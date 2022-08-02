@@ -1,99 +1,91 @@
-<!DOCTYPE html>
-<html>
+@extends('layouts.auth')
+<style>
+  .passwordInput {
+      box-sizing: border-box;
+      padding-left: 10px;  
+      vertical-align: top;
+    }
 
-<head>
-  <meta charset='utf-8'>
-  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-  <title>Page Title</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel='stylesheet' type='text/css' media='screen' href='style.css'>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
-    rel="stylesheet">
-    <link rel='stylesheet' type='text/css' media='screen' href='{{asset('css/login.css')}}'>
+    .passwordInput:focus {
+      outline: none;
+    }
 
-</head>
+    img {
+      position: absolute;
+      top: 12px;
+      right: 25px;  
+    }
 
-<body>
+  .inputs-icon {
+    position: relative;
+  }
+</style>
+@Section('content')
   <div class="login">
     <div class="container">
-
       <div class="form-sec1">
-
-
         <div class="heading">
           <div class="first-heading">
             <h3>
               Let’s get you started !
-
             </h3>
           </div>
           <div class="bottoom-title">
             <p>Please create your account</p>
           </div>
         </div>
-
         <div class="tab-sec">
           <a href="{{route('register')}}" class="signupBtn">Signup</a>
           <a href="{{route('login')}}" >Login</a>
         </div>
         <div class="form-sec">
-          <form>
+          <form method="POST" action="{{ route('register') }}">
+            @csrf
             <div class="mb-3">
-              <div class="label"><label for="email1" class="form-label">Name</label></div>
+              <div class="label"><label for="name" class="form-label">Name</label></div>
               <div class="inputs">
-                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <input type="text" class="form-control" id="exampleInputName" aria-describedby="emailHelp" autocomplete="off">
               </div>
-
-
             </div>
             <div class="mb-3">
-              <div class="label"><label for="email1" class="form-label">Phone number</label></div>
+              <div class="label"><label for="email" class="form-label">Email</label></div>
               <div class="inputs">
-                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" autocomplete="off">
               </div>
-
-
             </div>
-
+            <div class="mb-3">
+              <div class="label"><label for="phone number" class="form-label">Phone number</label></div>
+              <div class="inputs">
+                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" autocomplete="off">
+              </div>
+            </div>
             <div class="mb-3">
               <div class="label">
                 <label for="Password" class="form-label">Password</label>
               </div>
-              <div class="inputs">
-                <input type="password" class="form-control" id="exampleInputPassword1">
+              <div class="inputs-icon">
+                <input type="password" class="form-control passwordInput" id="exampleInputPassword1" autocomplete="off">
+                <a href="#"><img src="{{asset('images/Eye_Icon.png')}}" alt=img></a>
               </div>
             </div>
             <div class="mb-3">
               <div class="label"><label for="email1" class="form-label">Confirm Password</label></div>
-              <div class="inputs">
-                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+              <div class="inputs-icon">
+                <input type="password" class="form-control passwordInput" id="exampleInputEmail1 " aria-describedby="emailHelp" autocomplete="off">
+                <a href="#"><img src="{{asset('images/Eye_Icon.png')}}" alt=img></a>
               </div>
-
-
             </div>
             <div class="mb-3">
-
               <div class="inputs check-box">
                 <input type="checkbox">
                 <p>I agree to the <a href="Terms of Service and Privacy Policy">Terms of Service and Privacy Policy"</a>
                 </p>
               </div>
-
-
             </div>
             <button type="submit" class="btn btn-primary submitBtn">Signup</button>
-
           </form>
         </div>
-
       </div>
     </div>
   </div>
-
-
-
-</body>
-
-</html>
+@endsection
