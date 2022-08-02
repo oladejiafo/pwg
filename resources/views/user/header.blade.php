@@ -18,7 +18,7 @@
         </ul>
 
         <ul class="custom-navbar-nav navbar-nav mb-2 mb-md-0 ms-5">
-            <li><a class="nav-link" href="#"  style="font-size:large"><img src="../user/images/signin.svg" class="image" alt="signin" style="width: 80px; height: 40px;"> Sign-In</a></li>
+            <li><a class="nav-link" href="{{route('login')}}"  style="font-size:large"><img src="../user/images/signin.svg" class="image" alt="signin" style="width: 80px; height: 40px;"> Sign-In</a></li>
         </ul>
     </div>
 </div>

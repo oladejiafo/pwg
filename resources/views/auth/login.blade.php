@@ -9,11 +9,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="../user/css/style.css" rel="stylesheet">
   </head>
 <body>
   <div class="login">
       <div class="container">
-          <div class="header-sec">  
+          {{-- <div class="header-sec">  
             <div class="left-sec">
                 <div class="logo"><a href="#"><img src="{{asset('images/logo.png')}}" alt="logoo"></a></div>
                 <div class="applicant"><a href="#"><span><img src="{{asset('images/icon1.png')}}"></span>Applicants</a></div>
@@ -22,7 +23,8 @@
             <div class="signin-right ">
               <a href="#"><img src="images/icon3.png" alt="icon3">Sign In</a>
             </div>
-          </div>
+          </div> --}}
+          @include('user/header');
           <div class="form-sec1">
             <div class="heading">
               <div class="first-heading">
@@ -35,7 +37,7 @@
               </div>
             </div>
             <div class="tab-sec">
-                <a href="">Signup</a>
+                <a href="{{route('register')}}">Signup</a>
                 <a href="">Login</a>
             </div>
             <div class="form-sec">
