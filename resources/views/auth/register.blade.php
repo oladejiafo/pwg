@@ -11,6 +11,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet">
+    <link rel='stylesheet' type='text/css' media='screen' href='{{asset('css/login.css')}}'>
+
 </head>
 
 <body>
@@ -33,8 +35,8 @@
         </div>
 
         <div class="tab-sec">
-          <a href="">Signup</a>
-          <a href="">Login</a>
+          <a href="{{route('register')}}" class="signupBtn">Signup</a>
+          <a href="{{route('login')}}" >Login</a>
         </div>
         <div class="form-sec">
           <form>
@@ -81,7 +83,7 @@
 
 
             </div>
-            <button type="submit" class="btn btn-primary">Signup</button>
+            <button type="submit" class="btn btn-primary submitBtn">Signup</button>
 
           </form>
         </div>

@@ -246,7 +246,7 @@ a.more {
   border-color: #2f2f2f;
 }
 
-.btn:hover {
+.btn-secondary:hover {
   color: #ffffff;
   background: #222222;
   border-color: #222222;
@@ -259,15 +259,15 @@ a.more {
   box-shadow: none;
 }
 
-.btn.btn-primary {
+/* .btn.btn-primary {
   background: #3b5d50;
   border-color: #3b5d50;
 }
 
 .btn.btn-primary:hover {
-  background: #314d43;
-  border-color: #314d43;
-}
+  background: linear-gradient(90deg, #FACB08 2.41%, #FAE008 90.98%);
+
+} */
 
 .btn.btn-secondary {
   color: #2f2f2f;

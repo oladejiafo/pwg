@@ -16,13 +16,15 @@ body {
 }
 
 .login .signin-right {
-    text-align: right;
+    margin-top: 17px;
+    margin-bottom: 17px;
+    padding-right: 100px;
 }
 
 .login .header-sec {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 250px;
+    background-color: white;
 
 }
 
@@ -44,8 +46,18 @@ body {
     align-items: center;
 }
 
-.login .applicant {
-    padding-right: 70px;
+.applicant a {
+    height: 25px;
+    margin-top: 17px;
+    margin-bottom: 17px;
+    margin-left: 111px;
+}
+
+.affiliate a{
+    height: 25px;
+    margin-top: 17px;
+    margin-bottom: 17px;
+    margin-left: 111px;
 }
 
 .login .signin-right a {
@@ -81,8 +93,11 @@ body {
     border-radius: 10px;
 }
 
-.login .logo {
-    padding-right: 103px;
+.logo img {
+    margin-top: 17px;
+    margin-bottom: 17px;
+    margin-left: 111px;
+    height: 50px;
 }
 
 .form-sec1 {
@@ -90,11 +105,11 @@ body {
     max-width: 100%;
     margin-left: auto;
     margin-right: auto;
-
     margin: 0 auto;
     padding: 70px 203px 70px 203px;
     background-color: #ffffff;
     margin-bottom: 420px;
+    margin-top: 250px;
 }
 
 .form-sec1 h3 {
@@ -214,6 +229,17 @@ body {
     color: #4B73DE
 }
 
+.submitBtn:hover{
+    background: linear-gradient(90deg, #FACB08 2.41%, #FAE008 90.98%);
+    border-color:none;
+}
+
+.signupBtn {
+    border-bottom:1.5px solid #f9bf29;
+    width:132px
+
+}
+
 /*************Responsive Styles*****************/
 /***************iPhone Portrait**************/
 @media only screen and (max-width: 479px) and (min-width: 320px) {
@@ -259,12 +285,19 @@ body {
         width: 90%;
         margin: 0 auto;
     }
+    .header-sec {
+        width: 100%;
+    }
 }
 
 /*************************iPad Portrait***************/
 @media only screen and (max-width: 985px) and (min-width: 768px) {
     .container {
         width: 90%;
+        margin: 0 auto;
+    }
+    .header-sec {
+        width: 100%;
         margin: 0 auto;
     }
 }
@@ -275,6 +308,24 @@ body {
         width: 90%;
         margin: 0 auto;
     }
+    .header-sec {
+        width: 100%;
+        margin: 0 auto;
+    }
 }
 
 /*******************************************/
+
+@media only screen and (max-width: 667px) and (min-width: 375px) {
+    .signin-right {
+        padding-right: 0px;
+        padding-left: 111px;
+    }
+}
+
+@media only screen and (max-width: 740px) and (min-width: 360px) {
+    .signin-right {
+        padding-right: 0px;
+        padding-left: 111px;
+    }
+}
