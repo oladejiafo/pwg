@@ -1,0 +1,280 @@
+@font-face {
+    font-family: 'Akrobat';
+    src: url('fonts/Akrobat-Regular');
+}
+a {
+    text-decoration: none;
+}
+
+body {
+    background-color: #F6F7FB;
+}
+
+.container {
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.login .signin-right {
+    text-align: right;
+}
+
+.login .header-sec {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 250px;
+
+}
+
+.login .left-sec {
+    display: flex;
+}
+
+.login .left-sec a {
+    font-family: Montserrat;
+    font-size: 21px;
+    font-weight: 500;
+    line-height: 26px;
+    letter-spacing: 0em;
+    text-align: left;
+    color:
+        #313445;
+    ;
+    display: flex;
+    align-items: center;
+}
+
+.login .applicant {
+    padding-right: 70px;
+}
+
+.login .signin-right a {
+    display: flex;
+    align-items: center;
+    font-family: Montserrat;
+    font-size: 21px;
+    font-weight: 500;
+    line-height: 26px;
+    letter-spacing: 0em;
+    text-align: left;
+
+    color: #313445;
+
+}
+
+.login .signin-right img {
+
+    padding-right: 10px;
+}
+
+.login .applicant a span img,
+.login .affiliate a span img {
+    width: 30px;
+    margin-top: 10px;
+}
+
+.login .applicant a,
+.login .affiliate a {
+
+    background: #F0F3F4;
+    padding: 7px;
+    border-radius: 10px;
+}
+
+.login .logo {
+    padding-right: 103px;
+}
+
+.form-sec1 {
+    width: 360px;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+
+    margin: 0 auto;
+    padding: 70px 203px 70px 203px;
+    background-color: #ffffff;
+    margin-bottom: 420px;
+}
+
+.form-sec1 h3 {
+    font-family: Akrobat;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 43px;
+    letter-spacing: 0em;
+    text-align: center;
+}
+
+.form-sec1 p {
+    font-family: Akrobat;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 24px;
+    letter-spacing: 0em;
+    text-align: center;
+}
+
+.form-sec1 input {
+    height: 54px;
+    width: 358px;
+    border: 0.5px solid #C4C6CD;
+    border-radius: 0px;
+    margin-bottom: 13px;
+}
+
+.form-sec1 label {
+    font-family: Akrobat;
+    font-size: 20px;
+    font-weight: 400;
+    color: #636466;
+    padding-bottom: 6px;
+    display: inline-flex;
+    line-height: 24px;
+    letter-spacing: 0em;
+    text-align: left;
+}
+
+.form-sec1 button {
+    height: 60px;
+    width: 358px;
+    border: 1px solid #F6F6F6;
+    background: #F6F6F6;
+
+    border-radius: 0px;
+    padding: 10px;
+    font-family: Montserrat;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 43px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: #606060;
+
+    margin-top: 30px;
+}
+
+.form-sec1 .bottom-sec {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.form-sec1 .bottom-sec a {
+    font-family: Akrobat;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0em;
+    color: #636466;
+
+}
+
+.form-sec1 .tab-sec {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 62px;
+
+    margin-top: 61px;
+
+}
+
+.form-sec1 .tab-sec a {
+    font-family: Akrobat;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 29px;
+    color: #636466;
+    text-align: center;
+}
+
+.form-sec1 input[type="checkbox"] {
+    width: 30px;
+    height: 30px;
+}
+
+.form-sec1 .check-box {
+    display: flex;
+}
+
+.form-sec1 .check-box p {
+    margin: 0px;
+    font-family: Akrobat;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 22px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #000;
+
+
+}
+
+.form-sec1 .check-box p a {
+    color: #4B73DE
+}
+
+/*************Responsive Styles*****************/
+/***************iPhone Portrait**************/
+@media only screen and (max-width: 479px) and (min-width: 320px) {
+    .container {
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .login .header-sec {
+
+        flex-wrap: wrap;
+    }
+
+    .form-sec1 {
+        padding: 0px;
+        width: 100%;
+    }
+
+    .form-sec1 button {
+        width: 100%;
+    }
+
+    .form-sec1 input {
+
+        width: 100%;
+    }
+
+    .login .left-sec {
+        display: flex;
+        flex-wrap: wrap;
+
+    }
+
+    .login .left-sec a {
+        margin-bottom: 10px;
+    }
+
+}
+
+/**********************iPhone Landscape*************/
+@media only screen and (max-width: 767px) and (min-width: 480px) {
+    .container {
+        width: 90%;
+        margin: 0 auto;
+    }
+}
+
+/*************************iPad Portrait***************/
+@media only screen and (max-width: 985px) and (min-width: 768px) {
+    .container {
+        width: 90%;
+        margin: 0 auto;
+    }
+}
+
+/**************iPad Landscape***************/
+@media only screen and (max-width: 1024px) and (min-width: 986px) {
+    .container {
+        width: 90%;
+        margin: 0 auto;
+    }
+}
+
+/*******************************************/
