@@ -1,25 +1,4 @@
 @extends('layouts.auth')
-<style>
-  .passwordInput {
-      box-sizing: border-box;
-      padding-left: 10px;  
-      vertical-align: top;
-    }
-
-    .passwordInput:focus {
-      outline: none;
-    }
-
-    .iconImg {
-      position: absolute;
-      top: 12px;
-      right: 25px;  
-    }
-
-  .inputs-icon {
-    position: relative;
-  }
-</style>
 @Section('content')
   <div class="login">
   <div class="header-sec">  
@@ -75,14 +54,14 @@
               </div>
               <div class="inputs-icon">
                 <input type="password" class="form-control passwordInput" id="exampleInputPassword1" name="password" autocomplete="off">
-                <a href="#"><img src="{{asset('images/Eye_Icon.png')}}" alt=img class="iconImg"></a>
+                <img src="{{asset('images/Eye_Icon.png')}}" alt=img class="iconImg">
               </div>
             </div>
             <div class="mb-3">
               <div class="label"><label for="email1" class="form-label">Confirm Password</label></div>
               <div class="inputs-icon">
-                <input type="password" class="form-control passwordInput" id="exampleInputEmail1" name="password_confirmation" aria-describedby="emailHelp" autocomplete="off">
-                <a href="#"><img src="{{asset('images/Eye_Icon.png')}}" alt=img class="iconImg"></a>
+                <input type="password" class="form-control confirmation" name="password_confirmation" aria-describedby="emailHelp" autocomplete="off">
+                <img src="{{asset('images/Eye_Icon.png')}}" alt=img id="cofirmation">
               </div>
             </div>
             <div class="mb-3">
@@ -99,3 +78,30 @@
     </div>
   </div>
 @endsection
+@push('custom-scripts')
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
+      $(document).ready(function() {
+        //password
+        $('.iconImg').on('click', function(){
+            var passInput=$(".passwordInput");
+            if(passInput.attr('type')==='password')
+              {
+                passInput.attr('type','text');
+            }else{
+              passInput.attr('type','password');
+            }
+        })
+        // confirm password
+        $('#cofirmation').on('click', function(){
+            var passInput=$(".confirmation");
+            if(passInput.attr('type')==='password')
+              {
+                passInput.attr('type','text');
+            }else{
+              passInput.attr('type','password');
+            }
+        })
+      });
+  </script>
+@endpush

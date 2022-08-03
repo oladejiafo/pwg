@@ -1,109 +1,139 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+    
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <link rel="icon" href="images/fevicon.png" type="image/gif" />
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
 
-<html>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet" />
+    <!-- <link href="../user/css/main.css" rel="stylesheet" /> -->
+    <title>PWG Client Portal</title>
 
-@include('user/header');
 
+  <!-- bootstrap core css -->
+  <link href="../user/css/bootstrap.min.css" rel="stylesheet">
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
-<!-- bootstrap core css -->
-<link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+		<link href="../user/css/style.css" rel="stylesheet">
 
-<style>
-    .banner_bg {
-        width: 100%;
-        float: left;
-        background-image: url(../user/images/v1_17125.png);
-        height: auto;
-        background-size: 100%;
-        background-repeat: no-repeat;
-    }
+        <style>
+            .banner_bg {
+    width: 100%;
+    float: left;
+    background-image: url(../user/images/v1_17125.png);
+    height: auto;
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
 
-    #headerTitle {
-        font-family: 'TT Norms Pro Black';
-        font-weight: 900;
-        font-size: 60px;
-        font-style: normal;
-    }
-
-    #headerText {
-        font-family: 'TT Norms Pro Regular';
-        font-weight: bold;
-        font-size: 28px;
-        font-style: normal;
-        color: #fff;
-        text-transform: lowercase;
-    }
-
-    #headerText:first-letter {
-        text-transform: uppercase;
-    }
-
-    #headerBtn {
-        font-family: 'TT Norms Pro Bold';
-        font-weight: bold;
-        font-size: 32px;
-        font-style: normal;
-        color: #fff;
-
-    }
-
-    .cellContainer {
-        width: 546px;
-        margin: auto;
-    }
-</style>
+@font-face {
+    font-family: 'MyFont_SerifReg';
+    src: url('../user/fonts/TTNorms-Black.otf') format('truetype'),
+         url('/assets/fonts/TTNorms-BlackItalics.otf') format('woff');
+}
+        </style>
+</head>
 
 <body>
 
-    <!-- Start Hero Section -->
-    <div class="hero banner_bg layer">
+@include('user/header');
 
-        <div class="container-fluid">
-            <div class="row justify-content-between">
+<!-- Start Hero Section -->
+<div class="hero banner_bg layer">
+
+    <div class="container-fluid">
+        <div class="row justify-content-between">
                 <div class="col-md-12">
                     <div class="intro-excerpt">
-                        <h1 id="headerTitle">Your Migration Journey Starts Here</h1>
-                        <p id="headerText" class="mb-4">Get your Europe & Canada Visa from any part of the world.</p>
-                        <p><a href="" id="headerBtn" class="btn btn-hero" style='width:350px'>START NOW</a></p>
+                    <h1>Your Migration Journey Starts Here</h1>
+                    <p class="mb-4">Get your Europe & Canada Visa from any part of the world.</p>
+                    <p><a href="" class="btn btn-hero" style='width:240px'>START NOW</a></p>
                     </div>
                 </div>
-            </div>
-
         </div>
+
     </div>
-    <!-- End Hero Section -->
+</div>
+<!-- End Hero Section -->
 
 
-    <!-- Start Product Section -->
-    <div class="product-section">
-        <div class="container-fluid text-center" style="padding-left:50px; padding-right:50px">
-            <div class="row">
-                @foreach($package as $offer)
-                <!-- Start Column  -->
-                <div class="col-4 cellContainer">
-                    <span class="product-item" href="#">
-                        <span class="positionAnchor">
-                            <img src="../user/images/{{$offer->image}}" style="height:458px" class="img-fluid product-thumbnail">
-                            <span class="bottom">
-                                <h3 class="product-title intro-excerpt" style="font-size: 35px; color:aliceblue">{{$offer->product_name}}</h3>
-                                <p style="font-size:20px">{{$offer->slogan}}</p>
+		<!-- Start Product Section -->
+		<div class="product-section">
+			<div class="container-fluid text-center">
+				<div class="row">
+					<!-- Start Column 2 -->
+					<div class="col-4">
+						<a class="product-item" href="#">
+						<span class="positionAnchor">
+                          <img src="../user/images/v1_17064.png" style="height:420px" class="img-fluid product-thumbnail">
+							<span class="bottom">
+                             <h3 class="product-title intro-excerpt" style="font-size: 35px; color:aliceblue">POLAND</h3>
+                             <p style="font-size:20px">Your Dream Home</p>
                             </span>
-                            <strong class="product-price">{{number_format($offer->unit_price,2)}} {{$offer->currency}}</strong>
-                            <p><i class="fa fa-minus-circle" style='color: white'></i>{{$offer->discount}}% lower than last month</p>
-
-                            <p><a class="btn btn-secondary" href="{{ url('product', $offer->id) }}">Buy Now</a></p>
-
+							<strong class="product-price">4,789AED</strong>
+                            <p><i class="fa fa-minus-circle" style='color: white'></i>34% lower than last month</p>
+                            <p><button class="btn btn-secondary">Buy Now</button></p>
+							<span class="icon-cross">
+								<img src="../user/images/v1_17064.png" class="img-fluid">
+							</span>
                         </span>
-                    </span>
-                </div>
-                <!-- End Column  -->
-                @endforeach
+						</a>
+					</div> 
+					<!-- End Column 2 -->
 
-            </div>
-        </div>
-    </div>
-    <!-- End Product Section -->
+					<!-- Start Column 3 -->
+					<div class="col-4">
+						<a class="product-item" href="#">
+						<span class="positionAnchor">
+                          <img src="../user/images/v1_17105.png" style="height:420px" class="img-fluid product-thumbnail">
+							<span class="bottom">
+                             <h3 class="product-title intro-excerpt" style="font-size: 35px; color:aliceblue">CANADA</h3>
+                             <p style="font-size:20px">Your Dream Home</p>
+                            </span>
+							<strong class="product-price">9,975AED</strong>
+                            <p><i class="fa fa-minus-circle" style='color: white'></i>10% lower than last month</p>
+                            <p><button class="btn btn-secondary">Buy Now</button></p>
+							<span class="icon-cross">
+								<img src="../user/images/v1_17105.png" class="img-fluid">
+							</span>
+                        </span>
+						</a>
+					</div> 
+					<!-- End Column 3 -->
+
+					<!-- Start Column 4 -->
+					<div class="col-4">
+						<a class="product-item" href="#">
+						<span class="positionAnchor">
+                          <img src="../user/images/v1_17079.png" style="height:420px" class="img-fluid product-thumbnail">
+							<span class="bottom">
+                             <h3 class="product-title intro-excerpt" style="font-size: 35px; color:aliceblue">GERMANY</h3>
+                             <p style="font-size:20px">Your Dream Home</p>
+                            </span>
+							<strong class="product-price">4,789AED</strong>
+                            <p><i class="fa fa-minus-circle" style='color: white'></i>34% lower than last month</p>
+                            <p><button class="btn btn-secondary">Buy Now</button></p>
+							<span class="icon-cross">
+								<img src="../user/images/v1_17079.png" class="img-fluid">
+							</span>
+                        </span>
+						</a>
+					</div> 
+					<!-- End Column 4 -->
+
+				</div>
+			</div>
+		</div>
+		<!-- End Product Section -->
 
 </body>
 

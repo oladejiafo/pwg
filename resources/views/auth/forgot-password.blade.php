@@ -5,10 +5,12 @@
             <div class="forgot-password ">
                 <div class="reset">
                     <div class="resetImage">
-                        <img src="{{asset('images/ring.png')}}" alt="ring" class="ring">
-                        <img src="{{asset('images/question_mark.png')}}" alt="ring" class="questionMark">
+                        {{-- <img src="{{asset('images/ring.png')}}" alt="ring" class="ring">
+                        <img src="{{asset('images/question_mark.png')}}" alt="ring" class="questionMark"> --}}
                     </div>
                     <div class="reset-heading">
+                        <img src="{{asset('images/ring.png')}}" alt="ring" class="ring">
+                        <img src="{{asset('images/question_mark.png')}}" alt="ring" class="questionMark">
                         It’s okay to reset your password
                     </div>
                     <div class="reset-title">
