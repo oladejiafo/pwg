@@ -10,7 +10,7 @@
       outline: none;
     }
 
-    img {
+    .iconImg {
       position: absolute;
       top: 12px;
       right: 25px;  
@@ -75,14 +75,14 @@
               </div>
               <div class="inputs-icon">
                 <input type="password" class="form-control passwordInput" id="exampleInputPassword1" name="password" autocomplete="off">
-                <a href="#"><img src="{{asset('images/Eye_Icon.png')}}" alt=img></a>
+                <a href="#"><img src="{{asset('images/Eye_Icon.png')}}" alt=img class="iconImg"></a>
               </div>
             </div>
             <div class="mb-3">
               <div class="label"><label for="email1" class="form-label">Confirm Password</label></div>
               <div class="inputs-icon">
                 <input type="password" class="form-control passwordInput" id="exampleInputEmail1" name="password_confirmation" aria-describedby="emailHelp" autocomplete="off">
-                <a href="#"><img src="{{asset('images/Eye_Icon.png')}}" alt=img></a>
+                <a href="#"><img src="{{asset('images/Eye_Icon.png')}}" alt=img class="iconImg"></a>
               </div>
             </div>
             <div class="mb-3">
