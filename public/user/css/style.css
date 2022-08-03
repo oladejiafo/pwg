@@ -1,12 +1,14 @@
 @import url("https://fonts.googleapis.com/css2?family=TT+norms:wght@400;500;600;700;800&display=swap");
-
+@import url("../fonts/TTNorms-Black.otf");
+@import url("../fonts/TTNorms-Bold.otf");
+@import url("../fonts/TTNorms-Regular.otf");
 body {
   overflow-x: hidden;
   position: relative;
 }
 
 body {
-  font-family: "TT norms", sans-serif;
+  font-family: "TTNormsPro-Regular", sans-serif;
   font-weight: 400;
   line-height: 28px;
   color: #000;
@@ -138,6 +140,7 @@ a.more {
   padding: calc(4rem - 30px) 0 0rem 0;
 
   margin-bottom: 40px;
+  min-height: 700px;
 }
 
 @media (min-width: 768px) {
@@ -160,19 +163,19 @@ a.more {
 
 @media (min-width: 992px) {
   .hero .intro-excerpt {
-    max-width: 450px;
+    max-width: 650px;
   }
 }
 
 .hero h1 {
-  font-weight: 500;
+  font-weight: 900;
   color: #ffffff;
   margin-bottom: 30px;
 }
 
 @media (min-width: 1400px) {
   .hero h1 {
-    font-size: 45px;
+    font-size: 60px;
   }
 }
 
@@ -279,6 +282,7 @@ a.more {
 
 .btn.btn-secondary:hover {
   background: hsl(51, 94%, 50%); /*#f8b810*/
+  border-color: hsl(51, 94%, 50%);
 }
 
 .btn.btn-hero {
@@ -291,6 +295,7 @@ a.more {
 
 .btn.btn-hero:hover {
   background: hsl(51, 94%, 50%);
+  border-color: hsl(51, 94%, 50%);
 }
 
 .btn.btn-white-outline {
@@ -329,12 +334,12 @@ a.more {
 
 .product-section .product-item {
   text-align: center;
-  height: 620px;
+  height: 651px;
   text-decoration: none;
-  box-shadow: 0px 0px 8px 8px#96949481;
+  box-shadow: 0px 0px 0px 1px#e0d8d881;
   display: block;
   position: relative;
-  padding-bottom: 50px;
+  margin-bottom: 50px;
   cursor: pointer;
   border-style: solid 1px;
 }
@@ -362,6 +367,10 @@ a.more {
   transition: .3s all ease;
 }
 
+.product-section .product-item .product-title{
+  text-transform: uppercase;
+}
+
 .product-section .product-item h3 {
   font-weight: 600;
   font-size: 16px;
@@ -369,7 +378,7 @@ a.more {
 
 .product-section .product-item strong {
   font-weight: 800 !important;
-  font-size: 23px !important;
+  font-size: 32px !important;
 }
 
 .product-section .product-item h3,
@@ -383,7 +392,7 @@ a.more {
   width: 35px;
   height: 35px;
   display: inline-block;
-  background: #2f2f2f;
+  background: #fff;
   bottom: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
@@ -855,7 +864,7 @@ a.more {
 .footer-section .subscription-form .form-control {
   height: 50px;
   border-radius: 10px;
-  font-family: "TT Norms", sans-serif;
+  font-family: "TTNormsPro-Regular", sans-serif;
 }
 
 .footer-section .subscription-form .form-control:active,
@@ -956,7 +965,7 @@ a.more {
 .form-control {
   height: 50px;
   border-radius: 10px;
-  font-family: "TT Norms", sans-serif;
+  font-family: "TTNormsPro-Regular", sans-serif;
 }
 
 .form-control:active,

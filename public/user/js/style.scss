@@ -6,7 +6,7 @@ $primary2: #f89646;
 $textCol: #999;
 
 @mixin main-font {
-  font-family: "Roboto", sans-serif;
+  font-family: "TTNormsPro-Regular", sans-serif;
 }
 
 @mixin hero_btn($col1, $col2, $pad1, $pad2, $bRadius) {
@@ -479,7 +479,7 @@ a:focus {
 
       .rating {
         width: 100%;
-        border-bottom: 1px solid #888;
+        border-bottom: 1px solid #fff;
         padding-bottom: 10px;
         margin-bottom: 15px;
         color: $primary2;
