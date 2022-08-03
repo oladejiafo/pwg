@@ -52,17 +52,21 @@ input {
 }
 
 .applicant a {
-    height: 25px;
+    min-height: 25px;
+    padding-left: 30px;
     margin-top: 17px;
     margin-bottom: 17px;
     margin-left: 111px;
+    text-decoration: none;
 }
 
-.affiliate a {
-    height: 25px;
-    margin-top: 17px;
+.affiliate a{
+    min-height: 25px;
+    padding: 10px;
+    margin: 17px;
     margin-bottom: 17px;
     margin-left: 111px;
+    text-decoration: none;
 }
 
 .login .signin-right a {
@@ -74,7 +78,7 @@ input {
     line-height: 26px;
     letter-spacing: 0em;
     text-align: left;
-
+    text-decoration: none;
     color: #313445;
 
 }

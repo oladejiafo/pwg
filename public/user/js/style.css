@@ -3,7 +3,7 @@ html {
 }
 
 body {
-  font-family: "Roboto", sans-serif;
+  font-family: "TTNormsPro-Regular", sans-serif;
   color: #0c0c0c;
   background-color: #ffffff;
   overflow-x: hidden;
@@ -80,7 +80,7 @@ section {
   top: 50%;
   width: 3px;
   height: 90px;
-  background-color: #4E7F6A;
+  background-color: #fff;
   -webkit-transform: translateY(-50%);
           transform: translateY(-50%);
 }
