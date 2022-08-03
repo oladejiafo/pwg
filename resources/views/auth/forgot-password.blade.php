@@ -1,7 +1,6 @@
 @extends('layouts.auth')
 @Section('content')
     <div class="login">
-        {{-- @include('user/header') --}}
         <div class="container">
             <div class="forgot-password ">
                 <div class="reset">
@@ -16,14 +15,14 @@
                         <p>Please login with your account</p>
                     </div>
                     <div class="form-sec">
-                        <form method="POST" action="{{ route('login') }}">
+                        <form method="POST" action="{{ route('password.email') }}">
                             @csrf
                             <div class="mb-3">
                                 <div class="inputs"> 
-                                    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" autocomplete="off" placeholder="Email or phone number">
+                                    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" autocomplete="off" placeholder="Email or phone number" name="email" :value="old('email')" required autofocus>
                                 </div>            
                             </div>
-                            <button type="submit" class="btn btn-primary submitBtn">Login</button>
+                            <button type="submit" class="btn btn-primary submitBtn">Continue</button>
                         </form>
                     </div>
                 </div>

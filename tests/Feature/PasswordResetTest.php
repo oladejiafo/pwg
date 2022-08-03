@@ -78,6 +78,7 @@ class PasswordResetTest extends TestCase
             'email' => $user->email,
         ]);
 
+
         Notification::assertSentTo($user, ResetPassword::class, function ($notification) use ($user) {
             $response = $this->post('/reset-password', [
                 'token' => $notification->token,

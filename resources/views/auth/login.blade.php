@@ -1,7 +1,7 @@
 @extends('layouts.auth')
 @Section('content')
   <div class="login">
-    @include('user/header')
+    @include('layouts/auth-header')
     <div class="container">
         <div class="form-sec1">
           <div class="heading">
@@ -24,7 +24,7 @@
               <div class="mb-3">
                   <div class="label"><label for="email1" class="form-label">Email or phone number</label></div>
                 <div class="inputs"> 
-                  <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" autocomplete="off">
+                  <input type="text" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp" autocomplete="off">
                 </div>            
               </div>
               <div class="mb-3">
@@ -32,7 +32,7 @@
                   <label for="Password" class="form-label">Password</label>
                 </div>
                 <div class="inputs-icon">
-                  <input type="password" class="form-control passwordInput" id="exampleInputPassword1" autocomplete="off">
+                  <input type="password" class="form-control passwordInput" name="password" id="exampleInputPassword1" autocomplete="off">
                   <a href="#"><img src="{{asset('images/Eye_Icon.png')}}" alt=img class="hiddenIcon"></a>
                 </div>
               </div>

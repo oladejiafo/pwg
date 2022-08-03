@@ -1,36 +1,46 @@
-<x-guest-layout>
-    <x-jet-authentication-card>
-        <x-slot name="logo">
-            <x-jet-authentication-card-logo />
-        </x-slot>
-
-        <x-jet-validation-errors class="mb-4" />
-
-        <form method="POST" action="{{ route('password.update') }}">
-            @csrf
-
-            <input type="hidden" name="token" value="{{ $request->route('token') }}">
-
-            <div class="block">
-                <x-jet-label for="email" value="{{ __('Email') }}" />
-                <x-jet-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request->email)" required autofocus />
+@extends('layouts.auth')
+@Section('content')
+    <div class="login">
+        <div class="container">
+            <div class="forgot-password" style="height: 837px;">
+                <div class="reset">
+                    <div class="resetImage">
+                        <img src="{{asset('images/ring.png')}}" alt="ring" class="ring">
+                        <img src="{{asset('images/tick.png')}}" alt="ring" class="tick">
+                    </div>
+                    <div class="reset-heading">
+                        Reset your password
+                    </div>
+                    <div class="reset-title">
+                        <p>Please enter code received on email/phone</p>
+                    </div>
+                    <div class="form-sec">
+                        <form method="POST" action="{{ route('password.email') }}">
+                            <div class="mb-3">
+                                <div class="inputs"> 
+                                    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" autocomplete="off" placeholder="########">
+                                </div>            
+                            </div>
+                            <div class="mb-3">
+                                <div class="inputs"> 
+                                    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" autocomplete="off" placeholder="New password" name="password">
+                                </div>            
+                            </div>
+                            <div class="mb-3">
+                                <div class="inputs"> 
+                                    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" autocomplete="off" placeholder="Confirm password" name="password_confirmation">
+                                </div>            
+                            </div>
+                            <button type="submit" class="btn btn-primary submitBtn">Reset Password</button>
+                        </form>
+                    </div>
+                    <div >
+                        <p class="subInfo"> Haven't received the email? Check your spam folder.
+                            Still not there? Then try this: <a href="#">Resend email</a>
+                        </p>
+                    </div>
+                </div>
             </div>
-
-            <div class="mt-4">
-                <x-jet-label for="password" value="{{ __('Password') }}" />
-                <x-jet-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            </div>
-
-            <div class="mt-4">
-                <x-jet-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
-                <x-jet-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                <x-jet-button>
-                    {{ __('Reset Password') }}
-                </x-jet-button>
-            </div>
-        </form>
-    </x-jet-authentication-card>
-</x-guest-layout>
+        </div>
+    </div>
+@endsection
