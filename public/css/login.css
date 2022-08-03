@@ -2,6 +2,7 @@
     font-family: 'Akrobat';
     src: url('fonts/Akrobat-Regular');
 }
+
 a {
     text-decoration: none;
 }
@@ -13,6 +14,10 @@ body {
 .container {
     width: 1200px;
     margin: 0 auto;
+}
+
+input {
+    border-radius: 5px;
 }
 
 .login .signin-right {
@@ -114,6 +119,7 @@ body {
     background-color: #ffffff;
     margin-bottom: 420px;
     margin-top: 250px;
+    color: #636466;
 }
 
 .form-sec1 h3 {
@@ -138,7 +144,7 @@ body {
     height: 54px;
     width: 358px;
     border: 0.5px solid #C4C6CD;
-    border-radius: 0px;
+    /* border-radius: 0px; */
     margin-bottom: 13px;
 }
 
@@ -160,7 +166,7 @@ body {
     border: 1px solid #F6F6F6;
     background: #F6F6F6;
 
-    border-radius: 0px;
+    /* border-radius: 0px; */
     padding: 10px;
     font-family: Montserrat;
     font-size: 36px;
@@ -233,16 +239,188 @@ body {
     color: #4B73DE
 }
 
-.submitBtn:hover{
+.submitBtn:hover {
     background: linear-gradient(90deg, #FACB08 2.41%, #FAE008 90.98%);
-    border-color:none;
+    border-color: none;
 }
 
 .signupBtn {
-    border-bottom:1.5px solid #f9bf29;
-    width:132px
+    border-bottom: 1.5px solid #f9bf29;
+    width: 132px;
+    color: #F6F6F6;
 
 }
+
+.forgot-password {
+    width: 410px;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    margin: 0 auto;
+    padding: 70px 203px 70px 203px;
+    background-color: #ffffff;
+    margin-bottom: 420px;
+    margin-top: 250px;
+    color: #636466;
+    align-content: center;
+    height: 555px;
+}
+
+.resetPassword {
+    margin-top: 195px;
+    width: 434px;
+}
+
+.input-with-icon {
+    /* causes absolute icon div to be positioned correctly */
+    position: relative;
+
+    width: 25rem;
+    height: 3.2rem;
+    box-sizing: border-box;
+}
+
+.input-with-icon .form-control {
+    height: 100%;
+    width: 100%;
+    padding-right: 3.65rem;
+    box-sizing: border-box;
+}
+
+.input-with-icon .icon {
+    position: absolute;
+
+    /* These are set relative to the height of the input box to bound the box neatly inside. This is aesthetic to me but you may change the dimensions of course. */
+    right: 0.3rem;
+    top: 0.3rem;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 0.3rem;
+
+    /* content in the icon div is centered, without bootstrap or font-awesome you may wish to add your own text in the span */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.input-with-icon {
+    margin: 0.8rem;
+}
+
+.input-with-icon .form-control {
+    padding-left: 1.2rem;
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
+}
+
+.input-with-icon .icon {
+    border: 1px solid black;
+}
+
+.passwordInput {
+    box-sizing: border-box;
+    padding-left: 10px;
+    vertical-align: top;
+}
+
+.passwordInput:focus {
+    outline: none;
+}
+
+.hiddenIcon {
+    position: absolute;
+    top: 12px;
+    right: 25px;
+}
+
+.inputs-icon {
+    position: relative;
+}
+
+.questionMark{
+    position: absolute;
+    left: 49.22%;
+    right: 20%;
+    top: 42%;
+    bottom: 58.76%;
+}
+
+.reset{
+    width: 100%;
+    margin-top: 200px
+}
+
+.reset-heading {
+    font-family: Akrobat;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 43px;
+    letter-spacing: 0em;
+    text-align: center;
+}
+
+.forgot-password .ringRest{
+    align-items: center;
+}
+
+.reset-title {
+    text-align: center;
+}
+
+.reset-title p{
+    margin: 1px;
+}
+
+.forgot-password input {
+    height: 54px;
+    width: 100%;
+    border: 0.5px solid #C4C6CD;
+    margin-top: 30px;
+    text-align: center;
+}
+
+::-webkit-input-placeholder {
+    text-align: center;
+}
+
+:-moz-placeholder {
+    text-align: center;
+}
+
+.forgot-password button {
+    height: 60px;
+    width: 358px;
+    border: 1px solid #F6F6F6;
+    background: #F6F6F6;
+
+    /* border-radius: 0px; */
+    padding: 10px;
+    font-family: Montserrat;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 43px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: #606060;
+
+    margin-top: 30px;
+    width: 100%;
+}
+
+.ring {
+    height: 110px;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+/* 
+   BELOW PROPERTIES AREN'T CRITICAL FOR DESIRED BEHAVIOUR.
+   THEY ARE PURELY FOR DEMONSTRATION PURPOSES
+  */
 
 /*************Responsive Styles*****************/
 /***************iPhone Portrait**************/
@@ -289,6 +467,7 @@ body {
         width: 90%;
         margin: 0 auto;
     }
+
     .header-sec {
         width: 100%;
     }
@@ -300,6 +479,7 @@ body {
         width: 90%;
         margin: 0 auto;
     }
+
     .header-sec {
         width: 100%;
         margin: 0 auto;
@@ -312,6 +492,7 @@ body {
         width: 90%;
         margin: 0 auto;
     }
+
     .header-sec {
         width: 100%;
         margin: 0 auto;
@@ -328,6 +509,13 @@ body {
 }
 
 @media only screen and (max-width: 740px) and (min-width: 360px) {
+    .signin-right {
+        padding-right: 0px;
+        padding-left: 111px;
+    }
+}
+
+@media only screen and (max-width: 1280) and (min-width: ) {
     .signin-right {
         padding-right: 0px;
         padding-left: 111px;
