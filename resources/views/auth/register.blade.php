@@ -22,6 +22,7 @@
 </style>
 @Section('content')
   <div class="login">
+
   <div class="header-sec">  
     <div class="left-sec">
         <div class="logo"><a href="{{url('/')}}"><img src="{{asset('images/logo.png')}}" alt="logoo"></a></div>

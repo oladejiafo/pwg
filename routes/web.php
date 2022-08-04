@@ -21,17 +21,14 @@ Route::get('/',[HomeController::class, 'index']);
 
 Route::get('/home', [HomeController::class, 'redirect'] );
 
-// Route::get('/signup', [HomeController::class, 'signup'] );
 
-// Route::middleware([
-//     'auth:sanctum',
-//     config('jetstream.auth_session'),
-//     'verified'
-// ])->group(function () {
-//     Route::get('/dashboard', function () {
-//         return view('dashboard');
-//     })->name('dashboard');
-// });
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');
 
-// Route::get('/dashboard/{id}',['as' => 'dashboard', 'uses' => 'HomeController@package']);
- Route::get('/product/{id}',[HomeController::class,'product']);
+
+Route::get('/product/{id}',[HomeController::class,'product']);
+
+Route::get('/append_signature/{id}',[HomeController::class,'signature']);
+
+Route::post('/upload_signature', [HomeController::class,'upload']);

@@ -16,7 +16,9 @@
     /* margin: 30px; */
     width:100%;
     margin: 1em auto 0 auto;
-    background-color: #faf9f6;
+  }
+  hr {
+    color: #faf9f6;
   }
   img {
     margin-top: 15px;
@@ -36,7 +38,7 @@
     font-size: 60px;
     margin-top: 0;
     margin-bottom: 0.5rem;
-    font-family: 'TT Norms Pro Bold';
+    font-family: "TTNormsPro-Bold";
     font-weight: bold;
     font-style: normal;
 
@@ -46,7 +48,7 @@ h2 {
     font-size: 50px;
     margin-top: 0;
     margin-bottom: 0.5rem;
-    font-family: 'TT Norms Pro Bold';
+    font-family: "TTNormsPro-Bold";
     font-weight: bold;
     font-style: normal;
 }
@@ -57,7 +59,7 @@ h2 {
     margin-top: 0;
     margin-bottom: 0.5rem;
     color: #000;
-    font-family: 'TT Norms Pro regular';
+    font-family: "TTNormsPro-Regular";
     font-weight: bold;
     font-style: normal;
   }
@@ -65,7 +67,7 @@ h2 {
   p {
     margin-top: 0;
     margin-bottom: 1rem;
-    font-family: 'TT Norms Pro regular';
+    font-family: "TTNormsPro-Regular";
     font-weight: normal;
     font-style: normal;
     font-size: 20px;
@@ -74,10 +76,11 @@ h2 {
   li {
     margin-top: 0;
     margin-bottom: 0.4rem;
-    font-family: 'TT Norms Pro regular';
+    font-family: "TTNormsPro-Regular";
     font-weight: normal;
     font-style: normal;
     font-size: 20px;
+    list-style-type: disc;
   }
 
  .text {
@@ -98,7 +101,7 @@ h2 {
     color: #000;
     margin-top: 0.1rem;
     margin-bottom: 0.4rem;
-    font-family: 'TT Norms Pro regular';
+    font-family: "TTNormsPro-Regular";
     font-weight: normal;
     font-style: normal;
     font-size: 20px;
@@ -144,12 +147,11 @@ h2 {
 
 <body>
 
-
   <section class="product-section">
-    <div class="container-fluid outer">
+    <div class="container-fluid">
       <div class="row">
           <div>
-            <p style="font-style: italics; text-decoration:none"><a href="">Application </a>  > {{$data->product_name}} </p>
+            <p style="font-style: italics; text-decoration:none"><a href="/"><b><i>Packages </a>  > {{$data->product_name}} </i></b></p>
           </div>
           <div class="col-md-6 col-sm-12 img-fluid">
             <img src="../user/images/{{$data->image}}"  width="96%" border="0" alt="" />
@@ -166,6 +168,7 @@ h2 {
             <p>
               <ul>
               @if ($data->benefits != "")
+              
                 @foreach(explode(' - ' ,$data->benefits) as $item)
                 
                   <li> {{$item}} </li>
@@ -175,7 +178,13 @@ h2 {
               </ul>
             </p>
             <p><input type="checkbox"> By checking this box you accept our Terms & Conditions</p>
-            <p><a class="btn btn-secondary" href="{{ url('product', $data->id) }}">Purchase Now</a></p>
+            @if(Route::has('login'))
+            @auth 
+            <p><a class="btn btn-secondary" href="{{ url('append_signature', $data->id) }}">Purchase Now</a></p>
+            @else 
+            <p><a class="btn btn-secondary" href="{{ url('login') }}">Purchase Now</a></p>
+            @endauth
+            @endif
           </div>
       
       </div>

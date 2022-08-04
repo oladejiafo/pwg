@@ -23,14 +23,42 @@
 
 </head>
 <div class="login">
-<div class="header-sec">  
-    <div class="left-sec">
+    <div class="header-sec">
+        <div class="left-sec">
+
         <div class="logo"><a href="{{url('/')}}"><img src="{{asset('images/logo.png')}}" alt="logoo"></a></div>
-        <div class="applicant"><a href="{{route('login')}}" style="width:200px; text-align:center; display:block;"><span><img src="{{asset('images/icon1.png')}}"></span> Applicants</a></div>
-        <div class="affiliate "><a href="#" style="width:250px; text-align:center; display:block;"><span><img src="{{asset('images/icon2.png')}}"></span> Affiliate Partner</a></div>
+
+        @if(Route::has('login'))
+
+        @auth
+            <div class="myapplicant"><a href="{{url('/')}}" style="width:260px; "><span><img src="{{asset('images/icon1.png')}}"></span><span style="padding-top:5px"> My Application</span></a></div>
+        @else
+            <div class="applicant"><a href="{{route('login')}}" style="width:200px; text-align:center; display:block;"><span><img src="{{asset('images/icon1.png')}}"></span> Applicants</a></div>
+            <div class="affiliate "><a href="#" style="width:250px; text-align:center; display:block;"><span><img src="{{asset('images/icon2.png')}}"></span> Affiliate Partner</a></div>
+        @endauth
+        @endif
+
+        </div>
+        <div class="signin-right ">
+
+            @if(Route::has('login'))
+
+            @auth 
+            <div id="activity">
+            <div class="divs"><a href="#"><img src="../user/images/Search.svg" width="30px" height="30px" alt="icon3"></a></div>
+            <div class="divs"><a href="#"><img src="../user/images/Notification.svg" width="30px" height="30px" alt="icon3"></a></div>
+            <div class="divs"><a href="#"><img src="../user/images/Chat.svg" width="30px" height="30px" alt="icon3"></a></div>
+
+            <x-app-layout>
+           
+            </x-app-layout>
+            </div>
+            @else
+            
+            <a href="{{route('login')}}"><img src="../user/images/signin.svg" style="width: 80px; height: 40px;" alt="icon3">Sign In</a>
+            @endauth
+            @endif
+
+        </div>
     </div>
-    <div class="signin-right ">
-        <a href="{{route('login')}}"><img src="{{asset('images/icon3.png')}}" alt="icon3">Sign In</a>
-    </div>
-</div>
 </div>

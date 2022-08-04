@@ -244,15 +244,12 @@ a.more {
   font-weight: 600;
   padding: 12px 30px;
   /* border-radius: 30px; */
-  color: #ffffff;
-  background: #2f2f2f;
-  border-color: #2f2f2f;
+
 }
 
 .btn:hover {
   color: #ffffff;
-  background: #222222;
-  border-color: #222222;
+  background:linear-gradient(90deg, #FACB08 2.41%, #FAE008 90.98%);
 }
 
 .btn:active,
@@ -263,13 +260,12 @@ a.more {
 }
 
 .btn.btn-primary {
-  background: #3b5d50;
-  border-color: #3b5d50;
+  background: none;
+  border-color: #000;
 }
 
 .btn.btn-primary:hover {
-  background: #314d43;
-  border-color: #314d43;
+  background:linear-gradient(90deg, #FACB08 2.41%, #FAE008 90.98%);
 }
 
 .btn.btn-secondary {
@@ -343,6 +339,23 @@ a.more {
   cursor: pointer;
   border-style: solid 1px;
 }
+
+.product-section .outer{
+  width:100%;
+  overflow:auto;
+  white-space:nowrap;
+}
+.product-section .outer li{
+  display: inline-block;
+  *display: inline;/*For IE7*/
+  *zoom:1;/*For IE7*/
+  vertical-align:top;
+  /* width:400px; */
+  margin-right:20px;
+
+  white-space:normal;
+}
+
 
 .product-section .product-item .bottom{
   position: absolute;

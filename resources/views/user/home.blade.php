@@ -10,6 +10,13 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
 <style>
+    img {
+        height: auto;
+        /* width: auto;  */
+        width: 546px;
+        max-height: 451px;
+    }
+
     .banner_bg {
         width: 100%;
         float: left;
@@ -52,10 +59,60 @@
         width: 546px;
         margin: auto;
     }
+
+    .earn .p {
+    padding-top: 100px;
+    vertical-align: middle;
+    width: 100%;
+    justify-content: center;
+}
+
+    ::-webkit-scrollbar {
+    width: 15px;
+}
+::-webkit-scrollbar-button {
+    background: #ccc;
+    overflow-y: hidden;
+   
+}
+::-webkit-scrollbar-track-piece {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: transparent;
+}
+
+.filled {
+    background-color: hsl(51, 94%, 50%);
+    width: 95%;
+    height: 450px;
+    margin: 50px;
+    font-family: 'TT Norms Pro Black';
+    font-weight: 900;
+}
+.filled .btn {
+    font-size: 30px;
+    margin-top: 15px;
+    padding: 2px;
+    border-color: #000;
+    background-color: none;
+    height: 60px;
+    width: 300px;
+    color: #000;
+}
+.filled .btn:hover {
+    background-color: #fff;
+    border-color: #fff;
+    color: #000;
+}
+
 </style>
 
 <body>
 
+@if(Route::has('login'))
+        @auth
+        @else
     <!-- Start Hero Section -->
     <div class="hero banner_bg layer">
 
@@ -65,7 +122,7 @@
                     <div class="intro-excerpt">
                         <h1 id="headerTitle">Your Migration Journey Starts Here</h1>
                         <p id="headerText" class="mb-4">Get your Europe & Canada Visa from any part of the world.</p>
-                        <p><a href="" id="headerBtn" class="btn btn-hero" style='width:350px'>START NOW</a></p>
+                        <p><a href="{{route('login')}}" id="headerBtn" class="btn btn-hero" style='width:350px'>START NOW</a></p>
                     </div>
                 </div>
             </div>
@@ -73,11 +130,62 @@
         </div>
     </div>
     <!-- End Hero Section -->
-
+@endauth 
+@endif
 
     <!-- Start Product Section -->
     <div class="product-section">
+
+        @if(Route::has('login'))
+        @auth
+
+        <div class="outer">
+            <div class="container-fluid text-center" style="padding-left:50px; padding-right:50px">
+
+                <div class="row">
+                    <ul>
+                        @foreach($package as $offer)
+                        <!-- Start Column  -->
+                        <li>
+                            <div class="col-4 cellContainer">
+                                <span class="product-item" href="#">
+                                    <span class="positionAnchor">
+                                        <img src="../user/images/{{$offer->image}}" style="height:458px" class="img-fluid product-thumbnail">
+                                        <span class="bottom">
+                                            <h3 class="product-title intro-excerpt" style="font-size: 35px; color:aliceblue">{{$offer->product_name}}</h3>
+                                            <p style="font-size:20px">{{$offer->slogan}}</p>
+                                        </span>
+                                        <strong class="product-price">{{number_format($offer->unit_price,2)}} {{$offer->currency}}</strong>
+                                        <p><i class="fa fa-minus-circle" style='color: white'></i>{{$offer->discount}}% lower than last month</p>
+
+                                        <p><a class="btn btn-secondary" href="{{ url('product', $offer->id) }}">Buy Now</a></p>
+
+                                    </span>
+                                </span>
+                            </div>
+                        </li>
+                        <!-- End Column  -->
+                        @endforeach
+                    </ul>
+
+                </div>
+
+            </div>
+        </div>
+       <div class="filled">
+         <div align="center" class="earn" style="padding:150px">
+            <p>
+            <h1>REFER. EARN. REPEAT!</h1>
+            <h3>Endless opportunity to earn money</h3>
+            <a href="#" class="btn">LEARN MORE</a>
+            </p>
+         </div>
+        </div>
+
+        @else
+
         <div class="container-fluid text-center" style="padding-left:50px; padding-right:50px">
+
             <div class="row">
                 @foreach($package as $offer)
                 <!-- Start Column  -->
@@ -99,9 +207,11 @@
                 </div>
                 <!-- End Column  -->
                 @endforeach
-
             </div>
         </div>
+        @endauth
+        @endif
+
     </div>
     <!-- End Product Section -->
 

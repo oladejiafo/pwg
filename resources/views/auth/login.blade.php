@@ -1,7 +1,7 @@
 @extends('layouts.auth')
 @Section('content')
   <div class="login">
-    @include('layouts/auth-header')
+    @include('user/header')
     <div class="container">
         <div class="form-sec1">
           <div class="heading">
