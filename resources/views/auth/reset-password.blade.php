@@ -5,8 +5,7 @@
             <div class="forgot-password" style="height: 837px;">
                 <div class="reset">
                     <div class="resetImage">
-                        <img src="{{asset('images/ring.png')}}" alt="ring" class="ring">
-                        <img src="{{asset('images/tick.png')}}" alt="ring" class="tick">
+                        <img src="{{asset('images/Approved.svg')}}" alt="approved">
                     </div>
                     <div class="reset-heading">
                         Reset your password
@@ -16,6 +15,8 @@
                     </div>
                     <div class="form-sec">
                         <form method="POST" action="{{ route('password.email') }}">
+                            <input type="hidden" name="token" value="{{ $request->route('token') }}">
+                            <input type="hidden" name="email" value="{{old('email', $request->email)}}">
                             <div class="mb-3">
                                 <div class="inputs"> 
                                     <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" autocomplete="off" placeholder="########">

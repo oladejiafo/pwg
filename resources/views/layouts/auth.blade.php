@@ -13,4 +13,5 @@
     <body>
         @yield('content')
     </body>
+    @stack('custom-scripts')
 </html>

@@ -1,9 +1,54 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+    
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <link rel="icon" href="images/fevicon.png" type="image/gif" />
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
 
-<html>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet" />
+    <!-- <link href="../user/css/main.css" rel="stylesheet" /> -->
+    <title>PWG Client Portal</title>
+
+
+  <!-- bootstrap core css -->
+  <link href="../user/css/bootstrap.min.css" rel="stylesheet">
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+		<link href="../user/css/style.css" rel="stylesheet">
+
+        <style>
+            .banner_bg {
+    width: 100%;
+    float: left;
+    background-image: url(../user/images/v1_17125.png);
+    height: auto;
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
+@font-face {
+    font-family: 'MyFont_SerifReg';
+    src: url('../user/fonts/TTNorms-Black.otf') format('truetype'),
+         url('/assets/fonts/TTNorms-BlackItalics.otf') format('woff');
+}
+        </style>
+</head>
+
+<body>
 
 @include('user/header');
 
+<!-- Start Hero Section -->
+<div class="hero banner_bg layer">
 
 <!-- bootstrap core css -->
 <link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
@@ -125,9 +170,8 @@
                         <p><a href="{{route('login')}}" id="headerBtn" class="btn btn-hero" style='width:350px'>START NOW</a></p>
                     </div>
                 </div>
-            </div>
-
         </div>
+
     </div>
     <!-- End Hero Section -->
 @endauth 
@@ -197,11 +241,12 @@
                                 <h3 class="product-title intro-excerpt" style="font-size: 35px; color:aliceblue">{{$offer->product_name}}</h3>
                                 <p style="font-size:20px">{{$offer->slogan}}</p>
                             </span>
-                            <strong class="product-price">{{number_format($offer->unit_price,2)}} {{$offer->currency}}</strong>
-                            <p><i class="fa fa-minus-circle" style='color: white'></i>{{$offer->discount}}% lower than last month</p>
-
-                            <p><a class="btn btn-secondary" href="{{ url('product', $offer->id) }}">Buy Now</a></p>
-
+							<strong class="product-price">4,789AED</strong>
+                            <p><i class="fa fa-minus-circle" style='color: white'></i>34% lower than last month</p>
+                            <p><button class="btn btn-secondary">Buy Now</button></p>
+							<span class="icon-cross">
+								<img src="../user/images/v1_17064.png" class="img-fluid">
+							</span>
                         </span>
                     </span>
                 </div>

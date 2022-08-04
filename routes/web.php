@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,6 +16,17 @@ use App\Http\Controllers\HomeController;
 |
 */
 
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified'
+])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+}); 
+
 // Route::get('/', function () {
 //     return view('welcome');
 // });
@@ -20,6 +34,8 @@ use App\Http\Controllers\HomeController;
 Route::get('/',[HomeController::class, 'index']);
 
 Route::get('/home', [HomeController::class, 'redirect'] );
+
+// Route::get('/signup', [HomeController::class, 'signup'] );
 
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {

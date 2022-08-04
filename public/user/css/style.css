@@ -2,6 +2,7 @@
 @import url("../fonts/TTNorms-Black.otf");
 @import url("../fonts/TTNorms-Bold.otf");
 @import url("../fonts/TTNorms-Regular.otf");
+
 body {
   overflow-x: hidden;
   position: relative;
