@@ -11,20 +11,6 @@ class HomeController extends Controller
 {
     public function redirect()
     {
-<<<<<<< HEAD
-        // if (Auth::id()) {
-        //     if (Auth::user()->usertype == 0) {
-        //         $package = product::all();
-        //         return view('user.home', compact('package'));
-        //         //                return view('user.home');
-        //     } else {
-        $package = product::all();
-        return view('user.home', compact('package'));
-        //     }
-        // } else {
-        //     return redirect()->back();
-        // }
-=======
         if (Auth::id()) {
             // if (Auth::user()->usertype == 0) {
             //     $doctor = doctor::all();
@@ -36,7 +22,6 @@ class HomeController extends Controller
         } else {
             return redirect()->back();
         }
->>>>>>> 9135362ee85532f65fca424877f2c081b5d2c685
     }
 
     public function index()

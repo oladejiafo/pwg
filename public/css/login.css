@@ -614,6 +614,14 @@ input {
 .form-sec1 input[type="checkbox"]:checked {
     accent-color: linear-gradient(90deg, #FACB08 2.41%, #FAE008 90.98%);
 }
+
+.applicant a:hover {
+    background: linear-gradient(90deg, #FACB08 2.41%, #FAE008 90.98%);
+}
+
+.affiliate a:hover {
+    background: linear-gradient(90deg, #FACB08 2.41%, #FAE008 90.98%);
+}
 /* 
    BELOW PROPERTIES AREN'T CRITICAL FOR DESIRED BEHAVIOUR.
    THEY ARE PURELY FOR DEMONSTRATION PURPOSES
