@@ -5,8 +5,7 @@
             <div class="forgot-password">
                 <div class="reset">
                     <div class="resetImage">
-                        <img src="{{asset('images/ring.png')}}" alt="ring" class="ring">
-                        <img src="{{asset('images/tick.png')}}" alt="ring" class="tick">
+                        <img src="{{asset('images/Approved.svg')}}" alt="approved">
                     </div>
                     <div class="reset-heading">
                     Check your mailbox !

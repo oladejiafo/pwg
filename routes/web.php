@@ -16,21 +16,6 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-// Auth::routes(['verify' => true]);
-
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill();
-    return redirect('/home');
-})->middleware(['auth', 'signed'])->name('verification.verify');
-
-Route::get('/',[HomeController::class, 'index']);
-
-Route::get('/home', [HomeController::class, 'redirect'] );
-
-// Route::get('/signup', [HomeController::class, 'signup'] );
 
 Route::middleware([
     'auth:sanctum',
@@ -40,7 +25,18 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
-});
+}); 
+
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::get('/',[HomeController::class, 'index']);
+
+Route::get('/home', [HomeController::class, 'redirect'] );
+
+// Route::get('/signup', [HomeController::class, 'signup'] );
+
 
 // Route::get('/dashboard/{id}',['as' => 'dashboard', 'uses' => 'HomeController@package']);
  Route::get('/product/{id}',[HomeController::class,'product']);

@@ -29,7 +29,8 @@
               <div class="mb-3">
                   <div class="label"><label for="email1" class="form-label">Email or phone number</label></div>
                 <div class="inputs"> 
-                  <input type="text" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp" autocomplete="off">
+                  <input type="text" class="form-control w-full" id="exampleInputEmail1" name="auth" aria-describedby="emailHelp" autocomplete="off" required autofocus >
+                  @error('email') <span class="error">{{ $message }}</span> @enderror
                 </div>            
               </div>
               <div class="mb-3">
@@ -37,7 +38,8 @@
                   <label for="Password" class="form-label">Password</label>
                 </div>
                 <div class="inputs-icon">
-                  <input type="password" class="form-control passwordInput" name="password" id="exampleInputPassword1" autocomplete="off">
+                  <input type="password" class="form-control passwordInput" name="password" id="exampleInputPassword1" autocomplete="off" required autofocus>
+                  @error('password') <span class="error">{{ $message }}</span> @enderror
                   <img src="{{asset('images/Eye_Icon.png')}}" alt=img class="hiddenIcon">
                 </div>
               </div>

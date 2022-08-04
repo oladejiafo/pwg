@@ -17,7 +17,7 @@ class HomeController extends Controller
             //     return view('user.home', compact('doctor'));
             //     //                return view('user.home');
             // } else {
-                return view('user.home',compact('packages'));
+                return view('user.home');
             // }
         } else {
             return redirect()->back();

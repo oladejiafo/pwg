@@ -60,7 +60,7 @@ input {
     text-decoration: none;
 }
 
-.affiliate a{
+.affiliate a {
     min-height: 25px;
     padding: 10px;
     margin: 17px;
@@ -252,7 +252,7 @@ input {
 }
 
 .forgot-password {
-    width: 410px;
+    width: 409px;
     max-width: 100%;
     margin-left: auto;
     margin-right: auto;
@@ -263,7 +263,7 @@ input {
     margin-top: 250px;
     color: #636466;
     align-content: center;
-    height: 555px;
+    height: 760px;
 }
 
 .resetPassword {
@@ -338,7 +338,7 @@ input {
     position: relative;
 }
 
-.questionMark{
+.questionMark {
     position: absolute;
     left: 49.22%;
     right: 20%;
@@ -346,7 +346,7 @@ input {
     bottom: 58.76%;
 }
 
-.reset{
+.reset {
     width: 100%;
     margin-top: 200px
 }
@@ -360,7 +360,7 @@ input {
     text-align: center;
 }
 
-.forgot-password .ringRest{
+.forgot-password .ringRest {
     align-items: center;
 }
 
@@ -368,7 +368,7 @@ input {
     text-align: center;
 }
 
-.reset-title p{
+.reset-title p {
     margin: 1px;
 }
 
@@ -426,54 +426,68 @@ input {
     margin-top: 28px;
 }
 
-.tick{
+.tick {
     position: absolute;
     left: 49%;
     top: 42%;
     bottom: 58.76%;
 }
 
-.subConfirm{
+.subConfirm {
     text-align: center;
     margin-bottom: 22px;
 }
 
 .passwordInput {
     box-sizing: border-box;
-    padding-left: 10px;  
+    padding-left: 10px;
     vertical-align: top;
-  }
+}
 
-  .passwordInput:focus {
+.passwordInput:focus {
     outline: none;
-  }
+}
 
-  .confirmation{
+.confirmation {
     box-sizing: border-box;
-    padding-left: 10px;  
+    padding-left: 10px;
     vertical-align: top;
-  }
+}
 
-  .confirmation:focus {
+.confirmation:focus {
     outline: none;
-  }
+}
 
-  .iconImg {
+.iconImg {
     position: absolute;
     top: 12px;
-    right: 25px;  
+    right: 25px;
     cursor: pointer;
-  }
+}
 
-  #cofirmation {
+#cofirmation {
     position: absolute;
     top: 12px;
-    right: 25px;  
+    right: 25px;
     cursor: pointer;
-  }
+}
 
 .inputs-icon {
-  position: relative;
+    position: relative;
+}
+
+.resetImage {
+    width: 101px;
+    display: block;
+    margin: auto;
+}
+
+.error {
+    color: red;
+}
+
+.form-sec1 input[type="checkbox"]:checked {
+    accent-color: linear-gradient(90deg, #FACB08 2.41%, #FAE008 90.98%);
 }
 /* 
    BELOW PROPERTIES AREN'T CRITICAL FOR DESIRED BEHAVIOUR.
@@ -588,48 +602,56 @@ input {
 }
 
 @media only screen and (max-width: 1800px) and (min-width: 1400px) {
-    .ring{
+    .ring {
         top: 58%;
     }
-    .questionMark{
+
+    .questionMark {
         top: 54%;
+    }
+
+    .tick {
+        top: 53%
     }
 }
 
 @media only screen and (max-width: 130px) and (min-width: 102px) {
-    .forgot-password{
+    .forgot-password {
         margin-top: 100px;
     }
 }
 
 @media only screen and (max-width: 540px) and (min-width: 360px) {
-    .ring{
+    .ring {
         top: 46%;
         left: 100%;
     }
-    .questionMark{
+
+    .questionMark {
         top: 43%;
         left: 97%;
     }
 }
 
 @media only screen and (max-width: 820px) and (min-width: 700px) {
-    .ring{
+    .ring {
         top: 33%;
         left: 55%;
     }
-    .questionMark{
+
+    .questionMark {
         top: 31%;
         left: 53%;
     }
 }
 
 @media only screen and (max-width: 768px) and (min-width: 700px) {
-    .ring{
+    .ring {
         top: 42%;
         left: 58%;
     }
-    .questionMark{
+
+    .questionMark {
         top: 39%;
         left: 56%;
     }
@@ -637,11 +659,12 @@ input {
 }
 
 @media only screen and (max-width: 1000px) and (min-width: 912px) {
-    .ring{
+    .ring {
         top: 29%;
         left: 50%;
     }
-    .questionMark{
+
+    .questionMark {
         top: 27%;
         left: 48%;
     }
@@ -649,16 +672,14 @@ input {
 }
 
 @media only screen and (max-width: 1024px) and (min-width: 1000px) {
-    .ring{
+    .ring {
         top: 64%;
         left: 50%;
     }
-    .questionMark{
+
+    .questionMark {
         top: 59%;
         left: 48%;
     }
 
 }
-
-
-

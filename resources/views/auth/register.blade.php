@@ -33,19 +33,21 @@
             <div class="mb-3">
               <div class="label"><label for="name" class="form-label">Name</label></div>
               <div class="inputs">
-                <input type="text" class="form-control" id="exampleInputName" name="name" aria-describedby="emailHelp" autocomplete="off">
+                <input type="text" class="form-control" id="exampleInputName" name="name" aria-describedby="emailHelp" autocomplete="off" required>
               </div>
             </div>
             <div class="mb-3">
               <div class="label"><label for="email" class="form-label">Email</label></div>
               <div class="inputs">
-                <input type="email" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp" autocomplete="off">
+                <input type="email" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp" autocomplete="off" required>
+                @error('email') <span class="error">{{ $message }}</span> @enderror
               </div>
             </div>
             <div class="mb-3">
               <div class="label"><label for="phone number" class="form-label">Phone number</label></div>
               <div class="inputs">
-                <input type="text" class="form-control" id="exampleInputEmail1" name="phone_number" aria-describedby="emailHelp" autocomplete="off">
+                <input type="text" class="form-control" id="exampleInputEmail1" name="phone_number" aria-describedby="emailHelp" autocomplete="off" required>
+                @error('phone_number') <span class="error">{{ $message }}</span> @enderror
               </div>
             </div>
             <div class="mb-3">
@@ -53,20 +55,22 @@
                 <label for="Password" class="form-label">Password</label>
               </div>
               <div class="inputs-icon">
-                <input type="password" class="form-control passwordInput" id="exampleInputPassword1" name="password" autocomplete="off">
+                <input type="password" class="form-control passwordInput" id="exampleInputPassword1" name="password" autocomplete="off" required>
                 <img src="{{asset('images/Eye_Icon.png')}}" alt=img class="iconImg">
+                @error('password') <span class="error">{{ $message }}</span> @enderror
               </div>
             </div>
             <div class="mb-3">
               <div class="label"><label for="email1" class="form-label">Confirm Password</label></div>
               <div class="inputs-icon">
-                <input type="password" class="form-control confirmation" name="password_confirmation" aria-describedby="emailHelp" autocomplete="off">
+                <input type="password" class="form-control confirmation" name="password_confirmation" aria-describedby="emailHelp" autocomplete="off" required>
                 <img src="{{asset('images/Eye_Icon.png')}}" alt=img id="cofirmation">
+                @error('password') <span class="error">{{ $message }}</span> @enderror
               </div>
             </div>
             <div class="mb-3">
               <div class="inputs check-box">
-                <input type="checkbox">
+                <input type="checkbox" class="agree">
                 <p>I agree to the <a href="Terms of Service and Privacy Policy">Terms of Service and Privacy Policy"</a>
                 </p>
               </div>
