@@ -50,7 +50,7 @@
                 <div class="divs dropdown">
                     <img src="../user/images/signin.svg" style="width: 80px; height: 40px;" alt="icon3">
                     <div class="dropdown-content">
-                        <a class="dropdown-item" href="{{ route('profile.show') }}">Profile</a>
+                        <a class="dropdown-item" href="{{ route('profile.show') }}" style="width: 105px">Profile</a>
                         <form method="POST" action="{{ route('logout') }}" x-data>
                             @csrf
     
