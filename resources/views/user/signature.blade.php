@@ -56,8 +56,9 @@
                         <p>To proceed to payment, please upload your signature</p>
                         <form action="{{ url('upload_signature') }}" method="POST" enctype="multipart/form-data">
                             @csrf
+                            <input type="hidden" name="p_id" value="{{$data->id}}">
+
                             <label>
-                                <input type="hidden" name="p_id" value="{{$data->id}}">
                                 <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
                                 <input type="file" name="image" style="display: none;" required="">
                                 <img class="darken" src="{{asset('user/images/upload.svg')}}" alt="signature" title="Click to upload file" class="upload">

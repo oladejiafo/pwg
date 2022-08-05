@@ -15,6 +15,7 @@ class CreateApplicantsTable extends Migration
     {
         Schema::create('applicants', function (Blueprint $table) {
             $table->id();
+            $table->integer('product_id')->nullable();
             $table->foreignId('user_id')
                 ->constrained('users')
                 ->onUpdate('cascade')

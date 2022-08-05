@@ -48,3 +48,5 @@ Route::get('/product/{id}',[HomeController::class,'product']);
 Route::get('/append_signature/{id}',[HomeController::class,'signature']);
 
 Route::post('/upload_signature', [HomeController::class,'upload']);
+
+Route::get('/myapplication',[HomeController::class,'myapplication']);
