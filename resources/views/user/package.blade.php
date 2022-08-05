@@ -2,7 +2,7 @@
 
 <html>
 
-@include('user/header');
+@include('user/header')
 
 
 <!-- bootstrap core css -->
@@ -161,7 +161,21 @@ h2 {
             <p class="subheading"><span>{{$data->slogan}}</span></p>
             <p>{{$data->description}}</p><br>
             <h2>{{number_format($data->unit_price,2)}} {{$data->currency}}</h2>
-            <p class="subheading">{{$data->discount}} lower than last month</p><br>
+            <p class="subheading"><i class="fa fa-minus-circle btn btn-tertiary"></i>{{$data->discount}}% lower than last month</p><br>
+
+            <p>
+<h3>Payment Installments</h3>
+<table width="100%" border=0 style = "background-color:#e0e0e0">
+<tr>
+@foreach($ppay as $ppays)  
+
+<td align="left" style="padding:10px; font-size:20px;border-color:#fff">{{ $ppays->payment }} -> {{ $ppays->amount}}  || </td>
+
+@endforeach  
+</tr></table>
+<br>
+</p>
+
 
             <h3>Working in {{$data->product_name}} provides several benefits, including but not limited to: -</h3>
 
