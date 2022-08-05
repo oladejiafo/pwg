@@ -15,6 +15,6 @@
             @include('user/header')
             @yield('content')
         </div>
+        @stack('custom-scripts')
     </body>
-    @stack('custom-scripts')
 </html>

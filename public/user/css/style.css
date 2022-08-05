@@ -14,7 +14,7 @@ body {
   line-height: 28px;
   color: #000;
   font-size: 14px;
-  background-color: #fff;
+  background-color: #F6F7FB;
 }
 
 a {
@@ -262,11 +262,13 @@ a.more {
 
 .btn.btn-primary {
   background: none;
-  border-color: #000;
+  border-color: #C4C6CD
+  ;
 }
 
 .btn.btn-primary:hover {
   background:linear-gradient(90deg, #FACB08 2.41%, #FAE008 90.98%);
+  border: none;
 }
 
 .btn.btn-secondary {

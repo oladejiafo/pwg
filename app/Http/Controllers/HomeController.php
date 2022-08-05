@@ -77,4 +77,10 @@ class HomeController extends Controller
         $signature->save();
         return redirect()->back()->with('message', 'Signature Appended Successfully');
     }
+
+    
+    public function affiliate()
+    {
+        return view('user.payment-form');
+    }
 }
