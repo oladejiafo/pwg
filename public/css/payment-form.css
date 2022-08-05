@@ -58,7 +58,7 @@ body {
 }
 
 .rightside {
-    width: 190px;
+    width: 128px;
     padding: 15px 10px;
     border: 0.25px solid #CECECE
 }
@@ -74,7 +74,7 @@ body {
     font-weight: 400;
     line-height: 12px;
     margin: 0;
-    color: #606060;
+    color: #C4C4C4;
 }
 
 .rightside .amount p {

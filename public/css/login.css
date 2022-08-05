@@ -54,6 +54,7 @@ input {
 
 .login .left-sec {
     display: flex;
+    background: white;
 }
 
 .login .left-sec a {
@@ -732,87 +733,4 @@ input {
         padding-right: 0px;
         padding-left: 111px;
     }
-}
-
-@media only screen and (max-width: 1800px) and (min-width: 1400px) {
-    .ring {
-        top: 58%;
-    }
-
-    .questionMark {
-        top: 54%;
-    }
-
-    .tick {
-        top: 53%
-    }
-}
-
-@media only screen and (max-width: 130px) and (min-width: 102px) {
-    .forgot-password {
-        margin-top: 100px;
-    }
-}
-
-@media only screen and (max-width: 540px) and (min-width: 360px) {
-    .ring {
-        top: 46%;
-        left: 100%;
-    }
-
-    .questionMark {
-        top: 43%;
-        left: 97%;
-    }
-}
-
-@media only screen and (max-width: 820px) and (min-width: 700px) {
-    .ring {
-        top: 33%;
-        left: 55%;
-    }
-
-    .questionMark {
-        top: 31%;
-        left: 53%;
-    }
-}
-
-@media only screen and (max-width: 768px) and (min-width: 700px) {
-    .ring {
-        top: 42%;
-        left: 58%;
-    }
-
-    .questionMark {
-        top: 39%;
-        left: 56%;
-    }
-
-}
-
-@media only screen and (max-width: 1000px) and (min-width: 912px) {
-    .ring {
-        top: 29%;
-        left: 50%;
-    }
-
-    .questionMark {
-        top: 27%;
-        left: 48%;
-    }
-
-}
-
-@media only screen and (max-width: 1024px) and (min-width: 1000px) {
-    .ring {
-        top: 64%;
-        left: 50%;
-    }
-
-    .questionMark {
-        top: 59%;
-        left: 48%;
-    }
-
 }
