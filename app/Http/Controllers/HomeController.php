@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Applicant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -82,5 +83,22 @@ class HomeController extends Controller
     public function affiliate()
     {
         return view('user.referal-details');
+    }
+
+
+    public function addReferrer(Request $request)
+    {
+        Applicant::updateOrCreate(
+            [
+                'user_id' => 1,
+                'product_id' => 1
+            ],
+            [
+                'referral_first_name' => $request->referrer_first_name,
+                'referral_first_name' => $request->referrer_last_name,
+                'coupon_code'=> $request->coupon_code,
+                'current_residance_country' =>  $request->current_location,
+            ]
+        );
     }
 }
