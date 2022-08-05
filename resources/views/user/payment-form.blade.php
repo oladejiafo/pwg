@@ -29,6 +29,7 @@
                 </div>
                 <div class="payment-form1">
                     <form>
+                        @csrf
                         <div class="fieldset">
                             <div class="form-group">
                                 <input type="number" placeholder="Card Number" name="card_number" required>

@@ -22,20 +22,20 @@
           <div class="mb-3">
             <div class="label"><label for="name" class="form-label">Name</label></div>
             <div class="inputs">
-              <input type="text" class="form-control" id="exampleInputName" name="name" aria-describedby="emailHelp" autocomplete="off" required>
+              <input type="text" class="form-control" id="exampleInputName" name="name" aria-describedby="emailHelp" autocomplete="off" required value="{{ old('name') }}">
             </div>
           </div>
           <div class="mb-3">
             <div class="label"><label for="email" class="form-label">Email</label></div>
             <div class="inputs">
-              <input type="email" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp" autocomplete="off" required>
+              <input type="email" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp" autocomplete="off" required value="{{ old('email') }}">
               @error('email') <span class="error">{{ $message }}</span> @enderror
             </div>
           </div>
           <div class="mb-3">
             <div class="label"><label for="phone number" class="form-label">Phone number</label></div>
             <div class="inputs">
-              <input type="text" class="form-control" id="exampleInputEmail1" name="phone_number" aria-describedby="emailHelp" autocomplete="off" required>
+              <input type="text" class="form-control" id="exampleInputEmail1" name="phone_number" aria-describedby="emailHelp" autocomplete="off" required value="{{ old('phone_number') }}">
               @error('phone_number') <span class="error">{{ $message }}</span> @enderror
             </div>
           </div>
@@ -59,8 +59,8 @@
           </div>
           <div class="mb-3">
             <div class="inputs check-box">
-              <input type="checkbox" class="agree">
-              <p>I agree to the <a href="Terms of Service and Privacy Policy">Terms of Service and Privacy Policy"</a>
+              <input type="checkbox" class="agree" name="terms" required>
+                <p>I agree to the <a href="Terms of Service and Privacy Policy">Terms of Service and Privacy Policy"</a>
               </p>
             </div>
           </div>

@@ -196,6 +196,7 @@ input {
     line-height: 43px;
     letter-spacing: 0em;
     text-align: center;
+    margin-bottom: 0px;
 }
 
 .form-sec1 p {
@@ -205,6 +206,7 @@ input {
     line-height: 24px;
     letter-spacing: 0em;
     text-align: center;
+    margin-top: 5px;
 }
 
 .form-sec1 input {
@@ -622,6 +624,17 @@ input {
 
 .affiliate a:hover {
     background: linear-gradient(90deg, #FACB08 2.41%, #FAE008 90.98%);
+}
+
+.form-sec1 select {
+    height: 54px;
+    width: 358px;
+    margin-bottom: 13px;
+}
+
+.ref {
+    border: none;
+    background: #F0F3F4;
 }
 /* 
    BELOW PROPERTIES AREN'T CRITICAL FOR DESIRED BEHAVIOUR.
