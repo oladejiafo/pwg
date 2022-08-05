@@ -38,17 +38,17 @@
 </style>
 
 <body>
-    <div class="loginx">
+    <div class="login">
         <div class="container-fluid">
-        @if(session()->has('message'))
+            @if(session()->has('message'))
 
-<div class="alert alert-success" style="margin: 0 auto;;font-size:15px; width:35%; padding:0; height:28px;">
-    <button type="button" class="close" data-dismiss="alert" style="float:right">
-        
-    </button>
-    {{ session()->get('message') }}
-</div>
-@endif
+                <div class="alert alert-success" style="margin: 0 auto;;font-size:15px; width:35%; padding:0; height:28px;">
+                    <button type="button" class="close" data-dismiss="alert" style="float:right">
+                        
+                    </button>
+                    {{ session()->get('message') }}
+                </div>
+            @endif
             <div class="signature">
                 <div class="append">
                     <div class="append-title">
@@ -70,5 +70,4 @@
             </div>
         </div>
     </div>
-
 </body>

@@ -20,7 +20,26 @@
     <link rel='stylesheet' type='text/css' media='screen' href='{{asset('user/css/style.css')}}'>
     <link rel='stylesheet' type='text/css' media='screen' href='{{asset('css/login.css')}}'>
     <link rel='stylesheet' type='text/css' media='screen' href='{{asset('fonts/stylesheet.css')}}'>
+    <style>
+        .dropdown {
+  position: relative;
+  display: inline-block;
+}
 
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding: 12px 16px;
+  z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+    </style>
 </head>
 <div class="login">
     <div class="header-sec">
@@ -34,7 +53,7 @@
             <div class="myapplicant"><a href="{{url('myapplication')}}" style="width:260px; "><span><img src="{{asset('images/icon1.png')}}"></span><span style="padding-top:5px"> My Application</span></a></div>
         @else
             <div class="applicant"><a href="{{route('login')}}" style="width:200px; text-align:center; display:block;"><span><img src="{{asset('images/icon1.png')}}"></span> Applicants</a></div>
-            <div class="affiliate "><a href="#" style="width:250px; text-align:center; display:block;"><span><img src="{{asset('images/icon2.png')}}"></span> Affiliate Partner</a></div>
+            <div class="affiliate "><a href="{{route('affiliate')}}" style="width:250px; text-align:center; display:block;"><span><img src="{{asset('images/icon2.png')}}"></span> Affiliate Partner</a></div>
         @endauth
         @endif
 
@@ -45,13 +64,21 @@
 
             @auth 
             <div id="activity">
-            <div class="divs"><a href="#"><img src="../user/images/Search.svg" width="30px" height="30px" alt="icon3"></a></div>
-            <div class="divs"><a href="#"><img src="../user/images/Notification.svg" width="30px" height="30px" alt="icon3"></a></div>
-            <div class="divs"><a href="#"><img src="../user/images/Chat.svg" width="30px" height="30px" alt="icon3"></a></div>
-
-            <x-app-layout>
-           
-            </x-app-layout>
+                <div class="divs"><a href="#"><img src="../user/images/Search.svg" width="30px" height="30px" alt="icon3"></a></div>
+                <div class="divs"><a href="#"><img src="../user/images/Notification.svg" width="30px" height="30px" alt="icon3"></a></div>
+                <div class="divs"><a href="#"><img src="../user/images/Chat.svg" width="30px" height="30px" alt="icon3"></a></div>
+                {{-- <div class="dropdown">
+                    <img src="../user/images/signin.svg" style="width: 80px; height: 40px;" alt="icon3">
+                    <div class="dropdown-content">
+                        <a class="dropdown-item" href="{{ route('profile.show') }}">Profile</a>
+                        <form method="POST" action="{{ route('logout') }}">
+                        </form>
+                        <a class="dropdown-item" href="{{ route('logout') }}">Logout</a>
+                    </div>
+                </div> --}}
+                <x-app-layout>
+            
+                </x-app-layout>
             </div>
             @else
             

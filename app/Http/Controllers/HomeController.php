@@ -110,4 +110,10 @@ class HomeController extends Controller
 
         return view('user.myapplication', compact('paid', 'pays'));
     }
+
+    
+    public function affiliate()
+    {
+        return view('user.referal-details');
+    }
 }
