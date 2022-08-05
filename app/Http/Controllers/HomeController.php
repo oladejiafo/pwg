@@ -5,13 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Applicant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use DB;
 use App\Models\User;
 use App\Models\product;
 use App\Models\product_payments;
-
 use App\Models\payment;
-use App\Models\Applicant;
+use DB;
 
 class HomeController extends Controller
 {
