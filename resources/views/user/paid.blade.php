@@ -146,7 +146,7 @@ justify-content: center;
 
     <div class="outer">
 
-         <div class="row">
+         {{-- <div class="row">
                     <ul>
                         @foreach($pays as $pay)
                         <!-- Start Column  -->
@@ -182,7 +182,7 @@ justify-content: center;
                     </ul>
 
                 </div>
-    </div>
+    </div> --}}
 
     </div>
 </div>

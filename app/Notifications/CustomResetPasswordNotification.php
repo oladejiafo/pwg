@@ -5,6 +5,7 @@ namespace App\Notifications;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Lang;
+use App\Models\User;
 
 class CustomResetPasswordNotification extends Notification
 {
@@ -63,7 +64,7 @@ class CustomResetPasswordNotification extends Notification
             return call_user_func(static::$toMailCallback, $notifiable, $this->token);
         }
 
-        return $this->buildMailMessage($this->resetUrl($notifiable));
+        return $this->buildMailMessage($this->resetUrl($notifiable), $notifiable->getEmailForPasswordReset());
     }
 
     /**
@@ -72,15 +73,20 @@ class CustomResetPasswordNotification extends Notification
      * @param  string  $url
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    protected function buildMailMessage($url)
+    protected function buildMailMessage($url, $email)
     {
         // return view('auth.reset-password');
         $otp = rand(100000,999999);
 
+        User::where('email', $email)
+            ->update([
+                'two_factor_secret' => $otp
+            ]);
+
         return (new MailMessage)
-            ->line($otp)
             ->subject(Lang::get('Reset Password Notification'))
             ->line(Lang::get('You are receiving this email because we received a password reset request for your account.'))
+            ->line(Lang::get('Here is your OTP '.$otp))
             ->action(Lang::get('Reset Password'), $url)
             ->line(Lang::get('This password reset link will expire in :count minutes.', ['count' => config('auth.passwords.'.config('auth.defaults.passwords').'.expire')]))
             ->line(Lang::get('If you did not request a password reset, no further action is required.'));

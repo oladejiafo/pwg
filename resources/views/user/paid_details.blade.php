@@ -2,7 +2,7 @@
 		<!-- Theme style  -->
 		<link rel="stylesheet" href="{{asset('user/extra/css/bootstrap.css')}}">
         <link rel="stylesheet" href="{{asset('user/extra/css/styled.css')}}">
-	<div class="col-md-12">
+	{{-- <div class="col-md-12">
 		<div class="about-desc animate-box">
 
 			<div class="fancy-collapse-panel">
@@ -107,7 +107,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> --}}
 
 
 		<div class="gototop js-top">
