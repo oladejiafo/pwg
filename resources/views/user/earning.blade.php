@@ -8,20 +8,20 @@
         font-weight: 900;
     }
 
-    .filled .btn {
+    .filled a{
         font-size: 30px;
         margin-top: 15px;
         padding: 2px;
         border-color: #000;
-        background-color: none;
+        background-color: hsl(51, 94%, 50%);;
         height: 60px;
         width: 300px;
         color: #000;
     }
 
-    .filled .btn:hover {
-        background-color: #fff;
-        border-color: #fff;
+    .filled a:hover {
+        background: #fff;
+        border: none;
         color: #000;
     }
 </style>
