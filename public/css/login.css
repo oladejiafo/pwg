@@ -78,6 +78,9 @@ input {
     margin-left: 111px;
     text-decoration: none;
     border-radius: 8px;
+    width: 200px;
+    text-align: center;
+    display: block;
 }
 .applicant a:hover {
     background-color: hsl(51, 94%, 50%);
@@ -93,7 +96,7 @@ input {
     margin-top: 30px;
     margin-bottom: 17px;
     margin-left: 111px;
-    align:center;
+    text-align:center;
     text-decoration: none;
     border-radius: 8px;
     background-color: #e9ebf0;
@@ -312,6 +315,11 @@ input {
 .submitBtn:hover {
     background: linear-gradient(90deg, #FACB08 2.41%, #FAE008 90.98%);
     border-color: none;
+    color: #000;
+}
+
+.submitBtn {
+    background-color: #F6F7FB;
 }
 
 .signupBtn {
@@ -782,10 +790,53 @@ input {
         width: 100%;
         margin: 0 auto;
     }
+
+    .logo img {
+        margin-top: 30px;
+        margin-left: 17px;
+    }
+
+    .login .signin-right {
+        padding-right: 20px;
+    }
+
+    .logo {
+        width: 100%;
+    }
+
+    .login .applicant a, .login .affiliate a {
+        padding: 0px;
+        margin-left: 20px;
+        margin-top: 28px;
+        font-size: 15px;
+
+    }
+
+    .login .applicant, .login .affiliate {
+        width: 100%;
+    }
+
+    .login .applicant {
+        margin-left: 5px;
+    }
+
+    .form-sec1, .forgot-password {
+        padding: 100px;
+    }
+/* 
+    .forgot-password {
+        width: 90%;
+    } */
+
 }
 
 /**************iPad Landscape***************/
 @media only screen and (max-width: 1024px) and (min-width: 986px) {
+    .logo img {
+        margin-top: 30px;
+        margin-left: 15px;
+    }
+
     .container {
         width: 90%;
         margin: 0 auto;
@@ -800,10 +851,16 @@ input {
         padding-right: 20px;
     }
 
-    .logo img {
-        margin-top: 30px;
-        margin-left: 55px;
+    .applicant a,
+    .affiliate a {
+        margin-left: 20px;
+        margin-top: 32px;
     }
+
+    .login .signin-right a {
+        margin-top: 10px;
+    }
+    
 }
 
 /*******************************************/
@@ -812,6 +869,10 @@ input {
     .signin-right {
         padding-right: 0px;
         padding-left: 111px;
+    }
+
+    .form-sec1 h3 {
+        font-size: 34px;
     }
 }
 
@@ -829,9 +890,3 @@ input {
     }
 }
 
-@media only screen and (max-width: 1280) {
-    .signin-right {
-        padding-right: 0px;
-        padding-left: 111px;
-    }
-}
