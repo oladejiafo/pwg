@@ -39,81 +39,132 @@ class HomeController extends Controller
         return view('user.home', compact('package'));
         //}
     }
-    // public function signup(){
-    //     return view('auth.home');
-    // }
-
-    //     public function packageview($id){
-    // if ($id) {
-    //     $data = product::where('id', $id)->get();
-    //     return view('user.package', compact('data'));
-    // } else {
-    //     return redirect()->back();
-    // }
-    //     }
 
     public function product($id)
     {
         $data = product::find($id);
         $ppay = product_payments::where('product_id', '=', $id)->get();
-        // $ppay = DB::select( DB::raw(" SELECT * FROM product_payments WHERE product_id = '$id'"));
 
-        return view('user.package', compact('data','ppay'));
+        return view('user.package', compact('data', 'ppay'));
     }
 
     public function signature($id)
     {
-        $data = product::find($id);
-        return view('user.signature', compact('data'));
+        if (Auth::id()) {
+            $data = product::find($id);
+            return view('user.signature', compact('data'));
+        } else {
+            return redirect()->back()->with('message', 'You are not authorized');
+        }
+    }
+
+    public function signature_success($id)
+    {
+        if (Auth::id()) {
+            $data = product::find($id);
+            return view('user.signature-upload-success', compact('data'));
+        } else {
+            return redirect()->back()->with('message', 'You are not authorized');
+        }
+    }
+
+    public function referal($id)
+    {
+        if (Auth::id()) {
+            $data = product::find($id);
+            return view('user.referal-details', compact('data'));
+        } else {
+            return redirect()->back()->with('message', 'You are not authorized');
+        }
     }
 
     public function upload(Request $request)
     {
-        // $signature = new user;
-        //Auth::user()->id;
-        $signature = user::find($request->user_id);
-        if ($request->hasFile('image')) {
+        if (Auth::id()) {
+            $signature = user::find($request->user_id);
+            if ($request->hasFile('image')) {
 
-            $image = $request->file('image');
-            //  print_r($image);
-             $imagename = time().'.'.$image->getClientOriginalExtension();
+                $image = $request->file('image');
+                //  print_r($image);
+                $imagename = time() . '.' . $image->getClientOriginalExtension();
 
-             $destinationPath = 'signature';
-             $image->move($destinationPath, $imagename);
-            $signature->signature = $imagename;
+                $destinationPath = 'signature';
+                $image->move($destinationPath, $imagename);
+                $signature->signature = $imagename;
+            }
+
+
+            $signature->save();
+            return \Redirect::route('signature_success', $request->pid)->with('message', 'Uploaded');
+        } else {
+            return redirect()->back()->with('message', 'You are not authorized');
         }
-
-
-        $signature->save();
-        return view('user.signature-upload-success')->with('pid',$request->p_id);
-        
-        // return redirect()->back()->with('message', 'Signature Appended Successfully');
     }
 
-    public function myapplication() {
-        $id = Auth::user()->id; 
-        // $order = order::where('user_id', '=', $user_id)->get();
-        // $data = Applicant::find($user_id);
-        // // $paid = payment::where('application_id', '=', $order->id)->get();
-        
-        // $pays = product_payments::where('product_id', '=', $data->id)->get();
-
-        $pays = DB::table('product_payments')
-        ->join('applicants', 'product_payments.product_id', '=', 'applicants.id')
-        ->where('applicants.user_id', '=', $id)
-        ->get();
-
-        $paid = DB::table('payments')
-                    ->join('applicants', 'payments.id', '=', 'applicants.id')
-                    ->where('applicants.user_id', '=', $id)
-                    ->get();
-
-        return view('user.myapplication', compact('paid', 'pays'));
-    }
-
-    
-    public function affiliate()
+    public function addreferal(Request $request)
     {
-        return view('user.referal-details');
+        if (Auth::id()) {
+            $request->validate([
+                'current_location' => 'required',
+                'pid' => 'required'
+            ]);
+            $data = new applicant;
+            $data->referral_first_name = $request->referrer_first_name;
+            $data->referral_last_name = $request->referrer_last_name;
+            $data->coupon_code = $request->coupon_code;
+            $data->current_residance_country = $request->current_location;
+            $data->applicant_status = 0;
+            $data->product_id = $request->pid;
+            if (Auth::id()) {
+                $data->user_id = Auth::user()->id;
+                $data->first_name = Auth::user()->name;
+            }
+            $res = $data->save();
+
+if ($res) {
+    return \Redirect::route('signature', $request->pid)->with('success', 'ReferralSaved. Upload Signature to proceed');
+} else {
+    return redirect()->back()->with('failed', 'Oppss! Something Went Wrong!');
+}
+        } else {
+            return redirect()->back()->with('failed', 'You are not authorized');
+        }
     }
+
+    public function myapplication()
+    {
+
+        if (Auth::id()) {
+            $id = Auth::user()->id;
+
+            $paid = DB::table('applicants')
+                ->join('payments', 'payments.application_id', '=', 'applicants.id')
+                ->where('applicants.user_id', '=', $id)
+                ->get();
+
+            $pays = DB::table('product_payments')
+                ->join('applicants', 'applicants.product_id', '=', 'product_payments.product_id')
+                ->select('product_payments.id', 'product_payments.payment', 'product_payments.amount', 'product_payments.product_id')
+                ->where('applicants.user_id', '=', $id)
+                ->groupBy('product_payments.id')
+                ->get();
+
+            $prod = DB::table('products')
+                ->join('applicants', 'products.id', '=', 'applicants.product_id')
+                ->select('products.product_name', 'products.id')
+                ->where('applicants.user_id', '=', $id)
+                ->groupBy('products.id')
+                ->get();
+
+            return view('user.myapplication', compact('paid', 'pays', 'prod'));
+        } else {
+            return redirect()->back()->with('message', 'You are not authorized');
+        }
+    }
+
+
+    // public function affiliate()
+    // {
+    //     return view('user.referal-details');
+    // }
 }

@@ -1,199 +1,192 @@
-<style>
-    #headerTitle {
-        font-family: 'TT Norms Pro Black';
-        font-weight: 900;
-        font-size: 60px;
-        font-style: normal;
-    }
-
-        .jiji {
-        font-family: 'TT Norms Pro';
-        font-style: normal;
-padding-block: 50px;
-margin-left: 15%;
-margin-right: 15%;
-align-items: center;
-justify-content: center;
-}
- 
-    .jiji {
-        font-family: 'TT Norms Pro';
-        font-style: normal;
-padding-block: 50px;
-margin-left: 15%;
-margin-right: 15%;
+<style> 
+.paid-section {
+  padding: 25px 25px 25px 25px;
+  font-family: 'TT Norms Pro';
+  font-style: normal;
 align-items: center;
 justify-content: center;
 }
 
-.jiji h3 {
+.paid-section .product-item {
+  margin: 10px 10px 0 0;
+  /* padding: 50px 25px; */
+  padding-top: 60px;
+  padding-bottom: 60px;
+  padding-left: 80px;
+  padding-right: 80px;
+  text-align: center;
+ height:500px;
+  width: 100%;
+  text-decoration: none;
+  box-shadow: 0px 0px 0px 1px #e0d8d881;
+  display: inline-block;
+  position: relative;
+  border-style: solid 1px;
+}
+
+.paid-section .outer{
+  width:100%;
+  overflow:hidden;
+  /* white-space:nowrap; */
+}
+.paid-section .outer li{
+  display: inline-block;
+  *display: inline;/*For IE7*/
+  *zoom:1;/*For IE7*/
+  /* vertical-align:top; */
+  white-space:normal;
+}
+
+.paid-section .product-item .title{
+  position: absolute;
+  display: inline-block;
+  top: 150px;
+  left:27px;
+  margin: 10px 10px 0 0;
+  padding: 5px 5px;
+  text-align: center;
+  color: #fff;
+}
+
+.paid-section .product-item .positionAnchor {
+ position: relative;
+ display: inline-block;
+
+}
+
+.paid-section .product-item .product-thumbnail {
+  margin-bottom: 30px;
+  position: relative;
+  top: 0;
+  -webkit-transition: .3s all ease;
+  -o-transition: .3s all ease;
+  transition: .3s all ease;
+}
+
+.paid-section .product-item .product-title{
+  text-transform: uppercase;
+  font-size: 22px;
+}
+
+.paid-section .product-item h3 {
   font-weight: 600;
   font-size: 16px;
 }
 
-.jiji .title{
+.paid-section .product-item strong {
   position: absolute;
   display: inline-block;
-  top: 330px;
-  left:350px;
-  text-align: center;
-  color: #fff;
-}
-.jiji .product-title{
-  text-transform: uppercase;
-}
-
-.jiji .price{
-  position: absolute;
-  display: inline-block;
-  top: 460px;
-  left:320px;
+  top: 240px;
+  left:25px;
+  margin: 10px 10px 0 0;
+  padding: 5px 5px;
   text-align: center;
   color: #000;
-  font-size: 20px;
-  font-weight: bold;
-}
-.jiji strong {
-  font-weight: bold !important;
-  font-size: 22px !important;
+
+  font-weight: 800 !important;
+  font-size: 35px !important;
 }
 
-.jiji strong .wrap {
-    font-size: 15px;
-    width: 100px;
-    word-wrap: break-word;
-    white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
-    white-space: -pre-wrap;      /* Opera 4-6 */
-    white-space: -o-pre-wrap;    /* Opera 7 */
-    white-space: pre-wrap;       /* css-3 */
-    word-wrap: break-word;       /* Internet Explorer 5.5+ */
-    white-space: -webkit-pre-wrap; /* Newer versions of Chrome/Safari*/
-    word-break: break-all;
-    white-space: normal;
-}
-
-.jiji .btn {
-    position: absolute;
-  display: inline-block;
-  top: 580px;
-  left:320px;
-  width: 150px;
-  border-radius: 10px;
-  text-align: center;
-  color: #ccc;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-/* SECOND PAYMENT ITEMS */
-
-.jiji .title2{
+.paid-section .product-item amp {
   position: absolute;
   display: inline-block;
-  top: 330px;
-  left:700px;
-  text-align: center;
-  color: #fff;
+  top: 250px;
+  left:150px;
+  margin: 10px 10px 0 0;
+  line-height: normal;
+  padding: 5px 5px;
+  text-align: left;
+  color: #000;
+
+  font-weight: 600 !important;
+  font-size: 17px !important;
 }
 
-.jiji .price2{
+.paid-section .product-item a {
   position: absolute;
   display: inline-block;
-  top: 460px;
-  left:690px;
+  top: 380px;
+  left:35px;
+  margin: 10px 10px 0 0;
+  padding: 2px 5px;
   text-align: center;
   color: #000;
-  font-size: 20px;
-  font-weight: bold;
+  width: 200px;
 }
 
-.jiji .btn2 {
-    position: absolute;
-  display: inline-block;
-  top: 580px;
-  left:685px;
-  width: 150px;
-  border-radius: 10px;
-  text-align: center;
-  color: #ccc;
-  font-size: 20px;
-  font-weight: bold;
+.paid-section .product-item h3,
+.paid-section .product-item strong {
+  color: #2f2f2f;
+  text-decoration: none;
 }
 
-/* SECOND PAYMENT ITEMS */
-
-.jiji .title3 {
+.paid-section .product-item:before {
+  bottom: 0;
+  left: 0;
+  right: 0;
   position: absolute;
-  display: inline-block;
-  top: 330px;
-  left:1090px;
-  text-align: center;
-  color: #fff;
-}
-
-.jiji .price3 {
-  position: absolute;
-  display: inline-block;
-  top: 460px;
-  left:1070px;
-  text-align: center;
-  color: #000;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.jiji .btn3 {
-    position: absolute;
-  display: inline-block;
-  top: 580px;
-  left:1065px;
-  width: 150px;
+  content: "";
+  background: #dce5e4;
+  height: 0%;
+  z-index: -1;
   border-radius: 10px;
-  text-align: center;
-  color: #ccc;
-  font-size: 20px;
-  font-weight: bold;
+  border-color: #6a6a6a;
+  -webkit-transition: .3s all ease;
+  -o-transition: .3s all ease;
+  transition: .3s all ease;
 }
 
+.cellContainer {
+        width: 460px;
+        margin: auto;
+    }
 </style>
 
 
 <div class="card d-flex aligns-items-center justify-content-center text-center">
     <div class="card-header" style="background-color:white">My Applications</div><br>
-    <div class="card-body" style="background-color:#FAE008;">
-        <div class="row jiji d-flex aligns-items-center justify-content-center text-center">
-            
-            <div class="col-4" style="min-height:500px;background-image: url(../user/images/payment1.svg);background-repeat: no-repeat;">
-                <span class="title">
-                    <h3 class="product-title" style="font-size: 25px; color:aliceblue">FIRST PAYMENT</h3>
-                </span>
+    <div class="card-body paid-section" style="background-color:#FAE008;">
 
-                <p><strong class="price">{{number_format(1500,2)}} AED |<span class="wrap">POLAND &nbsp;&nbsp;&nbsp;&nbsp;<br><span class="wrap" style="float:right; margin-left:10px">PACKAGE</span></span></strong></p>
+    <div class="outer">
 
-                <p><a class="btn btn-secondary" href="#">Get Receipt</a></p>
+         <div class="row">
+                    <ul>
+                        @foreach($pays as $pay)
+                        <!-- Start Column  -->
+                        <li>
+                            <div align="center" class="col-md-4 col-sm-12 img-fluid cellContainer">
+                                <span class="product-item " href="#">
+                                    <span class="positionAnchor">
+                                        <img src="../user/images/{{$pay->payment}}.svg" style="height:500px" class="img-fluid xproduct-thumbnail">
+                                        <span class="title" style="align: center;">
+                                            <h3 class="product-title" style="font-size: 22px; color:aliceblue">{{$pay->payment}}</h3>                                           
+                                        </span>
+                                        <strong class="product-price">{{number_format($pay->amount)}} | </strong>&nbsp;<amp>@foreach($prod as $pp) {{$pp->product_name}} @endforeach<br>Package</amp>
 
-            </div>
-            
-            <div class="col-4 sect" style="min-height:500px;background-image: url(../user/images/payment2.svg);background-repeat: no-repeat;">
-            <span class="title2">
-                    <h3 class="product-title" style="font-size: 25px; color:aliceblue">SECOND PAYMENT</h3>
-                </span>
+                                        <p>
 
-                <p><strong class="price2">{{number_format(2000,2)}} AED |<span class="wrap">POLAND &nbsp;&nbsp;&nbsp;&nbsp;<br><span class="wrap" style="float:right; margin-left:10px">PACKAGE</span></span></strong></p>
+                                          @foreach($paid as $pd) 
+                                           
+                                            @if( $pd->product_payment_id == $pay->id)
+                                            <a class="btn btn-secondary" href="#">Get Reciept</a>
+                                            @else
+                                            <a class="btn btn-secondary" href="{{ url('product', $pay->id) }}">Pay Now</a>
+                                            @endif
+                                            
+                                          @endforeach
+                                          
+                                        </p>
 
-                <p><a class=" btn2 btn btn-secondary" href="#">Pay Now</a></p>
-            </div>
-            <div class="col-4" style="min-height:500px;background-image: url(../user/images/payment3.svg);background-repeat: no-repeat;">
-            <span class="title3">
-                    <h3 class="product-title" style="font-size: 25px; color:aliceblue">THIRD PAYMENT</h3>
-                </span>
+                                    </span>
+                                </span>
+                            </div>
+                        </li>
+                        <!-- End Column  -->
+                        @endforeach
+                    </ul>
 
-                <p><strong class="price3">{{number_format(1289,2)}} AED |<span class="wrap">POLAND &nbsp;&nbsp;&nbsp;&nbsp;<br><span class="wrap" style="float:right; margin-left:10px">PACKAGE</span></span></strong></p>
-
-                <p><a class=" btn3 btn btn-secondary" href="#">Pay Now</a></p>
-            </div>
-        </div>
-
+                </div>
+    </div>
 
     </div>
 </div>

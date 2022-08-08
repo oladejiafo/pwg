@@ -89,10 +89,7 @@
 
          @include('user.earning')
         @endif
-      
-        @foreach($pays as $pay)
-         {{$pay->payment}}
-        @endforeach
+        
 
     </div>
     <!-- End Product Section -->

@@ -1,11 +1,5 @@
-<!DOCTYPE html>
+@extends('layouts.master')
 
-<html>
-
-@include('user/header');
-
-<link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 <style>
     body {
         background-color: #f1f1f1;
@@ -32,36 +26,48 @@
     }
 
     label {
-        display: block;
-        width: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 70%;
     }
 </style>
 
-<body>
-    <div class="login">
-        <div class="container-fluid">
-            @if(session()->has('message'))
-
-                <div class="alert alert-success" style="margin: 0 auto;;font-size:15px; width:35%; padding:0; height:28px;">
+@section('content')
+    <div class="loginx">
+    @if(session()->has('success'))
+                <div class="alert alert-success">
                     <button type="button" class="close" data-dismiss="alert" style="float:right">
                         
                     </button>
-                    {{ session()->get('message') }}
+                    {{ session()->get('success') }}
                 </div>
             @endif
-            <div class="signature">
+
+            @if(session()->has('failed'))
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert" style="float:right">
+                        
+                    </button>
+                    {{ session()->get('failed') }}
+                </div>
+            @endif
+
+        <div class="container-fluid">
+            <div class="signature" style="box-shadow: 0 0 0 0.5px #ccc;">
                 <div class="append">
                     <div class="append-title">
                         <h1>Append Your Signature</h1>
                         <p>To proceed to payment, please upload your signature</p>
                         <form action="{{ url('upload_signature') }}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <input type="hidden" name="p_id" value="{{$data->id}}">
+                            <input type="hidden" name="pid" value="{{$data->id}}">
 
                             <label>
                                 <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
                                 <input type="file" name="image" style="display: none;" required="">
-                                <img class="darken" src="{{asset('user/images/upload.svg')}}" alt="signature" title="Click to upload file" class="upload">
+                                <img class="darken" style="cursor: pointer;" src="{{asset('user/images/upload.svg')}}" alt="signature" title="Click to upload file" class="upload">
                             </label>
                             <button class="btn btn-primary submitBtn">SUBMIT</button>
                         </form>
@@ -70,4 +76,4 @@
             </div>
         </div>
     </div>
-</body>
+@endsection

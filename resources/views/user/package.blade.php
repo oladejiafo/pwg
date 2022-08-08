@@ -14,12 +14,19 @@
   /* Linked Styles */
   .product-section {
     /* margin: 30px; */
-    width:100%;
+    width: 100%;
     margin: 1em auto 0 auto;
+    line-height: normal;
   }
+
+  input[type=checkbox] {
+    transform: scale(1.5);
+  }
+
   hr {
     color: #faf9f6;
   }
+
   img {
     margin-top: 15px;
     margin-right: auto;
@@ -34,7 +41,7 @@
   }
 
   h1 {
-    top:0;
+    top: 0;
     font-size: 60px;
     margin-top: 0;
     margin-bottom: 0.5rem;
@@ -44,14 +51,15 @@
 
   }
 
-h2 {
+  h2 {
     font-size: 50px;
     margin-top: 0;
     margin-bottom: 0.5rem;
     font-family: "TTNormsPro-Bold";
     font-weight: bold;
     font-style: normal;
-}
+  }
+
   h3,
   h4,
   h5,
@@ -83,15 +91,15 @@ h2 {
     list-style-type: disc;
   }
 
- .text {
-  /* width:90%; */
-   margin-top: 0;
+  .text {
+    /* width:90%; */
+    margin-top: 0;
 
-   justify-content: left;
+    justify-content: left;
     /* width: calc(100% - 250px); */
   }
 
- .text .subheading{
+  .text .subheading {
     font-size: 25px;
     color: #000;
   }
@@ -106,35 +114,36 @@ h2 {
     font-style: normal;
     font-size: 20px;
   }
+
   a .hoveer {
     color: yellow;
   }
 
   @media (max-width: 991.98px) {
-    .course .text {
+    .text {
       width: 100%;
     }
   }
 
-  .course .text .subheading {
+  .text .subheading {
     color: #000000;
   }
 
-  .course .text .subheading span {
+  .text .subheading span {
     color: #000;
   }
 
-  .course .text h3 {
+  .text h3 {
     font-weight: 500;
     font-size: 24px;
   }
 
-  .course .img {
+  .img {
     width: 250px;
   }
 
   @media (max-width: 991.98px) {
-    .course .img {
+    .img {
       width: 100%;
       height: 300px;
     }
@@ -150,61 +159,104 @@ h2 {
   <section class="product-section">
     <div class="container-fluid">
       <div class="row">
-          <div>
-            <p style="font-style: italics; text-decoration:none"><a href="/"><b><i>Packages </a>  > {{$data->product_name}} </i></b></p>
-          </div>
-          <div class="col-md-6 col-sm-12 img-fluid">
-            <img src="../user/images/{{$data->image}}"  width="96%" border="0" alt="" />
-          </div>
-          <div class="col-md-6 col-sm-12 text" style="padding-right:2px">
-            <h1>{{$data->product_name}}</h1>
-            <p class="subheading"><span>{{$data->slogan}}</span></p>
-            <p>{{$data->description}}</p><br>
-            <h2>{{number_format($data->unit_price,2)}} {{$data->currency}}</h2>
-            <p class="subheading"><i class="fa fa-minus-circle btn btn-tertiary"></i>{{$data->discount}}% lower than last month</p><br>
 
-            <p>
-<h3>Payment Installments</h3>
-<table width="100%" border=0 style = "background-color:#e0e0e0">
-<tr>
-@foreach($ppay as $ppays)  
+        <p style="font-style: italics; text-decoration:none"><a href="/"><b><i>Packages </a> > {{$data->product_name}} </i></b></p>
 
-<td align="left" style="padding:10px; font-size:20px;border-color:#fff">{{ $ppays->payment }} -> {{ $ppays->amount}}  || </td>
+        <div class="col-md-6 col-sm-12 img-fluid">
+          <img src="../user/images/{{$data->image}}" width="96%" height="99%" border="0" alt="" />
+        </div>
+        <div class="col-md-6 col-sm-12 text" style="padding-right:2px">
+          <h1>{{$data->product_name}}</h1>
+          <p class="subheading"><span>{{$data->slogan}}</span></p>
+          <p>{{$data->description}}</p>
+          <h2>{{number_format($data->unit_price,2)}} {{$data->currency}}</h2>
+          <p class="subheading"><i class="fa fa-minus-circle btn btn-tertiary"></i>{{$data->discount}}% lower than last month</p>
 
-@endforeach  
-</tr></table>
-<br>
-</p>
+          <p>
+          <h3>Payment Installments</h3>
+          <table width="540px" border=0 style="border-radius:10px">
+            <tr>
+
+              @foreach($ppay as $ppays)
+
+              <td align="left" style="border-color:#fff;width:100px">
+
+                <img src="../user/images/progress_payment_{{ $ppays->id}}.svg" width="100px" height="100px" alt="">
+
+                @if(!$loop->last)
+              </td>
+              <td align="center" style="border-color:#fff;width:120px">
+                <img src="../user/images/progress_bar.svg" alt="" width="120px" height="20px">
+                @endif
+              </td>
+
+              @endforeach
+            </tr>
+
+            <tr>
+
+              @foreach($ppay as $ppays)
+
+              <td align="center" style="border-color:#fff;width:80px">
+
+                <span style="font-size: 30px;font-weight:bold;">{{number_format($ppays->amount)}} </span><br>
+                <span style="font-size: 12px;font-weight:bold;">{{$ppays->payment}}</span>
+
+                @if(!$loop->last)
+              </td>
+              <td align="left" style="border-color:#fff;width:60px">
+
+                @endif
+              </td>
+
+              @endforeach
+            </tr>
+
+          </table>
+
+          </p>
 
 
-            <h3>Working in {{$data->product_name}} provides several benefits, including but not limited to: -</h3>
+          <h3>Working in {{$data->product_name}} provides several benefits, including but not limited to:</h3>
 
-            <p>
-              <ul>
-              @if ($data->benefits != "")
-              
-                @foreach(explode(' - ' ,$data->benefits) as $item)
-                
-                  <li> {{$item}} </li>
-                  
-                @endforeach
-              @endif
-              </ul>
-            </p>
-            <p><input type="checkbox"> By checking this box you accept our Terms & Conditions</p>
-            @if(Route::has('login'))
-            @auth 
-            <p><a class="btn btn-secondary" href="{{ url('append_signature', $data->id) }}">Purchase Now</a></p>
-            @else 
-            <p><a class="btn btn-secondary" href="{{ url('login') }}">Purchase Now</a></p>
-            @endauth
+          <p>
+          <ul>
+            @if ($data->benefits != "")
+
+            @foreach(explode(' - ' ,$data->benefits) as $item)
+
+            <li> {{$item}} </li>
+
+            @endforeach
             @endif
-          </div>
-      
+          </ul>
+          </p>
+          @if(Route::has('login'))
+          @auth
+          <form action="{{ url('referal_details', $data->id) }}">
+            @else
+            <form action="{{ url('login') }}">
+              @endauth
+              @endif
+              <p><input type="checkbox" id="agree" style="font-size:25px" required> By checking this box you accept our Terms & Conditions</p>
+
+              <p><button class="btn btn-secondary" id="buy">Purchase Now</button></p>
+
+            </form>
+
+        </div>
+
       </div>
     </div>
   </section>
-
+  <script>
+    $('#reset').click(function() {
+      if (!$('#agree').is(':checked')) {
+        alert('You Must Agree To Proceed');
+        return false;
+      }
+    });
+  </script>
 </body>
 
 </html>
