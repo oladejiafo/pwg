@@ -11,7 +11,7 @@
     .filled a{
         font-size: 30px;
         margin-top: 15px;
-        padding: 2px;
+        padding: 4px 2px;
         border-color: #000;
         background-color: hsl(51, 94%, 50%);;
         height: 60px;

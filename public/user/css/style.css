@@ -465,9 +465,9 @@ a.more {
   visibility: visible;
 }
 
-.product-section .product-item:hover:before {
+/* .product-section .product-item:hover:before {
   height: 70%;
-}
+} */
 
 .why-choose-section {
   padding: 7rem 0;
