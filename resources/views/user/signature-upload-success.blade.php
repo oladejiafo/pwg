@@ -27,11 +27,11 @@
             background-color: none;
             border-color: #000;
             color: #000;
-            font-family: "TTNormsPro-Regular";
+            font-family: "TT Norms Pro";
             font-size: 25px;
             font-weight: bold;
             padding: 2px;
-            box-shadow: 0 0 0 0.7px #ccc;
+            /* box-shadow: 0 0 0 0.7px #ccc; */
 
         }
 

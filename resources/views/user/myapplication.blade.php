@@ -73,7 +73,7 @@
         @if(Route::has('login'))
 
         @include('user.paid')
-
+        @include('user.paid_details')
         @else
 
         <div class="card d-flex aligns-items-center justify-content-center text-center">

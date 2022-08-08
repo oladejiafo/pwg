@@ -2,8 +2,6 @@
 
 <html>
 
-@include('user/header')
-
 <link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 <style>
@@ -42,23 +40,6 @@
 
 @section('content')
     <div class="loginx">
-    @if(session()->has('success'))
-                <div class="alert alert-success">
-                    <button type="button" class="close" data-dismiss="alert" style="float:right">
-                        
-                    </button>
-                    {{ session()->get('success') }}
-                </div>
-            @endif
-
-            @if(session()->has('failed'))
-                <div class="alert alert-danger">
-                    <button type="button" class="close" data-dismiss="alert" style="float:right">
-                        
-                    </button>
-                    {{ session()->get('failed') }}
-                </div>
-            @endif
 
         <div class="container-fluid">
             <div class="signature" style="box-shadow: 0 0 0 0.5px #ccc;">

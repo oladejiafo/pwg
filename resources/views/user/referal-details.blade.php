@@ -44,12 +44,6 @@
 }
 
 </style>
-
-    .select2-container--default .select2-selection--single {
-        height: 46px;
-        border-radius: 5px;
-    }
-</style>
 @section('content')
     <div class="container">
         <div class="form-secc">

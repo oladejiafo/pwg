@@ -45,7 +45,7 @@
     font-size: 60px;
     margin-top: 0;
     margin-bottom: 0.5rem;
-    font-family: "TTNormsPro-Bold";
+    font-family: "TT Norms Pro";
     font-weight: bold;
     font-style: normal;
 
@@ -55,7 +55,7 @@
     font-size: 50px;
     margin-top: 0;
     margin-bottom: 0.5rem;
-    font-family: "TTNormsPro-Bold";
+    font-family: "TT Norms Pro";
     font-weight: bold;
     font-style: normal;
   }
@@ -67,7 +67,7 @@
     margin-top: 0;
     margin-bottom: 0.5rem;
     color: #000;
-    font-family: "TTNormsPro-Regular";
+    font-family: "TT Norms Pro";
     font-weight: bold;
     font-style: normal;
   }
@@ -75,7 +75,7 @@
   p {
     margin-top: 0;
     margin-bottom: 1rem;
-    font-family: "TTNormsPro-Regular";
+    font-family: "TT Norms Pro";
     font-weight: normal;
     font-style: normal;
     font-size: 20px;
@@ -84,7 +84,7 @@
   li {
     margin-top: 0;
     margin-bottom: 0.4rem;
-    font-family: "TTNormsPro-Regular";
+    font-family: "TT Norms Pro";
     font-weight: normal;
     font-style: normal;
     font-size: 20px;
@@ -109,7 +109,7 @@
     color: #000;
     margin-top: 0.1rem;
     margin-bottom: 0.4rem;
-    font-family: "TTNormsPro-Regular";
+    font-family: "TT Norms Pro";
     font-weight: normal;
     font-style: normal;
     font-size: 20px;
