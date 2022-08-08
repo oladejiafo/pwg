@@ -8,14 +8,11 @@ justify-content: center;
 }
 
 .paid-section .product-item {
-  margin: 10px 10px 0 0;
+  margin: 40px 10px 0 0;
   /* padding: 50px 25px; */
-  padding-top: 60px;
-  padding-bottom: 60px;
-  padding-left: 80px;
-  padding-right: 80px;
+  padding: 2px;
   text-align: center;
- height:500px;
+  height:100%;
   width: 100%;
   text-decoration: none;
   box-shadow: 0px 0px 0px 1px #e0d8d881;
@@ -76,7 +73,7 @@ justify-content: center;
 .paid-section .product-item strong {
   position: absolute;
   display: inline-block;
-  top: 240px;
+  top: 250px;
   left:25px;
   margin: 10px 10px 0 0;
   padding: 5px 5px;
@@ -90,7 +87,7 @@ justify-content: center;
 .paid-section .product-item amp {
   position: absolute;
   display: inline-block;
-  top: 250px;
+  top: 260px;
   left:150px;
   margin: 10px 10px 0 0;
   line-height: normal;
@@ -157,14 +154,13 @@ justify-content: center;
                             <div align="center" class="col-md-4 col-sm-12 img-fluid cellContainer">
                                 <span class="product-item " href="#">
                                     <span class="positionAnchor">
-                                        <img src="../user/images/{{$pay->payment}}.svg" style="height:500px" class="img-fluid xproduct-thumbnail">
+                                        <img src="../user/images/{{$pay->payment}}.svg" style="height:500px;" class="img-fluid product-thumbnail">
                                         <span class="title" style="align: center;">
                                             <h3 class="product-title" style="font-size: 22px; color:aliceblue">{{$pay->payment}}</h3>                                           
                                         </span>
                                         <strong class="product-price">{{number_format($pay->amount)}} | </strong>&nbsp;<amp>@foreach($prod as $pp) {{$pp->product_name}} @endforeach<br>Package</amp>
 
                                         <p>
-
                                           @foreach($paid as $pd) 
                                            
                                             @if( $pd->product_payment_id == $pay->id)

@@ -467,9 +467,9 @@ a.more {
   visibility: visible;
 }
 
-.product-section .product-item:hover:before {
+/* .product-section .product-item:hover:before {
   height: 70%;
-}
+} */
 
 .why-choose-section {
   padding: 7rem 0;
@@ -1111,105 +1111,11 @@ textarea {
   background: rgba(59, 93, 80, 0.2);
 }
 
-#headerBtn {
-  width: 350px;
-
-}
-
-.home_img {
-  height: auto;
-  /* width: auto;  */
-  width: 546px;
-  max-height: 451px;
-}
-
-.banner_bg {
-  width: 100%;
-  float: left;
-  /* background-image: url(../user/images/v1_17125.png); */
-  height: auto;
-  background-size: 100%;
-  background-repeat: no-repeat;
-}
-
-#headerTitle {
-  font-family: 'TT Norms Pro Black';
-  font-weight: 900;
-  font-size: 60px;
-  font-style: normal;
-}
-
-#headerText {
-  font-family: 'TT Norms Pro Regular';
-  font-weight: bold;
-  font-size: 28px;
-  font-style: normal;
-  color: #fff;
-  text-transform: lowercase;
-}
-
-#headerText:first-letter {
-  text-transform: uppercase;
-}
-
-#headerBtn {
-  font-family: 'TT Norms Pro Bold';
-  font-weight: bold;
-  font-size: 32px;
-  font-style: normal;
-  color: #fff;
-  border-radius: 10px;
-}
-
-.cellContainer {
-  width: 546px;
-  margin: auto;
-}
-
-.earn .p {
-  padding-top: 100px;
-  vertical-align: middle;
-  width: 100%;
-  justify-content: center;
-}
-
-::-webkit-scrollbar {
-  overflow-y: hidden;
-  width: 15px;
-}
-
-::-webkit-scrollbar-button:single-button {
-  background: #ccc;
-
-  display: block;
-
-  overflow-y: hidden;
-
-  background: url('user/images/Forward.svg');
-}
-
-::-webkit-scrollbar-button:single-button:horizontal:decrement {
-  border-width: 0 8px 8px 8px;
-  border-color: transparent transparent #555555 transparent;
-}
-
-::-webkit-scrollbar-track-piece {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  -webkit-border-radius: 10px;
-  border-radius: 10px;
-  background: url('http://cdn.css-tricks.com/wp-content/themes/CSS-Tricks-10/images/header-demos.jpg');
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
-  background: transparent;
-  overflow-y: hidden;
-}
 
 /*************Responsive Styles*****************/
 /***************iPhone Portrait**************/
 /*************************iPad Portrait***************/
-@media only screen and (max-width: 479px) and (min-width: 320px) {
+/* @media only screen and (max-width: 479px) and (min-width: 320px) {
 
   .hero, .layer {
     min-height: 0px;
@@ -1250,7 +1156,7 @@ textarea {
     /* width: 100%; */
   }
 
-}
+} */
 
 @media only screen and (max-width: 667px) and (min-width: 375px) {
  

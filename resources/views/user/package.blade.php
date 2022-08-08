@@ -98,7 +98,9 @@
     justify-content: left;
     /* width: calc(100% - 250px); */
   }
-
+  input[type=checkbox] {
+    transform: scale(1.5);
+}
   .text .subheading {
     font-size: 25px;
     color: #000;
@@ -238,9 +240,9 @@
             <form action="{{ url('login') }}">
               @endauth
               @endif
-              <p><input type="checkbox" id="agree" style="font-size:25px" required> By checking this box you accept our Terms & Conditions</p>
+              <p><input type="checkbox" id="agree" style="font-size:25px;transform: scale(1.8); " required> By checking this box you accept our Terms & Conditions</p>
 
-              <p><button class="btn btn-secondary" id="buy">Purchase Now</button></p>
+              <p><button class="btn btn-secondary" id="buy" style="min-width: 50%; height:60px">Purchase Now</button></p>
 
             </form>
 
