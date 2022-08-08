@@ -793,6 +793,15 @@ input {
         width: 100%;
         margin: 0 auto;
     }
+
+    .login .signin-right {
+        padding-right: 20px;
+    }
+
+    .logo img {
+        margin-top: 30px;
+        margin-left: 55px;
+    }
 }
 
 /*******************************************/

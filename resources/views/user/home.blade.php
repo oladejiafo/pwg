@@ -2,7 +2,7 @@
 
 <html>
 
-@include('user/header');
+@include('user/header')
 
 
 <!-- bootstrap core css -->
