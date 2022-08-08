@@ -113,7 +113,7 @@ class HomeController extends Controller
     
     public function affiliate()
     {
-        return view('user.referal-details');
+        return view('user.payment-form');
     }
 
 

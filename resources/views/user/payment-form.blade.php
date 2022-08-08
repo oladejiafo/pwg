@@ -66,21 +66,21 @@
 
                         <div class="total">
                             <div class="total-sec">
-                                <div class="left-sec"><p>Subtotal (first payment)</p></div>
+                                <div class="left-section"><p>Subtotal (first payment)</p></div>
                                 <div class="price"><p>1,975.00</p></div>
                             </div>
                             <div class="total-sec">
-                                <div class="left-sec"><p>VAT</p></div>
+                                <div class="left-section"><p>VAT</p></div>
                                 <div class="price"><p>50.00</p></div>
                             </div>
                             <div class="total-sec">
-                                <div class="left-sec"><p>Discount</p></div>
+                                <div class="left-section"><p>Discount</p></div>
                                 <div class="price"><p>200.00</p></div>
                             </div>
                         </div>
                         <div class="gtotal">
                             <div class="total-sec">
-                                <div class="left-sec"><p>TOTAL AMOUNT</p></div>
+                                <div class="left-section"><p>TOTAL AMOUNT</p></div>
                                 <div class="price"><p>850.00</p></div>
                             </div>
                         </div>
