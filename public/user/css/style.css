@@ -277,6 +277,7 @@ a.more {
   border-color: #000;
   width: 250px;
   font-size: 20px;
+  border-radius: 10px;
 }
 
 .btn.btn-secondary:hover {
@@ -1160,7 +1161,7 @@ textarea {
   font-size: 32px;
   font-style: normal;
   color: #fff;
-
+  border-radius: 10px;
 }
 
 .cellContainer {
@@ -1249,7 +1250,7 @@ textarea {
   }
 
   .positionAnchor img {
-    width: 100%;
+    /* width: 100%; */
   }
 
 }

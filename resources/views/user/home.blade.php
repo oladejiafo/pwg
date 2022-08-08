@@ -100,7 +100,7 @@
                             <strong class="product-price">{{number_format($offer->unit_price,2)}} {{$offer->currency}}</strong>
                             <p><i class="fa fa-minus-circle" style='color: white'></i>{{$offer->discount}}% lower than last month</p>
 
-                            <p><a class="btn btn-secondary" href="{{ url('product', $offer->id) }}">Buy Now</a></p>
+                            <p><a class="btn btn-secondary buy_now" href="{{ url('product', $offer->id) }}">Buy Now</a></p>
 
                         </span>
                     </span>
