@@ -1,6 +1,7 @@
 @extends('layouts.auth')
 <style>
-  .hiddenIcon{
+  .hiddenIcon,
+  .viewIcon{
     cursor: pointer;
   }
 </style>
@@ -39,6 +40,7 @@
                 <input type="password" class="form-control passwordInput" name="password" value="{{ old('password') }}" id="exampleInputPassword1" autocomplete="off" required autofocus>
                 @error('password') <span class="error">{{ $message }}</span> @enderror
                 <img src="{{asset('images/Eye_Icon.png')}}" alt=img class="hiddenIcon">
+                <img src="{{asset('images/view_password.svg')}}" alt=img class="viewIcon">
               </div>
             </div>
             
@@ -56,13 +58,19 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script>
       $(document).ready(function() {
-        $('.hiddenIcon').on('click', function(){
+        $('.viewIcon').hide();
+        $('.hiddenIcon').show();
+        $('.hiddenIcon, .viewIcon').on('click', function(){
             var passInput=$(".passwordInput");
             if(passInput.attr('type')==='password')
               {
                 passInput.attr('type','text');
+                $('.viewIcon').show();
+                $('.hiddenIcon').hide();
             }else{
               passInput.attr('type','password');
+              $('.viewIcon').hide();
+              $('.hiddenIcon').show();
             }
         })
       });

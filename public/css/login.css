@@ -90,7 +90,7 @@ input {
     margin-bottom: 17px;
     margin-left: 111px;
     text-decoration: none;
-    border-radius: 8px;
+    border-radius: 10px;
     width: 200px;
     text-align: center;
     display: block;
@@ -111,7 +111,7 @@ input {
     margin-left: 111px;
     text-align:center;
     text-decoration: none;
-    border-radius: 8px;
+    border-radius: 10px;
     background-color: #e9ebf0;
     min-height: 60px;
 }
@@ -132,7 +132,7 @@ input {
     margin-bottom: 17px;
     margin-left: 111px;
     text-decoration: none;
-    border-radius: 8px;
+    border-radius: 10px;
 }
 .affiliate a:hover {
     background-color: hsl(51, 94%, 50%);
@@ -464,10 +464,16 @@ input {
     outline: none;
 }
 
-.hiddenIcon {
+.hiddenIcon,
+.viewIcon {
     position: absolute;
     top: 12px;
     right: 25px;
+}
+
+.viewIcon,
+.confirmation_viewIcon {
+    width: 30px;
 }
 
 .inputs-icon {
@@ -622,7 +628,8 @@ input {
     cursor: pointer;
 }
 
-#cofirmation {
+#cofirmation,
+.confirmation_viewIcon {
     position: absolute;
     top: 12px;
     right: 25px;

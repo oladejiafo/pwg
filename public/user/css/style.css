@@ -265,6 +265,7 @@ a.more {
 .btn.btn-primary:hover {
   background: linear-gradient(90deg, #FACB08 2.41%, #FAE008 90.98%);
   border: none;
+  color: black
 }
 
 .btn.btn-secondary {
