@@ -162,8 +162,8 @@ if ($res) {
     }
 
 
-    // public function affiliate()
-    // {
-    //     return view('user.referal-details');
-    // }
+    public function affiliate()
+    {
+        return view('user.payment-form');
+    }
 }

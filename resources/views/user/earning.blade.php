@@ -4,7 +4,7 @@
         width: 95%;
         height: 450px;
         margin: 50px;
-        font-family: 'TT Norms Pro Black';
+        font-family: 'TT Norms Pro';
         font-weight: 900;
     }
 

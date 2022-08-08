@@ -3,6 +3,19 @@
 @import url("../fonts/TTNorms-Bold.otf");
 @import url("../fonts/TTNorms-Regular.otf");
 
+@font-face {
+    font-family: 'TT Norms Pro';
+    src: url('TTNormsPro-Regular.eot');
+    src: local('TT Norms Pro Regular'), local('TTNormsPro-Regular'),
+        url('TTNormsPro-Regular.eot?#iefix') format('embedded-opentype'),
+        url('TTNormsPro-Regular.woff2') format('woff2'),
+        url('TTNormsPro-Regular.woff') format('woff'),
+        url('TTNormsPro-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
 a {
     text-decoration: none;
 }
@@ -57,7 +70,7 @@ input {
 }
 
 .login .left-sec a {
-    font-family: Montserrat;
+    font-family: TT Norms Pro;
     font-size: 21px;
     font-weight: 500;
     line-height: 26px;
@@ -129,7 +142,7 @@ input {
 .login .signin-right a {
     display: flex;
     align-items: center;
-    font-family: Montserrat;
+    font-family: TT Norms Pro;
     font-size: 21px;
     font-weight: 500;
     line-height: 26px;
@@ -161,7 +174,7 @@ input {
 }
 
 .logo a {
-    font-family: "TTNormsPro-Black";
+    font-family: "TT Norms Pro";
     font-weight: 900;
     font-style: normal;
     /* font-size: 60px; */
@@ -191,7 +204,7 @@ input {
 }
 
 .form-sec1 h3 {
-    font-family: Akrobat;
+    font-family: TT Norms Pro;
     font-size: 36px;
     font-weight: 700;
     line-height: 43px;
@@ -201,7 +214,7 @@ input {
 }
 
 .form-sec1 p {
-    font-family: Akrobat;
+    font-family: TT Norms Pro;
     font-size: 20px;
     font-weight: 700;
     line-height: 24px;
@@ -219,7 +232,7 @@ input {
 }
 
 .form-sec1 label {
-    font-family: Akrobat;
+    font-family: TT Norms Pro;
     font-size: 20px;
     font-weight: 400;
     color: #636466;
@@ -238,7 +251,7 @@ input {
 
     /* border-radius: 0px; */
     padding: 10px;
-    font-family: Montserrat;
+    font-family: TT Norms Pro;
     font-size: 36px;
     font-weight: 700;
     line-height: 43px;
@@ -256,7 +269,7 @@ input {
 }
 
 .form-sec1 .bottom-sec a {
-    font-family: Akrobat;
+    font-family: TT Norms Pro;
     font-size: 20px;
     font-weight: 400;
     line-height: 24px;
@@ -275,7 +288,7 @@ input {
 }
 
 .form-sec1 .tab-sec a {
-    font-family: Akrobat;
+    font-family: TT Norms Pro;
     font-size: 24px;
     font-weight: 700;
     line-height: 29px;
@@ -294,7 +307,7 @@ input {
 
 .form-sec1 .check-box p {
     margin: 0px;
-    font-family: Akrobat;
+    font-family: TT Norms Pro;
     font-size: 18px;
     font-weight: 500;
     line-height: 22px;
@@ -370,7 +383,7 @@ input {
     background-color: none;
     border-color: #606060 1px solid;
     color:#000;
-    font-family: "TTNormsPro-Regular";
+    font-family: "TT Norms Pro";
     font-size: 25px;
     font-weight: bold;
     box-shadow: 0 0 0 0.7px #ccc;
@@ -467,7 +480,7 @@ input {
 }
 
 .reset-heading {
-    font-family: Akrobat;
+    font-family: TT Norms Pro;
     font-size: 30px;
     font-weight: 700;
     line-height: 43px;
@@ -481,7 +494,7 @@ input {
 }
 
 .append-title {
-    font-family: "TTNormsPro-Black";
+    font-family: "TT Norms Pro";
     font-size: 30px;
     font-weight: 900;
     line-height: 30px;
@@ -490,7 +503,7 @@ input {
 }
 .append-title p{
     margin: 1px;
-    font-family: "TTNormsPro-Regular";
+    font-family: "TT Norms Pro";
     font-weight: 100;
     font-size: 20px;
 }
@@ -532,7 +545,7 @@ input {
 
     /* border-radius: 0px; */
     padding: 10px;
-    font-family: Montserrat;
+    font-family: TT Norms Pro;
     font-size: 36px;
     font-weight: 700;
     line-height: 43px;
@@ -553,7 +566,7 @@ input {
 }
 
 .subInfo {
-    font-family: Akrobat;
+    font-family: TT Norms Pro;
     font-size: 19px;
     font-weight: 400;
     line-height: 23px;
@@ -782,6 +795,8 @@ input {
         width: 100%;
         margin: 0 auto;
     }
+
+
 }
 
 /**************iPad Landscape***************/
@@ -812,6 +827,14 @@ input {
     .signin-right {
         padding-right: 0px;
         padding-left: 111px;
+    }
+
+    .myapplicant a {
+        margin-left: 0px;
+    }
+
+    #activity {
+        margin-right: 0px;
     }
 }
 

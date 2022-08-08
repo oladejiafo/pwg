@@ -1,6 +1,6 @@
 
 		<!-- Theme style  -->
-		<!-- <link rel="stylesheet" href="{{asset('user/extra/css/bootstrap.css')}}"> -->
+		<link rel="stylesheet" href="{{asset('user/extra/css/bootstrap.css')}}">
         <link rel="stylesheet" href="{{asset('user/extra/css/styled.css')}}">
 	<div class="col-md-12">
 		<div class="about-desc animate-box">
@@ -11,31 +11,48 @@
 						<div class="panel-heading" role="tab" id="headingOne">
 							<h4 class="panel-title">
 								<a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
-									aria-expanded="true" aria-controls="collapseOne">Who We Are?
+									aria-expanded="true" aria-controls="collapseOne"> &nbsp; @foreach($prod as $pp) {{$pp->product_name}} @endforeach PACKAGE
 								</a>
 							</h4>
-						</div>
+						</div><hr style="height:2px;border:none;color:#333;background-color:#333;" >
 						<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel"
 							aria-labelledby="headingOne">
 							<div class="panel-body">
-								<div class="row">
-									<div class="col-md-6">
-										<p>Today´s companies need to grow and shrink on constant basis. Every day
-											operations can be streamlined by creating applications that inspire, improve
-											and centralize transactions. Organizations are constantly looking for ways
-											to use technology as an enabler for improving their operations.</p>
+                              @foreach($pays as $pay) 
+                                <div class="row">
+									<div class="col-md-3">
+										<p>
+                                         {{$pay->payment}}
+                                        </p>
 									</div>
-									<div class="col-md-6">
-										<p>Detol Technology has worked with esteemed clients from all major verticals
-											supporting in their application development needs. We have also partnered
-											with technology solution providers so that customers always have a choice of
-											tools and can pick the best one for their requirements.</p>
+									<div class="col-md-3">
+										<p>
+                                        @foreach($paid as $pd) 
+                                           
+                                           {{ $pd->payment_status }}
+                                           
+                                         @endforeach
+                                        </p>
 									</div>
-								</div>
+                                    <div class="col-md-6" align="right">
+                                        <p>
+                                        @foreach($paid as $pd) 
+                                           
+                                           @if( $pd->product_payment_id == $pay->id)
+                                           <a class="btn btn-secondary" href="#">Get Reciept</a>
+                                           @else
+                                           <a class="btn btn-secondary" href="{{ url('product', $pay->id) }}">Pay Now</a>
+                                           @endif
+                                           
+                                         @endforeach
+                                        </p>
+                                    </div>
+								</div><hr>
+                              @endforeach
 							</div>
 						</div>
 					</div>
-					<div class="panel panel-default">
+					<!-- <div class="panel panel-default">
 						<div class="panel-heading" role="tab" id="headingTwo">
 							<h4 class="panel-title">
 								<a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"
@@ -86,7 +103,7 @@
 
 							</div>
 
-						</div>
+						</div> -->
 					</div>
 				</div>
 			</div>

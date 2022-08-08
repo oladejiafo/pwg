@@ -27,14 +27,14 @@
     }
 
     #headerTitle {
-        font-family: 'TT Norms Pro Black';
+        font-family: 'TT Norms Pro';
         font-weight: 900;
         font-size: 60px;
         font-style: normal;
     }
 
     #headerText {
-        font-family: 'TT Norms Pro Regular';
+        font-family: 'TT Norms Pro';
         font-weight: bold;
         font-size: 28px;
         font-style: normal;
@@ -47,7 +47,7 @@
     }
 
     #headerBtn {
-        font-family: 'TT Norms Pro Bold';
+        font-family: 'TT Norms Pro';
         font-weight: bold;
         font-size: 32px;
         font-style: normal;

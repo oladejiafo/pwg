@@ -1,9 +1,14 @@
 @font-face {
-  font-family: 'icomoon';
-  src: url("../fonts/icomoon/icomoon.eot?srf3rx");
-  src: url("../fonts/icomoon/icomoon.eot?srf3rx#iefix") format("embedded-opentype"), url("../fonts/icomoon/icomoon.ttf?srf3rx") format("truetype"), url("../fonts/icomoon/icomoon.woff?srf3rx") format("woff"), url("../fonts/icomoon/icomoon.svg?srf3rx#icomoon") format("svg");
+  font-family: 'TT Norms Pro';
+  src: url('TTNormsPro-Regular.eot');
+  src: local('TT Norms Pro Regular'), local('TTNormsPro-Regular'),
+      url('TTNormsPro-Regular.eot?#iefix') format('embedded-opentype'),
+      url('TTNormsPro-Regular.woff2') format('woff2'),
+      url('TTNormsPro-Regular.woff') format('woff'),
+      url('TTNormsPro-Regular.ttf') format('truetype');
   font-weight: normal;
-  font-style: normal; }
+  font-style: normal;
+}
 
 /* =======================================================
 *
@@ -12,6 +17,7 @@
 * ======================================================= */
 a {
   color: #6495ED;
+  text-decoration: none;
   -webkit-transition: 0.5s;
   -o-transition: 0.5s;
   transition: 0.5s; }
@@ -33,46 +39,59 @@ p {
   padding: 0; }
 
 .panel-heading a {
-  padding: 10px 25px;
+  padding: 0 25px;
   display: block;
   width: 100%;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 24px;
   text-transform: uppercase;
-  background-color: #000;
-  color: #fff;
+  background-color: none;
+  color: #000;
   position: relative;
   -webkit-box-shadow: none !important;
   -moz-box-shadow: none !important;
   -ms-box-shadow: none !important;
   -o-box-shadow: none !important;
-  box-shadow: none !important; }
+  box-shadow: 0 4px 2px -2px #000;
+}
 
 .panel-title {
-  font-family: "Open Sans", Arial, sans-serif;
-  font-weight: 400; }
+  font-family: "TT Norms Pro";
+  font-weight: 400; 
+}
 
 .panel {
   -webkit-box-shadow: none !important;
   -moz-box-shadow: none !important;
   -ms-box-shadow: none !important;
   -o-box-shadow: none !important;
-  box-shadow: none !important;
+  box-shadow: 0 4px 2px -2px gray;
   border: none; }
 
 .panel-heading a:after {
-  font-family: "icomoon";
-  content: "\e0c5";
+  font-family: "TT Norms Pro";
+  content: "\25AC"; /*content: url(image.jpg); */
   position: absolute;
-  right: 20px;
-  font-size: 16px;
-  font-weight: 400;
-  top: 50%;
+  left: 0px;
+ 
+  font-size: 24px;
+  font-weight:400;
+  top: 35%;
   line-height: 1;
-  margin-top: -10px; }
+  margin-top: -10px; 
+
+  /* content: 'text that follows 1';
+  background: url(https://unsplash.it/18) left center no-repeat;
+  vertical-align: middle;
+  background-size: 16px auto;
+  padding-left: 20px; */
+}
 
 .panel-heading a.collapsed:after {
-  content: "\e0c4"; }
+  content: "\271A"; 
+  font-size: 27px;
+  font-weight:400;
+}
 
 .panel-heading a.collapsed {
   background: #f2f3f7;
