@@ -46,6 +46,7 @@
             <div class="inputs-icon">
               <input type="password" class="form-control passwordInput" id="exampleInputPassword1" name="password" autocomplete="off" required>
               <img src="{{asset('images/Eye_Icon.png')}}" alt=img class="iconImg">
+              <img src="{{asset('images/view_password.svg')}}" alt=img class="viewIcon">
               @error('password') <span class="error">{{ $message }}</span> @enderror
             </div>
           </div>
@@ -54,6 +55,7 @@
             <div class="inputs-icon">
               <input type="password" class="form-control confirmation" name="password_confirmation" aria-describedby="emailHelp" autocomplete="off" required>
               <img src="{{asset('images/Eye_Icon.png')}}" alt=img id="cofirmation">
+              <img src="{{asset('images/view_password.svg')}}" alt=img class="confirmation_viewIcon">
               @error('password') <span class="error">{{ $message }}</span> @enderror
             </div>
           </div>
@@ -75,23 +77,35 @@
   <script>
       $(document).ready(function() {
         //password
-        $('.iconImg').on('click', function(){
+        $('.iconImg').show();
+        $('.viewIcon').hide();
+        $('.iconImg, .viewIcon').on('click', function(){
             var passInput=$(".passwordInput");
             if(passInput.attr('type')==='password')
               {
                 passInput.attr('type','text');
+                $('.iconImg').hide();
+                $('.viewIcon').show();
             }else{
               passInput.attr('type','password');
+              $('.iconImg').show();
+              $('.viewIcon').hide();
             }
         })
         // confirm password
-        $('#cofirmation').on('click', function(){
+        $('.confirmation_viewIcon').hide();
+        $('#cofirmation').show();
+        $('#cofirmation, .confirmation_viewIcon').on('click', function(){
             var passInput=$(".confirmation");
             if(passInput.attr('type')==='password')
               {
                 passInput.attr('type','text');
+                $('.confirmation_viewIcon').show();
+                $('#cofirmation').hide();
             }else{
               passInput.attr('type','password');
+              $('.confirmation_viewIcon').hide();
+              $('#cofirmation').show();
             }
         })
       });

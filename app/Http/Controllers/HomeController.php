@@ -164,6 +164,6 @@ if ($res) {
 
     public function affiliate()
     {
-        return view('user.payment-form');
+        return view('user.signature-upload-success');
     }
 }

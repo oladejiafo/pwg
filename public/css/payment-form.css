@@ -200,11 +200,13 @@ body {
     border: 1px solid #5F5F5F;
     padding: 13px 40px;
     margin-top: 66px;
+    border-radius: 10px;
 }
 
 .purchase-now:hover {
     background: linear-gradient(90deg, #FACB08 2.41%, #FAE008 90.98%);
     border-color: none;
+    color: black;
 }
 
 .payment-form1 input[type="checkbox"] {
