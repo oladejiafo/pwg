@@ -8,9 +8,10 @@ justify-content: center;
 }
 
 .paid-section .product-item {
-  margin: 40px 10px 0 0;
+  margin: 40px 0px 0 0;
   /* padding: 50px 25px; */
-  padding: 2px;
+  padding: 0px;
+
   text-align: center;
   height:100%;
   width: 100%;
