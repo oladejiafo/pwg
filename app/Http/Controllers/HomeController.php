@@ -149,19 +149,8 @@ if ($res) {
                 ->where('applicants.user_id', '=', $id)
                 ->get();
 
-            $pays = DB::table('product_payments')
-                ->join('applicants', 'applicants.product_id', '=', 'product_payments.product_id')
-                ->select('product_payments.id', 'product_payments.payment', 'product_payments.amount', 'product_payments.product_id')
-                ->where('applicants.user_id', '=', $id)
-                ->groupBy('product_payments.id')
-                ->get();
-
-            $prod = DB::table('products')
-                ->join('applicants', 'products.id', '=', 'applicants.product_id')
-                ->select('products.product_name', 'products.id')
-                ->where('applicants.user_id', '=', $id)
-                ->groupBy('products.id')
-                ->get();
+            $pays = 0;
+            $prod = 0;
 
             return view('user.myapplication', compact('paid', 'pays', 'prod'));
         } else {
