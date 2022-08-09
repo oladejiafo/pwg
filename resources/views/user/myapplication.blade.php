@@ -52,7 +52,7 @@
         line-height: 25px;
     }
 
-    .card .card-body a, button {
+    .card .card-body a {
         font-weight: bold;
         font-size: 30px;
         width:250px;

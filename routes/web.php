@@ -57,3 +57,5 @@ Route::get('/myapplication',[HomeController::class,'myapplication']);
 Route::get('/affiliate', [HomeController::class,'affiliate'])->name('affiliate');
 
 Route::post('/add-referrer', [HomeController::class,'addReferrer'])->name('add-referer');
+
+Route::get('/payment', [HomeController::class,'payment'])->name('payment');
