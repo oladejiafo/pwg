@@ -1,12 +1,15 @@
 @extends('layouts.master')
 
 <head>
+    
+<link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
 
 @section('content')
     <div class="loginx">
         <div class="container">
-            <div class="forgot-password" style="height: 700px;">
+            <div class="forgot-password">
                 <div class="reset">
                     <div class="resetImage">
                         <img src="{{asset('images/Approved.svg')}}" alt="approved">

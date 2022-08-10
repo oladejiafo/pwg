@@ -13,8 +13,8 @@ body {
     width: 700px;
     margin: 0 auto;
     background: #fff;
-    padding: 137px 50px 69px 75px;
-    margin-top:195px ;
+    padding: 75px 50px 69px 75px;
+    margin-top:75px ;
 }
 
 .payment h2 {
@@ -38,6 +38,45 @@ body {
 
 }
 
+@media (min-width:375px) and (max-width:768px)
+{
+    
+.payment-form {
+    width: 100%;
+    margin: 0 auto;
+    padding: 1px 1px 1px 1px;
+    margin-top:50px ;
+}
+
+.payment-form input [type="text"], select {
+    width: 95%;
+    padding: 30px 10px;
+}
+
+.payment-form fieldset {
+    width:100%;
+}
+.payment h2 {
+    font-family: TT Norms;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 42px;
+    color: #636466;
+    margin-bottom: 0px;
+    letter-spacing: 0em;
+}
+
+.payment-detail p {
+    font-family: TT Norms;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19px;
+    letter-spacing: 0em;
+    margin: 0;
+    color: #C4C4C4;
+
+}
+}
 .payment-heading {
     text-align: center;
 }

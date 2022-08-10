@@ -1,5 +1,6 @@
 @extends('layouts.master')
-
+<link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="{{asset('css/payment-form.css')}}" rel="stylesheet">
 
 @section('content')
@@ -16,10 +17,10 @@
             <form>
                 <div class="top-head">
                     <div class="left-input">
-                        <input type=radio id="rdo1" checked class="radio-input" name="card_type">
+                        <!-- <input type=radio id="rdo1" checked class="radio-input" name="card_type"> -->
                         <label for="rdo1" class="radio-label" > <span class="radio-border"></span>  <img src="images/payment_icons_Mastercard.svg" alt="Option 1" class="radioImage" width="40px"></label>
 
-                        <input type=radio id="rdo2"  class="radio-input" name="card_type">
+                        <!-- <input type=radio id="rdo2"  class="radio-input" name="card_type"> -->
                         <label for="rdo2" class="radio-label" ><span class="radio-border"></span> <img src="images/payment_icons _Visa_Logo.svg" alt="Option 1" class="radioImage" width="40px" style="margin-top: 11px"> </label>
                     </div>
                     <div class="rightside">

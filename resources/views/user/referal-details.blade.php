@@ -23,7 +23,14 @@
     font-style: normal;
 
 }
-
+@media (min-width:375px) and (max-width: 678px) {
+    .form-secc {
+      width: 100%;
+      padding: 70px;
+    margin-bottom: 50px;
+    margin-top: 50px;
+    }
+}
 .form-secc h3 {
     font-size: 36px;
 

@@ -65,7 +65,7 @@
                         </div>
                     </div>
                     <div class="row" style="font-size:18px">
-                        <div class="col-9">Your next payment is <b>
+                        <div style="align-items: left; align:left; float: left; magin-left:0px" class="col-12">Your next payment is <b>
                                 @foreach($prod as $pp)
                                 @foreach($pays as $pay)
                                 @if( $pd->product_payment_id == $pay->id)
@@ -91,7 +91,7 @@
 
                                 AED
                             </b>, to be charged for second payment.</div>
-                        <div class="col-3" align="center"></div>
+                        
                     </div>
                     <!-- <a class="btn btn-secondary" href="{{ url('payment') }}">Pay Now</a> -->
 

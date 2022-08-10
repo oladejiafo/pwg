@@ -21,7 +21,7 @@
 <div class="row cardd">
 
 
-    <h3>BLUE & PINK COLLAR JOBS IN {{strtoupper($data->product_name)}}</h3>
+    <h4>BLUE & PINK COLLAR JOBS</h4>
     @foreach($proddet as $pdet)
     <div class="col-md-3">
         <div class="about-decc xxanimate-box">

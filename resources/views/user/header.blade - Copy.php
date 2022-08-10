@@ -33,7 +33,7 @@
             <div class="myapplicant"><a href="{{url('myapplication')}}" style="width:260px; "><span><img src="{{asset('images/icon1.png')}}"></span><span style="padding-top:5px"> My Application</span></a></div>
         @else
             <div class="applicant"><a href="{{route('login')}}"><span><img src="{{asset('images/icon1.png')}}"></span> Applicants</a></div>
-            <div class="affiliate "><a href="#"><span><img src="{{asset('images/icon2.png')}}"></span> Affiliate</a></div>
+            <div class="affiliate "><a href="{{route('affiliate')}}"><span><img src="{{asset('images/icon2.png')}}"></span> Affiliate Partner</a></div>
         @endauth
         @endif
 
@@ -47,8 +47,8 @@
                 <div class="divs"><a href="#"><img src="../user/images/Search.svg" width="30px" height="30px" alt="icon3"></a></div>
                 <div class="divs"><a href="#"><img src="../user/images/Notification.svg" width="30px" height="30px" alt="icon3"></a></div>
                 <div class="divs"><a href="#"><img src="../user/images/Chat.svg" width="30px" height="30px" alt="icon3"></a></div>
-                <div class="divsx dropdown">
-                    <img src="../user/images/signin.svg" style="width: 40px; height: 40px;" alt="icon3">
+                <div class="divs dropdown">
+                    <img src="../user/images/signin.svg" style="width: 80px; height: 40px;" alt="icon3">
                     <div class="dropdown-content">
                         <a class="dropdown-item" href="{{ route('profile.show') }}">Profile</a>
                         <form method="POST" action="{{ route('logout') }}" x-data>
@@ -64,7 +64,7 @@
             </div>
             @else
             
-            <a class="logg" href="#"><a href="{{route('login')}}"><img src="../user/images/signin.svg" style="width: 80px; height: 40px;" alt="icon3">Sign In</a>
+            <a href="{{route('login')}}"><img src="../user/images/signin.svg" style="width: 80px; height: 40px;" alt="icon3">Sign In</a>
             @endauth
             @endif
 

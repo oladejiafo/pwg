@@ -4,7 +4,6 @@
 
 @include('user/header')
 
-
 <!-- bootstrap core css -->
 <link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
@@ -32,10 +31,11 @@
     margin-right: auto;
     vertical-align: middle;
     border-style: none;
+    padding: 0;
   }
 
   .img-fluid {
-
+    padding: 0;
     height: auto;
     /* margin-right: 10px; */
   }
@@ -54,6 +54,15 @@
   h2 {
     font-size: 50px;
     margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-family: "TT Norms Pro";
+    font-weight: bold;
+    font-style: normal;
+  }
+
+  
+  h3 {
+    font-size: 25px;
     margin-bottom: 0.5rem;
     font-family: "TT Norms Pro";
     font-weight: bold;
@@ -90,7 +99,9 @@
     font-size: 20px;
     list-style-type: disc;
   }
-
+ .btn {
+  width: 50%; max-width: 100%;
+ }
   .text {
     /* width:90%; */
     margin-top: 0;
@@ -104,6 +115,7 @@
   .text .subheading {
     font-size: 25px;
     color: #000;
+    margin-left: 0;
   }
 
   a {
@@ -150,7 +162,36 @@
       height: 300px;
     }
   }
+@media (max-width:375) {
+  img {
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 0;
+ }
+ p {
+  margin: 0;
+ }
+ .text h1 {
+    top: 0;
+    font-size: 27px;
+    margin-top: 10px;
+    margin-bottom: 0.5rem;
+    font-family: "TT Norms Pro";
+    font-weight: bold;
+    font-style: normal;
 
+  }
+
+  h2 {
+    font-size: 25px;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-family: "TT Norms Pro";
+    font-weight: bold;
+    font-style: normal;
+  }
+}
   /* Mobile styles */
   @media only screen and (max-device-width: 480px),
   only screen and (max-width: 480px) {}
@@ -164,31 +205,31 @@
 
         <p style="font-style: italics; text-decoration:none"><a href="/"><b><i>Packages </a> > {{$data->product_name}} </i></b></p>
 
-        <div class="col-md-6 col-sm-12 img-fluid">
-          <img src="../user/images/{{$data->image}}" width="96%" height="99%" border="0" alt="" />
+        <div class="col-md-6 col-sm-12 img-fluid" style="margin-bottom: 20px;">
+          <img src="../user/images/{{$data->image}}" width="100%" height="99%" border="0" alt="" />
         </div>
         <div class="col-md-6 col-sm-12 text" style="padding-right:2px">
           <h1>{{$data->product_name}}</h1>
           <p class="subheading"><span>{{$data->slogan}}</span></p>
           <p>{{$data->description}}</p>
           <h2>{{number_format($data->unit_price,2)}} {{$data->currency}}</h2>
-          <p class="subheading"><i class="fa fa-minus-circle btn btn-tertiary"></i>{{$data->discount}}% lower than last month</p>
+          <p class="subheading" style="margin-left: 0px;"><i class="fa fa-minus-circle"></i>{{$data->discount}}% lower than last month</p>
 
           <p>
           <h3>Payment Installments</h3>
-          <table width="540px" border=0 style="border-radius:10px">
+          <table border=0 style="border-radius:10px">
             <tr>
 
               @foreach($ppay as $ppays)
 
-              <td align="left" style="border-color:#fff;width:100px">
+              <td align="left" class="pie" style="border-color:#fff;">
 
-                <img src="../user/images/progress_payment_{{ $ppays->id}}.svg" width="100px" height="100px" alt="">
+                <img src="../user/images/progress_payment_{{ $ppays->id}}.svg" alt="">
 
                 @if(!$loop->last)
               </td>
-              <td align="center" style="border-color:#fff;width:120px">
-                <img src="../user/images/progress_bar.svg" alt="" width="120px" height="20px">
+              <td align="center" class="line" style="border-color:#fff;">
+                <img src="../user/images/progress_bar.svg" alt="">
                 @endif
               </td>
 
@@ -199,10 +240,10 @@
 
               @foreach($ppay as $ppays)
 
-              <td align="center" style="border-color:#fff;width:80px">
+              <td align="center" style="border-color:#fff;">
 
                 <span style="font-size: 30px;font-weight:bold;">{{number_format($ppays->amount)}} </span><br>
-                <span style="font-size: 12px;font-weight:bold;">{{$ppays->payment}}</span>
+                <span class="price" style="font-size: 12px;font-weight:bold;">{{$ppays->payment}}</span>
 
                 @if(!$loop->last)
               </td>
@@ -240,9 +281,9 @@
             <form action="{{ url('login') }}">
               @endauth
               @endif
-              <p><input type="checkbox" id="agree" style="font-size:25px;transform: scale(1.8); " required> By checking this box you accept our Terms & Conditions</p>
+              <p><input type="checkbox" id="agree" style="font-size:25px;transform: scale(1.8); " required> &nbsp; By checking this box you accept our Terms & Conditions</p>
 
-              <p><button class="btn btn-secondary" id="buy" style="min-width: 50%; height:60px">Purchase Now</button></p>
+              <p><button class="btn btn-secondary" id="buy">Purchase Now</button></p>
 
             </form>
 

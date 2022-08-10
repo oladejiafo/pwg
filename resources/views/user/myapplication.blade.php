@@ -4,7 +4,6 @@
 
 @include('user/header')
 
-
 <!-- bootstrap core css -->
 <link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
@@ -63,12 +62,38 @@
         background-color: none;
 
     }
+
+@media (min-width:375px) and (max-width:678px){
+    .card {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+    .card .card-header {
+        padding: 10px;
+        height: 50px;
+        font-size: 30px;
+    }
+    .card .card-body {
+        padding: 1px 1px 1px 1px;
+        height: auto;
+        max-height: 560px;
+        font-size: 20px;
+    }
+    .card .card-body img {
+        padding-block: 20px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+    }
+
+}    
 </style>
 
 <body>
 
     <!-- Start Product Section -->
-    <div class="product-section">
+    <div class="paid-section">
 
         @if(Route::has('login'))
 

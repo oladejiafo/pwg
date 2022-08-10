@@ -30,6 +30,14 @@ p {
 
 .about-desc {
   padding: 3em 3em 2em 3em; 
+  align-content: left;
+}
+
+@media only screen and (max-width: 679px) and (min-width: 375px) {
+  .about-desc {
+    padding: 1em 0em 1em 0em; 
+    align-content: center;
+  } 
 }
 
 .about-decc {
@@ -65,6 +73,14 @@ p {
   font-weight: 400; 
 }
 
+@media only screen and (max-width: 679px) and (min-width: 375px) {
+  .panel-heading a {
+    padding: 0 0 0 25px;
+    width: 100%;
+    font-weight: 500;
+    font-size: 20px;
+  }
+}
 .panel {
   -webkit-box-shadow: none !important;
   -moz-box-shadow: none !important;

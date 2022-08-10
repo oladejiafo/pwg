@@ -24,17 +24,26 @@
   /* width: auto;  */
   width: 546px;
   max-height: 451px;
+  margin: 0;
 }
 
 .banner_bg {
-  width: 100%;
+  height: 100%;
   float: left;
   /* background-image: url(../user/images/v1_17125.png); */
   height: auto;
   background-size: 100%;
   background-repeat: no-repeat;
 }
+@media (max-width: 768px) and (min-width: 370px)
+{
 
+  .banner_bg {
+    height: 300px;
+
+  }
+
+}
 #headerTitle {
   font-family: 'TT Norms Pro Black';
   font-weight: 900;
@@ -50,7 +59,6 @@
   color: #fff;
   text-transform: lowercase;
 }
-
 #headerText:first-letter {
   text-transform: uppercase;
 }
@@ -64,16 +72,58 @@
   border-radius: 10px;
 }
 
+@media (max-width: 768px) and (min-width: 370px)
+{
+  #headerTitle {
+  font-family: 'TT Norms Pro Black';
+  font-weight: 900;
+  font-size: 35px;
+  font-style: normal;
+}
+
+#headerText {
+  font-family: 'TT Norms Pro Regular';
+  font-weight: bold;
+  font-size: 20px;
+  font-style: normal;
+  color: #fff;
+  text-transform: lowercase;
+}
+
+
+#headerBtn {
+  font-family: 'TT Norms Pro Bold';
+  font-weight: bold;
+  font-size: 20px;
+  font-style: normal;
+  color: #fff;
+  border-radius: 10px;
+}
+
+}
+
 .cellContainer {
   width: 546px;
   margin: auto;
+  padding: 0px;
+  box-shadow: 5px 14px 22px #eceff0; 
+    margin-bottom: 30px;
+  padding-top: 10px;
+}
+.container-fluid {
+  padding-left:50px; 
+  padding-right:50px;
 }
 
-.earn .p {
-  padding-top: 100px;
-  vertical-align: middle;
+@media (max-width: 768px) and (min-width: 370px)
+{
+  .cellContainer {
   width: 100%;
-  justify-content: center;
+  }
+  .container-fluid {
+  padding-left:10px; 
+  padding-right:10px;
+}
 }
 
 ::-webkit-scrollbar {
@@ -117,7 +167,7 @@
         @auth
         @else
     <!-- Start Hero Section -->
-    <div class="hero banner_bg layer">
+    <div class="hero banner_bg layerd">
 
         <div class="container-fluid">
             <div class="row justify-content-between">
@@ -143,7 +193,7 @@
         @auth
 
         <div class="outer">
-            <div class="container-fluid text-center" style="padding-left:50px; padding-right:50px">
+            <div class="container-fluid text-center" >
 
                 <div class="row">
                     <ul>
@@ -179,7 +229,7 @@
 
         @else
 
-        <div class="container-fluid text-center" style="padding-left:50px; padding-right:50px">
+        <div class="container-fluid text-center">
 
             <div class="row">
                 @foreach($package as $offer)
