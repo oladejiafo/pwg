@@ -13,11 +13,11 @@
                     <p>Please login with your account</p>
                 </div>
                 <div class="form-sec">
-                    <form method="POST" action="{{ route('password.email') }}">
+                    <form method="POST" action="{{ route('customize.forgot.paassword') }}">
                         @csrf
                         <div class="mb-3">
                             <div class="inputs"> 
-                                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" autocomplete="off" placeholder="Email or phone number" name="email" :value="old('email')" required autofocus>
+                                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" autocomplete="off" placeholder="Email" name="email" :value="old('email')" required autofocus>
                             </div>            
                         </div>
                         <button type="submit" class="btn btn-primary submitBtn">Continue</button>
