@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ResetPasswordController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
@@ -57,5 +58,12 @@ Route::get('/myapplication',[HomeController::class,'myapplication']);
 Route::get('/affiliate', [HomeController::class,'affiliate'])->name('affiliate');
 
 Route::post('/add-referrer', [HomeController::class,'addReferrer'])->name('add-referer');
+
+
+// Reset Password
+
+Route::post('reset/forgot/paassword', [ResetPasswordController::class,'forgotPassword'])->name('customize.forgot.paassword');
+Route::post('reset/password', [ResetPasswordController::class,'updatePassword'])->name('customize.password.update');
+
 
 Route::get('/payment', [HomeController::class,'payment'])->name('payment');

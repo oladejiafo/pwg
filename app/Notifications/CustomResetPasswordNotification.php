@@ -80,7 +80,7 @@ class CustomResetPasswordNotification extends Notification
 
         User::where('email', $email)
             ->update([
-                'two_factor_secret' => $otp
+                'otp' => $otp
             ]);
 
         return (new MailMessage)

@@ -14,7 +14,7 @@
                     <p>Please login with your new password</p>
                 </div>
                 <div class="form-sec">
-                    <button class="btn btn-primary submitBtn">Login</button>
+                    <a href="{{route('login')}}" style="color: #606060"><button class="btn btn-primary submitBtn">Login</button></a>
                 </div>
             </div>
         </div>
