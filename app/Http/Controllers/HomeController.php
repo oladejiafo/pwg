@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\product;
 use App\Models\product_payments;
 use App\Models\payment;
+use App\Models\product_details;
 use DB;
 
 class HomeController extends Controller
@@ -43,8 +44,15 @@ class HomeController extends Controller
     {
         $data = product::find($id);
         $ppay = product_payments::where('product_id', '=', $id)->get();
+        $proddet = product_details::where('product_id', '=', $id)->get();
+        // $proddet = DB::table('products')
+        // ->join('applicants', 'products.id', '=', 'applicants.product_id')
+        // ->select('products.product_name', 'products.id')
+        // ->where('applicants.user_id', '=', $id)
+        // ->groupBy('products.id')
+        // ->get();
 
-        return view('user.package', compact('data', 'ppay'));
+        return view('user.package', compact('data', 'ppay','proddet'));
     }
 
     public function signature($id)
@@ -151,7 +159,7 @@ if ($res) {
     }
 
 
-    public function affiliate()
+    public function payment()
     {
         return view('user.payment-form');
     }

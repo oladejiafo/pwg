@@ -259,6 +259,8 @@
       }
     });
   </script>
+
+  @include('user.package-jobs')
 </body>
 
 </html>

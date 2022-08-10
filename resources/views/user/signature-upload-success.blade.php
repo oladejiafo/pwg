@@ -16,8 +16,10 @@
                     </div>
                     <div class="subConfirm">Your signature has been uploaded successfully</div>
                     <div class="sig">
+                        <form action="{{ route('payment') }}" method="GET">
                         <input type="hidden" name="pid" value="{{$data->id}}">
                         <button class="btn btn-primary">Proceed To Payment</button>
+                        </form>
                     </div>
                 </div>
             </div>

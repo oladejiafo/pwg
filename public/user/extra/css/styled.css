@@ -16,13 +16,12 @@
 *
 * ======================================================= */
 a {
-  color: #6495ED;
+
   text-decoration: none;
   -webkit-transition: 0.5s;
   -o-transition: 0.5s;
   transition: 0.5s; }
   a:hover, a:active, a:focus {
-    color: #6495ED;
     outline: none;
     text-decoration: none; }
 
@@ -32,6 +31,10 @@ p {
 .about-desc {
   padding: 3em 3em 2em 3em; 
 }
+
+.about-decc {
+  padding: 1em 1em 1.5em 0.5em; 
+}
   .about-desc h2 {
     font-weight: 700; }
 
@@ -39,10 +42,11 @@ p {
   padding: 0; }
 
 .panel-heading a {
+  font-family: "TT Norms Pro";
   padding: 0 25px;
   display: block;
   width: 100%;
-  font-weight: 400;
+  font-weight: 500;
   font-size: 24px;
   text-transform: uppercase;
   background-color: none;
@@ -56,6 +60,7 @@ p {
 }
 
 .panel-title {
+  
   font-family: "TT Norms Pro";
   font-weight: 400; 
 }
@@ -65,7 +70,7 @@ p {
   -moz-box-shadow: none !important;
   -ms-box-shadow: none !important;
   -o-box-shadow: none !important;
-  box-shadow: 0 4px 2px -2px gray;
+
   border: none; }
 
 .panel-heading a:after {
@@ -88,45 +93,83 @@ p {
 }
 
 .panel-heading a.collapsed:after {
+  font-family: "TT Norms Pro";
   content: "\271A"; 
   font-size: 27px;
   font-weight:400;
 }
 
 .panel-heading a.collapsed {
-  background: #f2f3f7;
-  border: 1px solid #e6e6e6 !important;
-  color: #333333; }
+  font-family: "TT Norms Pro";
+  color: #000; }
 
 .panel-body {
+  font-family: "TT Norms Pro";
+  font-size: 18px;
   padding: 1.5em;
   margin-top: 5px;
-  border: 1px solid #e6e6e6 !important; }
+  border: 0px solid #e6e6e6 !important; }
 
 
-
-.btn.with-arrow {
-  position: relative;
-  -webkit-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s; }
-  .btn.with-arrow i {
-    visibility: hidden;
-    opacity: 0;
+  .paneled-heading a {
+    font-family: "TT Norms Pro";
+    padding: 10px 0px 0px 25px;
+    vertical-align: middle;
+    display: block;
+    width: 100%;
+    font-weight: 500;
+    font-size: 20px;
+    text-transform:capitalize;
+    background-color: none;
+    color: #000;
+    position: relative;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    -ms-box-shadow: none !important;
+    -o-box-shadow: none !important;
+    box-shadow: 0 4px 2px -2px #000;
+  }
+    
+  .paneled-heading a:after {
+    font-family: "TT Norms Pro";
+    content: "\25AC"; /*content: url(image.jpg); */
     position: absolute;
-    right: 0px;
-    top: 50%;
-    margin-top: -8px;
-    -webkit-transition: 0.2s;
-    -o-transition: 0.2s;
-    transition: 0.2s; }
-  .btn.with-arrow:hover {
-    padding-right: 50px; }
-    .btn.with-arrow:hover i {
-      color: #fff;
-      right: 18px;
-      visibility: visible;
-      opacity: 1; }
+    left: 0px;
+   
+    font-size: 14px;
+    font-weight:400;
+    top: 45%;
+    line-height: 1;
+    margin-left: 5px;
+    margin-top: -1px; 
+  
+    /* content: 'text that follows 1';
+    background: url(https://unsplash.it/18) left center no-repeat;
+    vertical-align: middle;
+    background-size: 16px auto;
+    padding-left: 20px; */
+  }
+  
+  .paneled-heading a.collapsed:after {
+    font-family: "TT Norms Pro";
+    content: "\271A"; 
+    font-size: 17px;
+    font-weight:400;
+  }
+  
+  .paneled-heading a.collapsed {
+    font-family: "TT Norms Pro";
+    color: #000; }
+  
+  .paneled-body {
+    font-family: "TT Norms Pro";
+    font-size: 18px;
+    padding: 1em;
+    margin-top: -10px;
+    text-align: justify;
+    border: 0px solid #e6e6e6 !important; }
+  
+  
 
 .row-pb-lg {
   padding-bottom: 7em !important; }

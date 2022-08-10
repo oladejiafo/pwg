@@ -36,13 +36,27 @@
         width: 100%;
         height: 70%;
     }
+    
+ .thumbnail {
+  margin-bottom: 30px;
+  position: relative;
+  top: 0;
+  -webkit-transition: .3s all ease;
+  -o-transition: .3s all ease;
+  transition: .3s all ease;
+}
+.thumbnail:hover {
+  top: -20px;
+  left: -10px;
+  right: -10px;
+}
 </style>
 
 @section('content')
     <div class="loginx">
 
         <div class="container-fluid">
-            <div class="signature" style="box-shadow: 0 0 0 0.5px #ccc;">
+            <div class="signature" style="box-shadow: 0 0 0 0.5px #ccc; margin-top: 50px;">
                 <div class="append">
                     <div class="append-title">
                         <h1>Append Your Signature</h1>
@@ -54,7 +68,7 @@
                             <label>
                                 <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
                                 <input type="file" name="image" style="display: none;" required="">
-                                <img class="darken" style="cursor: pointer;" src="{{asset('user/images/upload.svg')}}" alt="signature" title="Click to upload file" class="upload">
+                                <img style="cursor: pointer; background-color:#fff" src="{{asset('user/images/upload.svg')}}" alt="signature" title="Click to upload file" class="upload img-fluid thumbnail">
                             </label>
                             <button class="btn btn-primary submitBtn">SUBMIT</button>
                         </form>

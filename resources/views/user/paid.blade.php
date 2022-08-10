@@ -8,9 +8,10 @@ justify-content: center;
 }
 
 .paid-section .product-item {
-  margin: 40px 10px 0 0;
+  margin: 50px 0px 0 0;
   /* padding: 50px 25px; */
-  padding: 2px;
+  padding: 0px;
+
   text-align: center;
   height:100%;
   width: 100%;
@@ -134,7 +135,8 @@ justify-content: center;
 }
 
 .cellContainer {
-        width: 460px;
+        width: 100%;
+        padding: 0px 20px;
         margin: auto;
     }
 </style>
@@ -158,7 +160,7 @@ justify-content: center;
                                         <span class="title" style="align: center;">
                                             <h3 class="product-title" style="font-size: 22px; color:aliceblue">{{$pay->payment}}</h3>                                           
                                         </span>
-                                        <strong class="product-price">{{number_format($pay->amount)}} | </strong>&nbsp;<amp>@foreach($prod as $pp) {{$pp->product_name}} @endforeach<br>Package</amp>
+                                        <strong class="product-price">{{number_format($pay->amount)}} | </strong>&nbsp;<amp>@foreach($prod as $pp) @if ($pp == reset($prod )) last Item: @endif {{$pp->product_name}} @endforeach<br>Package</amp>
 
                                         <p>
                                           @foreach($paid as $pd) 
@@ -166,7 +168,7 @@ justify-content: center;
                                             @if( $pd->product_payment_id == $pay->id)
                                             <a class="btn btn-secondary" href="#">Get Reciept</a>
                                             @else
-                                            <a class="btn btn-secondary" href="{{ url('product', $pay->id) }}">Pay Now</a>
+                                            <a class="btn btn-secondary" href="{{ url('payment') }}">Pay Now</a>
                                             @endif
                                             
                                           @endforeach
