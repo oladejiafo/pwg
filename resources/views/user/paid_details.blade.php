@@ -1,12 +1,33 @@
-<style>
-    .card {
-        border-radius: 10px;
-        margin-top: 20px;
-    }
-</style>
+
 <!-- Theme style  -->
 <link rel="stylesheet" href="{{asset('user/extra/css/bootstrap.css')}}">
 <link rel="stylesheet" href="{{asset('user/extra/css/styled.css')}}">
+
+<style>
+    .card {
+        /* style="font-size:30px;font-family: 'TT Norms Pro';font-weight:700" */
+        margin-top: 20px;
+        border-color: none;
+        border-radius: 10px;
+        border-style:hidden;
+    }
+
+    .btn {
+        height: 60px;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        font-size: 30px;
+    }
+
+   @media (min-width:375px){
+    .btn {
+        height: 60px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        font-size: 20px;
+    }
+   } 
+</style>
 <div class="row card">
 
     <div class="col-md-12">
@@ -21,7 +42,7 @@
                                 </a>
                             </h4>
                         </div>
-                        <hr style="height:2px;border:none;color:#333;background-color:#333;">
+                        <hr style="height:1px;border:none;color:#333;background-color:#333;">
                         <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                             <div class="panel-body">
                                 @foreach($pays as $pay)
@@ -50,9 +71,9 @@
 
                                             @if( $pd->product_payment_id == $pay->id)
 
-                                            <a class="btn btn-secondary" style="  font-family: 'TT Norms Pro';" href="#">Get Reciept</a>
+                                            <a class="btn btn-secondary" style="font-size:30px;font-family: 'TT Norms Pro';font-weight:700" href="#">Get Reciept</a>
                                             @else
-                                            <a class="btn btn-secondary" href="{{ url('payment') }}">Pay Now</a>
+                                            <a class="btn btn-secondary" style="font-size:30px;font-family: 'TT Norms Pro';font-weight:700" href="{{ url('payment') }}">Pay Now</a>
                                             @endif
 
                                             @endforeach

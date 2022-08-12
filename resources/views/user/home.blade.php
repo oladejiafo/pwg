@@ -10,6 +10,9 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
 <style>
+  body {
+    background-color: #F6F7FB;
+  }
     .banner_bg {
         background-image: url(../user/images/v1_17125.png);
     }
@@ -39,8 +42,11 @@
 {
 
   .banner_bg {
-    height: 300px;
+    height: 330px;
 
+  }
+  .banner_bg img {
+    height: 300px;
   }
 
 }
@@ -64,7 +70,7 @@
 }
 
 #headerBtn {
-  font-family: 'TT Norms Pro Bold';
+  font-family: 'TT Norms Pro';
   font-weight: bold;
   font-size: 32px;
   font-style: normal;
@@ -92,7 +98,7 @@
 
 
 #headerBtn {
-  font-family: 'TT Norms Pro Bold';
+  font-family: 'TT Norms Pro';
   font-weight: bold;
   font-size: 20px;
   font-style: normal;
@@ -119,6 +125,7 @@
 {
   .cellContainer {
   width: 100%;
+  padding-left: 3px;
   }
   .container-fluid {
   padding-left:10px; 
@@ -243,7 +250,7 @@
                                 <p style="font-size:20px">{{$offer->slogan}}</p>
                             </span>
                             <strong class="product-price">{{number_format($offer->unit_price,2)}} {{$offer->currency}}</strong>
-                            <p><i class="fa fa-minus-circle" style='color: white'></i>{{$offer->discount}}% lower than last month</p>
+                            <p><i class="fa fa-minus-circle" style='color: white'></i> {{$offer->discount}}% lower than last month</p>
 
                             <p><a class="btn btn-secondary buy_now" href="{{ url('product', $offer->id) }}">Buy Now</a></p>
 

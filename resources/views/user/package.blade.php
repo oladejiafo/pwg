@@ -11,6 +11,9 @@
 
 <style type="text/css" media="screen">
   /* Linked Styles */
+body {
+  background-color: #F6F7FB;
+}
   .product-section {
     /* margin: 30px; */
     width: 100%;
@@ -100,12 +103,14 @@
     list-style-type: disc;
   }
  .btn {
+  height: 60px;
   width: 50%; max-width: 100%;
  }
   .text {
     /* width:90%; */
     margin-top: 0;
-
+    padding-left: 40px;
+    padding-right: 70px;
     justify-content: left;
     /* width: calc(100% - 250px); */
   }
@@ -133,6 +138,13 @@
     color: yellow;
   }
 
+  @media(min-width: 375px) and (max-width:768px) {
+    .text {
+    padding-left: 20px;
+    padding-right:20px;
+    text-align: justify;
+  }
+  }
   @media (max-width: 991.98px) {
     .text {
       width: 100%;
@@ -208,12 +220,12 @@
         <div class="col-md-6 col-sm-12 img-fluid" style="margin-bottom: 20px;">
           <img src="../user/images/{{$data->image}}" width="100%" height="99%" border="0" alt="" />
         </div>
-        <div class="col-md-6 col-sm-12 text" style="padding-right:2px">
+        <div class="col-md-6 col-sm-12 text">
           <h1>{{$data->product_name}}</h1>
           <p class="subheading"><span>{{$data->slogan}}</span></p>
           <p>{{$data->description}}</p>
           <h2>{{number_format($data->unit_price,2)}} {{$data->currency}}</h2>
-          <p class="subheading" style="margin-left: 0px;"><i class="fa fa-minus-circle"></i>{{$data->discount}}% lower than last month</p>
+          <p class="subheading" style="margin-left: 0px;"><i class="fa fa-minus-circle"></i> &nbsp;{{$data->discount}}% lower than last month</p>
 
           <p>
           <h3>Payment Installments</h3>
@@ -281,7 +293,7 @@
             <form action="{{ url('login') }}">
               @endauth
               @endif
-              <p><input type="checkbox" id="agree" style="font-size:25px;transform: scale(1.8); " required> &nbsp; By checking this box you accept our Terms & Conditions</p>
+              <p><input type="checkbox" class="checkcolor" id="agree" style="font-size:25px;transform: scale(1.8); " required> &nbsp; By checking this box you accept our Terms & Conditions</p>
 
               <p><button class="btn btn-secondary" id="buy">Purchase Now</button></p>
 

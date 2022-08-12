@@ -10,7 +10,8 @@
 
 <style>
     body {
-        background-color: #fcfcfc;
+        /* background-color: #fcfcfc; */
+        background-color: #F6F7FB;
     }
     .earn .p {
         padding-top: 100px;
@@ -95,26 +96,31 @@
     <!-- Start Product Section -->
     <div class="paid-section">
 
-        @if(Route::has('login'))
+     @if(Route::has('login'))
 
-        @include('user.paid')
-        @include('user.paid_details')
-        @else
+          @foreach($paid as $pd)
+          
+             @if( $pd->product_payment_id > 0)
 
-        <div class="card d-flex aligns-items-center justify-content-center text-center">
-            <div class="card-header">My Applications</div>
-            <div class="card-body">
-                <hr>
-                <img src="{{asset('user/images/noapply.svg')}}" alt="..." style="width: 200px;height: 200px;">
-                <h5 class="card-title">No Applications Yet</h5>
-                <p class="card-text">You currently have no applications to view.</p>
-                <a href="{{url('home')}}" class="btn btn-primary">START NOW</a>
-            </div>
-        </div>
+              @include('user.paid')
+              @include('user.paid_details')
+             @else
 
-         @include('user.earning')
-        @endif
-        
+                <div class="card d-flex aligns-items-center justify-content-center text-center">
+                    <div class="card-header">My Applications</div>
+                    <div class="card-body">
+                        <hr>
+                        <img src="{{asset('user/images/noapply.svg')}}" alt="..." style="width: 200px;height: 200px;">
+                        <h5 class="card-title">No Applications Yet</h5>
+                        <p class="card-text">You currently have no applications to view.</p>
+                        <a href="{{url('home')}}" class="btn btn-primary">START NOW</a>
+                    </div>
+                </div>
+
+                @include('user.earning')
+             @endif
+          @endforeach
+      @endif          
 
     </div>
     <!-- End Product Section -->

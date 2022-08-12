@@ -1,11 +1,28 @@
 @extends('layouts.auth')
+<style>
+  .checkcolor {
+  accent-color: #f9bf29;
+}
+
+select,
+textarea,
+input [type="text"],
+input [type="number"],
+input [type="password"],
+input [type="date"],
+input [type="email"],
+input [type="phone"]
+{
+  padding: 10px;
+}
+</style>
 @Section('content')
   <div class="container">
     <div class="form-sec1">
       <div class="heading">
         <div class="first-heading">
           <h3>
-            Let’s get you started !
+            Let’s get you started!
           </h3>
         </div>
         <div class="bottoom-title">
@@ -22,20 +39,20 @@
           <div class="mb-3">
             <div class="label"><label for="name" class="form-label">Name</label></div>
             <div class="inputs">
-              <input type="text" class="form-control" id="exampleInputName" name="name" aria-describedby="emailHelp" autocomplete="off" required value="{{ old('name') }}">
+              <input type="text" style="padding: 10px;" class="form-control" id="exampleInputName" name="name" aria-describedby="emailHelp" autocomplete="off" required value="{{ old('name') }}">
             </div>
           </div>
           <div class="mb-3">
             <div class="label"><label for="email" class="form-label">Email</label></div>
             <div class="inputs">
-              <input type="email" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp" autocomplete="off" required value="{{ old('email') }}">
+              <input type="email" style="padding: 10px;" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp" autocomplete="off" required value="{{ old('email') }}">
               @error('email') <span class="error">{{ $message }}</span> @enderror
             </div>
           </div>
           <div class="mb-3">
             <div class="label"><label for="phone number" class="form-label">Phone number</label></div>
             <div class="inputs">
-              <input type="text" class="form-control" id="exampleInputEmail1" name="phone_number" aria-describedby="emailHelp" autocomplete="off" required value="{{ old('phone_number') }}">
+              <input type="text" style="padding: 10px;" class="form-control" id="exampleInputEmail1" name="phone_number" aria-describedby="emailHelp" autocomplete="off" required value="{{ old('phone_number') }}">
               @error('phone_number') <span class="error">{{ $message }}</span> @enderror
             </div>
           </div>
@@ -61,8 +78,8 @@
           </div>
           <div class="mb-3">
             <div class="inputs check-box">
-              <input type="checkbox" class="agree" name="terms" required>
-                <p>I agree to the <a href="Terms of Service and Privacy Policy">Terms of Service and Privacy Policy"</a>
+              <input type="checkbox" class="checkcolor agree" name="terms" required>
+                <p  style="padding-top: 5px;">I agree to the <a href="Terms of Service and Privacy Policy">Terms of Service and Privacy Policy"</a>
               </p>
             </div>
           </div>

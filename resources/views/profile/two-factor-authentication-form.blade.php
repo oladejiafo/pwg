@@ -1,6 +1,6 @@
 <x-jet-action-section>
     <x-slot name="title">
-        {{ __('Two Factor Authentication') }}
+        {{--  {{ __('Two Factor Authentication') }}  --}}
     </x-slot>
 
     <x-slot name="description">

@@ -9,6 +9,28 @@
         background-color: #f1f1f1;
     }
 
+    .signature {
+   
+    padding: 12%; /*100px 110px 100px 110px; */
+   
+
+}
+
+@media (min-width:375px) and (max-width: 768px) {
+.signature {
+     
+      padding: 50px;
+    margin-bottom: 50px;
+    margin-top: 50px;
+    }
+
+    .tt h3 {
+    font-size: 30px;
+}
+.tt p {
+    font-size: 12px;
+}
+}
     a.darken {
         background: #e0d8d881;
 
@@ -36,6 +58,10 @@
         width: 100%;
         height: 70%;
     }
+    .btn {
+        padding: 20px;
+        height: 60px;
+    }
     
  .thumbnail {
   margin-bottom: 30px;
@@ -50,13 +76,19 @@
   left: -10px;
   right: -10px;
 }
+
+@media (min-375){
+    h1{
+        font-size: 12px;
+    }
+}
 </style>
 
 @section('content')
     <div class="loginx">
 
         <div class="container-fluid">
-            <div class="signature" style="box-shadow: 0 0 0 0.5px #ccc; margin-top: 50px;">
+            <div class="signature tt" style="margin-top: 50px;">
                 <div class="append">
                     <div class="append-title">
                         <h1>Append Your Signature</h1>
@@ -68,9 +100,10 @@
                             <label>
                                 <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
                                 <input type="file" name="image" style="display: none;" required="">
-                                <img style="cursor: pointer; background-color:#fff" src="{{asset('user/images/upload.svg')}}" alt="signature" title="Click to upload file" class="upload img-fluid thumbnail">
+                                <img style="cursor: pointer; background-color:#fff;border-color:none" src="{{asset('user/images/upload.svg')}}" alt="signature" title="Click to upload file" class="upload img-fluid thumbnail">
                             </label>
-                            <button class="btn btn-primary submitBtn">SUBMIT</button>
+                            <p>Image Types: .png, .jpg, .gif || Max file size: 2mb</p>
+                            <button class="btn btn-primary" style="height:60px">SUBMIT</button>
                         </form>
                     </div>
                 </div>

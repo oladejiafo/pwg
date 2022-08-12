@@ -67,6 +67,29 @@ p {
   box-shadow: 0 4px 2px -2px #000;
 }
 
+.fancy-collapse-panel .panel-default > .ppanel-heading {
+  padding-top: 20px;
+  padding-left: 20%; 
+}
+
+.ppanel-heading a {
+  font-family: "TT Norms Pro";
+  padding: 0 25px;
+  display: block;
+  width: 100%;
+  font-weight: 500;
+  font-size: 24px;
+  text-transform: capitalize;
+  background-color: none;
+  color: #000;
+  position: relative;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  -ms-box-shadow: none !important;
+  -o-box-shadow: none !important;
+  box-shadow: 0 4px 2px -2px #000;
+}
+
 .panel-title {
   
   font-family: "TT Norms Pro";
@@ -118,6 +141,38 @@ p {
 .panel-heading a.collapsed {
   font-family: "TT Norms Pro";
   color: #000; }
+
+
+  .ppanel-heading a:after {
+    font-family: "TT Norms Pro";
+    content: "\25b2"; /*content: url(image.jpg); */
+    position: absolute;
+    right: 50px;
+   
+    font-size: 24px;
+    font-weight:400;
+    top: 40%;
+    line-height: 1;
+    margin-top: -5px; 
+  
+    /* content: 'text that follows 1';
+    background: url(https://unsplash.it/18) left center no-repeat;
+    vertical-align: middle;
+    background-size: 16px auto;
+    padding-left: 20px; */
+  }
+  
+  .ppanel-heading a.collapsed:after {
+    font-family: "TT Norms Pro";
+    content: "\25bc"; 
+    font-size: 27px;
+    font-weight:400;
+  }
+  
+  .ppanel-heading a.collapsed {
+    font-family: "TT Norms Pro";
+    color: #000; }
+  
 
 .panel-body {
   font-family: "TT Norms Pro";

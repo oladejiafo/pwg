@@ -1,4 +1,17 @@
 <style> 
+    .card {
+        /* style="font-size:30px;font-family: 'TT Norms Pro';font-weight:700" */
+        border-color: none;
+        border-radius: 10px;
+        border-style:hidden;
+    }
+    .card-header {
+        /* style="font-size:30px;font-family: 'TT Norms Pro';font-weight:700" */
+        border-color: none;
+        border-radius: 10px;
+        border-style:hidden;
+        padding-top: 60px;
+    }
 .paid-section {
   padding: 25px 25px 25px 25px;
   font-family: 'TT Norms Pro';
@@ -16,7 +29,7 @@ background-size: cover;
   white-space: nowrap;
   padding-bottom: 1em;
   display: flex;
-  overflow-x: scroll;
+
 }
 
 .paid-section .outer li {
@@ -234,7 +247,7 @@ background-size: cover;
 
 
 ::-webkit-scrollbar {
-  overflow-y: hidden;
+  overflow: hidden;
   width: 15px;
 }
 
@@ -263,27 +276,27 @@ background-size: cover;
   background: url('http://cdn.css-tricks.com/wp-content/themes/CSS-Tricks-10/images/header-demos.jpg');
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
   background: transparent;
-  overflow-y: hidden;
+  overflow: hidden;
 }
 }
 </style>
 
 
 <div class="card d-flex aligns-items-center justify-content-center text-center">
-    <div class="card-header" style="background-color:white;">My Applications</div><br>
+    <div class="card-header" style="background-color:white;">My Applications</div>
     <div class="card-body paid-section" style="background-color:#FAE008;">
 
     <div class="outer">
             <div class="container-fluid text-center" >
-          <div class="row">
+          <div class="row paid-thumbnail">
                     <ul>
                         @foreach($pays as $pay)
                         <!-- Start Column  -->
                         <li>
                             <div align="center" class="col-md-4 col-sm-12 img-fluid cellContainer">
                                 <span class="paid-item " href="#">
-                                    <span class="positionAnchor">
-                                        <img src="../user/images/{{$pay->payment}}.svg" height="500px" class="img-fluid paid-thumbnail">
+                                    <span class="positionAnchor  paid-thumbnail">
+                                        <img src="../user/images/{{$pay->payment}}.svg" height="500px" class="img-fluid">
                                         <span class="title" style="align: center;">
                                             <h3 class="paid-title" style="font-size: 22px; color:aliceblue">{{$pay->payment}}</h3>                                           
                                         </span>

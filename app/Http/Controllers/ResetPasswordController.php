@@ -70,7 +70,7 @@ class ResetPasswordController extends Controller
 
             return view('auth.reset-password-success');
         } else {
-            return back()->withErrors(['otp' => 'Please recheck OTP.']);
+            return redirect()->route('password.request')->with('falied', 'Please Check Your OTP!');
         }
         
     }

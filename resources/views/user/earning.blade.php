@@ -52,6 +52,7 @@
         height: 50px;
         width: 80%;
         color: #000;
+        border-radius: 10px;
     }
     .earn {
         padding:5px;
@@ -66,7 +67,7 @@
         <p>
         <h1>REFER. EARN. REPEAT!</h1>
         <h3>Endless opportunity to earn money</h3>
-        <a href="#" class="btn">LEARN MORE</a>
+         <a href="#" class="btn" style="padding-top:5px">LEARN MORE</a>
         </p>
     </div>
 </div>

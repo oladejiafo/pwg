@@ -120,6 +120,7 @@ class HomeController extends Controller
             $data->referral_last_name = $request->referrer_last_name;
             $data->coupon_code = $request->coupon_code;
             $data->current_residance_country = $request->current_location;
+            $data->home_country = $request->nationality;
             $data->applicant_status = 0;
             $data->product_id = $request->pid;
             if (Auth::id()) {
@@ -129,7 +130,7 @@ class HomeController extends Controller
             $res = $data->save();
 
 if ($res) {
-    return \Redirect::route('signature', $request->pid)->with('success', 'ReferralSaved. Upload Signature to proceed');
+    return \Redirect::route('signature', $request->pid); //->with('success', 'Referral Saved. Upload Signature to proceed')
 } else {
     return redirect()->back()->with('failed', 'Oppss! Something Went Wrong!');
 }
@@ -145,7 +146,9 @@ if ($res) {
 
             $paid = DB::table('applicants')
                 ->join('payments', 'payments.applicant_id', '=', 'applicants.id')
+                ->select('payments.*', 'applicants.*')
                 ->where('applicants.user_id', '=', $id)
+                ->groupBy('payments.id')
                 ->get();
 
             $pays = DB::table('product_payments')

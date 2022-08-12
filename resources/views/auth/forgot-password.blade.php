@@ -1,4 +1,17 @@
 @extends('layouts.auth')
+
+<style>
+    @media (min-width: 375px) and (max-width: 768px)
+    {
+        .btn {
+            margin: 0 0 0 0px;
+            padding: 0;
+            width:100%;
+            align-self: center;
+
+        }
+    }
+</style>
 @Section('content')
     <div class="container">
         <div class="forgot-password ">
@@ -13,14 +26,14 @@
                     <p>Please login with your account</p>
                 </div>
                 <div class="form-sec">
-                    <form method="POST" action="{{ route('customize.forgot.paassword') }}">
+                    <form method="POST" action="{{ route('customize.forgot.password') }}">
                         @csrf
                         <div class="mb-3">
                             <div class="inputs"> 
-                                <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" autocomplete="off" placeholder="Email" name="email" :value="old('email')" required autofocus>
+                                <input type="text" style="padding: 10px;" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" autocomplete="off" placeholder="Email" name="email" :value="old('email')" required autofocus>
                             </div>            
                         </div>
-                        <button type="submit" class="btn btn-primary submitBtn">Continue</button>
+                        <button type="submit" class="btn btn-primary">Continue</button>
                     </form>
                 </div>
             </div>
