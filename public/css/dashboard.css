@@ -1,0 +1,362 @@
+.login .signin-right {
+    margin-top: 29px;
+    margin-bottom: 17px;
+    padding-right: 100px;
+}
+
+#activity {
+    margin:20px;
+    margin-top: 10px;
+    margin-right: 100px;
+    display: absolute;
+  }
+  
+  .divs {  
+    float: left;
+    margin-right: 15px;
+    margin-top: 10px;
+    width: 50px;
+  }
+  /* .divs img {
+    width: 100%;
+    height: auto;  
+  } */
+
+.login .header-sec {
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+
+}
+
+.login .left-sec {
+    display: flex;
+    background: white;
+}
+
+.login .left-sec a {
+    font-family: TT Norms Pro;
+    font-size: 21px;
+    font-weight: 500;
+    line-height: 26px;
+    letter-spacing: 0em;
+    text-align: left;
+    color:
+        #313445;
+    ;
+    display: flex;
+    align-items: center;
+}
+
+.applicant a {
+    min-height: 25px;
+    padding-left: 30px;
+    margin-top: 17px;
+    margin-bottom: 17px;
+    margin-left: 111px;
+    text-decoration: none;
+    border-radius: 8px;
+}
+.applicant a:hover {
+    background-color: hsl(51, 94%, 50%);
+}
+.applicant img {
+    width: 100%;
+    height: auto;
+}
+
+.myapplicant a {
+    height: 40px;
+    padding-left: 30px;
+    margin-top: 30px;
+    margin-bottom: 17px;
+    margin-left: 111px;
+    align:center;
+    text-decoration: none;
+    border-radius: 8px;
+    background-color: #e9ebf0;
+    min-height: 60px;
+}
+.myapplicant img {
+    width: 100%;
+    height: auto;
+}
+.myapplicant a:hover {
+    width: 100%;
+    min-height: 60px;
+    background-color: hsl(51, 94%, 50%);
+}
+
+.affiliate a {
+    min-height: 25px;
+    padding: 10px;
+    margin: 17px;
+    margin-bottom: 17px;
+    margin-left: 111px;
+    text-decoration: none;
+    border-radius: 8px;
+}
+.affiliate a:hover {
+    background-color: hsl(51, 94%, 50%);
+}
+.affiliate img {
+    width: 100%;
+    height: auto;
+}
+
+.login .signin-right a {
+    display: flex;
+    align-items: center;
+    font-family: TT Norms Pro;
+    font-size: 21px;
+    font-weight: 500;
+    line-height: 26px;
+    letter-spacing: 0em;
+    text-align: left;
+    text-decoration: none;
+    color: #313445;
+
+}
+
+
+.login .signin-right img {
+
+    padding-right: 10px;
+}
+
+.login .applicant a span img,
+.login .affiliate a span img {
+    width: 30px;
+    margin-top: 10px;
+}
+
+.login .applicant a,
+.login .affiliate a {
+
+    background: #F0F3F4;
+    padding: 7px;
+    border-radius: 10px;
+}
+
+.logo a {
+    font-family: "TT Norms Pro";
+    font-weight: 900;
+    font-style: normal;
+    /* font-size: 60px; */
+}
+.logo img {
+    width: 100%;
+    height: auto;
+
+    margin-top: 17px;
+    margin-bottom: 17px;
+    margin-left: 111px;
+    /* height: 50px; */
+    
+}
+
+.ref {
+    border: none;
+    background: #F0F3F4;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    left: 0;
+    min-width: 160px;
+    z-index: 1;
+    background-color: #fff;
+}
+
+.dropdown-content button,
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content button {
+    border: none;
+    background: white;
+    font-size: 21px;
+}
+.dropdown-content button:hover {
+    background-color: #e9ecef
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* 
+   BELOW PROPERTIES AREN'T CRITICAL FOR DESIRED BEHAVIOUR.
+   THEY ARE PURELY FOR DEMONSTRATION PURPOSES
+  */
+
+/*************Responsive Styles*****************/
+/***************iPhone Portrait**************/
+@media only screen and (max-width: 479px) and (min-width: 320px) {
+    .container {
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .login .header-sec {
+
+        flex-wrap: wrap;
+    }
+
+    .form-sec1 {
+        padding: 10px;
+        width: 90%;
+    }
+
+    .form-sec1 button {
+        width: 100%;
+    }
+
+    .form-sec1 input {
+
+        width: 100%;
+    }
+
+    .login .left-sec {
+        display: flex;
+        flex-wrap: wrap;
+
+    }
+
+    .login .left-sec a {
+        margin-bottom: 10px;
+    }
+
+    .applicant,
+    .affiliate {
+        width: 100%;
+    }
+
+    .logo img {
+        margin-left: 0px;
+    }
+
+    .applicant a,
+    .affiliate a {
+        margin-left: 0px;
+        text-align:left;
+    }
+
+    .login .signin-right {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    .header-sec {
+        padding: 10px;
+    }
+
+    .applicant,
+    .affiliate {
+        width: 60%;
+    }
+
+    .forgot-password {
+        padding: 0px;
+        height: 600px;
+    }
+
+}
+
+/**********************iPhone Landscape*************/
+@media only screen and (max-width: 767px) and (min-width: 480px) {
+    .container {
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .header-sec {
+        width: 100%;
+    }
+}
+
+/*************************iPad Portrait***************/
+@media only screen and (max-width: 985px) and (min-width: 768px) {
+    .container {
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .header-sec {
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    
+}
+
+/**************iPad Landscape***************/
+@media only screen and (max-width: 1024px) and (min-width: 986px) {
+    .container {
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .header-sec {
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .login .signin-right {
+        padding-right: 20px;
+    }
+
+    .logo img {
+        margin-top: 30px;
+        margin-left: 55px;
+    }
+}
+
+/*******************************************/
+
+@media only screen and (max-width: 667px) and (min-width: 375px) {
+    .signin-right {
+        padding-right: 0px;
+        padding-left: 111px;
+    }
+
+    .myapplicant a {
+        margin-left: 0px;
+    }
+
+    #activity {
+        margin-right: 0px;
+    }
+}
+
+@media only screen and (max-width: 740px) and (min-width: 360px) {
+    .signin-right {
+        padding-right: 0px;
+        padding-left: 111px;
+    }
+}
+
+@media only screen and (max-width: 1280) {
+    .signin-right {
+        padding-right: 0px;
+        padding-left: 111px;
+    }
+}
+
+@media only screen and (max-width: 1280) {
+    .signin-right {
+        padding-right: 0px;
+        padding-left: 111px;
+    }
+}
