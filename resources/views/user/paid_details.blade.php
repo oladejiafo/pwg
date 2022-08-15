@@ -43,7 +43,8 @@
                             </h4>
                         </div>
                         <hr style="height:1px;border:none;color:#333;background-color:#333;">
-                        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                        <div id="collapseOne" class="panel-collapse" role="tabpanel" aria-labelledby="headingOne">
+                        <!-- collapse in -->
                             <div class="panel-body">
                                 @foreach($pays as $pay)
                                 <div class="row">

@@ -61,6 +61,7 @@
         font-weight: 500;
         font-size: 20px;
         display: block;
+        
     }
     .navbar .logos img {
       /* content: url('../images/logo.png'); */
@@ -74,16 +75,27 @@
     .navbar .jobbers img,
     .navbar .jobber img {
         height: 40px;
-        padding: 5px;
+        padding: 3px;
         padding-bottom: 10px;
+        float: left;
     }
 
+
+ .navbar .jobbers .title{
+  width:75%;
+  text-align: left;
+  float: right;
+}
     .nav-item {
         color: #fff;
     }
 
     @media (max-width:768px) {
 
+        .navbar {
+            padding-bottom: -10px;
+            margin-bottom: 30px;
+        }
         .navbar .container {
         padding-left: 0px;
         padding: 5px;
@@ -177,7 +189,7 @@
 @auth
    <div class="d-flex align-items-center justify-content-center jobbers">
      <a class="nav-link btn create-new-button"  aria-expanded="false" href="{{url('myapplication')}}">
-       <span><img src="{{asset('images/icon1.png')}}"></span><span style="padding-top:5px">My Application </span>
+       <span style="display:inline-block"><img src="{{asset('images/icon1.png')}}"></span><span class="title" style="padding-top:0px; display:inline-block">My Application </span>
      </a>
    </div>
  @else
@@ -282,10 +294,10 @@
     <script src="../user/extra/assets/js/bootstrap.min.js"></script>
     <script src="../user/extra/assets/js/owl.carousel.min.js"></script>
     <script src="../user/extra/assets/js/wow.js"></script>
-    <script src="../user/extra/assets/js/jquery.nav.js"></script>
+    <!-- <script src="../user/extra/assets/js/jquery.nav.js"></script>
     <script src="../user/extra/assets/js/scrolling-nav.js"></script>
-    <script src="../user/extra/assets/js/jquery.easing.min.js"></script>  
+    <script src="../user/extra/assets/js/jquery.easing.min.js"></script>  -->
     <script src="../user/extra/assets/js/main.js"></script>
-    <script src="../user/extra/assets/js/form-validator.min.js"></script>
+    <!-- <script src="../user/extra/assets/js/form-validator.min.js"></script>
     <script src="../user/extra/assets/js/contact-form-script.min.js"></script>
-      
+       -->

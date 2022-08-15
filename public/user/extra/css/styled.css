@@ -175,6 +175,16 @@ p {
     color: #000; }
   
 
+    @media only screen and (max-width: 679px) and (min-width: 375px) {
+      .ppanel-heading a {
+        padding: 0 0 0 25px;
+        width: 100%;
+        margin: 0;
+        font-weight: 500;
+        font-size: 20px;
+      }
+    }
+
 .panel-body {
   font-family: "TT Norms Pro";
   font-size: 18px;

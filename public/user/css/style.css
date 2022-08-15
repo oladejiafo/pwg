@@ -529,6 +529,14 @@ a.more {
   transition: .3s all ease;
 }
 
+@media (min-width:375px) and (max-width:768px){
+  
+.product-section .product-item {
+  margin-top: 30px;
+  margin-left: 10px;
+}
+}
+
 .product-section .product-item .product-title {
   text-transform: uppercase;
 }

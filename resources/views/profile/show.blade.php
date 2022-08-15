@@ -10,10 +10,33 @@
 <link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 <style>
+
+body {
+    background-color: #F6F7FB;
+  }
   .cards {
-    margin-right:25%;
-    margin-left:25%;
+    width: 70%;
+    margin: 0 auto;
+    /* margin-right:25%;
+    margin-left:15%; */
     margin-top: 60px;
+  }
+  .panel-title {
+    margin-left:10%;
+  }
+
+  @media (min-width: 375px) and (max-width: 768px) {
+    .cards {
+    width: 90%;
+    margin: 0 auto;
+    /* margin-right:25%;
+    margin-left:15%; */
+    margin-top: 60px;
+  }
+
+  .panel-title {
+    margin-left:0px;
+  }
   }
 </style>
 
@@ -27,8 +50,9 @@
     </h2>
 </x-slot>
 
-
-<div class="row card" style="border-radius:10px">
+<body>
+    
+<div class="row card" style="border-radius:10px;background-color: #F6F7FB;">
 
     <div class="col-12 cards">
         <div class="about-desc animate-box">
@@ -38,7 +62,7 @@
                     <!-- Tab One -->
                     <div class="panel panel-default" style="border-radius: 10px;">
                         <div class="ppanel-heading" role="tab" id="headingOne">
-                            <h4 class="panel-title" style="margin-left:10%">
+                            <h4 class="panel-title">
                                 <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                     &nbsp; {{ __('Profile Information') }} |
                                 </a>
@@ -57,12 +81,12 @@
                        
                             </div>
                         </div>
-                    </div><p style="margin-top: 10px;"> &nbsp; </p>
+                    </div><p style="margin-top: 5px;"> &nbsp; </p>
 
                     <!-- Tab Two -->
                     <div class="panel panel-default" style="border-radius: 10px;">
                         <div class="ppanel-heading" role="tab" id="headingTwo">
-                            <h4 class="panel-title" style="margin-left:11%">
+                            <h4 class="panel-title">
                                 <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                     &nbsp; {{ __('Update Password') }} |
 
@@ -89,7 +113,7 @@
                     <!-- Tab Three -->
                     <div class="panel panel-default" style="border-radius: 10px;">
                         <div class="ppanel-heading" role="tab" id="headingThree">
-                            <h4 class="panel-title" style="margin-left:14%">
+                            <h4 class="panel-title">
                                 <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                                     &nbsp; {{ __('Authentication') }} |
 
@@ -119,7 +143,7 @@
                     <!-- Tab Four -->
                     <div class="panel panel-default" style="border-radius: 10px;">
                         <div class="ppanel-heading" role="tab" id="headingFour">
-                            <h4 class="panel-title" style="margin-left:13%">
+                            <h4 class="panel-title">
                                 <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
                                     &nbsp; {{ __('Delete Account') }} |
 
@@ -141,7 +165,7 @@
 
                             </div>
                         </div>
-                    </div><p style="margin-top: 10px;"> &nbsp; </p>
+                    </div><p style="margin-top: 5px;"> &nbsp; </p>
 
 
                 </div>
@@ -149,14 +173,13 @@
         </div>
     </div>
 </div>
+</body>
 
-<div class="gototop js-top">
-    <a href="#" class="js-gotop"><i class="icon-arrow-up2"></i></a>
-</div>
 
 <!-- jQuery -->
 <script src="{{asset('user/extra/js/jquery.min.js')}}"></script>
 <!-- Bootstrap -->
-<script src="{{asset('user/extra/js/bootstrap.min.js')}}"></script>
+<!-- <script src="{{asset('user/extra/js/bootstrap.min.js')}}"></script> -->
 
 @livewireScripts
+

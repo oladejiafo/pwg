@@ -1,22 +1,23 @@
 <x-jet-action-section>
+    {{--
     <x-slot name="title">
         {{ __('Browser Sessions') }}
     </x-slot>
 
     <x-slot name="description">
         {{ __('Manage and log out your active sessions on other browsers and devices.') }}
-    </x-slot>
+    </x-slot> --}}
 
-    <x-slot name="content">
-        <div class="max-w-xl text-sm text-gray-600" style="width:100%; margin-left:10%; margin-right:10%">
+    <x-slot name="content" class=" flex-center" style="width:100%; margin: 0 auto;margin-bottom:20px">
+        <div class="max-w-xl text-sm text-gray-600" style="width:100%; margin: 0 auto;margin-bottom:20px">
             {{ __('If necessary, you may log out of all of your other browser sessions across all of your devices. Some of your recent sessions are listed below; however, this list may not be exhaustive. If you feel your account has been compromised, you should also update your password.') }}
         </div>
 
         @if (count($this->sessions) > 0)
-            <div class="mt-5 space-y-6" style="width:100%; margin-left:35%; margin-right:10%">
+            <div class="mt-5 space-y-6" style="width:100%; margin:0 auto;">
                 <!-- Other Browser Sessions -->
                 @foreach ($this->sessions as $session)
-                    <div class="flex items-center">
+                    <div class="flex items-center" style="width:100%; margin:0 35%;">
                         <div>
                             @if ($session->agent->isDesktop())
                                 <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor" class="w-8 h-8 text-gray-500">
@@ -51,9 +52,9 @@
             </div>
         @endif
 
-        <div class="flex items-center mt-5" style="width:100%; margin-left:20%; margin-right:20%;">
+        <div class="flex items-center mt-5" style="width:70%; margin: 0 auto;margin-bottom:20px">
             <x-jet-button wire:click="confirmLogout" wire:loading.attr="disabled" class="ml-3">
-                {{ __('Log Out Others') }}
+                {{ __('LogOut Others') }}
             </x-jet-button>
 
             <x-jet-action-message class="ml-3" on="loggedOut">

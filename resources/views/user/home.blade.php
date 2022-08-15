@@ -183,39 +183,20 @@ background-position:center;
   background: transparent;
 }
 
-
-.right-arrow,
-.left-arrow {
-  height: 100%;
-  width: 50px;
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 2rem;
-  cursor: pointer;
-  transition: all 0.2s linear;
+.scoll-pane {
+    width: 100%;
+    height: auto;
+    overflow: auto;
+    outline: none;
+    overflow-y: hidden;
+    padding-bottom: 15px;
+    -ms-overflow-style: scroll;  // IE 10+
+    scrollbar-width: none;  // Firefox
 }
 
-.scroll-area {
-  width: 100%;
-  overflow: auto;
-  white-space: nowrap;
-}
-
-.right-arrow {
-  right: 10%;
-}
-.left-arrow {
-  left:0px;
-}
-
-.scroll-btn {
-  pointer-events: none;
-}
-.hide {
-  opacity: 0;
-}
+  .scoll-pane::-webkit-scrollbar { 
+  display: none;  // Safari and Chrome
+  }
 </style>
 
 <body>
@@ -244,22 +225,17 @@ background-position:center;
 @endif
 
     <!-- Start Product Section -->
-    <div class="product-section slider_area" id="home">
+    <div class="product-section">
 
         @if(Route::has('login'))
         @auth
-       <div class="carousel slide scroll-area" id="carouselThree"  data-ride="carousel">
-       <ol class="carousel-indicators">
-                <li data-target="#carouselThree" data-slide-to="0" class="active"></li>
-                <li data-target="#carouselThree" data-slide-to="1"></li>
-                <li data-target="#carouselThree" data-slide-to="2"></li>
-            </ol>
+       <div class="carousel" id="carouselThree"  data-ride="carousel">
 
 
-          <div class="outer">
+          <div class="outer  scroll-pane" id="container">
             <div class="container-fluid text-center">
 
-                <div class="row">
+                <div class="row" >
 
                     <ul>
                         @foreach($package as $offer)
@@ -288,14 +264,15 @@ background-position:center;
 
                 </div>
             </div>
-
-        </div>
-            <a class="carousel-control-prev" href="#carouselThree" style="text-decoration:none;" role="button" data-slide="prev">
+            <a class="carousel-control-prev" id="slideBack" href="#carouselThree" style="text-decoration:none;" role="button" data-slide="prev">
                 <i class="lni lni-arrow-left"></i>
             </a>
-            <a class="carousel-control-next" href="#carouselThree" style="text-decoration:none;" role="button" data-slide="next">
+            <a class="carousel-control-next" id="slide" href="#carouselThree" style="text-decoration:none;" role="button" data-slide="next">
                 <i class="lni lni-arrow-right"></i>
             </a>
+ 
+        </div>
+
        </div>
         @include('user.earning')
 
@@ -333,35 +310,6 @@ background-position:center;
     <!-- End Product Section -->
 
 
-    <script>
-      let interval;
-
-      $('.arrow').on('mousedown', ({ target })=> {
-        const type = target.classList[1];
-
-        const scrollArea = $(target).parent().find('.scroll-area');
-        interval = setInterval(() => {
-          const prev = scrollArea.scrollLeft();
-          scrollArea.scrollLeft(type === 'left-arrow' ? prev - 10 : prev + 10);
-        }, 50);
-      });
-
-      $('.arrow').on('mouseup mouseout', () => clearInterval(interval));
-
-      $('.scroll-area').on('scroll', ({ target }) => {
-        const left = $(target).parent().find('.left-arrow');
-        const right = $(target).parent().find('.right-arrow');
-
-        const scroll = $(target).scrollLeft();
-        const fullwidth = $(target)[0].scrollWidth - $(target)[0].offsetWidth;
-
-        if(scroll ===0) left.addClass('hide');
-        else left.removeClass('hide');
-
-        if(scroll > fullwidth) right.addClass('hide');
-        else right.removeClass('hide');
-      });
-    </script>
     <!--====== Jquery js ======-->
     <script src="../user/assets/js/vendor/jquery-1.12.4.min.js"></script>
     <!-- <script src="../user/assets/js/vendor/modernizr-3.7.1.min.js"></script> -->
@@ -384,3 +332,32 @@ background-position:center;
   </body>
 
 </html>
+
+<script>
+  var button = document.getElementById('slide');
+button.onclick = function () {
+    var container = document.getElementById('container');
+    sideScroll(container,'right',25,100,10);
+};
+
+var back = document.getElementById('slideBack');
+back.onclick = function () {
+    var container = document.getElementById('container');
+    sideScroll(container,'left',25,100,10);
+};
+
+function sideScroll(element,direction,speed,distance,step){
+    scrollAmount = 0;
+    var slideTimer = setInterval(function(){
+        if(direction == 'left'){
+            element.scrollLeft -= step;
+        } else {
+            element.scrollLeft += step;
+        }
+        scrollAmount += step;
+        if(scrollAmount >= distance){
+            window.clearInterval(slideTimer);
+        }
+    }, speed);
+}
+</script>
