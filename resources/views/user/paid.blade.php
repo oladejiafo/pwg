@@ -11,6 +11,15 @@
         border-radius: 10px;
         border-style:hidden;
         padding-top: 60px;
+        /* margin-bottom: 10px; */
+    }
+
+    @media (min-width:375px)
+    {
+      .card-header {
+        /* style="font-size:30px;font-family: 'TT Norms Pro';font-weight:700" */
+        margin-bottom: 10px;
+    }
     }
 .paid-section {
   padding: 25px 25px 25px 25px;
@@ -19,13 +28,16 @@
 align-items: center;
 justify-content: center;
 background-size: cover;
+
 }
 
 
 
 .paid-section .outer {
   width: 100%;
-  overflow: auto;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  overflow: hidden;
   white-space: nowrap;
   padding-bottom: 1em;
   display: flex;
@@ -83,7 +95,9 @@ background-size: cover;
 
 .paid-section .outer{
   width:100%;
+  margin-top: 0%;
   overflow-x: visible;
+  overflow-y: hidden;
   /* white-space:nowrap; */
 }
 .paid-section .outer li{
@@ -245,9 +259,9 @@ background-size: cover;
   padding-right:10px;
 }
 
-
+/* 
 ::-webkit-scrollbar {
-  overflow: hidden;
+  overflow-y: hidden;
   width: 15px;
 }
 
@@ -276,8 +290,8 @@ background-size: cover;
   background: url('http://cdn.css-tricks.com/wp-content/themes/CSS-Tricks-10/images/header-demos.jpg');
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
   background: transparent;
-  overflow: hidden;
-}
+  overflow-y: hidden;
+} */
 }
 </style>
 

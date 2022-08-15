@@ -1,14 +1,9 @@
 <x-jet-action-section>
-    <x-slot name="title">
-        {{--  {{ __('Two Factor Authentication') }}  --}}
-    </x-slot>
-
-    <x-slot name="description">
-        {{ __('Add additional security to your account using two factor authentication.') }}
-    </x-slot>
 
     <x-slot name="content">
-        <h3 class="text-lg font-medium text-gray-900">
+        <i style="width:100%; margin-left:10%; margin-right:10%;padding-bottom:50px">{{ __('Add additional security to your account using two factor authentication.') }}</i>
+   
+        <h3 class="text-lg font-medium text-gray-900" style="width:100%; margin-left:10%; margin-right:15%">
             @if ($this->enabled)
                 @if ($showingConfirmation)
                     {{ __('Finish enabling two factor authentication.') }}
@@ -20,7 +15,7 @@
             @endif
         </h3>
 
-        <div class="mt-3 max-w-xl text-sm text-gray-600">
+        <div class="mt-3 max-w-xl text-sm text-gray-600" style="width:100%; margin-left:10%; margin-right:15%">
             <p>
                 {{ __('When two factor authentication is enabled, you will be prompted for a secure, random token during authentication. You may retrieve this token from your phone\'s Google Authenticator application.') }}
             </p>
@@ -76,7 +71,7 @@
             @endif
         @endif
 
-        <div class="mt-5">
+        <div class="mt-5" style="width:100%; margin-left:20%; margin-right:20%">
             @if (! $this->enabled)
                 <x-jet-confirms-password wire:then="enableTwoFactorAuthentication">
                     <x-jet-button type="button" wire:loading.attr="disabled">

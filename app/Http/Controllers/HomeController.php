@@ -52,7 +52,7 @@ class HomeController extends Controller
         // ->groupBy('products.id')
         // ->get();
 
-        return view('user.package', compact('data', 'ppay','proddet'));
+        return view('user.package', compact('data', 'ppay', 'proddet'));
     }
 
     public function signature($id)
@@ -129,11 +129,11 @@ class HomeController extends Controller
             }
             $res = $data->save();
 
-if ($res) {
-    return \Redirect::route('signature', $request->pid); //->with('success', 'Referral Saved. Upload Signature to proceed')
-} else {
-    return redirect()->back()->with('failed', 'Oppss! Something Went Wrong!');
-}
+            if ($res) {
+                return \Redirect::route('signature', $request->pid); //->with('success', 'Referral Saved. Upload Signature to proceed')
+            } else {
+                return redirect()->back()->with('failed', 'Oppss! Something Went Wrong!');
+            }
         } else {
             return redirect()->back()->with('failed', 'You are not authorized');
         }

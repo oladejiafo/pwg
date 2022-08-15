@@ -153,7 +153,7 @@ a.more {
   max-height: 700px;
 }
 
-@media (min-width: 375px) and (max-width:675px) {
+@media (min-width: 375px) and (max-width:768px) {
   .hero {
     height: 100%;
     margin-bottom: 20px;
@@ -180,7 +180,7 @@ a.more {
   z-index: 4;
 }
 
-@media (min-width: 375px) and (max-width:675px) {
+@media (min-width: 375px) and (max-width:768px) {
   .hero .intro-excerpt {
   position: relative;
   width:90%;
@@ -288,9 +288,12 @@ a.more {
 }
 
 .btn.btn-primary {
+  color: #000;
   background: none;
   border-color: #C4C6CD;
   border-radius: 10px;
+  border-width: thin;
+  border-style: solid;
 }
 
 .btn.btn-primary:hover {
@@ -303,6 +306,7 @@ a.more {
   color: #2f2f2f;
   background: none;
   border-color: #000;
+  border-width: thin;
   width: 50%;
   font-size: 20px;
   border-radius: 10px;
@@ -421,6 +425,14 @@ a.more {
   width:120px;
   height: 10px;
 }
+.product-section .product-item  table td .prices {
+  font-size: 30px;
+}
+
+.product-section .product-item  table td .pays {
+  font-size: 17px;
+}
+
 @media only screen and (max-width: 768px) and (min-width: 370px)
 {
 
@@ -449,8 +461,19 @@ a.more {
     width:100%;
   }
 
-  .product-section .product-item  table td .price {
-    font-size: 30px;
+  .product-section .product-item  table td .prices {
+    font-size: 20px;
+  }
+  .product-section .product-item  table td .pays {
+    font-size: 11px;
+  }
+  .product-section .product-item  table td .pie {
+    width:100px;
+    height: 100px;
+  }
+  .product-section .product-item  table td .line {
+    width:70px;
+    height: 10px;
   }
 }
 
@@ -1119,18 +1142,22 @@ a.more {
 
 .form-control::-webkit-input-placeholder {
   font-size: 14px;
+  text-align: left;
 }
 
 .form-control::-moz-placeholder {
   font-size: 14px;
+  text-align: left;
 }
 
 .form-control:-ms-input-placeholder {
   font-size: 14px;
+  text-align: left;
 }
 
 .form-control:-moz-placeholder {
   font-size: 14px;
+  text-align: left;
 }
 
 .service {

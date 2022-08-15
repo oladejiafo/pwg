@@ -145,15 +145,15 @@ p {
 
   .ppanel-heading a:after {
     font-family: "TT Norms Pro";
-    content: "\25b2"; /*content: url(image.jpg); */
+    content: "\2303"; /*content: url(image.jpg);  25b2 */
     position: absolute;
     right: 50px;
    
-    font-size: 24px;
+    font-size: 30px;
     font-weight:400;
     top: 40%;
     line-height: 1;
-    margin-top: -5px; 
+    margin-top: -0px; 
   
     /* content: 'text that follows 1';
     background: url(https://unsplash.it/18) left center no-repeat;
@@ -164,8 +164,9 @@ p {
   
   .ppanel-heading a.collapsed:after {
     font-family: "TT Norms Pro";
-    content: "\25bc"; 
-    font-size: 27px;
+    content: "\2304"; 
+    font-size: 30px;
+    margin-top: -20px; 
     font-weight:400;
   }
   

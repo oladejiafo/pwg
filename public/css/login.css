@@ -258,7 +258,7 @@ input {
 .logo img {
     width: 100%;
     height: auto;
-    content:url("../images/logo.png");
+    content:url("{{asset('images/logo.png')}}");
 
     margin-top: 17px;
     margin-bottom: 17px;
@@ -286,12 +286,12 @@ input {
 
 
 .form-sec1 {
-    width: 360px;
+    width: 560px;
     max-width: 100%;
     margin-left: auto;
     margin-right: auto;
     margin: 0 auto;
-    padding: 70px 203px 70px 203px;
+    padding: 70px 100px 70px 100px;
     background-color: #ffffff;
     margin-bottom: 420px;
     margin-top: 250px;
@@ -445,6 +445,7 @@ input {
 
 .submitBtn {
     background-color: #F6F7FB;
+    border-style: hidden;
 }
 
 .signupBtn {
@@ -487,10 +488,6 @@ input {
         height: 500px;
     }
 
-    /* .forgot-password .btn {
-        width: 100%;
-        margin: 0 auto;
-    } */
 }
 
 .signature {
@@ -668,13 +665,18 @@ input {
         margin-top: 70px;
     }
     .reset .btn {
-        font-size: 25px;
+        font-size: 18px;
+        height: 60px;
     }
     
     .reset-heading {
         font-size: 25px;
         font-weight: 700;
         line-height: 43px;
+    }
+    .reset .input {
+        padding: 10px;
+        text-align: left;
     }
 }
 
@@ -717,15 +719,20 @@ input {
     width: 60%;
     border: 0.5px solid #C4C6CD;
     margin-top: 30px;
-    text-align: center;
+    /* text-align: center; */
     margin-left: 20%;
     margin-right: 20%;
+    padding: 10px;
+    font-size: 17px;
 }
 .forgot-password .btn {
     width: 60%;
     margin-top: 25px;
     margin-left: 20%;
     margin-right: 20%;
+}
+.forgot-password input::placeholder {
+    font-size: 18px;
 }
 
 @media (min-width:375px) and (max-width:768px) {
@@ -739,11 +746,13 @@ input {
     }
 
 ::-webkit-input-placeholder {
-    text-align: center;
+    text-align: left;
+    font-size: 16px;
 }
 
 :-moz-placeholder {
-    text-align: center;
+    text-align: left;
+    font-size: 16px;
 }
 
 /* .forgot-password button {

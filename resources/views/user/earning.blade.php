@@ -37,9 +37,11 @@
 
     @media (min-width:375px) and (max-width:675px) {
     .filled {
-        width: 100%;
+        width: 94%;
         height: 200px;
         margin: 5px;
+        margin-left: 10px;
+        margin-right: 10px;
         font-weight: 700;
     }
     .filled h1 {
@@ -55,8 +57,10 @@
         border-radius: 10px;
     }
     .earn {
-        padding:5px;
-        margin-top: 70px;
+        min-height: 220px;
+        padding:10px;
+        margin-top: 30px;
+        padding-bottom: 50px;
     }
    
     }

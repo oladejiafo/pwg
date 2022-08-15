@@ -9,6 +9,20 @@
 <link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
+
+    <!--====== Slick CSS ======-->
+    <!-- <link rel="stylesheet" href="../user/assets/css/slick.css"> -->
+        
+    <!--====== Line Icons CSS ======-->
+    <link rel="stylesheet" href="../user/assets/css/LineIcons.css">
+        
+    <!--====== Bootstrap CSS ======-->
+    <!-- <link rel="stylesheet" href="../user/assets/css/bootstrap.min.css"> -->
+    
+    <!--====== Style CSS ======-->
+    <link rel="stylesheet" href="../user/assets/css/style.css">
+
+
 <style>
   body {
     background-color: #F6F7FB;
@@ -40,13 +54,20 @@
 }
 @media (max-width: 768px) and (min-width: 370px)
 {
-
+.hero {
+  padding: 0px;
+  margin: 0px;
+}
   .banner_bg {
-    height: 330px;
-
+    background-repeat:no-repeat;
+-webkit-background-size:cover;
+-moz-background-size:cover;
+-o-background-size:cover;
+background-size:cover;
+background-position:center;
   }
   .banner_bg img {
-    height: 300px;
+
   }
 
 }
@@ -130,22 +151,27 @@
   .container-fluid {
   padding-left:10px; 
   padding-right:10px;
-}
+  }
+  .positionAnchor .btn {
+    width: 95%;
+    padding-top: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+
 }
 
 ::-webkit-scrollbar {
-  overflow-y: hidden;
+  overflow: hidden;
   width: 15px;
 }
 
 ::-webkit-scrollbar-button:single-button {
-  background: #ccc;
+  background: transparent;
 
   display: block;
 
-  overflow-y: hidden;
-
-  background: url('user/images/Forward.svg');
+  overflow: hidden;
 }
 
 ::-webkit-scrollbar-button:single-button:horizontal:decrement {
@@ -157,15 +183,39 @@
   background: transparent;
 }
 
-::-webkit-scrollbar-thumb {
-  -webkit-border-radius: 10px;
-  border-radius: 10px;
-  background: url('http://cdn.css-tricks.com/wp-content/themes/CSS-Tricks-10/images/header-demos.jpg');
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
-  background: transparent;
-  overflow-y: hidden;
+
+.right-arrow,
+.left-arrow {
+  height: 100%;
+  width: 50px;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: all 0.2s linear;
 }
 
+.scroll-area {
+  width: 100%;
+  overflow: auto;
+  white-space: nowrap;
+}
+
+.right-arrow {
+  right: 10%;
+}
+.left-arrow {
+  left:0px;
+}
+
+.scroll-btn {
+  pointer-events: none;
+}
+.hide {
+  opacity: 0;
+}
 </style>
 
 <body>
@@ -194,15 +244,23 @@
 @endif
 
     <!-- Start Product Section -->
-    <div class="product-section">
+    <div class="product-section slider_area" id="home">
 
         @if(Route::has('login'))
         @auth
+       <div class="carousel slide scroll-area" id="carouselThree"  data-ride="carousel">
+       <ol class="carousel-indicators">
+                <li data-target="#carouselThree" data-slide-to="0" class="active"></li>
+                <li data-target="#carouselThree" data-slide-to="1"></li>
+                <li data-target="#carouselThree" data-slide-to="2"></li>
+            </ol>
 
-        <div class="outer">
-            <div class="container-fluid text-center" >
+
+          <div class="outer">
+            <div class="container-fluid text-center">
 
                 <div class="row">
+
                     <ul>
                         @foreach($package as $offer)
                         <!-- Start Column  -->
@@ -229,9 +287,16 @@
                     </ul>
 
                 </div>
-
             </div>
+
         </div>
+            <a class="carousel-control-prev" href="#carouselThree" style="text-decoration:none;" role="button" data-slide="prev">
+                <i class="lni lni-arrow-left"></i>
+            </a>
+            <a class="carousel-control-next" href="#carouselThree" style="text-decoration:none;" role="button" data-slide="next">
+                <i class="lni lni-arrow-right"></i>
+            </a>
+       </div>
         @include('user.earning')
 
         @else
@@ -267,6 +332,55 @@
     </div>
     <!-- End Product Section -->
 
-</body>
+
+    <script>
+      let interval;
+
+      $('.arrow').on('mousedown', ({ target })=> {
+        const type = target.classList[1];
+
+        const scrollArea = $(target).parent().find('.scroll-area');
+        interval = setInterval(() => {
+          const prev = scrollArea.scrollLeft();
+          scrollArea.scrollLeft(type === 'left-arrow' ? prev - 10 : prev + 10);
+        }, 50);
+      });
+
+      $('.arrow').on('mouseup mouseout', () => clearInterval(interval));
+
+      $('.scroll-area').on('scroll', ({ target }) => {
+        const left = $(target).parent().find('.left-arrow');
+        const right = $(target).parent().find('.right-arrow');
+
+        const scroll = $(target).scrollLeft();
+        const fullwidth = $(target)[0].scrollWidth - $(target)[0].offsetWidth;
+
+        if(scroll ===0) left.addClass('hide');
+        else left.removeClass('hide');
+
+        if(scroll > fullwidth) right.addClass('hide');
+        else right.removeClass('hide');
+      });
+    </script>
+    <!--====== Jquery js ======-->
+    <script src="../user/assets/js/vendor/jquery-1.12.4.min.js"></script>
+    <!-- <script src="../user/assets/js/vendor/modernizr-3.7.1.min.js"></script> -->
+    
+    <!--====== Bootstrap js ======-->
+    <!-- <script src="../user/assets/js/popper.min.js"></script> -->
+    <!-- <script src="../user/assets/js/bootstrap.min.js"></script> -->
+    
+    <!--====== Slick js ======-->
+    <!-- <script src="../user/assets/js/slick.min.js"></script> -->
+    
+    
+    <!--====== Scrolling Nav js ======-->
+    <!-- <script src="../user/assets/js/jquery.easing.min.js"></script>
+    <script src="../user/assets/js/scrolling-nav.js"></script> -->
+    
+    <!--====== Main js ======-->
+    <!-- <script src="../user/assets/js/main.js"></script> -->
+
+  </body>
 
 </html>

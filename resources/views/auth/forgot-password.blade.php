@@ -14,7 +14,7 @@
 </style>
 @Section('content')
     <div class="container">
-        <div class="forgot-password ">
+        <div class="forgot-password " style="padding-top:50px;">
             <div class="reset">
                 <div class="resetImage">
                     <img src="{{asset('images/forgot_password.svg')}}" alt="forgot password">
@@ -30,7 +30,7 @@
                         @csrf
                         <div class="mb-3">
                             <div class="inputs"> 
-                                <input type="text" style="padding: 10px;" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" autocomplete="off" placeholder="Email" name="email" :value="old('email')" required autofocus>
+                                <input type="text" style="padding: 10px;text-align:left; font-size:16px" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" autocomplete="off" placeholder="Email" name="email" :value="old('email')" required autofocus>
                             </div>            
                         </div>
                         <button type="submit" class="btn btn-primary">Continue</button>

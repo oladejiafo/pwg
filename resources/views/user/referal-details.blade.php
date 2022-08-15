@@ -60,6 +60,7 @@
     width: 100%;
     color: #000;
     border-radius: 5px;
+    border-color: #C4C4C4;
 }
 
 </style>
@@ -96,6 +97,7 @@
                 </div>
                 <div class="mb-3">
                     <div class="inputs"> 
+                    
                         <input type="text" class="form-control w-full ref" name="coupon_code" placeholder="Coupon Code(if you have any)" autocomplete="off" autofocus style="border: none">
                         @error('coupon_code') <span class="error">{{ $message }}</span> @enderror
                     </div>            
@@ -103,8 +105,8 @@
                 <div class="mb-3">
                     <div class="inputs"> 
                         <select title="Current Location" class="form-control w-full ref current_location" name="current_location" required="">
-                            <option  selected disabled>Current Location</option>
-                            <option value="United Arab Emirates" selected >United Arab Emirates</option>
+                            <option  selected disabled>--Current Location--</option>
+                            <option value="United Arab Emirates">United Arab Emirates</option>
                             <option value="Afghanistan">Afghanistan</option>
                             <option value="Albania">Albania</option>
                             <option value="Algeria">Algeria</option>

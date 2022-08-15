@@ -8,12 +8,12 @@
     </x-slot>
 
     <x-slot name="content">
-        <div class="max-w-xl text-sm text-gray-600">
+        <div class="max-w-xl text-sm text-gray-600" style="width:100%; margin-left:10%; margin-right:10%">
             {{ __('If necessary, you may log out of all of your other browser sessions across all of your devices. Some of your recent sessions are listed below; however, this list may not be exhaustive. If you feel your account has been compromised, you should also update your password.') }}
         </div>
 
         @if (count($this->sessions) > 0)
-            <div class="mt-5 space-y-6">
+            <div class="mt-5 space-y-6" style="width:100%; margin-left:35%; margin-right:10%">
                 <!-- Other Browser Sessions -->
                 @foreach ($this->sessions as $session)
                     <div class="flex items-center">
@@ -51,9 +51,9 @@
             </div>
         @endif
 
-        <div class="flex items-center mt-5">
-            <x-jet-button wire:click="confirmLogout" wire:loading.attr="disabled">
-                {{ __('Log Out Other Browser Sessions') }}
+        <div class="flex items-center mt-5" style="width:100%; margin-left:20%; margin-right:20%;">
+            <x-jet-button wire:click="confirmLogout" wire:loading.attr="disabled" class="ml-3">
+                {{ __('Log Out Others') }}
             </x-jet-button>
 
             <x-jet-action-message class="ml-3" on="loggedOut">

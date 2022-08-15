@@ -29,7 +29,7 @@ body {
     color: #faf9f6;
   }
 
-  img {
+  .product-section img {
     margin-top: 15px;
     margin-right: auto;
     vertical-align: middle;
@@ -37,12 +37,15 @@ body {
     padding: 0;
   }
 
-  .img-fluid {
+  .product-section .img-fluid {
     padding: 0;
     height: auto;
     /* margin-right: 10px; */
   }
-
+ .nav-item::marker {
+  color: #fff;
+  background-color: #fff;
+ }
   h1 {
     top: 0;
     font-size: 60px;
@@ -138,19 +141,6 @@ body {
     color: yellow;
   }
 
-  @media(min-width: 375px) and (max-width:768px) {
-    .text {
-    padding-left: 20px;
-    padding-right:20px;
-    text-align: justify;
-  }
-  }
-  @media (max-width: 991.98px) {
-    .text {
-      width: 100%;
-    }
-  }
-
   .text .subheading {
     color: #000000;
   }
@@ -158,7 +148,11 @@ body {
   .text .subheading span {
     color: #000;
   }
+  .price {
+    font-size: 13px;
+  }
 
+  
   .text h3 {
     font-weight: 500;
     font-size: 24px;
@@ -168,13 +162,47 @@ body {
     width: 250px;
   }
 
+  @media(min-width: 375px) and (max-width:768px) {
+    .text {
+    padding-left: 30px;
+    padding-right:30px;
+  }
+
+  .price {
+    font-size: 11px;
+  }
+  h1 {
+    margin-bottom: 0.1rem;
+  }
+  h2 {
+    margin-top: 40px;
+    font-size: 40px;
+  }
+  h3 {
+    font-size: 20px;
+  }
+  h4 {
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .text .subheading {
+    font-size: 18px;
+  }
+
+  }
+  @media (max-width: 991.98px) {
+    .text {
+      width: 100%;
+    }
+  }
+
   @media (max-width: 991.98px) {
     .img {
       width: 100%;
       height: 300px;
     }
   }
-@media (max-width:375) {
+/* @media (max-width:375) {
   img {
   width: 100%;
   height: auto;
@@ -203,7 +231,8 @@ body {
     font-weight: bold;
     font-style: normal;
   }
-}
+} */
+
   /* Mobile styles */
   @media only screen and (max-device-width: 480px),
   only screen and (max-width: 480px) {}
@@ -254,8 +283,8 @@ body {
 
               <td align="center" style="border-color:#fff;">
 
-                <span style="font-size: 30px;font-weight:bold;">{{number_format($ppays->amount)}} </span><br>
-                <span class="price" style="font-size: 12px;font-weight:bold;">{{$ppays->payment}}</span>
+                <span class="prices" style="font-size:30px;font-weight:bold;">{{number_format($ppays->amount)}} </span><br>
+                <span class="pays" style="margin-left:0px;font-size:10px;font-weight:bold;">{{$ppays->payment}}</span>
 
                 @if(!$loop->last)
               </td>
@@ -271,8 +300,8 @@ body {
 
           </p>
 
-
-          <h3>Working in {{$data->product_name}} provides several benefits, including but not limited to:</h3>
+<br>
+          <h4>Working in {{$data->product_name}} provides several benefits, including but not limited to:</h4>
 
           <p>
           <ul>

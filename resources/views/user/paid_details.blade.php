@@ -1,6 +1,6 @@
 
 <!-- Theme style  -->
-<link rel="stylesheet" href="{{asset('user/extra/css/bootstrap.css')}}">
+<!-- <link rel="stylesheet" href="{{asset('user/extra/css/bootstrap.css')}}"> -->
 <link rel="stylesheet" href="{{asset('user/extra/css/styled.css')}}">
 
 <style>
@@ -12,18 +12,18 @@
         border-style:hidden;
     }
 
-    .btn {
-        height: 60px;
-        padding-top: 15px;
-        padding-bottom: 15px;
-        font-size: 30px;
-    }
-
-   @media (min-width:375px){
-    .btn {
+    .card .panel-body .btn {
         height: 60px;
         padding-top: 10px;
         padding-bottom: 10px;
+        font-size: 30px;
+    }
+
+   @media (min-width:375px) and (max-width:768px){
+    .btn {
+        height: 60px;
+        padding-top: 8px;
+        padding-bottom: 8px;
         font-size: 20px;
     }
    } 
@@ -71,9 +71,9 @@
 
                                             @if( $pd->product_payment_id == $pay->id)
 
-                                            <a class="btn btn-secondary" style="font-size:30px;font-family: 'TT Norms Pro';font-weight:700" href="#">Get Reciept</a>
+                                            <a class="btn btn-secondary" style="font-family: 'TT Norms Pro';font-weight:700" href="#">Get Reciept</a>
                                             @else
-                                            <a class="btn btn-secondary" style="font-size:30px;font-family: 'TT Norms Pro';font-weight:700" href="{{ url('payment') }}">Pay Now</a>
+                                            <a class="btn btn-secondary" style="font-family: 'TT Norms Pro';font-weight:700" href="{{ url('payment') }}">Pay Now</a>
                                             @endif
 
                                             @endforeach
@@ -86,7 +86,7 @@
                         </div>
                     </div>
                     <div class="row" style="font-size:18px">
-                        <div style="align-items: left; align:left; float: left; magin-left:0px" class="col-12">Your next payment is <b>
+                        <div style="align-items: left; align:left; float: left; padding-left:40px;padding-right:40px" class="col-12">Your next payment is <b>
                                 @foreach($prod as $pp)
                                 @foreach($pays as $pay)
                                 @if( $pd->product_payment_id == $pay->id)
