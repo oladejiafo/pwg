@@ -66,7 +66,7 @@
 </style>
 @section('content')
     <div class="container">
-        <div class="form-secc">
+        <div class="form-secc"  style="margin-top: 130px;">
         <div class="heading">
             <div class="first-heading">
                 <h3>

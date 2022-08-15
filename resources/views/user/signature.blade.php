@@ -85,7 +85,7 @@
 </style>
 
 @section('content')
-    <div class="loginx">
+    <div class="loginx"  style="margin-top: 130px;">
 
         <div class="container-fluid">
             <div class="signature tt" style="margin-top: 50px;">

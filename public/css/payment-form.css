@@ -13,7 +13,7 @@ body {
     width: 700px;
     margin: 0 auto;
     background: #fff;
-    padding: 75px 50px 69px 75px;
+    padding: 75px 50px 69px 50px;
     margin-top:75px ;
 }
 
@@ -44,7 +44,7 @@ body {
 .payment-form {
     width: 100%;
     margin: 0 auto;
-    padding: 1px 1px 1px 1px;
+    padding: 5px 15px 5px 15px;
     margin-top:50px ;
 }
 
@@ -92,12 +92,12 @@ body {
     border: 0.25px solid #CECECE;
     padding: 10px 20px;
     /* width: 40px; */
-    height: 40px;
+    /* height: 40px; */
 
 }
 
 .rightside {
-    width: 128px;
+    width: 150px;
     padding: 15px 10px;
     border: 0.25px solid #CECECE
 }
@@ -135,28 +135,33 @@ body {
     color: #606060;
 }
 
+
 .payment-form1 .fieldset {
     display: flex;
     justify-content: space-between;
+    width: 100%;
 }
 
 .payment-form1 .fieldset input {
-    height: 45px;
-    width: 302.6755676269531px;
+    height: 50px;
+    width: 290px;
     background-color: #F0F3F4;
     border: 1px solid #F0F3F4;
     margin-bottom: 18px;
-    font-family: TT Norms;
+    font-family: 'TT Norms Pro';
     font-size: 14px;
     font-weight: 400;
     line-height: 17px;
     letter-spacing: 0em;
     text-align: left;
     border-radius: 10px;
-    padding-left: 10px;
+    padding-left: 20px;
     color: #636466;
 }
 
+.payment-form1 .fieldset .b input {
+  margin-left:1%;
+}
 .payment-form1 .fieldset .cvv input {
     height: 46px;
     width: 190px;
@@ -173,6 +178,7 @@ body {
     border-radius: 10px;
     padding-left: 10px;
 }
+
 
 .payment-form1 .total,
 .payment-form1 .gtotal {
@@ -300,3 +306,22 @@ select {
     padding: 4px 12px;
 }
 
+@media (min-width:375px) and (max-width:768px){
+    .payment-form1 .fieldset {
+        display: flex;
+        flex-flow: wrap; 
+        width:100%;
+    }
+
+    .payment-form1 .fieldset select,
+    .payment-form1 .fieldset .cvv input,
+    .payment-form1 .fieldset input {
+        width: 90vw;
+        margin-left: 5px;
+        margin-right: 10px;
+    }
+
+    .payment-form1 .fieldset select {
+        margin-bottom: 10px;
+    }
+}

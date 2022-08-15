@@ -16,7 +16,7 @@
 
 @section('content')
     <div class="login">
-        <div class="container">
+        <div class="container" style="margin-top: 130px;">
             <div class="forgot-password" style="padding-top: 30px;">
                 <div class="reset">
                     <div class="resetImage">
