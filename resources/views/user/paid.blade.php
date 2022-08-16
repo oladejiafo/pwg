@@ -249,6 +249,22 @@
     width: 200px;
   }
 
+  .paid-section .paid-item button {
+    position: absolute;
+    display: inline-block;
+    top: 380px;
+    left: 35px;
+    margin: 10px 10px 0 0;
+    padding: 2px 5px;
+    text-align: center;
+    color: #000;
+    width: 200px;
+    height: 50px;
+    font-family: 'TT Norms Pro';
+    font-weight: bold;
+    font-size: 30px;
+  }
+
   .paid-section .paid-item h3,
   .paid-section .paid-item strong {
     color: #2f2f2f;
@@ -360,7 +376,11 @@
                         @if( $pd->product_payment_id == $pay->id)
                         <a class="btn btn-secondary" href="#">Get Reciept</a>
                         @else
-                        <a class="btn btn-secondary" href="{{ url('payment') }}">Pay Now</a>
+                        <form action="{{ route('payment') }}" method="GET">
+                        <input type="hidden" name="pid" value="{{$pp->id}}">
+                        <button class="btn btn-secondary">Pay Now</button>
+                        </form>
+                        <!-- <a class="btn btn-secondary" href="{{ route('payment',$pp->id) }}">Pay Now</a> -->
                         @endif
 
                         @endforeach
@@ -391,6 +411,18 @@
   </div>
 
 
+</div>
+
+
+<div class="card d-flex aligns-items-center justify-content-center text-center" style="background-color:#000; color: #fff; padding-block:35px; font-weight: bold;font-family:'TT Norms Pro'">
+  <h3 style="font-size:36px">Earn 5% discount when you pay full amount! </h3>
+  <p>
+  <form action="{{ route('payment') }}" method="GET">
+                        <input type="hidden" name="pid" value="{{$pp->id}}">
+                        <input type="hidden" name="payall" value="1">
+                        <button class="btn btn-secondary" style="border-color:#fff;border-width:thin; width:250px; height:60px;color:#fff; font-size:32px; font-weight:bold">Pay All Now</button>
+                        </form>
+  </p>
 </div>
 <!-- <script src="../user/assets/js/vendor/jquery-1.12.4.min.js"></script> -->
 <script>

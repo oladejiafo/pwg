@@ -90,27 +90,26 @@ class HomeController extends Controller
     public function upload(Request $request)
     {
         if (Auth::id()) {
-         
+
             $signature = user::find($request->user_id);
             $validator = Validator::make($request->all(), [
                 'file' => 'max:2000',
             ]);
-          if ($validator->fails()) {
-            // send back to the page with the input data and errors
-            return Redirect::to('user/signature')->withInput()->withErrors($validator);
-          }
-          else{
-    if ($request->hasFile('image')) {
-        $image = $request->file('image');
-        //  print_r($image);
-        $imagename = time() . '.' . $image->getClientOriginalExtension();
+            if ($validator->fails()) {
+                // send back to the page with the input data and errors
+                return Redirect::to('user/signature')->withInput()->withErrors($validator);
+            } else {
+                if ($request->hasFile('image')) {
+                    $image = $request->file('image');
+                    //  print_r($image);
+                    $imagename = time() . '.' . $image->getClientOriginalExtension();
 
-        $destinationPath = 'signature';
-        $image->move($destinationPath, $imagename);
-        $signature->signature = $imagename;
-    }
-    $signature->save();
-}
+                    $destinationPath = 'signature';
+                    $image->move($destinationPath, $imagename);
+                    $signature->signature = $imagename;
+                }
+                $signature->save();
+            }
             return \Redirect::route('signature_success', $request->pid)->with('message', 'Uploaded');
         } else {
             return redirect()->back()->with('message', 'You are not authorized');
@@ -124,20 +123,40 @@ class HomeController extends Controller
                 'current_location' => 'required',
                 'pid' => 'required'
             ]);
-            
-            $data = new applicant;
-            $data->referral_first_name = $request->referrer_first_name;
-            $data->referral_last_name = $request->referrer_last_name;
-            $data->coupon_code = $request->coupon_code;
-            $data->current_residance_country = $request->current_location;
-            $data->home_country = $request->nationality;
-            $data->applicant_status = 0;
-            $data->product_id = $request->pid;
-            if (Auth::id()) {
-                $data->user_id = Auth::user()->id;
-                $data->first_name = Auth::user()->name;
+
+            // $data = new applicant;
+            $datas = applicant::where([
+                ['user_id', '=', Auth::user()->id],
+                ['product_id', '=', $request->pid],
+            ])->first();
+            if ($datas === null) {
+                $data = new applicant;
+                $data->referral_first_name = $request->referrer_first_name;
+                $data->referral_last_name = $request->referrer_last_name;
+                $data->coupon_code = $request->coupon_code;
+                $data->current_residance_country = $request->current_location;
+                $data->home_country = $request->nationality;
+                $data->applicant_status = 0;
+                $data->product_id = $request->pid;
+                if (Auth::id()) {
+                    $data->user_id = Auth::user()->id;
+                    $data->first_name = Auth::user()->name;
+                }
+                $res = $data->save();
+            } else {
+                $datas->referral_first_name = $request->referrer_first_name;
+                $datas->referral_last_name = $request->referrer_last_name;
+                $datas->coupon_code = $request->coupon_code;
+                $datas->current_residance_country = $request->current_location;
+                $datas->home_country = $request->nationality;
+                $datas->applicant_status = 0;
+                $datas->product_id = $request->pid;
+                if (Auth::id()) {
+                    $datas->user_id = Auth::user()->id;
+                    $datas->first_name = Auth::user()->name;
+                }
+                $res = $datas->save();
             }
-            $res = $data->save();
 
             if ($res) {
                 return \Redirect::route('signature', $request->pid); //->with('success', 'Referral Saved. Upload Signature to proceed')
@@ -154,11 +173,14 @@ class HomeController extends Controller
         if (Auth::id()) {
             $id = Auth::user()->id;
 
-            $paid = DB::table('applicants')
-                ->join('payments', 'payments.application_id', '=', 'applicants.id')
+            $paid = DB::table('payments')
+                ->join('applicants', 'payments.application_id', '=', 'applicants.id')
                 ->select('payments.*', 'applicants.*')
                 ->where('applicants.user_id', '=', $id)
                 ->groupBy('payments.id')
+                ->groupBy('applicants.id')
+                ->orderBy('applicants.id', 'desc')
+                ->limit(1)
                 ->get();
 
             $pays = DB::table('product_payments')
@@ -187,27 +209,38 @@ class HomeController extends Controller
     //     return view('user.payment-form');
     // }
 
-    
+
     public function payment(Request $request)
     {
         if (Auth::id()) {
             $data = product::find($request->pid);
-            $id =$request->pid;
+            $id = $request->pid;
+            $payall =  $request->payall;;
 
-            $paid = DB::table('applicants')
-            ->join('payments', 'payments.application_id', '=', 'applicants.id')
-            ->join('product_payments', 'product_payments.id', '=', 'payments.product_payment_id')
-            ->select('product_payments.*','payments.product_payment_id')
-            ->where('applicants.user_id', '=', Auth::user()->id)
-            ->where('applicants.product_id','=', $id)
-            ->orderBy('payments.product_payment_id','desc')
-            ->limit(1)
-            ->get();
+            // Session::put('payall', $request->payall');
 
-             $pdet = DB::table('product_payments')
-            ->where('product_id', '=', $request->pid)
-            ->groupBy('product_payments.id')
-            ->get();
+            // $paid = DB::table('payments')
+            //     ->select('payments.*')
+            //     ->where('payments.user_id', '=', Auth::user()->id)
+            //     ->where('payments.product_id', '=', $id)
+            //     ->orderBy('payments.product_payment_id', 'desc')
+            //     ->limit(1)
+            //     ->get();
+
+            $pays = DB::table('applicants')
+                ->leftJoin('payments', 'payments.application_id', '=', 'applicants.id')
+                ->leftJoin('product_payments', 'product_payments.id', '=', 'payments.product_payment_id')
+                ->select('product_payments.*', 'payments.product_payment_id','payments.total')
+                ->where('applicants.user_id', '=', Auth::user()->id)
+                ->where('applicants.product_id', '=', $id)
+                ->orderBy('payments.product_payment_id', 'desc')
+                ->limit(1)
+                ->get();
+
+            $pdet = DB::table('product_payments')
+                ->where('product_id', '=', $request->pid)
+                ->groupBy('product_payments.id')
+                ->get();
 
             // $paid = DB::table('applicants')
             // ->join('payments', 'payments.application_id', '=', 'applicants.id')
@@ -225,7 +258,7 @@ class HomeController extends Controller
             // ->groupBy('product_payments.id')
             // ->get();
 
-            return view('user.payment-form', compact('data','pdet','paid'));
+            return view('user.payment-form', compact('data', 'pdet', 'pays','payall'));
         } else {
             return redirect()->back()->with('message', 'You are not authorized');
         }

@@ -74,7 +74,11 @@
 
                                             <a class="btn btn-secondary" style="font-family: 'TT Norms Pro';font-weight:700" href="#">Get Reciept</a>
                                             @else
-                                            <a class="btn btn-secondary" style="font-family: 'TT Norms Pro';font-weight:700" href="{{ url('payment') }}">Pay Now</a>
+                                            <form action="{{ route('payment') }}" method="GET">
+                        <input type="hidden" name="pid" value="{{$pp->id}}">
+                        <button class="btn btn-secondary" style="font-weight:700">Pay Now</button>
+                        </form>
+                                            <!-- <a class="btn btn-secondary" style="font-family: 'TT Norms Pro';font-weight:700" href="{{ url('payment') }}">Pay Now</a> -->
                                             @endif
 
                                             @endforeach
@@ -90,6 +94,7 @@
                         <div style="align-items: left; align:left; float: left; padding-left:40px;padding-right:40px" class="col-12">Your next payment is <b>
                                 @foreach($prod as $pp)
                                 @foreach($pays as $pay)
+                                
                                 @if( $pd->product_payment_id == $pay->id)
                                 <?php $tt = $pay->id;
                                 $ttt = $pay->id + 1; ?>
@@ -101,10 +106,27 @@
                                 $count++; // Note that first iteration is $count = 1 not 0 here.
                                 if ($count <= $tt or $count > $ttt) continue; // Skip the iteration unless 4th or above.
                                 ?>
+                
                                 {{ number_format($review->amount) }}
-
+                                <?php $pt = $review->payment; ?>
+                      
 
                                 @endforeach
+
+                                @else 
+
+                                @if ($loop->first)
+
+                                @foreach($pays as $pay => $review)
+
+                                @if ($loop->first)
+                                {{ number_format($review->amount) }}
+                                <?php $pt = $review->payment; ?>
+                                @endif
+
+                                @endforeach
+
+                                @endif
 
                                 @endif
                                 @endforeach
@@ -112,7 +134,7 @@
 
 
                                 AED
-                            </b>, to be charged for second payment.</div>
+                            </b>, to be charged for {{ $pt }} .</div>
                         
                     </div>
                     <!-- <a class="btn btn-secondary" href="{{ url('payment') }}">Pay Now</a> -->
