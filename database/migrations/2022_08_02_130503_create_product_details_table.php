@@ -15,10 +15,7 @@ class CreateProductDetailsTable extends Migration
     {
         Schema::create('product_details', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')
-                ->constrained('products')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+            $table->integer('product_id');
             $table->text('job_title');
             $table->longText('description');
             $table->timestamps();

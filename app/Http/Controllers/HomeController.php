@@ -155,7 +155,7 @@ class HomeController extends Controller
             $id = Auth::user()->id;
 
             $paid = DB::table('applicants')
-                ->join('payments', 'payments.applicant_id', '=', 'applicants.id')
+                ->join('payments', 'payments.application_id', '=', 'applicants.id')
                 ->select('payments.*', 'applicants.*')
                 ->where('applicants.user_id', '=', $id)
                 ->groupBy('payments.id')
@@ -195,7 +195,7 @@ class HomeController extends Controller
             $id =$request->pid;
 
             $paid = DB::table('applicants')
-            ->join('payments', 'payments.applicant_id', '=', 'applicants.id')
+            ->join('payments', 'payments.application_id', '=', 'applicants.id')
             ->join('product_payments', 'product_payments.id', '=', 'payments.product_payment_id')
             ->select('product_payments.*','payments.product_payment_id')
             ->where('applicants.user_id', '=', Auth::user()->id)
@@ -210,7 +210,7 @@ class HomeController extends Controller
             ->get();
 
             // $paid = DB::table('applicants')
-            // ->join('payments', 'payments.applicant_id', '=', 'applicants.id')
+            // ->join('payments', 'payments.application_id', '=', 'applicants.id')
             // ->select('payments.*', 'applicants.*')
             // ->where('applicants.user_id', '=', Auth::user()->id)
             // ->groupBy('payments.id')

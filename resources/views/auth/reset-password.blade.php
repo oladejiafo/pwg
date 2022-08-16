@@ -12,7 +12,7 @@
 </style>
 @Section('content')
     <div class="container">
-        <div class="forgot-password" style="height: 837px;padding-top:50px">
+        <div class="forgot-password" style="height: 837px;padding-top:50px;margin-top:150px">
             <div class="reset">
                 <div class="resetImage">
                     <img src="{{asset('images/Approved.svg')}}" alt="approved">

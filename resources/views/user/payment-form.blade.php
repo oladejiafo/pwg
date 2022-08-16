@@ -88,7 +88,7 @@
                             <p>Subtotal (first payment)</p>
                         </div>
                         <div class="price">
-                            <p>{{ number_format(2000,2) }}</p>
+                            <p> @foreach($pdet as $det) @if ($det == reset($pdet)) last Item: @endif {{ number_format($det->amount,2) }} @endforeach</p>
                         </div>
                     </div>
                     <div class="total-sec">
@@ -129,14 +129,12 @@
                 @foreach($pdet as $index => $det)
 
                 @if( $pd->product_payment_id != $det->id)
-
-                @if($index ==0)
-
+                
+                
+                @if($index ==1)
+                {{ number_format($det->amount,2) }}
                 @endif
 
-
-                @if ($det == reset($pdet)) First Item: @endif
-                {{ number_format($det->amount,2) }}
 
                 @endif
 
