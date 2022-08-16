@@ -17,7 +17,6 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 |
 */
 
-
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -38,18 +37,15 @@ Route::get('/home', [HomeController::class, 'redirect'] );
 
 // Route::get('/signup', [HomeController::class, 'signup'] );
 
-
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
-
 
 Route::get('/product/{id}',[HomeController::class,'product']);
 
 Route::get('append_signature/{id}',[HomeController::class,'signature'])->name('signature');
 Route::get('signature_success/{id}',[HomeController::class,'signature_success'])->name('signature_success');
 Route::get('/referal_details/{id}',[HomeController::class,'referal']);
-
 
 Route::post('/upload_signature', [HomeController::class,'upload']);
 Route::post('/add_referal', [HomeController::class,'addreferal']);
@@ -59,15 +55,12 @@ Route::get('/affiliate', [HomeController::class,'affiliate'])->name('affiliate')
 
 Route::post('/add-referrer', [HomeController::class,'addReferrer'])->name('add-referer');
 
-
 // Reset Password
 
-Route::post('reset/forgot/paassword', [ResetPasswordController::class,'forgotPassword'])->name('customize.forgot.paassword');
 Route::post('reset/password', [ResetPasswordController::class,'updatePassword'])->name('customize.password.update');
+Route::post('reset/forgot/password', [ResetPasswordController::class,'forgotPassword'])->name('customize.forgot.password');
 
+// Route::get('payment-form/{id}', [HomeController::class,'payment'])->name('payment');
 
-Route::get('/payment', [HomeController::class,'payment'])->name('payment');
+Route::get('payment_form/{id}',[HomeController::class,'payment'])->name('payment');
 
-// Applicant
-
-// Route::get('applicant', [HomeController::class,'applicant'])->name('applicant');

@@ -1,16 +1,26 @@
 <x-jet-form-section submit="updateProfileInformation">
-    <x-slot name="title">
-        {{ __('Profile Information') }}
-    </x-slot>
+    <!-- <x-slot name="title">
+      {{--  {{ __('Profile Information') }}  --}}
+    </x-slot> -->
+    <style>
+    .cols {
+        width:50%; 
+        margin-left: 0 auto;
+    }
 
-    <x-slot name="description">
-        {{ __('Update your account\'s profile information and email address.') }}
-    </x-slot>
+    @media (min-width:375px) and (max-width:768px){
+        .cols {
+        width:70%; 
+        margin-left: 0 auto;
+    }
+    }
+</style>
 
-    <x-slot name="form">
+    <x-slot name="form" style="width:100%; border-color:#fff;border-style:hidden">
         <!-- Profile Photo -->
         @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
             <div x-data="{photoName: null, photoPreview: null}" class="col-span-6 sm:col-span-4">
+
                 <!-- Profile Photo File Input -->
                 <input type="file" class="hidden"
                             wire:model="photo"
@@ -52,38 +62,37 @@
             </div>
         @endif
 
+
         <!-- Name -->
-        <div class="col-span-6 sm:col-span-4">
+        <div class="cols col-span-12 sm:col-span-12" style="width:70%; margin: 0 auto; margin-bottom:20px">
             <x-jet-label for="name" value="{{ __('Name') }}" />
             <x-jet-input id="name" type="text" class="mt-1 block w-full" wire:model.defer="state.name" autocomplete="name" />
             <x-jet-input-error for="name" class="mt-2" />
         </div>
 
         <!-- Email -->
-        <div class="col-span-6 sm:col-span-4">
+        <div class="cols col-span-12 sm:col-span-12" style="width:70%; margin: 0 auto">
             <x-jet-label for="email" value="{{ __('Email') }}" />
             <x-jet-input id="email" type="email" class="mt-1 block w-full" wire:model.defer="state.email" />
             <x-jet-input-error for="email" class="mt-2" />
 
             @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::emailVerification()) && ! $this->user->hasVerifiedEmail())
                 <p class="text-sm mt-2">
-                    {{ __('Your email address is unverified.') }}
+                  {{--  {{ __('Your email address is unverified.') }}  --}}
 
                     <button type="button" class="underline text-sm text-gray-600 hover:text-gray-900" wire:click.prevent="sendEmailVerification">
-                        {{ __('Click here to re-send the verification email.') }}
+                     {{--   {{ __('Click here to re-send the verification email.') }} --}}
                     </button>
                 </p>
 
                 @if ($this->verificationLinkSent)
                     <p v-show="verificationLinkSent" class="mt-2 font-medium text-sm text-green-600">
-                        {{ __('A new verification link has been sent to your email address.') }}
+                       {{--  {{ __('A new verification link has been sent to your email address.') }} --}}
                     </p>
                 @endif
             @endif
         </div>
-    </x-slot>
-
-    <x-slot name="actions">
+        <x-slot name="actions"  style="width:70%; margin: 0 auto">
         <x-jet-action-message class="mr-3" on="saved">
             {{ __('Saved.') }}
         </x-jet-action-message>
@@ -92,4 +101,7 @@
             {{ __('Save') }}
         </x-jet-button>
     </x-slot>
+    </x-slot>
+
+
 </x-jet-form-section>

@@ -28,7 +28,7 @@
             <div class="mb-3">
                 <div class="label"><label for="email1" class="form-label">Email or phone number</label></div>
               <div class="inputs"> 
-                <input type="text" class="form-control w-full" id="exampleInputEmail1" name="auth" value="{{ old('auth') }}" aria-describedby="emailHelp" autocomplete="off" required autofocus >
+                <input type="text" style="padding: 10px;" class="form-control w-full" id="exampleInputEmail1" name="auth" value="{{ old('auth') }}" aria-describedby="emailHelp" autocomplete="off" required autofocus >
                 @error('auth') <span class="error">{{ $message }}</span> @enderror
               </div>            
             </div>

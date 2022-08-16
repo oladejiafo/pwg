@@ -1,7 +1,18 @@
 @extends('layouts.auth')
+
+<style>
+    select,
+    input [type="text"] {
+        font-size: 18px;
+        text-align: left;
+        padding: 10px;
+    }
+
+    
+</style>
 @Section('content')
     <div class="container">
-        <div class="forgot-password" style="height: 837px;">
+        <div class="forgot-password" style="height: 837px;padding-top:50px;margin-top:150px">
             <div class="reset">
                 <div class="resetImage">
                     <img src="{{asset('images/Approved.svg')}}" alt="approved">
@@ -10,7 +21,7 @@
                     Reset your password
                 </div>
                 <div class="reset-title">
-                    <p>Please enter code received on email/phone</p>
+                    <p>Please enter code received</p>
                 </div>
                 <div class="form-sec">
                     <form method="POST" action="{{ route('customize.password.update') }}">
@@ -39,7 +50,7 @@
                 </div>
                 <div >
                     <p class="subInfo"> Haven't received the email? Check your spam folder.
-                        Still not there? Then try this: <a href="{{route('password.request')}}">Resend email</a>
+                        <br>Still not there? <a href="{{route('password.request')}}">Resend email</a>
                     </p>
                 </div>
             </div>

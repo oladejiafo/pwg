@@ -19,6 +19,10 @@ class CreateProductsTable extends Migration
             $table->longText('description');
             $table->decimal('unit_price');
             $table->integer('discount');
+            $table->string('image')->nullable();
+            $table->text('slogan')->nullable();
+            $table->string('currency')->nullable();
+            $table->longText('benefits')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

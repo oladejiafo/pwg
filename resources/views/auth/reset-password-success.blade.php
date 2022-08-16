@@ -1,7 +1,7 @@
 @extends('layouts.auth')
 @Section('content')
     <div class="container">
-        <div class="forgot-password" style="width: 250px;">
+        <div class="forgot-password" style="width: 450px;margin-top:150px">
             <div class="reset">
                 <div class="resetImage">
                     <img src="{{asset('images/Approved.svg')}}" alt="approved">

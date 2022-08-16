@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Applicant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+
 use App\Models\User;
 use App\Models\product;
 use App\Models\product_payments;
@@ -88,20 +90,27 @@ class HomeController extends Controller
     public function upload(Request $request)
     {
         if (Auth::id()) {
+         
             $signature = user::find($request->user_id);
-            if ($request->hasFile('image')) {
+            $validator = Validator::make($request->all(), [
+                'file' => 'max:2000',
+            ]);
+          if ($validator->fails()) {
+            // send back to the page with the input data and errors
+            return Redirect::to('user/signature')->withInput()->withErrors($validator);
+          }
+          else{
+    if ($request->hasFile('image')) {
+        $image = $request->file('image');
+        //  print_r($image);
+        $imagename = time() . '.' . $image->getClientOriginalExtension();
 
-                $image = $request->file('image');
-                //  print_r($image);
-                $imagename = time() . '.' . $image->getClientOriginalExtension();
-
-                $destinationPath = 'signature';
-                $image->move($destinationPath, $imagename);
-                $signature->signature = $imagename;
-            }
-
-
-            $signature->save();
+        $destinationPath = 'signature';
+        $image->move($destinationPath, $imagename);
+        $signature->signature = $imagename;
+    }
+    $signature->save();
+}
             return \Redirect::route('signature_success', $request->pid)->with('message', 'Uploaded');
         } else {
             return redirect()->back()->with('message', 'You are not authorized');
@@ -115,11 +124,13 @@ class HomeController extends Controller
                 'current_location' => 'required',
                 'pid' => 'required'
             ]);
+            
             $data = new applicant;
             $data->referral_first_name = $request->referrer_first_name;
             $data->referral_last_name = $request->referrer_last_name;
             $data->coupon_code = $request->coupon_code;
             $data->current_residance_country = $request->current_location;
+            $data->home_country = $request->nationality;
             $data->applicant_status = 0;
             $data->product_id = $request->pid;
             if (Auth::id()) {
@@ -129,7 +140,7 @@ class HomeController extends Controller
             $res = $data->save();
 
             if ($res) {
-                return \Redirect::route('signature', $request->pid)->with('success', 'ReferralSaved. Upload Signature to proceed');
+                return \Redirect::route('signature', $request->pid); //->with('success', 'Referral Saved. Upload Signature to proceed')
             } else {
                 return redirect()->back()->with('failed', 'Oppss! Something Went Wrong!');
             }
@@ -140,17 +151,29 @@ class HomeController extends Controller
 
     public function myapplication()
     {
-
         if (Auth::id()) {
             $id = Auth::user()->id;
 
             $paid = DB::table('applicants')
-                ->join('payments', 'payments.applicant_id', '=', 'applicants.id')
+                ->join('payments', 'payments.application_id', '=', 'applicants.id')
+                ->select('payments.*', 'applicants.*')
                 ->where('applicants.user_id', '=', $id)
+                ->groupBy('payments.id')
                 ->get();
 
-            $pays = 0;
-            $prod = 0;
+            $pays = DB::table('product_payments')
+                ->join('applicants', 'applicants.product_id', '=', 'product_payments.product_id')
+                ->select('product_payments.id', 'product_payments.payment', 'product_payments.amount', 'product_payments.product_id')
+                ->where('applicants.user_id', '=', $id)
+                ->groupBy('product_payments.id')
+                ->get();
+
+            $prod = DB::table('products')
+                ->join('applicants', 'products.id', '=', 'applicants.product_id')
+                ->select('products.product_name', 'products.id')
+                ->where('applicants.user_id', '=', $id)
+                ->groupBy('products.id')
+                ->get();
 
             return view('user.myapplication', compact('paid', 'pays', 'prod'));
         } else {
@@ -159,13 +182,53 @@ class HomeController extends Controller
     }
 
 
-    public function payment()
-    {
-        return view('user.payment-form');
-    }
+    // public function paymentx()
+    // {
+    //     return view('user.payment-form');
+    // }
 
-//     public function applicant()
-//     {
-//         return view('user.applicant');
-//     }
-// }
+    
+    public function payment(Request $request)
+    {
+        if (Auth::id()) {
+            $data = product::find($request->pid);
+            $id =$request->pid;
+
+            $paid = DB::table('applicants')
+            ->join('payments', 'payments.application_id', '=', 'applicants.id')
+            ->join('product_payments', 'product_payments.id', '=', 'payments.product_payment_id')
+            ->select('product_payments.*','payments.product_payment_id')
+            ->where('applicants.user_id', '=', Auth::user()->id)
+            ->where('applicants.product_id','=', $id)
+            ->orderBy('payments.product_payment_id','desc')
+            ->limit(1)
+            ->get();
+
+             $pdet = DB::table('product_payments')
+            ->where('product_id', '=', $request->pid)
+            ->groupBy('product_payments.id')
+            ->get();
+
+            // $paid = DB::table('applicants')
+            // ->join('payments', 'payments.application_id', '=', 'applicants.id')
+            // ->select('payments.*', 'applicants.*')
+            // ->where('applicants.user_id', '=', Auth::user()->id)
+            // ->groupBy('payments.id')
+            // ->orderBy('payments.product_payment_id','desc')
+            // ->limit(1)
+            // ->get();
+
+            // $pdet = DB::table('product_payments')
+            // ->join('products', 'products.id', '=', 'product_payments.product_id')
+            // ->select('products.*', 'product_payments.payment', 'product_payments.amount','product_payments.id')
+            // ->where('products.id', '=', $request->pid)
+            // ->groupBy('product_payments.id')
+            // ->get();
+
+            return view('user.payment-form', compact('data','pdet','paid'));
+        } else {
+            return redirect()->back()->with('message', 'You are not authorized');
+        }
+    
+    }
+}

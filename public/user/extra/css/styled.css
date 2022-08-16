@@ -30,6 +30,14 @@ p {
 
 .about-desc {
   padding: 3em 3em 2em 3em; 
+  align-content: left;
+}
+
+@media only screen and (max-width: 679px) and (min-width: 375px) {
+  .about-desc {
+    padding: 1em 0em 1em 0em; 
+    align-content: center;
+  } 
 }
 
 .about-decc {
@@ -59,12 +67,43 @@ p {
   box-shadow: 0 4px 2px -2px #000;
 }
 
+.fancy-collapse-panel .panel-default > .ppanel-heading {
+  padding-top: 20px;
+  padding-left: 20%; 
+}
+
+.ppanel-heading a {
+  font-family: "TT Norms Pro";
+  padding: 0 25px;
+  display: block;
+  width: 100%;
+  font-weight: 500;
+  font-size: 24px;
+  text-transform: capitalize;
+  background-color: none;
+  color: #000;
+  position: relative;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  -ms-box-shadow: none !important;
+  -o-box-shadow: none !important;
+  box-shadow: 0 4px 2px -2px #000;
+}
+
 .panel-title {
   
   font-family: "TT Norms Pro";
   font-weight: 400; 
 }
 
+@media only screen and (max-width: 679px) and (min-width: 375px) {
+  .panel-heading a {
+    padding: 0 0 0 25px;
+    width: 100%;
+    font-weight: 500;
+    font-size: 20px;
+  }
+}
 .panel {
   -webkit-box-shadow: none !important;
   -moz-box-shadow: none !important;
@@ -102,6 +141,49 @@ p {
 .panel-heading a.collapsed {
   font-family: "TT Norms Pro";
   color: #000; }
+
+
+  .ppanel-heading a:after {
+    font-family: "TT Norms Pro";
+    content: "\2303"; /*content: url(image.jpg);  25b2 */
+    position: absolute;
+    right: 50px;
+   
+    font-size: 30px;
+    font-weight:400;
+    top: 40%;
+    line-height: 1;
+    margin-top: -0px; 
+  
+    /* content: 'text that follows 1';
+    background: url(https://unsplash.it/18) left center no-repeat;
+    vertical-align: middle;
+    background-size: 16px auto;
+    padding-left: 20px; */
+  }
+  
+  .ppanel-heading a.collapsed:after {
+    font-family: "TT Norms Pro";
+    content: "\2304"; 
+    font-size: 30px;
+    margin-top: -20px; 
+    font-weight:400;
+  }
+  
+  .ppanel-heading a.collapsed {
+    font-family: "TT Norms Pro";
+    color: #000; }
+  
+
+    @media only screen and (max-width: 679px) and (min-width: 375px) {
+      .ppanel-heading a {
+        padding: 0 0 0 25px;
+        width: 100%;
+        margin: 0;
+        font-weight: 500;
+        font-size: 20px;
+      }
+    }
 
 .panel-body {
   font-family: "TT Norms Pro";

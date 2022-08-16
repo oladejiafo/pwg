@@ -193,17 +193,7 @@ tbody.collapse.in {
     right: auto;
   }
 }
-.btn-group,
-.btn-group-vertical {
-  position: relative;
-  display: inline-block;
-  vertical-align: middle;
-}
-.btn-group > .btn,
-.btn-group-vertical > .btn {
-  position: relative;
-  float: left;
-}
+
 .btn-group > .btn:hover, .btn-group > .btn:focus, .btn-group > .btn:active, .btn-group > .btn.active,
 .btn-group-vertical > .btn:hover,
 .btn-group-vertical > .btn:focus,
@@ -319,8 +309,6 @@ tbody.collapse.in {
 .btn-group-vertical > .btn-group > .btn {
   display: block;
   float: none;
-  width: 100%;
-  max-width: 100%;
 }
 .btn-group-vertical > .btn-group:before, .btn-group-vertical > .btn-group:after {
   content: " ";
@@ -1452,7 +1440,7 @@ a.label:hover, a.label:focus {
 }
 .btn-xs .badge, .btn-group-xs > .btn .badge, .btn-group-xs > .btn .badge {
   top: 0;
-  padding: 1px 5px;
+
 }
 .list-group-item.active > .badge, .nav-pills > .active > a > .badge {
   color: #337ab7;

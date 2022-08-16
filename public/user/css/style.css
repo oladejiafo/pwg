@@ -1,31 +1,3 @@
-Skip to content
-Search or jump to…
-Pull requests
-Issues
-Marketplace
-Explore
- 
-@shamsi253 
-oladejiafo
-/
-PWG_Client
-Private
-Code
-Issues
-Pull requests
-Actions
-Projects
-Security
-Insights
-PWG_Client/public/user/css/style.css
-@oladejiafo
-oladejiafo Most Recent updates commit
-Latest commit 8839377 2 hours ago
- History
- 2 contributors
-@oladejiafo@shamsi253
-1308 lines (1096 sloc)  22.8 KB
-
 
 body {
   overflow-x: hidden;
@@ -1293,33 +1265,42 @@ textarea {
 /***************iPhone Portrait**************/
 /*************************iPad Portrait***************/
 /* @media only screen and (max-width: 479px) and (min-width: 320px) {
+
   .hero, .layer {
     min-height: 0px;
   }
+
   .hero .intro-excerpt {
     margin-left: 11px;
     margin-top: 10px;
   }
+
   #headerTitle {
     font-size: 26px;
   }
+
   #headerText {
     font-size: 14px;
   }
+
   #headerBtn {
     width: 217px;
   }
+
   #headerBtn {
     padding: 0px;
   }
+
   .hero  {
     padding: 0px;
   }
+
   .product-section,
   .cellContainer {
     padding: 0px;
     margin: 0;
   }
+
   .positionAnchor img {
     /* width: 100%; */
   }
