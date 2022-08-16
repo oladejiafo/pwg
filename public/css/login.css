@@ -36,9 +36,23 @@ input {
 .login .signin-right {
     margin-top: 29px;
     margin-bottom: 17px;
-    padding-right: 100px;
+    padding-right: 30px;
 }
-
+.checkcolor {
+    accent-color: #f9bf29;
+  }
+  
+  select,
+  textarea,
+  input [type="text"],
+  input [type="number"],
+  input [type="password"],
+  input [type="date"],
+  input [type="email"],
+  input [type="phone"]
+  {
+    padding: 10px;
+  }
 #activity {
     margin:20px;
     margin-top: 10px;
@@ -47,9 +61,10 @@ input {
   }
   
   .divs {  
+    display: inline-block;
     float: left;
     margin-right: 15px;
-    margin-top: 10px;
+    margin-top: 1px;
     width: 50px;
   }
   /* .divs img {
@@ -89,9 +104,10 @@ input {
     margin-left: 111px;
     text-decoration: none;
     border-radius: 10px;
-    width: 200px;
+    width: 150px;
     text-align: center;
     display: block;
+    
 }
 .applicant a:hover {
     background-color: hsl(51, 94%, 50%);
@@ -100,8 +116,34 @@ input {
     width: 100%;
     height: auto;
 }
+@media only screen and (max-width: 768px) and (min-width: 370px)
+{
+ .login .left-sec a {
+        font-size: 15px;
+        font-weight: 400;
+        line-height: 26px;
+        letter-spacing: 0em;
+}
+
+.applicant a {
+    margin-left: 30px;
+    margin-right: 20px;
+    text-align:center;
+    width: 120px;
+    font-size: 12px;
+}
+.affiliate a {
+    margin-left: 20px;
+    text-align:center;
+    width: 100px;
+    font-size: 12px;
+    content: "Affiliate"; 
+}
+
+}
 
 .myapplicant a {
+    width:240px;
     height: 40px;
     padding-left: 30px;
     margin-top: 30px;
@@ -118,9 +160,24 @@ input {
     height: auto;
 }
 .myapplicant a:hover {
-    width: 100%;
     min-height: 60px;
     background-color: hsl(51, 94%, 50%);
+}
+
+@media only screen and (max-width: 768px) and (min-width: 370px)
+{
+.myapplicant a {
+    height: 60px;
+    padding-left: 15px;
+
+    margin-left: 20px;
+    text-align:center;
+    text-decoration: none;
+    border-radius: 10px;
+    background-color: #e9ebf0;
+    min-height: 40px;
+    width: 180px;
+}
 }
 
 .affiliate a {
@@ -131,6 +188,7 @@ input {
     margin-left: 111px;
     text-decoration: none;
     border-radius: 10px;
+    content: 'Affiliate Partner';
 }
 .affiliate a:hover {
     background-color: hsl(51, 94%, 50%);
@@ -139,7 +197,23 @@ input {
     width: 100%;
     height: auto;
 }
+@media only screen and (max-width: 768px) and (min-width: 370px)
+{
+.affiliate a {
+    margin-left: 20px;
+    text-align:center;
+    content: 'Affiliate';
+}
 
+.logg a {
+    margin-left: 5px;
+    font-size: 12px;
+    width: 120px;
+    text-align:center;
+    content: 'Affiliate';
+}
+
+}
 .login .signin-right a {
     display: flex;
     align-items: center;
@@ -151,6 +225,7 @@ input {
     text-align: left;
     text-decoration: none;
     color: #313445;
+    float: right;
 
 }
 
@@ -183,6 +258,7 @@ input {
 .logo img {
     width: 100%;
     height: auto;
+    content:url("{{asset('images/logo.png')}}");
 
     margin-top: 17px;
     margin-bottom: 17px;
@@ -191,13 +267,31 @@ input {
     
 }
 
+
+@media only screen and (max-width: 768px) and (min-width: 370px)
+{
+    .logo img {
+        width: 100%;
+        height: auto;
+        content:url("../images/logo2.png");
+    
+        margin-top: 17px;
+        margin-bottom: 17px;
+        margin-left: 111px;
+        /* height: 50px; */
+        
+    }
+    
+}
+
+
 .form-sec1 {
-    width: 360px;
+    width: 560px;
     max-width: 100%;
     margin-left: auto;
     margin-right: auto;
     margin: 0 auto;
-    padding: 70px 203px 70px 203px;
+    padding: 70px 100px 70px 100px;
     background-color: #ffffff;
     margin-bottom: 420px;
     margin-top: 250px;
@@ -214,6 +308,22 @@ input {
     margin-bottom: 0px;
 }
 
+@media only screen and (max-width: 768px) and (min-width: 370px)
+{
+    .form-sec1 {
+        padding: 20px 203px 20px 203px;
+        margin-top: 50px;
+    }
+    
+.form-sec1 h3 {
+    font-size: 30px;
+}
+
+.form-sec1 p {
+    font-size: 12px;
+}
+
+}
 .form-sec1 p {
     font-family: TT Norms Pro;
     font-size: 20px;
@@ -309,14 +419,18 @@ input {
 .form-sec1 .check-box p {
     margin: 0px;
     font-family: TT Norms Pro;
-    font-size: 18px;
+    font-size: 14px;
     font-weight: 500;
     line-height: 22px;
     letter-spacing: 0em;
     text-align: left;
     color: #000;
+}
 
-
+@media (min-width:375px) and (max-width:768px) {
+.form-sec1 .check-box p {
+    font-size: 12px;
+}
 }
 
 .form-sec1 .check-box p a {
@@ -331,6 +445,7 @@ input {
 
 .submitBtn {
     background-color: #F6F7FB;
+    border-style: hidden;
 }
 
 .signupBtn {
@@ -342,32 +457,54 @@ input {
 }
 
 .forgot-password {
-    width: 409px;
+    width: 50%;
     max-width: 100%;
-    margin-left: auto;
-    margin-right: auto;
+    /* margin-left: 70px;
+    margin-right: auto; */
     margin: 0 auto;
-    padding: 70px 203px 70px 203px;
+    padding: 70px 70px 70px 70px;
     background-color: #ffffff;
-    margin-bottom: 420px;
-    margin-top: 250px;
+    margin-bottom: 70px;
+    margin-top: 70px;
     color: #636466;
     align-content: center;
     height: 760px;
 }
+.forgot-password .btn {
+    font-size: 27px;
+    margin: 0 auto;
+    /* margin-left: 100px; */
+}
+
+@media (min-width:375px) and (max-width:768px) {
+
+    .forgot-password {
+        width: 90%;
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 30px;
+        margin-bottom: 30px;
+        margin-top: 30px;
+        height: 500px;
+    }
+
+}
 
 .signature {
-    width:35%;
-    box-shadow: 0px 0px 0px 0.5px#e0d8d881;;
-    padding: 20px 10px 20px 10px;
+    width:40%;
+
+    padding: 120px 120px 120px 120px;
     background-color: #ffffff;
-    margin-top: 70px;
+    margin: 0 auto;
+    margin-top: 120px;
+    margin-bottom: 120px;
     color: #000;
     align-content: center;
-    height: 650px;
+    height: 750px;
     border-radius: 10px;
-    margin: 0 auto;
+
 }
+
 .signature img {
     margin-block: 50px;
     margin-left: auto;
@@ -375,10 +512,30 @@ input {
     width: 250px;
     height: 280px;
     padding: 50px;
-    background-color: #e0d8d881;
-    box-shadow: 0px 0px 0px 1px#e0d8d881;
-    border-radius: 20px;
+
 }
+
+@media (min-width:375px) and (max-width:768px){
+    .signature {
+        width:96%;
+        padding: 20px 10px 70px 10px;
+        margin: 0 auto;
+        margin-bottom: 70px;
+        height: 650px;
+
+    }
+
+    .signature h1 {
+        font-size: 25px;
+    }
+
+    .signature img {
+        width: 180px;
+        height: 200px;
+        padding: 50px;
+    }
+}
+
 
 .signature button {
     margin: auto;
@@ -488,7 +645,9 @@ input {
 
 .reset {
     width: 100%;
-    margin-top: 200px
+    margin: 0 auto;
+    margin-top: 150px;
+
 }
 
 .reset-heading {
@@ -498,6 +657,27 @@ input {
     line-height: 43px;
     letter-spacing: 0em;
     text-align: center;
+}
+
+@media (min-width:375px) and (max-width:768px) {
+    .reset {
+        width: 100%;
+        margin-top: 70px;
+    }
+    .reset .btn {
+        font-size: 18px;
+        height: 60px;
+    }
+    
+    .reset-heading {
+        font-size: 25px;
+        font-weight: 700;
+        line-height: 43px;
+    }
+    .reset .input {
+        padding: 10px;
+        text-align: left;
+    }
 }
 
 .append{
@@ -527,6 +707,7 @@ input {
 
 .reset-title {
     text-align: center;
+    font-size: 23px;
 }
 
 .reset-title p {
@@ -535,27 +716,51 @@ input {
 
 .forgot-password input {
     height: 54px;
-    width: 100%;
+    width: 60%;
     border: 0.5px solid #C4C6CD;
     margin-top: 30px;
-    text-align: center;
+    /* text-align: center; */
+    margin-left: 20%;
+    margin-right: 20%;
+    padding: 10px;
+    font-size: 17px;
+}
+.forgot-password .btn {
+    width: 60%;
+    margin-top: 25px;
+    margin-left: 20%;
+    margin-right: 20%;
+}
+.forgot-password input::placeholder {
+    font-size: 18px;
 }
 
+@media (min-width:375px) and (max-width:768px) {
+    .forgot-password .ose {
+        width: 80%;
+        margin-top: 25px;
+        margin-left: 10%;
+        margin-right: 10%;
+        font-size: 18px;
+    }
+    }
+
 ::-webkit-input-placeholder {
-    text-align: center;
+    text-align: left;
+    font-size: 16px;
 }
 
 :-moz-placeholder {
-    text-align: center;
+    text-align: left;
+    font-size: 16px;
 }
 
-.forgot-password button {
+/* .forgot-password button {
     height: 60px;
     width: 358px;
     border: 1px solid #F6F6F6;
     background: #F6F6F6;
-
-    /* border-radius: 0px; */
+ 
     padding: 10px;
     font-family: TT Norms Pro;
     font-size: 36px;
@@ -564,10 +769,9 @@ input {
     letter-spacing: 0em;
     text-align: center;
     color: #606060;
-
     margin-top: 30px;
     width: 100%;
-}
+} */
 
 .ring {
     position: absolute;
@@ -681,7 +885,7 @@ input {
     display: none;
     position: absolute;
     left: 0;
-    min-width: 160px;
+    min-width: 10px;
     z-index: 1;
     background-color: #fff;
 }
@@ -753,6 +957,7 @@ input {
 
     .login .left-sec a {
         margin-bottom: 10px;
+        
     }
 
     .applicant,
@@ -773,16 +978,19 @@ input {
     .login .signin-right {
         padding-left: 0px;
         padding-right: 0px;
+        margin:0px;
     }
 
     .header-sec {
         padding: 10px;
     }
 
+
     .applicant,
     .affiliate {
-        width: 60%;
+        width: 130px;
     }
+
 
     .forgot-password {
         padding: 0px;
@@ -895,9 +1103,7 @@ input {
         padding-left: 111px;
     }
 
-    .form-sec1 h3 {
-        font-size: 34px;
-    }
+
 }
 
 @media only screen and (max-width: 740px) and (min-width: 360px) {
@@ -913,4 +1119,3 @@ input {
         padding-left: 111px;
     }
 }
-

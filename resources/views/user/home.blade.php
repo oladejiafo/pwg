@@ -9,7 +9,24 @@
 <link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
+
+    <!--====== Slick CSS ======-->
+    <!-- <link rel="stylesheet" href="../user/assets/css/slick.css"> -->
+        
+    <!--====== Line Icons CSS ======-->
+    <link rel="stylesheet" href="../user/assets/css/LineIcons.css">
+        
+    <!--====== Bootstrap CSS ======-->
+    <!-- <link rel="stylesheet" href="../user/assets/css/bootstrap.min.css"> -->
+    
+    <!--====== Style CSS ======-->
+    <link rel="stylesheet" href="../user/assets/css/style.css">
+
+
 <style>
+  body {
+    background-color: #F6F7FB;
+  }
     .banner_bg {
         background-image: url(../user/images/v1_17125.png);
     }
@@ -24,17 +41,36 @@
   /* width: auto;  */
   width: 546px;
   max-height: 451px;
+  margin: 0;
 }
 
 .banner_bg {
-  width: 100%;
+  height: 100%;
   float: left;
   /* background-image: url(../user/images/v1_17125.png); */
   height: auto;
   background-size: 100%;
   background-repeat: no-repeat;
 }
+@media (max-width: 768px) and (min-width: 370px)
+{
+.hero {
+  padding: 0px;
+  margin: 0px;
+}
+  .banner_bg {
+    background-repeat:no-repeat;
+-webkit-background-size:cover;
+-moz-background-size:cover;
+-o-background-size:cover;
+background-size:cover;
+background-position:center;
+  }
+  .banner_bg img {
 
+  }
+
+}
 #headerTitle {
   font-family: 'TT Norms Pro Black';
   font-weight: 900;
@@ -50,13 +86,12 @@
   color: #fff;
   text-transform: lowercase;
 }
-
 #headerText:first-letter {
   text-transform: uppercase;
 }
 
 #headerBtn {
-  font-family: 'TT Norms Pro Bold';
+  font-family: 'TT Norms Pro';
   font-weight: bold;
   font-size: 32px;
   font-style: normal;
@@ -64,31 +99,79 @@
   border-radius: 10px;
 }
 
+@media (max-width: 768px) and (min-width: 370px)
+{
+  #headerTitle {
+  font-family: 'TT Norms Pro Black';
+  font-weight: 900;
+  font-size: 35px;
+  font-style: normal;
+}
+
+#headerText {
+  font-family: 'TT Norms Pro Regular';
+  font-weight: bold;
+  font-size: 20px;
+  font-style: normal;
+  color: #fff;
+  text-transform: lowercase;
+}
+
+
+#headerBtn {
+  font-family: 'TT Norms Pro';
+  font-weight: bold;
+  font-size: 20px;
+  font-style: normal;
+  color: #fff;
+  border-radius: 10px;
+}
+
+}
+
 .cellContainer {
   width: 546px;
   margin: auto;
+  padding: 0px;
+  box-shadow: 5px 14px 22px #eceff0; 
+    margin-bottom: 30px;
+  padding-top: 10px;
+}
+.container-fluid {
+  padding-left:50px; 
+  padding-right:50px;
 }
 
-.earn .p {
-  padding-top: 100px;
-  vertical-align: middle;
+@media (max-width: 768px) and (min-width: 370px)
+{
+  .cellContainer {
   width: 100%;
-  justify-content: center;
+  padding-left: 3px;
+  }
+  .container-fluid {
+  padding-left:10px; 
+  padding-right:10px;
+  }
+  .positionAnchor .btn {
+    width: 95%;
+    padding-top: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+
 }
 
 ::-webkit-scrollbar {
-  overflow-y: hidden;
+  overflow: hidden;
   width: 15px;
 }
 
 ::-webkit-scrollbar-button:single-button {
-  background: #ccc;
+  background: transparent;
 
   display: block;
 
-  overflow-y: hidden;
-
-  background: url('user/images/Forward.svg');
+  overflow: hidden;
 }
 
 ::-webkit-scrollbar-button:single-button:horizontal:decrement {
@@ -100,15 +183,20 @@
   background: transparent;
 }
 
-::-webkit-scrollbar-thumb {
-  -webkit-border-radius: 10px;
-  border-radius: 10px;
-  background: url('http://cdn.css-tricks.com/wp-content/themes/CSS-Tricks-10/images/header-demos.jpg');
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
-  background: transparent;
-  overflow-y: hidden;
+.scoll-pane {
+    width: 100%;
+    height: auto;
+    overflow: auto;
+    outline: none;
+    overflow-y: hidden;
+    padding-bottom: 15px;
+    -ms-overflow-style: scroll;  // IE 10+
+    scrollbar-width: none;  // Firefox
 }
 
+  .scoll-pane::-webkit-scrollbar { 
+  display: none;  // Safari and Chrome
+  }
 </style>
 
 <body>
@@ -117,7 +205,7 @@
         @auth
         @else
     <!-- Start Hero Section -->
-    <div class="hero banner_bg layer">
+    <div class="hero banner_bg layerd">
 
         <div class="container-fluid">
             <div class="row justify-content-between">
@@ -141,11 +229,14 @@
 
         @if(Route::has('login'))
         @auth
+       <div class="carousel" id="carouselThree"  data-ride="carousel">
 
-        <div class="outer">
-            <div class="container-fluid text-center" style="padding-left:50px; padding-right:50px">
 
-                <div class="row">
+          <div class="outer  scroll-pane" id="container">
+            <div class="container-fluid text-center">
+
+                <div class="row" >
+
                     <ul>
                         @foreach($package as $offer)
                         <!-- Start Column  -->
@@ -172,14 +263,22 @@
                     </ul>
 
                 </div>
-
             </div>
+            <a class="carousel-control-prev" id="slideBack" href="#carouselThree" style="text-decoration:none;" role="button" data-slide="prev">
+                <i class="lni lni-arrow-left"></i>
+            </a>
+            <a class="carousel-control-next" id="slide" href="#carouselThree" style="text-decoration:none;" role="button" data-slide="next">
+                <i class="lni lni-arrow-right"></i>
+            </a>
+ 
         </div>
+
+       </div>
         @include('user.earning')
 
         @else
 
-        <div class="container-fluid text-center" style="padding-left:50px; padding-right:50px">
+        <div class="container-fluid text-center">
 
             <div class="row">
                 @foreach($package as $offer)
@@ -193,7 +292,7 @@
                                 <p style="font-size:20px">{{$offer->slogan}}</p>
                             </span>
                             <strong class="product-price">{{number_format($offer->unit_price,2)}} {{$offer->currency}}</strong>
-                            <p><i class="fa fa-minus-circle" style='color: white'></i>{{$offer->discount}}% lower than last month</p>
+                            <p><i class="fa fa-minus-circle" style='color: white'></i> {{$offer->discount}}% lower than last month</p>
 
                             <p><a class="btn btn-secondary buy_now" href="{{ url('product', $offer->id) }}">Buy Now</a></p>
 
@@ -210,6 +309,55 @@
     </div>
     <!-- End Product Section -->
 
-</body>
+
+    <!--====== Jquery js ======-->
+    <script src="../user/assets/js/vendor/jquery-1.12.4.min.js"></script>
+    <!-- <script src="../user/assets/js/vendor/modernizr-3.7.1.min.js"></script> -->
+    
+    <!--====== Bootstrap js ======-->
+    <!-- <script src="../user/assets/js/popper.min.js"></script> -->
+    <!-- <script src="../user/assets/js/bootstrap.min.js"></script> -->
+    
+    <!--====== Slick js ======-->
+    <!-- <script src="../user/assets/js/slick.min.js"></script> -->
+    
+    
+    <!--====== Scrolling Nav js ======-->
+    <!-- <script src="../user/assets/js/jquery.easing.min.js"></script>
+    <script src="../user/assets/js/scrolling-nav.js"></script> -->
+    
+    <!--====== Main js ======-->
+    <!-- <script src="../user/assets/js/main.js"></script> -->
+
+  </body>
 
 </html>
+
+<script>
+  var button = document.getElementById('slide');
+button.onclick = function () {
+    var container = document.getElementById('container');
+    sideScroll(container,'right',25,100,10);
+};
+
+var back = document.getElementById('slideBack');
+back.onclick = function () {
+    var container = document.getElementById('container');
+    sideScroll(container,'left',25,100,10);
+};
+
+function sideScroll(element,direction,speed,distance,step){
+    scrollAmount = 0;
+    var slideTimer = setInterval(function(){
+        if(direction == 'left'){
+            element.scrollLeft -= step;
+        } else {
+            element.scrollLeft += step;
+        }
+        scrollAmount += step;
+        if(scrollAmount >= distance){
+            window.clearInterval(slideTimer);
+        }
+    }, speed);
+}
+</script>

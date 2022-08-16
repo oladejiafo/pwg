@@ -67,3 +67,7 @@ Route::post('reset/password', [ResetPasswordController::class,'updatePassword'])
 
 
 Route::get('/payment', [HomeController::class,'payment'])->name('payment');
+
+// Applicant
+
+// Route::get('applicant', [HomeController::class,'applicant'])->name('applicant');

@@ -1,10 +1,36 @@
+Skip to content
+Search or jump to…
+Pull requests
+Issues
+Marketplace
+Explore
+ 
+@shamsi253 
+oladejiafo
+/
+PWG_Client
+Private
+Code
+Issues
+Pull requests
+Actions
+Projects
+Security
+Insights
+PWG_Client/public/user/css/style.css
+@oladejiafo
+oladejiafo Most Recent updates commit
+Latest commit 8839377 2 hours ago
+ History
+ 2 contributors
+@oladejiafo@shamsi253
+1308 lines (1096 sloc)  22.8 KB
+
 
 body {
   overflow-x: hidden;
   position: relative;
-}
 
-body {
   font-family: "TT Norms Pro";
   font-weight: 400;
   line-height: 28px;
@@ -13,6 +39,21 @@ body {
   background-color: #F6F7FB;
 }
 
+.checkcolor {
+  accent-color: #f9bf29;
+}
+
+select,
+textarea,
+input [type="text"],
+input [type="number"],
+input [type="password"],
+input [type="date"],
+input [type="email"],
+input [type="phone"]
+{
+  padding: 10px;
+}
 a {
   text-decoration: none;
   -webkit-transition: .3s all ease;
@@ -132,16 +173,25 @@ a.more {
 }
 
 .hero {
-  background: rgb(31, 116, 212);
+  /* background: rgb(31, 116, 212); */
 
   padding: calc(4rem - 30px) 0 0rem 0;
 
   margin-bottom: 40px;
-  min-height: 700px;
+  max-height: 700px;
+}
+
+@media (min-width: 375px) and (max-width:768px) {
+  .hero {
+    height: 100%;
+    margin-bottom: 20px;
+    padding: calc(4rem - 30px) 0 4rem 0;
+  }
 }
 
 @media (min-width: 768px) {
   .hero {
+    height: auto;
     padding: calc(4rem - 30px) 0 4rem 0;
   }
 }
@@ -156,6 +206,15 @@ a.more {
   position: relative;
   margin-left: 70px;
   z-index: 4;
+}
+
+@media (min-width: 375px) and (max-width:768px) {
+  .hero .intro-excerpt {
+  position: relative;
+  width:90%;
+  margin-left: 0px;
+  z-index: 4;
+  }
 }
 
 @media (min-width: 992px) {
@@ -257,9 +316,12 @@ a.more {
 }
 
 .btn.btn-primary {
+  color: #000;
   background: none;
   border-color: #C4C6CD;
   border-radius: 10px;
+  border-width: thin;
+  border-style: solid;
 }
 
 .btn.btn-primary:hover {
@@ -272,7 +334,8 @@ a.more {
   color: #2f2f2f;
   background: none;
   border-color: #000;
-  width: 250px;
+  border-width: thin;
+  width: 50%;
   font-size: 20px;
   border-radius: 10px;
 }
@@ -283,6 +346,19 @@ a.more {
   border-color: hsl(51, 94%, 50%);
   color: #000;
 }
+@media only screen and (max-width: 768px) and (min-width: 370px)
+{
+ .btn.btn-secondary {
+    color: #2f2f2f;
+    background: none;
+    border-color: #000;
+    width: 100%;
+    height: 50px;
+    font-size: 20px;
+    border-radius: 10px;
+  }
+}
+
 
 .btn.btn-hero {
   color: #fff;
@@ -336,17 +412,99 @@ a.more {
   padding: 25px 50px 25px 50px;
 }
 
+@media only screen and (max-width: 768px) and (min-width: 370px)
+{
+  .product-section 
+  {
+    padding: 0px 0px 0px 0px;
+  }
+
+}
+
 .product-section .product-item {
   text-align: center;
   height: 651px;
   text-decoration: none;
-  box-shadow: 0px 0px 0px 1px#e0d8d881;
+
   display: block;
   position: relative;
-  margin-bottom: 50px;
+  /* margin-bottom: 50px; */
   cursor: pointer;
-  border-style: solid 1px;
+  /* border-style: solid 1px; */
 }
+
+
+.product-section .product-item .text h3 {
+  font-size: 25px;
+  margin-bottom: 0.5rem;
+  font-family: "TT Norms Pro";
+  font-weight: bold;
+  font-style: normal;
+}
+
+.product-section .product-item  table {
+  width:540px;
+}
+.product-section .product-item  table td .pie {
+  width:100px;
+  height: 100px;
+}
+.product-section .product-item  table td .line {
+  width:120px;
+  height: 10px;
+}
+.product-section .product-item  table td .prices {
+  font-size: 30px;
+}
+
+.product-section .product-item  table td .pays {
+  font-size: 17px;
+}
+
+@media only screen and (max-width: 768px) and (min-width: 370px)
+{
+
+  .product-section .product-item {
+    margin: 0;
+    padding-right: -20px;
+  }
+  .product-section .product-item .text {
+    padding-top: 30px;
+  }
+
+  .product-section .product-item .text h1 {
+    padding-top: 40px;
+    margin-bottom: 0.5rem;
+    font-family: "TT Norms Pro";
+    font-weight: bold;
+    font-style: normal;
+
+  }
+
+  .product-section .product-item  h1 {
+    margin-top:10px;
+  }
+
+  .product-section .product-item  table {
+    width:100%;
+  }
+
+  .product-section .product-item  table td .prices {
+    font-size: 20px;
+  }
+  .product-section .product-item  table td .pays {
+    font-size: 11px;
+  }
+  .product-section .product-item  table td .pie {
+    width:100px;
+    height: 100px;
+  }
+  .product-section .product-item  table td .line {
+    width:70px;
+    height: 10px;
+  }
+}
+
 
 .product-section .outer {
   width: 100%;
@@ -367,6 +525,13 @@ a.more {
   white-space: normal;
 }
 
+@media (min-width:375px) and (max-width:768px){
+  .product-section .outer li {
+    margin-right: 20px;
+    width:100%;
+  
+  }
+}
 
 .product-section .product-item .bottom {
   position: absolute;
@@ -378,8 +543,8 @@ a.more {
 }
 
 .product-section .product-item .positionAnchor {
-  position: relative;
-  display: inline-block;
+  position: relative; 
+  display: inline-block; 
 
 }
 
@@ -392,13 +557,21 @@ a.more {
   transition: .3s all ease;
 }
 
+@media (min-width:375px) and (max-width:768px){
+  
+.product-section .product-item {
+  margin-top: 30px;
+  margin-left: 10px;
+}
+}
+
 .product-section .product-item .product-title {
   text-transform: uppercase;
 }
 
 .product-section .product-item h3 {
   font-weight: 600;
-  font-size: 16px;
+  font-size: 27px;
 }
 
 .product-section .product-item strong {
@@ -1005,18 +1178,22 @@ a.more {
 
 .form-control::-webkit-input-placeholder {
   font-size: 14px;
+  text-align: left;
 }
 
 .form-control::-moz-placeholder {
   font-size: 14px;
+  text-align: left;
 }
 
 .form-control:-ms-input-placeholder {
   font-size: 14px;
+  text-align: left;
 }
 
 .form-control:-moz-placeholder {
   font-size: 14px;
+  text-align: left;
 }
 
 .service {
@@ -1116,48 +1293,35 @@ textarea {
 /***************iPhone Portrait**************/
 /*************************iPad Portrait***************/
 /* @media only screen and (max-width: 479px) and (min-width: 320px) {
-
   .hero, .layer {
     min-height: 0px;
   }
-
   .hero .intro-excerpt {
     margin-left: 11px;
     margin-top: 10px;
   }
-
   #headerTitle {
     font-size: 26px;
   }
-
   #headerText {
     font-size: 14px;
   }
-
   #headerBtn {
     width: 217px;
   }
-
   #headerBtn {
     padding: 0px;
   }
-
   .hero  {
     padding: 0px;
   }
-
   .product-section,
   .cellContainer {
     padding: 0px;
     margin: 0;
   }
-
   .positionAnchor img {
     /* width: 100%; */
   }
 
 } */
-
-@media only screen and (max-width: 667px) and (min-width: 375px) {
- 
-}
