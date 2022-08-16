@@ -52,6 +52,7 @@
         line-height: 25px;
     }
 
+    .card .card-body button,
     .card .card-body a {
         font-weight: bold;
         font-size: 30px;
@@ -61,7 +62,6 @@
         padding-bottom: 1px;
         color: #000;
         background-color: none;
-
     }
 
 @media (min-width:375px) and (max-width:678px){
@@ -95,12 +95,11 @@
 
     <!-- Start Product Section -->
     <div class="paid-section">
-
      @if(Route::has('login'))
 
           @foreach($paid as $pd)
           
-             @if( $pd->product_payment_id > 0)
+             @if( $pd->product_id > 0)
 
               @include('user.paid')
               @include('user.paid_details')

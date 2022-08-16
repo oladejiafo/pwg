@@ -105,9 +105,12 @@ body {
     font-size: 20px;
     list-style-type: disc;
   }
- .btn {
+ .product-section .btn {
   height: 60px;
-  width: 50%; max-width: 100%;
+  width: 45%; max-width: 100%;
+  margin-left: 5px;
+  font-weight: bold;
+  font-size: 25px;
  }
   .text {
     /* width:90%; */
@@ -189,6 +192,13 @@ body {
     font-size: 18px;
   }
 
+  .product-section .btn {
+  height: 50px;
+  margin-left: 5px;
+  font-weight: bold;
+  font-size: 65%;
+ }
+
   }
   @media (max-width: 991.98px) {
     .text {
@@ -202,6 +212,14 @@ body {
       height: 300px;
     }
   }
+ @media (min-width: 768px) AND (max-width: 991px){
+  .product-section .btn {
+  height: 50px;
+  margin-left: 5px;
+  font-weight: bold;
+  font-size: 65%;
+ }
+ } 
 /* @media (max-width:375) {
   img {
   width: 100%;
@@ -315,19 +333,19 @@ body {
             @endif
           </ul>
           </p>
+
           @if(Route::has('login'))
-          @auth
-          <form action="{{ url('referal_details', $data->id) }}">
-            @else
+           @auth
+            <form action="{{ url('referal_details', $data->id) }}" method="GET">
+          @else
             <form action="{{ url('login') }}">
-              @endauth
-              @endif
-              <p><input type="checkbox" class="checkcolor" id="agree" style="font-size:25px;transform: scale(1.8); " required> &nbsp; By checking this box you accept our Terms & Conditions</p>
-
-              <p><button class="btn btn-secondary" id="buy">Purchase Now</button></p>
-
+           @endauth
+          @endif
+          <p><input type="checkbox" class="checkcolor" id="agree" style="font-size:25px;transform: scale(1.8); " required=""> &nbsp; By checking this box you accept our Terms & Conditions</p>
+              <p><button class="btn btn-secondary" id="buy" value="1" name="payall">FULL PAYMENT</button>
+                 <button class="btn btn-secondary" id="buy" value="0" name="payall">PARTIAL PAYMENT</button></p>
             </form>
-
+            <p style="margin-left:2px;font-weight:bold">Get 5% discount on Full Payment</p>
         </div>
 
       </div>

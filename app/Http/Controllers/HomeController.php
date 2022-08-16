@@ -259,18 +259,29 @@ class HomeController extends Controller
             // ->where('products.id', '=', $request->pid)
             // ->groupBy('product_payments.id')
             // ->get();
-
             return view('user.payment-form', compact('data', 'pdet', 'pays', 'payall'));
         } else {
             return redirect()->back()->with('message', 'You are not authorized');
         }
     }
 
+    /**
+     * 
+     * 
+     *Redirest to step 3 of Applicant details
+     * 
+     */
     public function applicant()
     {
         return view('user.applicant');
     }
 
+    /**
+     * Store applicant details at step 3
+     * @param Request
+     *
+     * @return void
+     */
     public function applicantDetails(Request $request)
     {
         $request->validate([

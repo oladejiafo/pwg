@@ -29,6 +29,62 @@
         </div>
         <form>
             @csrf
+
+            @foreach(($pays ? $pays : array()) as $pd)
+
+            @foreach($pdet as $index => $det)
+
+            <?php 
+             $pp = $pd->product_payment_id;
+           ?>
+
+            @if($pd->product_payment_id != $det->id)
+            @if($index == $pp)
+
+            <?php
+/*
+if($pp == 0 || $pp==null) {
+    echo $total = $data->unit_price;
+ }
+ else if($pp == 1) {
+    echo $total = $data->unit_price - $pd->total;
+ }
+ else if($pp == 2) {
+    echo $total = $det->amount;
+ }
+*/
+
+if ($payall ==0) {
+    $whichPayment =  $det->payment;
+    $payNow = $det->amount;
+    // $vatPercent = '5%';
+    // $vat = ($det->amount * 5) / 100;
+    // $discountPercent = $data->discount . '%';
+    // $discount = ($det->amount * $data->discount / 100);
+    // $totalPay = ($payNow + $vat) - $discount;   
+} else {
+     if($pp == 0 || $pp==null) {
+        $payNow = $data->unit_price;
+     }
+     else if($pp == 1) {
+        $payNow = $data->unit_price - $pd->total;
+     }
+     else if($pp == 2) {
+        $payNow = $det->amount;
+     }
+
+     $whichPayment =  "Full Payment";
+}
+$vatPercent = '5%';
+$vat = ($payNow * 5) / 100;
+$discountPercent = $data->discount . '%';
+$discount = ($payNow * $data->discount / 100);
+$totalPay = ($payNow + $vat) - $discount;   
+            ?>
+            @endif
+
+            @endif
+            @endforeach
             <div class="top-head">
                 <input type="hidden" name="pid" value="{{$data->id}}">
                 <input type="hidden" name="uid" value="{{Auth::user()->id}}">
@@ -40,9 +96,9 @@
                     <label for="rdo2" class="radio-label"><span class="radio-border"></span> <img src="images/payment_icons _Visa_Logo.svg" alt="Option 2" class="radioImage" height="40px" width="40px"> </label>
                 </div>
                 <div class="rightside">
-                    <p>Total Amount:</p>
+                    <p>{{ $whichPayment}} Amount:</p>
                     <div class="amount">
-                        <p>AED <span>{{ number_format($data->unit_price) }}</span></p>
+                        <p>AED <span>{{ number_format($payNow) }}</span></p>
                     </div>
                 </div>
             </div>
@@ -50,15 +106,15 @@
 
                 <div class="fieldset">
                     <div class="form-group">
-                        <input type="number" placeholder="Card Number" name="card_number" value="" required>
+                        <input type="number" placeholder="Card Number" name="card_number" value="{{ old('card_number') }}" required>
                     </div>
                     <div class="form-group">
-                        <input class="b" type="text" placeholder="Cardholder full name" name="card_holder_name" value="" required>
+                        <input class="b" type="text" placeholder="Cardholder full name" name="card_holder_name" value="{{ old('card_holder_name') }}" required>
                     </div>
                 </div>
                 <div class="fieldset">
                     <div class="form-group">
-                        <select name="month" class="input-field options" name="month" required>
+                        <select name="month" class="input-field options" name="month" value="{{ old('month') }}" required>
                             <option selected disabled>Month</option>
                             <option>01</option>
                             <option>02</option>
@@ -75,76 +131,61 @@
                         </select>
                     </div>
                     <div class="cvv">
-                        <input type="number" placeholder="Year" name="year" required>
+                        <input type="number" placeholder="Year" name="year" value="{{ old('year') }}" required>
                     </div>
                     <div class="cvv">
-                        <input type="number" placeholder="CVV" name=cvv required>
+                        <input type="number" placeholder="CVV" name=cvv value="{{ old('cvv') }}" required>
                     </div>
                 </div>
 
                 <div class="total">
                     <div class="total-sec">
                         <div class="left-section">
-                            <p>Subtotal (first payment)</p>
+                            <p>Subtotal ({{ $whichPayment }})</p>
                         </div>
                         <div class="price">
-                            <p> @foreach($pdet as $det) @if ($det == reset($pdet)) last Item: @endif {{ number_format($det->amount,2) }} @endforeach</p>
+                            <p>{{ number_format($payNow,2) }}</p>
                         </div>
                     </div>
                     <div class="total-sec">
                         <div class="left-section">
-                            <p>VAT</p>
+                            <p>VAT ({{ $vatPercent}})</p>
                         </div>
                         <div class="price">
-                            <p>50.00</p>
+                            <p> {{ number_format($vat,2) }}</p>
                         </div>
                     </div>
                     <div class="total-sec">
                         <div class="left-section">
-                            <p>Discount</p>
+                            <p>Discount ({{$discountPercent}})</p>
                         </div>
                         <div class="price">
-                            <p>200.00</p>
+                            <p>{{ number_format($discount,2) }}</p>
                         </div>
                     </div>
                 </div>
                 <div class="gtotal">
                     <div class="total-sec">
                         <div class="left-section">
-                            <p>TOTAL AMOUNT</p>
+                            <p><b>TOTAL AMOUNT</b></p>
                         </div>
                         <div class="price">
-                            <p>850.00</p>
+                            <p><b>{{ number_format($totalPay,2) }}</b></p>
                         </div>
                     </div>
                 </div>
+                @endforeach
+
                 <div class="inputs check-box">
-                    <input type="checkbox" class="checkcolor">
+                    <input type="checkbox" name="save_card" value="{{ old('save_card') }}" class="checkcolor">
                     <p class="btt">Save my details for future payment & Automatic deductions</p>
                 </div>
                 <button type="submit" class="btn btn-primary purchase-now">PURCHASE NOW</button>
 
-                @foreach($paid as $pd)
-
-                @foreach($pdet as $index => $det)
-
-                @if( $pd->product_payment_id != $det->id)
-                
-                
-                @if($index ==1)
-                {{ number_format($det->amount,2) }}
-                @endif
-
-
-                @endif
-
-                @endforeach
-                @endforeach
         </form>
     </div>
     </form>
 </div>
 </div>
-
 
 @endsection
