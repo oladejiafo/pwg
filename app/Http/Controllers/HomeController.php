@@ -262,5 +262,6 @@ class HomeController extends Controller
         } else {
             return redirect()->back()->with('message', 'You are not authorized');
         }
+    
     }
 }
