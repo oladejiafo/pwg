@@ -64,3 +64,8 @@ Route::post('reset/forgot/password', [ResetPasswordController::class,'forgotPass
 
 Route::get('payment_form/{id}',[HomeController::class,'payment'])->name('payment');
 
+// Applicant
+
+Route::get('applicant', [HomeController::class,'applicant'])->name('applicant');
+Route::post('store/applicant/details', [HomeController::class,'applicantDetails'])->name('store.applicant.details');
+
