@@ -203,7 +203,6 @@ class HomeController extends Controller
             return redirect()->back()->with('message', 'You are not authorized');
         }
     }
-
     public function payment(Request $request)
     {
         if (Auth::id()) {
@@ -225,7 +224,7 @@ class HomeController extends Controller
 
             $pdet = DB::table('product_payments')
                 ->where('product_id', '=', $request->pid)
-                ->groupBy('product_payments.id')
+                // ->groupBy('product_payments.id')
                 ->get();
 
             return view('user.payment-form', compact('data', 'pdet', 'pays','payall'));
