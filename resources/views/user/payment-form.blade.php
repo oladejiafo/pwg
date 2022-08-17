@@ -70,7 +70,7 @@ $totalPay = ($payNow + $vat) - $discount;
             @endforeach
             <div class="top-head">
                 <input type="hidden" name="pid" value="{{$data->id}}">
-                <input type="hidden" name="ppid" value="{{$det->id}}">
+                <input type="hidden" name="ppid" value="{{$pd->product_payment_id}}">
                 <input type="hidden" name="uid" value="{{Auth::user()->id}}">
                 <div class="left-input">
                     <!-- <input type=radio id="rdo1" checked class="radio-input" name="card_type"> -->

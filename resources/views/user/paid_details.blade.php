@@ -74,7 +74,7 @@
 
                                             <a class="btn btn-secondary" style="font-family: 'TT Norms Pro';font-weight:700" href="#">Get Reciept</a>
                                             @else
-                                            <form action="{{ route('payment') }}" method="GET">
+                                            <form action="{{ route('payment',$pp->id) }}" method="GET">
                         <input type="hidden" name="pid" value="{{$pp->id}}">
                         <button class="btn btn-secondary" style="font-weight:700">Pay Now</button>
                         </form>

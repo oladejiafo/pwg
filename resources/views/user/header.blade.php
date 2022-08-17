@@ -171,6 +171,10 @@ width: auto;
   margin: 0 3px;
 }
 }
+
+.container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+    max-width: 100% !important;
+}
 </style>
 
 </head>
