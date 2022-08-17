@@ -5,23 +5,36 @@
 @section('content')
     <div class="container">
         <div class="col-12">
-            <div class="row wizard">
-                <div class="row bg-white">
+            <div class="row wizard bg-white">
+                <div class="row">
                     <div class="tabs d-flex justify-content-center">
-                        <div class="round1 p-3 m-3">1</div>
+                        <div class="wrapper">
+                            <a href=" " ><div class="round-completed round1 p-3 m-2">1</div></a>
+                            <div class="round-title">Refferal <br> Details</div>
+                        </div>
                         <div class="linear"></div>
-                        <div class="round2 p-3 m-3">2</div>
+                        <div class="wrapper">
+                            <a href=" " ><div class="round-completed round2 p-3 m-2">2</div></a>
+                            <div class="col-2 round-title">Payment <br> Details</div>
+                        </div>
                         <div class="linear"></div>
-                        <div class="round3 p-3 m-3">3</div>
+                        <div class="wrapper">
+                            <a href="{{route('applicant')}}" ><div class="round-active  round3 p-3 m-2">3</div></a>
+                            <div class="col-2 round-title">Application <br> Details</div>
+                        </div>
+                        <div class="linear"></div>
+                        <div class="wrapper">
+                            <a href=" " ><div class="round4 p-3 m-2">4</div></a>
+                            <div class="col-2 round-title">Applicant <br> Details</div>
+                        </div>
+                        <div class="linear"></div>
+                        <div class="wrapper">
+                            <a href=" " ><div class="round5 p-3 m-2">5</div></a>
+                            <div class="col-2 round-title">Application <br> Review</div>
+                        </div>
                     </div>
                 </div>
-                <div class="row bg-white">
-                    <div class="col-4 round-title">Application Details</div>
-                    <div class="col-4 round-title">Applicant's Details</div>
-                    <div class="col-4 round-title">Confirmation</div>
-                </div>
             </div>
-            <div></div>
             <div class="row">
                 <div class="applicant-sec">
                     <div class="heading">
@@ -86,7 +99,7 @@
                                 </div>
                             </div>
                             <div class="form-group row mt-4">
-                                <div class="col-lg-8 col-md-8 offset-lg-2 offset-md-2 col-sm-12">
+                                <div class="col-lg-6 col-md-8 offset-lg-3 offset-md-2 col-sm-12">
                                     <select class="form-select form-control" name="embassy_country" placeholder="Applied Country *" value="{{old('embassy_country')}}"  required>
                                         <option selected disabled>Select Country</option>
                                         <option value="Afghanistan">Afghanistan</option>
@@ -317,7 +330,6 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js" integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
-<script type="text/javascript" src="js/bootstrap-filestyle.min.js"> </script>
 
 <script>
     const phoneInputField = document.querySelector("#phone");
@@ -328,14 +340,31 @@
             "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
     });
     function getIp(callback) {
-        fetch('https://ipapi.co/json/', { mode: 'no-cors' })
-        .then((resp) => resp.json())
-        .catch((resp) => {
-            return {
-            country: 'ae',
-            };
+        var api_key = 'hk9woa8o8wuag4hd';
+        fetch('https://api.ipregistry.co/?key=tryout')
+        .then(function (response) {
+            return response.json();
         })
-        .then((resp) => callback(resp.country));
+        .catch((resp) => {
+                return {
+                    country: 'ae',
+                };
+            })
+        // .then((payload) => callback(payload.location.country.code))
+        .then((payload) => callback('ae'))
+        .then(function (payload) {
+            // return payload.location.country.code;
+            return 'ae';
+        });
+        // $.getJSON("https://api.ipify.org/?format=json", function(e) {
+        //     ip = e.ip;
+        // //     var ipInfo = request_ipwhois(ip)
+        //     console.log(ip);
+        //     $.getJSON("https://cors-anywhere.herokuapp.com/http://www.geoplugin.net/json.gp?ip=" + ip, function(response) {
+        //         console.log(response.geoplugin_countryCode);
+
+        //     });
+        // });
     }
 
     $(document).on('change','.up', function(){

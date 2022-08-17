@@ -1273,36 +1273,42 @@ textarea {
 
 .round1,
 .round2,
-.round3 {
-  width: 80px;
-  height: 80px;
-  /* border: 1px solid black; */
+.round3,
+.round4,
+.round5 {
+  width: 60px;
+  height: 60px;
   border-radius: 100px;
-  font-weight: bolder;
-  font-size: 35px;
+  font-weight: bold;
+  font-size: 33px;
   text-align: center;
   cursor: pointer;
-  background: white
+  background: #f0f3f4;
+  color: #a7a7aa;
 }
 
-.round1:hover,
-.round2:hover,
-.round3:hover {
-  background: black;
-  color: white;
+.round-active {
+  background: #facb08;
+  color: #181828;
 }
+
+.round-completed {
+  background: #facb08;
+  color: #ffffff;
+}
+
 
 .tabs {
   display: flex;
   align-items: center;
-  margin-top: 9rem;
+  margin-top: 5rem;
 
 }
 
 .linear {
-  border: 0.25px solid #babcc1;
-  width: 300px;
-
+  border: 0.25px solid #f0f3f4;
+  width: 90px;
+  margin-top: -65px;
 }
 
 .content-box {
@@ -1315,7 +1321,7 @@ textarea {
 .round-title {
   text-align: center;
   margin-bottom: 1rem;
-  font-size: 25px;
+  font-size: 16px;
   font-weight: 300;
   font-family: "TT Norms Pro";
 }
@@ -1329,7 +1335,7 @@ textarea {
   background-color: #ffffff;
   margin-bottom: 420px;
   color: #636466;
-  padding: 70px 100px 70px 100px;
+  padding: 40px 100px 70px 100px;
 }
 
 .applicant-sec h3 {

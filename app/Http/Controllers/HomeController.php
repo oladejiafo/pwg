@@ -206,12 +206,6 @@ class HomeController extends Controller
     }
 
 
-    // public function paymentx()
-    // {
-    //     return view('user.payment-form');
-    // }
-
-
     public function payment(Request $request)
     {
         if (Auth::id()) {
@@ -241,7 +235,7 @@ class HomeController extends Controller
 
             $pdet = DB::table('product_payments')
                 ->where('product_id', '=', $request->pid)
-                ->groupBy('product_payments.id')
+                // ->groupBy('product_payments.id')
                 ->get();
 
             // $paid = DB::table('applicants')
@@ -273,7 +267,8 @@ class HomeController extends Controller
      */
     public function applicant()
     {
-        return view('user.applicant');
+        $step = 3 ;
+        return view('user.applicant', compact('step'));
     }
 
     /**
