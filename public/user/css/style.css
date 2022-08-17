@@ -153,7 +153,7 @@ a.more {
   max-height: 700px;
 }
 
-@media (min-width: 375px) and (max-width:768px) {
+@media (min-width: 260px) and (max-width:768px) {
   .hero {
     height: 100%;
     margin-bottom: 20px;
@@ -180,7 +180,7 @@ a.more {
   z-index: 4;
 }
 
-@media (min-width: 375px) and (max-width:768px) {
+@media (min-width: 260px) and (max-width:768px) {
   .hero .intro-excerpt {
   position: relative;
   width:90%;
@@ -370,6 +370,7 @@ a.more {
   background-image: url(../user/images/v1_17125.png);
   background-color: rgba(6, 45, 83, 0.7);
   height: auto;
+  padding-top: 30px;
   background-size: 100%;
   background-repeat: no-repeat;
 }
@@ -393,7 +394,16 @@ a.more {
 
 }
 
+@media (min-width:768px) and (max-width:1024px) {
+  .banner_bg {
+    width: 100%;
+    min-height: 400px;
+  }
+  
+}
+
 .product-section .product-item {
+background-color: #fff;
   text-align: center;
   height: 651px;
   text-decoration: none;
@@ -515,6 +525,7 @@ a.more {
 }
 
 .product-section .product-item .positionAnchor {
+  background-color: #fff;
   position: relative; 
   display: inline-block; 
 
@@ -533,7 +544,7 @@ a.more {
   
 .product-section .product-item {
   margin-top: 30px;
-  margin-left: 10px;
+  margin-left: 0px;
 }
 }
 
@@ -802,7 +813,7 @@ a.more {
   content: "";
   position: absolute;
   border-radius: 20px;
-  background: #dce5e4;
+  background: #fff;
   width: 98px;
   height: 98px;
   top: 50%;

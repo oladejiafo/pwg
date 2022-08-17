@@ -29,6 +29,7 @@
   }
     .banner_bg {
         background-image: url(../user/images/v1_17125.png);
+        padding-top: 60px; 
     }
 
     #headerBtn {
@@ -51,8 +52,9 @@
   height: auto;
   background-size: 100%;
   background-repeat: no-repeat;
+  padding-top: 60px; 
 }
-@media (max-width: 768px) and (min-width: 370px)
+@media (min-width:260px) and (max-width: 768px)
 {
 .hero {
   padding: 0px;
@@ -66,9 +68,31 @@
 background-size:cover;
 background-position:center;
   }
-  .banner_bg img {
+  .home_img {
+  width: 100%;
+}
 
+}
+
+@media (min-width: 768px) and (max-width: 1024px)
+{
+.hero {
+  padding: 0px;
+  margin: 0px;
+}
+  .banner_bg {
+   padding-top: 60px; 
+    background-repeat:no-repeat;
+-webkit-background-size:cover;
+-moz-background-size:cover;
+-o-background-size:cover;
+background-size:cover;
+background-position:center;
   }
+  .home_img {
+    /* min-width:769px; */
+  width: 100%;
+}
 
 }
 #headerTitle {
@@ -99,7 +123,13 @@ background-position:center;
   border-radius: 10px;
 }
 
-@media (max-width: 768px) and (min-width: 370px)
+@media (min-width:280px) and (max-width:653px) {
+  #headerBtn {
+
+    width: 250px;
+  }
+}
+@media (max-width: 768px) and (min-width: 260px)
 {
   #headerTitle {
   font-family: 'TT Norms Pro Black';
@@ -142,7 +172,7 @@ background-position:center;
   padding-right:50px;
 }
 
-@media (max-width: 768px) and (min-width: 370px)
+@media (max-width: 768px) and (min-width: 260px)
 {
   .cellContainer {
   width: 100%;
@@ -153,7 +183,7 @@ background-position:center;
   padding-right:10px;
   }
   .positionAnchor .btn {
-    width: 95%;
+    width: 21.5rem;
     padding-top: 10px;
     margin-left: 5px;
     margin-right: 5px;
@@ -205,7 +235,7 @@ background-position:center;
         @auth
         @else
     <!-- Start Hero Section -->
-    <div class="hero banner_bg layerd">
+    <div class="hero banner_bg layerd" style="        padding-top: 60px; ">
 
         <div class="container-fluid">
             <div class="row justify-content-between">
