@@ -45,7 +45,7 @@ Route::get('/product/{id}',[HomeController::class,'product']);
 
 Route::get('append_signature/{id}',[HomeController::class,'signature'])->name('signature');
 Route::get('signature_success/{id}',[HomeController::class,'signature_success'])->name('signature_success');
-Route::get('/referal_details/{id}',[HomeController::class,'referal']);
+Route::get('/referal_details/{id}',[HomeController::class,'referal'])->name('referal');
 
 Route::post('/upload_signature', [HomeController::class,'upload']);
 Route::post('/add_referal', [HomeController::class,'addreferal']);

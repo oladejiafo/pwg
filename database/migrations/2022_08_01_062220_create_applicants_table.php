@@ -67,6 +67,11 @@ class CreateApplicantsTable extends Migration
             $table->softDeletes();
             $table->timestamps();
         });
+
+        Schema::table('applicants', function($table) {
+            $table->decimal('embassy_country')->after('visa_copy');
+            $table->string('applicant_status')->default('pending')->change();
+        });
     }
 
     /**

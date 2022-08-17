@@ -54,9 +54,11 @@ class HomeController extends Controller
         return view('user.package', compact('data', 'ppay', 'proddet'));
     }
 
-    public function signature($id)
+    public function signature(Request $request, $id)
     {
         if (Auth::id()) {
+            Session::put('myproduct_id', $id);
+            Session::put('mypay_option', $request->payall);
             $data = product::find($id);
             return view('user.signature', compact('data'));
         } else {
@@ -77,7 +79,7 @@ class HomeController extends Controller
     public function referal($id)
     {
         if (Auth::id()) {
-            Session::put('myproduct_id', $id);
+            // Session::put('myproduct_id', $id);
             // Session::put('payall', $payall);
             // Session::get('variableName');
             $data = product::find($id);
@@ -92,13 +94,8 @@ class HomeController extends Controller
         if (Auth::id()) {
 
             $signature = user::find($request->user_id);
-            $validator = Validator::make($request->all(), [
-                'file' => 'max:2000',
-            ]);
-            if ($validator->fails()) {
-                // send back to the page with the input data and errors
-                return Redirect::to('user/signature')->withInput()->withErrors($validator);
-            } else {
+
+       
                 if ($request->hasFile('image')) {
                     $image = $request->file('image');
                     //  print_r($image);
@@ -109,8 +106,9 @@ class HomeController extends Controller
                     $signature->signature = $imagename;
                 }
                 $signature->save();
-            }
-            return \Redirect::route('signature_success', $request->pid)->with('message', 'Uploaded');
+                return \Redirect::route('referal', $request->pid);
+            
+           
         } else {
             return redirect()->back()->with('message', 'You are not authorized');
         }
@@ -160,7 +158,7 @@ class HomeController extends Controller
             }
 
             if ($res) {
-                return \Redirect::route('signature', $request->pid); //->with('success', 'Referral Saved. Upload Signature to proceed')
+                return \Redirect::route('payment', $request->pid); //->with('success', 'Referral Saved. Upload Signature to proceed')
             } else {
                 return redirect()->back()->with('failed', 'Oppss! Something Went Wrong!');
             }
@@ -206,9 +204,9 @@ class HomeController extends Controller
     public function payment(Request $request)
     {
         if (Auth::id()) {
-            $data = product::find($request->pid);
-            $id = $request->pid;
-            $payall = 0; //$request->payall;
+            $data = product::find(Session::get('myproduct_id'));
+            $id = Session::get('myproduct_id');
+            $payall = Session::get('payall'); //$request->payall;
 
             // Session::put('payall', $request->payall');
 
@@ -223,7 +221,7 @@ class HomeController extends Controller
                 ->get();
 
             $pdet = DB::table('product_payments')
-                ->where('product_id', '=', $request->pid)
+                ->where('product_id', '=', Session::get('myproduct_id'))
                 // ->groupBy('product_payments.id')
                 ->get();
 
@@ -296,6 +294,7 @@ class HomeController extends Controller
             // $data = new applicant;
             $datas = payment::where([
                 ['product_payment_id', '=', $request->ppid],
+                ['payment_type', '=', $request->whichpayment],
                 ['application_id', '=', 1],
             ])->first();
             if ($datas === null) {
@@ -306,8 +305,9 @@ class HomeController extends Controller
                 $data->total = $request->totalpay;
                 $data->payment_status = 'Paid';
                 $data->payment_type = $request->whichpayment;
-                $data->save_card_info = $request->get('save_card');
-                if ($request->get('save_card')==1) {
+    
+                if($request->get('save_card')) {
+                    $data->save_card_info = $request->get('save_card');
                     $data->card_number = $request->card_number;
                     $data->month = $request->month;
                     $data->year = $request->year;
@@ -321,8 +321,9 @@ class HomeController extends Controller
                 $datas->total = $request->totalpay;
                 $datas->payment_status = 'Paid';
                 $datas->payment_type = $request->whichpayment;
-                $datas->save_card_info = $request->get('save_card');
-                if ($request->get('save_card')==1) {
+
+                if($request->get('save_card')) {
+                    $datas->save_card_info = $request->get('save_card');
                     $datas->card_number = $request->card_number;
                     $datas->month = $request->month;
                     $datas->year = $request->year;
@@ -332,8 +333,7 @@ class HomeController extends Controller
             }
 
             if ($res) {
-                $package = product::all();
-                return view('user.home', compact('package'));
+                return view('user.applicant');
                 // return \Redirect::route('/')->with('success', 'Payment Successful');
             } else {
                 return redirect()->back()->with('failed', 'Oppss! Something Went Wrong!');

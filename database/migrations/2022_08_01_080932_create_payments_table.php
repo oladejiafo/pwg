@@ -33,6 +33,11 @@ class CreatePaymentsTable extends Migration
             $table->softDeletes();
             $table->timestamps();
         });
+
+        Schema::table('payments', function($table) {
+            $table->string('payment_type')->after('transaction_id');
+            $table->integer('save_card_info')->after('payment_type');
+        });
     }
 
     /**

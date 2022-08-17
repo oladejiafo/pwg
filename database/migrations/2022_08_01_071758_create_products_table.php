@@ -26,6 +26,11 @@ class CreateProductsTable extends Migration
             $table->softDeletes();
             $table->timestamps();
         });
+
+        Schema::table('products', function($table) {
+            $table->decimal('prev_discount')->after('discount');
+            $table->decimal('full_payment_discount')->after('prev_discount');
+        });
     }
 
     /**

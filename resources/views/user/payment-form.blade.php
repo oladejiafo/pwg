@@ -7,6 +7,7 @@
     .btt {
         font-size: 16px;
         margin-top: 5px;
+        
     }
 
     @media (max-width:768px) {
@@ -26,18 +27,21 @@
     }
 </style>
 @section('content')
+<?php
+ $pid =  Session::get('myproduct_id');
+?>
 <div class="container" style="margin-block: 150px;">
     <div class="payment-form">
         <div class="wizard bg-white">
             <div class="row">
                 <div class="tabs d-flex justify-content-center">
                     <div class="wrapper">
-                        <a href="{{ url('referal_details', $data->id) }}" ><div class="round-completed round1 p-3 m-2">1</div></a>
+                        <a href="{{ url('referal_details', $pid) }}" ><div class="round-completed round1 p-3 m-2">1</div></a>
                         <div class="round-title">Refferal <br> Details</div>
                     </div>
                     <div class="linear"></div>
                     <div class="wrapper">
-                        <a href="{{ url('payment_form', $data->id)}}" ><div class="round-active round2 p-3 m-2">2</div></a>
+                        <a href="{{ url('payment_form', $pid)}}" ><div class="round-active round2 p-3 m-2">2</div></a>
                         <div class="col-2 round-title">Payment <br> Details</div>
                     </div>
                     <div class="linear"></div>
@@ -84,6 +88,8 @@
 if ($payall ==0) {
     $whichPayment =  $det->payment;
     $payNow = $det->amount;
+    $discountPercent = '0%';
+    $discount = '0.00';
 } else {
      if($pp == 0 || $pp==null) {
         $payNow = $data->unit_price;
@@ -96,11 +102,11 @@ if ($payall ==0) {
      }
 
      $whichPayment =  "Full Payment";
+     $discountPercent = $data->full_payment_discount . '%';
+     $discount = ($payNow * $data->full_payment_discount / 100);
 }
 $vatPercent = '5%';
 $vat = ($payNow * 5) / 100;
-$discountPercent = $data->discount . '%';
-$discount = ($payNow * $data->discount / 100);
 $totalPay = ($payNow + $vat) - $discount;   
             ?>
             @endif
@@ -202,7 +208,7 @@ $totalPay = ($payNow + $vat) - $discount;
                 @endforeach
 
                 <div class="inputs check-box">
-                    <input type="checkbox" name="save_card" value="{{ old('save_card') }}" class="checkcolor">
+                    <input type="checkbox" name="save_card" value="{{ old('save_card') }}" class="checkcolor" style="margin-right: 10px;">
                     <p class="btt">Save my details for future payment & Automatic deductions</p>
                 </div>
                 <button type="submit" class="btn btn-primary purchase-now">PURCHASE NOW</button>

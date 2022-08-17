@@ -269,6 +269,24 @@ background-position:center;
 
                     <ul>
                         @foreach($package as $offer)
+
+                        <?php
+                                           $offer_discount= $offer->prev_discount - $offer->discount;
+                                           if($offer_discount >0)
+                                           { 
+                                            $icon = 'fa fa-minus-circle';
+                                            $offer_discount_msg = $offer_discount .'% lower than last month';
+                                           }
+                                           else if($offer_discount < 0)
+                                           { 
+                                            $icon = 'fa fa-plus-circle';
+                                            $offer_discount_msg = ($offer_discount*-1) .'% higher than last month';
+                                           } else {
+                                            $icon = '';
+                                            $offer_discount_msg = '-';
+                                           }
+                                           
+                ?>
                         <!-- Start Column  -->
                         <li>
                             <div class="col-4 cellContainer">
@@ -280,7 +298,7 @@ background-position:center;
                                             <p style="font-size:20px">{{$offer->slogan}}</p>
                                         </span>
                                         <strong class="product-price">{{number_format($offer->unit_price,2)}} {{$offer->currency}}</strong>
-                                        <p><i class="fa fa-minus-circle" style='color: white'></i>{{$offer->discount}}% lower than last month</p>
+                                        <p><i class="<?php echo $icon; ?>"></i> {{$offer_discount_msg}}</p>
 
                                         <p><a class="btn btn-secondary" href="{{ url('product', $offer->id) }}">Buy Now</a></p>
 
@@ -312,6 +330,23 @@ background-position:center;
 
             <div class="row">
                 @foreach($package as $offer)
+                <?php
+                                           $offer_discount= $offer->prev_discount - $offer->discount;
+                                           if($offer_discount >0)
+                                           { 
+                                            $icon = 'fa fa-minus-circle';
+                                            $offer_discount_msg = $offer_discount .'% lower than last month';
+                                           }
+                                           else if($offer_discount < 0)
+                                           { 
+                                            $icon = 'fa fa-plus-circle';
+                                            $offer_discount_msg = ($offer_discount*-1) .'% higher than last month';
+                                           } else {
+                                            $icon = '';
+                                            $offer_discount_msg = '-';
+                                           }
+                                           
+                ?>
                 <!-- Start Column  -->
                 <div class="col-4 cellContainer">
                     <span class="product-item" href="#">
@@ -322,7 +357,7 @@ background-position:center;
                                 <p style="font-size:20px">{{$offer->slogan}}</p>
                             </span>
                             <strong class="product-price">{{number_format($offer->unit_price,2)}} {{$offer->currency}}</strong>
-                            <p><i class="fa fa-minus-circle" style='color: white'></i> {{$offer->discount}}% lower than last month</p>
+                            <p><i class="<?php echo $icon; ?>"></i> {{$offer_discount_msg}}</p>
 
                             <p><a class="btn btn-secondary buy_now" href="{{ url('product', $offer->id) }}">Buy Now</a></p>
 
