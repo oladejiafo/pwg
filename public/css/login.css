@@ -311,8 +311,9 @@ input {
 @media only screen and (max-width: 768px) and (min-width: 370px)
 {
     .form-sec1 {
-        padding: 20px 203px 20px 203px;
-        margin-top: 50px;
+        /* padding: 20px 203px 20px 203px; */
+        /* margin-top: 50px; */
+        margin-top:40%;
     }
     
 .form-sec1 h3 {

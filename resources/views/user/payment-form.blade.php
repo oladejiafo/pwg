@@ -66,7 +66,7 @@
                 <p>Your details are safe and encrypted</p>
             </div>
         </div>
-        <form>
+        <form method="POST" action="{{ url('add_payment') }}">
             @csrf
 
             @foreach(($pays ? $pays : array()) as $pd)
@@ -81,26 +81,9 @@
             @if($index == $pp)
 
             <?php
-/*
-if($pp == 0 || $pp==null) {
-    echo $total = $data->unit_price;
- }
- else if($pp == 1) {
-    echo $total = $data->unit_price - $pd->total;
- }
- else if($pp == 2) {
-    echo $total = $det->amount;
- }
-*/
-
 if ($payall ==0) {
     $whichPayment =  $det->payment;
     $payNow = $det->amount;
-    // $vatPercent = '5%';
-    // $vat = ($det->amount * 5) / 100;
-    // $discountPercent = $data->discount . '%';
-    // $discount = ($det->amount * $data->discount / 100);
-    // $totalPay = ($payNow + $vat) - $discount;   
 } else {
      if($pp == 0 || $pp==null) {
         $payNow = $data->unit_price;
@@ -126,13 +109,14 @@ $totalPay = ($payNow + $vat) - $discount;
             @endforeach
             <div class="top-head">
                 <input type="hidden" name="pid" value="{{$data->id}}">
+                <input type="hidden" name="ppid" value="{{$det->id}}">
                 <input type="hidden" name="uid" value="{{Auth::user()->id}}">
                 <div class="left-input">
                     <!-- <input type=radio id="rdo1" checked class="radio-input" name="card_type"> -->
-                    <label for="rdo1" class="radio-label"><span class="radio-border"></span> <img src="images/payment_icons_Mastercard.svg" alt="Option 1" class="radioImage" height="40px" width="40px"></label>
+                    <label for="rdo1" class="radio-label"><span class="radio-border"></span> <img src="{{asset('images/payment_icons_Mastercard.svg')}}" alt="Option 1" class="radioImage" height="40px" width="40px"></label>
 
                     <!-- <input type=radio id="rdo2"  class="radio-input" name="card_type"> -->
-                    <label for="rdo2" class="radio-label"><span class="radio-border"></span> <img src="images/payment_icons _Visa_Logo.svg" alt="Option 2" class="radioImage" height="40px" width="40px"> </label>
+                    <label for="rdo2" class="radio-label"><span class="radio-border"></span> <img src="{{asset('images/payment_icons _Visa_Logo.svg')}}" alt="Option 2" class="radioImage" height="40px" width="40px"> </label>
                 </div>
                 <div class="rightside">
                     <p>{{ $whichPayment}} Amount:</p>
@@ -180,6 +164,7 @@ $totalPay = ($payNow + $vat) - $discount;
                 <div class="total">
                     <div class="total-sec">
                         <div class="left-section">
+                        <input type="hidden" name="whichpayment" value="{{ $whichPayment }}">
                             <p>Subtotal ({{ $whichPayment }})</p>
                         </div>
                         <div class="price">
@@ -209,6 +194,7 @@ $totalPay = ($payNow + $vat) - $discount;
                             <p><b>TOTAL AMOUNT</b></p>
                         </div>
                         <div class="price">
+                            <input type="hidden" name="totalpay" value="{{ $totalPay }}">
                             <p><b>{{ number_format($totalPay,2) }}</b></p>
                         </div>
                     </div>
