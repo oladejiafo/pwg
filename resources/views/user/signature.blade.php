@@ -88,7 +88,7 @@
     <div class="loginx">
 
         <div class="container-fluid">
-            <div class="signature tt" style="margin-top: 50px;">
+            <div class="signature tt">
                 <div class="append">
                     <div class="append-title">
                         <h1>Append Your Signature</h1>

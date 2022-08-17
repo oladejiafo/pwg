@@ -1,6 +1,6 @@
 body {
     background: #F0F3F4;
-
+    font-family: TT Norms Pro;
 }
 
 .top-head {
@@ -10,54 +10,34 @@ body {
 }
 
 .payment-form {
-    width: 700px;
-    margin: 0 auto;
-    background: #fff;
-    padding: 75px 50px 69px 75px;
-    margin-top:75px ;
-}
-
-.payment h2 {
-    font-family: TT Norms;
-    font-size: 36px;
-    font-weight: 700;
-    line-height: 42px;
-    color: #636466;
-    margin-bottom: 0px;
-    letter-spacing: 0em;
-}
-
-.payment-detail p {
-    font-family: TT Norms;
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 19px;
-    letter-spacing: 0em;
-    margin: 0;
-    color: #C4C4C4;
-
-}
-
-@media (min-width:375px) and (max-width:768px)
-{
-    
-.payment-form {
+    font-family: TT Norms Pro;
     width: 100%;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
     margin: 0 auto;
-    padding: 1px 1px 1px 1px;
-    margin-top:50px ;
+    background-color: #ffffff;
+    margin-bottom: 420px;
+    color: #636466;
+    padding: 40px 150px 70px 150px;
 }
 
-.payment-form input [type="text"], select {
-    width: 95%;
-    padding: 30px 10px;
+.payment-form h3 {
+    font-family: TT Norms Pro;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 43px;
+    letter-spacing: 0em;
+    text-align: center;
+    margin-top: 70px;
 }
 
-.payment-form fieldset {
-    width:100%;
+.bottom-title {
+    margin-bottom: 50px;
 }
+
 .payment h2 {
-    font-family: TT Norms;
+    font-family: TT Norms Pro;
     font-size: 36px;
     font-weight: 700;
     line-height: 42px;
@@ -67,7 +47,7 @@ body {
 }
 
 .payment-detail p {
-    font-family: TT Norms;
+    font-family: TT Norms Pro;
     font-size: 16px;
     font-weight: 400;
     line-height: 19px;
@@ -76,7 +56,48 @@ body {
     color: #C4C4C4;
 
 }
+
+@media (min-width:375px) and (max-width:768px) {
+
+    .payment-form {
+        width: 100%;
+        margin: 0 auto;
+        padding: 5px 15px 5px 15px;
+        margin-top: 50px;
+    }
+
+    .payment-form input [type="text"],
+    select {
+        width: 95%;
+        padding: 30px 10px;
+    }
+
+    .payment-form fieldset {
+        width: 100%;
+    }
+
+    .payment h2 {
+        font-family: TT Norms Pro;
+        font-size: 36px;
+        font-weight: 700;
+        line-height: 42px;
+        color: #636466;
+        margin-bottom: 0px;
+        letter-spacing: 0em;
+    }
+
+    .payment-detail p {
+        font-family: TT Norms Pro;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 19px;
+        letter-spacing: 0em;
+        margin: 0;
+        color: #C4C4C4;
+
+    }
 }
+
 .payment-heading {
     text-align: center;
 }
@@ -92,14 +113,15 @@ body {
     border: 0.25px solid #CECECE;
     padding: 10px 20px;
     /* width: 40px; */
-    height: 40px;
+    /* height: 40px; */
 
 }
 
 .rightside {
-    width: 128px;
+    width: 150px;
     padding: 15px 10px;
-    border: 0.25px solid #CECECE
+    border: 0.25px solid #CECECE;
+    float: right;
 }
 
 .rightside .amount {
@@ -108,7 +130,7 @@ body {
 }
 
 .rightside p {
-    font-family: TT Norms;
+    font-family: TT Norms Pro;
     font-size: 10px;
     font-weight: 400;
     line-height: 12px;
@@ -117,7 +139,7 @@ body {
 }
 
 .rightside .amount p {
-    font-family: TT Norms;
+    font-family: TT Norms Pro;
     font-size: 10px;
     font-weight: 700;
     line-height: 12px;
@@ -127,7 +149,7 @@ body {
 }
 
 .rightside .amount p span {
-    font-family: TT Norms;
+    font-family: TT Norms Pro;
     font-size: 20px;
     font-weight: 700;
     line-height: 24px;
@@ -135,26 +157,32 @@ body {
     color: #606060;
 }
 
+
 .payment-form1 .fieldset {
     display: flex;
     justify-content: space-between;
+    width: 100%;
 }
 
 .payment-form1 .fieldset input {
-    height: 45px;
-    width: 302.6755676269531px;
+    height: 50px;
+    width: 290px;
     background-color: #F0F3F4;
     border: 1px solid #F0F3F4;
     margin-bottom: 18px;
-    font-family: TT Norms;
+    font-family: 'TT Norms Pro';
     font-size: 14px;
     font-weight: 400;
     line-height: 17px;
     letter-spacing: 0em;
     text-align: left;
     border-radius: 10px;
-    padding-left: 10px;
+    padding-left: 20px;
     color: #636466;
+}
+
+.payment-form1 .fieldset .b input {
+    margin-left: 1%;
 }
 
 .payment-form1 .fieldset .cvv input {
@@ -174,11 +202,13 @@ body {
     padding-left: 10px;
 }
 
+
 .payment-form1 .total,
 .payment-form1 .gtotal {
-    background: #F0F3F4;
     padding: 16px 17px;
     margin-bottom: 3px;
+
+    border: 0.25px solid #e0e4e8;
 }
 
 .payment-form1 .total .total-sec,
@@ -195,7 +225,7 @@ body {
 
 .payment-form1 .total .total-sec p,
 .payment-form1 .gtotal .total-sec p {
-    font-family: TT Norms;
+    font-family: TT Norms Pro;
     font-size: 14px;
     font-weight: 400;
     line-height: 17px;
@@ -210,7 +240,7 @@ body {
 }
 
 .payment-form1 .inputs.check-box p {
-    font-family: TT Norms;
+    font-family: TT Norms Pro;
     font-size: 14px;
     font-weight: 400;
     line-height: 17px;
@@ -226,7 +256,7 @@ body {
 }
 
 .purchase-now {
-    font-family: TT Norms;
+    font-family: TT Norms  Pro;
     font-size: 36px;
     font-weight: 700;
     line-height: 43px;
@@ -248,27 +278,51 @@ body {
     color: black;
 }
 
+.payment-form button {
+    height: 60px;
+    border: 1px solid #F6F6F6;
+    background: #F6F6F6;
+    padding: 10px;
+    font-family: TT Norms Pro;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 43px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: #606060;
+    margin-top: 30px;
+    width: 100%;
+}
+
+.form-check {
+    padding: 0.5em;
+}
+
+
 .payment-form1 input[type="checkbox"] {
-    width: 30px;
-    height: 30px;
+    width: 20px;
+    height: 20px;
 }
 
 input::placeholder {
-                 
+    font-size: 12px !important;
     /* Firefox, Chrome, Opera */
     text-align: left;
 }
 
 input:-ms-input-placeholder {
-                 
+    font-size: 12px !important;
+
     /* Internet Explorer 10-11 */
     text-align: left;
-    padding-left: 10px; 
+    padding-left: 10px;
 }
 
 input::-ms-input-placeholder {
+    font-size: 12px !important;
+
     text-align: left;
-    padding-left: 10px; 
+    padding-left: 10px;
 }
 
 input {
@@ -282,8 +336,8 @@ select {
 .select2-container .select2-choice {
     padding: 5px 10px;
     height: 40px;
-    width: 132px; 
-    font-size: 1.2em;  
+    width: 132px;
+    font-size: 1.2em;
 }
 
 .select2-container .select2-choice .select2-arrow {
@@ -300,3 +354,22 @@ select {
     padding: 4px 12px;
 }
 
+@media (min-width:375px) and (max-width:768px) {
+    .payment-form1 .fieldset {
+        display: flex;
+        flex-flow: wrap;
+        width: 100%;
+    }
+
+    .payment-form1 .fieldset select,
+    .payment-form1 .fieldset .cvv input,
+    .payment-form1 .fieldset input {
+        width: 90vw;
+        margin-left: 5px;
+        margin-right: 10px;
+    }
+
+    .payment-form1 .fieldset select {
+        margin-bottom: 10px;
+    }
+}php 

@@ -60,4 +60,14 @@ Route::post('/add-referrer', [HomeController::class,'addReferrer'])->name('add-r
 Route::post('reset/password', [ResetPasswordController::class,'updatePassword'])->name('customize.password.update');
 Route::post('reset/forgot/password', [ResetPasswordController::class,'forgotPassword'])->name('customize.forgot.password');
 
-Route::get('/payment', [HomeController::class,'payment'])->name('payment');
+// Route::get('payment-form/{id}', [HomeController::class,'payment'])->name('payment');
+
+Route::get('payment_form/{id}',[HomeController::class,'payment'])->name('payment');
+
+Route::post('/add_payment', [HomeController::class,'addpayment']);
+
+// Applicant
+Route::get('applicant/details', [HomeController::class, 'applicantDetails'])->name('applicant.details');
+Route::get('applicant/{id}', [HomeController::class,'applicant'])->name('applicant');
+Route::post('store/applicant', [HomeController::class,'storeApplicant'])->name('store.applicant');
+

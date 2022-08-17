@@ -311,8 +311,9 @@ input {
 @media only screen and (max-width: 768px) and (min-width: 370px)
 {
     .form-sec1 {
-        padding: 20px 203px 20px 203px;
-        margin-top: 50px;
+        /* padding: 20px 203px 20px 203px; */
+        /* margin-top: 50px; */
+        margin-top:40%;
     }
     
 .form-sec1 h3 {
@@ -492,15 +493,14 @@ input {
 
 .signature {
     width:40%;
-
     padding: 120px 120px 120px 120px;
     background-color: #ffffff;
     margin: 0 auto;
-    margin-top: 120px;
+    margin-top: 150px;
     margin-bottom: 120px;
     color: #000;
     align-content: center;
-    height: 750px;
+    height: auto;
     border-radius: 10px;
 
 }
@@ -521,7 +521,7 @@ input {
         padding: 20px 10px 70px 10px;
         margin: 0 auto;
         margin-bottom: 70px;
-        height: 650px;
+        height: auto;
 
     }
 
@@ -1121,4 +1121,3 @@ input {
         padding-left: 111px;
     }
 }
-
