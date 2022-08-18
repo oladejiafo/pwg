@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApplicantionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ResetPasswordController;
@@ -67,7 +68,8 @@ Route::get('payment_form/{id}',[HomeController::class,'payment'])->name('payment
 Route::post('/add_payment', [HomeController::class,'addpayment']);
 
 // Applicant
-Route::get('applicant/details', [HomeController::class, 'applicantDetails'])->name('applicant.details');
-Route::get('applicant/{id}', [HomeController::class,'applicant'])->name('applicant');
-Route::post('store/applicant', [HomeController::class,'storeApplicant'])->name('store.applicant');
+Route::get('applicant/details', [ApplicantionController::class, 'applicantDetails'])->name('applicant.details');
+Route::get('applicant/{id}', [ApplicantionController::class,'index'])->name('applicant');
+Route::post('store/applicant', [ApplicantionController::class,'storeApplicant'])->name('store.applicant');
+Route::post('srore/applicant/details', [ApplicantionController::class,'storeApplicantDetails'])->name('store.applicant.details');
 

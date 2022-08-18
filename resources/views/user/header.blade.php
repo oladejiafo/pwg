@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="../user/extra/assets/css/main.css">
     <!-- Responsive Style -->
     <link rel="stylesheet" href="../user/extra/assets/css/responsive.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 <link rel='stylesheet' type='text/css' media='screen' href='{{asset('user/css/style.css')}}'>
 <link rel='stylesheet' type='text/css' media='screen' href='{{asset('css/login.css')}}'>
