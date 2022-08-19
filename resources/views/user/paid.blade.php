@@ -303,9 +303,9 @@
         margin-bottom: 3px;
         position: relative;
         top: 0;
-        -webkit-transition: .3s all ease;
-        -o-transition: .3s all ease;
-        transition: .3s all ease;
+        -webkit-transition: .2s all ease;
+        -o-transition: .2s all ease;
+        transition: .2s all ease;
       }
 
       .paid-section .paid-item .paid-title {
@@ -444,6 +444,11 @@
         line-height: 3px !important;
         white-space:normal ;
       }
+
+      .card .card-body .paid-thumbnail img {
+        padding-bottom: 0px;
+      }
+
     </style>
 
     <div class="card d-flex aligns-items-center justify-content-center text-center">
@@ -524,7 +529,7 @@
                           </svg>
                           </div>
                           <div class="dg aligns-items-center justify-content-center text-center" style="display:inline; justify-content: center;  align-items: center;">
-                          <p style="padding-top: 27px;padding-bottom:0px; font-size:16px">Work Permit</p>
+                          <p style="padding-top: 27px;padding-bottom:0px; font-size:14px;font-weight:800">Work Permit</p>
                           <span style="font-size:11px; color:grey;padding-left:1px; padding-right:1px">Work Permit has been released.</span>
                         </div>
                           @else
@@ -534,8 +539,8 @@
                           </svg>
                           </div>
                           <div class="dg aligns-items-center justify-content-center text-center" style="display:inline; justify-content: center;  align-items: center;">
-                          <p style="padding-top: 27px;padding-bottom:0px; font-size:16px">Embassy Appearance</p>
-                          <span style="font-size:11px; color:grey;padding-left:1px; padding-right:1px;line-height:1px;">Confirmation of embassy appearance.</span>
+                          <p style="padding-top: 27px;padding-bottom:0px; font-size:14px;font-weight:800">Embassy Appearance</p>
+                          <span style="font-size:11px; color:grey;padding-left:1px; padding-right:1px;line-height:1px;">Embassy appearance pending.</span>
                         </div>
                           @endif
 
@@ -553,34 +558,6 @@
                 </ul>
 
               </div>
-
-              <!-- <div class="row download-thumbnail">
-                <div align="center" class="col-md-4 col-sm-12 img-fluid downloadContainer">
-                  <div class="cardc downlaod-item  d-flexx aligns-items-center justify-content-center text-center" style="font-weight: bold;font-family:'TT Norms Pro'; display:inline-block">
-                    <div class="cardc-body">
-                      jjllj;j;
-
-                    </div>
-                  </div>
-                </div>
-                <div align="center" class="col-md-4 col-sm-12 img-fluid downloadContainer">
-                  <div class="cardc downlaod-item" style="display:inline-block">
-                    <div class="cardc-body">
-                      jjllj;j;
-
-                    </div>
-                  </div>
-                </div>
-                <div align="center" class="col-md-4 col-sm-12 img-fluid downloadContainer">
-                  <div class="cardc downlaod-item">
-                    <div class="cardc-body">
-                      jjllj;j;
-
-                    </div>
-                  </div>
-                </div>
-              </div> -->
-
             </div>
 
             <a class="carousel-control-prev" id="slideBack" href="#carouselThree" style="text-decoration:none;" role="button" data-slide="prev">

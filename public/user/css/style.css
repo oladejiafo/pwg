@@ -446,11 +446,18 @@ a.more {
 
 @media only screen and (max-width: 768px) and (min-width: 370px) {
 
+
   .product-section .product-item {
-    margin: 0;
-    padding-right: -20px;
+    margin-top: 30px;
+    margin-left: 0px;
   }
 
+  .product-section .product-item .btn {
+    width: 95%;
+  }
+  .product-section .product-item img {
+    width: 100%;
+  }
   .product-section .product-item .text {
     padding-top: 30px;
   }

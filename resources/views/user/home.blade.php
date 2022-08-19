@@ -235,7 +235,7 @@ background-position:center;
         @auth
         @else
     <!-- Start Hero Section -->
-    <div class="hero banner_bg layerd" style="        padding-top: 60px; ">
+    <div class="hero banner_bg layerd" style="padding-top: 80px; ">
 
         <div class="container-fluid">
             <div class="row justify-content-between">

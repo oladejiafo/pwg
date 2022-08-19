@@ -2,6 +2,7 @@
 <style>
   .checkcolor {
   accent-color: #f9bf29;
+
 }
 
 select,
@@ -79,7 +80,7 @@ input [type="phone"]
           <div class="mb-3">
             <div class="inputs check-box">
               <input type="checkbox" class="checkcolor agree" name="terms" required>
-                <p  style="padding-top: 5px;">I agree to the <a href="Terms of Service and Privacy Policy">Terms of Service and Privacy Policy"</a>
+                <p  style="padding-top: 5px;padding-left:10px"> I agree to the <a href="Terms of Service and Privacy Policy">Terms of Service and Privacy Policy"</a>
               </p>
             </div>
           </div>

@@ -8,7 +8,7 @@
     <!-- Bootstrap CSS -->
     <!-- <link rel="stylesheet" href="../user/extra/assets/css/bootstrap.min.css" > -->
     <!-- Icon -->
-    <link rel="stylesheet" href="../user/extra/assets/fonts/line-icons.css">
+    <link rel="stylesheet" href="{{asset('user/extra/assets/fonts/line-icons.css')}}">
     <!-- Owl carousel -->
     <!-- <link rel="stylesheet" href="../user/extra/assets/css/owl.carousel.min.css">
     <link rel="stylesheet" href="../user/extra/assets/css/owl.theme.css"> -->
@@ -16,9 +16,9 @@
     <!-- Animate -->
     <!-- <link rel="stylesheet" href="../user/extra/assets/css/animate.css"> -->
     <!-- Main Style -->
-    <link rel="stylesheet" href="../user/extra/assets/css/main.css">
+    <link rel="stylesheet" href="{{asset('user/extra/assets/css/main.css')}}">
     <!-- Responsive Style -->
-    <link rel="stylesheet" href="../user/extra/assets/css/responsive.css">
+    <link rel="stylesheet" href="{{asset('user/extra/assets/css/responsive.css')}}">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 <link rel='stylesheet' type='text/css' media='screen' href='{{asset('user/css/style.css')}}'>
@@ -170,17 +170,17 @@
 		
 </head>
 <body>
-    <nav class="navbar navbar-expand-md bg-inverse fixed-top scrolling-navbar">
+    <nav class="navbar navbar-expand-md bg-inverse fixed-top scrolling-navbarx">
         <div class="container">
           <!-- Brand and toggle get grouped for better mobile display -->
 
           <a class="navbar-brand" href="{{url('/')}}">
             <picture>
-            <source media="(min-width:769px)" srcset="../images/logo.png">
+            <source media="(min-width:769px)" srcset="{{asset('images/logo.png')}}">
 
-              <source media="(min-width:375px)" srcset="../images/logo2.png">
+              <source media="(min-width:375px)" srcset="{{asset('images/logo2.png')}}">
 
-             <img class="logos" src="../images/logo.png" alt="logo">
+             <img class="logos" src="{{asset('images/logo.png')}}" alt="logo">
              </picture>
             <!-- <img class="logos" src="../images/logo.png" data-device-pixel-ratio-1="../images/logo2.png" alt="logo"> -->
           </a>       
