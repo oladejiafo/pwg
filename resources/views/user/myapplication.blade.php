@@ -64,7 +64,7 @@
         background-color: none;
     }
 
-@media (min-width:375px) and (max-width:678px){
+@media (min-width:375px) and (max-width:768px){
     .card {
         margin-left: 20px;
         margin-right: 20px;
@@ -77,7 +77,8 @@
     .card .card-body {
         padding: 1px 1px 1px 1px;
         height: auto;
-        max-height: 560px;
+        max-height: auto;
+        margin-top: 40px;
         font-size: 20px;
     }
     .card .card-body img {

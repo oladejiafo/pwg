@@ -172,16 +172,8 @@ class HomeController extends Controller
         if (Auth::id()) {
             $id = Auth::user()->id;
 
-            $paid = DB::table('payments')
-                ->join('applicants', 'payments.application_id', '=', 'applicants.id')
-                ->select('payments.*', 'applicants.*')
-                ->where('applicants.user_id', '=', $id)
-                ->groupBy('payments.id')
-                ->groupBy('applicants.id')
-                ->orderBy('applicants.id', 'desc')
-                ->limit(1)
-                ->get();
-
+            \DB::statement("SET SQL_MODE=''");
+            
             $pays = DB::table('product_payments')
                 ->join('applicants', 'applicants.product_id', '=', 'product_payments.product_id')
                 ->select('product_payments.id', 'product_payments.payment', 'product_payments.amount', 'product_payments.product_id')
@@ -189,12 +181,24 @@ class HomeController extends Controller
                 ->groupBy('product_payments.id')
                 ->get();
 
+            $paid = DB::table('payments')
+                ->join('applicants', 'payments.application_id', '=', 'applicants.id')
+                ->selectRaw('payments.*, applicants.*, COUNT(payments.id) as count')
+
+                ->where('applicants.user_id', '=', $id)
+                // ->groupBy('payments.id')
+                ->groupBy('applicants.id')
+                ->orderBy('applicants.id', 'desc')
+                // ->limit(2)
+                ->get();
+    
             $prod = DB::table('products')
                 ->join('applicants', 'products.id', '=', 'applicants.product_id')
                 ->select('products.product_name', 'products.id')
                 ->where('applicants.user_id', '=', $id)
                 ->groupBy('products.id')
                 ->get();
+
 
             return view('user.myapplication', compact('paid', 'pays', 'prod'));
         } else {

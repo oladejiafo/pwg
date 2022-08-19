@@ -46,7 +46,30 @@
                         <div id="collapseOne" class="panel-collapse" role="tabpanel" aria-labelledby="headingOne">
                         <!-- collapse in -->
                             <div class="panel-body">
+                            @foreach($paid as $index => $pd)
+
+<?php
+$count = $pd->count;
+$px = $pd->product_payment_id;
+if ($count > 1) {
+  $countt = $pd->count - 1;
+} else {
+    $countt =1;
+}
+
+$ind = $index + 1;
+?>
+
+@endforeach
+
                                 @foreach($pays as $pay)
+
+                                <?php
+                  $pay_id = $pay->id;
+                  $payment = $pay->payment;
+                  $amount = $pay->amount;
+
+                  ?>
                                 <div class="row">
                                     <div class="col-md-3" align="left">
                                         <p>
@@ -55,33 +78,34 @@
                                     </div>
                                     <div class="col-md-3" align="left">
                                         <p>
-                                            @foreach($paid as $pd)
-
-                                            @if( $pd->product_payment_id == $pay->id)
+                                            @if( $countt == $pay_id)
                                             Status PAID
                                             @else
                                             Status PENDING
                                             @endif
+                                            
 
-                                            @endforeach
                                         </p>
                                     </div>
                                     <div class="col-md-6" align="right">
                                         <p>
-                                            @foreach($paid as $pd)
+                                       
 
-                                            @if( $pd->product_payment_id == $pay->id)
+                                            @if( $countt == $pay_id)
 
                                             <a class="btn btn-secondary" style="font-family: 'TT Norms Pro';font-weight:700" href="#">Get Reciept</a>
                                             @else
                                             <form action="{{ route('payment',$pp->id) }}" method="GET">
-                        <input type="hidden" name="pid" value="{{$pp->id}}">
+                        
                         <button class="btn btn-secondary" style="font-weight:700">Pay Now</button>
                         </form>
                                             <!-- <a class="btn btn-secondary" style="font-family: 'TT Norms Pro';font-weight:700" href="{{ url('payment') }}">Pay Now</a> -->
                                             @endif
 
-                                            @endforeach
+                                            <?php
+                  while ($countt < $count) {
+                    $countt = $countt + 1;
+                  } ?>
                                         </p>
                                     </div>
                                 </div>
@@ -92,52 +116,57 @@
                     </div>
                     <div class="row" style="font-size:18px">
                         <div style="align-items: left; align:left; float: left; padding-left:40px;padding-right:40px" class="col-12">Your next payment is <b>
-                                @foreach($prod as $pp)
-                                @foreach($pays as $pay)
-                                
-                                @if( $pd->product_payment_id == $pay->id)
-                                <?php $tt = $pay->id;
-                                $ttt = $pay->id + 1; ?>
 
-                                <?php $count = 0; ?>
-                                @foreach($pays as $pay => $review)
-                                <?php
+                        @foreach($prod as $pdd) <?php $pdd= $pdd->id; ?> @endforeach                         
+@foreach($pays as $index => $pd) 
+@foreach($paid as $det) 
 
-                                $count++; // Note that first iteration is $count = 1 not 0 here.
-                                if ($count <= $tt or $count > $ttt) continue; // Skip the iteration unless 4th or above.
-                                ?>
-                
-                                {{ number_format($review->amount) }}
-                                <?php $pt = $review->payment; ?>
+<?php 
+            $items = DB::table('applicants')
+            ->leftJoin('payments', 'payments.application_id', '=', 'applicants.id')
+            ->leftJoin('product_payments', 'product_payments.id', '=', 'payments.product_payment_id')
+            ->select('product_payments.*', 'payments.product_payment_id', 'payments.total')
+            ->where('applicants.user_id', '=', Auth::user()->id)
+            ->where('applicants.product_id', '=', $pdd)
+            ->orderBy('payments.product_payment_id', 'desc')
+            ->limit(1)
+            ->get();
+?>
+ @foreach($items as $item) 
+ <?php 
+ $pp = $item->product_payment_id; 
+ ?> 
+ @endforeach  
+<?php
+
+?>
+
+@if($pp != $pd->id)
+
+@if($index == $pp)
+
+<?php
+
+$payNow = $pd->amount;
+
+$whichPayment =  $pd->payment;
+
+?>
+@endif
+
+@endif
+@endforeach
+@endforeach
+                      
+                                {{ number_format($payNow) }}
+                                                        
+                        
+                                AED
+                            </b>, to be charged for   {{ $whichPayment }}.</div>
                       
 
-                                @endforeach
 
-                                @else 
-
-                                @if ($loop->first)
-
-                                @foreach($pays as $pay => $review)
-
-                                @if ($loop->first)
-                                {{ number_format($review->amount) }}
-                                <?php $pt = $review->payment; ?>
-                                @endif
-
-                                @endforeach
-
-                                @endif
-
-                                @endif
-                                @endforeach
-                                @endforeach
-
-
-                                AED
-                            </b>, to be charged for {{ $pt }} .</div>
-                        
                     </div>
-                    <!-- <a class="btn btn-secondary" href="{{ url('payment') }}">Pay Now</a> -->
 
                 </div>
             </div>
