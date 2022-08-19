@@ -354,7 +354,21 @@ select {
     padding: 4px 12px;
 }
 
+
+.btt {
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+.payment-form .payment-heading {
+    padding-top: 30px
+}
+
 @media (min-width:375px) and (max-width:768px) {
+    .btt {
+        font-size: 14px;
+        margin-top: 5px;
+    }
     .payment-form1 .fieldset {
         display: flex;
         flex-flow: wrap;
@@ -372,4 +386,6 @@ select {
     .payment-form1 .fieldset select {
         margin-bottom: 10px;
     }
-}php 
+
+
+}

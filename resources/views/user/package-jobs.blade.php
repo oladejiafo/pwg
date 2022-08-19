@@ -3,25 +3,6 @@
 <link rel="stylesheet" href="{{asset('user/extra/css/bootstrap.css')}}">
 <link rel="stylesheet" href="{{asset('user/extra/css/styled.css')}}">
 
-<style>
-    .cardd {
-        border-radius: 10px;
-        border: none;
-        border-color: none;
-        margin: 20px 45px;
-    }
-    .card {
-        border-radius: 10px;
-        margin: 0px;
-        padding: 0px;
-        width:100%;
-        background-color: #F5F5F5;
-        border: 0px thin #F5F5F5;
-
-
-    }
-
-</style>
 <div class="row cardd">
 
 
