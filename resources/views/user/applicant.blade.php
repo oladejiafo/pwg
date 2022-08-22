@@ -3,7 +3,7 @@
  -->
  <link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
-
+ <script src=”https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <style>
     body {
     background: #e5e8e9 !important;
@@ -55,6 +55,14 @@
                           </h3>
                       </div>
                     </div>
+                    
+                    @php
+                        $applied = DB::table('products')
+                            ->where('id', '=', $productId)
+                            ->get();
+                    @endphp
+                    
+
                     <div class="form-sec">
                         <form method="POST" action="{{route('store.applicant')}}" enctype="multipart/form-data">
                             @csrf
@@ -62,7 +70,8 @@
                             <div class="form-group row mt-4">
                                 <div class="col-sm-6 mt-3">
                                     <select class="form-select form-control" id="inputFirstname" name="applied_country" placeholder="Applied Country *" value="{{old('applied_country')}}" required>
-                                        <option selected disabled>Applied Country *</option>
+                                        <!-- <option selected disabled>Applied Country *</option> -->
+                                        <option selected>@foreach($applied as $appliedc) {{$appliedc->product_name}} @endforeach</option>
                                         <option value="Canada">Canada</option>
                                         <option value="Czech">Czech</option>
                                         <option value="Poland">Poland</option>
@@ -94,6 +103,7 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-6 mt-3">
+
                                     <input id="phone" type="tel" name="agent_phone" class="form-control" placeholder="Your agent phone number*" value="{{old('agent_phone')}}" required/>
                                     @error('agent_phone') <span class="error">{{ $message }}</span> @enderror
                                 </div>
@@ -329,7 +339,11 @@
                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
                                     <button type="submit" class="btn btn-primary submitBtn">Continue</button>
                                 </div>
-                            </div>
+                            </div>helo
+                            <div id="signaturePad" ></div>
+<br/>
+<button id="clear" class="btn btn-danger btn-sm">Clear Signature</button>
+<textarea id="signature64" name="signed" style="display: none"></textarea>
                         </form>
                     </div>            
                 </div>
@@ -342,6 +356,19 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js" integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
 
+
+<script type="text/javascript" src="http://keith-wood.name/js/jquery.signature.js"></script>
+<link rel="stylesheet" type="text/css" href="http://keith-wood.name/css/jquery.signature.css">
+<script type="text/javascript">
+var signaturePad = $('#signaturePad').signature({syncField: '#signature64', syncFormat: 'PNG'});
+$('#clear').click(function(e) {
+e.preventDefault();
+signaturePad.signature('clear');
+$("#signature64").val('');
+});
+</script>
+
+
 <script>
     const phoneInputField = document.querySelector("#phone");
     const phoneInput = window.intlTelInput(phoneInputField, {
@@ -350,6 +377,12 @@
         utilsScript:
             "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
     });
+
+///TESTTTTTTTTTTTTTTTTTTTTTTTTT
+
+
+///TESTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+
     function getIp(callback) {
         var api_key = 'hk9woa8o8wuag4hd';
         fetch('https://api.ipregistry.co/?key=tryout')
@@ -361,7 +394,7 @@
                     country: 'ae',
                 };
             })
-        // .then((payload) => callback(payload.location.country.code))
+        //  .then((payload) => callback(payload.location.country.code))
         .then((payload) => callback('ae'))
         .then(function (payload) {
             // return payload.location.country.code;

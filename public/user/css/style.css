@@ -364,16 +364,6 @@ a.more {
   color: #2f2f2f;
 }
 
-.banner_bg {
-  width: 100%;
-  float: left;
-  background-image: url(../user/images/v1_17125.png);
-  background-color: rgba(6, 45, 83, 0.7);
-  height: auto;
-  padding-top: 30px;
-  background-size: 100%;
-  background-repeat: no-repeat;
-}
 
 .layer {
   background-color: rgba(6, 45, 83, 0.7);

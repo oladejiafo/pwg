@@ -9,6 +9,7 @@
         "doctrine/dbal": "v2.4.2",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.4",
+        "laravel-validation-rules/credit-card": "^1.7",
         "laravel/fortify": "^1.13",
         "laravel/framework": "^8.75",
         "laravel/jetstream": "^2.9",

@@ -85,6 +85,7 @@
                         @if($index == $pp)
 
                         <?php
+                        $det_id = $det->id;
                         if ($payall == 0) {
                             $whichPayment =  $det->payment;
                             $payNow = $det->amount;
@@ -112,7 +113,7 @@
                         @endif
                         @endforeach
                         <input type="hidden" name="pid" value="{{$data->id}}">
-                        <input type="hidden" name="ppid" value="{{$det->id}}">
+                        <input type="hidden" name="ppid" value="{{$det_id}}">
                         <input type="hidden" name="uid" value="{{Auth::user()->id}}">
                         <div class="form-group row mt-4">
                             <div class="col-sm-6 mt-3">
@@ -132,7 +133,7 @@
                         </div>
                         <div class="form-group row mt-4">
                             <div class="col-sm-6 mt-3">
-                                <input type="number" class="form-control" placeholder="Card Number" name="card_number" value="{{ old('card_number') }}" required>
+                                <input type="text" class="form-control" placeholder="Card Number" name="card_number" pattern="\d*" maxlength="16" value="{{ old('card_number') }}" required>
                             </div>
                             <div class="col-sm-6 mt-3">
                                 <input class="b form-control" type="text" placeholder="Cardholder full name" name="card_holder_name" value="{{ old('card_holder_name') }}" required>
@@ -157,10 +158,10 @@
                                 </select>
                             </div>
                             <div class="col-sm-4 mt-3">
-                                <input type="number" class="form-control" placeholder="Year" name="year" value="{{ old('year') }}" required>
+                                <input type="text" pattern="\d*" maxlength="4" class="form-control" placeholder="Year" name="year" value="{{ old('year') }}" required>
                             </div>
                             <div class="col-sm-4 mt-3">
-                                <input type="number" class="form-control" placeholder="CVV" name=cvv value="{{ old('cvv') }}" required>
+                                <input type="text" pattern="\d*" maxlength="3" class="form-control" placeholder="CVV" name=cvv value="{{ old('cvv') }}" required>
                             </div>
                         </div>
                         <div class="form-group row mt-6 payment-form1 ">

@@ -3,7 +3,7 @@
     @include('user/header')
 <body>
         @if(session()->has('success'))
-            <div class="alert alert-success">
+            <div class="alert alert-success" style="margin-left:auto;margin-right:auto; width:40%; text-align:center;">
                 <button type="button" class="close" data-dismiss="alert" style="float:right">
                     
                 </button>
@@ -12,7 +12,7 @@
         @endif
 
         @if(session()->has('failed'))
-            <div class="alert alert-danger">
+            <div class="alert alert-danger" style="margin-left:auto;margin-right:auto; width:40%; text-align:center;">
                 <button type="button" class="close" data-dismiss="alert" style="float:right">
                     
                 </button>
