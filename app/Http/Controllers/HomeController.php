@@ -37,7 +37,7 @@ class HomeController extends Controller
 
     public function index()
     {
-        $package = product::all();
+        $package = product::all()->sortBy("id");
         return view('user.home', compact('package'));
     }
 
