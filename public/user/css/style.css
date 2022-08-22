@@ -1345,7 +1345,7 @@ textarea {
 
 .round-title {
   text-align: center;
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 300;
   font-family: "TT Norms Pro";
   color: #7D7D86;
@@ -1562,7 +1562,12 @@ input[type="checkbox"]:hover {
 .ui-widget.ui-widget-content {
   border: 1px solid #ced4da !important;
   border-radius: 10px;
+  width: 19% !important;
 }
+
+/* .passport_issue .ui-widget.ui-widget-content {
+  width: 29.5% !important;
+} */
 
 .ui-datepicker .ui-datepicker-header,
 .ui-datepicker .ui-datepicker-title {
@@ -1581,6 +1586,16 @@ html .ui-button.ui-state-disabled:active {
   border: 1px solid black;
   background: black;
   color: white;
+}
+
+.accordion-button::after {
+  background-image: url("C:\Users\Shamshera Hamza\pwg_client_portal\public\images\down_arrow.png");
+}
+
+.accordion-button:not(.collapsed) {
+  background: white !important;
+  color: black !important;
+  box-shadow: inset 0 0px 0 !important;
 }
 
 .wizard {
@@ -1683,6 +1698,10 @@ input:-moz-placeholder {
   margin-bottom: 420px;
   color: #636466;
   padding: 40px 150px 70px 150px;
+}
+
+.form-control:disabled, .form-control[readonly] {
+  background: white;
 }
 
 .referal-sec h3 {

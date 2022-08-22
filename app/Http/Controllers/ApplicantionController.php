@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Response;
+
 
 class ApplicantionController extends Controller
 {
@@ -81,62 +83,95 @@ class ApplicantionController extends Controller
 
     public function storeApplicantDetails(Request $request)
     {
-        $response['status'] = false;
-        try {
-            $request->validate([
-                'first_name' => 'required',
-                'surname' => 'required',
-                'dob' => 'required',
-                'place_birth' => 'required',
-                'country_birth' => 'required',
-                'sex' => 'required',
-                'civil_status' => 'required'
+        $validator = \Validator::make($request->all(), [
+            'first_name' => 'required',
+            'surname' => 'required',
+            'dob' => 'required',
+            'place_birth' => 'required',
+            'country_birth' => 'required',
+            'sex' => 'required',
+            'civil_status' => 'required',
+            'citizenship'=> 'required'
+        ]);
+
+        if ($validator->fails())
+        {
+            return Response::json(array(
+                'success' => false,
+                'errors' => $validator->getMessageBag()->toArray()
+        
+            ), 200); // 400 being the HTTP code for an invalid request.
+        }
+
+        Applicant::where('user_id', Auth::id())
+            ->where('product_id', $request->product_id)
+            ->update([
+                'first_name' => $request['first_name'],
+                'middle_name' => $request['middle_name'],
+                'surname' => $request['surname'],
+                'dob' => $request['dob'],
+                'place_birth' => $request['place_birth'],
+                'country_birth' => $request['country_birth'],
+                'citizenship' => $request['citizenship'],
+                'sex' => $request['sex'],
+                'civil_status' => $request['civil_status']
             ]);
-    
-            Applicant::where('user_id', Auth::id())
-                ->where('product_id', $request->product_id)
-                ->update([
-                    'first_name' => $request['first_name'],
-                    'middle_name' => $request['middle_name'],
-                    'surname' => $request['surname'],
-                    'dob' => $request['dob'],
-                    'place_birth' => $request['place_birth'],
-                    'country_birth' => $request['country_birth'],
-                    'citizenship' => $request['citizenship'],
-                    'sex' => $request['sex'],
-                    'civil_status' => $request['civil_status']
-                ]);
-                $response['status'] = true;
-        } catch (Exception $e) {
-            $response['message'] = $e->getMessage();
-        }   
-        return $response;
+        return Response::json(array('success' => true), 200);
     }
 
     public function storeHomeCountryDetails(Request $request)
     {
-        $response['status'] = false;
-        try {
-            $request->validate([
+        dd ($request);
+        $validator = \Validator::make($request->all(), [
                 'passport_number' => 'Required',
                 'passport_issue'=> 'required',
                 'passport_expiry' => 'required',
                 'issued_by' => 'Required',
                 'passport_copy'=> 'required',
-                
+                'home_country' => 'required',
+                'state' => 'required',
+                'city' => 'required',
+                'postal_code' => 'required',
+                'address1' => 'required',
+                'address2' => 'required'
             ]);
-            Applicant::where('user_id', Auth::id())
-            ->where('product_id', $request->product_id)
-            ->update([
+        
+            if ($validator->fails())
+            {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+            
+                ), 200); // 400 being the HTTP code for an invalid request.
+            }
+            if($request->hasFile('passport_copy')){
+                $file = $request->file('passport_copy');
+                dd($file);
+             }
+             die;
+            $fileName = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
 
-            ]);
+            $destinationPath = 'public/passportCopy';
+            $file->storeAs($destinationPath, $fileName);
+            Applicant::where('user_id', Auth::id())
+                ->where('product_id', $request->product_id)
+                ->update([
+                    'passport_number'  => $request['passport_number'],
+                    'passport_date_issue' => $request['passport_issue'],
+                    'passport_expiry' => $request['passport_expiry'],
+                    'issued_by' => $request['issued_by'],
+                    'passport' => '',
+                    'phone_number' => $request['home_phone_number'],
+                    'home_country' => $request['home_country'],
+                    'state' => $request['state'],
+                    'city' => $request['city'],
+                    'postal_code' => $request['postal_code'],
+                    'address_1' => $request['address_1'],
+                    'address_2' => $request['address_2']
+                ]);
             $response['status'] = true;
-            return back()->with('success', 'Data saved successfully!');
-        } catch (Exception $e) {
-            $response['message'] = $e->getMessage();
+            return Response::json(array('success' => true), 200);
         }
-        return $response;        
-    }
 
     public function applicantReview()
     {
