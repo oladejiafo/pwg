@@ -70,11 +70,11 @@ class ApplicantionController extends Controller
     {
         if(Auth::id()) {
             $user = User::find(Auth::id());
-            // $response = Http::post('https://bo.pwggroup.ae/api/get-job-category-list');
-            // $jobCategory = $response->body();
-            // $jobCategories = json_decode($jobCategory, true);
+            $response = Http::post('https://bo.pwggroup.ae/api/get-job-category-list');
+            $jobCategory = $response->body();
+            $jobCategories = json_decode($jobCategory, true);
             // dd($jobCategories);
-            $jobCategories = [] ;
+            // $jobCategories = [] ;
             return view('user.application-next', compact('user', 'jobCategories'))->with('success', 'Data saved successfully!');
         } else {
             return back();
@@ -175,10 +175,10 @@ class ApplicantionController extends Controller
     public function applicantReview()
     {
         $user = User::find(Auth::id());
-        // $response = Http::post('https://bo.pwggroup.ae/api/get-job-category-list');
-        // $jobCategory = $response->body();
-        // $jobCategories = json_decode($jobCategory, true);
-        $jobCategories = [] ;
+        $response = Http::post('https://bo.pwggroup.ae/api/get-job-category-list');
+        $jobCategory = $response->body();
+        $jobCategories = json_decode($jobCategory, true);
+        // $jobCategories = [] ;
         return view('user.application-review', compact('user', 'jobCategories'))->with('success', 'Data saved successfully!');
     }
 }

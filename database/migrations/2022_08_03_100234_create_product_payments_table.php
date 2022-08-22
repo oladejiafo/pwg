@@ -15,10 +15,7 @@ class CreateProductPaymentsTable extends Migration
     {
         Schema::create('product_payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')
-                ->constrained('products')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+            $table->integer('product_id');
             $table->string('payment')->nullable();
             $table->decimal('amount')->nullable();
             $table->integer('status')->nullable();
