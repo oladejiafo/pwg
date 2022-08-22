@@ -24,12 +24,12 @@
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href=" " ><div class="round-active round4 m-2">4</div></a>
+                                <a href="{{route('applicant.details')}}" ><div class="round-completed round4 m-2">4</div></a>
                                 <div class="round-title"><p>Applicant</p><p> Details</p></div>
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href=" " ><div class="round5 m-2">5</div></a>
+                                <a href="{{route('applicant.review')}}" ><div class="round-active round5 m-2">5</div></a>
                                 <div class="round-title"><p>Application</p><p> Review</p></div>
                             </div>
                         </div>
@@ -55,18 +55,17 @@
                             </div>
                             <div class="col-1"></div>
                             <div class="col-2 mx-auto my-auto">
-                                <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseApplicant" aria-expanded="false" aria-controls="collapseApplicant">
+                                <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseApplicant" aria-expanded="true" aria-controls="collapseApplicant">
                                     <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="collapse" id="collapseApplicant">
+                        <div class="collapse show" id="collapseApplicant">
                             <div class="form-sec">
-                                <form method="POST" id="applicant_details">
+                                <form method="POST" enctype="multipart/form-data" id="applicant_details">
                                     @csrf
-                                    <input type="hidden" name="product_id" value="1">
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-4 mt-3">
                                             <input type="tel" name="first_name" class="form-control" placeholder="First Name*" value="{{old('first_name')}}" autocomplete="off" required/>
@@ -92,8 +91,8 @@
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
-                                        <div class="col-sm-4 mt-3 dob">
-                                            <input type="text" name="dob" class="form-control datepicker" placeholder="Date of Birth*" value="{{old('dob')}}" id="datepicker" autocomplete="off"  readonly="readonly" required/>
+                                        <div class="col-sm-4 mt-3">
+                                            <input type="text" name="dob" class="form-control" placeholder="Date of Birth*" value="{{old('dob')}}" id="datepicker" autocomplete="off"  required/>
                                             @error('dob') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                         <div class="col-sm-4 mt-3">
@@ -511,8 +510,8 @@
                                         <div class="col-sm-4 mt-3">
                                             <select name="sex"  aria-required="true" class="form-control form-select" required>
                                                 <option selected disabled>Sex *</option>
-                                                <option value="MALE">Male</option>
-                                                <option value="FEMALE">Female</option>
+                                                <option value="MALE">MALE</option>
+                                                <option value="FEMALE">FEMALE</option>
                                             </select>
                                             @error('sex') <span class="error">{{ $message }}</span> @enderror
                                         </div>
@@ -531,7 +530,7 @@
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                            <button type="button" class="btn btn-primary submitBtn applicantDetails"  data-bs-toggle="collapse" data-bs-target="#collapseHome" aria-expanded="false" aria-controls="collapseHome">Continue</button>
+                                            <button type="submit" class="btn btn-primary submitBtn">Ammend</button>
                                         </div>
                                     </div>
                                 </form>
@@ -560,14 +559,14 @@
                             </div>
                             <div class="col-1"></div>
                             <div class="col-2 mx-auto my-auto">
-                                <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseHome" aria-expanded="false" aria-controls="collapseHome">
+                                <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseHome" aria-expanded="true" aria-controls="collapseHome">
                                     <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="collapse" id="collapseHome">
+                        <div class="collapse show" id="collapseHome">
                             <div class="form-sec">
                                 <form method="POST" enctype="multipart/form-data" id="home_country_details">
                                     @csrf
@@ -579,11 +578,11 @@
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-6 mt-3">
-                                            <input type="text" name="passport_issue" class="form-control passport_issue" placeholder="Passport Date of Issue*" value="{{old('passport_issue')}}" autocomplete="off" required/>
+                                            <input type="text" name="passport_issue" class="form-control" placeholder="Passport Date of Issue*" value="{{old('passport_issue')}}" autocomplete="off" required/>
                                             @error('passport_issue') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                         <div class="col-sm-6 mt-3">
-                                            <input type="text" name="passport_expiry" class="form-control passport_expiry" placeholder="passport Date of Expiry*" value="{{old('passport_expiry')}}" autocomplete="off"  required/>
+                                            <input type="text" name="passport_expiry" class="form-control" placeholder="assport Date of Expiry*" value="{{old('passport_expiry')}}" autocomplete="off"  required/>
                                             @error('passport_expiry') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                     </div>
@@ -595,7 +594,7 @@
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-6 mt-3">
-                                            <input type="text" name="passport_copy" class="form-control passport_copy" placeholder="Upload Passport Copy*" value="{{old('passport_copy')}}" autocomplete="off" readonly required/>
+                                            <input type="text" name="passport_copy" class="form-control" placeholder="Upload Passport Copy*" value="{{old('passport_copy')}}" autocomplete="off" readonly required/>
                                             <div class="input-group-btn">
                                                 <span class="fileUpload btn">
                                                     <span class="upl" id="upload">Choose File</span>
@@ -835,7 +834,7 @@
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                            <button type="button" class="btn btn-primary submitBtn homeCountryDetails">Continue</button>
+                                            <button type="submit" class="btn btn-primary submitBtn">Ammend</button>
                                         </div>
                                     </div>
                                 </form>
@@ -864,14 +863,14 @@
                             </div>
                             <div class="col-1"></div>
                             <div class="col-2 mx-auto my-auto">
-                                <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseCurrent" aria-expanded="false" aria-controls="collapseCurrent">
+                                <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseCurrent" aria-expanded="true" aria-controls="collapseCurrent">
                                     <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="collapse" id="collapseCurrent">
+                        <div class="collapse show" id="collapseCurrent">
                             <div class="form-sec">
                                 <form method="POST" enctype="multipart/form-data" id="current_residency">
                                     @csrf
@@ -1090,13 +1089,13 @@
                                             @error('residence_id') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                         <div class="col-sm-6 mt-3">
-                                            <input type="text" class="form-control visa_validity" name="id_validity" placeholder="Your ID/Visa Date of Validity*" required>
+                                            <input type="text" class="form-control" name="id_validity" placeholder="Your ID/Visa Date of Validity*" required>
                                             @error('id_validity') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-6 mt-3">
-                                            <input type="text" class="form-control residenc_id" name="residenc_id" placeholder="Residence/Emirates ID*" readonly required>
+                                            <input type="text" class="form-control" name="residenc_id" placeholder="Residence/Emirates ID*" readonly required>
                                             <div class="input-group-btn">
                                                 <span class="fileUpload btn">
                                                     <span class="upl" id="upload">Choose File</span>
@@ -1105,7 +1104,7 @@
                                             </div><!-- btn -->
                                         </div>
                                         <div class="col-sm-6 mt-3">
-                                            <input type="text" class="form-control visa_copy" name="visa_copy" placeholder="Visa Copy*" readonly required>
+                                            <input type="text" class="form-control" name="visa_copy" placeholder="Visa Copy*" readonly required>
                                             <div class="input-group-btn">
                                                 <span class="fileUpload btn">
                                                     <span class="upl" id="upload">Choose File</span>
@@ -1153,7 +1152,7 @@
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                            <button type="submit" class="btn btn-primary submitBtn">Continue</button>
+                                            <button type="submit" class="btn btn-primary submitBtn">Ammend</button>
                                         </div>
                                     </div>
                                 </form>
@@ -1182,14 +1181,14 @@
                             </div>
                             <div class="col-1"></div>
                             <div class="col-2 mx-auto my-auto">
-                                <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseSchengen" aria-expanded="false" aria-controls="collapseSchengen">
+                                <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseSchengen" aria-expanded="true" aria-controls="collapseSchengen">
                                     <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="collapse" id="collapseSchengen">
+                        <div class="collapse show" id="collapseSchengen">
                             <div class="form-sec">
                                 <form method="POST" id="schengen_details">
                                     @csrf
@@ -1213,7 +1212,7 @@
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                            <button type="submit" class="btn btn-primary submitBtn">Continue</button>
+                                            <button type="submit" class="btn btn-primary submitBtn">Ammend</button>
                                         </div>
                                     </div>
                                 </form>
@@ -1242,14 +1241,14 @@
                             </div>
                             <div class="col-1"></div>
                             <div class="col-2 mx-auto my-auto">
-                                <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseExperience" aria-expanded="false" aria-controls="collapseExperience">
+                                <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseExperience" aria-expanded="true" aria-controls="collapseExperience">
                                     <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="collapse" id="collapseExperience">
+                        <div class="collapse show" id="collapseExperience">
                             <div class="form-sec">
                                 <form method="POST" id="experience">
                                     @csrf
@@ -1262,7 +1261,7 @@
                                         </div>
                                     </div>
                                 </form>
-                                @foreach ($jobCategories as $key => $jobCategoryOne)
+                                {{-- @foreach ($jobCategories as $key => $jobCategoryOne)
                                     <div class="jobCategory">
                                         <div class="experience-sec" data-bs-toggle="collapse" data-bs-target="#collapseExperience{{$key}}" aria-expanded="false" aria-controls="collapseExperience{{$key}}">
                                             <div class="row">
@@ -1361,16 +1360,17 @@
                                             @endforeach
                                         </div>
                                     </div>
-                                @endforeach
+                                @endforeach --}}
                             </div>
                             <div class="form-group row mt-4">
                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                    <button type="submit" class="btn btn-primary submitBtn">Review</button>
+                                    <button type="submit" class="btn btn-primary submitBtn">Submit</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -1379,34 +1379,9 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js" integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
     $(document).ready(function(){
-        $('.datepicker').datepicker({
-            dateFormat : "dd-mm-yy",
-            changeMonth: true,
-            changeYear: true,
-            yearRange: "-100:+0",
-            beforeShow: function (input, inst) {
-                setTimeout(function() {
-                    inst.dpDiv.outerWidth($('#datepicker').outerWidth());
-                },0);
-            },
-        });
-        $('div.ui-datepicker').on('click',function(){
-            $(this).outerWidth($('#datepicker').outerWidth());
-        });
-        $('.passport_expiry, .passport_issue, .visa_validity').datepicker({
-            dateFormat : "dd-mm-yy",
-            changeMonth: true,
-            changeYear: true,
-            yearRange: "-100:+0",
-            beforeShow: function (input, inst) {
-                setTimeout(function() {
-                    inst.dpDiv.outerWidth($('.passport_expiry, .passport_issue, .visa_validity').outerWidth());
-                },0);
-            },
-        });
+       
     });
     const phoneInputField = document.querySelector("#phone");
     const phoneInput = window.intlTelInput(phoneInputField, {
@@ -1416,42 +1391,22 @@
     });
 
 
-    $(".applicantDetails").click(function(e){
-        var formdata = $('#applicant_details').serialize(); 
+    $("#applicant_details").submit(function(stay){
+        var formdata = $(this).serialize(); 
         console.log(formdata);
         e.preventDefault(); 
-        $.ajax({
-            type: 'POST',
-            url: "{{ route('store.applicant.details') }}",
-            data: formdata, 
-            success: function (data) {
-                if(data.status) {
-                    alert('data saved successfully');
-                } else {
-                    alert(data.message);
-                }
-            },
-            errror: function (error) {
-                console.log(error);
-            }
-        });
-    });
+        // $.ajax({
+        //     type: 'POST',
+        //     url: "{{ route('store.applicant.details') }}",
+        //     data: formdata, 
+        //     success: function (data) {
 
-    $(".homeCountryDetails").click(function(e){
-        var formdata = $('#home_country_details').serialize(); 
-        console.log(formdata);
-        e.preventDefault(); 
-        $.ajax({
-            type: 'POST',
-            url: "{{ route('store.home-country.details') }}",
-            data: formdata, 
-            success: function (data) {
-                alert('data saved successfully');
-            },
-            errror: function (error) {
-                console.log(error);
-            }
-        });
+        //         alert('hereer');
+        //     },
+        //     errror: function (error) {
+        //         console.log(error);
+        //     }
+        // });
     });
     
     $(document).on('change','.up', function(){
@@ -1463,10 +1418,10 @@
           // $("input[name=file]").val(names);
         if(length>2){
           var fileName = names.join(', ');
-          $('.passport_copy').attr("value",length+" files selected");
+          $(this).closest('.form-group').find('.form-control').attr("value",length+" files selected");
         }
         else{
-          $('.passport_copy').attr("value",names);
+          $(this).closest('.form-group').find('.form-control').attr("value",names);
         }
      });
      $(document).on('change','.residence', function(){
@@ -1478,10 +1433,10 @@
           // $("input[name=file]").val(names);
         if(length>2){
           var fileName = names.join(', ');
-          $('residence_id').attr("value",length+" files selected");
+          $(this).closest('.form-group').find('.form-control').attr("value",length+" files selected");
         }
         else{
-          $('residence_id').attr("value",names);
+          $(this).closest('.form-group').find('.form-control').attr("value",names);
         }
      });
      $(document).on('change','.visa', function(){
@@ -1493,10 +1448,10 @@
           // $("input[name=file]").val(names);
         if(length>2){
           var fileName = names.join(', ');
-          $('visa_copy').attr("value",length+" files selected");
+          $(this).closest('.form-group').find('.form-control').attr("value",length+" files selected");
         }
         else{
-          $('visa_copy').attr("value",names);
+          $(this).closest('.form-group').find('.form-control').attr("value",names);
         }
      });
 

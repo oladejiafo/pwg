@@ -68,8 +68,11 @@ Route::get('payment_form/{id}',[HomeController::class,'payment'])->name('payment
 Route::post('/add_payment', [HomeController::class,'addpayment']);
 
 // Applicant
+Route::get('applicant/review', [ApplicantionController::class, 'applicantReview'])->name('applicant.review');
 Route::get('applicant/details', [ApplicantionController::class, 'applicantDetails'])->name('applicant.details');
 Route::get('applicant/{id}', [ApplicantionController::class,'index'])->name('applicant');
 Route::post('store/applicant', [ApplicantionController::class,'storeApplicant'])->name('store.applicant');
+Route::post('store/home/country/details', [ApplicantionController::class,'storeHomeCountryDetails'])->name('store.home-country.details');
+
 Route::post('srore/applicant/details', [ApplicantionController::class,'storeApplicantDetails'])->name('store.applicant.details');
 

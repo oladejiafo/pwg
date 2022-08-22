@@ -10,27 +10,27 @@
                     <div class="row">
                         <div class="tabs d-flex justify-content-center">
                             <div class="wrapper">
-                                <a href="{{ url('referal_details', $productId) }}" ><div class="round-completed round1 p-3 m-2">1</div></a>
+                                <a href="{{ url('referal_details', $productId) }}" ><div class="round-completed round1 m-2">1</div></a>
                                 <div class="round-title">Refferal <br> Details</div>
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href="{{ url('payment_form', $productId) }}" ><div class="round-completed round2 p-3 m-2">2</div></a>
+                                <a href="{{ url('payment_form', $productId) }}" ><div class="round-completed round2 m-2">2</div></a>
                                 <div class="col-2 round-title">Payment <br> Details</div>
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href="{{route('applicant', $productId)}}" ><div class="round-active  round3 p-3 m-2">3</div></a>
+                                <a href="{{route('applicant', $productId)}}" ><div class="round-active  round3 m-2">3</div></a>
                                 <div class="col-2 round-title">Application <br> Details</div>
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href=" " ><div class="round4 p-3 m-2">4</div></a>
+                                <a href=" " ><div class="round4 m-2">4</div></a>
                                 <div class="col-2 round-title">Applicant <br> Details</div>
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href=" " ><div class="round5 p-3 m-2">5</div></a>
+                                <a href=" " ><div class="round5 m-2">5</div></a>
                                 <div class="col-2 round-title">Application <br> Review</div>
                             </div>
                         </div>
