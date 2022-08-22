@@ -81,7 +81,7 @@ body {
                         </div>
                         <div class="linear"></div>
                         <div class="wrapper">
-                            <a href="{{route('applicant.review')}}" ><div class="round5 m-2">5</div></a>
+                            <a href="{{url('applicant/review')}}" ><div class="round5 m-2">5</div></a>
                             <div class="col-2 round-title">Application <br> Review</div>
                         </div>
                     </div>

@@ -32,7 +32,7 @@
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href="{{route('applicant.review')}}" ><div class="round5 m-2">5</div></a>
+                                <a href="{{url('applicant/review')}}" ><div class="round5 m-2">5</div></a>
                                 <div class="round-title"><p>Application</p><p> Review</p></div>
                             </div>
                         </div>
@@ -1454,7 +1454,7 @@
         });
         $.ajax({
             type: 'POST',
-            url: "{{ route('store.home-country.details') }}",
+            url: "{{ url('store/home/country/details') }}",
             data: formdata, 
             success: function (data) {
                 if(data.success) {

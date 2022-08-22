@@ -1,6 +1,7 @@
 @extends('layouts.master')
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous"> -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
+<link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
 @section('content')
     <div class="container">
         <div class="col-12">
@@ -30,7 +31,7 @@
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href="{{route('applicant.review')}}" ><div class="round-active round5 m-2">5</div></a>
+                                <a href="{{url('applicant/review')}}" ><div class="round-active round5 m-2">5</div></a>
                                 <div class="round-title"><p>Application</p><p> Review</p></div>
                             </div>
                         </div>

@@ -91,7 +91,7 @@
                             <div class="col-4 cellContainer">
                                 <span class="product-item" href="#">
                                     <span class="positionAnchor">
-                                        <img src="../user/images/{{$offer->image}}" style="height:458px" class="img-fluid product-thumbnail home_img">
+                                        <img src="../user/images/{{$offer->image}}" style="height:458px" class="img-fluid product-thumbnail home_img" title="{{$offer->description}}">
                                         <span class="bottom">
                                             <h3 class="product-title intro-excerpt" style="font-size: 35px; color:aliceblue">{{$offer->product_name}}</h3>
                                             <p style="font-size:20px">{{$offer->slogan}}</p>
@@ -107,6 +107,7 @@
                         </li>
                         <!-- End Column  -->
                         @endforeach
+
                     </ul>
 
                 </div>
@@ -150,7 +151,7 @@
                 <div class="col-4 cellContainer">
                     <span class="product-item" href="#">
                         <span class="positionAnchor">
-                            <img src="../user/images/{{$offer->image}}" style="height:458px" class="img-fluid product-thumbnail home_img">
+                            <img src="../user/images/{{$offer->image}}" style="height:458px" class="img-fluid product-thumbnail home_img" title="{{$offer->description}}">
                             <span class="bottom">
                                 <h3 class="product-title intro-excerpt" style="font-size: 35px; color:aliceblue">{{$offer->product_name}}</h3>
                                 <p style="font-size:20px">{{$offer->slogan}}</p>
@@ -165,6 +166,21 @@
                 </div>
                 <!-- End Column  -->
                 @endforeach
+                <div class="col-4 cellContainer">
+                    <span class="product-item" href="#">
+                        <span class="positionAnchor">
+                            <img src="../user/images/{{$offer->image}}" style="height:458px" class="img-fluid product-thumbnail home_img">
+                            <span class="bottom">
+                                <h3 class="product-title intro-excerpt" style="font-size: 35px; color:aliceblue"></h3>
+                                <p style="font-size:20px"></p>
+                            </span>
+                            <strong class="product-price"></strong>
+                            <p></p>
+
+
+                        </span>
+                    </span>
+                </div>
             </div>
         </div>
         @endauth

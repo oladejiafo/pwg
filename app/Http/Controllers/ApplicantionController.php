@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Response;
 class ApplicantionController extends Controller
 {
 
-    public function index($productId)
+    public function applicanview($productId)
     {
         if(Auth::id()) {
             return view('user.applicant', compact('productId'));
