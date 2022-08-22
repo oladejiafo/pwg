@@ -37,12 +37,12 @@
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href=" " ><div class="round4 m-2">4</div></a>
+                                <a href="{{route('applicant.details')}}" ><div class="round4 m-2">4</div></a>
                                 <div class="col-2 round-title">Applicant <br> Details</div>
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href=" " ><div class="round5 m-2">5</div></a>
+                                <a href="{{route('applicant.review')}}" ><div class="round5 m-2">5</div></a>
                                 <div class="col-2 round-title">Application <br> Review</div>
                             </div>
                         </div>
@@ -99,7 +99,6 @@
                         <?php
                         $pp = $pd->product_payment_id;
                         ?>
-
                         @if($pd->product_payment_id != $det->id)
                         @if($index == $pp)
 
@@ -132,7 +131,7 @@
                         @endif
                         @endforeach
                         <input type="hidden" name="pid" value="{{$data->id}}">
-                        <input type="hidden" name="ppid" value="{{$det_id}}">
+                        <input type="hidden" name="ppid" value="{{(isset($det_id))?$det_id:''}}">
                         <input type="hidden" name="uid" value="{{Auth::user()->id}}">
                         <div class="form-group row mt-4">
                             <div class="col-sm-6 mt-3">

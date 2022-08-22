@@ -233,7 +233,6 @@ class HomeController extends Controller
                     ->orderBy('payments.product_payment_id', 'desc')
                     ->limit(1)
                     ->get();
-
                 $pdet = DB::table('product_payments')
                     ->where('product_id', '=', Session::get('myproduct_id'))
                     // ->groupBy('product_payments.id')

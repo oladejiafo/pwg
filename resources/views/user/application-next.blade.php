@@ -10,28 +10,29 @@
                 <div class="wizard-details bg-white">
                     <div class="row">
                         <div class="tabs-detail d-flex justify-content-center">
+                            @php $productId = 1; @endphp
                             <div class="wrapper">
-                                <a href="" ><div class="round-completed round1 m-2">1</div></a>
+                                <a href="{{ url('referal_details', $productId) }}" ><div class="round-completed round1 m-2">1</div></a>
                                 <div class="round-title"><p>Refferal</p><p> Details</p></div>
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href="" ><div class="round-completed round2 m-2">2</div></a>
+                                <a href="{{ url('payment_form', $productId) }}" ><div class="round-completed round2 m-2">2</div></a>
                                 <div class="round-title"><p>Payment</p><p> Details</p></div>
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href="" ><div class="round-completed  round3 m-2">3</div></a>
+                                <a href="{{route('applicant', $productId)}}" ><div class="round-completed  round3 m-2">3</div></a>
                                 <div class="round-title"><p>Application</p><p> Details</p></div>
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href=" " ><div class="round-active round4 m-2">4</div></a>
+                                <a href="{{route('applicant.details')}}" ><div class="round-active round4 m-2">4</div></a>
                                 <div class="round-title"><p>Applicant</p><p> Details</p></div>
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href=" " ><div class="round5 m-2">5</div></a>
+                                <a href="{{route('applicant.review')}}" ><div class="round5 m-2">5</div></a>
                                 <div class="round-title"><p>Application</p><p> Review</p></div>
                             </div>
                         </div>
@@ -57,14 +58,14 @@
                             </div>
                             <div class="col-1"></div>
                             <div class="col-2 mx-auto my-auto">
-                                <div class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    {{-- <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%"> --}}
+                                <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseapplicant" aria-expanded="false" aria-controls="collapseapplicant">
+                                    <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                        <div id="collapseapplicant" class="collapse">
                             <div class="form-sec">
                                 <form method="POST" id="applicant_details">
                                     @csrf
