@@ -121,7 +121,6 @@ class ApplicantionController extends Controller
 
     public function storeHomeCountryDetails(Request $request)
     {
-        dd ($request);
         $validator = \Validator::make($request->all(), [
                 'passport_number' => 'Required',
                 'passport_issue'=> 'required',
@@ -144,21 +143,21 @@ class ApplicantionController extends Controller
             
                 ), 200); // 400 being the HTTP code for an invalid request.
             }
-            if($request->hasFile('passport_copy')){
-                $file = $request->file('passport_copy');
-                dd($file);
-             }
-             die;
-            $fileName = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
+            // if($request->hasFile('passport_copy')){
+            //     $file = $request->file('passport_copy');
+            //     dd($file);
+            //  }
+            //  die;
+            // $fileName = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
 
-            $destinationPath = 'public/passportCopy';
-            $file->storeAs($destinationPath, $fileName);
+            // $destinationPath = 'public/passportCopy';
+            // $file->storeAs($destinationPath, $fileName);
             Applicant::where('user_id', Auth::id())
                 ->where('product_id', $request->product_id)
                 ->update([
                     'passport_number'  => $request['passport_number'],
                     'passport_date_issue' => $request['passport_issue'],
-                    'passport_expiry' => $request['passport_expiry'],
+                    'passport_date_expiry' => $request['passport_expiry'],
                     'issued_by' => $request['issued_by'],
                     'passport' => '',
                     'phone_number' => $request['home_phone_number'],

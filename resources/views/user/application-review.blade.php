@@ -7,19 +7,20 @@
             <div class="row">
                 <div class="wizard-details bg-white">
                     <div class="row">
+                        @php $productId = 1; @endphp
                         <div class="tabs-detail d-flex justify-content-center">
                             <div class="wrapper">
-                                <a href="" ><div class="round-completed round1 m-2">1</div></a>
+                                <a href="{{ url('referal_details', $productId) }}" ><div class="round-completed round1 m-2">1</div></a>
                                 <div class="round-title"><p>Refferal</p><p> Details</p></div>
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href="" ><div class="round-completed round2 m-2">2</div></a>
+                                <a href="{{ url('payment_form', $productId) }}" ><div class="round-completed round2 m-2">2</div></a>
                                 <div class="round-title"><p>Payment</p><p> Details</p></div>
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href="" ><div class="round-completed  round3 m-2">3</div></a>
+                                <a href="{{route('applicant', $productId)}}" ><div class="round-completed  round3 m-2">3</div></a>
                                 <div class="round-title"><p>Application</p><p> Details</p></div>
                             </div>
                             <div class="linear"></div>
