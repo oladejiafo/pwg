@@ -1297,7 +1297,7 @@ textarea {
   padding: 7px;
 }
 
-.round-title p{
+.round-title p {
   margin: 0px !important;
   line-height: 22px !important;
 }
@@ -1335,7 +1335,7 @@ textarea {
 
 .round-title {
   text-align: center;
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 300;
   font-family: "TT Norms Pro";
   color: #7D7D86;
@@ -1373,13 +1373,59 @@ textarea {
   margin-left: auto;
   margin-right: auto;
   margin: 0 auto;
-  background-color: #FCFCFC;
+  background-color: #fff;
   color: #6B6B6B;
-  padding: 0px 15px 0px 15px;
+  padding: 0px 35px 0px 35px;
   margin-top: 20px;
-  border-radius: 20px;
-  box-shadow: 5px 4px 8px rgba(96, 96, 96, 0.05);
-  height: 60px;
+  border-radius: 10px;
+  /* box-shadow: 0px 6px 5px rgb(0 0 0 / 5%); */
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;;
+  height: auto;
+  border: 0.5px solid white;
+  cursor: pointer;
+}
+
+.searchForm button {
+  background-color: #EED509 !important;
+  margin-top: 0px !important;
+  color: #000000 !important;
+  margin-left: -24px !important;
+  font-size: 24px !important;
+  height: 51px !important;
+  line-height: 0px !important;
+  width: 167px !important;
+}
+
+.searchForm button:hover {
+  background-color: #EED509 !important;
+  border: 1px solid #F6F6F6;
+  color: #000000;
+}
+
+
+
+  .detail-sec {
+  width: 100%;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  margin: 0 auto;
+  background-color: #fff;
+  color: #636466;
+  padding: 18px 40px 18px 40px;
+  margin-top: 20px;
+  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.05);
+  font-family: TT Norms Pro;
+  line-height: 18px;
+}
+
+.detail-sec button{
+  width: auto !important;
+  font-size: 20px !important;
+  margin-left: 12px;
+  margin-top: 0px !important;
+  height: auto !important;
+  padding: auto !important;
 }
 
 .exp-font {
@@ -1400,9 +1446,13 @@ textarea {
   line-height: 43px;
   letter-spacing: 0em;
   text-align: center;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  /* margin-top: 20px;
+  margin-bottom: 20px; */
 }
+
+/* .applicant-detail-sec .heading {
+  height: 90px;
+} */
 
 .down-arrow img {
   float: right;
@@ -1494,9 +1544,48 @@ input[type="checkbox"]:hover {
   line-height: 43px;
   letter-spacing: 0em;
   text-align: center;
-  color: #606060;
+  color: #606060 !important;
   margin-top: 30px;
   width: 100%;
+}
+
+.ui-widget.ui-widget-content {
+  border: 1px solid #ced4da !important;
+  border-radius: 10px;
+  width: 19% !important;
+}
+
+/* .passport_issue .ui-widget.ui-widget-content {
+  width: 29.5% !important;
+} */
+
+.ui-datepicker .ui-datepicker-header,
+.ui-datepicker .ui-datepicker-title {
+  background: white;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default, 
+.ui-widget-header .ui-state-default, .ui-button, 
+html .ui-button.ui-state-disabled:hover, 
+html .ui-button.ui-state-disabled:active {
+  color: #000;
+  background: white;
+}
+
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
+  border: 1px solid black;
+  background: black;
+  color: white;
+}
+
+.accordion-button::after {
+  background-image: url("C:\Users\Shamshera Hamza\pwg_client_portal\public\images\down_arrow.png");
+}
+
+.accordion-button:not(.collapsed) {
+  background: white !important;
+  color: black !important;
+  box-shadow: inset 0 0px 0 !important;
 }
 
 .wizard {
@@ -1599,6 +1688,10 @@ input:-moz-placeholder {
   margin-bottom: 420px;
   color: #636466;
   padding: 40px 150px 70px 150px;
+}
+
+.form-control:disabled, .form-control[readonly] {
+  background: white;
 }
 
 .referal-sec h3 {

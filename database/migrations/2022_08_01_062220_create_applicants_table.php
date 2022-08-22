@@ -38,7 +38,7 @@ class CreateApplicantsTable extends Migration
             $table->string('sex')->nullable();
             $table->string('civil_status')->nullable();
             $table->string('passport_number')->nullable();
-            $table->date('passport_dete_issue')->nullable();
+            $table->date('passport_date_issue')->nullable();
             $table->date('passport_date_expiry')->nullable();
             $table->string('issued_by')->nullable();
             $table->string('passport')->nullable();
@@ -47,7 +47,7 @@ class CreateApplicantsTable extends Migration
             $table->string('state')->nullable();
             $table->string('city')->nullable();
             $table->string('postal_code')->nullable();
-            $table->text('addess_1')->nullable();
+            $table->text('address_1')->nullable();
             $table->text('address_2')->nullable();
             $table->string('current_residance_country')->nullable();
             $table->string('current_residance_mobile')->nullable();

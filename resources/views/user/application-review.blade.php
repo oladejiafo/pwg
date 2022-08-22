@@ -1,8 +1,6 @@
 @extends('layouts.master')
-<link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
-<meta name="csrf-token" content="{{ csrf_token() }}" />
 @section('content')
     <div class="container">
         <div class="col-12">
@@ -26,12 +24,12 @@
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href=" " ><div class="round-active round4 m-2">4</div></a>
+                                <a href="{{route('applicant.details')}}" ><div class="round-completed round4 m-2">4</div></a>
                                 <div class="round-title"><p>Applicant</p><p> Details</p></div>
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href=" " ><div class="round5 m-2">5</div></a>
+                                <a href="{{route('applicant.review')}}" ><div class="round-active round5 m-2">5</div></a>
                                 <div class="round-title"><p>Application</p><p> Review</p></div>
                             </div>
                         </div>
@@ -57,49 +55,49 @@
                             </div>
                             <div class="col-1"></div>
                             <div class="col-2 mx-auto my-auto">
-                                <div class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    {{-- <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%"> --}}
+                                <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseApplicant" aria-expanded="true" aria-controls="collapseApplicant">
+                                    <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                        <div class="collapse show" id="collapseApplicant">
                             <div class="form-sec">
-                                <form method="POST" id="applicant_details">
+                                <form method="POST" enctype="multipart/form-data" id="applicant_details">
                                     @csrf
-                                    <input type="hidden" name="product_id" value="1">
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-4 mt-3">
                                             <input type="tel" name="first_name" class="form-control" placeholder="First Name*" value="{{old('first_name')}}" autocomplete="off" required/>
-                                            <span class="first_name_errorClass"></span>
+                                            @error('first_name') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                         <div class="col-sm-4 mt-3">
                                             <input type="text" name="middle_name" class="form-control" placeholder="Middle Name" value="{{old('middle_name')}}"  autocomplete="off"/>
+                                            @error('middle_name') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                         <div class="col-sm-4 mt-3">
                                             <input type="text" name="surname" class="form-control" placeholder="Surname*" value="{{old('surname')}}" autocomplete="off" required />
-                                            <span class="surname_errorClass"></span>
+                                            @error('surname') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-6 mt-3">
                                             <input type="text" name="email" class="form-control" placeholder="Email*" value="{{$user['email']}}" autocomplete="off" required/>
-                                            <span class="email_errorClass"></span>
+                                            @error('email') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                         <div class="col-sm-6 mt-3">
                                             <input type="tel" name="phone_number" class="form-control" id="phone" placeholder="Phone Number*" value="{{$user['phone_number']}}" autocomplete="off"  required/>
-                                            <span class="phone_number_errorClass"></span>
+                                            @error('phone_number') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
-                                        <div class="col-sm-4 mt-3 dob">
-                                            <input type="text" name="dob" class="form-control datepicker" placeholder="Date of Birth*" value="{{old('dob')}}" id="datepicker" autocomplete="off"  readonly="readonly" required/>
-                                            <span class="dob_errorClass"></span>
+                                        <div class="col-sm-4 mt-3">
+                                            <input type="text" name="dob" class="form-control" placeholder="Date of Birth*" value="{{old('dob')}}" id="datepicker" autocomplete="off"  required/>
+                                            @error('dob') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                         <div class="col-sm-4 mt-3">
                                             <input type="text" name="place_birth" class="form-control" placeholder="Place of Birth*" value="{{old('place_birth')}}" autocomplete="off" required/>
-                                            <span class="place_birth_errorClass"></span>
+                                            @error('place_birth') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                         <div class="col-sm-4 mt-3">
                                             <select class="form-select form-control" name="country_birth" placeholder="Country of Birth*" value="{{old('country_birth')}}"  required>
@@ -302,7 +300,7 @@
                                                 <option value="Zambia">Zambia</option>
                                                 <option value="Zimbabwe">Zimbabwe</option>
                                             </select>
-                                            <span class="country_birth_errorClass"></span>
+                                            @error('country_birth') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
@@ -507,15 +505,15 @@
                                                 <option value="Zambia">Zambia</option>
                                                 <option value="Zimbabwe">Zimbabwe</option>
                                             </select>
-                                            <span class="citizenship_errorClass"></span>
+                                            @error('citizenship') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                         <div class="col-sm-4 mt-3">
                                             <select name="sex"  aria-required="true" class="form-control form-select" required>
                                                 <option selected disabled>Sex *</option>
-                                                <option value="MALE">Male</option>
-                                                <option value="FEMALE">Female</option>
+                                                <option value="MALE">MALE</option>
+                                                <option value="FEMALE">FEMALE</option>
                                             </select>
-                                            <span class="sex_errorClass"></span>
+                                            @error('sex') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                         <div class="col-sm-4 mt-3">
                                             <select name="civil_status" id="civil_status" required="" aria-required="true" class="form-control form-select">
@@ -527,12 +525,12 @@
                                                 <option value="Widow">Widow</option>
                                                 <option value="Other">Other</option>
                                             </select>
-                                            <span class="civil_status_errorClass"></span>
+                                            @error('civil_status') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                            <button type="button" class="btn btn-primary submitBtn applicantDetails"  data-bs-toggle="collapse" data-bs-target="#collapseHome" aria-expanded="false" aria-controls="collapseHome">Continue</button>
+                                            <button type="submit" class="btn btn-primary submitBtn">Ammend</button>
                                         </div>
                                     </div>
                                 </form>
@@ -561,53 +559,53 @@
                             </div>
                             <div class="col-1"></div>
                             <div class="col-2 mx-auto my-auto">
-                                <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseHome" aria-expanded="false" aria-controls="collapseHome">
+                                <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseHome" aria-expanded="true" aria-controls="collapseHome">
                                     <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="collapse" id="collapseHome">
+                        <div class="collapse show" id="collapseHome">
                             <div class="form-sec">
                                 <form method="POST" enctype="multipart/form-data" id="home_country_details">
                                     @csrf
-                                    <input type="hidden" name="product_id" value="1">
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-12 mt-3">
                                             <input type="text" name="passport_number" class="form-control" placeholder="Passport Number*" value="{{old('passport_number')}}" autocomplete="off" required/>
-                                            <span class="passport_number_errorClass"></span>
+                                            @error('passport_number') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-6 mt-3">
-                                            <input type="text" name="passport_issue" class="form-control passport_issue" placeholder="Passport Date of Issue*" value="{{old('passport_issue')}}" autocomplete="off" required/>
-                                            <span class="passport_issue_errorClass"></span>
+                                            <input type="text" name="passport_issue" class="form-control" placeholder="Passport Date of Issue*" value="{{old('passport_issue')}}" autocomplete="off" required/>
+                                            @error('passport_issue') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                         <div class="col-sm-6 mt-3">
-                                            <input type="text" name="passport_expiry" class="form-control passport_expiry" placeholder="passport Date of Expiry*" value="{{old('passport_expiry')}}" autocomplete="off"  required/>
-                                            <span class="passport_expiry_errorClass"></span>
+                                            <input type="text" name="passport_expiry" class="form-control" placeholder="assport Date of Expiry*" value="{{old('passport_expiry')}}" autocomplete="off"  required/>
+                                            @error('passport_expiry') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-12 mt-3">
                                             <input type="text" name="issued_by" class="form-control" placeholder="Issued By(Authority that issued the passport)*" value="{{old('issued_by')}}" autocomplete="off" required/>
-                                            <span class="issued_by_errorClass"></span>
+                                            @error('issued_by') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-6 mt-3">
-                                            <input type="text" name="passport_copy" class="form-control passport_copy" placeholder="Upload Passport Copy*" value="{{old('passport_copy')}}" autocomplete="off" readonly required/>
+                                            <input type="text" name="passport_copy" class="form-control" placeholder="Upload Passport Copy*" value="{{old('passport_copy')}}" autocomplete="off" readonly required/>
                                             <div class="input-group-btn">
                                                 <span class="fileUpload btn">
                                                     <span class="upl" id="upload">Choose File</span>
-                                                    <input type="file" class="upload up passport_copy" id="up"  name="passport_copy" />
+                                                    <input type="file" class="upload up" id="up"  name="passport_copy" onchange="readURL(this);" />
                                                 </span><!-- btn-orange -->
                                             </div><!-- btn -->
-                                            <span class="passport_copy_errorClass"></span>
+                                            @error('passport_copy') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                         <div class="col-sm-6 mt-3">
-                                            <input type="tel" name="home_phone_number" class="form-control" placeholder="Phone Number" value="{{old('home_phone_number')}}" autocomplete="off" />
+                                            <input type="tel" name="home_phone_number" class="form-control" placeholder="Phone Number" value="{{old('home_phone_number')}}" autocomplete="off"  required/>
+                                            @error('home_phone_number') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
@@ -812,35 +810,31 @@
                                                 <option value="Zambia">Zambia</option>
                                                 <option value="Zimbabwe">Zimbabwe</option>
                                             </select>
-                                            <span class="home_country_errorClass"></span>
+                                            @error('home_country') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                         <div class="col-sm-3 mt-3">
                                             <input type="text" name="state" class="form-control" placeholder="State/Province*" required>
                                             @error('state') <span class="error">{{ $message }}</span> @enderror
-                                            <span class="state_errorClass"></span>
                                         </div>
                                         <div class="col-sm-3 mt-3">
                                             <input type="text" name="city" class="form-control" placeholder="City*" required>
-                                            <span class="city_errorClass"></span>
+                                            @error('city') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                         <div class="col-sm-3 mt-3">
                                             <input type="integer" name="postal_code" value="{{old('postal_code')}}" class="form-control" placeholder="Postal Code*" required>
-                                            <span class="postal_code_errorClass"></span>
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-6 mt-3">
                                             <input type="text" name="address1" class="form-control" placeholder="Address (Street And Number) Line 1*" required>
-                                            <span class="address1_errorClass"></span>
                                         </div>
                                         <div class="col-sm-6 mt-3">
-                                            <input type="text" name="address2" class="form-control" placeholder="Address (Street And Number) Line 2*" required>
-                                            <span class="address2_errorClass"></span>
+                                            <input type="text" name="address1" class="form-control" placeholder="Address (Street And Number) Line 2*" required>
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                            <button type="button" class="btn btn-primary submitBtn homeCountryDetails">Continue</button>
+                                            <button type="submit" class="btn btn-primary submitBtn">Ammend</button>
                                         </div>
                                     </div>
                                 </form>
@@ -869,14 +863,14 @@
                             </div>
                             <div class="col-1"></div>
                             <div class="col-2 mx-auto my-auto">
-                                <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseCurrent" aria-expanded="false" aria-controls="collapseCurrent">
+                                <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseCurrent" aria-expanded="true" aria-controls="collapseCurrent">
                                     <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="collapse" id="collapseCurrent">
+                        <div class="collapse show" id="collapseCurrent">
                             <div class="form-sec">
                                 <form method="POST" enctype="multipart/form-data" id="current_residency">
                                     @csrf
@@ -1095,13 +1089,13 @@
                                             @error('residence_id') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                         <div class="col-sm-6 mt-3">
-                                            <input type="text" class="form-control visa_validity" name="id_validity" placeholder="Your ID/Visa Date of Validity*" required>
+                                            <input type="text" class="form-control" name="id_validity" placeholder="Your ID/Visa Date of Validity*" required>
                                             @error('id_validity') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-6 mt-3">
-                                            <input type="text" class="form-control residenc_id" name="residenc_id" placeholder="Residence/Emirates ID*" readonly required>
+                                            <input type="text" class="form-control" name="residenc_id" placeholder="Residence/Emirates ID*" readonly required>
                                             <div class="input-group-btn">
                                                 <span class="fileUpload btn">
                                                     <span class="upl" id="upload">Choose File</span>
@@ -1110,7 +1104,7 @@
                                             </div><!-- btn -->
                                         </div>
                                         <div class="col-sm-6 mt-3">
-                                            <input type="text" class="form-control visa_copy" name="visa_copy" placeholder="Visa Copy*" readonly required>
+                                            <input type="text" class="form-control" name="visa_copy" placeholder="Visa Copy*" readonly required>
                                             <div class="input-group-btn">
                                                 <span class="fileUpload btn">
                                                     <span class="upl" id="upload">Choose File</span>
@@ -1158,7 +1152,7 @@
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                            <button type="submit" class="btn btn-primary submitBtn">Continue</button>
+                                            <button type="submit" class="btn btn-primary submitBtn">Ammend</button>
                                         </div>
                                     </div>
                                 </form>
@@ -1187,14 +1181,14 @@
                             </div>
                             <div class="col-1"></div>
                             <div class="col-2 mx-auto my-auto">
-                                <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseSchengen" aria-expanded="false" aria-controls="collapseSchengen">
+                                <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseSchengen" aria-expanded="true" aria-controls="collapseSchengen">
                                     <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="collapse" id="collapseSchengen">
+                        <div class="collapse show" id="collapseSchengen">
                             <div class="form-sec">
                                 <form method="POST" id="schengen_details">
                                     @csrf
@@ -1218,7 +1212,7 @@
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                            <button type="submit" class="btn btn-primary submitBtn">Continue</button>
+                                            <button type="submit" class="btn btn-primary submitBtn">Ammend</button>
                                         </div>
                                     </div>
                                 </form>
@@ -1247,14 +1241,14 @@
                             </div>
                             <div class="col-1"></div>
                             <div class="col-2 mx-auto my-auto">
-                                <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseExperience" aria-expanded="false" aria-controls="collapseExperience">
+                                <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseExperience" aria-expanded="true" aria-controls="collapseExperience">
                                     <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="collapse" id="collapseExperience">
+                        <div class="collapse show" id="collapseExperience">
                             <div class="form-sec">
                                 <form method="POST" id="experience">
                                     @csrf
@@ -1267,7 +1261,7 @@
                                         </div>
                                     </div>
                                 </form>
-                                @foreach ($jobCategories as $key => $jobCategoryOne)
+                                {{-- @foreach ($jobCategories as $key => $jobCategoryOne)
                                     <div class="jobCategory">
                                         <div class="experience-sec" data-bs-toggle="collapse" data-bs-target="#collapseExperience{{$key}}" aria-expanded="false" aria-controls="collapseExperience{{$key}}">
                                             <div class="row">
@@ -1366,16 +1360,17 @@
                                             @endforeach
                                         </div>
                                     </div>
-                                @endforeach
+                                @endforeach --}}
                             </div>
                             <div class="form-group row mt-4">
                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                    <button type="submit" class="btn btn-primary submitBtn">Review</button>
+                                    <button type="submit" class="btn btn-primary submitBtn">Submit</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -1384,24 +1379,9 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js" integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 <script>
     $(document).ready(function(){
-        $('.datepicker').datepicker({
-            dateFormat : "dd-mm-yy",
-            changeMonth: true,
-            changeYear: true,
-            yearRange: "-100:+0",
-            constrainInput: false   
-        });
-        $('.passport_expiry, .passport_issue, .visa_validity').datepicker({
-            dateFormat : "dd-mm-yy",
-            changeMonth: true,
-            changeYear: true,
-            yearRange: "-100:+0",
-            constrainInput: false   
-        });
+       
     });
     const phoneInputField = document.querySelector("#phone");
     const phoneInput = window.intlTelInput(phoneInputField, {
@@ -1411,60 +1391,22 @@
     });
 
 
-    $(".applicantDetails").click(function(e){
-        $("#applicant_details").validate();
-        $("#applicant_details :input").each(function(index, elm){
-            $("."+elm.name+"_errorClass").empty();
-        });
-        var formdata = $('#applicant_details').serialize(); 
+    $("#applicant_details").submit(function(stay){
+        var formdata = $(this).serialize(); 
+        console.log(formdata);
         e.preventDefault(); 
-        $.ajax({
-            type: 'POST',
-            url: "{{ route('store.applicant.details') }}",
-            data: formdata, 
-            success: function (data) {
-                if(data.success) {
-                    alert('Data added successfully !');
-                } else {
-                    var validationError = data.errors;
-                    $.each(validationError, function(index, value) {
-                        $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
-                    });
-                }
-            },
-            errror: function (error) {
-            }
-        });
-    });
+        // $.ajax({
+        //     type: 'POST',
+        //     url: "{{ route('store.applicant.details') }}",
+        //     data: formdata, 
+        //     success: function (data) {
 
-    $(".homeCountryDetails").click(function(e){
-        var formdata = $('#home_country_details').serialize(); 
-        $("#home_country_details :input").each(function(index, elm){
-            $("."+elm.name+"_errorClass").empty();
-        });
-        e.preventDefault(); 
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax({
-            type: 'POST',
-            url: "{{ route('store.home-country.details') }}",
-            data: formdata, 
-            success: function (data) {
-                if(data.success) {
-                    alert('Data added successfully !');
-                } else {
-                    var validationError = data.errors;
-                    $.each(validationError, function(index, value) {
-                        $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
-                    });
-                }
-            },
-            errror: function (error) {
-            }
-        });
+        //         alert('hereer');
+        //     },
+        //     errror: function (error) {
+        //         console.log(error);
+        //     }
+        // });
     });
     
     $(document).on('change','.up', function(){
@@ -1479,7 +1421,7 @@
           $(this).closest('.form-group').find('.form-control').attr("value",length+" files selected");
         }
         else{
-          $('.passport_copy, .up').attr("value",names);
+          $(this).closest('.form-group').find('.form-control').attr("value",names);
         }
      });
      $(document).on('change','.residence', function(){
@@ -1491,10 +1433,10 @@
           // $("input[name=file]").val(names);
         if(length>2){
           var fileName = names.join(', ');
-          $('residence_id').attr("value",length+" files selected");
+          $(this).closest('.form-group').find('.form-control').attr("value",length+" files selected");
         }
         else{
-          $('residence_id').attr("value",names);
+          $(this).closest('.form-group').find('.form-control').attr("value",names);
         }
      });
      $(document).on('change','.visa', function(){
@@ -1506,10 +1448,10 @@
           // $("input[name=file]").val(names);
         if(length>2){
           var fileName = names.join(', ');
-          $('visa_copy').attr("value",length+" files selected");
+          $(this).closest('.form-group').find('.form-control').attr("value",length+" files selected");
         }
         else{
-          $('visa_copy').attr("value",names);
+          $(this).closest('.form-group').find('.form-control').attr("value",names);
         }
      });
 
