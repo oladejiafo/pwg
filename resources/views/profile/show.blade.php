@@ -12,14 +12,20 @@
 <style>
 
 body {
-    background-color: #F6F7FB;
+    background: #e5e8e9 !important;
   }
-  .cards {
+  hr {
+    height:1px;
+    color:#e5e8e9 !important;
+    background-color:#ccc;
+    opacity: 1;
+  }
+  .card {
     width: 70%;
     margin: 0 auto;
     /* margin-right:25%;
     margin-left:15%; */
-    margin-top: 60px;
+    margin-top: 160px;
   }
   .panel-title {
     margin-left:10%;
@@ -68,7 +74,7 @@ body {
                                 </a>
                             </h4>
                         </div>
-                        <hr style="height:1px;border:none;color:#ccc;background-color:#ccc;">
+                        <hr>
                         <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                             <div class="panel-body">
 

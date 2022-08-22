@@ -105,9 +105,12 @@ body {
     font-size: 20px;
     list-style-type: disc;
   }
- .btn {
+ .product-section .btn {
   height: 60px;
-  width: 50%; max-width: 100%;
+  width: 45%; max-width: 100%;
+  margin-left: 5px;
+  font-weight: bold;
+  font-size: 25px;
  }
   .text {
     /* width:90%; */
@@ -189,6 +192,13 @@ body {
     font-size: 18px;
   }
 
+  .product-section .btn {
+  height: 50px;
+  margin-left: 5px;
+  font-weight: bold;
+  font-size: 65%;
+ }
+
   }
   @media (max-width: 991.98px) {
     .text {
@@ -202,6 +212,14 @@ body {
       height: 300px;
     }
   }
+ @media (min-width: 768px) AND (max-width: 991px){
+  .product-section .btn {
+  height: 50px;
+  margin-left: 5px;
+  font-weight: bold;
+  font-size: 65%;
+ }
+ } 
 /* @media (max-width:375) {
   img {
   width: 100%;
@@ -239,6 +257,24 @@ body {
 </style>
 
 <body>
+<?php
+  $offer_discount= $data->prev_discount - $data->discount;
+  
+  if($offer_discount >0)
+  { 
+    $icon = 'fa fa-minus-circle';
+    $offer_discount_msg = number_format($offer_discount) .'% lower than last month';
+  }
+  else if($offer_discount < 0)
+  { 
+    $icon = 'fa fa-plus-circle';
+   $offer_discount_msg = number_format(($offer_discount*-1)) .'% higher than last month';
+  } else {
+    $icon = '';
+   $offer_discount_msg = '';
+  }
+  
+?>
 
   <section class="product-section">
     <div class="container-fluid">
@@ -254,7 +290,7 @@ body {
           <p class="subheading"><span>{{$data->slogan}}</span></p>
           <p>{{$data->description}}</p>
           <h2>{{number_format($data->unit_price,2)}} {{$data->currency}}</h2>
-          <p class="subheading" style="margin-left: 0px;"><i class="fa fa-minus-circle"></i> &nbsp;{{$data->discount}}% lower than last month</p>
+          <p class="subheading" style="margin-left: 0px;"><i class="<?php echo $icon; ?>"></i> {{$offer_discount_msg}}</p>
 
           <p>
           <h3>Payment Installments</h3>
@@ -315,19 +351,26 @@ body {
             @endif
           </ul>
           </p>
+
           @if(Route::has('login'))
-          @auth
-          <form action="{{ url('referal_details', $data->id) }}">
-            @else
+           @auth
+            <form action="{{ url('append_signature', $data->id) }}" method="GET">
+          @else
             <form action="{{ url('login') }}">
-              @endauth
-              @endif
-              <p><input type="checkbox" class="checkcolor" id="agree" style="font-size:25px;transform: scale(1.8); " required> &nbsp; By checking this box you accept our Terms & Conditions</p>
-
-              <p><button class="btn btn-secondary" id="buy">Purchase Now</button></p>
-
+           @endauth
+          @endif
+          <input type="hidden" value="{{$data->id}}">
+          <p><input type="checkbox" class="checkcolor" id="agree" style="font-size:25px;transform: scale(1.8); " required=""> &nbsp; By checking this box you accept our Terms & Conditions</p>
+              <p><button class="btn btn-secondary" id="buy" value="1" name="payall">FULL PAYMENT</button>
+                 <button class="btn btn-secondary" id="buy" value="0" name="payall">PARTIAL PAYMENT</button></p>
             </form>
-
+            <?php
+if ($data->full_payment_discount > 0) {
+    ?>
+            <p style="margin-left:2px;font-weight:bold">Get {{number_format($data->full_payment_discount)}}% discount on Full Payment</p>
+            <?php
+}
+?>
         </div>
 
       </div>

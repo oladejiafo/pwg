@@ -25,10 +25,11 @@
 
 <style>
   body {
-    background-color: #F6F7FB;
+    background: #e5e8e9 !important;
   }
     .banner_bg {
         background-image: url(../user/images/v1_17125.png);
+        padding-top: 60px; 
     }
 
     #headerBtn {
@@ -51,8 +52,9 @@
   height: auto;
   background-size: 100%;
   background-repeat: no-repeat;
+  padding-top: 60px; 
 }
-@media (max-width: 768px) and (min-width: 370px)
+@media (min-width:260px) and (max-width: 768px)
 {
 .hero {
   padding: 0px;
@@ -66,9 +68,31 @@
 background-size:cover;
 background-position:center;
   }
-  .banner_bg img {
+  .home_img {
+  width: 100%;
+}
 
+}
+
+@media (min-width: 768px) and (max-width: 1024px)
+{
+.hero {
+  padding: 0px;
+  margin: 0px;
+}
+  .banner_bg {
+   padding-top: 60px; 
+    background-repeat:no-repeat;
+-webkit-background-size:cover;
+-moz-background-size:cover;
+-o-background-size:cover;
+background-size:cover;
+background-position:center;
   }
+  .home_img {
+    /* min-width:769px; */
+  width: 100%;
+}
 
 }
 #headerTitle {
@@ -99,7 +123,13 @@ background-position:center;
   border-radius: 10px;
 }
 
-@media (max-width: 768px) and (min-width: 370px)
+@media (min-width:280px) and (max-width:653px) {
+  #headerBtn {
+
+    width: 250px;
+  }
+}
+@media (max-width: 768px) and (min-width: 260px)
 {
   #headerTitle {
   font-family: 'TT Norms Pro Black';
@@ -142,7 +172,7 @@ background-position:center;
   padding-right:50px;
 }
 
-@media (max-width: 768px) and (min-width: 370px)
+@media (max-width: 768px) and (min-width: 260px)
 {
   .cellContainer {
   width: 100%;
@@ -153,7 +183,7 @@ background-position:center;
   padding-right:10px;
   }
   .positionAnchor .btn {
-    width: 95%;
+    width: 21.5rem;
     padding-top: 10px;
     margin-left: 5px;
     margin-right: 5px;
@@ -205,7 +235,7 @@ background-position:center;
         @auth
         @else
     <!-- Start Hero Section -->
-    <div class="hero banner_bg layerd">
+    <div class="hero banner_bg layerd" style="padding-top: 80px; ">
 
         <div class="container-fluid">
             <div class="row justify-content-between">
@@ -239,6 +269,24 @@ background-position:center;
 
                     <ul>
                         @foreach($package as $offer)
+
+                        <?php
+                                           $offer_discount= $offer->prev_discount - $offer->discount;
+                                           if($offer_discount >0)
+                                           { 
+                                            $icon = 'fa fa-minus-circle';
+                                            $offer_discount_msg = $offer_discount .'% lower than last month';
+                                           }
+                                           else if($offer_discount < 0)
+                                           { 
+                                            $icon = 'fa fa-plus-circle';
+                                            $offer_discount_msg = ($offer_discount*-1) .'% higher than last month';
+                                           } else {
+                                            $icon = '';
+                                            $offer_discount_msg = '-';
+                                           }
+                                           
+                ?>
                         <!-- Start Column  -->
                         <li>
                             <div class="col-4 cellContainer">
@@ -250,7 +298,7 @@ background-position:center;
                                             <p style="font-size:20px">{{$offer->slogan}}</p>
                                         </span>
                                         <strong class="product-price">{{number_format($offer->unit_price,2)}} {{$offer->currency}}</strong>
-                                        <p><i class="fa fa-minus-circle" style='color: white'></i>{{$offer->discount}}% lower than last month</p>
+                                        <p><i class="<?php echo $icon; ?>"></i> {{$offer_discount_msg}}</p>
 
                                         <p><a class="btn btn-secondary" href="{{ url('product', $offer->id) }}">Buy Now</a></p>
 
@@ -282,6 +330,23 @@ background-position:center;
 
             <div class="row">
                 @foreach($package as $offer)
+                <?php
+                                           $offer_discount= $offer->prev_discount - $offer->discount;
+                                           if($offer_discount >0)
+                                           { 
+                                            $icon = 'fa fa-minus-circle';
+                                            $offer_discount_msg = $offer_discount .'% lower than last month';
+                                           }
+                                           else if($offer_discount < 0)
+                                           { 
+                                            $icon = 'fa fa-plus-circle';
+                                            $offer_discount_msg = ($offer_discount*-1) .'% higher than last month';
+                                           } else {
+                                            $icon = '';
+                                            $offer_discount_msg = '-';
+                                           }
+                                           
+                ?>
                 <!-- Start Column  -->
                 <div class="col-4 cellContainer">
                     <span class="product-item" href="#">
@@ -292,7 +357,7 @@ background-position:center;
                                 <p style="font-size:20px">{{$offer->slogan}}</p>
                             </span>
                             <strong class="product-price">{{number_format($offer->unit_price,2)}} {{$offer->currency}}</strong>
-                            <p><i class="fa fa-minus-circle" style='color: white'></i> {{$offer->discount}}% lower than last month</p>
+                            <p><i class="<?php echo $icon; ?>"></i> {{$offer_discount_msg}}</p>
 
                             <p><a class="btn btn-secondary buy_now" href="{{ url('product', $offer->id) }}">Buy Now</a></p>
 

@@ -1,9 +1,15 @@
 @extends('layouts.master')
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
+<link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 <link href="{{asset('css/payment-form.css')}}" rel="stylesheet">
+<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous"> -->
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/> -->
+<!-- <link href="{{asset('css/payment-form.css')}}" rel="stylesheet"> -->
 
 <style>
+      body {
+    background-color: #ccc;
+  }
     .btt {
         font-size: 16px;
         margin-top: 5px;
@@ -21,6 +27,9 @@
     }
 </style>
 @section('content')
+<?php
+ $pid =  Session::get('myproduct_id');
+?>
     <div class="container">
         <div class="col-12">
             <div class="row">
@@ -28,17 +37,17 @@
                     <div class="row">
                         <div class="tabs d-flex justify-content-center">
                             <div class="wrapper">
-                                <a href="{{ url('referal_details', $data->id) }}" ><div class="round-completed round1 m-2">1</div></a>
+                                <a href="{{ url('referal_details', $pid) }}" ><div class="round-completed round1 p-3 m-2">1</div></a>
                                 <div class="round-title">Refferal <br> Details</div>
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href="{{ url('payment_form', $data->id)}}" ><div class="round-active round2 m-2">2</div></a>
+                                <a href="{{ url('payment_form', $pid)}}" ><div class="round-active round2 p-3 m-2">2</div></a>
                                 <div class="col-2 round-title">Payment <br> Details</div>
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href="{{route('applicant', $data->id)}}" ><div class="round3 m-2">3</div></a>
+                                <a href="#" ><div class="round3 p-3 m-2">3</div></a>
                                 <div class="col-2 round-title">Application <br> Details</div>
                             </div>
                             <div class="linear"></div>
@@ -68,47 +77,47 @@
                     <div class="form-sec">
                         <form method="POST" action="{{ url('add_payment') }}">
                             @csrf
-                            <?php 
-                                $whichPayment = null ;
-                                $payNow = 0;
-                                $vatPercent = 0;
-                                $vat = 0;
-                                $discountPercent = 0;
-                                $discount = 0;
-                                $totalPay = 0;
-                            ?>
+
                             @foreach(($pays ? $pays : array()) as $pd)
-                                @foreach($pdet as $index => $det)
-                                    <?php 
-                                        $pp = $pd->product_payment_id;
-                                    ?>
-                                    @if($pd->product_payment_id != $det->id)
-                                        @if($index == $pp)
-                                            <?php
-                                                if ($payall ==0) {
-                                                    $whichPayment =  $det->payment;
-                                                    $payNow = $det->amount;
-                                                } else {
-                                                    if($pp == 0 || $pp==null) {
-                                                        $payNow = $data->unit_price;
-                                                    }
-                                                    else if($pp == 1) {
-                                                        $payNow = $data->unit_price - $pd->total;
-                                                    }
-                                                    else if($pp == 2) {
-                                                        $payNow = $det->amount;
-                                                    }
-                                                    $whichPayment =  "Full Payment";
-                                                }
-                                                $vatPercent = '5%';
-                                                $vat = ($payNow * 5) / 100;
-                                                $discountPercent = $data->discount . '%';
-                                                $discount = ($payNow * $data->discount / 100);
-                                                $totalPay = ($payNow + $vat) - $discount;   
-                                            ?>
-                                        @endif
-                                    @endif
-                                @endforeach
+
+@foreach($pdet as $index => $det)
+
+<?php 
+ $pp = $pd->product_payment_id;
+?>
+
+@if($pd->product_payment_id != $det->id)
+@if($index == $pp)
+
+<?php
+if ($payall ==0) {
+$whichPayment =  $det->payment;
+$payNow = $det->amount;
+$discountPercent = '0%';
+$discount = '0.00';
+} else {
+if($pp == 0 || $pp==null) {
+$payNow = $data->unit_price;
+}
+else if($pp == 1) {
+$payNow = $data->unit_price - $pd->total;
+}
+else if($pp == 2) {
+$payNow = $det->amount;
+}
+
+$whichPayment =  "Full Payment";
+$discountPercent = $data->full_payment_discount . '%';
+$discount = ($payNow * $data->full_payment_discount / 100);
+}
+$vatPercent = '5%';
+$vat = ($payNow * 5) / 100;
+$totalPay = ($payNow + $vat) - $discount;   
+?>
+@endif
+
+@endif
+@endforeach
                                 <input type="hidden" name="pid" value="{{$data->id}}">
                                 <input type="hidden" name="ppid" value="{{$det->id}}">
                                 <input type="hidden" name="uid" value="{{Auth::user()->id}}">
