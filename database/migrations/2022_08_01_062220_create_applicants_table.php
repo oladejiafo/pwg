@@ -63,14 +63,10 @@ class CreateApplicantsTable extends Migration
             $table->string('employer_email')->nullable();
             $table->string('is_schengen_visa_issued')->comment('is schengen visa issued in past 5 years')->nullable();
             $table->string('is_fingerprint_collected')->comment('is fingerprint collected for schengen visa application')->nullable();
-            $table->integer('applicant_status')->nullable();
+            $table->decimal('embassy_country')->after('visa_copy');
+            $table->string('applicant_status')->default('pending')->comment('1:referal; 2:payment; 3:applcant; 4:applicant details; 5:applicant review')->change();
             $table->softDeletes();
             $table->timestamps();
-        });
-
-        Schema::table('applicants', function($table) {
-            $table->decimal('embassy_country')->after('visa_copy');
-            $table->string('applicant_status')->default('pending')->change();
         });
     }
 

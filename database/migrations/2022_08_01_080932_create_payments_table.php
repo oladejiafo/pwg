@@ -29,14 +29,11 @@ class CreatePaymentsTable extends Migration
             $table->string('currency_code')->nullable();
             $table->string('payment_status')->nullable();
             $table->string('transaction_id')->nullable();
+            $table->string('payment_type');
+            $table->integer('save_card_info');
             $table->string('card_type')->nullable();
             $table->softDeletes();
             $table->timestamps();
-        });
-
-        Schema::table('payments', function($table) {
-            $table->string('payment_type')->after('transaction_id');
-            $table->integer('save_card_info')->after('payment_type');
         });
     }
 
