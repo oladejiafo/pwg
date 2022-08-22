@@ -30,7 +30,7 @@ class CreatePaymentsTable extends Migration
             $table->string('payment_status')->nullable();
             $table->string('transaction_id')->nullable();
             $table->string('payment_type');
-            $table->integer('save_card_info');
+            $table->integer('save_card_info')->nullable();
             $table->string('card_type')->nullable();
             $table->softDeletes();
             $table->timestamps();

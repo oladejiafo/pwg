@@ -106,7 +106,7 @@ body {
                         <input type="hidden" name="uid" value="{{Auth::user()->id}}">
                         <div class="form-group row mt-4">
                             <div class="col-sm-6 mt-3">
-                                <input type="text" class="form-control" name="referrer_first_name" placeholder="Referrer Last Name" autocomplete="off" autofocus>
+                                <input type="text" class="form-control" name="referrer_first_name" placeholder="Referrer First Name" autocomplete="off" autofocus>
                                 @error('referrer_first_name') <span class="error">{{ $message }}</span> @enderror
                             </div>
                             <div class="col-sm-6 mt-3">
