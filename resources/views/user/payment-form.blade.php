@@ -32,7 +32,7 @@
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href="#" ><div class="round3 p-3 m-2">3</div></a>
+                                <a href="{{route('applicant', $pid)}}" ><div class="round3 p-3 m-2">3</div></a>
                                 <div class="col-2 round-title">Application <br> Details</div>
                             </div>
                             <div class="linear"></div>
@@ -47,7 +47,7 @@
                             </div>
                         </div>
                         <div class="linear"></div>
-                        <div class="wrapper">
+                        <!-- <div class="wrapper">
                             <a href="{{ url('payment_form', $pid)}}">
                                 <div class="round-active round2 p-3 m-2">2</div>
                             </a>
@@ -73,7 +73,7 @@
                                 <div class="round5 p-3 m-2">5</div>
                             </a>
                             <div class="col-2 round-title">Application <br> Review</div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

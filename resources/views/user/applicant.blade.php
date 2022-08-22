@@ -18,27 +18,27 @@
                     <div class="row">
                         <div class="tabs d-flex justify-content-center">
                             <div class="wrapper">
-                                <a href="{{ url('referal_details', $productId) }}" ><div class="round-completed round1 m-2">1</div></a>
+                                <a href="{{ url('referal_details', $productId) }}" ><div class="round-completed round1 p-3 m-2">1</div></a>
                                 <div class="round-title">Refferal <br> Details</div>
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href="{{ url('payment_form', $productId) }}" ><div class="round-completed round2 m-2">2</div></a>
+                                <a href="{{ url('payment_form', $productId) }}" ><div class="round-completed round2 p-3 m-2">2</div></a>
                                 <div class="col-2 round-title">Payment <br> Details</div>
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href="{{route('applicant', $productId)}}" ><div class="round-active  round3 m-2">3</div></a>
+                                <a href="{{route('applicant', $productId)}}" ><div class="round-active  round3 p-3 m-2">3</div></a>
                                 <div class="col-2 round-title">Application <br> Details</div>
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href=" " ><div class="round4 m-2">4</div></a>
+                                <a href=" " ><div class="round4 p-3 m-2">4</div></a>
                                 <div class="col-2 round-title">Applicant <br> Details</div>
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href=" " ><div class="round5 m-2">5</div></a>
+                                <a href=" " ><div class="round5 p-3 m-2">5</div></a>
                                 <div class="col-2 round-title">Application <br> Review</div>
                             </div>
                         </div>
@@ -339,11 +339,8 @@
                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
                                     <button type="submit" class="btn btn-primary submitBtn">Continue</button>
                                 </div>
-                            </div>helo
-                            <div id="signaturePad" ></div>
-<br/>
-<button id="clear" class="btn btn-danger btn-sm">Clear Signature</button>
-<textarea id="signature64" name="signed" style="display: none"></textarea>
+                            </div>
+
                         </form>
                     </div>            
                 </div>
@@ -355,18 +352,6 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js" integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
-
-
-<script type="text/javascript" src="http://keith-wood.name/js/jquery.signature.js"></script>
-<link rel="stylesheet" type="text/css" href="http://keith-wood.name/css/jquery.signature.css">
-<script type="text/javascript">
-var signaturePad = $('#signaturePad').signature({syncField: '#signature64', syncFormat: 'PNG'});
-$('#clear').click(function(e) {
-e.preventDefault();
-signaturePad.signature('clear');
-$("#signature64").val('');
-});
-</script>
 
 
 <script>
