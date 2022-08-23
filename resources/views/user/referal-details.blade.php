@@ -3,11 +3,10 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous"> -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
+<link href="{{asset('css/alert.css')}}" rel="stylesheet">
+
 <style>
-body {
-    background: #e5e8e9 !important;
-    font-family: TT Norms Pro;
-}
+
 .form-sec-content {
     padding: 12%; /*100px 110px 100px 110px; */
 
@@ -54,6 +53,19 @@ body {
 
 </style>
 @section('content')
+@php 
+    $completed = DB::table('applicants')
+                ->where('product_id', '=', $data->id)
+                ->where('user_id', '=', Auth::user()->id)
+                ->get();
+
+    $levels='0';
+    foreach($completed as $complete) 
+    {
+            $levels = $complete->applicant_status;
+    } 
+@endphp
+
 <div class="container">
     <div class="col-12">
         <div class="row">
@@ -65,6 +77,9 @@ body {
                             <div class="round-title">Refferal <br> Details</div>
                         </div>
                         <div class="linear"></div>
+                            @php 
+                                if ($levels == '5' || $levels == '4' || $levels == '3' || $levels == '2' || $levels == '1') {
+                            @endphp
                         <div class="wrapper">
                             <a href="{{ url('payment_form', $data->id) }}" ><div class="round2 m-2">2</div></a>
                             <div class="col-2 round-title">Payment <br> Details</div>
@@ -84,6 +99,31 @@ body {
                             <a href="{{url('applicant/review')}}" ><div class="round5 m-2">5</div></a>
                             <div class="col-2 round-title">Application <br> Review</div>
                         </div>
+
+                        @php  
+                            } else {
+                        @endphp
+                        <div class="wrapper">
+                            <a href="#" onclick="return alert('You have to complete Application Details first');"><div class="round2 m-2">2</div></a>
+                            <div class="col-2 round-title">Payment <br> Details</div>
+                        </div>
+                        <div class="linear"></div>
+                        <div class="wrapper">
+                            <a href="#" onclick="return alert('You have to complete Application Details first');"><div class="round3 m-2">3</div></a>
+                            <div class="col-2 round-title">Application <br> Details</div>
+                        </div>
+                        <div class="wrapper">
+                            <a href="#" onclick="return alert('You have to complete Application Details first');"><div class="round4 m-2">4</div></a>
+                            <div class="col-2 round-title">Applicant <br> Details</div>
+                        </div>
+                        <div class="linear"></div>
+                        <div class="wrapper">
+                        <a href="#" onclick="return alert('You have to complete Application Details first');"><div class="round5 m-2">5</div></a>
+                            <div class="col-2 round-title">Applicant <br> Reviews</div>
+                        </div>
+                        @php  
+                            }
+                        @endphp
                     </div>
                 </div>
             </div>
@@ -545,4 +585,7 @@ body {
 @push('custom-scripts')
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js" integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous"></script>
-@endpush
+@endpush 
+
+
+<script src="{{asset('js/alert.js')}}"></script>

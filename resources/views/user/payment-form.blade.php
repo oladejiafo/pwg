@@ -2,19 +2,22 @@
 <link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 <link href="{{asset('css/payment-form.css')}}" rel="stylesheet">
-<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous"> -->
-<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/> -->
-<!-- <link href="{{asset('css/payment-form.css')}}" rel="stylesheet"> -->
-
+<link href="{{asset('css/alert.css')}}" rel="stylesheet">
 
 @section('content')
-<?php
-// if (session()->get('package_id')) {
-    $pid =  Session::get('myproduct_id');
-// } else {
-//     return redirect()->back();
-// } 
-?>
+@php 
+   $pid =  Session::get('myproduct_id');
+    $completed = DB::table('applicants')
+                ->where('product_id', '=', $productId)
+                ->where('user_id', '=', Auth::user()->id)
+                ->get();
+
+    $levels='0';
+    foreach($completed as $complete) 
+    {
+            $levels = $complete->applicant_status;
+    } 
+@endphp
     <div class="container">
         <div class="col-12">
             <div class="row">
@@ -31,6 +34,9 @@
                                 <div class="col-2 round-title">Payment <br> Details</div>
                             </div>
                             <div class="linear"></div>
+                            @php 
+                                if ($levels == '5' || $levels == '4' || $levels == '3' || $levels == '2') {
+                            @endphp    
                             <div class="wrapper">
                                 <a href="{{route('applicant', $pid)}}" ><div class="round3 m-2">3</div></a>
                                 <div class="col-2 round-title">Application <br> Details</div>
@@ -45,6 +51,30 @@
                                 <a href="{{url('applicant/review')}}" ><div class="round5 m-2">5</div></a>
                                 <div class="col-2 round-title">Application <br> Review</div>
                             </div>
+                            @php  
+                                } else {
+                            @endphp
+                            <div class="wrapper">
+                                <!-- <a href="{{route('applicant', $pid)}}" ><div class="round3 m-2">3</div></a> -->
+                                <a href="#" onclick="return alert('You have to complete Payment first');"><div class="round3 m-2">3</div></a>
+                                <div class="col-2 round-title">Application <br> Details</div>
+                            </div>
+                            <div class="linear"></div>
+                            <div class="wrapper">
+                                <!-- <a href="{{route('applicant.details')}}" ><div class="round4 m-2">4</div></a> -->
+                                <a href="#" onclick="return alert('You have to complete Payment first');"><div class="round4 m-2">4</div></a>
+                                <div class="col-2 round-title">Applicant <br> Details</div>
+                            </div>
+                            <div class="linear"></div>
+                            <div class="wrapper">
+                                <!-- <a href="{{url('applicant/review')}}" ><div class="round5 m-2">5</div></a> -->
+                                <a href="#" onclick="return alert('You have to complete Payment first');"><div class="round5 m-2">5</div></a>
+                                <div class="col-2 round-title">Application <br> Review</div>
+                            </div>
+
+                            @php  
+                                }
+                            @endphp
                         </div>
                         <div class="linear"></div>
                         <!-- <div class="wrapper">
@@ -179,7 +209,7 @@
                                 <input type="text" pattern="\d*" maxlength="4" class="form-control" placeholder="Year" name="year" value="{{ old('year') }}" required>
                             </div>
                             <div class="col-sm-4 mt-3">
-                                <input type="text" pattern="\d*" maxlength="3" class="form-control" placeholder="CVV" name=cvv value="{{ old('cvv') }}" required>
+                                <input type="text" pattern="\d*" maxlength="3" class="form-control" placeholder="CVC" name=cvv value="{{ old('cvv') }}" required>
                             </div>
                         </div>
                         <div class="form-group row mt-6 payment-form1 ">
@@ -245,3 +275,5 @@
     </div>
 </div>
 @endsection
+
+<script src="{{asset('js/alert.js')}}"></script>
