@@ -100,19 +100,22 @@
                     <div class="row">
                         <div id="collapseapplicant" class="collapse">
                             <div class="form-sec">
+                                @php
+                                    $name = explode(' ', $user['name']);
+                                @endphp
                                 <form method="POST" id="applicant_details">
                                     @csrf
                                     <input type="hidden" name="product_id" value="1">
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-4 mt-3">
-                                            <input type="tel" name="first_name" class="form-control" placeholder="First Name*" value="{{old('first_name')}}" autocomplete="off" required/>
+                                            <input type="tel" name="first_name" class="form-control" placeholder="First Name*" value="{{$name[0]}}" autocomplete="off" required/>
                                             <span class="first_name_errorClass"></span>
                                         </div>
                                         <div class="col-sm-4 mt-3">
                                             <input type="text" name="middle_name" class="form-control" placeholder="Middle Name" value="{{old('middle_name')}}"  autocomplete="off"/>
                                         </div>
                                         <div class="col-sm-4 mt-3">
-                                            <input type="text" name="surname" class="form-control" placeholder="Surname*" value="{{old('surname')}}" autocomplete="off" required />
+                                            <input type="text" name="surname" class="form-control" placeholder="Surname*" value="{{$name[count($name)-1]}}" autocomplete="off" required />
                                             <span class="surname_errorClass"></span>
                                         </div>
                                     </div>
