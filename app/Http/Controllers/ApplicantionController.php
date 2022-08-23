@@ -70,11 +70,11 @@ class ApplicantionController extends Controller
     {
         if(Auth::id()) {
             $user = User::find(Auth::id());
-            $response = Http::post('https://bo.pwggroup.ae/api/get-job-category-list');
-            $jobCategory = $response->body();
-            $jobCategories = json_decode($jobCategory, true);
+            // $response = Http::post('https://bo.pwggroup.ae/api/get-job-category-list');
+            // $jobCategory = $response->body();
+            // $jobCategories = json_decode($jobCategory, true);
             // dd($jobCategories);
-            // $jobCategories = [] ;
+            $jobCategories = [] ;
             
             return view('user.application-next', compact('user', 'jobCategories'))->with('success', 'Data saved successfully!');
         } else {
@@ -82,6 +82,12 @@ class ApplicantionController extends Controller
         }
     }
 
+    /**
+     * Store applicant details at step 4
+     * @param Request
+     *
+     * @return void
+     */
     public function storeApplicantDetails(Request $request)
     {
         $validator = \Validator::make($request->all(), [
@@ -110,7 +116,7 @@ class ApplicantionController extends Controller
                 'first_name' => $request['first_name'],
                 'middle_name' => $request['middle_name'],
                 'surname' => $request['surname'],
-                'dob' => $request['dob'],
+                'dob' => date('Y-m-d', strtotime($request['dob'])),
                 'place_birth' => $request['place_birth'],
                 'country_birth' => $request['country_birth'],
                 'citizenship' => $request['citizenship'],
@@ -120,66 +126,164 @@ class ApplicantionController extends Controller
         return Response::json(array('success' => true), 200);
     }
 
+    /**
+     * Store applicant home country details as step 4
+     * @param Request
+     *
+     * @return void
+     */
     public function storeHomeCountryDetails(Request $request)
     {
         $validator = \Validator::make($request->all(), [
-                'passport_number' => 'Required',
-                'passport_issue'=> 'required',
-                'passport_expiry' => 'required',
-                'issued_by' => 'Required',
-                'passport_copy'=> 'required',
-                'home_country' => 'required',
-                'state' => 'required',
-                'city' => 'required',
-                'postal_code' => 'required',
-                'address1' => 'required',
-                'address2' => 'required'
-            ]);
+            'passport_number' => 'Required',
+            'passport_issue'=> 'required',
+            'passport_expiry' => 'required',
+            'issued_by' => 'Required',
+            'passport_copy'=> 'required',
+            'home_country' => 'required',
+            'state' => 'required',
+            'city' => 'required',
+            'postal_code' => 'required',
+            'address1' => 'required',
+            'address2' => 'required'
+        ]);
+    
+        if ($validator->fails())
+        {
+            return Response::json(array(
+                'success' => false,
+                'errors' => $validator->getMessageBag()->toArray()
         
-            if ($validator->fails())
-            {
-                return Response::json(array(
-                    'success' => false,
-                    'errors' => $validator->getMessageBag()->toArray()
-            
-                ), 200); // 400 being the HTTP code for an invalid request.
-            }
-            // if($request->hasFile('passport_copy')){
-            //     $file = $request->file('passport_copy');
-            //     dd($file);
-            //  }
-            //  die;
-            // $fileName = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
-
-            // $destinationPath = 'public/passportCopy';
-            // $file->storeAs($destinationPath, $fileName);
-            Applicant::where('user_id', Auth::id())
-                ->where('product_id', $request->product_id)
-                ->update([
-                    'passport_number'  => $request['passport_number'],
-                    'passport_date_issue' => $request['passport_issue'],
-                    'passport_date_expiry' => $request['passport_expiry'],
-                    'issued_by' => $request['issued_by'],
-                    'passport' => '',
-                    'phone_number' => $request['home_phone_number'],
-                    'home_country' => $request['home_country'],
-                    'state' => $request['state'],
-                    'city' => $request['city'],
-                    'postal_code' => $request['postal_code'],
-                    'address_1' => $request['address_1'],
-                    'address_2' => $request['address_2']
-                ]);
-            $response['status'] = true;
-            return Response::json(array('success' => true), 200);
+            ), 200); // 400 being the HTTP code for an invalid request.
         }
 
-    public function applicantReview()
+        $file = $request->file('passport_copy');
+        $fileName = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
+        $destinationPath = 'public/passportCopy';
+        $file->storeAs($destinationPath, $fileName);
+        Applicant::where('user_id', Auth::id())
+            ->where('product_id', $request->product_id)
+            ->update([
+                'passport_number'  => $request['passport_number'],
+                'passport_date_issue' =>  date('Y-m-d', strtotime($request['passport_issue'])),
+                'passport_date_expiry' => date('Y-m-d', strtotime($request['passport_expiry'])),
+                'issued_by' => $request['issued_by'],
+                'passport' => '',
+                'phone_number' => $request['home_phone_number'],
+                'home_country' => $request['home_country'],
+                'state' => $request['state'],
+                'city' => $request['city'],
+                'postal_code' => $request['postal_code'],
+                'address_1' => $request['address_1'],
+                'address_2' => $request['address_2']
+            ]);
+        return Response::json(array('success' => true), 200);
+    }
+
+    public function applicantReview($productId = 1)
     {
         $user = User::find(Auth::id());
-        $response = Http::post('https://bo.pwggroup.ae/api/get-job-category-list');
-        $jobCategory = $response->body();
-        $jobCategories = json_decode($jobCategory, true);
-        // $jobCategories = [] ;
-        return view('user.application-review', compact('user', 'jobCategories'))->with('success', 'Data saved successfully!');
+        $applicant = Applicant::where('user_id', Auth::id())->where('product_id', $productId)->first();
+        $jobCategories = [] ;
+        return view('user.application-review', compact('user', 'jobCategories', 'applicant'))->with('success', 'Data saved successfully!');
+    }
+
+     /**
+     * Store applicant current residence and work details as step 4
+     * @param Request
+     *
+     * @return void
+     */
+    public function storeCurrentDetails(Request $request)
+    {
+        $validator = \Validator::make($request->all(), [
+            'current_country' => 'required',
+            'residence_id' => 'required',
+            'visa_validity'  => 'required',
+            'residence_copy' => 'required',
+            'current_job' => 'required',
+            'work_state' => 'required',
+            'work_city' => 'required',
+            'work_postal_code' => 'required',
+            'work_street' => 'required'
+        ]);
+
+        if ($validator->fails())
+        {
+            return Response::json(array(
+                'success' => false,
+                'errors' => $validator->getMessageBag()->toArray()
+        
+            ), 200); // 400 being the HTTP code for an invalid request.
+        }
+        $file = $request->file('residence_copy');
+        $residenceCopy = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
+        $destinationPath = 'public/residenceCopy';
+        $file->storeAs($destinationPath, $residenceCopy);
+        $visaCopy = null;
+        if ($request->hasFile('visa_copy')) {
+            $file = $request->file('visa_copy');
+            $visaCopy = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
+            $destinationPath = 'public/visaCopy';
+            $file->storeAs($destinationPath, $visaCopy);
+        }
+        Applicant::where('user_id', Auth::id())
+            ->where('product_id', $request->product_id)
+            ->update([
+                'current_residance_country' => $request->current_country,
+                'current_residance_mobile' => $request->current_residance_mobile,
+                'residence_id' => $request->residence_id,
+                'id_validity' => date('Y-m-d', strtotime($request->visa_validity)),
+                'residence_copy'=> $residenceCopy,
+                'visa_copy' => $visaCopy,
+                'current_job' => $request->current_job,
+                'work_state' => $request->work_state,
+                'work_city' => $request->work_city,
+                'work_postal_code' => $request->work_postal_code,
+                'work_street_number' => $request->work_street,
+                'company_name' => $request->company_name,
+                'employer_phone_number' => $request->employer_phone,
+                'employer_email' => $request->employer_email
+            ]);
+        return Response::json(array('success' => true), 200);
+    }
+
+         /**
+     * Store applicant schengen visa details as step 4
+     * @param Request
+     *
+     * @return response
+     */
+    public function storeSchengenDetails(Request $request)
+    {
+        $validator = \Validator::make($request->all(), [
+            'is_schengen_visa_issued_last_five_year' => 'required',
+            'is_finger_print_collected_for_Schengen_visa' => 'required',
+        ]);
+
+        if ($validator->fails())
+        {
+            return Response::json(array(
+                'success' => false,
+                'errors' => $validator->getMessageBag()->toArray()
+        
+            ), 200); // 400 being the HTTP code for an invalid request.
+        }
+        $schengenCopy = null;
+        if ($request->hasFile('schengen_copy')) {
+            $file = $request->file('schengen_copy');
+            $schengenCopy = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
+            $destinationPath = 'public/schengenCopy';
+            $file->storeAs($destinationPath, $schengenCopy);
+        }
+        Applicant::where('user_id', Auth::id())
+        ->where('product_id', $request->product_id)
+        ->update([
+            'is_schengen_visa_issued'  => $request->is_schengen_visa_issued_last_five_year,
+            'schengen_visa' => $schengenCopy,
+            'is_fingerprint_collected' => $request->is_finger_print_collected_for_Schengen_visa
+        ]);
+        return Response::json(array('success' => true), 200);
+
     }
 }

@@ -18,6 +18,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 |
 */
 Route::get('applicant/review', [ApplicantionController::class, 'applicantReview'])->name('applicant.review');
+Route::post('store/schengen/details', [ApplicantionController::class,'storeSchengenDetails'])->name('store.schengen.details');
 
 Route::middleware([
     'auth:sanctum',
@@ -72,7 +73,7 @@ Route::post('/add_payment', [HomeController::class,'addpayment']);
 Route::get('applicant/details', [ApplicantionController::class, 'applicantDetails'])->name('applicant.details');
 Route::get('applicant/{id}', [ApplicantionController::class,'applicanview'])->name('applicant');
 Route::post('store/applicant', [ApplicantionController::class,'storeApplicant'])->name('store.applicant');
-Route::post('store/home/country/details', [ApplicantionController::class,'storeHomeCountryDetails'])->name('store.home-country.details');
-
 Route::post('srore/applicant/details', [ApplicantionController::class,'storeApplicantDetails'])->name('store.applicant.details');
+Route::post('store/home/country/details', [ApplicantionController::class,'storeHomeCountryDetails'])->name('store.home-country.details');
+Route::post('store/current/details', [ApplicantionController::class,'storeCurrentDetails'])->name('store.current.details');
 

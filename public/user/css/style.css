@@ -11,6 +11,14 @@ body {
   background: #e5e8e9 !important;
 }
 
+.table tbody{
+  border-top: 0.25px solid #e2e5e9 !important;
+}
+
+.table tbody td, .table tbody th {
+  padding: 25px;
+}
+
 .checkcolor {
   accent-color: #f9bf29;
 }

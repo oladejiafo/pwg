@@ -53,7 +53,9 @@ class CreateApplicantsTable extends Migration
             $table->string('current_residance_mobile')->nullable();
             $table->string('residence_id')->nullable();
             $table->date('id_validity')->nullable();
+            $table->string('residence_copy')->nullable();
             $table->string('visa_copy')->nullable();
+            $table->string('current_job')->nullable();
             $table->string('work_state')->nullable();
             $table->string('work_city')->nullable();
             $table->string('work_postal_code')->nullable();

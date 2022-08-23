@@ -42,9 +42,9 @@
                                 <div class="col-2 round-title">Applicant <br> Reviews</div>
                             </div>
                         </div>
+                    </div>
                 </div>
-            </div>
-            <div></div>
+            <div>
             <div class="row">
                 <div class="applicant-sec">
                     <div class="heading">
