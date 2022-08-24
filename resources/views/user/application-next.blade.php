@@ -618,8 +618,10 @@
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-6 mt-3">
-                                            <a href="javascript:void(0)" data-toggle="modal" class="passportFormatModal" data-target="#passportFormatModal" onclick="showPassportFormat()">Click to view uploading passport format</a>
                                             <input type="text" name="passport_copy" class="form-control passport_copy" placeholder="Upload Passport Copy*" value="{{old('passport_copy')}}" autocomplete="off" readonly/>
+                                            {{-- <span > --}}
+                                                <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                            {{-- </span> --}}
                                             <div class="input-group-btn">
                                                 <span class="fileUpload btn">
                                                     <span class="upl" id="upload">Choose File</span>
