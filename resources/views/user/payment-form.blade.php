@@ -100,11 +100,8 @@ $levels = $complete->applicant_status;
                         }
                         @endphp
                     </div>
-                    <div class="linear"></div>
-
                 </div>
             </div>
-        </div>
         @php       
          }
         @endphp    
@@ -276,6 +273,8 @@ $levels = $complete->applicant_status;
     </div>
 </div>
 </div>
+</div>
+
 @endsection
 
 <script src="{{asset('js/alert.js')}}"></script>

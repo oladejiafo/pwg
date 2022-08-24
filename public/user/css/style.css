@@ -1331,7 +1331,7 @@ textarea {
 .linear {
   border: 0.25px solid #f0f3f4;
   width: 90px;
-  margin-top: -22px;
+  margin-top: -53px;
 }
 
 .content-box {
@@ -1732,7 +1732,18 @@ input:-moz-placeholder {
   width: 100%;
 }
 
+#collapseHome a {
+  text-decoration: underline;
+}
+#collapseHome .passportFormatModal  {
+  text-decoration: underline;
+  color: orange;
+}
 
+iframe img {
+  margin-left: 148px !important;
+  margin-top: 97px !important;
+}
 /*************** ToolTip Styles for Home page ******************/
 
 .item-hints .hint[data-position="1"] .hint-content {
