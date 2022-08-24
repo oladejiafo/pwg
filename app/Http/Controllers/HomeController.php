@@ -66,7 +66,7 @@ class HomeController extends Controller
     {
         if (Auth::id()) {
 
-            $folderPath = public_path('signature/');
+            $folderPath = public_path('storage/signature/');
        
             $image_parts = explode(";base64,", $request->signed);
                  
