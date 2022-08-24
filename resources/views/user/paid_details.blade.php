@@ -1,12 +1,11 @@
 <!-- Theme style  -->
 <link rel="stylesheet" href="{{asset('user/extra/css/styled.css')}}">
 
-
 <div class="row card">
 
     <div class="col-md-12">
-        <div class="about-desc animate-box">
 
+        <div class="about-desc animate-box">
             <div class="fancy-collapse-panel">
                 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                     <div class="panel panel-default">

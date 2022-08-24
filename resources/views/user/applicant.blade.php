@@ -4,13 +4,27 @@
  <link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
  <script src=”https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+ <link href="{{asset('css/alert.css')}}" rel="stylesheet">
 <style>
     body {
-    background: #e5e8e9 !important;
+    background: #f0f3f4 !important;
     font-family: TT Norms Pro;
 }
+
 </style>
 @section('content')
+@php 
+    $completed = DB::table('applicants')
+                ->where('product_id', '=', $productId)
+                ->where('user_id', '=', Auth::user()->id)
+                ->get();
+
+    $levels='0';
+    foreach($completed as $complete) 
+    {
+            $levels = $complete->applicant_status;
+    } 
+@endphp
     <div class="container">
         <div class="col-12">
             <div class="row">
@@ -23,7 +37,14 @@
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href="{{ url('payment_form', $productId) }}" ><div class="round-completed round2  m-2">2</div></a>
+                            @php 
+                                if ($levels == '2' || $levels == '5' || $levels == '4' || $levels == '3') {
+                            @endphp    
+                                <a href="#" onclick="return alert('Payment Concluded Already!');"><div class="round-completed round2 m-2">2</div></a>
+                                <!-- <a href="{{ url('payment_form', $productId) }}" ><div class="round-completed round2  m-2">2</div></a> -->
+                                @php  
+                                }
+                            @endphp
                                 <div class="col-2 round-title">Payment <br> Details</div>
                             </div>
                             <div class="linear"></div>
@@ -32,6 +53,9 @@
                                 <div class="col-2 round-title">Application <br> Details</div>
                             </div>
                             <div class="linear"></div>
+                            @php 
+                                if ($levels == '5' || $levels == '4' || $levels == '3') {
+                            @endphp    
                             <div class="wrapper">
                                 <a href="{{route('applicant.details')}}" ><div class="round4 m-2">4</div></a>
                                 <div class="col-2 round-title">Applicant <br> Details</div>
@@ -41,6 +65,21 @@
                                 <a href="{{url('applicant/review')}}" ><div class="round5 m-2">5</div></a>
                                 <div class="col-2 round-title">Applicant <br> Reviews</div>
                             </div>
+                            @php  
+                                } else {
+                            @endphp
+                            <div class="wrapper">
+                                <a href="#" onclick="return alert('You have to complete Application Details first');"><div class="round4 m-2">4</div></a>
+                                <div class="col-2 round-title">Applicant <br> Details</div>
+                            </div>
+                            <div class="linear"></div>
+                            <div class="wrapper">
+                            <a href="#" onclick="return alert('You have to complete Application Details first');"><div class="round5 m-2">5</div></a>
+                                <div class="col-2 round-title">Applicant <br> Reviews</div>
+                            </div>
+                            @php  
+                                }
+                            @endphp
                         </div>
                     </div>
                 </div>
@@ -59,8 +98,9 @@
                         $applied = DB::table('products')
                             ->where('id', '=', $productId)
                             ->get();
-                    @endphp
-                    
+
+                        $products =  DB::table('products')->get();
+                    @endphp    
 
                     <div class="form-sec">
                         <form method="POST" action="{{route('store.applicant')}}" enctype="multipart/form-data">
@@ -71,11 +111,15 @@
                                     <select class="form-select form-control" id="inputFirstname" name="applied_country" placeholder="Applied Country *" value="{{old('applied_country')}}" required>
                                         <!-- <option selected disabled>Applied Country *</option> -->
                                         <option selected>@foreach($applied as $appliedc) {{$appliedc->product_name}} @endforeach</option>
-                                        <option value="Canada">Canada</option>
+                                        @foreach($products as $product)
+                                         <option value="{{$product->product_name}}">{{$product->product_name}}</option>
+                                        @endforeach 
+                                        <!-- <option value="Canada">Canada</option>
+
                                         <option value="Czech">Czech</option>
                                         <option value="Poland">Poland</option>
                                         <option value="Germany">Germany</option>
-                                        <option value="Malta">Malta</option>
+                                        <option value="Malta">Malta</option> -->
                                     </select>
                                     @error('applied_country') <span class="error">{{ $message }}</span> @enderror
                                 </div>
@@ -103,11 +147,11 @@
                             <div class="form-group row">
                                 <div class="col-sm-6 mt-3">
 
-                                    <input id="phone" type="tel" name="agent_phone" class="form-control" placeholder="Your agent phone number*" value="{{old('agent_phone')}}" required/>
+                                    <input id="phone" type="tel" name="agent_phone" class="form-control" placeholder="Your agent phone number" value="{{old('agent_phone')}}" />
                                     @error('agent_phone') <span class="error">{{ $message }}</span> @enderror
                                 </div>
                                 <div class="col-sm-6 mt-3">
-                                    <input id="agent-name" type="tel" name="agent_name" class="form-control" placeholder="Your agent name*" value="{{old('agent_name')}}" required/>
+                                    <input id="agent-name" type="tel" name="agent_name" class="form-control" placeholder="Your agent name" value="{{old('agent_name')}}" />
                                     @error('agent_name') <span class="error">{{ $message }}</span> @enderror
                                 </div>
                             </div>
@@ -413,3 +457,5 @@
 </script>
 
 @endpush
+
+<script src="{{asset('js/alert.js')}}"></script>

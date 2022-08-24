@@ -284,6 +284,5 @@ class ApplicantionController extends Controller
             'is_fingerprint_collected' => $request->is_finger_print_collected_for_Schengen_visa
         ]);
         return Response::json(array('success' => true), 200);
-
     }
 }

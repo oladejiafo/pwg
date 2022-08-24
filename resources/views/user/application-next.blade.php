@@ -2,22 +2,45 @@
 <link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
+<link href="{{asset('css/alert.css')}}" rel="stylesheet">
 <meta name="csrf-token" content="{{ csrf_token() }}" />
 @section('content')
+
+
+@php 
+    $completed = DB::table('applicants')
+                ->where('product_id', '=', $productId)
+                ->where('user_id', '=', Auth::user()->id)
+                ->get();
+
+    $levels='0';
+    foreach($completed as $complete) 
+    {
+            $levels = $complete->applicant_status;
+    } 
+@endphp
     <div class="container" id="app">
         <div class="col-12">
             <div class="row">
                 <div class="wizard-details bg-white">
                     <div class="row">
                         <div class="tabs-detail d-flex justify-content-center">
-                            @php $productId = 1; @endphp
+                            <!-- @php $productId = 1; @endphp -->
                             <div class="wrapper">
                                 <a href="{{ url('referal_details', $productId) }}" ><div class="round-completed round1 m-2">1</div></a>
                                 <div class="round-title"><p>Refferal</p><p> Details</p></div>
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href="{{ url('payment_form', $productId) }}" ><div class="round-completed round2 m-2">2</div></a>
+                            @php 
+                                if ($levels == '2' || $levels == '5' || $levels == '4' || $levels == '3') {
+                            @endphp    
+                                <a href="#" onclick="return alert('Payment Concluded Already!');"><div class="round-completed round2 m-2">2</div></a>
+                                <!-- <a href="{{ url('payment_form', $productId) }}" ><div class="round-completed round2 m-2">2</div></a> -->
+                                @php  
+                                }
+                            @endphp
+
                                 <div class="round-title"><p>Payment</p><p> Details</p></div>
                             </div>
                             <div class="linear"></div>
@@ -31,8 +54,19 @@
                                 <div class="round-title"><p>Applicant</p><p> Details</p></div>
                             </div>
                             <div class="linear"></div>
+                                
                             <div class="wrapper">
+                            @php 
+                                if ($levels == '5' || $levels == '4') {
+                            @endphp
                                 <a href="{{url('applicant/review')}}" ><div class="round5 m-2">5</div></a>
+                                @php  
+                                } else {
+                            @endphp
+                                <a href="#" onclick="return alert('You have to complete Applicant Details first');"><div class="round4 m-2">5</div></a>
+                            @php  
+                                }
+                            @endphp
                                 <div class="round-title"><p>Application</p><p> Review</p></div>
                             </div>
                         </div>
@@ -1656,3 +1690,5 @@
 <script src="{{ asset('js/application-details.js') }}" type="text/javascript"></script>
 
 @endpush
+
+<script src="{{asset('js/alert.js')}}"></script>

@@ -26,6 +26,7 @@
   background-size: 100%;
   background-repeat: no-repeat;
 }
+
 </style>
 
 <body>
@@ -89,9 +90,12 @@
                         <!-- Start Column  -->
                         <li>
                             <div class="col-4 cellContainer">
-                                <span class="product-item" href="#">
-                                    <span class="positionAnchor">
-                                        <img src="../user/images/{{$offer->image}}" style="height:458px" class="img-fluid product-thumbnail home_img" title="{{$offer->description}}">
+                                <span class="product-item item-hints" href="#">
+                                    <span class="positionAnchor hint"  data-position="1">
+                                        <img src="../user/images/{{$offer->image}}" style="height:458px" class="img-fluid product-thumbnail home_img">
+                                        <div class="hint-content do--split-children">
+                                        <p>{{$offer->description}}</p>
+                                        </div>
                                         <span class="bottom">
                                             <h3 class="product-title intro-excerpt" style="font-size: 35px; color:aliceblue">{{$offer->product_name}}</h3>
                                             <p style="font-size:20px">{{$offer->slogan}}</p>
@@ -149,9 +153,12 @@
                 ?>
                 <!-- Start Column  -->
                 <div class="col-4 cellContainer">
-                    <span class="product-item" href="#">
-                        <span class="positionAnchor">
-                            <img src="../user/images/{{$offer->image}}" style="height:458px" class="img-fluid product-thumbnail home_img" title="{{$offer->description}}">
+                    <span class="product-item item-hints" href="#">
+                        <span class="positionAnchor hint"  data-position="1">
+                            <img src="../user/images/{{$offer->image}}" style="height:458px" class="img-fluid product-thumbnail home_img">
+                            <div class="hint-content do--split-children">
+                              <p>{{$offer->description}}</p>
+                            </div>
                             <span class="bottom">
                                 <h3 class="product-title intro-excerpt" style="font-size: 35px; color:aliceblue">{{$offer->product_name}}</h3>
                                 <p style="font-size:20px">{{$offer->slogan}}</p>
@@ -167,9 +174,10 @@
                 <!-- End Column  -->
                 @endforeach
                 <div class="col-4 cellContainer">
-                    <span class="product-item" href="#">
-                        <span class="positionAnchor">
-                            <img src="../user/images/{{$offer->image}}" style="height:458px" class="img-fluid product-thumbnail home_img">
+                    <span class="product-item item-hints" href="#">
+                        <span class="positionAnchor hint" data-position="1">
+                            <img src="../user/images/placeholder.png" style="height:458px" class="img-fluid product-thumbnailx home_img">
+          
                             <span class="bottom">
                                 <h3 class="product-title intro-excerpt" style="font-size: 35px; color:aliceblue"></h3>
                                 <p style="font-size:20px"></p>

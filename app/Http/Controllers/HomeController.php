@@ -66,17 +66,42 @@ class HomeController extends Controller
     {
         if (Auth::id()) {
 
+            $folderPath = public_path('signature/');
+       
+            $image_parts = explode(";base64,", $request->signed);
+                 
+            $image_type_aux = explode("image/", $image_parts[0]);
+               
+            $image_type = $image_type_aux[1];
+               
+            $image_base64 = base64_decode($image_parts[1]);
+     
+            $signate = time() . '.'.$image_type;
+               
+            $file = $folderPath . $signate;
+     
+            file_put_contents($file, $image_base64);
+     
             $signature = user::find($request->user_id);
-            if ($request->hasFile('image')) {
-                    $image = $request->file('image');
-                    $imagename = time() . '.' . $image->getClientOriginalName();
-                    $destinationPath = 'public/signature';
-                    $image->storeAs($destinationPath, $imagename);
-                    $signature->signature = $imagename;
-            }
+            $signature->signature = $signate;
+            // $save = new Signature;
+            // $save->name = $request->name;
+            // $save->signature = $signature
+            // $save->save();
+        
+
+            // if ($request->hasFile('image')) {
+            //         $image = $request->file('image');
+            //         $imagename = time() . '.' . $image->getClientOriginalName();
+            //         $destinationPath = 'public/signature';
+            //         $image->storeAs($destinationPath, $imagename);
+            //         $signature->signature = $imagename;
+            // }
             $signature->save();
             
-            return \Redirect::route('referal', $request->pid)->with('success', 'Signature Uploaded Successfully. Proceed to application');
+            return \Redirect::route('referal', $request->pid)
+            ->with('info', 'Signature Uploaded Successfully!')
+            ->with('info_sub','Proceed to application');
         } else {
             return redirect()->back()->with('message', 'You are not authorized');
         }
@@ -150,7 +175,23 @@ class HomeController extends Controller
             }
 
             if ($res) {
-                return \Redirect::route('payment', $request->pid)->with('success', 'Referral Saved Successfully. Proceed to make payment');
+                $applys = DB::table('applicants')
+                            ->where('product_id', '=', $request->pid)
+                            ->where('user_id', '=', Auth::user()->id)
+                            ->get();
+
+                $applied='0';
+                foreach($applys as $apply) 
+                {
+                        $applied = $apply->applicant_status;
+                } 
+
+                if ($applied == '1' || $applied == '0' || $applied == 'Pending') {
+                    $msg="Referral Saved Successfully!";
+                    return \Redirect::route('payment', $request->pid)->with('info', $msg)->with('info_sub', 'Proceed to make payment.');
+                } else {
+                    return \Redirect::route('applicant', $request->pid)->with('failed', 'Payment Already Completed');
+                }  
             } else {
                 return redirect()->back()->with('failed', 'Oppss! Something Went Wrong!');
             }
@@ -208,18 +249,18 @@ class HomeController extends Controller
             }
 
             $id = Session::get('myproduct_id');
-            // $applys = DB::table('applicants')
-            // ->where('product_id', '=', $id)
-            // ->where('user_id', '=', Auth::user()->id)
-            // ->get();
+            $applys = DB::table('applicants')
+            ->where('product_id', '=', $id)
+            ->where('user_id', '=', Auth::user()->id)
+            ->get();
 
-            // $applied='0';
-            // foreach($applys as $apply) 
-            // {
-            //         $applied = $apply->applicant_status;
-            // } 
+            $applied='0';
+            foreach($applys as $apply) 
+            {
+                    $applied = $apply->applicant_status;
+            } 
 
-            // if ($applied == '1') {
+            if ($applied == '1') {
                 $data = product::find(Session::get('myproduct_id'));
                             // $id = Session::get('myproduct_id');
                 $payall = Session::get('payall'); //$request->payall;
@@ -239,16 +280,16 @@ class HomeController extends Controller
                     ->get();
 
                 return view('user.payment-form', compact('data', 'pdet', 'pays', 'payall'));
-            // } else if($applied == '2' || $applied == '3' || $applied == '4') {
-            //     $productId = $id;
-            //     return \Redirect::route('applicant', $productId)->with('failed', 'Payment Already Completed');
-            // } else if($applied == '5') {
-            //     $package = product::all();
-            //     return view('user.home', compact('package'))->with('failed', 'Application Already Completed');
-            // } else {
-            //     $data = product::find($id);
-            //     return view('user.referal-details', compact('data'))->with('failed', 'You are not done with Referral pls. Complete this section before you make payment');
-            // }
+            } else if($applied == '2' || $applied == '3' || $applied == '4') {
+                $productId = $id;
+                return \Redirect::route('applicant', $productId)->with('failed', 'Payment Already Completed');
+            } else if($applied == '5') {
+                $package = product::all();
+                return view('user.home', compact('package'))->with('failed', 'Application Already Completed');
+            } else {
+                $data = product::find($id);
+                return view('user.referal-details', compact('data'))->with('failed', 'You are not done with Referral pls. Complete this section before you make payment');
+            }
         } else {
             return redirect()->back()->with('message', 'You are not authorized');
         }
@@ -294,8 +335,8 @@ class HomeController extends Controller
                 $data->payment_status = 'Paid';
                 $data->payment_type = $request->whichpayment;
     
-                if($request->get('save_card')) {
-                    $data->save_card_info = $request->get('save_card');
+                if($request->save_card ==1) {
+                    $data->save_card_info = $request->save_card;
                     $data->card_number = $request->card_number;
                     $data->month = $request->month;
                     $data->year = $request->year;
@@ -310,8 +351,8 @@ class HomeController extends Controller
                 $datas->payment_status = 'Paid';
                 $datas->payment_type = $request->whichpayment;
 
-                if($request->get('save_card')) {
-                    $datas->save_card_info = $request->get('save_card');
+                if($request->save_card ==1) {
+                    $datas->save_card_info = $request->save_card;
                     $datas->card_number = $request->card_number;
                     $datas->month = $request->month;
                     $datas->year = $request->year;
@@ -332,10 +373,14 @@ class HomeController extends Controller
                 $status->applicant_status = '2';
                 $status->save();
             }
-
             if ($res) { 
                 $productId = $id;
-                return view('user.applicant', compact('productId'))->with('success', 'Payment Successful');
+                $dest = product::find($request->pid);
+                $dest_name = $dest->product_name;
+    
+                $msg="Awesome! Payment Successful!";
+
+                return \Redirect::route('applicant', $request->pid)->with('info', $msg)->with('info_sub', 'You journey to ' .$dest_name. ' just began!');
                 // return \Redirect::route('/')->with('success', 'Payment Successful');
             } else {
                 return redirect()->back()->with('failed', 'Oppss! Something Went Wrong!');
