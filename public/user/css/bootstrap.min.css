@@ -2686,7 +2686,7 @@ textarea.form-control.is-invalid {
         transition: none;
     }
 }
-.btn:hover {
+/* .btn:hover {
     color: #212529;
 }
 .btn-check:focus + .btn,
@@ -3307,7 +3307,7 @@ fieldset:disabled .btn {
     padding: 0.25rem 0.5rem;
     font-size: 0.875rem;
     border-radius: 0.2rem;
-}
+} */
 .fade {
     transition: opacity 0.15s linear;
 }

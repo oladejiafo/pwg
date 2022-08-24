@@ -69,7 +69,7 @@ p {
 
 .fancy-collapse-panel .panel-default > .ppanel-heading {
   padding-top: 20px;
-  padding-left: 20%; 
+  /* padding-left: 20%;  */
 }
 
 .ppanel-heading a {
@@ -78,16 +78,18 @@ p {
   display: block;
   width: 100%;
   font-weight: 500;
-  font-size: 24px;
+  vertical-align: middle;
+  font-size: 34px;
   text-transform: capitalize;
   background-color: none;
-  color: #000;
+  color: #5d5d61;
   position: relative;
   -webkit-box-shadow: none !important;
   -moz-box-shadow: none !important;
   -ms-box-shadow: none !important;
   -o-box-shadow: none !important;
   box-shadow: 0 4px 2px -2px #000;
+
 }
 
 .panel-title {
@@ -114,7 +116,7 @@ p {
 
 .panel-heading a:after {
   font-family: "TT Norms Pro";
-  content: "\25AC"; /*content: url(image.jpg); */
+  content: "\25AC"; /*content: url(images/down_arrow.png); */
   position: absolute;
   left: 0px;
  
@@ -144,13 +146,14 @@ p {
 
 
   .ppanel-heading a:after {
+    
     font-family: "TT Norms Pro";
-    content: "\2303"; /*content: url(image.jpg);  25b2 */
+    content: "\2303"; /*content: url(../../images/down_arrow.png);  25b2 */
     position: absolute;
     right: 50px;
-   
-    font-size: 30px;
-    font-weight:400;
+  
+    font-size: 65px;
+    font-weight:500;
     top: 40%;
     line-height: 1;
     margin-top: -0px; 
@@ -165,14 +168,14 @@ p {
   .ppanel-heading a.collapsed:after {
     font-family: "TT Norms Pro";
     content: "\2304"; 
-    font-size: 30px;
-    margin-top: -20px; 
-    font-weight:400;
+    font-size: 65px;
+    margin-top: -55px; 
+    font-weight:500;
   }
   
   .ppanel-heading a.collapsed {
     font-family: "TT Norms Pro";
-    color: #000; }
+    color: #5d5d61; }
   
 
     @media only screen and (max-width: 679px) and (min-width: 375px) {

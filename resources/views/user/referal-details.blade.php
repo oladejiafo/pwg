@@ -2,68 +2,71 @@
 <link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous"> -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
 <link href="{{asset('css/alert.css')}}" rel="stylesheet">
 
 <style>
+    .form-sec-content {
+        padding: 12%;
+        /*100px 110px 100px 110px; */
 
-.form-sec-content {
-    padding: 12%; /*100px 110px 100px 110px; */
-
-}
-.form-secc h3 {
-    font-size: 36px;
-
-    text-align: center;
-}
-
-.form-secc p {
-    font-size: 17px;
-}
-
-@media (min-width:375px) and (max-width: 768px) {
-    .form-secc {
-      width: 100%;
-      padding: 50px;
-    margin-bottom: 50px;
-    margin-top: 50px;
     }
 
     .form-secc h3 {
-    font-size: 30px;
-}
-.form-secc p {
-    font-size: 12px;
-}
-}
+        font-size: 36px;
 
-.form-secc input, select {
-    border-radius: 10px;
-    border-color: #f5f5f5;
-    background-color: #f5f5f5;
-    padding: 10px;
-    
-}
-.form-secc button {
-    width: 100%;
-    color: #000;
-    border-radius: 5px;
-    border-color: #C4C4C4;
-}
+        text-align: center;
+    }
 
+    .form-secc p {
+        font-size: 17px;
+    }
+
+    @media (min-width:375px) and (max-width: 768px) {
+        .form-secc {
+            width: 100%;
+            padding: 50px;
+            margin-bottom: 50px;
+            margin-top: 50px;
+        }
+
+        .form-secc h3 {
+            font-size: 30px;
+        }
+
+        .form-secc p {
+            font-size: 12px;
+        }
+    }
+
+    .form-secc input,
+    select {
+        border-radius: 10px;
+        border-color: #f5f5f5;
+        background-color: #f5f5f5;
+        padding: 10px;
+
+    }
+
+    .form-secc button {
+        width: 100%;
+        color: #000;
+        border-radius: 5px;
+        border-color: #C4C4C4;
+    }
 </style>
 @section('content')
-@php 
-    $completed = DB::table('applicants')
-                ->where('product_id', '=', $data->id)
-                ->where('user_id', '=', Auth::user()->id)
-                ->get();
+@php
+$completed = DB::table('applicants')
+->where('product_id', '=', $data->id)
+->where('user_id', '=', Auth::user()->id)
+->get();
 
-    $levels='0';
-    foreach($completed as $complete) 
-    {
-            $levels = $complete->applicant_status;
-    } 
+$levels='0';
+foreach($completed as $complete)
+{
+$levels = $complete->applicant_status;
+}
 @endphp
 
 <div class="container">
@@ -73,56 +76,76 @@
                 <div class="row">
                     <div class="tabs d-flex justify-content-center">
                         <div class="wrapper">
-                            <a href="{{ url('referal_details', $data->id) }}" ><div class="round-active round1 m-2">1</div></a>
+                            <a href="{{ url('referal_details', $data->id) }}">
+                                <div class="round-active round1 m-2">1</div>
+                            </a>
                             <div class="round-title">Refferal <br> Details</div>
                         </div>
                         <div class="linear"></div>
-                            @php 
-                                if ($levels == '5' || $levels == '4' || $levels == '3' || $levels == '2' || $levels == '1') {
-                            @endphp
+                        @php
+                        if ($levels == '2' || $levels == '5' || $levels == '4' || $levels == '3') {
+                        @endphp
                         <div class="wrapper">
-                            <a href="{{ url('payment_form', $data->id) }}" ><div class="round2 m-2">2</div></a>
+                            <a href="#" onclick="return alert('Payment Concluded Already!');">
+                                <div class="round-completed round2 m-2">2</div>
+                            </a>
                             <div class="col-2 round-title">Payment <br> Details</div>
                         </div>
+                        @php
+                        }
+                        @endphp
+
+                        @php
+                        if ($levels == '5' || $levels == '4' || $levels == '3' || $levels == '2' || $levels == '1') {
+                        @endphp
                         <div class="linear"></div>
                         <div class="wrapper">
-                            <a href="{{route('applicant', $data->id)}}" ><div class="round3 m-2">3</div></a>
+                            <a href="{{route('applicant', $data->id)}}">
+                                <div class="round3 m-2">3</div>
+                            </a>
                             <div class="col-2 round-title">Application <br> Details</div>
                         </div>
                         <div class="linear"></div>
                         <div class="wrapper">
-                            <a href="{{route('applicant.details')}}" ><div class="round4 m-2">4</div></a>
+                            <a href="{{route('applicant.details')}}">
+                                <div class="round4 m-2">4</div>
+                            </a>
                             <div class="col-2 round-title">Applicant <br> Details</div>
                         </div>
                         <div class="linear"></div>
                         <div class="wrapper">
-                            <a href="{{url('applicant/review')}}" ><div class="round5 m-2">5</div></a>
+                            <a href="{{url('applicant/review')}}">
+                                <div class="round5 m-2">5</div>
+                            </a>
                             <div class="col-2 round-title">Application <br> Review</div>
                         </div>
 
-                        @php  
-                            } else {
+                        @php
+                        } else {
                         @endphp
-                        <div class="wrapper">
-                            <a href="#" onclick="return alert('You have to complete Application Details first');"><div class="round2 m-2">2</div></a>
-                            <div class="col-2 round-title">Payment <br> Details</div>
-                        </div>
+
                         <div class="linear"></div>
                         <div class="wrapper">
-                            <a href="#" onclick="return alert('You have to complete Application Details first');"><div class="round3 m-2">3</div></a>
+                            <a href="#" onclick="return alert('You have to complete Application Details first');">
+                                <div class="round3 m-2">3</div>
+                            </a>
                             <div class="col-2 round-title">Application <br> Details</div>
                         </div>
                         <div class="wrapper">
-                            <a href="#" onclick="return alert('You have to complete Application Details first');"><div class="round4 m-2">4</div></a>
+                            <a href="#" onclick="return alert('You have to complete Application Details first');">
+                                <div class="round4 m-2">4</div>
+                            </a>
                             <div class="col-2 round-title">Applicant <br> Details</div>
                         </div>
                         <div class="linear"></div>
                         <div class="wrapper">
-                        <a href="#" onclick="return alert('You have to complete Application Details first');"><div class="round5 m-2">5</div></a>
+                            <a href="#" onclick="return alert('You have to complete Application Details first');">
+                                <div class="round5 m-2">5</div>
+                            </a>
                             <div class="col-2 round-title">Applicant <br> Reviews</div>
                         </div>
-                        @php  
-                            }
+                        @php
+                        }
                         @endphp
                     </div>
                 </div>
@@ -153,7 +176,7 @@
                                 <input type="text" class="form-control" name="referrer_last_name" placeholder="Referrer Last Name" autocomplete="off" autofocus>
                                 @error('referrer_last_name') <span class="error">{{ $message }}</span> @enderror
                             </div>
-                        </div>  
+                        </div>
                         <div class="form-group row mt-4">
                             <div class="col-sm-12 mt-3">
                                 <input type="text" class="form-control" name="coupon_code" placeholder="Coupon Code(if you have any)" autocomplete="off" autofocus>
@@ -163,7 +186,7 @@
                         <div class="form-group row mt-4">
                             <div class="col-sm-12 mt-3">
                                 <select title="Current Location" class="form-control  current_location form-select" name="current_location" required="">
-                                    <option  selected disabled>--Current Location--</option>
+                                    <option selected disabled>--Current Location--</option>
                                     <option value="United Arab Emirates">United Arab Emirates</option>
                                     <option value="Afghanistan">Afghanistan</option>
                                     <option value="Albania">Albania</option>
@@ -350,7 +373,7 @@
                                     <option value="Tuvalu">Tuvalu</option>
                                     <option value="Uganda">Uganda</option>
                                     <option value="Ukraine">Ukraine</option>
-                                    
+
                                     <option value="United Kingdom">United Kingdom</option>
                                     <option value="United States">United States</option>
                                     <option value="Uruguay">Uruguay</option>
@@ -369,7 +392,7 @@
                         <div class="form-group row mt-4">
                             <div class="col-sm-12 mt-3">
                                 <select class="form-control form-select" name="nationality">
-                                    <option  selected disabled>--Select Nationality--</option>
+                                    <option selected disabled>--Select Nationality--</option>
                                     <option value="Afghanistan">Afghanistan</option>
                                     <option value="Albania">Albania</option>
                                     <option value="Algeria">Algeria</option>
@@ -581,11 +604,11 @@
             </div>
         </div>
     </div>
-@endsection
-@push('custom-scripts')
+    @endsection
+    @push('custom-scripts')
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js" integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous"></script>
-@endpush 
+    @endpush
 
 
-<script src="{{asset('js/alert.js')}}"></script>
+    <script src="{{asset('js/alert.js')}}"></script>

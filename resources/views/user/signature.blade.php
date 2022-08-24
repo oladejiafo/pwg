@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@include('user/header')
 
 <html>
 
@@ -22,7 +22,8 @@
 <!-- <script type="text/javascript" src="{{asset('user/js/jquery.signature.js')}}"></script> -->
 <style>
     .kbw-signature {
-        width: 100%; height: 350px;
+        width: 100%; 
+        height: 350px;
 
         align-content: center;
         border-radius: 10px;
@@ -36,14 +37,31 @@
         height: auto;
         z-index: 9099;
     }
-    [contentEditable=true]:empty:not(:focus):before{
-    content:attr(data-text);
-    font-size: 30px;
-    color:#ccc;
-   
+.append-title .btn.btn-primary {
+  color: #000;
+  background: none;
+  border-color: #C4C6CD;
+  border-radius: 10px;
+  border-width: thin;
+  border-style: solid;
+}
+
+.append-title .btn.btn-primary:hover {
+  background: linear-gradient(90deg, #FACB08 2.41%, #FAE008 90.98%);
+  border: none;
+  color: black
+}
+
+.append-title .btn.btn-primary::after {
+  color: #000;
+  background: none;
+  border-color: #C4C6CD !important;
+  border-radius: 10px;
+  border-width: thin;
+  border-style: solid;
 }
 </style>
-@section('content')
+
 <div class="loginx">
 
     <div class="container-fluid">
@@ -59,7 +77,7 @@
 
                         <div><br>
                             <p>Signature Here:</p>
-                            <div id="sig" class="kbw-signature" contentEditable=true data-text="Sign Here">
+                            <div id="sig" class="kbw-signature">
                                 
                             </div>
                             <p style="clear: both;">
@@ -75,7 +93,7 @@
         </div>
     </div>
 </div>
-@endsection
+
 <script type="text/javascript">
     $(function() {
         var sig = $('#sig').signature({
@@ -89,4 +107,16 @@
         });
 
     });
+
+    var canvas = document.querySelector('canvas');
+fitToContainer(canvas);
+
+function fitToContainer(canvas){
+  // Make it visually fill the positioned parent
+  canvas.style.width ='100%';
+  canvas.style.height='100%';
+  // ...then set the internal size to match
+  canvas.width  = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+}
 </script>

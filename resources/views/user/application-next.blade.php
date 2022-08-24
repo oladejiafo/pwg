@@ -7,6 +7,7 @@
 
 
 @php 
+ $productId = 1; 
     $completed = DB::table('applicants')
                 ->where('product_id', '=', $productId)
                 ->where('user_id', '=', Auth::user()->id)
@@ -1685,4 +1686,5 @@
 <script src="{{ asset('js/application-details.js') }}" type="text/javascript"></script>
 <script src="{{asset('js/alert.js')}}"></script>
 @endpush
+<script src="../user/extra/assets/js/jquery-min.js"></script>
 
