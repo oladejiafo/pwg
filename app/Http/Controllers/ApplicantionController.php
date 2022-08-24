@@ -41,7 +41,6 @@ class ApplicantionController extends Controller
                 'job_type' => 'required',
                 'cv' => 'required|mimes:pdf',
                 'agent_phone' => 'required',
-                'agent_name' => 'required',
                 'embassy_country' => 'required',
                 'agree' => 'required'
             ]);
