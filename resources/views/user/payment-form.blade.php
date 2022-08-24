@@ -8,7 +8,7 @@
 @php 
    $pid =  Session::get('myproduct_id');
     $completed = DB::table('applicants')
-                ->where('product_id', '=', $productId)
+                ->where('product_id', '=', $pid)
                 ->where('user_id', '=', Auth::user()->id)
                 ->get();
 

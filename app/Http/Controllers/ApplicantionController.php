@@ -75,8 +75,8 @@ class ApplicantionController extends Controller
             // $jobCategories = json_decode($jobCategory, true);
             // dd($jobCategories);
             $jobCategories = [] ;
-            
-            return view('user.application-next', compact('user', 'jobCategories'))->with('success', 'Data saved successfully!');
+            $productId = 1;
+            return view('user.application-next', compact('user', 'jobCategories', 'productId'))->with('success', 'Data saved successfully!');
         } else {
             return back();
         }

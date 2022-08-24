@@ -1,6 +1,6 @@
 @extends('layouts.master')
 <link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+{{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"> --}}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
 <link href="{{asset('css/alert.css')}}" rel="stylesheet">
 <meta name="csrf-token" content="{{ csrf_token() }}" />
@@ -25,21 +25,20 @@
                 <div class="wizard-details bg-white">
                     <div class="row">
                         <div class="tabs-detail d-flex justify-content-center">
-                            <!-- @php $productId = 1; @endphp -->
                             <div class="wrapper">
                                 <a href="{{ url('referal_details', $productId) }}" ><div class="round-completed round1 m-2">1</div></a>
                                 <div class="round-title"><p>Refferal</p><p> Details</p></div>
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                            @php 
+                            {{-- @php 
                                 if ($levels == '2' || $levels == '5' || $levels == '4' || $levels == '3') {
-                            @endphp    
+                            @endphp     --}}
                                 <a href="#" onclick="return alert('Payment Concluded Already!');"><div class="round-completed round2 m-2">2</div></a>
                                 <!-- <a href="{{ url('payment_form', $productId) }}" ><div class="round-completed round2 m-2">2</div></a> -->
                                 @php  
-                                }
-                            @endphp
+                                // }
+                            // @endphp
 
                                 <div class="round-title"><p>Payment</p><p> Details</p></div>
                             </div>
@@ -1415,7 +1414,7 @@
                                                                         </div>
                                                                         <div class="row">
                                                                             <h5>Employement Requirment</h5>
-                                                                            <p v-html="jobCategoryFour.employement_requirement"></p>
+                                                                            <p v-html="jobCategoryFour.employement_requirements"></p>
                                                                         </div>
                                                                         <div class="form-group row mt-4" style="margin-bottom: 20px">
                                                                             <div class="row">
