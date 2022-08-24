@@ -249,18 +249,20 @@ class HomeController extends Controller
             }
 
             $id = Session::get('myproduct_id');
-            $applys = DB::table('applicants')
-            ->where('product_id', '=', $id)
-            ->where('user_id', '=', Auth::user()->id)
-            ->get();
 
-            $applied='0';
-            foreach($applys as $apply) 
-            {
-                    $applied = $apply->applicant_status;
-            } 
+            // $applys = DB::table('applicants')
+            // ->where('product_id', '=', $id)
+            // ->where('user_id', '=', Auth::user()->id)
+            // ->get();
 
-            if ($applied == '1') {
+            // $applied='0';
+            // foreach($applys as $apply) 
+            // {
+            //         $applied = $apply->applicant_status;
+            // } 
+
+            // if ($applied == '1') {
+
                 $data = product::find(Session::get('myproduct_id'));
                             // $id = Session::get('myproduct_id');
                 $payall = Session::get('payall'); //$request->payall;
@@ -280,16 +282,18 @@ class HomeController extends Controller
                     ->get();
 
                 return view('user.payment-form', compact('data', 'pdet', 'pays', 'payall'));
-            } else if($applied == '2' || $applied == '3' || $applied == '4') {
-                $productId = $id;
-                return \Redirect::route('applicant', $productId)->with('failed', 'Payment Already Completed');
-            } else if($applied == '5') {
-                $package = product::all();
-                return view('user.home', compact('package'))->with('failed', 'Application Already Completed');
-            } else {
-                $data = product::find($id);
-                return view('user.referal-details', compact('data'))->with('failed', 'You are not done with Referral pls. Complete this section before you make payment');
-            }
+
+            // } else if($applied == '2' || $applied == '3' || $applied == '4') {
+            //     $productId = $id;
+            //     return \Redirect::route('applicant', $productId)->with('failed', 'Payment Already Completed');
+            // } else if($applied == '5') {
+            //     $package = product::all();
+            //     return view('user.home', compact('package'))->with('failed', 'Application Already Completed');
+            // } else {
+            //     $data = product::find($id);
+            //     return view('user.referal-details', compact('data'))->with('failed', 'You are not done with Referral pls. Complete this section before you make payment');
+            // }
+
         } else {
             return redirect()->back()->with('message', 'You are not authorized');
         }

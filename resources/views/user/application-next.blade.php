@@ -7,6 +7,7 @@
 @section('content')
 
 @php 
+ $productId = 1; 
     $completed = DB::table('applicants')
                 ->where('product_id', '=', $productId)
                 ->where('user_id', '=', Auth::user()->id)
@@ -24,7 +25,7 @@
                 <div class="wizard-details bg-white">
                     <div class="row">
                         <div class="tabs-detail d-flex justify-content-center">
-                            <!-- @php $productId = 1; @endphp -->
+                           
                             <div class="wrapper">
                                 <a href="{{ url('referal_details', $productId) }}" ><div class="round-completed round1 m-2">1</div></a>
                                 <div class="round-title"><p>Refferal</p><p> Details</p></div>
@@ -1553,5 +1554,6 @@
 </script>
 
 @endpush
+<script src="../user/extra/assets/js/jquery-min.js"></script>
 
 <script src="{{asset('js/alert.js')}}"></script>

@@ -15,29 +15,25 @@
     <div class="paid-section">
      @if(Route::has('login'))
 
-          @foreach($paid as $pd)
-          
-             @if( $pd->product_id > 0)
+      @if($paid->first())
+
+        @foreach($paid as $pd)
+
+            @if( $pd->product_id > 0 && $pd->product_id != null && $paid->first())
 
               @include('user.paid')
               @include('user.paid_details')
-             @else
 
-                <div class="card d-flex aligns-items-center justify-content-center text-center">
-                    <div class="card-header">My Applications</div>
-                    <div class="card-body">
-                        <hr>
-                        <img src="{{asset('user/images/noapply.svg')}}" alt="..." style="width: 200px;height: 200px;">
-                        <h5 class="card-title">No Applications Yet</h5>
-                        <p class="card-text">You currently have no applications to view.</p>
-                        <a href="{{url('home')}}" class="btn btn-primary">START NOW</a>
-                    </div>
-                </div>
-
-                @include('user.earning')
-             @endif
-          @endforeach
-      @endif          
+            @else
+              @include('user.noapplication')
+            @endif
+        @endforeach
+        
+      @else 
+       @include('user.noapplication')
+      @endif
+     
+     @endif
 
     </div>
     <!-- End Product Section -->

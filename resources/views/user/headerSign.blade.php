@@ -291,7 +291,7 @@
 </body>
       <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 
-    <script src="../user/extra/assets/js/jquery-min.js"></script>
+    <!-- <script src="../user/extra/assets/js/jquery-min.js"></script> -->
 
     
     <script src="../user/extra/assets/js/popper.min.js"></script>

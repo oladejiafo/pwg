@@ -17,11 +17,11 @@
   { 
     $icon = 'fa fa-minus-circle';
     $offer_discount_msg = number_format($offer_discount) .'% lower than last month';
-  }
-  else if($offer_discount < 0)
-  { 
-    $icon = 'fa fa-plus-circle';
-   $offer_discount_msg = number_format(($offer_discount*-1)) .'% higher than last month';
+  //}
+  // else if($offer_discount < 0)
+  // { 
+  //   $icon = 'fa fa-plus-circle';
+  //  $offer_discount_msg = number_format(($offer_discount*-1)) .'% higher than last month';
   } else {
     $icon = '';
    $offer_discount_msg = '';
@@ -33,7 +33,7 @@
     <div class="container-fluid">
       <div class="row">
 
-        <p style="font-style: italics; text-decoration:none"><a href="/"><b><i>Packages </a> > {{$data->product_name}} </i></b></p>
+        <!-- <p style="font-style: italics; text-decoration:none"><a href="/"><b><i>Packages </a> > {{$data->product_name}} </i></b></p> -->
 
         <div class="col-md-6 col-sm-12 img-fluid" style="margin-bottom: 20px;">
           <img src="../user/images/{{$data->image}}" width="100%" height="99%" border="0" alt="" />
@@ -90,7 +90,7 @@
           </p>
 
 <br>
-          <h4>Working in {{$data->product_name}} provides several benefits, including but not limited to:</h4>
+          <h4>Working in {{$data->product_name}} provides several benefits not limited to:</h4>
 
           <p>
           <ul>

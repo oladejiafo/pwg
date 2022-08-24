@@ -12,7 +12,8 @@
 <style>
 
 body {
-    background: #e5e8e9 !important;
+    background: #ccc !important; /* #f0f3f4 */
+    font-family: 'TT Norms Pro' !important;
   }
   hr {
     height:1px;
@@ -20,15 +21,27 @@ body {
     background-color:#ccc;
     opacity: 1;
   }
-  .card {
-    width: 70%;
+  .cardx {
+    width: 60%;
     margin: 0 auto;
     /* margin-right:25%;
     margin-left:15%; */
-    margin-top: 160px;
+    margin-top: 150px;
   }
-  .panel-title {
-    margin-left:10%;
+  .card {
+    width:100%;
+    margin: 0 auto;
+   
+  }
+  .card .ppanel-heading {
+    height: 110px;
+    margin-top:20px;
+
+  }
+  .card .panel-title {
+    margin-left:50px;
+    font-size: 48px;
+    color: #ccc;
   }
 
   @media (min-width: 375px) and (max-width: 768px) {
@@ -58,19 +71,24 @@ body {
 
 <body>
     
-<div class="row card" style="border-radius:10px;background-color: #F6F7FB;">
+<div class="row cardx" style="border-radius:10px;">
 
-    <div class="col-12 cards">
+    <div class="col-12 cardsx">
         <div class="about-desc animate-box">
             <div class="fancy-collapse-panel">
                 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 
                     <!-- Tab One -->
-                    <div class="panel panel-default" style="border-radius: 10px;">
+                    <div class="panel panel-default card" style="border-radius: 10px;">
                         <div class="ppanel-heading" role="tab" id="headingOne">
                             <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    &nbsp; {{ __('Profile Information') }} |
+                            
+                            
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="vertical-align: middle;">
+                                <span style="display:inline-block"><img src="{{asset('images/Icons_applicant_details.svg')}}" width="70px" height="auto" style="margin-right:50px"></span>
+                                <span class="title" style="display:inline-block">
+                                    &nbsp; {{ __('Profile Information') }}  
+                                </span>
                                 </a>
                             </h4>
                         </div>
@@ -90,9 +108,10 @@ body {
                     </div><p style="margin-top: 5px;"> &nbsp; </p>
 
                     <!-- Tab Two -->
-                    <div class="panel panel-default" style="border-radius: 10px;">
+                    <div class="panel panel-default card" style="border-radius: 10px;margin-top:1px">
                         <div class="ppanel-heading" role="tab" id="headingTwo">
                             <h4 class="panel-title">
+                                
                                 <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                                     &nbsp; {{ __('Update Password') }} |
 
@@ -114,10 +133,10 @@ body {
 
                             </div>
                         </div>
-                    </div><p style="margin-top: 10px;"> &nbsp; </p>
+                    </div><p style="margin-top: 5px;"> &nbsp; </p>
 
                     <!-- Tab Three -->
-                    <div class="panel panel-default" style="border-radius: 10px;">
+                    <div class="panel panel-default card" style="border-radius: 10px;margin-top:1px">
                         <div class="ppanel-heading" role="tab" id="headingThree">
                             <h4 class="panel-title">
                                 <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
@@ -144,10 +163,10 @@ body {
 
                             </div>
                         </div>
-                    </div><p style="margin-top: 10px;"> &nbsp; </p>
+                    </div><p style="margin-top: 5px;"> &nbsp; </p>
 
                     <!-- Tab Four -->
-                    <div class="panel panel-default" style="border-radius: 10px;">
+                    <div class="panel panel-default card" style="border-radius: 10px;margin-top:1px">
                         <div class="ppanel-heading" role="tab" id="headingFour">
                             <h4 class="panel-title">
                                 <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
@@ -181,7 +200,7 @@ body {
 </div>
 </body>
 
-
+    <!-- <script src="../user/extra/assets/js/jquery-min.js"></script> -->
 <!-- jQuery -->
 <script src="{{asset('user/extra/js/jquery.min.js')}}"></script>
 <!-- Bootstrap -->

@@ -74,7 +74,7 @@ class ApplicantionController extends Controller
             // $jobCategory = $response->body();
             // $jobCategories = json_decode($jobCategory, true);
             // dd($jobCategories);
-            // $jobCategories = [] ;
+            $jobCategories = [] ;
             
             return view('user.application-next', compact('user', 'jobCategories'))->with('success', 'Data saved successfully!');
         } else {
