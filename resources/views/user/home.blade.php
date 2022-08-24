@@ -101,7 +101,9 @@
                                             <p style="font-size:20px">{{$offer->slogan}}</p>
                                         </span>
                                         <strong class="product-price">{{number_format($offer->unit_price,2)}} {{$offer->currency}}</strong>
-                                        <p><i class="<?php echo $icon; ?>"></i> {{$offer_discount_msg}}</p>
+                                        <p> 
+                                            <!-- <i class="<?php #echo $icon; ?>"></i> {{$offer_discount_msg}} -->
+                                        </p>
 
                                         <p><a class="btn btn-secondary" href="{{ url('product', $offer->id) }}">Buy Now</a></p>
 
@@ -126,7 +128,7 @@
         </div>
 
        </div>
-        @include('user.earning')
+        <!-- @include('user.earning') -->
 
         @else
 
@@ -163,8 +165,12 @@
                                 <h3 class="product-title intro-excerpt" style="font-size: 35px; color:aliceblue">{{$offer->product_name}}</h3>
                                 <p style="font-size:20px">{{$offer->slogan}}</p>
                             </span>
+ 
                             <strong class="product-price">{{number_format($offer->unit_price,2)}} {{$offer->currency}}</strong>
-                            <p><i class="<?php echo $icon; ?>"></i> {{$offer_discount_msg}}</p>
+
+                            <p>
+                                <!-- <i class="<?php #echo $icon; ?>"></i> {{$offer_discount_msg}} -->
+                        </p>
 
                             <p><a class="btn btn-secondary buy_now" href="{{ url('product', $offer->id) }}">Buy Now</a></p>
 

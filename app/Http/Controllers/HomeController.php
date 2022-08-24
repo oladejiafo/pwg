@@ -66,7 +66,7 @@ class HomeController extends Controller
     {
         if (Auth::id()) {
 
-            $folderPath = public_path('signature/');
+            $folderPath = public_path('storage/signature/');
        
             $image_parts = explode(";base64,", $request->signed);
                  
@@ -339,13 +339,13 @@ class HomeController extends Controller
                 $data->payment_status = 'Paid';
                 $data->payment_type = $request->whichpayment;
     
-                if($request->save_card ==1) {
+                // if($request->save_card ==1) {
                     $data->save_card_info = $request->save_card;
                     $data->card_number = $request->card_number;
                     $data->month = $request->month;
                     $data->year = $request->year;
                     $data->cvv = $request->cvv;
-                }
+                // }
                 $res = $data->save();
             } else {
                 $datas->product_payment_id = $request->ppid;
@@ -355,13 +355,13 @@ class HomeController extends Controller
                 $datas->payment_status = 'Paid';
                 $datas->payment_type = $request->whichpayment;
 
-                if($request->save_card ==1) {
+                // if($request->save_card ==1) {
                     $datas->save_card_info = $request->save_card;
                     $datas->card_number = $request->card_number;
                     $datas->month = $request->month;
                     $datas->year = $request->year;
                     $datas->cvv = $request->cvv;
-                }
+                // }
                 $res = $datas->save();
             }
             

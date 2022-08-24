@@ -42,8 +42,14 @@
                             @endphp    
                                 <a href="#" onclick="return alert('Payment Concluded Already!');"><div class="round-completed round2 m-2">2</div></a>
                                 <!-- <a href="{{ url('payment_form', $productId) }}" ><div class="round-completed round2  m-2">2</div></a> -->
-                                @php  
-                                }
+                                @php
+                          } else {
+                                @endphp    
+                                <a href="{{ url('payment_form', $data->id) }}" >
+                                    <div class="round2  m-2">2</div>
+                                </a>
+                              @php   
+                        }
                             @endphp
                                 <div class="col-2 round-title">Payment <br> Details</div>
                             </div>

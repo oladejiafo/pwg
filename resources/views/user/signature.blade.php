@@ -22,10 +22,11 @@
 <!-- <script type="text/javascript" src="{{asset('user/js/jquery.signature.js')}}"></script> -->
 <style>
     .kbw-signature {
-        width: 100%; 
+        width: 99%; 
         height: 350px;
-
+        zoom:normal;
         align-content: center;
+        padding: 0;
         border-radius: 10px;
         border-style: solid;
         border-color: #ccc; /*#f0f3f4*/;
@@ -33,9 +34,11 @@
     }
 
     #sig canvas {
+        padding: 0;
         width: 100% !important;
-        height: auto;
+        height: 345px;
         z-index: 9099;
+        zoom:100%
     }
 .append-title .btn.btn-primary {
   color: #000;
@@ -78,11 +81,11 @@
                         <div><br>
                             <p>Signature Here:</p>
                             <div id="sig" class="kbw-signature">
-                                
+                            
                             </div>
                             <p style="clear: both;">
-                                <button id="clear" class="btn btn-primary">Clear</button>
-                                <textarea name="signed" id="signature64" style="display:none"></textarea>
+                                <button id="clear" class="btn btn-primary" style="height: 55px;">Clear</button>
+                                <textarea name="signed" id="signature64" style="display:none" required></textarea>
                             </p>
 
                         </div>
@@ -107,6 +110,18 @@
         });
 
     });
+
+    function resizeCanvas() {
+  var ratio =  Math.max(window.devicePixelRatio || 1, 1);
+  canvas.width = canvas.offsetWidth * ratio;
+  canvas.height = canvas.offsetHeight * ratio;
+  canvas.getContext("2d").scale(ratio, ratio);
+  signaturePad.clear(); // otherwise isEmpty() might return incorrect value
+}
+
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
+
 
     var canvas = document.querySelector('canvas');
 fitToContainer(canvas);

@@ -9,6 +9,22 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 <link href="{{asset('user/css/products.css')}}" rel="stylesheet">
 
+<style>
+  .se2 {
+    width: 100% !important;
+    background-color: #FFCD04 !important;
+    border-style: none !important;
+    margin-bottom: 5px !important;
+  }
+
+  .se2:hover {
+    background-color: white !important;
+    border-color: grey !important;
+    border-style: solid !important;
+  }
+
+</style>
+
 <body>
 <?php
   $offer_discount= $data->prev_discount - $data->discount;
@@ -43,7 +59,11 @@
           <p class="subheading"><span>{{$data->slogan}}</span></p>
           <p>{{$data->description}}</p>
           <h2>{{number_format($data->unit_price,2)}} {{$data->currency}}</h2>
-          <p class="subheading" style="margin-left: 0px;"><i class="<?php echo $icon; ?>"></i> {{$offer_discount_msg}}</p>
+
+          <p class="subheading" style="margin-left: 0px;">
+          <!-- <i class="<?php #echo $icon; ?>"></i> {{$offer_discount_msg}} -->
+        </p>
+
 
           <p>
           <h3>Payment Installments</h3>
@@ -89,6 +109,7 @@
 
           </p>
 
+          
 <br>
           <h4>Working in {{$data->product_name}} provides several benefits not limited to:</h4>
 
@@ -113,17 +134,22 @@
            @endauth
           @endif
           <input type="hidden" value="{{$data->id}}">
-          <p><input type="checkbox" class="checkcolor" id="agree" style="font-size:25px;transform: scale(1.8); " required=""> &nbsp; By checking this box you accept our Terms & Conditions</p>
-              <p><button class="btn btn-secondary" id="buy" value="1" name="payall">FULL PAYMENT</button>
-                 <button class="btn btn-secondary" id="buy" value="0" name="payall">PARTIAL PAYMENT</button></p>
-            </form>
-            <?php
+    
+<p style="margin-left:2px;font-weight:bold; font-size:1.4em">Please, select one of the following options:</p>
+          <?php
 if ($data->full_payment_discount > 0) {
     ?>
             <p style="margin-left:2px;font-weight:bold">Get {{number_format($data->full_payment_discount)}}% discount on Full Payment</p>
             <?php
 }
 ?>
+
+              <p><button class="btn btn-secondary se2" id="buy" value="1" name="payall" style="font-size:1.6em">Full Payment</button>
+                 <button class="btn btn-secondary" id="buy" value="0" name="payall" style="width:100%; font-size:1.6em">Pay in Installments</button></p>
+
+                 <p>&nbsp; <input type="checkbox" class="checkcolor" id="agree" style="font-size:25px;transform: scale(1.8); " required=""> &nbsp; By checking this box you accept our <a href="#" style="color:blue;margin:0">Terms & Conditions</a></p>     
+            </form>
+
         </div>
 
       </div>
@@ -138,7 +164,7 @@ if ($data->full_payment_discount > 0) {
     });
   </script>
 
-  @include('user.package-jobs')
+ {{-- @include('user.package-jobs') --}}
 </body>
 
 </html>
