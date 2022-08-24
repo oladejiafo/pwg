@@ -81,9 +81,9 @@
                                 }
                             @endphp
                         </div>
+                    </div>
                 </div>
-            </div>
-            <div></div>
+            <div>
             <div class="row">
                 <div class="applicant-sec">
                     <div class="heading">

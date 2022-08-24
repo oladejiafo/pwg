@@ -70,15 +70,15 @@
                                     @csrf
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-4 mt-3">
-                                            <input type="tel" name="first_name" class="form-control" placeholder="First Name*" value="{{old('first_name')}}" autocomplete="off" required/>
+                                            <input type="tel" name="first_name" class="form-control" placeholder="First Name*" value="{{$applicant['first_name']}}" autocomplete="off" required/>
                                             @error('first_name') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                         <div class="col-sm-4 mt-3">
-                                            <input type="text" name="middle_name" class="form-control" placeholder="Middle Name" value="{{old('middle_name')}}"  autocomplete="off"/>
+                                            <input type="text" name="middle_name" class="form-control" placeholder="Middle Name" value="{{$applicant['middle_name']}}"  autocomplete="off"/>
                                             @error('middle_name') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                         <div class="col-sm-4 mt-3">
-                                            <input type="text" name="surname" class="form-control" placeholder="Surname*" value="{{old('surname')}}" autocomplete="off" required />
+                                            <input type="text" name="surname" class="form-control" placeholder="Surname*" value="{{$applicant['surname']}}" autocomplete="off" required />
                                             @error('surname') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                     </div>
@@ -94,16 +94,16 @@
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-4 mt-3">
-                                            <input type="text" name="dob" class="form-control" placeholder="Date of Birth*" value="{{old('dob')}}" id="datepicker" autocomplete="off"  required/>
+                                            <input type="text" name="dob" class="form-control" placeholder="Date of Birth*" value="{{ date('d-m-Y', strtotime($applicant['dob']))}}" id="datepicker" autocomplete="off"  required/>
                                             @error('dob') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                         <div class="col-sm-4 mt-3">
-                                            <input type="text" name="place_birth" class="form-control" placeholder="Place of Birth*" value="{{old('place_birth')}}" autocomplete="off" required/>
+                                            <input type="text" name="place_birth" class="form-control" placeholder="Place of Birth*" value="{{$applicant['place_birth']}}" autocomplete="off" required/>
                                             @error('place_birth') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                         <div class="col-sm-4 mt-3">
-                                            <select class="form-select form-control" name="country_birth" placeholder="Country of Birth*" value="{{old('country_birth')}}"  required>
-                                                <option selected disabled>Country of Birth *</option>
+                                            <select class="form-select form-control" name="country_birth" placeholder="Country of Birth*"  required>
+                                                <option selected>{{$applicant['country_birth']}}</option>
                                                 <option value="Afghanistan">Afghanistan</option>
                                                 <option value="Albania">Albania</option>
                                                 <option value="Algeria">Algeria</option>
@@ -308,7 +308,7 @@
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-4 mt-3">
                                             <select class="form-select form-control" name="citizenship" placeholder="Citizenship*" value="{{old('citizenship')}}"  required>
-                                                <option selected disabled>Citizenship *</option>
+                                                <option selected>{{$applicant['citizenship']}}</option>
                                                 <option value="Afghanistan">Afghanistan</option>
                                                 <option value="Albania">Albania</option>
                                                 <option value="Algeria">Algeria</option>
@@ -512,20 +512,20 @@
                                         <div class="col-sm-4 mt-3">
                                             <select name="sex"  aria-required="true" class="form-control form-select" required>
                                                 <option selected disabled>Sex *</option>
-                                                <option value="MALE">MALE</option>
-                                                <option value="FEMALE">FEMALE</option>
+                                                <option {{($applicant['sex'] == "Male") ? 'selected' : ''}} value="Male">Male</option>
+                                                <option {{($applicant['sex'] == "Female") ? 'selected' : ''}} value="Female">Female</option>
                                             </select>
                                             @error('sex') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                         <div class="col-sm-4 mt-3">
                                             <select name="civil_status" id="civil_status" required="" aria-required="true" class="form-control form-select">
                                                 <option selected disabled>Civil Status *</option>
-                                                <option value="Single">Single</option>
-                                                <option value="Married">Married</option>
-                                                <option value="Separated">Separated</option>
-                                                <option value="Divorced">Divorced</option>
-                                                <option value="Widow">Widow</option>
-                                                <option value="Other">Other</option>
+                                                <option {{($applicant['civil_status'] == "Single") ? 'selected' : ''}} value="Single">Single</option>
+                                                <option {{($applicant['civil_status'] == "Married") ? 'selected' : ''}} value="Married">Married</option>
+                                                <option {{($applicant['civil_status'] == "Separated") ? 'selected' : ''}} value="Separated">Separated</option>
+                                                <option {{($applicant['civil_status'] == "Divorced") ? 'selected' : ''}} value="Divorced">Divorced</option>
+                                                <option {{($applicant['civil_status'] == "Widow") ? 'selected' : ''}} value="Widow">Widow</option>
+                                                <option {{($applicant['civil_status'] == "Other") ? 'selected' : ''}} value="Other">Other</option>
                                             </select>
                                             @error('civil_status') <span class="error">{{ $message }}</span> @enderror
                                         </div>
@@ -574,29 +574,29 @@
                                     @csrf
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-12 mt-3">
-                                            <input type="text" name="passport_number" class="form-control" placeholder="Passport Number*" value="{{old('passport_number')}}" autocomplete="off" required/>
+                                            <input type="text" name="passport_number" class="form-control" placeholder="Passport Number*" value="{{$applicant['passport_number']}}" autocomplete="off" required/>
                                             @error('passport_number') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-6 mt-3">
-                                            <input type="text" name="passport_issue" class="form-control" placeholder="Passport Date of Issue*" value="{{old('passport_issue')}}" autocomplete="off" required/>
+                                            <input type="text" name="passport_issue" class="form-control" placeholder="Passport Date of Issue*" value="{{ date('d-m-Y', strtotime($applicant['passport_date_issue']))}}" autocomplete="off" required/>
                                             @error('passport_issue') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                         <div class="col-sm-6 mt-3">
-                                            <input type="text" name="passport_expiry" class="form-control" placeholder="assport Date of Expiry*" value="{{old('passport_expiry')}}" autocomplete="off"  required/>
+                                            <input type="text" name="passport_expiry" class="form-control" placeholder="assport Date of Expiry*" value="{{ date('d-m-Y', strtotime($applicant['passport_date_expiry']))}}" autocomplete="off"  required/>
                                             @error('passport_expiry') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-12 mt-3">
-                                            <input type="text" name="issued_by" class="form-control" placeholder="Issued By(Authority that issued the passport)*" value="{{old('issued_by')}}" autocomplete="off" required/>
+                                            <input type="text" name="issued_by" class="form-control" placeholder="Issued By(Authority that issued the passport)*" value="{{$applicant['issued_by']}}" autocomplete="off" required/>
                                             @error('issued_by') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-6 mt-3">
-                                            <input type="text" name="passport_copy" class="form-control" placeholder="Upload Passport Copy*" value="{{old('passport_copy')}}" autocomplete="off" readonly required/>
+                                            <input type="text" name="passport_copy" class="form-control" placeholder="Upload Passport Copy*" value="{{$applicant['passport']}}" autocomplete="off" readonly required/>
                                             <div class="input-group-btn">
                                                 <span class="fileUpload btn">
                                                     <span class="upl" id="upload">Choose File</span>
@@ -606,14 +606,14 @@
                                             @error('passport_copy') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                         <div class="col-sm-6 mt-3">
-                                            <input type="tel" name="home_phone_number" class="form-control" placeholder="Phone Number" value="{{old('home_phone_number')}}" autocomplete="off"  required/>
+                                            <input type="tel" name="home_phone_number" class="form-control" placeholder="Phone Number" value="{{$applicant['phone_number']}}" autocomplete="off"  required/>
                                             @error('home_phone_number') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-3 mt-3">
-                                            <select class="form-select form-control" name="home_country" placeholder="home_country*" value="{{old('home_country')}}"  required>
-                                                <option selected disabled>Home Country *</option>
+                                            <select class="form-select form-control" name="home_country" placeholder="home_country*" value="{{$applicant['home_country']}}"  required>
+                                                <option selected>{{$applicant['home_country']}}</option>
                                                 <option value="Afghanistan">Afghanistan</option>
                                                 <option value="Albania">Albania</option>
                                                 <option value="Algeria">Algeria</option>
@@ -815,23 +815,23 @@
                                             @error('home_country') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                         <div class="col-sm-3 mt-3">
-                                            <input type="text" name="state" class="form-control" placeholder="State/Province*" required>
+                                            <input type="text" name="state" class="form-control" placeholder="State/Province*" value="{{$applicant['state']}}" required>
                                             @error('state') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                         <div class="col-sm-3 mt-3">
-                                            <input type="text" name="city" class="form-control" placeholder="City*" required>
+                                            <input type="text" name="city" class="form-control" placeholder="City*"  value="{{$applicant['city']}}" required>
                                             @error('city') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                         <div class="col-sm-3 mt-3">
-                                            <input type="integer" name="postal_code" value="{{old('postal_code')}}" class="form-control" placeholder="Postal Code*" required>
+                                            <input type="integer" name="postal_code" value="{{old('postal_code')}}" class="form-control" value="{{$applicant['postal_code']}}" placeholder="Postal Code*" required>
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-6 mt-3">
-                                            <input type="text" name="address1" class="form-control" placeholder="Address (Street And Number) Line 1*" required>
+                                            <input type="text" name="address1" class="form-control" placeholder="Address (Street And Number) Line 1*" value="{{$applicant['address_1']}}" required>
                                         </div>
                                         <div class="col-sm-6 mt-3">
-                                            <input type="text" name="address1" class="form-control" placeholder="Address (Street And Number) Line 2*" required>
+                                            <input type="text" name="address1" class="form-control" placeholder="Address (Street And Number) Line 2*" value="{{$applicant['address_2']}}" required>
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
@@ -878,8 +878,8 @@
                                     @csrf
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-6 mt-3">
-                                            <select class="form-select form-control" name="current_country" placeholder="current_country*" value="{{old('current_country')}}"  required>
-                                                <option selected disabled>Current Country Are You Living Right Now? *</option>
+                                            <select class="form-select form-control" name="current_country" placeholder="current_country*" value="{{$applicant['current_residance_country']}}"  required>
+                                                <option selected>{{$applicant['current_residance_country']}}</option>                                            </option>
                                                 <option value="Afghanistan">Afghanistan</option>
                                                 <option value="Albania">Albania</option>
                                                 <option value="Algeria">Algeria</option>
@@ -1081,17 +1081,17 @@
                                             @error('current_country') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                         <div class="col-sm-6 mt-3">
-                                            <input type="tel" class="form-control" name='current_residance_mobile' value="{{old('current_residance_mobile')}}" placeholder="Current Residence Mobile Number" required>
+                                            <input type="tel" class="form-control" name='current_residance_mobile' value="{{$applicant['current_residance_mobile']}}" placeholder="Current Residence Mobile Number" required>
                                             @error('current_residance_mobile') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-6 mt-3">
-                                            <input type="text" name="residence_id" class="form-control" placeholder="Residence Id*"required />
+                                            <input type="text" name="residence_id" class="form-control" placeholder="Residence Id*" value="{{$applicant['residence_id']}}" required />
                                             @error('residence_id') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                         <div class="col-sm-6 mt-3">
-                                            <input type="text" class="form-control" name="id_validity" placeholder="Your ID/Visa Date of Validity*" required>
+                                            <input type="text" class="form-control" name="id_validity" placeholder="Your ID/Visa Date of Validity*" value="{{ date('d-m-Y', strtotime($applicant['id_validity']))}}" required>
                                             @error('id_validity') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                     </div>
@@ -1117,39 +1117,39 @@
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-12 mt-3">
-                                            <input type="text" name="prof_current_job" class="form-control" placeholder="Profession As Per Current Job (or on Visa)*" required>
+                                            <input type="text" name="prof_current_job" class="form-control" placeholder="Profession As Per Current Job (or on Visa)*" value="{{$applicant['current_job']}}" required>
                                             @error('prof_current_job') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-4 mt-3">
-                                            <input type="text" name="work_state" class="form-control" placeholder="Work State/Province*"required />
+                                            <input type="text" name="work_state" class="form-control" placeholder="Work State/Province*" value="{{$applicant['work_state']}}" required />
                                             @error('work_state') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                         <div class="col-sm-4 mt-3">
-                                            <input type="text" class="form-control" name="work_city" placeholder="Work City*" required>
+                                            <input type="text" class="form-control" name="work_city" placeholder="Work City*" value="{{$applicant['work_city']}}" required>
                                             @error('work_city') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                         <div class="col-sm-4 mt-3">
-                                            <input type="text" class="form-control" name="work_postal_code" placeholder="Work Place Postal Code*" required>
+                                            <input type="text" class="form-control" name="work_postal_code" placeholder="Work Place Postal Code*" value="{{$applicant['work_postal_code']}}" required>
                                             @error('work_postal_code') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-4 mt-3">
-                                            <input type="text" name="work_street" class="form-control" placeholder="Work Place Street & Number*"required />
+                                            <input type="text" name="work_street" class="form-control" placeholder="Work Place Street & Number*" value="{{$applicant['work_street_number']}}" required />
                                             @error('work_street') <span class="error">{{ $message }}</span> @enderror
                                         </div>
                                         <div class="col-sm-4 mt-3">
-                                            <input type="text" class="form-control" name="company_name" placeholder="Name of Company">
+                                            <input type="text" class="form-control" name="company_name" placeholder="Name of Company" value="{{$applicant['company_name']}}">
                                         </div>
                                         <div class="col-sm-4 mt-3">
-                                            <input type="text" class="form-control" name="employer_phone" placeholder="Employer Phone Number" >
+                                            <input type="text" class="form-control" name="employer_phone" placeholder="Employer Phone Number" value="{{$applicant['employer_phone_number']}}">
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-12 mt-3">
-                                            <input type="email" name="employer_email" class="form-control" placeholder="Email of the employer">
+                                            <input type="email" name="employer_email" class="form-control" placeholder="Email of the employer" value="{{$applicant['employer_email']}}">
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
@@ -1197,19 +1197,32 @@
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-12 mt-3">
                                             <select name="is_schengen_visa_issued_last_five_year" id="is_schengen_visa_issued_last_five_year" required="" aria-required="true" class="form-control form-select">
-                                                <option selected disabled>Schengen Or National Visa Issued During Last 5 Years</option>
-                                                <option value="NO">NO</option>
-                                                <option value="YES">YES</option>
+                                                <option selected disabled>Schengen Or National Visa Issued During Last 5 Years*</option>
+                                                <option {{($applicant['is_schengen_visa_issued'] == "No") ? 'selected' : ''}} value="No">No</option>
+                                                <option {{($applicant['is_schengen_visa_issued'] == "Yes") ? 'selected' : ''}} value="Yes">Yes</option>
                                             </select>
+                                            <span class="is_schengen_visa_issued_last_five_year_errorClass"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mt-4 schengen_visa">
+                                        <div class="col-sm-12 mt-3">
+                                            <input type="text" class="form-control schengen_copy" name="schengen_copy" placeholder="Image of Schengen Or National Visa Issued During Last 5 Years" readonly >
+                                            <div class="input-group-btn">
+                                                <span class="fileUpload btn">
+                                                    <span class="upl" id="upload">Choose File</span>
+                                                    <input type="file" class="upload schengen_copy" accept="image/png, image/gif, image/jpeg" name="schengen_copy" />
+                                                </span><!-- btn-orange -->
+                                            </div><!-- btn -->
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-12 mt-3">
                                             <select name="is_finger_print_collected_for_Schengen_visa" id="is_finger_print_collected_for_Schengen_visa" required="" aria-required="true" class="form-control form-select">
                                                 <option value="">Fingerprints Collected Previously For The Purpose Of Applying For Schengen Visa*</option>
-                                                <option value="NO">NO</option>
-                                                <option value="YES">YES</option>
+                                                <option {{($applicant['is_fingerprint_collected'] == "No") ? 'selected' : ''}} value="No">No</option>
+                                                <option {{($applicant['is_fingerprint_collected'] == "Yes") ? 'selected' : ''}} value="Yes">Yes</option>
                                             </select>
+                                            <span class="is_finger_print_collected_for_Schengen_visa_errorClass"></span>
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
@@ -1383,7 +1396,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
 <script>
     $(document).ready(function(){
-       
+        if($('#is_schengen_visa_issued_last_five_year').val() == 'Yes'){
+            $('.schengen_visa').show();                
+        } else {
+            $('.schengen_visa').hide();                
+        }
     });
     const phoneInputField = document.querySelector("#phone");
     const phoneInput = window.intlTelInput(phoneInputField, {

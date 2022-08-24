@@ -1,10 +1,11 @@
 @extends('layouts.master')
 <link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+{{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"> --}}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
 <link href="{{asset('css/alert.css')}}" rel="stylesheet">
 <meta name="csrf-token" content="{{ csrf_token() }}" />
 @section('content')
+
 
 @php 
  $productId = 1; 
@@ -19,27 +20,26 @@
             $levels = $complete->applicant_status;
     } 
 @endphp
-    <div class="container">
+    <div class="container" id="app">
         <div class="col-12">
             <div class="row">
                 <div class="wizard-details bg-white">
                     <div class="row">
                         <div class="tabs-detail d-flex justify-content-center">
-                           
                             <div class="wrapper">
                                 <a href="{{ url('referal_details', $productId) }}" ><div class="round-completed round1 m-2">1</div></a>
                                 <div class="round-title"><p>Refferal</p><p> Details</p></div>
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                            @php 
+                            {{-- @php 
                                 if ($levels == '2' || $levels == '5' || $levels == '4' || $levels == '3') {
-                            @endphp    
+                            @endphp     --}}
                                 <a href="#" onclick="return alert('Payment Concluded Already!');"><div class="round-completed round2 m-2">2</div></a>
                                 <!-- <a href="{{ url('payment_form', $productId) }}" ><div class="round-completed round2 m-2">2</div></a> -->
                                 @php  
-                                }
-                            @endphp
+                                // }
+                            // @endphp
 
                                 <div class="round-title"><p>Payment</p><p> Details</p></div>
                             </div>
@@ -570,7 +570,7 @@
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                            <button type="button" class="btn btn-primary submitBtn applicantDetails"  data-bs-toggle="collapse" data-bs-target="#collapseHome" aria-expanded="false" aria-controls="collapseHome">Continue</button>
+                                            <button type="button" class="btn btn-primary submitBtn applicantDetails">Continue</button>
                                         </div>
                                     </div>
                                 </form>
@@ -613,29 +613,29 @@
                                     <input type="hidden" name="product_id" value="1">
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-12 mt-3">
-                                            <input type="text" name="passport_number" class="form-control" placeholder="Passport Number*" value="{{old('passport_number')}}" autocomplete="off" required/>
+                                            <input type="text" name="passport_number" class="form-control" placeholder="Passport Number*" value="{{old('passport_number')}}" autocomplete="off"/>
                                             <span class="passport_number_errorClass"></span>
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-6 mt-3">
-                                            <input type="text" name="passport_issue" class="form-control passport_issue" placeholder="Passport Date of Issue*" value="{{old('passport_issue')}}" autocomplete="off" required/>
+                                            <input type="text" name="passport_issue" class="form-control passport_issue" placeholder="Passport Date of Issue*" value="{{old('passport_issue')}}" autocomplete="off"/>
                                             <span class="passport_issue_errorClass"></span>
                                         </div>
                                         <div class="col-sm-6 mt-3">
-                                            <input type="text" name="passport_expiry" class="form-control passport_expiry" placeholder="passport Date of Expiry*" value="{{old('passport_expiry')}}" autocomplete="off"  required/>
+                                            <input type="text" name="passport_expiry" class="form-control passport_expiry" placeholder="passport Date of Expiry*" value="{{old('passport_expiry')}}" autocomplete="off" />
                                             <span class="passport_expiry_errorClass"></span>
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-12 mt-3">
-                                            <input type="text" name="issued_by" class="form-control" placeholder="Issued By(Authority that issued the passport)*" value="{{old('issued_by')}}" autocomplete="off" required/>
+                                            <input type="text" name="issued_by" class="form-control" placeholder="Issued By(Authority that issued the passport)*" value="{{old('issued_by')}}" autocomplete="off"/>
                                             <span class="issued_by_errorClass"></span>
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-6 mt-3">
-                                            <input type="text" name="passport_copy" class="form-control passport_copy" placeholder="Upload Passport Copy*" value="{{old('passport_copy')}}" autocomplete="off" readonly required/>
+                                            <input type="text" name="passport_copy" class="form-control passport_copy" placeholder="Upload Passport Copy*" value="{{old('passport_copy')}}" autocomplete="off" readonly/>
                                             <div class="input-group-btn">
                                                 <span class="fileUpload btn">
                                                     <span class="upl" id="upload">Choose File</span>
@@ -650,7 +650,7 @@
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-3 mt-3">
-                                            <select class="form-select form-control" name="home_country" placeholder="home_country*" value="{{old('home_country')}}"  required>
+                                            <select class="form-select form-control" name="home_country" placeholder="home_country*" value="{{old('home_country')}}" autocomplete="off">
                                                 <option selected disabled>Home Country *</option>
                                                 <option value="Afghanistan">Afghanistan</option>
                                                 <option value="Albania">Albania</option>
@@ -853,32 +853,32 @@
                                             <span class="home_country_errorClass"></span>
                                         </div>
                                         <div class="col-sm-3 mt-3">
-                                            <input type="text" name="state" class="form-control" placeholder="State/Province*" required>
+                                            <input type="text" name="state" class="form-control" placeholder="State/Province*" autocomplete="off">
                                             @error('state') <span class="error">{{ $message }}</span> @enderror
                                             <span class="state_errorClass"></span>
                                         </div>
                                         <div class="col-sm-3 mt-3">
-                                            <input type="text" name="city" class="form-control" placeholder="City*" required>
+                                            <input type="text" name="city" class="form-control" placeholder="City*" autocomplete="off">
                                             <span class="city_errorClass"></span>
                                         </div>
                                         <div class="col-sm-3 mt-3">
-                                            <input type="integer" name="postal_code" value="{{old('postal_code')}}" class="form-control" placeholder="Postal Code*" required>
+                                            <input type="integer" name="postal_code" value="{{old('postal_code')}}" class="form-control" placeholder="Postal Code*" autocomplete="off">
                                             <span class="postal_code_errorClass"></span>
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-6 mt-3">
-                                            <input type="text" name="address1" class="form-control" placeholder="Address (Street And Number) Line 1*" required>
+                                            <input type="text" name="address1" class="form-control" placeholder="Address (Street And Number) Line 1*" autocomplete="off">
                                             <span class="address1_errorClass"></span>
                                         </div>
                                         <div class="col-sm-6 mt-3">
-                                            <input type="text" name="address2" class="form-control" placeholder="Address (Street And Number) Line 2*" required>
+                                            <input type="text" name="address2" class="form-control" placeholder="Address (Street And Number) Line 2*" autocomplete="off">
                                             <span class="address2_errorClass"></span>
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                            <button type="button" class="btn btn-primary submitBtn homeCountryDetails">Continue</button>
+                                            <button type="submit" class="btn btn-primary submitBtn homeCountryDetails">Continue</button>
                                         </div>
                                     </div>
                                 </form>
@@ -918,9 +918,10 @@
                             <div class="form-sec">
                                 <form method="POST" enctype="multipart/form-data" id="current_residency">
                                     @csrf
+                                    <input type="hidden" name="product_id" value="1">
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-6 mt-3">
-                                            <select class="form-select form-control" name="current_country" placeholder="current_country*" value="{{old('current_country')}}"  required>
+                                            <select class="form-select form-control" name="current_country" placeholder="current_country*" value="{{old('current_country')}}"  >
                                                 <option selected disabled>Current Country Are You Living Right Now? *</option>
                                                 <option value="Afghanistan">Afghanistan</option>
                                                 <option value="Albania">Albania</option>
@@ -1120,78 +1121,79 @@
                                                 <option value="Zambia">Zambia</option>
                                                 <option value="Zimbabwe">Zimbabwe</option>
                                             </select>
-                                            @error('current_country') <span class="error">{{ $message }}</span> @enderror
+                                            <span class="current_country_errorClass"></span>
                                         </div>
                                         <div class="col-sm-6 mt-3">
-                                            <input type="tel" class="form-control" name='current_residance_mobile' value="{{old('current_residance_mobile')}}" placeholder="Current Residence Mobile Number" required>
-                                            @error('current_residance_mobile') <span class="error">{{ $message }}</span> @enderror
-                                        </div>
-                                    </div>
-                                    <div class="form-group row mt-4">
-                                        <div class="col-sm-6 mt-3">
-                                            <input type="text" name="residence_id" class="form-control" placeholder="Residence Id*"required />
-                                            @error('residence_id') <span class="error">{{ $message }}</span> @enderror
-                                        </div>
-                                        <div class="col-sm-6 mt-3">
-                                            <input type="text" class="form-control visa_validity" name="id_validity" placeholder="Your ID/Visa Date of Validity*" required>
-                                            @error('id_validity') <span class="error">{{ $message }}</span> @enderror
+                                            <input type="tel" class="form-control" name='current_residance_mobile' value="{{old('current_residance_mobile')}}" placeholder="Current Residence Mobile Number" autocomplete="off">
+                                            <span class="current_residance_mobile_errorClass"></span>
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-6 mt-3">
-                                            <input type="text" class="form-control residenc_id" name="residenc_id" placeholder="Residence/Emirates ID*" readonly required>
+                                            <input type="text" name="residence_id" class="form-control" placeholder="Residence Id*" autocomplete="off"/>
+                                            <span class="residence_id_errorClass"></span>
+                                        </div>
+                                        <div class="col-sm-6 mt-3">
+                                            <input type="text" class="form-control visa_validity" name="visa_validity" placeholder="Your ID/Visa Date of Validity*" >
+                                            <span class="visa_validity_errorClass"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mt-4">
+                                        <div class="col-sm-6 mt-3">
+                                            <input type="text" class="form-control residence_id" name="residence_copy" placeholder="Residence/Emirates ID*" readonly >
                                             <div class="input-group-btn">
                                                 <span class="fileUpload btn">
                                                     <span class="upl" id="upload">Choose File</span>
-                                                    <input type="file" class="upload residence" id="up"  name="residenc_id" onchange="readURL(this);" />
+                                                    <input type="file" class="upload residence_id" id="up"  name="residence_copy" />
                                                 </span><!-- btn-orange -->
                                             </div><!-- btn -->
+                                            <span class="residence_copy_errorClass"></span>
                                         </div>
                                         <div class="col-sm-6 mt-3">
-                                            <input type="text" class="form-control visa_copy" name="visa_copy" placeholder="Visa Copy*" readonly required>
+                                            <input type="text" class="form-control visa_copy" name="visa_copy" placeholder="Visa Copy" readonly >
                                             <div class="input-group-btn">
                                                 <span class="fileUpload btn">
                                                     <span class="upl" id="upload">Choose File</span>
-                                                    <input type="file" class="upload visa" id="up"  name="visa_copy" onchange="readURL(this);" />
+                                                    <input type="file" class="upload visa_copy" id="up"  name="visa_copy" />
                                                 </span><!-- btn-orange -->
                                             </div><!-- btn -->
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-12 mt-3">
-                                            <input type="text" name="prof_current_job" class="form-control" placeholder="Profession As Per Current Job (or on Visa)*" required>
-                                            @error('prof_current_job') <span class="error">{{ $message }}</span> @enderror
+                                            <input type="text" name="current_job" class="form-control" placeholder="Profession As Per Current Job (or on Visa)*" autocomplete="off">
+                                            <span class="current_job_errorClass"></span>
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-4 mt-3">
-                                            <input type="text" name="work_state" class="form-control" placeholder="Work State/Province*"required />
-                                            @error('work_state') <span class="error">{{ $message }}</span> @enderror
+                                            <input type="text" name="work_state" class="form-control" placeholder="Work State/Province*" autocomplete="off"/>
+                                            <span class="work_state_errorClass"></span>
                                         </div>
                                         <div class="col-sm-4 mt-3">
-                                            <input type="text" class="form-control" name="work_city" placeholder="Work City*" required>
-                                            @error('work_city') <span class="error">{{ $message }}</span> @enderror
+                                            <input type="text" class="form-control" name="work_city" placeholder="Work City*" autocomplete="off">
+                                            <span class="work_city_errorClass"></span>
                                         </div>
                                         <div class="col-sm-4 mt-3">
-                                            <input type="text" class="form-control" name="work_postal_code" placeholder="Work Place Postal Code*" required>
-                                            @error('work_postal_code') <span class="error">{{ $message }}</span> @enderror
+                                            <input type="text" class="form-control" name="work_postal_code" placeholder="Work Place Postal Code*" autocomplete="off">
+                                            <span class="work_postal_code_errorClass"></span>
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-4 mt-3">
-                                            <input type="text" name="work_street" class="form-control" placeholder="Work Place Street & Number*"required />
-                                            @error('work_street') <span class="error">{{ $message }}</span> @enderror
+                                            <input type="text" name="work_street" class="form-control" placeholder="Work Place Street & Number*" autocomplete="off"/>
+                                            <span class="work_street_errorClass"></span>
                                         </div>
                                         <div class="col-sm-4 mt-3">
-                                            <input type="text" class="form-control" name="company_name" placeholder="Name of Company">
+                                            <input type="text" class="form-control" name="company_name" placeholder="Name of Company" autocomplete="off">
                                         </div>
                                         <div class="col-sm-4 mt-3">
-                                            <input type="text" class="form-control" name="employer_phone" placeholder="Employer Phone Number" >
+                                            <input type="text" class="form-control" name="employer_phone" placeholder="Employer Phone Number" autocomplete="off">
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-12 mt-3">
-                                            <input type="email" name="employer_email" class="form-control" placeholder="Email of the employer">
+                                            <input type="email" name="employer_email" class="form-control" placeholder="Email of the employer" autocomplete="off">
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
@@ -1234,24 +1236,38 @@
                     <div class="row">
                         <div class="collapse" id="collapseSchengen">
                             <div class="form-sec">
-                                <form method="POST" id="schengen_details">
+                                <form method="POST" enctype="multipart/form-data" id="schengen_details">
                                     @csrf
+                                    <input type="hidden" name="product_id" value="1">
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-12 mt-3">
-                                            <select name="is_schengen_visa_issued_last_five_year" id="is_schengen_visa_issued_last_five_year" required="" aria-required="true" class="form-control form-select">
-                                                <option selected disabled>Schengen Or National Visa Issued During Last 5 Years</option>
+                                            <select name="is_schengen_visa_issued_last_five_year" id="is_schengen_visa_issued_last_five_year" aria-required="true" class="form-control form-select" autocomplete="off">
+                                                <option selected disabled>Schengen Or National Visa Issued During Last 5 Years*</option>
                                                 <option value="NO">NO</option>
                                                 <option value="YES">YES</option>
                                             </select>
+                                            <span class="is_schengen_visa_issued_last_five_year_errorClass"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mt-4 schengen_visa">
+                                        <div class="col-sm-12 mt-3">
+                                            <input type="text" class="form-control schengen_copy" name="schengen_copy" placeholder="Image of Schengen Or National Visa Issued During Last 5 Years" readonly >
+                                            <div class="input-group-btn">
+                                                <span class="fileUpload btn">
+                                                    <span class="upl" id="upload">Choose File</span>
+                                                    <input type="file" class="upload schengen_copy" accept="image/png, image/gif, image/jpeg" name="schengen_copy" />
+                                                </span><!-- btn-orange -->
+                                            </div><!-- btn -->
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-12 mt-3">
-                                            <select name="is_finger_print_collected_for_Schengen_visa" id="is_finger_print_collected_for_Schengen_visa" required="" aria-required="true" class="form-control form-select">
+                                            <select name="is_finger_print_collected_for_Schengen_visa" id="is_finger_print_collected_for_Schengen_visa" aria-required="true" class="form-control form-select" autocomplete="off">
                                                 <option value="">Fingerprints Collected Previously For The Purpose Of Applying For Schengen Visa*</option>
-                                                <option value="NO">NO</option>
-                                                <option value="YES">YES</option>
+                                                <option value="No">No</option>
+                                                <option value="Yes">Yes</option>
                                             </select>
+                                            <span class="is_finger_print_collected_for_Schengen_visa_errorClass"></span>
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
@@ -1294,6 +1310,23 @@
                     <div class="row">
                         <div class="collapse" id="collapseExperience">
                             <div class="form-sec">
+                                <div class="jobSelected">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <td>Job Sector</td>
+                                                <td></td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th style="text-align: left;">2</th>
+                                                <td style="text-align: right;">Jacob</td>
+                                            </tr>
+                                        </tbody>
+                                      </table>
+                                </div>
+                                <h4 style="margin-top:60px">Job Sector List</h4>
                                 <form method="POST" id="experience">
                                     @csrf
                                     <div class="form-group row mt-4 searchForm">
@@ -1305,106 +1338,100 @@
                                         </div>
                                     </div>
                                 </form>
-                                @foreach ($jobCategories as $key => $jobCategoryOne)
-                                    <div class="jobCategory">
-                                        <div class="experience-sec" data-bs-toggle="collapse" data-bs-target="#collapseExperience{{$key}}" aria-expanded="false" aria-controls="collapseExperience{{$key}}">
-                                            <div class="row">
-                                                <div class="col-11">
-                                                    <p class="exp-font">{{$jobCategoryOne['name']}}</p>
-                                                </div>
-                                                <div class="col-1 mx-auto my-auto">
-                                                    <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseExperience{{$key}}" aria-expanded="false" aria-controls="collapseExperience{{$key}}">
-                                                        <img src="{{asset('images/down_arrow.png')}}" height="auto" class="exp-image">
-                                                    </div>
+                                <div class="jobCategory" v-if="jobCategories.length > 0" v-for='(jobCategoryOne, index) in jobCategories'>
+                                    <div class="experience-sec" data-bs-toggle="collapse" :data-bs-target="'#collapseExperience'+index" aria-expanded="false" :aria-controls="'collapseExperience'+index">
+                                        <div class="row">
+                                            <div class="col-11">
+                                                <p class="exp-font">@{{jobCategoryOne.name}}</p>
+                                            </div>
+                                            <div class="col-1 mx-auto my-auto">
+                                                <div class="down-arrow" data-bs-toggle="collapse" :data-bs-target="'#collapseExperience'+index" aria-expanded="false" :aria-controls="'collapseExperience'+index">
+                                                    <img src="{{asset('images/down_arrow.png')}}" height="auto" class="exp-image">
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="collapse" id="collapseExperience{{$key}}" style="width: 95%; margin-left:2%">
-                                            @foreach($jobCategoryOne['job_category_two'] as $keyTwo => $jobCategoryTwo)
-                                                <div class="jobCategoryTwo">
-                                                    <div class="experience-sec" data-bs-toggle="collapse" data-bs-target="#collapseExperienceTwo{{$key}}{{$keyTwo}}" aria-expanded="false" aria-controls="collapseExperienceTwo{{$key}}{{$keyTwo}}">
+                                    </div>
+                                    <div class="collapse" :id="'collapseExperience'+index" style="width: 95%; margin-left:2%">
+                                        <div class="jobCategoryTwo"  v-for='(jobCategoryTwo, indexTwo) in jobCategoryOne.job_category_two'>
+                                            <div class="experience-sec" data-bs-toggle="collapse" :data-bs-target="'#collapseExperienceTwo'+index+indexTwo" aria-expanded="false" :aria-controls="'collapseExperienceTwo'+index+indexTwo">
+                                                <div class="row">
+                                                    <div class="col-11">
+                                                        <p class="exp-font">@{{jobCategoryTwo.name}}</p>
+                                                    </div>
+                                                    <div class="col-1 mx-auto my-auto">
+                                                        <div class="down-arrow" data-bs-toggle="collapse" :data-bs-target="'#collapseExperienceTwo'+index+indexTwo" aria-expanded="false" :aria-controls="'collapseExperienceTwo'+index+indexTwo">
+                                                            <img src="{{asset('images/down_arrow.png')}}" height="auto" class="exp-image">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="collapse" :id="'collapseExperienceTwo'+index+indexTwo" style="width: 95%; margin-left:2%">
+                                                <div class="jobCategoryThree" v-for='(jobCategoryThree, indexThree) in jobCategoryTwo.job_category_three'>
+                                                    <div class="experience-sec" data-bs-toggle="collapse" :data-bs-target="'#collapseExperienceThree'+index+indexTwo+indexThree" aria-expanded="false" :aria-controls="'collapseExperienceThree'+index+indexTwo+indexThree">
                                                         <div class="row">
                                                             <div class="col-11">
-                                                                <p class="exp-font">{{$jobCategoryTwo['name']}}</p>
+                                                                <p class="exp-font">@{{jobCategoryThree.name}}</p>
                                                             </div>
                                                             <div class="col-1 mx-auto my-auto">
-                                                                <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseExperienceTwo{{$key}}{{$keyTwo}}" aria-expanded="false" aria-controls="collapseExperienceTwo{{$key}}{{$keyTwo}}">
+                                                                <div class="down-arrow" data-bs-toggle="collapse" :data-bs-target="'#collapseExperienceThree'+index+indexTwo+indexThree" aria-expanded="false" :aria-controls="'collapseExperienceThree'+index+indexTwo+indexThree">
                                                                     <img src="{{asset('images/down_arrow.png')}}" height="auto" class="exp-image">
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="collapse" id="collapseExperienceTwo{{$key}}{{$keyTwo}}" style="width: 95%; margin-left:2%">
-                                                        @foreach($jobCategoryTwo['job_category_three'] as $keyThree => $jobCategoryThree)
-                                                            <div class="jobCategoryThree" data-bs-toggle="collapse" data-bs-target="#collapseExperienceThree{{$key}}{{$keyTwo}}{{$keyThree}}" aria-expanded="false" aria-controls="collapseExperienceThree{{$key}}{{$keyTwo}}{{$keyThree}}">
-                                                                <div class="experience-sec">
-                                                                    <div class="row">
-                                                                        <div class="col-11">
-                                                                            <p class="exp-font">{{$jobCategoryThree['name']}}</p>
-                                                                        </div>
-                                                                        <div class="col-1 mx-auto my-auto">
-                                                                            <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseExperienceThree{{$key}}{{$keyTwo}}{{$keyThree}}" aria-expanded="false" aria-controls="collapseExperienceThree{{$key}}{{$keyTwo}}{{$keyThree}}">
-                                                                                <img src="{{asset('images/down_arrow.png')}}" height="auto" class="exp-image">
-                                                                            </div>
+                                                    <div class="collapse" :id="'collapseExperienceThree'+index+indexTwo+indexThree" style="width: 95%; margin-left:2%">
+                                                        <div class="jobCategoryThree" v-for='(jobCategoryFour, indexFour) in jobCategoryThree.job_category_four'>
+                                                            <div class="experience-sec" data-bs-toggle="collapse" :data-bs-target="'#collapseExperienceFour'+index+indexTwo+indexThree+indexFour" aria-expanded="false" :aria-controls="'collapseExperienceFour'+index+indexTwo+indexThree+indexFour">
+                                                                <div class="row">
+                                                                    <div class="col-11">
+                                                                        <p class="exp-font">@{{jobCategoryFour.name}}</p>
+                                                                    </div>
+                                                                    <div class="col-1 mx-auto my-auto">
+                                                                        <div class="down-arrow" data-bs-toggle="collapse" :data-bs-target="'#collapseExperienceFour'+index+indexTwo+indexThree+indexFour" aria-expanded="false" :aria-controls="'collapseExperienceFour'+index+indexTwo+indexThree+indexFour">
+                                                                            <img src="{{asset('images/down_arrow.png')}}" height="auto" class="exp-image">
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="collapse" id="collapseExperienceThree{{$key}}{{$keyTwo}}{{$keyThree}}" style="width: 95%; margin-left:2%">
-                                                                    @foreach($jobCategoryThree['job_category_four'] as $keyFour => $jobCategoryFour)
-                                                                        <div class="experience-sec" data-bs-toggle="collapse" data-bs-target="#collapseExperienceFour{{$key}}{{$keyTwo}}{{$keyThree}}{{$keyFour}}" aria-expanded="false" aria-controls="collapseExperienceFour{{$key}}{{$keyTwo}}{{$keyThree}}{{$keyFour}}">
+                                                            </div>
+                                                            <div class="collapse" :id="'collapseExperienceFour'+index+indexTwo+indexThree+indexFour">
+                                                                {{-- <form>
+                                                                    @csrf
+                                                                    <input type="hidden" name="jobCategoryone" value="{{$jobCategoryOne['id']}}">
+                                                                    <input type="hidden" name="jobCategorytwo" value="{{$jobCategoryTwo['id']}}">
+                                                                    <input type="hidden" name="jobCategorythree" value="{{$jobCategoryThree['id']}}">
+                                                                    <input type="hidden" name="jobCategoryfour" value="{{$jobCategoryFour['id']}}"> --}}
+                                                                    <div class="detail-sec">
+                                                                        <div class="row">
+                                                                            <h5>Description</h5>
+                                                                            <p v-html="jobCategoryFour.description"></p>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <h5>Example Titles</h5>
+                                                                            <p><span  v-html="jobCategoryFour.example_titles"></span></p>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <h5>Main Duties</h5>
+                                                                            <p v-html="jobCategoryFour.main_duties"></p>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <h5>Employement Requirment</h5>
+                                                                            <p v-html="jobCategoryFour.employement_requirements"></p>
+                                                                        </div>
+                                                                        <div class="form-group row mt-4" style="margin-bottom: 20px">
                                                                             <div class="row">
-                                                                                <div class="col-11">
-                                                                                    <p class="exp-font">{{$jobCategoryFour['name']}}</p>
-                                                                                </div>
-                                                                                <div class="col-1 mx-auto my-auto">
-                                                                                    <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseExperienceFour{{$key}}{{$keyTwo}}{{$keyThree}}{{$keyFour}}" aria-expanded="false" aria-controls="collapseExperienceFour{{$key}}{{$keyTwo}}{{$keyThree}}{{$keyFour}}">
-                                                                                        <img src="{{asset('images/down_arrow.png')}}" height="auto" class="exp-image">
-                                                                                    </div>
-                                                                                </div>
+                                                                                <button type="button" class="btn btn-primary submitBtn"  v-on:click="addExperience(index,indexTwo,indexThree,indexFour,jobCategoryFour.name)" style="line-height: 22px">Add Experience</button>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="collapse" id="collapseExperienceFour{{$key}}{{$keyTwo}}{{$keyThree}}{{$keyFour}}">
-                                                                            <form>
-                                                                                @csrf
-                                                                                <input type="hidden" name="jobCategoryone" value="{{$jobCategoryOne['id']}}">
-                                                                                <input type="hidden" name="jobCategorytwo" value="{{$jobCategoryTwo['id']}}">
-                                                                                <input type="hidden" name="jobCategorythree" value="{{$jobCategoryThree['id']}}">
-                                                                                <input type="hidden" name="jobCategoryfour" value="{{$jobCategoryFour['id']}}">
-                                                                                <div class="detail-sec">
-                                                                                    <div class="row">
-                                                                                        <h5>Description</h5>
-                                                                                        <p>{{$jobCategoryFour['description']}}</p>
-                                                                                    </div>
-                                                                                    <div class="row">
-                                                                                        <h5>Example Titles</h5>
-                                                                                        <p>{!! nl2br($jobCategoryFour['example_titles']) !!}</p>
-                                                                                    </div>
-                                                                                    <div class="row">
-                                                                                        <h5>Main Duties</h5>
-                                                                                        <p>{!! nl2br($jobCategoryFour['main_duties']) !!}</p>
-                                                                                    </div>
-                                                                                    <div class="row">
-                                                                                        <h5>Employement Requirment</h5>
-                                                                                        <p>{{ $jobCategoryFour['employement_requirements'] }}</p>
-                                                                                    </div>
-                                                                                    <div class="form-group row mt-4" style="margin-bottom: 20px">
-                                                                                        <div class="row">
-                                                                                            <button type="submit" class="btn btn-primary submitBtn">Add Experience</button>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </form>
-                                                                        </div>
-                                                                    @endforeach
-                                                                </div>
+                                                                    </div>
+                                                                {{-- </form> --}}
                                                             </div>
-                                                        @endforeach
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            @endforeach
+                                            </div>
                                         </div>
                                     </div>
-                                @endforeach
+                                </div>
                             </div>
                             <div class="form-group row mt-4">
                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
@@ -1426,14 +1453,25 @@
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 <script>
     $(document).ready(function(){
+        $('.schengen_visa').hide();
         $('.datepicker').datepicker({
+            maxDate : 0,
             dateFormat : "dd-mm-yy",
             changeMonth: true,
             changeYear: true,
             yearRange: "-100:+0",
             constrainInput: false   
         });
-        $('.passport_expiry, .passport_issue, .visa_validity').datepicker({
+        $('.passport_issue').datepicker({
+            maxDate : 0,
+            dateFormat : "dd-mm-yy",
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-100:+0",
+            constrainInput: false   
+        });
+        $('.passport_expiry, .visa_validity').datepicker({
+            minDate : 0,
             dateFormat : "dd-mm-yy",
             changeMonth: true,
             changeYear: true,
@@ -1475,12 +1513,11 @@
         });
     });
 
-    $(".homeCountryDetails").click(function(e){
-        var formdata = $('#home_country_details').serialize(); 
+    $("#home_country_details").submit(function(e){
+        e.preventDefault(); 
         $("#home_country_details :input").each(function(index, elm){
             $("."+elm.name+"_errorClass").empty();
         });
-        e.preventDefault(); 
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -1489,7 +1526,40 @@
         $.ajax({
             type: 'POST',
             url: "{{ url('store/home/country/details') }}",
-            data: formdata, 
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                if(data.success) {
+                    alert('Data added successfully !');
+                } else {
+                    var validationError = data.errors;
+                    $.each(validationError, function(index, value) {
+                        $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                    });
+                }
+            },
+            errror: function (error) {
+            }
+        });
+    });
+
+    $('#current_residency').submit(function(e){
+        e.preventDefault(); 
+        $("#current_residency :input").each(function(index, elm){
+            $("."+elm.name+"_errorClass").empty();
+        });
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            type: 'POST',
+            url: "{{ url('store/current/details') }}",
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
             success: function (data) {
                 if(data.success) {
                     alert('Data added successfully !');
@@ -1519,8 +1589,8 @@
         else{
           $('.passport_copy, .up').attr("value",names);
         }
-     });
-     $(document).on('change','.residence', function(){
+    });
+     $(document).on('change','.residence_id', function(){
         var names = [];
         var length = $(this).get(0).files.length;
           for (var i = 0; i < $(this).get(0).files.length; ++i) {
@@ -1529,13 +1599,13 @@
           // $("input[name=file]").val(names);
         if(length>2){
           var fileName = names.join(', ');
-          $('residence_id').attr("value",length+" files selected");
+          $('.residence_id').attr("value",length+" files selected");
         }
         else{
-          $('residence_id').attr("value",names);
+          $('.residence_id').attr("value",names);
         }
      });
-     $(document).on('change','.visa', function(){
+     $(document).on('change','.visa_copy', function(){
         var names = [];
         var length = $(this).get(0).files.length;
           for (var i = 0; i < $(this).get(0).files.length; ++i) {
@@ -1544,14 +1614,80 @@
           // $("input[name=file]").val(names);
         if(length>2){
           var fileName = names.join(', ');
-          $('visa_copy').attr("value",length+" files selected");
+          $('.visa_copy').attr("value",length+" files selected");
         }
         else{
-          $('visa_copy').attr("value",names);
+          $('.visa_copy').attr("value",names);
         }
      });
 
+     $('#is_schengen_visa_issued_last_five_year').on('change', function(){
+        if($('#is_schengen_visa_issued_last_five_year').val() == "Yes"){
+            $('.schengen_visa').show();
+        } else {
+            $('.schengen_visa').hide();
+        }
+     });
+
+     $('#schengen_details').submit(function(e){
+        e.preventDefault(); 
+        $("#schengen_details :input").each(function(index, elm){
+            $("."+elm.name+"_errorClass").empty();
+        });
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            type: 'POST',
+            url: "{{ url('store/schengen/details') }}",
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                if(data.success) {
+                    alert('Data added successfully !');
+                } else {
+                    var validationError = data.errors;
+                    $.each(validationError, function(index, value) {
+                        $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                    });
+                }
+            },
+            errror: function (error) {
+            }
+        });
+     });
+
+     $(document).on('change','.schengen_copy', function(){
+        var names = [];
+        var length = $(this).get(0).files.length;
+          for (var i = 0; i < $(this).get(0).files.length; ++i) {
+              names.push($(this).get(0).files[i].name);
+          }
+          // $("input[name=file]").val(names);
+        if(length>2){
+          var fileName = names.join(', ');
+          $('.schengen_copy').attr("value",length+" files selected");
+        }
+        else{
+          $('.schengen_copy').attr("value",names);
+        }
+     });
+
+     function addExperience(cat1, cat2, cat3, cat4, jobTitle)
+     {
+        console.log(cat1, cat2, cat3, cat4);
+        $('.jobSelected .table tbody').append('<tr><th style="text-align: left;" data-bs-toggle="collapse" data-bs-target="#collapseExperienceFour"'+cat1+cat2+cat3+cat4+' aria-expanded="false" aria-controls="collapseExperienceFour"'+cat1+cat2+cat3+cat4+'>'+jobTitle+'</th><td style="text-align: right;"><button class="btn btn-danger">Remove</button></td></tr>');
+        
+     }
+
+
 </script>
+<script src="https://unpkg.com/vue@next"></script>
+<script src="{{ asset('js/application-details.js') }}" type="text/javascript"></script>
 
 @endpush
 <script src="../user/extra/assets/js/jquery-min.js"></script>
