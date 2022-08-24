@@ -292,6 +292,7 @@
       <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 
     <!-- <script src="../user/extra/assets/js/jquery-min.js"></script> -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
     
     <script src="../user/extra/assets/js/popper.min.js"></script>

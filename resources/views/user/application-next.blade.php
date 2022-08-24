@@ -1,6 +1,5 @@
 @extends('layouts.master')
 <link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
-{{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"> --}}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
 <link href="{{asset('css/alert.css')}}" rel="stylesheet">
 <meta name="csrf-token" content="{{ csrf_token() }}" />
@@ -31,14 +30,8 @@
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                            {{-- @php 
-                                if ($levels == '2' || $levels == '5' || $levels == '4' || $levels == '3') {
-                            @endphp     --}}
                                 <a href="#" onclick="return alert('Payment Concluded Already!');"><div class="round-completed round2 m-2">2</div></a>
-                                <!-- <a href="{{ url('payment_form', $productId) }}" ><div class="round-completed round2 m-2">2</div></a> -->
-                                @php  
-                                // }
-                            // @endphp
+
 
                                 <div class="round-title"><p>Payment</p><p> Details</p></div>
                             </div>
@@ -55,17 +48,7 @@
                             <div class="linear"></div>
                                 
                             <div class="wrapper">
-                            @php 
-                                if ($levels == '5' || $levels == '4') {
-                            @endphp
                                 <a href="{{url('applicant/review')}}" ><div class="round5 m-2">5</div></a>
-                                @php  
-                                } else {
-                            @endphp
-                                <a href="#" onclick="return alert('You have to complete Applicant Details first');"><div class="round4 m-2">5</div></a>
-                            @php  
-                                }
-                            @endphp
                                 <div class="round-title"><p>Application</p><p> Review</p></div>
                             </div>
                         </div>
@@ -634,6 +617,7 @@
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-6 mt-3">
+                                            <a href="javascript:void(0)" data-toggle="modal" class="passportFormatModal" data-target="#passportFormatModal" onclick="showPassportFormat()">Click to view uploading passport format</a>
                                             <input type="text" name="passport_copy" class="form-control passport_copy" placeholder="Upload Passport Copy*" value="{{old('passport_copy')}}" autocomplete="off" readonly/>
                                             <div class="input-group-btn">
                                                 <span class="fileUpload btn">
@@ -867,11 +851,11 @@
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-6 mt-3">
-                                            <input type="text" name="address1" class="form-control" placeholder="Address (Street And Number) Line 1*" autocomplete="off">
+                                            <input type="text" name="address_1" class="form-control" placeholder="Address (Street And Number) Line 1*" autocomplete="off">
                                             <span class="address1_errorClass"></span>
                                         </div>
                                         <div class="col-sm-6 mt-3">
-                                            <input type="text" name="address2" class="form-control" placeholder="Address (Street And Number) Line 2*" autocomplete="off">
+                                            <input type="text" name="address_2" class="form-control" placeholder="Address (Street And Number) Line 2*" autocomplete="off">
                                             <span class="address2_errorClass"></span>
                                         </div>
                                     </div>
@@ -1310,7 +1294,7 @@
                         <div class="collapse" id="collapseExperience">
                             <div class="form-sec">
                                 <div class="jobSelected">
-                                    <table class="table">
+                                    {{-- <table class="table">
                                         <thead>
                                             <tr>
                                                 <td>Job Sector</td>
@@ -1323,7 +1307,7 @@
                                                 <td style="text-align: right;">Jacob</td>
                                             </tr>
                                         </tbody>
-                                      </table>
+                                      </table> --}}
                                 </div>
                                 <h4 style="margin-top:60px">Job Sector List</h4>
                                 <form method="POST" id="experience">
@@ -1443,15 +1427,26 @@
             </div>
         </div>
     </div>
+    <div id="passportFormatModal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <img src="{{asset('images/Passport_Requirement.jpg')}}" width ="760px" height ="760px;">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary close" data-dismiss="modal">Close Modal</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endSection
 @push('custom-scripts')
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js" integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 <script>
     $(document).ready(function(){
+        $('#passportFormatModal').modal('hide');
         $('.schengen_visa').hide();
         $('.datepicker').datepicker({
             maxDate : 0,
@@ -1477,217 +1472,217 @@
             yearRange: "-100:+0",
             constrainInput: false   
         });
-    });
-    const phoneInputField = document.querySelector("#phone");
-    const phoneInput = window.intlTelInput(phoneInputField, {
-        initialCountry: "ae",
-        utilsScript:
-            "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-    });
 
-
-    $(".applicantDetails").click(function(e){
-        $("#applicant_details").validate();
-        $("#applicant_details :input").each(function(index, elm){
-            $("."+elm.name+"_errorClass").empty();
+        const phoneInputField = document.querySelector("#phone");
+        const phoneInput = window.intlTelInput(phoneInputField, {
+            initialCountry: "ae",
+            utilsScript:
+                "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
         });
-        var formdata = $('#applicant_details').serialize(); 
-        e.preventDefault(); 
-        $.ajax({
-            type: 'POST',
-            url: "{{ route('store.applicant.details') }}",
-            data: formdata, 
-            success: function (data) {
-                if(data.success) {
-                    alert('Data added successfully !');
-                } else {
-                    var validationError = data.errors;
-                    $.each(validationError, function(index, value) {
-                        $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
-                    });
+
+
+        $(".applicantDetails").click(function(){
+            $("#applicant_details").validate();
+            $("#applicant_details :input").each(function(index, elm){
+                $("."+elm.name+"_errorClass").empty();
+            });
+            var formdata = $('#applicant_details').serialize(); 
+            $.ajax({
+                type: 'POST',
+                url: "{{ route('store.applicant.details') }}",
+                data: formdata, 
+                success: function (data) {
+                    if(data.success) {
+                        alert('Data added successfully !');
+                    } else {
+                        var validationError = data.errors;
+                        $.each(validationError, function(index, value) {
+                            $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                        });
+                    }
+                },
+                errror: function (error) {
                 }
-            },
-            errror: function (error) {
-            }
+            });
         });
-    });
 
-    $("#home_country_details").submit(function(e){
-        e.preventDefault(); 
-        $("#home_country_details :input").each(function(index, elm){
-            $("."+elm.name+"_errorClass").empty();
-        });
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax({
-            type: 'POST',
-            url: "{{ url('store/home/country/details') }}",
-            data: new FormData(this),
-            processData: false,
-            contentType: false,
-            success: function (data) {
-                if(data.success) {
-                    alert('Data added successfully !');
-                } else {
-                    var validationError = data.errors;
-                    $.each(validationError, function(index, value) {
-                        $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
-                    });
+        $("#home_country_details").submit(function(e){
+            e.preventDefault(); 
+            $("#home_country_details :input").each(function(index, elm){
+                $("."+elm.name+"_errorClass").empty();
+            });
+            
+            $.ajax({
+                type: 'POST',
+                url: "{{ route('store.home-country.details') }}",
+                data: new FormData(this),
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    if(data.success) {
+                        alert('Data added successfully !');
+                    } else {
+                        var validationError = data.errors;
+                        $.each(validationError, function(index, value) {
+                            $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                        });
+                    }
+                },
+                errror: function (error) {
                 }
-            },
-            errror: function (error) {
-            }
+            });
         });
-    });
 
-    $('#current_residency').submit(function(e){
-        e.preventDefault(); 
-        $("#current_residency :input").each(function(index, elm){
-            $("."+elm.name+"_errorClass").empty();
-        });
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax({
-            type: 'POST',
-            url: "{{ url('store/current/details') }}",
-            data: new FormData(this),
-            processData: false,
-            contentType: false,
-            success: function (data) {
-                if(data.success) {
-                    alert('Data added successfully !');
-                } else {
-                    var validationError = data.errors;
-                    $.each(validationError, function(index, value) {
-                        $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
-                    });
+        $('#current_residency').submit(function(e){
+            e.preventDefault(); 
+            $("#current_residency :input").each(function(index, elm){
+                $("."+elm.name+"_errorClass").empty();
+            });
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
-            },
-            errror: function (error) {
-            }
-        });
-    });
-    
-    $(document).on('change','.up', function(){
-        var names = [];
-        var length = $(this).get(0).files.length;
-          for (var i = 0; i < $(this).get(0).files.length; ++i) {
-              names.push($(this).get(0).files[i].name);
-          }
-          // $("input[name=file]").val(names);
-        if(length>2){
-          var fileName = names.join(', ');
-          $(this).closest('.form-group').find('.form-control').attr("value",length+" files selected");
-        }
-        else{
-          $('.passport_copy, .up').attr("value",names);
-        }
-    });
-     $(document).on('change','.residence_id', function(){
-        var names = [];
-        var length = $(this).get(0).files.length;
-          for (var i = 0; i < $(this).get(0).files.length; ++i) {
-              names.push($(this).get(0).files[i].name);
-          }
-          // $("input[name=file]").val(names);
-        if(length>2){
-          var fileName = names.join(', ');
-          $('.residence_id').attr("value",length+" files selected");
-        }
-        else{
-          $('.residence_id').attr("value",names);
-        }
-     });
-     $(document).on('change','.visa_copy', function(){
-        var names = [];
-        var length = $(this).get(0).files.length;
-          for (var i = 0; i < $(this).get(0).files.length; ++i) {
-              names.push($(this).get(0).files[i].name);
-          }
-          // $("input[name=file]").val(names);
-        if(length>2){
-          var fileName = names.join(', ');
-          $('.visa_copy').attr("value",length+" files selected");
-        }
-        else{
-          $('.visa_copy').attr("value",names);
-        }
-     });
-
-     $('#is_schengen_visa_issued_last_five_year').on('change', function(){
-        if($('#is_schengen_visa_issued_last_five_year').val() == "Yes"){
-            $('.schengen_visa').show();
-        } else {
-            $('.schengen_visa').hide();
-        }
-     });
-
-     $('#schengen_details').submit(function(e){
-        e.preventDefault(); 
-        $("#schengen_details :input").each(function(index, elm){
-            $("."+elm.name+"_errorClass").empty();
-        });
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
-        $.ajax({
-            type: 'POST',
-            url: "{{ url('store/schengen/details') }}",
-            data: new FormData(this),
-            processData: false,
-            contentType: false,
-            success: function (data) {
-                if(data.success) {
-                    alert('Data added successfully !');
-                } else {
-                    var validationError = data.errors;
-                    $.each(validationError, function(index, value) {
-                        $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
-                    });
+            });
+            $.ajax({
+                type: 'POST',
+                url: "{{ url('store/current/details') }}",
+                data: new FormData(this),
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    if(data.success) {
+                        alert('Data added successfully !');
+                    } else {
+                        var validationError = data.errors;
+                        $.each(validationError, function(index, value) {
+                            $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                        });
+                    }
+                },
+                errror: function (error) {
                 }
-            },
-            errror: function (error) {
-            }
+            });
         });
-     });
-
-     $(document).on('change','.schengen_copy', function(){
-        var names = [];
-        var length = $(this).get(0).files.length;
-          for (var i = 0; i < $(this).get(0).files.length; ++i) {
-              names.push($(this).get(0).files[i].name);
-          }
-          // $("input[name=file]").val(names);
-        if(length>2){
-          var fileName = names.join(', ');
-          $('.schengen_copy').attr("value",length+" files selected");
-        }
-        else{
-          $('.schengen_copy').attr("value",names);
-        }
-     });
-
-     function addExperience(cat1, cat2, cat3, cat4, jobTitle)
-     {
-        console.log(cat1, cat2, cat3, cat4);
-        $('.jobSelected .table tbody').append('<tr><th style="text-align: left;" data-bs-toggle="collapse" data-bs-target="#collapseExperienceFour"'+cat1+cat2+cat3+cat4+' aria-expanded="false" aria-controls="collapseExperienceFour"'+cat1+cat2+cat3+cat4+'>'+jobTitle+'</th><td style="text-align: right;"><button class="btn btn-danger">Remove</button></td></tr>');
         
-     }
+        $(document).on('change','.up', function(){
+            var names = [];
+            var length = $(this).get(0).files.length;
+            for (var i = 0; i < $(this).get(0).files.length; ++i) {
+                names.push($(this).get(0).files[i].name);
+            }
+            // $("input[name=file]").val(names);
+            if(length>2){
+            var fileName = names.join(', ');
+            $(this).closest('.form-group').find('.form-control').attr("value",length+" files selected");
+            }
+            else{
+            $('.passport_copy, .up').attr("value",names);
+            }
+        });
+        $(document).on('change','.residence_id', function(){
+            var names = [];
+            var length = $(this).get(0).files.length;
+            for (var i = 0; i < $(this).get(0).files.length; ++i) {
+                names.push($(this).get(0).files[i].name);
+            }
+            // $("input[name=file]").val(names);
+            if(length>2){
+            var fileName = names.join(', ');
+            $('.residence_id').attr("value",length+" files selected");
+            }
+            else{
+            $('.residence_id').attr("value",names);
+            }
+        });
+        $(document).on('change','.visa_copy', function(){
+            var names = [];
+            var length = $(this).get(0).files.length;
+            for (var i = 0; i < $(this).get(0).files.length; ++i) {
+                names.push($(this).get(0).files[i].name);
+            }
+            // $("input[name=file]").val(names);
+            if(length>2){
+            var fileName = names.join(', ');
+            $('.visa_copy').attr("value",length+" files selected");
+            }
+            else{
+            $('.visa_copy').attr("value",names);
+            }
+        });
 
+        $('#is_schengen_visa_issued_last_five_year').on('change', function(){
+            if($('#is_schengen_visa_issued_last_five_year').val() == "Yes"){
+                $('.schengen_visa').show();
+            } else {
+                $('.schengen_visa').hide();
+            }
+        });
 
+        $('#schengen_details').submit(function(e){
+            e.preventDefault(); 
+            $("#schengen_details :input").each(function(index, elm){
+                $("."+elm.name+"_errorClass").empty();
+            });
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                type: 'POST',
+                url: "{{ url('store/schengen/details') }}",
+                data: new FormData(this),
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    if(data.success) {
+                        alert('Data added successfully !');
+                    } else {
+                        var validationError = data.errors;
+                        $.each(validationError, function(index, value) {
+                            $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                        });
+                    }
+                },
+                errror: function (error) {
+                }
+            });
+        });
+
+        $(document).on('change','.schengen_copy', function(){
+            var names = [];
+            var length = $(this).get(0).files.length;
+            for (var i = 0; i < $(this).get(0).files.length; ++i) {
+                names.push($(this).get(0).files[i].name);
+            }
+            // $("input[name=file]").val(names);
+            if(length>2){
+            var fileName = names.join(', ');
+            $('.schengen_copy').attr("value",length+" files selected");
+            }
+            else{
+            $('.schengen_copy').attr("value",names);
+            }
+        });
+
+        function addExperience(cat1, cat2, cat3, cat4, jobTitle)
+        {
+            console.log(cat1, cat2, cat3, cat4);
+            $('.jobSelected .table tbody').append('<tr><th style="text-align: left;" data-bs-toggle="collapse" data-bs-target="#collapseExperienceFour"'+cat1+cat2+cat3+cat4+' aria-expanded="false" aria-controls="collapseExperienceFour"'+cat1+cat2+cat3+cat4+'>'+jobTitle+'</th><td style="text-align: right;"><button class="btn btn-danger">Remove</button></td></tr>');
+            
+        }
+    });
+    function showPassportFormat()
+    {
+        $("#passportFormatModal").modal('show');
+    }
 </script>
 <script src="https://unpkg.com/vue@next"></script>
 <script src="{{ asset('js/application-details.js') }}" type="text/javascript"></script>
-
+<script src="{{asset('js/alert.js')}}"></script>
 @endpush
 
-<script src="{{asset('js/alert.js')}}"></script>

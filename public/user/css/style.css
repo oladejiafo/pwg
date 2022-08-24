@@ -1732,7 +1732,18 @@ input:-moz-placeholder {
   width: 100%;
 }
 
+#collapseHome a {
+  text-decoration: underline;
+}
+#collapseHome .passportFormatModal  {
+  text-decoration: underline;
+  color: orange;
+}
 
+iframe img {
+  margin-left: 148px !important;
+  margin-top: 97px !important;
+}
 /*************** ToolTip Styles for Home page ******************/
 
 .item-hints .hint[data-position="1"] .hint-content {

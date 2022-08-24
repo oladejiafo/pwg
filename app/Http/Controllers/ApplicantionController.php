@@ -20,7 +20,7 @@ class ApplicantionController extends Controller
 
     public function applicanview($productId)
     {
-        if(Auth::id()) {
+        if (Auth::id()) {
             return view('user.applicant', compact('productId'));
         } else {
             return back();
@@ -35,7 +35,7 @@ class ApplicantionController extends Controller
      */
     public function storeApplicant(Request $request)
     {
-        if(Auth::id()){
+        if (Auth::id()) {
             $request->validate([
                 'applied_country' => 'required',
                 'job_type' => 'required',
@@ -68,13 +68,13 @@ class ApplicantionController extends Controller
 
     public function applicantDetails()
     {
-        if(Auth::id()) {
+        if (Auth::id()) {
             $user = User::find(Auth::id());
             // $response = Http::post('https://bo.pwggroup.ae/api/get-job-category-list');
             // $jobCategory = $response->body();
             // $jobCategories = json_decode($jobCategory, true);
             // dd($jobCategories);
-            $jobCategories = [] ;
+            $jobCategories = [];
             $productId = 1;
             return view('user.application-next', compact('user', 'jobCategories', 'productId'))->with('success', 'Data saved successfully!');
         } else {
@@ -98,15 +98,14 @@ class ApplicantionController extends Controller
             'country_birth' => 'required',
             'sex' => 'required',
             'civil_status' => 'required',
-            'citizenship'=> 'required'
+            'citizenship' => 'required'
         ]);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return Response::json(array(
                 'success' => false,
                 'errors' => $validator->getMessageBag()->toArray()
-        
+
             ), 200); // 400 being the HTTP code for an invalid request.
         }
 
@@ -136,24 +135,23 @@ class ApplicantionController extends Controller
     {
         $validator = \Validator::make($request->all(), [
             'passport_number' => 'Required',
-            'passport_issue'=> 'required',
+            'passport_issue' => 'required',
             'passport_expiry' => 'required',
             'issued_by' => 'Required',
-            'passport_copy'=> 'required',
+            'passport_copy' => 'required',
             'home_country' => 'required',
             'state' => 'required',
             'city' => 'required',
             'postal_code' => 'required',
-            'address1' => 'required',
-            'address2' => 'required'
+            'address_1' => 'required',
+            'address_2' => 'required'
         ]);
-    
-        if ($validator->fails())
-        {
+
+        if ($validator->fails()) {
             return Response::json(array(
                 'success' => false,
                 'errors' => $validator->getMessageBag()->toArray()
-        
+
             ), 200); // 400 being the HTTP code for an invalid request.
         }
 
@@ -168,7 +166,7 @@ class ApplicantionController extends Controller
                 'passport_date_issue' =>  date('Y-m-d', strtotime($request['passport_issue'])),
                 'passport_date_expiry' => date('Y-m-d', strtotime($request['passport_expiry'])),
                 'issued_by' => $request['issued_by'],
-                'passport' => '',
+                'passport' => $fileName,
                 'phone_number' => $request['home_phone_number'],
                 'home_country' => $request['home_country'],
                 'state' => $request['state'],
@@ -177,18 +175,22 @@ class ApplicantionController extends Controller
                 'address_1' => $request['address_1'],
                 'address_2' => $request['address_2']
             ]);
-        return Response::json(array('success' => true), 200);
+        return Response::json(array(
+                    'success' => true,
+                    'passport' => storage_path('passportCopy/'.$fileName)
+                ),
+             200);
     }
 
     public function applicantReview($productId = 1)
     {
         $user = User::find(Auth::id());
         $applicant = Applicant::where('user_id', Auth::id())->where('product_id', $productId)->first();
-        $jobCategories = [] ;
-        return view('user.application-review', compact('user', 'jobCategories', 'applicant'))->with('success', 'Data saved successfully!');
+        $jobCategories = [];
+        return view('user.application-review', compact('user', 'jobCategories', 'applicant', 'productId'))->with('success', 'Data saved successfully!');
     }
 
-     /**
+    /**
      * Store applicant current residence and work details as step 4
      * @param Request
      *
@@ -208,12 +210,11 @@ class ApplicantionController extends Controller
             'work_street' => 'required'
         ]);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return Response::json(array(
                 'success' => false,
                 'errors' => $validator->getMessageBag()->toArray()
-        
+
             ), 200); // 400 being the HTTP code for an invalid request.
         }
         $file = $request->file('residence_copy');
@@ -234,7 +235,7 @@ class ApplicantionController extends Controller
                 'current_residance_mobile' => $request->current_residance_mobile,
                 'residence_id' => $request->residence_id,
                 'id_validity' => date('Y-m-d', strtotime($request->visa_validity)),
-                'residence_copy'=> $residenceCopy,
+                'residence_copy' => $residenceCopy,
                 'visa_copy' => $visaCopy,
                 'current_job' => $request->current_job,
                 'work_state' => $request->work_state,
@@ -248,7 +249,7 @@ class ApplicantionController extends Controller
         return Response::json(array('success' => true), 200);
     }
 
-         /**
+    /**
      * Store applicant schengen visa details as step 4
      * @param Request
      *
@@ -261,12 +262,11 @@ class ApplicantionController extends Controller
             'is_finger_print_collected_for_Schengen_visa' => 'required',
         ]);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return Response::json(array(
                 'success' => false,
                 'errors' => $validator->getMessageBag()->toArray()
-        
+
             ), 200); // 400 being the HTTP code for an invalid request.
         }
         $schengenCopy = null;
@@ -277,12 +277,12 @@ class ApplicantionController extends Controller
             $file->storeAs($destinationPath, $schengenCopy);
         }
         Applicant::where('user_id', Auth::id())
-        ->where('product_id', $request->product_id)
-        ->update([
-            'is_schengen_visa_issued'  => $request->is_schengen_visa_issued_last_five_year,
-            'schengen_visa' => $schengenCopy,
-            'is_fingerprint_collected' => $request->is_finger_print_collected_for_Schengen_visa
-        ]);
+            ->where('product_id', $request->product_id)
+            ->update([
+                'is_schengen_visa_issued'  => $request->is_schengen_visa_issued_last_five_year,
+                'schengen_visa' => $schengenCopy,
+                'is_fingerprint_collected' => $request->is_finger_print_collected_for_Schengen_visa
+            ]);
         return Response::json(array('success' => true), 200);
     }
 }
