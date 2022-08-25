@@ -20,14 +20,9 @@ $levels = $complete->applicant_status;
 @endphp
 <div class="container">
     <div class="col-12">
-
     <!-- Check if application completed, then exclude the other processes link and allow for subsequent payments only -->
-    @php 
-      if ($levels == '5') 
-      {
-            
-      } else {
-    @endphp    
+      @if($levels == '5') 
+      @else 
         <div class="row">
             <div class="wizard bg-white">
                 <div class="row">
@@ -46,76 +41,135 @@ $levels = $complete->applicant_status;
                             <div class="col-2 round-title">Payment <br> Details</div>
                         </div>
                         <div class="linear"></div>
-                        @php
-                        if ($levels == '5' || $levels == '4' || $levels == '3' || $levels == '2') {
-                        @endphp
-                        <div class="wrapper">
-                            <a href="{{route('applicant', $pid)}}">
-                                <div class="round3 m-2">3</div>
-                            </a>
-                            <div class="col-2 round-title">Application <br> Details</div>
-                        </div>
-                        <div class="linear"></div>
-                        <div class="wrapper">
-                            <a href="{{route('applicant.details')}}">
-                                <div class="round4 m-2">4</div>
-                            </a>
-                            <div class="col-2 round-title">Applicant <br> Details</div>
-                        </div>
-                        <div class="linear"></div>
-                        <div class="wrapper">
-                            <a href="{{url('applicant/review')}}">
-                                <div class="round5 m-2">5</div>
-                            </a>
-                            <div class="col-2 round-title">Application <br> Review</div>
-                        </div>
-                        @php
-                        } else {
-                        @endphp
-                        <div class="wrapper">
-                            <!-- <a href="{{route('applicant', $pid)}}" ><div class="round3 m-2">3</div></a> -->
-                            <a href="#" onclick="return alert('You have to complete Payment first');">
-                                <div class="round3 m-2">3</div>
-                            </a>
-                            <div class="col-2 round-title">Application <br> Details</div>
-                        </div>
-                        <div class="linear"></div>
-                        <div class="wrapper">
-                            <!-- <a href="{{route('applicant.details')}}" ><div class="round4 m-2">4</div></a> -->
-                            <a href="#" onclick="return alert('You have to complete Payment first');">
-                                <div class="round4 m-2">4</div>
-                            </a>
-                            <div class="col-2 round-title">Applicant <br> Details</div>
-                        </div>
-                        <div class="linear"></div>
-                        <div class="wrapper">
-                            <!-- <a href="{{url('applicant/review')}}" ><div class="round5 m-2">5</div></a> -->
-                            <a href="#" onclick="return alert('You have to complete Payment first');">
-                                <div class="round5 m-2">5</div>
-                            </a>
-                            <div class="col-2 round-title">Application <br> Review</div>
-                        </div>
-
-                        @php
-                        }
-                        @endphp
+                        @if ($levels == '5' || $levels == '4' || $levels == '3' || $levels == '2')
+                            <div class="wrapper">
+                                <a href="{{route('applicant', $pid)}}">
+                                    <div class="round3 m-2">3</div>
+                                </a>
+                                <div class="col-2 round-title">Application <br> Details</div>
+                            </div>
+                            <div class="linear"></div>
+                            <div class="wrapper">
+                                <a href="{{route('applicant.details')}}">
+                                    <div class="round4 m-2">4</div>
+                                </a>
+                                <div class="col-2 round-title">Applicant <br> Details</div>
+                            </div>
+                            <div class="linear"></div>
+                            <div class="wrapper">
+                                <a href="{{url('applicant/review')}}">
+                                    <div class="round5 m-2">5</div>
+                                </a>
+                                <div class="col-2 round-title">Application <br> Review</div>
+                            </div>
+                        @else 
+                            <div class="wrapper">
+                                <!-- <a href="{{route('applicant', $pid)}}" ><div class="round3 m-2">3</div></a> -->
+                                <a href="#" onclick="return alert('You have to complete Payment first');">
+                                    <div class="round3 m-2">3</div>
+                                </a>
+                                <div class="col-2 round-title">Application <br> Details</div>
+                            </div>
+                            <div class="linear"></div>
+                            <div class="wrapper">
+                                <!-- <a href="{{route('applicant.details')}}" ><div class="round4 m-2">4</div></a> -->
+                                <a href="#" onclick="return alert('You have to complete Payment first');">
+                                    <div class="round4 m-2">4</div>
+                                </a>
+                                <div class="col-2 round-title">Applicant <br> Details</div>
+                            </div>
+                            <div class="linear"></div>
+                            <div class="wrapper">
+                                <!-- <a href="{{url('applicant/review')}}" ><div class="round5 m-2">5</div></a> -->
+                                <a href="#" onclick="return alert('You have to complete Payment first');">
+                                    <div class="round5 m-2">5</div>
+                                </a>
+                                <div class="col-2 round-title">Application <br> Review</div>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
-        @php       
-         }
-        @endphp    
+        @endif
 <!-- Main Module Begins here -->
         <div class="payment-form">
             <div class="heading">
                 <div class="first-heading">
                     <h3>
-                        Payment Details
+                        Discount Details
                     </h3>
                 </div>
                 <div class="bottom-title">
-                    <p style="color: #C4C4C4; text-align: center;">Your details are safe and encrypted</p>
+                    <p style="color: #C4C4C4; text-align: center;">If you have a dicount code, enter it here.</p>
                 </div>
+            </div>
+            <div class="form-sec discountForm">
+                <form id="discountForm">
+                    @csrf
+                    <div class="col-6 offset-3">
+                        <div class="mb-3">
+                            <div class="inputs"> 
+                                <input type="text" class="form-control dicount_code" name="dicount_code" aria-describedby="emailHelp" autocomplete="off" placeholder="########">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary dicountBtn ">APPLY CODE</button>
+                    </div>
+                </form>
+                <div class="row payament-sec">
+                    <div class="col-6">
+                        <div class="total">
+                            <div class="total-sec row mt-3">
+                                <div class="left-section col-6">
+                                    First payment
+                                </div>
+                                <div class="right-section col-6">
+                                    1850.00
+                                </div>
+                            </div>
+                            <div class="total-sec row mt-3">
+                                <div class="left-section col-6">
+                                    Second payment
+                                </div>
+                                <div class="right-section col-6">
+                                    3000.00
+                                </div>
+                            </div>
+                            <div class="total-sec row mt-3">
+                                <div class="left-section col-6">
+                                    Third Payment
+                                </div>
+                                <div class="right-section col-6">
+                                    0.00
+                                </div>
+                            </div>
+                            <div class="total-sec row mt-3">
+                                <div class="left-section col-6">
+                                    Total Payment
+                                </div>
+                                <div class="right-section col-6">
+                                    4850.00
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="partial">
+                            <p>pay first installment in partial</p>
+                            <input type="text"  class="form-control" placeholder="Enter partial payment">
+                            <p>Minimum amount of <b> 1000AED</b></p>
+                        </div>
+                    </div>
+                    <div class="partial-total-sec">
+                        <h2>Now you will pay first installment only 1850 AED</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="heading">
+                <div class="first-heading">
+                    <h3>
+                        Card Details
+                    </h3>
+                </div> 
             </div>
             <div class="form-sec">
                 <form method="POST" action="{{ url('add_payment') }}">
@@ -211,7 +265,7 @@ $levels = $complete->applicant_status;
                             <input type="text" pattern="\d*" maxlength="3" class="form-control" placeholder="CVC" name=cvv value="{{ old('cvv') }}" required>
                         </div>
                     </div>
-                    <div class="form-group row mt-6 payment-form1 ">
+                    {{-- <div class="form-group row mt-6 payment-form1 ">
                         <div class="total">
                             <div class="total-sec">
                                 <div class="left-section">
@@ -250,7 +304,7 @@ $levels = $complete->applicant_status;
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     @endforeach
                     <div class="form-group row mt-4">
                         <div class="form-check">

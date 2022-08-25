@@ -1227,8 +1227,8 @@
                                         <div class="col-sm-12 mt-3">
                                             <select name="is_schengen_visa_issued_last_five_year" id="is_schengen_visa_issued_last_five_year" aria-required="true" class="form-control form-select" autocomplete="off">
                                                 <option selected disabled>Schengen Or National Visa Issued During Last 5 Years*</option>
-                                                <option value="NO">NO</option>
-                                                <option value="YES">YES</option>
+                                                <option value="No">No</option>
+                                                <option value="Yes">Yes</option>
                                             </select>
                                             <span class="is_schengen_visa_issued_last_five_year_errorClass"></span>
                                         </div>
@@ -1295,7 +1295,7 @@
                         <div class="collapse" id="collapseExperience">
                             <div class="form-sec">
                                 <div class="jobSelected">
-                                    {{-- <table class="table">
+                                    <table class="table" v-if="selectedJob.length > 0">
                                         <thead>
                                             <tr>
                                                 <td>Job Sector</td>
@@ -1303,12 +1303,12 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <th style="text-align: left;">2</th>
-                                                <td style="text-align: right;">Jacob</td>
+                                            <tr v-for="(job, jobIndex) in selectedJob">
+                                                <td style="text-align: left;" data-bs-toggle="collapse" :data-bs-target="'#collapseExperienceFour'+job.cat1+job.cat2+job.cat3+job.cat4" aria-expanded="false" :aria-controls="'collapseExperienceFour'+job.cat1+job.cat2+job.cat3+job.cat4">@{{job.name}}</td>
+                                                <td style="text-align: right;"><a class="btn btn-danger remove" v-on:click="removeJob(jobIndex)">Remove</a></td>
                                             </tr>
                                         </tbody>
-                                      </table> --}}
+                                    </table>
                                 </div>
                                 <h4 style="margin-top:60px">Job Sector List</h4>
                                 <form method="POST" id="experience">
@@ -1391,15 +1391,19 @@
                                                                         </div>
                                                                         <div class="row">
                                                                             <h5>Example Titles</h5>
-                                                                            <p><span  v-html="jobCategoryFour.example_titles"></span></p>
+                                                                            <p>@{{jobCategoryFour.example_titles}}</p>
                                                                         </div>
                                                                         <div class="row">
                                                                             <h5>Main Duties</h5>
-                                                                            <p v-html="jobCategoryFour.main_duties"></p>
+                                                                            <p >
+                                                                                <span style="white-space: pre-line">@{{jobCategoryFour.main_duties}}</span>
+                                                                            </p>
                                                                         </div>
                                                                         <div class="row">
                                                                             <h5>Employement Requirment</h5>
-                                                                            <p v-html="jobCategoryFour.employement_requirements"></p>
+                                                                            <p >
+                                                                                <span style="white-space: pre-line">@{{jobCategoryFour.employement_requirements}}</span>
+                                                                            </p>
                                                                         </div>
                                                                         <div class="form-group row mt-4" style="margin-bottom: 20px">
                                                                             <div class="row">
@@ -1447,6 +1451,7 @@
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 <script>
     $(document).ready(function(){
+        $('.schengen_visa').hide();
         $('.datepicker').datepicker({
             maxDate : 0,
             dateFormat : "dd-mm-yy",

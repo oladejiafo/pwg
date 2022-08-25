@@ -65,7 +65,7 @@ class ApplicantionController extends Controller
         }
     }
 
-    public function applicantDetails()
+    public function applicantDetails($productId = 1)
     {
         if (Auth::id()) {
             $user = User::find(Auth::id());
@@ -75,7 +75,10 @@ class ApplicantionController extends Controller
             // dd($jobCategories);
             $jobCategories = [];
             $productId = 1;
-            return view('user.application-next', compact('user', 'jobCategories', 'productId'))->with('success', 'Data saved successfully!');
+            $applicantId = Applicant::where('user_id', Auth::id())
+                                    ->where('product_id', $productId)
+                                    ->find('id');
+            return view('user.application-next', compact('user', 'jobCategories', 'productId', 'applicantId'))->with('success', 'Data saved successfully!');
         } else {
             return back();
         }
@@ -283,5 +286,10 @@ class ApplicantionController extends Controller
                 'is_fingerprint_collected' => $request->is_finger_print_collected_for_Schengen_visa
             ]);
         return Response::json(array('success' => true), 200);
+    }
+
+    public function addExperience(Request $request)
+    {
+        dd($request);
     }
 }

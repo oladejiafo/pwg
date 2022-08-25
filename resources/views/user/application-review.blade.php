@@ -1120,7 +1120,7 @@
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-6 mt-3">
-                                            <input type="text" class="form-control residence_id" name="residence_copy" placeholder="Residence/Emirates ID*" readonly >
+                                            <input type="text" class="form-control residence_id" name="residence_copy" placeholder="Residence/Emirates ID*" value="{{$applicant['residence_copy']}}" readonly >
                                             <div class="input-group-btn">
                                                 <span class="fileUpload btn">
                                                     <span class="upl" id="upload">Choose File</span>
@@ -1131,14 +1131,16 @@
                                             <span class="residence_copy_errorClass"></span>
                                         </div>
                                         <div class="col-sm-6 mt-3">
-                                            <input type="text" class="form-control visa_copy" name="visa_copy" placeholder="Visa Copy" readonly >
+                                            <input type="text" class="form-control visa_copy" name="visa_copy" placeholder="Visa Copy" value="{{$applicant['visa_copy']}}" readonly >
                                             <div class="input-group-btn">
                                                 <span class="fileUpload btn">
                                                     <span class="upl" id="upload">Choose File</span>
                                                     <input type="file" class="upload visa_copy" id="up"  name="visa_copy" />
                                                 </span><!-- btn-orange -->
                                             </div><!-- btn -->
-                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#visaCopyModal" onclick="visaCopy()">click to view uploaded visa copy</a>
+                                            @if($applicant['visa_copy'])
+                                                <a href="javascript:void(0)" data-toggle="modal" data-target="#visaCopyModal" onclick="visaCopyModal()">click to view uploaded visa copy</a>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
@@ -1396,15 +1398,19 @@
                                                                         </div>
                                                                         <div class="row">
                                                                             <h5>Main Duties</h5>
-                                                                            <p v-html="jobCategoryFour.main_duties"></p>
+                                                                            <p >
+                                                                                <span style="white-space: pre-line">@{{jobCategoryFour.main_duties}}</span>
+                                                                            </p>
                                                                         </div>
                                                                         <div class="row">
                                                                             <h5>Employement Requirment</h5>
-                                                                            <p v-html="jobCategoryFour.employement_requirements"></p>
+                                                                            <p >
+                                                                                <span style="white-space: pre-line">@{{jobCategoryFour.employement_requirements}}</span>
+                                                                            </p>
                                                                         </div>
                                                                         <div class="form-group row mt-4" style="margin-bottom: 20px">
                                                                             <div class="row">
-                                                                                <button type="button" class="btn btn-primary submitBtn"  v-on:click="addExperience(index,indexTwo,indexThree,indexFour,jobCategoryFour.name)" style="line-height: 22px">Add Experience</button>
+                                                                                <button type="button" class="btn btn-primary submitBtn"  v-on:click="addExperience(index,indexTwo,indexThree,indexFour,jobCategoryFour.name, {{$applicantId}})" style="line-height: 22px">Add Experience</button>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -1469,6 +1475,30 @@
                 <div class="modal-content">
                     <div class="modal-body">
                         <iframe src ="{{asset('storage/residenceCopy/'.$applicant['residence_copy'])}}"  width="100%" height="400px"></iframe>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="visaCopyModal" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <iframe src ="{{asset('storage/visaCopy/'.$applicant['visa_copy'])}}"  width="100%" height="400px"></iframe>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="schengenVisatModal" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <iframe src ="{{asset('storage/schengenCopy/'.$applicant['schengen_visa'])}}"  width="100%" height="400px"></iframe>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
@@ -1741,6 +1771,15 @@
         $('#residenceCopyModal').modal('show');
     }
 
+    function visaCopyModal()
+    {
+        $('#visaCopyModal').modal('show');
+    }
+
+    function schengenVisatModal()
+    {
+        $('#schengenVisatModal').modal('show');
+    }
 
 </script>
 <script src="https://unpkg.com/vue@next"></script>
