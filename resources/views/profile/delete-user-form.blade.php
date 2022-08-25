@@ -12,14 +12,14 @@
             {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.') }}
         </div>
 
-        <div class="mt-5" style="width:100%; margin-left:15%; margin-right:15%">
+        <div class="mt-5 dgg" style="width:100%; margin-left:15%; margin-right:15%">
             <x-jet-danger-button wire:click="confirmUserDeletion" wire:loading.attr="disabled">
                 {{ __('Delete Account') }}
             </x-jet-danger-button>
         </div>
 
         <!-- Delete User Confirmation Modal -->
-        <x-jet-dialog-modal wire:model="confirmingUserDeletion" style="width:100%; margin-left:15%; margin-right:15%">
+        <x-jet-dialog-modal wire:model="confirmingUserDeletion" class="dgg" style="margin-left:15%; margin-right:15%">
             <x-slot name="title">
                 {{ __('Delete Account') }}
             </x-slot>
@@ -43,8 +43,8 @@
                     {{ __('Cancel') }}
                 </x-jet-secondary-button>
 
-                <x-jet-danger-button class="ml-3" wire:click="deleteUser" wire:loading.attr="disabled">
-                    {{ __('Delete Account') }}
+                <x-jet-danger-button class="ml-3 dgg" wire:click="deleteUser" wire:loading.attr="disabled">
+                    {{ __('Delete') }}
                 </x-jet-danger-button>
             </x-slot>
         </x-jet-dialog-modal>

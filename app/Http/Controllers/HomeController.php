@@ -21,18 +21,18 @@ class HomeController extends Controller
 {
     public function redirect()
     {
-        // if (Auth::id()) {
-        //     if (Auth::user()->usertype == 0) {
-        //         $package = product::all();
-        //         return view('user.home', compact('package'));
-        //         //                return view('user.home');
-        //     } else {
-        $package = product::all();
-        return view('user.home', compact('package'));
-        //     }
-        // } else {
-        //     return redirect()->back();
-        // }
+
+        if(session('prod_id'))
+        {
+          $idd = Session::get('prod_id');
+
+          return \Redirect::route('product', $idd);
+
+        } else{
+                $package = product::all();
+                return view('user.home', compact('package'));
+        }            
+        
     }
 
     public function index()
@@ -46,7 +46,7 @@ class HomeController extends Controller
         $data = product::find($id);
         $ppay = product_payments::where('product_id', '=', $id)->get();
         $proddet = product_details::where('product_id', '=', $id)->get();
-  
+        session()->forget('prod_id');
         return view('user.package', compact('data', 'ppay', 'proddet'));
     }
 
@@ -264,7 +264,7 @@ class HomeController extends Controller
             // if ($applied == '1') {
 
                 $data = product::find(Session::get('myproduct_id'));
-                            // $id = Session::get('myproduct_id');
+                          
                 $payall = Session::get('payall'); //$request->payall;
 
                 $pays = DB::table('applicants')
@@ -385,7 +385,7 @@ class HomeController extends Controller
                 $msg="Awesome! Payment Successful!";
 
                 return \Redirect::route('applicant', $request->pid)->with('info', $msg)->with('info_sub', 'You journey to ' .$dest_name. ' just began!');
-                // return \Redirect::route('/')->with('success', 'Payment Successful');
+              
             } else {
                 return redirect()->back()->with('failed', 'Oppss! Something Went Wrong!');
             }

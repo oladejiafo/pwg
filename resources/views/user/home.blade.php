@@ -32,6 +32,8 @@
 <body>
 
 @if(Route::has('login'))
+
+
         @auth
         @else
     <!-- Start Hero Section -->
@@ -59,7 +61,7 @@
 
         @if(Route::has('login'))
         @auth
-       <div class="carousel" id="carouselThree"  data-ride="carousel">
+       <div class="carousel" id="carouselThree"  data-ride="carousel" style="margin-block:20px ;">
 
 
           <div class="outer  scroll-pane" id="container">
@@ -71,16 +73,16 @@
                         @foreach($package as $offer)
 
                         <?php
-                                           $offer_discount= $offer->prev_discount - $offer->discount;
-                                           if($offer_discount >0)
+                                        //    $offer_discount= $offer->prev_discount - $offer->discount;
+                                           if($offer->discount >0)
                                            { 
                                             $icon = 'fa fa-minus-circle';
-                                            $offer_discount_msg = $offer_discount .'% lower than last month';
-                                           }
-                                           else if($offer_discount < 0)
-                                           { 
-                                            $icon = 'fa fa-plus-circle';
-                                            $offer_discount_msg = ($offer_discount*-1) .'% higher than last month';
+                                            $offer_discount_msg = 'Promo Offer' .$offer->discount .'% off !';
+                                        //    }
+                                        //    else if($offer_discount < 0)
+                                        //    { 
+                                        //     $icon = 'fa fa-plus-circle';
+                                        //     $offer_discount_msg = ($offer_discount*-1) .'% higher than last month';
                                            } else {
                                             $icon = '';
                                             $offer_discount_msg = '-';
@@ -102,7 +104,7 @@
                                         </span>
                                         <strong class="product-price">{{number_format($offer->unit_price,2)}} {{$offer->currency}}</strong>
                                         <p> 
-                                            <!-- <i class="<?php #echo $icon; ?>"></i> {{$offer_discount_msg}} -->
+                                            <i class="<?php echo $icon; ?>"></i> {{$offer_discount_msg}}
                                         </p>
 
                                         <p><a class="btn btn-secondary" href="{{ url('product', $offer->id) }}">Buy Now</a></p>
@@ -137,16 +139,16 @@
             <div class="row">
                 @foreach($package as $offer)
                 <?php
-                                           $offer_discount= $offer->prev_discount - $offer->discount;
-                                           if($offer_discount >0)
+                                        //    $offer_discount= $offer->prev_discount - $offer->discount;
+                                           if($offer->discount >0)
                                            { 
                                             $icon = 'fa fa-minus-circle';
-                                            $offer_discount_msg = $offer_discount .'% lower than last month';
-                                           }
-                                           else if($offer_discount < 0)
-                                           { 
-                                            $icon = 'fa fa-plus-circle';
-                                            $offer_discount_msg = ($offer_discount*-1) .'% higher than last month';
+                                            $offer_discount_msg = 'Promo Offer' .$offer->discount .'% off !';
+                                        //    }
+                                        //    else if($offer_discount < 0)
+                                        //    { 
+                                        //     $icon = 'fa fa-plus-circle';
+                                        //     $offer_discount_msg = ($offer_discount*-1) .'% higher than last month';
                                            } else {
                                             $icon = '';
                                             $offer_discount_msg = '-';
@@ -169,7 +171,7 @@
                             <strong class="product-price">{{number_format($offer->unit_price,2)}} {{$offer->currency}}</strong>
 
                             <p>
-                                <!-- <i class="<?php #echo $icon; ?>"></i> {{$offer_discount_msg}} -->
+                                <i class="<?php echo $icon; ?>"></i> {{$offer_discount_msg}} 
                         </p>
 
                             <p><a class="btn btn-secondary buy_now" href="{{ url('product', $offer->id) }}">Buy Now</a></p>
@@ -180,8 +182,8 @@
                 <!-- End Column  -->
                 @endforeach
                 <div class="col-4 cellContainer">
-                    <span class="product-item item-hints" href="#">
-                        <span class="positionAnchor hint" data-position="1">
+                    <span class="product-itemx" href="#">
+                        <span class="positionAnchorx" data-position="1">
                             <img src="../user/images/placeholder.png" style="height:458px" class="img-fluid product-thumbnailx home_img">
           
                             <span class="bottom">

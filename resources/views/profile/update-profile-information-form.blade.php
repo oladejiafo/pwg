@@ -8,6 +8,18 @@
         margin-left: 0 auto;
     }
 
+    button {
+        width: 350px !important;
+        height:60px !important; 
+        text-align:center; 
+        color:#000; 
+        font-family:'TT Norms Pro'; 
+        font-weight:700;
+        
+        margin: 0 auto;
+
+    }
+
     @media (min-width:375px) and (max-width:768px){
         .cols {
         width:70%; 
@@ -69,6 +81,12 @@
             <x-jet-input id="name" type="text" class="mt-1 block w-full" wire:model.defer="state.name" autocomplete="name" />
             <x-jet-input-error for="name" class="mt-2" />
         </div>
+        <!-- Phone -->
+        <!-- <div class="cols col-span-12 sm:col-span-12" style="width:70%; margin: 0 auto; margin-bottom:20px">
+            <x-jet-label for="phone" value="{{ __('Phone') }}" />
+            <x-jet-input id="phone" type="text" class="mt-1 block w-full" wire:model.defer="state.phone" autocomplete="phone" />
+            <x-jet-input-error for="phone" class="mt-2" />
+        </div> -->
 
         <!-- Email -->
         <div class="cols col-span-12 sm:col-span-12" style="width:70%; margin: 0 auto">
@@ -92,7 +110,9 @@
                 @endif
             @endif
         </div>
-        <x-slot name="actions"  style="width:70%; margin: 0 auto">
+
+
+        <x-slot name="actions">
         <x-jet-action-message class="mr-3" on="saved">
             {{ __('Saved.') }}
         </x-jet-action-message>

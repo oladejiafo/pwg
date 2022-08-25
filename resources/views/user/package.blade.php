@@ -27,12 +27,12 @@
 
 <body>
 <?php
-  $offer_discount= $data->prev_discount - $data->discount;
+  // $offer_discount= $data->prev_discount - $data->discount;
   
-  if($offer_discount >0)
+  if($data->discount >0)
   { 
     $icon = 'fa fa-minus-circle';
-    $offer_discount_msg = number_format($offer_discount) .'% lower than last month';
+    $offer_discount_msg = 'Promo Offer: ' . number_format($data->discount) .'% Off !';
   //}
   // else if($offer_discount < 0)
   // { 
@@ -47,7 +47,7 @@
 
   <section class="product-section">
     <div class="container-fluid">
-      <div class="row">
+      <div class="row" style="margin-block: 50px;">
 
         <!-- <p style="font-style: italics; text-decoration:none"><a href="/"><b><i>Packages </a> > {{$data->product_name}} </i></b></p> -->
 
@@ -61,10 +61,11 @@
           <h2>{{number_format($data->unit_price,2)}} {{$data->currency}}</h2>
 
           <p class="subheading" style="margin-left: 0px;">
-          <!-- <i class="<?php #echo $icon; ?>"></i> {{$offer_discount_msg}} -->
-        </p>
+          <i class="<?php echo $icon; ?>"></i><i> {{$offer_discount_msg}} </i>
+        </p><br>
 
 
+        @if($ppay->first())
           <p>
           <h3>Payment Installments</h3>
           <table border=0 style="border-radius:10px">
@@ -108,7 +109,7 @@
           </table>
 
           </p>
-
+@endif
           
 <br>
           <h4>Working in {{$data->product_name}} provides several benefits not limited to:</h4>
@@ -131,6 +132,7 @@
             <form action="{{ url('append_signature', $data->id) }}" method="GET">
           @else
             <form action="{{ url('login') }}">
+              @php Session::put('prod_id', $data->id); @endphp  
            @endauth
           @endif
           <input type="hidden" value="{{$data->id}}">
@@ -142,6 +144,7 @@ if ($data->full_payment_discount > 0) {
             <p style="margin-left:2px;font-weight:bold">Get {{number_format($data->full_payment_discount)}}% discount on Full Payment</p>
             <?php
 }
+
 ?>
 
               <p><button class="btn btn-secondary se2" id="buy" value="1" name="payall" style="font-size:1.6em">Full Payment</button>

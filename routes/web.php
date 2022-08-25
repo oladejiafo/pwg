@@ -44,7 +44,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
-Route::get('/product/{id}',[HomeController::class,'product']);
+Route::get('/product/{id}',[HomeController::class,'product'])->name('product');
 
 Route::get('append_signature/{id}',[HomeController::class,'signature'])->name('signature');
 Route::get('signature_success/{id}',[HomeController::class,'signature_success'])->name('signature_success');
