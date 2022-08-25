@@ -618,10 +618,8 @@
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-6 mt-3">
-                                            <input type="text" name="passport_copy" class="form-control passport_copy" placeholder="Upload Passport Copy*" value="{{old('passport_copy')}}" autocomplete="off" readonly/>
-                                            {{-- <span > --}}
-                                                <i class="fa fa-info-circle" aria-hidden="true"></i>
-                                            {{-- </span> --}}
+                                            <input type="text" name="passport_copy" class="form-control passport_copy" placeholder="Upload Passport Copy*" value="{{old('passport_copy')}}" data-toggle="modal" class="passportFormatModal" data-target="#passportFormatModal" onclick="showPassportFormat()" autocomplete="off" readonly/>
+
                                             <div class="input-group-btn">
                                                 <span class="fileUpload btn">
                                                     <span class="upl" id="upload">Choose File</span>
@@ -1437,7 +1435,7 @@
                     <img src="{{asset('images/Passport_Requirement.jpg')}}" width ="760px" height ="760px;">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary close" data-dismiss="modal">Close Modal</button>
+                    <button type="button" class="btn closeBtn" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -1449,8 +1447,6 @@
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 <script>
     $(document).ready(function(){
-        $('#passportFormatModal').modal('hide');
-        $('.schengen_visa').hide();
         $('.datepicker').datepicker({
             maxDate : 0,
             dateFormat : "dd-mm-yy",
@@ -1569,8 +1565,8 @@
                 }
             });
         });
-        
         $(document).on('change','.up', function(){
+            $("#passportFormatModal").modal('hide');
             var names = [];
             var length = $(this).get(0).files.length;
             for (var i = 0; i < $(this).get(0).files.length; ++i) {
@@ -1578,11 +1574,11 @@
             }
             // $("input[name=file]").val(names);
             if(length>2){
-            var fileName = names.join(', ');
-            $(this).closest('.form-group').find('.form-control').attr("value",length+" files selected");
+                var fileName = names.join(', ');
+                $(this).closest('.form-group').find('.form-control').attr("value",length+" files selected");
             }
             else{
-            $('.passport_copy, .up').attr("value",names);
+                $('.passport_copy, .up').attr("value",names);
             }
         });
         $(document).on('change','.residence_id', function(){
@@ -1678,6 +1674,10 @@
             $('.jobSelected .table tbody').append('<tr><th style="text-align: left;" data-bs-toggle="collapse" data-bs-target="#collapseExperienceFour"'+cat1+cat2+cat3+cat4+' aria-expanded="false" aria-controls="collapseExperienceFour"'+cat1+cat2+cat3+cat4+'>'+jobTitle+'</th><td style="text-align: right;"><button class="btn btn-danger">Remove</button></td></tr>');
             
         }
+        $('.closeBtn').click(function(){
+            $("#passportFormatModal").modal('hide');
+        });
+        
     });
     function showPassportFormat()
     {

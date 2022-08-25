@@ -1334,6 +1334,11 @@ textarea {
   margin-top: -53px;
 }
 
+.passport_copy {
+   width: 95%;
+   display: inline;
+}
+
 .content-box {
   width: 100%;
   padding: 2rem;
@@ -1675,11 +1680,19 @@ input:-moz-placeholder {
   filter: alpha(opacity=0);
 }
 
-.input-group-btn {
-  margin-top: -42px;
+form .input-group-btn {
+  margin-top: -43px;
   float: right;
-  margin-right: 6px;
+  margin-right: 30px;
 
+}
+
+.passportFormatModal {
+  color: red;
+}
+
+.passportFormatModal  .input-group-btn{
+  margin: 0px !important; 
 }
 
 .input-group-btn .btn:hover {
@@ -1734,10 +1747,6 @@ input:-moz-placeholder {
 
 #collapseHome a {
   text-decoration: underline;
-}
-#collapseHome .passportFormatModal  {
-  text-decoration: underline;
-  color: orange;
 }
 
 iframe img {

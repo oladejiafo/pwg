@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Applicant;
-use Doctrine\Common\Annotations\Annotation\Required;
+use App\Constant;
 use Exception;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Response;
-
+use Doctrine\Common\Annotations\Annotation\Required;
 
 class ApplicantionController extends Controller
 {

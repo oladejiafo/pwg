@@ -21,4 +21,9 @@ class Applicant extends Model
         
     ];
 
+    public function familyDetails()
+    {
+        return $this->hasMany(FamilyDetail::class, 'applicant_id', 'id');
+    }
+
 }

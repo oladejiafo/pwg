@@ -614,8 +614,7 @@
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-6 mt-3">
-                                            {{-- <a href="javascript:void(0)" data-toggle="modal" class="passportFormatModal" data-target="#passportFormatModal" onclick="showPassportFormat()">Click to view uploading passport format</a> --}}
-                                            <input type="text" name="passport_copy" class="form-control passport_copy" placeholder="Upload Passport Copy*" value="{{$applicant['passport']}}" autocomplete="off" readonly/>
+                                            <input type="text" name="passport_copy" class="form-control passport_copy" placeholder="Upload Passport Copy*" value="{{$applicant['passport']}}"  class="passportFormatModal" data-target="#passportFormatModal" onclick="showPassportFormat()" autocomplete="off" readonly/>
                                             <div class="input-group-btn">
                                                 <span class="fileUpload btn">
                                                     <span class="upl" id="upload">Choose File</span>
@@ -1436,19 +1435,43 @@
                         <img src="{{asset('images/Passport_Requirement.jpg')}}" width ="760px" height ="760px;">
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary close" data-dismiss="modal">Close Modal</button>
+                        <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
         </div>
         <div id="passportModal" class="modal fade" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <iframe src ="{{asset('storage/passportCopy/'.$applicant['passport'])}}" width="100%" height="400px" style="margin: auto"></iframe>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="residenceCopyModal" class="modal fade" tabindex="-1">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <img src ="{{asset('storage/passportCopy/'.$applicant['passport'])}}"></iframe>
+                        <iframe src ="{{asset('storage/residenceCopy/'.$applicant['residence_copy'])}}"  width="100%" height="400px"></iframe>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary close" data-dismiss="modal">Close Modal</button>
+                        <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="residenceCopyModal" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <iframe src ="{{asset('storage/residenceCopy/'.$applicant['residence_copy'])}}"  width="100%" height="400px"></iframe>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -1461,8 +1484,6 @@
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 <script>
     $(document).ready(function(){
-        $("#passportModal").modal('hide');
-        $('#passportFormatModal').modal('hide');
         $('.datepicker').datepicker({
             maxDate : 0,
             dateFormat : "dd-mm-yy",
@@ -1598,11 +1619,11 @@
             }
             // $("input[name=file]").val(names);
             if(length>2){
-            var fileName = names.join(', ');
-            $(this).closest('.form-group').find('.form-control').attr("value",length+" files selected");
+                var fileName = names.join(', ');
+                $(this).closest('.form-group').find('.form-control').attr("value",length+" files selected");
             }
             else{
-            $('.passport_copy, .up').attr("value",names);
+                $('.passport_copy, .up').attr("value",names);
             }
         });
         $(document).on('change','.residence_id', function(){
@@ -1699,8 +1720,10 @@
             
         }
 
-        $('.close').click(function(){
-
+        $('.close').click(function(e){
+            $("#passportModal").modal('hide');
+            $("#passportFormatModal").modal('hide');
+            $('#residenceCopyModal').modal('hide');
         });
     });
     function showPassport()
@@ -1715,7 +1738,7 @@
     
     function residenceCopyModal()
     {
-
+        $('#residenceCopyModal').modal('show');
     }
 
 
