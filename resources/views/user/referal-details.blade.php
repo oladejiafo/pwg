@@ -92,6 +92,15 @@ $levels = $complete->applicant_status;
                             <div class="col-2 round-title">Payment <br> Details</div>
                         </div>
                         @php
+                          } else {
+                                @endphp    
+                                <div class="wrapper">
+                                <a href="{{ url('payment_form', $data->id) }}" >
+                                    <div class="round2  m-2">2</div>
+                                </a>
+                                <div class="col-2 round-title">Payment <br> Details</div>
+                                </div>
+                              @php   
                         }
                         @endphp
 
@@ -105,6 +114,7 @@ $levels = $complete->applicant_status;
                             </a>
                             <div class="col-2 round-title">Application <br> Details</div>
                         </div>
+
                         <div class="linear"></div>
                         <div class="wrapper">
                             <a href="{{route('applicant.details')}}">
@@ -112,6 +122,7 @@ $levels = $complete->applicant_status;
                             </a>
                             <div class="col-2 round-title">Applicant <br> Details</div>
                         </div>
+                        
                         <div class="linear"></div>
                         <div class="wrapper">
                             <a href="{{url('applicant/review')}}">

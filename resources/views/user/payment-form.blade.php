@@ -5,13 +5,12 @@
 <link href="{{asset('css/alert.css')}}" rel="stylesheet">
 
 @section('content')
-
-@php 
-   $pid =  Session::get('myproduct_id');
-    $completed = DB::table('applicants')
-                ->where('product_id', '=', $pid)
-                ->where('user_id', '=', Auth::user()->id)
-                ->get();
+@php
+$pid = Session::get('myproduct_id');
+$completed = DB::table('applicants')
+->where('product_id', '=', $pid)
+->where('user_id', '=', Auth::user()->id)
+->get();
 
 $levels='0';
 foreach($completed as $complete)
