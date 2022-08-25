@@ -15,7 +15,6 @@ class CreateFamilyDetailsTable extends Migration
     {
         Schema::create('family_details', function (Blueprint $table) {
             $table->id();
-            $table->id();
             $table->integer('product_id')->nullable();
             $table->foreignId('applicant_id')
                 ->constrained('applicants')
