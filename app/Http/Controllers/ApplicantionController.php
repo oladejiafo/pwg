@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Applicant;
-use Doctrine\Common\Annotations\Annotation\Required;
+use App\Constant;
 use Exception;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Response;
-
+use Doctrine\Common\Annotations\Annotation\Required;
 
 class ApplicantionController extends Controller
 {
@@ -65,7 +65,7 @@ class ApplicantionController extends Controller
         }
     }
 
-    public function applicantDetails()
+    public function applicantDetails($productId = 1)
     {
         if (Auth::id()) {
             $user = User::find(Auth::id());
@@ -75,7 +75,10 @@ class ApplicantionController extends Controller
             // dd($jobCategories);
             $jobCategories = [];
             $productId = 1;
-            return view('user.application-next', compact('user', 'jobCategories', 'productId'))->with('success', 'Data saved successfully!');
+            $applicantId = Applicant::where('user_id', Auth::id())
+                                    ->where('product_id', $productId)
+                                    ->find('id');
+            return view('user.application-next', compact('user', 'jobCategories', 'productId', 'applicantId'))->with('success', 'Data saved successfully!');
         } else {
             return back();
         }
@@ -283,5 +286,10 @@ class ApplicantionController extends Controller
                 'is_fingerprint_collected' => $request->is_finger_print_collected_for_Schengen_visa
             ]);
         return Response::json(array('success' => true), 200);
+    }
+
+    public function addExperience(Request $request)
+    {
+        dd($request);
     }
 }

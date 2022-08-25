@@ -76,4 +76,5 @@ Route::post('store/applicant', [ApplicantionController::class,'storeApplicant'])
 Route::post('srore/applicant/details', [ApplicantionController::class,'storeApplicantDetails'])->name('store.applicant.details');
 Route::post('store/home/country/details', [ApplicantionController::class,'storeHomeCountryDetails'])->name('store.home-country.details');
 Route::post('store/current/details', [ApplicantionController::class,'storeCurrentDetails'])->name('store.current.details');
-
+Route::post('upload/passport/copy', [ApplicantionController::class, 'uploadPassportCopy'])->name('upload.passport.copy');
+Route::post('/add/experience', [ApplicantionController::class,'addExperience'])->name('add.experience');

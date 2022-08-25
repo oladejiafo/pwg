@@ -24,11 +24,34 @@ const app = new Vue({
                 console.log(error);
             });
         },
-        addExperience(cat1, cat2, cat3, cat4, jobTitle) {
-            console.log(cat1, cat2, cat3, cat4, jobTitle);
+
+        addExperience(cat1, cat2, cat3, cat4, jobTitle, applicantId) {
+            this.selectedJob.push({ name: jobTitle, cat1: cat1, cat2: cat2, cat3: cat3, cat4: cat4});
+            // axios.post('/add/experience', {
+            //     applicant_id: applicantId,
+            //     job_category_one_id : cat1,
+            //     job_category_two_id : cat2,
+            //     job_category_three_id : cat3,
+            //     job_category_four_id : cat4
+            // }).then(function (response) {
+               
+            //     console.log(response);
+            // })
+            // .catch(function (error) {
+            //     console.log(error);
+            // });
+        },
+
+        removeJob(index) {
+            this.selectedJob.splice(index, 1);
+        },
+
+        getSelectedExperience() {
+            
         }
     },
     mounted: function() {
         this.getCategories();
+        this.getSelectedExperience();
     }
 });

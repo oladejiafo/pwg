@@ -614,8 +614,7 @@
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-6 mt-3">
-                                            {{-- <a href="javascript:void(0)" data-toggle="modal" class="passportFormatModal" data-target="#passportFormatModal" onclick="showPassportFormat()">Click to view uploading passport format</a> --}}
-                                            <input type="text" name="passport_copy" class="form-control passport_copy" placeholder="Upload Passport Copy*" value="{{$applicant['passport']}}" autocomplete="off" readonly/>
+                                            <input type="text" name="passport_copy" class="form-control passport_copy" placeholder="Upload Passport Copy*" value="{{$applicant['passport']}}"  class="passportFormatModal" data-target="#passportFormatModal" onclick="showPassportFormat()" autocomplete="off" readonly/>
                                             <div class="input-group-btn">
                                                 <span class="fileUpload btn">
                                                     <span class="upl" id="upload">Choose File</span>
@@ -1121,7 +1120,7 @@
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-6 mt-3">
-                                            <input type="text" class="form-control residence_id" name="residence_copy" placeholder="Residence/Emirates ID*" readonly >
+                                            <input type="text" class="form-control residence_id" name="residence_copy" placeholder="Residence/Emirates ID*" value="{{$applicant['residence_copy']}}" readonly >
                                             <div class="input-group-btn">
                                                 <span class="fileUpload btn">
                                                     <span class="upl" id="upload">Choose File</span>
@@ -1132,14 +1131,16 @@
                                             <span class="residence_copy_errorClass"></span>
                                         </div>
                                         <div class="col-sm-6 mt-3">
-                                            <input type="text" class="form-control visa_copy" name="visa_copy" placeholder="Visa Copy" readonly >
+                                            <input type="text" class="form-control visa_copy" name="visa_copy" placeholder="Visa Copy" value="{{$applicant['visa_copy']}}" readonly >
                                             <div class="input-group-btn">
                                                 <span class="fileUpload btn">
                                                     <span class="upl" id="upload">Choose File</span>
                                                     <input type="file" class="upload visa_copy" id="up"  name="visa_copy" />
                                                 </span><!-- btn-orange -->
                                             </div><!-- btn -->
-                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#visaCopyModal" onclick="visaCopy()">click to view uploaded visa copy</a>
+                                            @if($applicant['visa_copy'])
+                                                <a href="javascript:void(0)" data-toggle="modal" data-target="#visaCopyModal" onclick="visaCopyModal()">click to view uploaded visa copy</a>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
@@ -1397,15 +1398,19 @@
                                                                         </div>
                                                                         <div class="row">
                                                                             <h5>Main Duties</h5>
-                                                                            <p v-html="jobCategoryFour.main_duties"></p>
+                                                                            <p >
+                                                                                <span style="white-space: pre-line">@{{jobCategoryFour.main_duties}}</span>
+                                                                            </p>
                                                                         </div>
                                                                         <div class="row">
                                                                             <h5>Employement Requirment</h5>
-                                                                            <p v-html="jobCategoryFour.employement_requirements"></p>
+                                                                            <p >
+                                                                                <span style="white-space: pre-line">@{{jobCategoryFour.employement_requirements}}</span>
+                                                                            </p>
                                                                         </div>
                                                                         <div class="form-group row mt-4" style="margin-bottom: 20px">
                                                                             <div class="row">
-                                                                                <button type="button" class="btn btn-primary submitBtn"  v-on:click="addExperience(index,indexTwo,indexThree,indexFour,jobCategoryFour.name)" style="line-height: 22px">Add Experience</button>
+                                                                                <button type="button" class="btn btn-primary submitBtn"  v-on:click="addExperience(index,indexTwo,indexThree,indexFour,jobCategoryFour.name, {{$applicantId}})" style="line-height: 22px">Add Experience</button>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -1436,19 +1441,67 @@
                         <img src="{{asset('images/Passport_Requirement.jpg')}}" width ="760px" height ="760px;">
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary close" data-dismiss="modal">Close Modal</button>
+                        <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
         </div>
         <div id="passportModal" class="modal fade" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <iframe src ="{{asset('storage/passportCopy/'.$applicant['passport'])}}" width="100%" height="400px" style="margin: auto"></iframe>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="residenceCopyModal" class="modal fade" tabindex="-1">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <img src ="{{asset('storage/passportCopy/'.$applicant['passport'])}}"></iframe>
+                        <iframe src ="{{asset('storage/residenceCopy/'.$applicant['residence_copy'])}}"  width="100%" height="400px"></iframe>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary close" data-dismiss="modal">Close Modal</button>
+                        <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="residenceCopyModal" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <iframe src ="{{asset('storage/residenceCopy/'.$applicant['residence_copy'])}}"  width="100%" height="400px"></iframe>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="visaCopyModal" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <iframe src ="{{asset('storage/visaCopy/'.$applicant['visa_copy'])}}"  width="100%" height="400px"></iframe>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="schengenVisatModal" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <iframe src ="{{asset('storage/schengenCopy/'.$applicant['schengen_visa'])}}"  width="100%" height="400px"></iframe>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -1461,8 +1514,6 @@
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 <script>
     $(document).ready(function(){
-        $("#passportModal").modal('hide');
-        $('#passportFormatModal').modal('hide');
         $('.datepicker').datepicker({
             maxDate : 0,
             dateFormat : "dd-mm-yy",
@@ -1598,11 +1649,11 @@
             }
             // $("input[name=file]").val(names);
             if(length>2){
-            var fileName = names.join(', ');
-            $(this).closest('.form-group').find('.form-control').attr("value",length+" files selected");
+                var fileName = names.join(', ');
+                $(this).closest('.form-group').find('.form-control').attr("value",length+" files selected");
             }
             else{
-            $('.passport_copy, .up').attr("value",names);
+                $('.passport_copy, .up').attr("value",names);
             }
         });
         $(document).on('change','.residence_id', function(){
@@ -1699,8 +1750,10 @@
             
         }
 
-        $('.close').click(function(){
-
+        $('.close').click(function(e){
+            $("#passportModal").modal('hide');
+            $("#passportFormatModal").modal('hide');
+            $('#residenceCopyModal').modal('hide');
         });
     });
     function showPassport()
@@ -1715,9 +1768,18 @@
     
     function residenceCopyModal()
     {
-
+        $('#residenceCopyModal').modal('show');
     }
 
+    function visaCopyModal()
+    {
+        $('#visaCopyModal').modal('show');
+    }
+
+    function schengenVisatModal()
+    {
+        $('#schengenVisatModal').modal('show');
+    }
 
 </script>
 <script src="https://unpkg.com/vue@next"></script>

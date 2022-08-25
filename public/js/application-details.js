@@ -2088,12 +2088,34 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]({
         console.log(error);
       });
     },
-    addExperience: function addExperience(cat1, cat2, cat3, cat4, jobTitle) {
-      console.log(cat1, cat2, cat3, cat4, jobTitle);
-    }
+    addExperience: function addExperience(cat1, cat2, cat3, cat4, jobTitle, applicantId) {
+      this.selectedJob.push({
+        name: jobTitle,
+        cat1: cat1,
+        cat2: cat2,
+        cat3: cat3,
+        cat4: cat4
+      });
+      axios__WEBPACK_IMPORTED_MODULE_1___default().post('/add/experience', {
+        applicant_id: applicantId,
+        job_category_one_id: cat1,
+        job_category_two_id: cat2,
+        job_category_three_id: cat3,
+        job_category_four_id: cat4
+      }).then(function (response) {
+        console.log(response);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    removeJob: function removeJob(index) {
+      this.selectedJob.splice(index, 1);
+    },
+    getSelectedExperience: function getSelectedExperience() {}
   },
   mounted: function mounted() {
     this.getCategories();
+    this.getSelectedExperience();
   }
 });
 

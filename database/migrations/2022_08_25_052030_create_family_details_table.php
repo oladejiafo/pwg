@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateApplicantsTable extends Migration
+class CreateFamilyDetailsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateApplicantsTable extends Migration
      */
     public function up()
     {
-        Schema::create('applicants', function (Blueprint $table) {
+        Schema::create('family_details', function (Blueprint $table) {
             $table->id();
             $table->integer('product_id')->nullable();
-            $table->foreignId('user_id')
-                ->constrained('users')
+            $table->foreignId('applicant_id')
+                ->constrained('applicants')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->string('first_name')->nullable();
@@ -26,10 +26,6 @@ class CreateApplicantsTable extends Migration
             $table->string('country')->nullable();
             $table->string('job_type')->nullable();
             $table->string('resume')->nullable();
-            $table->string('agent_phone_number')->nullable();
-            $table->string('agent_name')->nullable();
-            $table->string('referral_first_name')->nullable();
-            $table->string('referral_last_name')->nullable();
             $table->string('coupon_code')->nullable();
             $table->date('dob')->nullable();
             $table->string('place_birth')->nullable();
@@ -68,9 +64,6 @@ class CreateApplicantsTable extends Migration
             $table->string('is_fingerprint_collected')->comment('is fingerprint collected for schengen visa application')->nullable();
             $table->string('embassy_country')->nullable();
             $table->string('applicant_status')->default('pending')->comment('1:referal; 2:payment; 3:applcant; 4:applicant details; 5:applicant review');
-            $table->string('referrer_code')->nullable();
-            $table->string('agent_code')->nullable();
-            $table->integer('visa_type')->comment('1:bluepinkjob; 2:whitejob; 3:familypackage')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
@@ -83,6 +76,6 @@ class CreateApplicantsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('applicants');
+        Schema::dropIfExists('family_details');
     }
 }

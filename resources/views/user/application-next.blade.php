@@ -618,10 +618,8 @@
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-sm-6 mt-3">
-                                            <input type="text" name="passport_copy" class="form-control passport_copy" placeholder="Upload Passport Copy*" value="{{old('passport_copy')}}" autocomplete="off" readonly/>
-                                            {{-- <span > --}}
-                                                <i class="fa fa-info-circle" aria-hidden="true"></i>
-                                            {{-- </span> --}}
+                                            <input type="text" name="passport_copy" class="form-control passport_copy" placeholder="Upload Passport Copy*" value="{{old('passport_copy')}}" data-toggle="modal" class="passportFormatModal" data-target="#passportFormatModal" onclick="showPassportFormat()" autocomplete="off" readonly/>
+
                                             <div class="input-group-btn">
                                                 <span class="fileUpload btn">
                                                     <span class="upl" id="upload">Choose File</span>
@@ -1229,8 +1227,8 @@
                                         <div class="col-sm-12 mt-3">
                                             <select name="is_schengen_visa_issued_last_five_year" id="is_schengen_visa_issued_last_five_year" aria-required="true" class="form-control form-select" autocomplete="off">
                                                 <option selected disabled>Schengen Or National Visa Issued During Last 5 Years*</option>
-                                                <option value="NO">NO</option>
-                                                <option value="YES">YES</option>
+                                                <option value="No">No</option>
+                                                <option value="Yes">Yes</option>
                                             </select>
                                             <span class="is_schengen_visa_issued_last_five_year_errorClass"></span>
                                         </div>
@@ -1297,7 +1295,7 @@
                         <div class="collapse" id="collapseExperience">
                             <div class="form-sec">
                                 <div class="jobSelected">
-                                    {{-- <table class="table">
+                                    <table class="table" v-if="selectedJob.length > 0">
                                         <thead>
                                             <tr>
                                                 <td>Job Sector</td>
@@ -1305,12 +1303,12 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <th style="text-align: left;">2</th>
-                                                <td style="text-align: right;">Jacob</td>
+                                            <tr v-for="(job, jobIndex) in selectedJob">
+                                                <td style="text-align: left;" data-bs-toggle="collapse" :data-bs-target="'#collapseExperienceFour'+job.cat1+job.cat2+job.cat3+job.cat4" aria-expanded="false" :aria-controls="'collapseExperienceFour'+job.cat1+job.cat2+job.cat3+job.cat4">@{{job.name}}</td>
+                                                <td style="text-align: right;"><a class="btn btn-danger remove" v-on:click="removeJob(jobIndex)">Remove</a></td>
                                             </tr>
                                         </tbody>
-                                      </table> --}}
+                                    </table>
                                 </div>
                                 <h4 style="margin-top:60px">Job Sector List</h4>
                                 <form method="POST" id="experience">
@@ -1393,15 +1391,19 @@
                                                                         </div>
                                                                         <div class="row">
                                                                             <h5>Example Titles</h5>
-                                                                            <p><span  v-html="jobCategoryFour.example_titles"></span></p>
+                                                                            <p>@{{jobCategoryFour.example_titles}}</p>
                                                                         </div>
                                                                         <div class="row">
                                                                             <h5>Main Duties</h5>
-                                                                            <p v-html="jobCategoryFour.main_duties"></p>
+                                                                            <p >
+                                                                                <span style="white-space: pre-line">@{{jobCategoryFour.main_duties}}</span>
+                                                                            </p>
                                                                         </div>
                                                                         <div class="row">
                                                                             <h5>Employement Requirment</h5>
-                                                                            <p v-html="jobCategoryFour.employement_requirements"></p>
+                                                                            <p >
+                                                                                <span style="white-space: pre-line">@{{jobCategoryFour.employement_requirements}}</span>
+                                                                            </p>
                                                                         </div>
                                                                         <div class="form-group row mt-4" style="margin-bottom: 20px">
                                                                             <div class="row">
@@ -1437,7 +1439,7 @@
                     <img src="{{asset('images/Passport_Requirement.jpg')}}" width ="760px" height ="760px;">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary close" data-dismiss="modal">Close Modal</button>
+                    <button type="button" class="btn closeBtn" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -1449,7 +1451,6 @@
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 <script>
     $(document).ready(function(){
-        $('#passportFormatModal').modal('hide');
         $('.schengen_visa').hide();
         $('.datepicker').datepicker({
             maxDate : 0,
@@ -1569,8 +1570,8 @@
                 }
             });
         });
-        
         $(document).on('change','.up', function(){
+            $("#passportFormatModal").modal('hide');
             var names = [];
             var length = $(this).get(0).files.length;
             for (var i = 0; i < $(this).get(0).files.length; ++i) {
@@ -1578,11 +1579,11 @@
             }
             // $("input[name=file]").val(names);
             if(length>2){
-            var fileName = names.join(', ');
-            $(this).closest('.form-group').find('.form-control').attr("value",length+" files selected");
+                var fileName = names.join(', ');
+                $(this).closest('.form-group').find('.form-control').attr("value",length+" files selected");
             }
             else{
-            $('.passport_copy, .up').attr("value",names);
+                $('.passport_copy, .up').attr("value",names);
             }
         });
         $(document).on('change','.residence_id', function(){
@@ -1678,6 +1679,10 @@
             $('.jobSelected .table tbody').append('<tr><th style="text-align: left;" data-bs-toggle="collapse" data-bs-target="#collapseExperienceFour"'+cat1+cat2+cat3+cat4+' aria-expanded="false" aria-controls="collapseExperienceFour"'+cat1+cat2+cat3+cat4+'>'+jobTitle+'</th><td style="text-align: right;"><button class="btn btn-danger">Remove</button></td></tr>');
             
         }
+        $('.closeBtn').click(function(){
+            $("#passportFormatModal").modal('hide');
+        });
+        
     });
     function showPassportFormat()
     {

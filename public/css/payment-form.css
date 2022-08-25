@@ -57,6 +57,42 @@ body {
 
 }
 
+.dicount_code {
+    background: #F0F3F4 ;
+    height: 55px !important;
+    color: #F9F9F9;
+}
+
+.discountForm input, .discountForm input[placeholder]{
+    text-align: center !important;
+}
+
+.dicountBtn {
+    background: linear-gradient(90deg, #FACB08 2.41%, #FAE008 90.98%) !important;
+    margin-top: 0px !important;
+}
+
+.partial {
+    background: #F0F3F4;
+    padding: 34px;
+}
+
+.payament-sec {
+    margin-top: 55px;
+}
+
+.payament-sec p{
+    margin: 0;
+}
+
+.partial-total-sec {
+    background: #F0F3F4;
+    margin-top: 18px;
+    padding: 16px;
+    
+
+}
+
 @media (min-width:375px) and (max-width:768px) {
 
     .payment-form {

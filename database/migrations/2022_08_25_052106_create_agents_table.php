@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateUsersTable1 extends Migration
+class CreateAgentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,14 @@ class UpdateUsersTable1 extends Migration
      */
     public function up()
     {
-        Schema::table("users", function (Blueprint $table) 
-        {
-            $table->string('phone_number')->unique()->change();
+        Schema::create('agents', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->string('phone');
+            $table->string('code')->unique();
+            $table->timestamps();
         });
-
     }
 
     /**
@@ -27,9 +30,6 @@ class UpdateUsersTable1 extends Migration
      */
     public function down()
     {
-        Schema::table("users", function (Blueprint $table) 
-        {
-            $table->dropUnique('phone_number');
-        });
+        Schema::dropIfExists('agents');
     }
 }

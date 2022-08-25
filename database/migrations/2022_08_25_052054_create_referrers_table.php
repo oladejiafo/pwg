@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProductDetailsTable extends Migration
+class CreateReferrersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,12 @@ class CreateProductDetailsTable extends Migration
      */
     public function up()
     {
-        Schema::create('product_details', function (Blueprint $table) {
+        Schema::create('referrers', function (Blueprint $table) {
             $table->id();
-            $table->integer('product_id');
-            $table->integer('visa_type')->comment('1:bluepinkjob; 2:whitejob; 3:familypackage');
-            $table->text('job_title');
-            $table->longText('description');
-            $table->decimal('cost');
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->string('phone');
+            $table->string('code')->unique();
             $table->timestamps();
         });
     }
@@ -31,6 +30,6 @@ class CreateProductDetailsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_details');
+        Schema::dropIfExists('referrers');
     }
 }
