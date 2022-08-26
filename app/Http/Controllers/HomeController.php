@@ -41,11 +41,11 @@ class HomeController extends Controller
         return view('user.home', compact('package'));
     }
 
-    public function packageType($id)
+    public function packageType($productId)
     {
-        $proddet = product_details::where('product_id', '=', $id)->where('visa_type', 'BLUE AND PINK COLLAR JOBS')->get();
-        $whiteJobs = product_details::where('product_id', '=', $id)->where('visa_type', 'WHITE COLLAR JOBS')->get();
-        return view('user.package-type', compact('proddet', 'id', 'whiteJobs'));
+        $proddet = product_details::where('product_id', '=', $productId)->where('visa_type', 'BLUE AND PINK COLLAR JOBS')->get();
+        $whiteJobs = product_details::where('product_id', '=', $productId)->where('visa_type', 'WHITE COLLAR JOBS')->get();
+        return view('user.package-type', compact('proddet', 'productId', 'whiteJobs'));
     }
 
     public function product($id)
@@ -443,5 +443,12 @@ class HomeController extends Controller
 
     //     return view('user.application-next')->with('success', 'Data saved successfully!');
     // }
+
+    
+    public function familyDetails(Request $request)
+    {
+        return \Redirect::route('product', $request->productId);
+
+    }
 
 }

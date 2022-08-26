@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Response;
 use Doctrine\Common\Annotations\Annotation\Required;
 
-class ApplicantionController extends Controller
+class ApplicationController extends Controller
 {
 
     public function applicanview($productId)
@@ -292,4 +292,5 @@ class ApplicantionController extends Controller
     {
         dd($request);
     }
+
 }

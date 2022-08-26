@@ -17,6 +17,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::put('family/details/submit', [HomeController::class, 'familyDetails'])->name('family.details.submit');
 Route::get('package/type/{id}', [HomeController::class,'packageType'])->name('package-type');
 Route::get('applicant/review', [ApplicantionController::class, 'applicantReview'])->name('applicant.review');
 Route::post('store/schengen/details', [ApplicantionController::class,'storeSchengenDetails'])->name('store.schengen.details');
@@ -70,11 +71,11 @@ Route::get('payment_form/{id}',[HomeController::class,'payment'])->name('payment
 Route::post('/add_payment', [HomeController::class,'addpayment']);
 
 // Applicant
-Route::post('/add/experience', [ApplicantionController::class,'addExperience'])->name('add.experience');
-Route::get('applicant/details', [ApplicantionController::class, 'applicantDetails'])->name('applicant.details');
-Route::get('applicant/{id}', [ApplicantionController::class,'applicanview'])->name('applicant');
-Route::post('store/applicant', [ApplicantionController::class,'storeApplicant'])->name('store.applicant');
-Route::post('srore/applicant/details', [ApplicantionController::class,'storeApplicantDetails'])->name('store.applicant.details');
-Route::post('store/home/country/details', [ApplicantionController::class,'storeHomeCountryDetails'])->name('store.home-country.details');
+Route::post('/add/experience', [ApplicationController::class,'addExperience'])->name('add.experience');
+Route::get('applicant/details', [ApplicationController::class, 'applicantDetails'])->name('applicant.details');
+Route::get('applicant/{id}', [ApplicationController::class,'applicanview'])->name('applicant');
+Route::post('store/applicant', [ApplicationController::class,'storeApplicant'])->name('store.applicant');
+Route::post('srore/applicant/details', [ApplicationController::class,'storeApplicantDetails'])->name('store.applicant.details');
+Route::post('store/home/country/details', [ApplicationController::class,'storeHomeCountryDetails'])->name('store.home-country.details');
 Route::post('store/current/details', [ApplicantionController::class,'storeCurrentDetails'])->name('store.current.details');
 Route::post('upload/passport/copy', [ApplicantionController::class, 'uploadPassportCopy'])->name('upload.passport.copy');

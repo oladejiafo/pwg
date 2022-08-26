@@ -49,7 +49,7 @@
                             @include('user.package-jobs')
                             <div class="form-group row" style="margin-top: 70px"> 
                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                    <a class="btn btn-primary" href="{{ url('product', $id) }}" style="width: 100%;font-size: 24px;">Continue</a>
+                                    <a class="btn btn-primary" href="{{ url('product', $productId) }}" style="width: 100%;font-size: 24px;">Continue</a>
                                 </div>
                             </div>
                         </div>
@@ -57,7 +57,7 @@
                             @include('user.white-collar-packge')
                             <div class="form-group row" style="margin-top: 70px"> 
                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                    <a class="btn btn-primary" href="{{ url('product', $id) }}" style="width: 100%;font-size: 24px;">Continue</a>
+                                    <a class="btn btn-primary" href="{{ url('product', $productId) }}" style="width: 100%;font-size: 24px;">Continue</a>
                                 </div>
                             </div>
                         </div>
@@ -69,7 +69,10 @@
                                     <p>Please add details aabout your dependants here</p>
                                 </div>
                             </div>
-                            <form method="post" action="">
+                            <form method="POST" action="{{url('family/details/submit')}}">
+                                @csrf
+                                @method('PUT') 
+                                <input type="hidden" name="productId" value="{{$productId}}">
                                 <div class="partner-sec">
                                     <p style="height: 13px"><span class="header"> Partner/Spouse</span>
                                         Yes
@@ -91,16 +94,16 @@
                                         <span class="header"> Children</span>
                                         <ul class="children">
                                             <li>
-                                            <input type="radio" id="none" name="children" checked="checked" value="0"/>
-                                            <label for="none">None</label>
+                                                <input type="radio" id="none" name="children" checked="checked" value="0"/>
+                                                <label for="none">None</label>
                                             </li>
                                             <li>
-                                            <input type="radio" id="one" name="children" value="1"/>
-                                            <label for="one">One</label>
+                                                <input type="radio" id="one" name="children" value="1"/>
+                                                <label for="one">One</label>
                                             </li>
                                             <li>
-                                            <input type="radio" id="two" name="children"value="2" />
-                                            <label for="two">Two</label>
+                                                <input type="radio" id="two" name="children"value="2" />
+                                                <label for="two">Two</label>
                                             </li>
                                             <li>
                                                 <input type="radio" id="three" name="children"value="3" />
