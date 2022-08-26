@@ -16,7 +16,7 @@ class CreateProductDetailsTable extends Migration
         Schema::create('product_details', function (Blueprint $table) {
             $table->id();
             $table->integer('product_id');
-            $table->integer('visa_type')->comment('1:bluepinkjob; 2:whitejob; 3:familypackage');
+            $table->string('visa_type')->nullable();
             $table->text('job_title');
             $table->longText('description');
             $table->decimal('cost');

@@ -106,8 +106,9 @@
                                         <p> 
                                             <i class="<?php echo $icon; ?>"></i> {{$offer_discount_msg}}
                                         </p>
+                                        <p><a class="btn btn-secondary" href="{{ url('package/type', $offer->id) }}">Buy Now</a></p>
 
-                                        <p><a class="btn btn-secondary" href="{{ url('product', $offer->id) }}">Buy Now</a></p>
+                                        {{-- <p><a class="btn btn-secondary" href="{{ url('product', $offer->id) }}">Buy Now</a></p> --}}
 
                                     </span>
                                 </span>
@@ -173,8 +174,9 @@
                             <p>
                                 <i class="<?php echo $icon; ?>"></i> {{$offer_discount_msg}} 
                         </p>
+                            <p><a class="btn btn-secondary" href="{{ url('package/type', $offer->id) }}">Buy Now</a></p>
 
-                            <p><a class="btn btn-secondary buy_now" href="{{ url('product', $offer->id) }}">Buy Now</a></p>
+                            {{-- <p><a class="btn btn-secondary buy_now" href="{{ url('product', $offer->id) }}">Buy Now</a></p> --}}
 
                         </span>
                     </span>
