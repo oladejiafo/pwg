@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\ApplicantionController;
+use App\Http\Controllers\ApplicationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ResetPasswordController;
@@ -19,8 +19,8 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 */
 Route::put('family/details/submit', [HomeController::class, 'familyDetails'])->name('family.details.submit');
 Route::get('package/type/{id}', [HomeController::class,'packageType'])->name('package-type');
-Route::get('applicant/review', [ApplicantionController::class, 'applicantReview'])->name('applicant.review');
-Route::post('store/schengen/details', [ApplicantionController::class,'storeSchengenDetails'])->name('store.schengen.details');
+Route::get('applicant/review', [ApplicationController::class, 'applicantReview'])->name('applicant.review');
+Route::post('store/schengen/details', [ApplicationController::class,'storeSchengenDetails'])->name('store.schengen.details');
 
 Route::middleware([
     'auth:sanctum',
@@ -77,5 +77,5 @@ Route::get('applicant/{id}', [ApplicationController::class,'applicanview'])->nam
 Route::post('store/applicant', [ApplicationController::class,'storeApplicant'])->name('store.applicant');
 Route::post('srore/applicant/details', [ApplicationController::class,'storeApplicantDetails'])->name('store.applicant.details');
 Route::post('store/home/country/details', [ApplicationController::class,'storeHomeCountryDetails'])->name('store.home-country.details');
-Route::post('store/current/details', [ApplicantionController::class,'storeCurrentDetails'])->name('store.current.details');
-Route::post('upload/passport/copy', [ApplicantionController::class, 'uploadPassportCopy'])->name('upload.passport.copy');
+Route::post('store/current/details', [ApplicationController::class,'storeCurrentDetails'])->name('store.current.details');
+Route::post('upload/passport/copy', [ApplicationController::class, 'uploadPassportCopy'])->name('upload.passport.copy');
