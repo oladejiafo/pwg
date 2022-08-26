@@ -26,10 +26,14 @@
 </style>
 
 <body>
+
+@if($promo->first())
+                 @foreach($promo as $prom)
 <?php
   // $offer_discount= $data->prev_discount - $data->discount;
   
-  if($data->discount >0)
+  if($prom->discount_percent >0)
+
   { 
     $icon = 'fa fa-minus-circle';
     $offer_discount_msg = 'Promo Offer: ' . number_format($data->discount) .'% Off !';
@@ -44,7 +48,13 @@
   }
   
 ?>
+                                @endforeach
 
+@else 
+@php
+$icon = '';
+           $offer_discount_msg = ''; @endphp
+@endif
   <section class="product-section">
     <div class="container-fluid">
       <div class="row" style="margin-block: 50px;">

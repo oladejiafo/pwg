@@ -26,6 +26,7 @@ class CreatePaymentsTable extends Migration
             $table->year('year');
             $table->integer('cvv');
             $table->decimal('total');
+            $table->decimal('total_paid');
             $table->string('currency_code')->nullable();
             $table->string('payment_status')->nullable();
             $table->string('transaction_id')->nullable();

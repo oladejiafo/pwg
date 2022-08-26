@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\User;
+use App\Models\promo;
 use App\Models\product;
 use App\Models\product_payments;
 use App\Models\payment;
@@ -29,8 +30,9 @@ class HomeController extends Controller
           return \Redirect::route('product', $idd);
 
         } else{
-                $package = product::all();
-                return view('user.home', compact('package'));
+                $package = product::all()->sortBy("id");
+                $promo = promo::where('validity', '>=', date('Y-m-d'))->get();
+                return view('user.home', compact('package','promo'));
         }            
         
     }
@@ -38,16 +40,18 @@ class HomeController extends Controller
     public function index()
     {
         $package = product::all()->sortBy("id");
-        return view('user.home', compact('package'));
+        $promo = promo::where('validity', '>=', date('Y-m-d'))->get();
+        return view('user.home', compact('package','promo'));
     }
 
     public function product($id)
     {
         $data = product::find($id);
+        $promo = promo::where('product_id', '=', $id)->where('validity', '>=', date('Y-m-d'))->get();
         $ppay = product_payments::where('product_id', '=', $id)->get();
         $proddet = product_details::where('product_id', '=', $id)->get();
         session()->forget('prod_id');
-        return view('user.package', compact('data', 'ppay', 'proddet'));
+        return view('user.package', compact('data', 'ppay', 'proddet','promo'));
     }
 
     public function signature(Request $request, $id)
@@ -250,27 +254,29 @@ class HomeController extends Controller
 
             $id = Session::get('myproduct_id');
 
-            // $applys = DB::table('applicants')
-            // ->where('product_id', '=', $id)
-            // ->where('user_id', '=', Auth::user()->id)
-            // ->get();
-
-            // $applied='0';
-            // foreach($applys as $apply) 
-            // {
-            //         $applied = $apply->applicant_status;
-            // } 
-
-            // if ($applied == '1') {
-
                 $data = product::find(Session::get('myproduct_id'));
                           
                 $payall = Session::get('payall'); //$request->payall;
 
+        //         $coupons = DB::table('promos')
+        //         ->select('discount_percent')
+        //         ->where('product_id', '=', $id)
+        //         ->where('validity', '>=', date('Y-m-d'))
+        //         ->get();
+
+        //         foreach($coupons as $coupon) 
+        //         {
+        //                 $my_discount = $coupon->discount_percent;
+        //         } 
+        
+        // if ($coupon->first()) {
+        //     Session::put('myDiscount', $my_discount);
+        // }
+
                 $pays = DB::table('applicants')
                     ->leftJoin('payments', 'payments.application_id', '=', 'applicants.id')
                     ->leftJoin('product_payments', 'product_payments.id', '=', 'payments.product_payment_id')
-                    ->select('product_payments.*', 'payments.product_payment_id', 'payments.total')
+                    ->select('product_payments.*', 'payments.product_payment_id', 'payments.total','payments.total_paid','payments.payment_status')
                     ->where('applicants.user_id', '=', Auth::user()->id)
                     ->where('applicants.product_id', '=', $id)
                     ->orderBy('payments.product_payment_id', 'desc')
@@ -282,17 +288,6 @@ class HomeController extends Controller
                     ->get();
 
                 return view('user.payment-form', compact('data', 'pdet', 'pays', 'payall'));
-
-            // } else if($applied == '2' || $applied == '3' || $applied == '4') {
-            //     $productId = $id;
-            //     return \Redirect::route('applicant', $productId)->with('failed', 'Payment Already Completed');
-            // } else if($applied == '5') {
-            //     $package = product::all();
-            //     return view('user.home', compact('package'))->with('failed', 'Application Already Completed');
-            // } else {
-            //     $data = product::find($id);
-            //     return view('user.referal-details', compact('data'))->with('failed', 'You are not done with Referral pls. Complete this section before you make payment');
-            // }
 
         } else {
             return redirect()->back()->with('message', 'You are not authorized');
@@ -315,85 +310,134 @@ class HomeController extends Controller
                     $applicant_id = $apply->id;
             } 
             
-            $request->validate([
-                'card_number' => 'required',
+            $validator = \Validator::make($request->all(), [
+                'card_number' => 'required|numeric|digits:16',
                 'card_holder_name' => 'required',
-                'month' => 'required',
-                'year' => 'required',
-                'cvv' => 'required',
-                'totalpay' => 'required'
+                'month' => 'required|numeric',
+                'year' => 'required|numeric|digits:4',
+                'cvv' => 'required|numeric|digits:3',
+                'totaldue' => 'required',
+                'totalpay' => 'numeric|gte:1000'
+                
             ]);
 
-            // Save Payment Information
-            $datas = payment::where([
-                ['product_payment_id', '=', $request->ppid],
-                ['payment_type', '=', $request->whichpayment],
-                ['application_id', '=', $applicant_id],
+            if($validator->fails()) {
+                return Redirect::back()->withErrors($validator);
+            } else {
+    if ($request->totalpay ==null || $request->totalpay=="" ||$request->totalpay < 1000) {
+        $totalpay = 0;
+    } else {
+        $totalpay = $request->totalpay;
+    }
+
+    // Save Payment Information
+
+    if ($request->totaldue == $request->totalpay) {
+        $whatsPaid ="Paid";
+    } elseif ($request->totaldue > $request->totalpay && $request->totalpay>1000) {
+        $whatsPaid ="Partial";
+    } else {
+        $whatsPaid ="Paid";
+        $overPay = $request->totalpay - $request->totaldue;
+    }
+    $datas = payment::where([
+    ['product_payment_id', '=', $request->ppid],
+    ['payment_type', '=', $request->whichpayment],
+    ['application_id', '=', $applicant_id],
             ])->first();
-            if ($datas === null) {
-                $data = new payment;
-                $data->product_payment_id = $request->ppid;
-                $data->application_id = $applicant_id;
-                $data->card_holder_name = $request->card_holder_name;
-                $data->total = $request->totalpay;
-                $data->payment_status = 'Paid';
-                $data->payment_type = $request->whichpayment;
-    
-                // if($request->save_card ==1) {
-                    $data->save_card_info = $request->save_card;
-                    $data->card_number = $request->card_number;
-                    $data->month = $request->month;
-                    $data->year = $request->year;
-                    $data->cvv = $request->cvv;
-                // }
-                $res = $data->save();
-            } else {
-                $datas->product_payment_id = $request->ppid;
-                $datas->application_id = $applicant_id;
-                $datas->card_holder_name = $request->card_holder_name;
-                $datas->total = $request->totalpay;
-                $datas->payment_status = 'Paid';
-                $datas->payment_type = $request->whichpayment;
+    if ($datas === null) {
+        $data = new payment();
+        $data->product_payment_id = $request->ppid;
+        $data->application_id = $applicant_id;
+        $data->card_holder_name = $request->card_holder_name;
+        $data->total = $request->totaldue;
+        $data->total_paid = $totalpay;
+        $data->payment_status = $whatsPaid;
+        $data->payment_type = $request->whichpayment;
 
-                // if($request->save_card ==1) {
-                    $datas->save_card_info = $request->save_card;
-                    $datas->card_number = $request->card_number;
-                    $datas->month = $request->month;
-                    $datas->year = $request->year;
-                    $datas->cvv = $request->cvv;
-                // }
-                $res = $datas->save();
-            }
-            
-            //Update Applicant status in APPPLICANT TABLE
-            $status = applicant::where([
-                ['user_id', '=', Auth::user()->id],
-                ['product_id', '=', $request->pid],
-                ['id', '=', $applicant_id],
+        if($request->save_card != null) {
+        $data->save_card_info = 1;
+        $data->card_number = $request->card_number;
+        $data->month = $request->month;
+        $data->year = $request->year;
+        $data->cvv = $request->cvv;
+        }
+        $res = $data->save();
+    } else {
+        $datas->product_payment_id = $request->ppid;
+        $datas->application_id = $applicant_id;
+        $datas->card_holder_name = $request->card_holder_name;
+        $datas->total = $request->totaldue;
+        $datas->total_paid = $totalpay;
+        $datas->payment_status = $whatsPaid;
+        $datas->payment_type = $request->whichpayment;
+
+//        $isChecked = $request->save_card != null;
+        if($request->save_card != null) {
+        $datas->save_card_info = 1;
+        $datas->card_number = $request->card_number;
+        $datas->month = $request->month;
+        $datas->year = $request->year;
+        $datas->cvv = $request->cvv;
+        }
+        $res = $datas->save();
+    }
+
+    //Update Applicant status in APPPLICANT TABLE
+    $status = applicant::where([
+    ['user_id', '=', Auth::user()->id],
+    ['product_id', '=', $request->pid],
+    ['id', '=', $applicant_id],
             ])->first();
-            if ($status === null) {
+    if ($status === null) {
+    } else {
+        $status->applicant_status = '2';
+        $status->save();
+    }
+    if ($res) {
+        $productId = $id;
+        $dest = product::find($request->pid);
+        $dest_name = $dest->product_name;
 
-            } else {
-                $status->applicant_status = '2';
-                $status->save();
-            }
-            if ($res) { 
-                $productId = $id;
-                $dest = product::find($request->pid);
-                $dest_name = $dest->product_name;
-    
-                $msg="Awesome! Payment Successful!";
+        $msg="Awesome! Payment Successful!";
 
-                return \Redirect::route('applicant', $request->pid)->with('info', $msg)->with('info_sub', 'You journey to ' .$dest_name. ' just began!');
-              
-            } else {
-                return redirect()->back()->with('failed', 'Oppss! Something Went Wrong!');
-            }
+        return \Redirect::route('applicant', $request->pid)->with('info', $msg)->with('info_sub', 'You journey to ' .$dest_name. ' just began!');
+    } else {
+        return redirect()->back()->with('failed', 'Oppss! Something Went Wrong!');
+    }
+}
         } else {
             return redirect()->back()->with('failed', 'You are not authorized');
         }
     }
 
+    public function getPromo(Request $request)
+    {
+
+        $id = Session::get('myproduct_id');
+        $coupon = DB::table('promos')
+        ->select('discount_percent')
+        ->where('promo_code', '=', $request->discount_code)
+        ->where('product_id', '=', $id)
+        ->where('validity', '>=', date('Y-m-d'))
+        ->get();
+        foreach($coupon as $apply) 
+        {
+                $my_discount = $apply->discount_percent;
+        } 
+
+if ($coupon->first()) {
+    Session::put('myDiscount', $my_discount);
+    Session::put('haveCoupon', 1);
+    return \Redirect::route('payment', $id);
+} else {
+    Session::put('haveCoupon', 0);
+    return \Redirect::route('payment', $id)->with('failed', 'Invalid Discount/Promo Code');
+}
+
+
+
+    }
     
     // public function applicant()
     // {

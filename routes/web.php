@@ -78,3 +78,5 @@ Route::post('store/home/country/details', [ApplicantionController::class,'storeH
 Route::post('store/current/details', [ApplicantionController::class,'storeCurrentDetails'])->name('store.current.details');
 Route::post('upload/passport/copy', [ApplicantionController::class, 'uploadPassportCopy'])->name('upload.passport.copy');
 Route::post('/add/experience', [ApplicantionController::class,'addExperience'])->name('add.experience');
+
+Route::post('get-promo',[HomeController::class, 'getPromo'])->name('getPromo');
