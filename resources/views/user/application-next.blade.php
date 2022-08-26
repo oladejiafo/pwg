@@ -1315,10 +1315,10 @@
                                     @csrf
                                     <div class="form-group row mt-4 searchForm">
                                         <div class="col-sm-10 mt-3" >
-                                            <input type="text" class="form-control" name="search" placeholder="Enter Job Title" >
+                                            <input type="text" class="form-control" v-model="search" name="search" placeholder="Enter Job Title" >
                                         </div>
                                         <div class="col-sm-2 mt-3" style="padding-left: 0px">
-                                            <button class="btn btn-danger">Search</button>
+                                            <button class="btn btn-danger" v-on:click="filterJob()">Search</button>
                                         </div>
                                     </div>
                                 </form>
@@ -1407,7 +1407,7 @@
                                                                         </div>
                                                                         <div class="form-group row mt-4" style="margin-bottom: 20px">
                                                                             <div class="row">
-                                                                                <button type="button" class="btn btn-primary submitBtn"  v-on:click="addExperience(index,indexTwo,indexThree,indexFour,jobCategoryFour.name)" style="line-height: 22px">Add Experience</button>
+                                                                                <button type="button" class="btn btn-primary submitBtn" applicantId="{{$applicantId}}" v-on:click="addExperience(index,indexTwo,indexThree,indexFour,jobCategoryFour.name)" style="line-height: 22px">Add Experience</button>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -1451,6 +1451,7 @@
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 <script>
     $(document).ready(function(){
+        window.applicantId = {{$applicantId}};
         $('.schengen_visa').hide();
         $('.datepicker').datepicker({
             maxDate : 0,

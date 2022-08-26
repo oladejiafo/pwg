@@ -45,7 +45,7 @@
                                 @php
                           } else {
                                 @endphp    
-                                <a href="{{ url('payment_form', $data->id) }}" >
+                                <a href="{{ url('payment_form', $productId) }}" >
                                     <div class="round2  m-2">2</div>
                                 </a>
                               @php   

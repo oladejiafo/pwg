@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\ApplicantionController;
+use App\Http\Controllers\ApplicationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ResetPasswordController;
@@ -17,8 +17,10 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('applicant/review', [ApplicantionController::class, 'applicantReview'])->name('applicant.review');
-Route::post('store/schengen/details', [ApplicantionController::class,'storeSchengenDetails'])->name('store.schengen.details');
+Route::put('family/details/submit', [HomeController::class, 'familyDetails'])->name('family.details.submit');
+Route::get('package/type/{id}', [HomeController::class,'packageType'])->name('package-type');
+Route::get('applicant/review', [ApplicationController::class, 'applicantReview'])->name('applicant.review');
+Route::post('store/schengen/details', [ApplicationController::class,'storeSchengenDetails'])->name('store.schengen.details');
 
 Route::middleware([
     'auth:sanctum',
@@ -45,7 +47,6 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 })->name('dashboard');
 
 Route::get('/product/{id}',[HomeController::class,'product'])->name('product');
-
 Route::get('append_signature/{id}',[HomeController::class,'signature'])->name('signature');
 Route::get('signature_success/{id}',[HomeController::class,'signature_success'])->name('signature_success');
 Route::get('/referal_details/{id}',[HomeController::class,'referal'])->name('referal');

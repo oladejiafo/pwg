@@ -218,20 +218,20 @@
             @auth
               <li class="nav-item d-lg-block">
                 <a class="nav-link" href="#">
-                  <img src="../user/images/Search.svg" width="30px" height="30px" alt="icon3">
+                  <img src="{{asset('user/images/Search.svg')}}" width="30px" height="30px" alt="icon3">
                 </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">
                   <!-- <i class="mdi mdi-email" style="width: 30px; height: 30px;"></i> -->
-                  <img src="../user/images/Chat.svg" width="30px" height="30px" alt="icon3">
+                  <img src="{{asset('user/images/Chat.svg')}}" width="30px" height="30px" alt="icon3">
                   <span class="count bg-success"></span>
                 </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">
                   <!-- <i class="mdi mdi-bell" style="width: 30px; height: 30px;"></i> -->
-                  <img src="../user/images/Notification.svg" width="30px" height="30px" alt="icon3">
+                  <img src="{{asset('user/images/Notification.svg')}}" width="30px" height="30px" alt="icon3">
                   <span class="count bg-danger"></span>
                 </a>
               </li>
@@ -292,16 +292,16 @@
 </body>
       <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 
-    <script src="../user/extra/assets/js/jquery-min.js"></script>
+    <script src="{{asset('user/extra/assets/js/jquery-min.js')}}"></script>
     
-    <script src="../user/extra/assets/js/popper.min.js"></script>
-    <script src="../user/extra/assets/js/bootstrap.min.js"></script>
-    <script src="../user/extra/assets/js/owl.carousel.min.js"></script>
-    <script src="../user/extra/assets/js/wow.js"></script>
-    <!-- <script src="../user/extra/assets/js/jquery.nav.js"></script>
-    <script src="../user/extra/assets/js/scrolling-nav.js"></script>
-    <script src="../user/extra/assets/js/jquery.easing.min.js"></script>  -->
-    <script src="../user/extra/assets/js/main.js"></script>
-    <!-- <script src="../user/extra/assets/js/form-validator.min.js"></script>
-    <script src="../user/extra/assets/js/contact-form-script.min.js"></script>
-       -->
+    <script src="{{asset('user/extra/assets/js/popper.min.js')}}"></script>
+    <script src="{{asset('user/extra/assets/js/bootstrap.min.js')}}"></script>
+    <script src="{{asset('user/extra/assets/js/owl.carousel.min.js')}}"></script>
+    <script src="{{asset('user/extra/assets/js/wow.js')}}"></script>
+    <script src="{{asset('user/extra/assets/js/main.js')}}"></script>
+
+   {{-- <script src="{{asset('user/extra/assets/js/jquery.nav.js')}}"></script>
+    <script src="{{asset('user/extra/assets/js/scrolling-nav.js')}}"></script>
+    <script src="{{asset('user/extra/assets/js/jquery.easing.min.js')}}"></script> 
+    <script src="{{asset('user/extra/assets/js/form-validator.min.js')}}"></script>
+    <script src="{{asset('user/extra/assets/js/contact-form-script.min.js')}}"></script> --}}

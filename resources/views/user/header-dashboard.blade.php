@@ -44,9 +44,9 @@
 
             @auth 
             <div id="activity">
-                <div class="divs"><a href="#"><img src="../user/images/Search.svg" width="30px" height="30px" alt="icon3"></a></div>
-                <div class="divs"><a href="#"><img src="../user/images/Notification.svg" width="30px" height="30px" alt="icon3"></a></div>
-                <div class="divs"><a href="#"><img src="../user/images/Chat.svg" width="30px" height="30px" alt="icon3"></a></div>
+                <div class="divs"><a href="#"><img src="{{asset('user/images/Search.svg')}}" width="30px" height="30px" alt="icon3"></a></div>
+                <div class="divs"><a href="#"><img src="{{asset('user/images/Notification.svg')}}" width="30px" height="30px" alt="icon3"></a></div>
+                <div class="divs"><a href="#"><img src="{{asset('user/images/Chat.svg')}}" width="30px" height="30px" alt="icon3"></a></div>
                 <div class="divs dropdown">
                     <img src="../user/images/signin.svg" style="width: 80px; height: 40px;" alt="icon3"><i class="fa fa-arrow-circle-down"></i>
                     <div class="dropdown-content">

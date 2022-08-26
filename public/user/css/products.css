@@ -208,7 +208,7 @@ display: none;  // Safari and Chrome
     border-radius: 10px;
     border: none;
     border-color: none;
-    margin: 20px 45px;
+    /* margin: 20px 45px; */
 }
 .card {
     border-radius: 10px;

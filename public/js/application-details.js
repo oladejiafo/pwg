@@ -2073,14 +2073,17 @@ __webpack_require__.r(__webpack_exports__);
 window.Vue = (__webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js")["default"]);
 var app = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]({
   el: '#app',
+  props: ['applicantId'],
   data: function data() {
     return {
       jobCategories: [],
-      selectedJob: []
+      selectedJob: [],
+      search: null
     };
   },
   methods: {
     getCategories: function getCategories() {
+      console.log(this.applicantId);
       axios__WEBPACK_IMPORTED_MODULE_1___default().post('https://bo.pwggroup.ae/api/get-job-category-list').then(function (response) {
         app.jobCategories = response.data;
         console.log(app.jobCategories);
@@ -2088,7 +2091,8 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]({
         console.log(error);
       });
     },
-    addExperience: function addExperience(cat1, cat2, cat3, cat4, jobTitle, applicantId) {
+    addExperience: function addExperience(cat1, cat2, cat3, cat4, jobTitle) {
+      console.log(this.applicantId);
       this.selectedJob.push({
         name: jobTitle,
         cat1: cat1,
@@ -2097,7 +2101,7 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]({
         cat4: cat4
       });
       axios__WEBPACK_IMPORTED_MODULE_1___default().post('/add/experience', {
-        applicant_id: applicantId,
+        applicant_id: this.applicantId,
         job_category_one_id: cat1,
         job_category_two_id: cat2,
         job_category_three_id: cat3,
@@ -2111,7 +2115,15 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]({
     removeJob: function removeJob(index) {
       this.selectedJob.splice(index, 1);
     },
-    getSelectedExperience: function getSelectedExperience() {}
+    getSelectedExperience: function getSelectedExperience() {},
+    filterJob: function filterJob() {
+      axios__WEBPACK_IMPORTED_MODULE_1___default().post('https://bo.pwggroup.ae/api/get-job-category-four-list').then(function (response) {
+        app.jobCategories = response.data;
+        console.log(app.jobCategories);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    }
   },
   mounted: function mounted() {
     this.getCategories();
