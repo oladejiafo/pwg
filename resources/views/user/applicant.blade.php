@@ -1,9 +1,6 @@
 @extends('layouts.master')
-<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
- -->
  <link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
- <script src=”https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
  <link href="{{asset('css/alert.css')}}" rel="stylesheet">
 <style>
     body {
@@ -135,11 +132,11 @@
                             </div>        
                             <div class="form-group row mt-3">
                                 <div class="col-sm-6 mt-3">
-                                    <input type="text" class="form-control" placeholder="Upload your cv (PDF only)*" name="cv" value="{{old('cv')}}" readonly required>
+                                    <input type="text" class="form-control cvupload" placeholder="Upload your cv (PDF only)*" name="cv" value="{{old('cv')}}" readonly required>
                                     <div class="input-group-btn">
                                         <span class="fileUpload btn">
                                             <span class="upl" id="upload">Choose File</span>
-                                            <input type="file" class="upload up" id="up"  name="cv" accept="application/pdf" onchange="readURL(this);" />
+                                            <input type="file" class="upload up cvupload" id="up"  name="cv" accept="application/pdf" onchange="readURL(this);" />
                                           </span><!-- btn-orange -->
                                     </div><!-- btn -->
                                     @error('cv') <span class="error">{{ $message }}</span> @enderror
@@ -400,51 +397,8 @@
 @push('custom-scripts')
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js" integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
-
 
 <script>
-    const phoneInputField = document.querySelector("#phone");
-    const phoneInput = window.intlTelInput(phoneInputField, {
-        initialCountry: "ae",
-        // geoIpLookup: getIp,
-        utilsScript:
-            "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-    });
-
-///TESTTTTTTTTTTTTTTTTTTTTTTTTT
-
-
-///TESTTTTTTTTTTTTTTTTTTTTTTTTTTTT
-
-    function getIp(callback) {
-        var api_key = 'hk9woa8o8wuag4hd';
-        fetch('https://api.ipregistry.co/?key=tryout')
-        .then(function (response) {
-            return response.json();
-        })
-        .catch((resp) => {
-                return {
-                    country: 'ae',
-                };
-            })
-        //  .then((payload) => callback(payload.location.country.code))
-        .then((payload) => callback('ae'))
-        .then(function (payload) {
-            // return payload.location.country.code;
-            return 'ae';
-        });
-        // $.getJSON("https://api.ipify.org/?format=json", function(e) {
-        //     ip = e.ip;
-        // //     var ipInfo = request_ipwhois(ip)
-        //     console.log(ip);
-        //     $.getJSON("https://cors-anywhere.herokuapp.com/http://www.geoplugin.net/json.gp?ip=" + ip, function(response) {
-        //         console.log(response.geoplugin_countryCode);
-
-        //     });
-        // });
-    }
-
     $(document).on('change','.up', function(){
         var names = [];
         var length = $(this).get(0).files.length;
@@ -454,10 +408,10 @@
           // $("input[name=file]").val(names);
         if(length>2){
           var fileName = names.join(', ');
-          $(this).closest('.form-group').find('.form-control').attr("value",length+" files selected");
+          $('.cvupload').attr("value",length+" files selected");
         }
         else{
-          $(this).closest('.form-group').find('.form-control').attr("value",names);
+          $('.cvupload').attr("value",names);
         }
      });
 </script>

@@ -48,7 +48,7 @@
                         </div>
                     </div>
                 </div>
-                <form>
+                {{-- <form> --}}
                     <div class="applicant-detail-sec">
                         <div class="heading">
                             <div class="row">
@@ -81,7 +81,7 @@
                                     @php
                                         $name = explode(' ', $user['name']);
                                     @endphp
-                                    <form method="POST" id="applicant_details">
+                                    <form method="POST" enctype="multipart/form-data" id="applicant_details">
                                         @csrf
                                         <input type="hidden" name="product_id" value="1">
                                         <div class="form-group row mt-4">
@@ -556,7 +556,7 @@
                         </div>
                     </div>
 
-                    <div class="applicant-detail-sec">
+                    <div class="applicant-detail-sec home_country_details">
                         <div class="heading">
                             <div class="row">
                                 <div class="col-2 my-auto">
@@ -1460,7 +1460,7 @@
                             </div>
                         </div>
                     </div>
-                </form>
+                {{-- </form> --}}
             </div>
         </div>
     </div>
@@ -1522,13 +1522,20 @@
             $("#applicant_details :input").each(function(index, elm){
                 $("."+elm.name+"_errorClass").empty();
             });
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
             $.ajax({
                 type: 'POST',
                 url: "{{ route('store.applicant.details') }}",
                 data: new FormData(this), 
+                processData: false,
+                contentType: false,
                 success: function (data) {
                     if(data.success) {
-                        alert('Data added successfully !');
+                        // alert('Data added successfully !');
                     } else {
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
@@ -1544,9 +1551,14 @@
         $("#home_country_details").submit(function(e){
             e.preventDefault(); 
             $("#home_country_details :input").each(function(index, elm){
+                console.log(elm.name);
                 $("."+elm.name+"_errorClass").empty();
             });
-            
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
             $.ajax({
                 type: 'POST',
                 url: "{{ route('store.home-country.details') }}",
@@ -1558,12 +1570,16 @@
                 contentType: false,
                 success: function (data) {
                     if(data.success) {
-                        alert('Data added successfully !');
+                        // alert('Data added successfully !');
                     } else {
+                        $('html, body').animate({
+                            scrollTop: $("#home_country_details").offset().top
+                        }, 2000);
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
                             $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
                         });
+                        
                     }
                 },
                 errror: function (error) {
@@ -1589,7 +1605,7 @@
                 contentType: false,
                 success: function (data) {
                     if(data.success) {
-                        alert('Data added successfully !');
+                        // alert('Data added successfully !');
                     } else {
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
@@ -1675,7 +1691,7 @@
                 contentType: false,
                 success: function (data) {
                     if(data.success) {
-                        alert('Data added successfully !');
+                        // alert('Data added successfully !');
                     } else {
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
@@ -1689,10 +1705,14 @@
         });
 
         $('.applicantReview').click(function(){
-            $('#schengen_details').submit();
-            $('#current_residency').submit();
-            $("#home_country_details").submit();
-            $("#applicant_details").submit();  
+            $.ajax({
+                type: 'POST',
+                url: "{{ url('submit/applicant/review') }}",
+                data: {{$applicantId}}
+                success: function (response) {
+                    console.log(response);
+                }
+            });
         });
 
         $(document).on('change','.schengen_copy', function(){

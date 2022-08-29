@@ -319,11 +319,16 @@ class HomeController extends Controller
         if (Auth::id()) {
 
             $id = Session::get('myproduct_id');
+            Applicant::updateOrCreate([
+                'product_id' => $id,
+                'user_id' => Auth::id()
+            ],[
+                'first_name'=> Auth::user()->first_name
+            ]);
             $applys = DB::table('applicants')
             ->where('product_id', '=', $id)
             ->where('user_id', '=', Auth::user()->id)
             ->get();
-
 
             foreach($applys as $apply) 
             {

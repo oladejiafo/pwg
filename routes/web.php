@@ -18,6 +18,8 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 |
 */
 
+Route::post('srore/applicant/details', [ApplicationController::class,'storeApplicantDetails'])->name('store.applicant.details');
+Route::post('get-promo',[HomeController::class, 'getPromo'])->name('getPromo');
 Route::get('applicant/review', [ApplicationController::class, 'applicantReview'])->name('applicant.review');
 
 Route::middleware([
@@ -76,7 +78,6 @@ Route::post('/add/experience', [ApplicationController::class,'addExperience'])->
 Route::get('applicant/details', [ApplicationController::class, 'applicantDetails'])->name('applicant.details');
 Route::get('applicant/{id}', [ApplicationController::class,'applicant'])->name('applicant');
 Route::post('store/applicant', [ApplicationController::class,'storeApplicant'])->name('store.applicant');
-Route::post('srore/applicant/details', [ApplicationController::class,'storeApplicantDetails'])->name('store.applicant.details');
 Route::post('store/home/country/details', [ApplicationController::class,'storeHomeCountryDetails'])->name('store.home-country.details');
 Route::post('store/current/details', [ApplicationController::class,'storeCurrentDetails'])->name('store.current.details');
 Route::post('upload/passport/copy', [ApplicationController::class, 'uploadPassportCopy'])->name('upload.passport.copy');
@@ -85,4 +86,3 @@ Route::post('/get/selected/experience', [ApplicationController::class,'getApplic
 Route::post('/remove/selected/experience', [ApplicationController::class,'removeExperience'])->name('remove.selected.experience');
 Route::post('/submit/applicant/review/', [ApplicationController::class, 'applicantReviewSubmit'])->name('submit.applicant.review');
 
-Route::post('get-promo',[HomeController::class, 'getPromo'])->name('getPromo');

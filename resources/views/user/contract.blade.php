@@ -4,7 +4,7 @@
     <div class="container">
         <div class="col-12">
             <div class="contract">
-                <form method="get" action="{{route('signature', $productId)}}">
+                <form method="get" action="{{route('signature', $productId)}}" id="sign">
                     <div class="col-4 offset-4 contractLogo">
                         <img src="{{asset('images/contract.svg')}}" width="100%" height="100%">
                     </div>
@@ -31,7 +31,8 @@
                                 <p>&nbsp; <input type="checkbox" class="checkcolor" id="agree" style="font-size:25px;transform: scale(1.8); " checked required="" > &nbsp; By checking this box you accept our <a href="#" style="color:blue;margin:0">Terms & Conditions</a></p>
                             </div>
                             <button type="button" class="btn btn-secondary zoomOut" id="zoom" value="0" name="payall" style="width:100%; font-size:1.6em">ZOOM TO REVIEW</button>
-                            
+                            <button type="button" class="btn btn-secondary zoomIn" id="zoom" value="0" name="payall" style="width:100%; font-size:1.6em">ZOOM TO REVIEW</button>
+
                             <button type="submit" class="btn btn-secondary" id="sign" value="0" name="payall" style="width:100%; font-size:1.6em;margin-top: 18px;">SIGN</button>
                         </div>
                     </div>
@@ -44,10 +45,19 @@
     <script>
         $(document).ready(function(){
             $('.contractPreview').hide();
+            $('.zoomIn').hide();
             $('.zoomOut').click(function(){
                 $('.contractPreview').show();
                 $('.contractZoomIn').hide();
+                $('.zoomIn').show();
+                $('.zoomOut').hide();
             })
+            $('.zoomIn').click(function(){
+                $('.zoomOut').show();
+                $('.zoomIn').hide();
+                $('.contractPreview').hide();
+                $('.contractZoomIn').show();
+            });
         });
     </script>
 @endpush

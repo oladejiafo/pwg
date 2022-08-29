@@ -56,7 +56,7 @@
                         <img src="{{asset('images/CheckMark.svg')}}" alt="approved">
                     </div>
                     <div class="reset-heading">
-                        Payment unsuccessful !
+                        Payment successful !
                     </div>
                     <div class="subConfirm"> Your journey to Poland just began!</div>
                     <div class="sig">
