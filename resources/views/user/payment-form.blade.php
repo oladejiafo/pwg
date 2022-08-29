@@ -4,6 +4,28 @@
 <link href="{{asset('css/payment-form.css')}}" rel="stylesheet">
 <link href="{{asset('css/alert.css')}}" rel="stylesheet">
 
+<style>
+    input {
+    text-align:left;
+}
+    .dicount_code::placeholder {
+   text-align: center !important; 
+}
+</style>
+
+<script>
+
+function changeLink(inputElement)
+{
+
+    document.getElementById('amountLink').innerText.value = document.getElementById('amount').value
+//    $("span").text("$" + inputElement.value);
+//  $('#amountLink').attr("href","donate.php?amount="+inputElement.value);
+    // $('#amountLink').text("$" + inputElement.value);
+    //console.log($('#donateLink').attr("href"));
+}
+
+</script>
 @section('content')
 @php
 $pid = Session::get('myproduct_id');
@@ -17,6 +39,9 @@ foreach($completed as $complete)
 {
 $levels = $complete->applicant_status;
 }
+
+// ******CURRENCY FORMAT ONLY****** oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');" ///
+// ******NUMBER FORMAT ONLY, NO COMA****** oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
 @endphp
 <div class="container">
     <div class="col-12">
@@ -59,7 +84,7 @@ $levels = $complete->applicant_status;
                             <div class="wrapper">
                                 <!-- <a href="{{route('applicant', $pid)}}" ><div class="round3 m-2">3</div></a> -->
                                 <a href="#" onclick="return alert('You have to complete Payment first');">
-                                    <div class="round3 m-2">3</div>
+                                    <div class="round3 m-2">2</div>
                                 </a>
                                 <div class="col-2 round-title">Application <br> Details</div>
                             </div>
@@ -67,7 +92,7 @@ $levels = $complete->applicant_status;
                             <div class="wrapper">
                                 <!-- <a href="{{route('applicant.details')}}" ><div class="round4 m-2">4</div></a> -->
                                 <a href="#" onclick="return alert('You have to complete Payment first');">
-                                    <div class="round4 m-2">4</div>
+                                    <div class="round4 m-2">3</div>
                                 </a>
                                 <div class="col-2 round-title">Applicant <br> Details</div>
                             </div>
@@ -75,7 +100,7 @@ $levels = $complete->applicant_status;
                             <div class="wrapper">
                                 <!-- <a href="{{url('applicant/review')}}" ><div class="round5 m-2">5</div></a> -->
                                 <a href="#" onclick="return alert('You have to complete Payment first');">
-                                    <div class="round5 m-2">5</div>
+                                    <div class="round5 m-2">4</div>
                                 </a>
                                 <div class="col-2 round-title">Application <br> Review</div>
                             </div>
@@ -85,6 +110,7 @@ $levels = $complete->applicant_status;
             </div>
         @endif
 <!-- Main Module Begins here -->
+
         <div class="payment-form">
             <div class="heading">
                 <div class="first-heading">
@@ -97,63 +123,278 @@ $levels = $complete->applicant_status;
                 </div>
             </div>
             <div class="form-sec discountForm">
-                <form id="discountForm">
-                    @csrf
+                <form id="discountForm" method="POST" action="{{route('getPromo')}}">
+                @csrf
                     <div class="col-6 offset-3">
                         <div class="mb-3">
                             <div class="inputs"> 
-                                <input type="text" class="form-control dicount_code" name="dicount_code" aria-describedby="emailHelp" autocomplete="off" placeholder="########">
+                                <input type="text" class="form-control dicount_code" name="discount_code" id="discount_code" aria-describedby="emailHelp" autocomplete="off" placeholder="########">
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary dicountBtn ">APPLY CODE</button>
                     </div>
                 </form>
+                <!-- <script>
+jQuery(function(){
+    $('#submit').click(function(){
+        var discountCode = $('#discount_code').val();
+        // var productId = $('#product_id').val();
+
+        $.ajax({
+            url : "{{route('getPromo')}}",
+            dataType : 'JSON',
+            type : 'GET',
+            data: {
+                'discountCode' : discountCode,
+        
+            },
+            success: function(data) {
+                console.log(data);
+                alert(data);
+            }
+        });
+        return false;
+    });
+});
+</script> -->
+
+
+
+                <form method="POST" action="{{ url('add_payment') }}">
+                    @csrf
+
+                    @foreach(($pays ? $pays : array()) as $pd)
+
+                    @foreach($pdet as $index => $det)
+
+                    <?php
+                    
+                    $pp = $pd->product_payment_id;
+               //     echo $instal = $det->amount;
+                    ?>
+
+@if(session()->has('myDiscount') && session()->has('haveCoupon') && session()->get('haveCoupon')==1)
+  @php 
+    $promo = session()->get('myDiscount')
+  @endphp
+@else
+@php 
+$promo =0
+@endphp 
+@endif
+
+
+@if($index == 0) 
+    @php
+    $first_pay = $det->amount
+    @endphp
+
+@elseif($index == 1)
+
+   @php
+    $second_pay = $det->amount
+    @endphp    
+
+@else
+    @php
+    $third_pay = $det->amount
+    @endphp    
+
+@endif
+                   
+                    @if($pd->product_payment_id != $det->id)
+                    @if($index == $pp)
+
+                    @php  $diff = $pd->total - $pd->total_paid @endphp
+
+                    @if($diff > 0)
+                     @php
+                      $pends = $pd->total - $pd->total_paid;
+                     @endphp
+                    @elseif($diff < 0)
+                     @php
+                      $pends = $pd->total_paid - $pd->total;
+                     @endphp
+
+                    @endif
+
+                    <?php
+                    $det_id = $det->id;
+                    if ($payall == 0) {
+                        $whichPayment =  $det->payment;
+                        if($diff > 0 && $pd->total_paid >0) 
+                        {
+                          $payNow = $det->amount;
+                          $payNoww = $det->amount + $pends;
+                          $pendMsg =' + ' .$pends ." carried over from previous payment";
+
+                        } elseif($diff < 0 && $pd->total_paid >0) {
+                            $payNow = $det->amount;
+                            $payNoww = $det->amount - $pends;
+                            $pendMsg =' - ' .$pends ." over paid from previous payment";
+                        
+                        } else {
+                            $payNow = $det->amount;
+                            $payNoww = $det->amount;
+                            $pendMsg ="";
+                        }
+                    if($promo>0)
+                    {
+                        $discountPercent = 'PROMO: '.$promo . '%';
+                        $discount = ($promo * $payNow) /100;
+                    } else {
+                        $discountPercent = '0%';
+                        $discount = '0.00';
+                    }
+
+                    } else {
+                        if ($pp == 0 || $pp == null) {
+                            $payNow = $data->unit_price;
+                            $payNoww = $det->unit_price;
+                            $pendMsg ="Full Payment";
+                        } else if ($pp == 1) {
+                            $payNow = $data->unit_price - $pd->total;
+                            $payNoww = $payNow;
+                            $pendMsg ="Full Outstanding Payment";
+                        } else if ($pp == 2) {
+                            $payNow = $det->amount;
+                            $payNoww = $payNow;
+                            $pendMsg ="";
+                        }
+
+                        $whichPayment =  "Full Payment";
+                        $discountPercent = $data->full_payment_discount . '%';
+                        $discount = ($data->unit_price * $data->full_payment_discount / 100);
+                    }
+                    $vatPercent = '5%';
+                    $vat = ($payNow * 5) / 100;
+                    $totalPay = ($payNow + $vat) - $discount;
+
+                    list($which,$zzz) =explode(' ',$whichPayment);
+                    ?>
+                    @endif
+
+                    @endif
+                    @endforeach   
+                    @endforeach
                 <div class="row payament-sec">
-                    <div class="col-6">
+                    <div class="col-6" style="padding-right:20px">
                         <div class="total">
                             <div class="total-sec row mt-3">
                                 <div class="left-section col-6">
-                                    First payment
+                                    
+                                    @if($first_pay == $payNow)
+                                     
+                                      <b>First Payment</b> @if(strlen($pendMsg)>1) <br><font style='font-size:11px;color:red'><i fa fa-arrow-up></i>({{ $pendMsg }}) </font> @endif
+                                    @else
+                                        First Payment
+                                    
+                                    @endif
                                 </div>
-                                <div class="right-section col-6">
-                                    1850.00
+                                <div class="right-section col-6" align="right">
+                                @if($first_pay == $payNow)
+                                     
+                                     <b>{{number_format($first_pay,2)}}</b>
+                                     
+                                    @else
+                                        {{number_format($first_pay,2)}}
+                                    @endif
                                 </div>
                             </div>
                             <div class="total-sec row mt-3">
                                 <div class="left-section col-6">
-                                    Second payment
+                                
+                                    @if($second_pay == $payNow)
+                                      <b>Second Payment</b> @if(strlen($pendMsg)>1) <br><font style='font-size:11px;color:red'><i fa fa-arrow-up></i>({{ $pendMsg }}) </font> @endif
+                                    @else 
+                                       Second Payment
+                                    @endif
                                 </div>
-                                <div class="right-section col-6">
-                                    3000.00
+                                <div class="right-section col-6" align="right">
+                                    
+                                    @if($second_pay == $payNow)
+                                     
+                                     <b>{{number_format($second_pay,2)}}</b>
+                                     
+                                    @else
+                                        {{number_format($second_pay,2)}}
+                                    @endif
+                                   
                                 </div>
                             </div>
                             <div class="total-sec row mt-3">
                                 <div class="left-section col-6">
-                                    Third Payment
+                                    @if($third_pay == $payNow)
+                                      <b>Third Payment</b> @if(strlen($pendMsg)>1) <br><font style='font-size:11px;color:red'><i fa fa-arrow-up></i>({{ $pendMsg }}) </font> @endif
+                                    @else 
+                                       Third Payment
+                                    @endif
                                 </div>
-                                <div class="right-section col-6">
-                                    0.00
+                                <div class="right-section col-6" align="right">
+                                    @if($third_pay == $payNow)
+                                     
+                                     <b>{{number_format($third_pay,2)}}</b>
+                                     
+                                    @else
+                                        {{number_format($third_pay,2)}}
+                                    @endif
                                 </div>
                             </div>
                             <div class="total-sec row mt-3">
                                 <div class="left-section col-6">
                                     Total Payment
                                 </div>
-                                <div class="right-section col-6">
-                                    4850.00
+                                <div class="right-section col-6" align="right">
+                                    {{number_format($data->unit_price,2)}}
+                                </div>
+                            </div>
+                            <div class="total-sec row mt-3">
+                                <div class="left-section col-6">
+                                    @if($discount>0)
+                                      Discount ({{$discountPercent}})
+                                    @endif
+                                </div>
+                                <div class="right-section col-6" align="right">
+                                    @if($discount>0)
+                                     {{number_format($discount,2)}}
+                                    @endif
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="partial">
-                            <p>pay first installment in partial</p>
-                            <input type="text"  class="form-control" placeholder="Enter partial payment">
-                            <p>Minimum amount of <b> 1000AED</b></p>
+                        <div class="partial" style="height: 100%;">
+                            <p>Pay {{strtolower($which)}} installment in partial</p>
+                            <input type="text"  class="form-control" name="amount" id="amount" placeholder="Enter partial payment" style="text-align:left !important" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');">
+                            @if($errors->has('totalpay'))
+    <div class="error">{{ $errors->first('totalpay') }}</div>
+@endif
+                            
+                            <p>Minimum amount of <b> 1,000 AED</b></p>
+                            
+<script>
+$(document).ready(function () {
+  $('#amount').keyup(function () {
+    // if (parseInt($('input[name="amount"]').val()) >= 1000) 
+    // {
+    let ax = $('#amountLink').text($(this).val());
+    document.getElementById("amountLink2").value = $(this).val();
+    // } else {
+    //     alert('Too samll');
+    // }
+  });
+});
+</script>
+<?php 
+        echo $axx = "<script>document.write(ax)</script>"; //I want above javascript variable 'a' value to be store here
+    ?>
                         </div>
                     </div>
                     <div class="partial-total-sec">
-                        <h2>Now you will pay first installment only 1850 AED</h2>
+                        
+                        <h2 style="font-size: 20px;">Now you will pay {{strtolower($which)}} installment only <span id="amountLink"><b>{{number_format($payNoww)}}</b></span> AED</h2>
+                        <input type="hidden" id="amountLink2" name="totalpay" value="{{$payNoww}}">
+                        <input type="hidden" name="totaldue" value="{{$payNoww}}">
                     </div>
                 </div>
             </div>
@@ -165,51 +406,12 @@ $levels = $complete->applicant_status;
                 </div> 
             </div>
             <div class="form-sec">
-                <form method="POST" action="{{ url('add_payment') }}">
-                    @csrf
 
-                    @foreach(($pays ? $pays : array()) as $pd)
-
-                    @foreach($pdet as $index => $det)
-
-                    <?php
-                    $pp = $pd->product_payment_id;
-                    ?>
-                    @if($pd->product_payment_id != $det->id)
-                    @if($index == $pp)
-
-                    <?php
-                    $det_id = $det->id;
-                    if ($payall == 0) {
-                        $whichPayment =  $det->payment;
-                        $payNow = $det->amount;
-                        $discountPercent = '0%';
-                        $discount = '0.00';
-                    } else {
-                        if ($pp == 0 || $pp == null) {
-                            $payNow = $data->unit_price;
-                        } else if ($pp == 1) {
-                            $payNow = $data->unit_price - $pd->total;
-                        } else if ($pp == 2) {
-                            $payNow = $det->amount;
-                        }
-
-                        $whichPayment =  "Full Payment";
-                        $discountPercent = $data->full_payment_discount . '%';
-                        $discount = ($payNow * $data->full_payment_discount / 100);
-                    }
-                    $vatPercent = '5%';
-                    $vat = ($payNow * 5) / 100;
-                    $totalPay = ($payNow + $vat) - $discount;
-                    ?>
-                    @endif
-
-                    @endif
-                    @endforeach
                     <input type="hidden" name="pid" value="{{$data->id}}">
                     <input type="hidden" name="ppid" value="{{(isset($det_id))?$det_id:''}}">
                     <input type="hidden" name="uid" value="{{Auth::user()->id}}">
-                    <div class="form-group row mt-4">
+                    <input type="hidden" name="whichpayment" value="{{ $whichPayment }}">
+                    <!-- <div class="form-group row mt-4">
                         <div class="col-sm-6 mt-3">
                             <div class="left-input">
                                 <label for="rdo1" class="radio-label"><span class="radio-border"></span> <img src="{{asset('images/payment_icons_Mastercard.svg')}}" alt="Option 1" class="radioImage" height="40px" width="40px"></label>
@@ -224,10 +426,13 @@ $levels = $complete->applicant_status;
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="form-group row mt-4">
                         <div class="col-sm-6 mt-3">
-                            <input type="text" class="form-control" placeholder="Card Number" name="card_number" pattern="\d*" maxlength="16" value="{{ old('card_number') }}" required>
+                            <input type="text" class="form-control" placeholder="Card Number" name="card_number" pattern="\d*" maxlength="16" value="{{ old('card_number') }}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required>
+                            @if($errors->has('card_number'))
+    <div class="error">{{ $errors->first('card_number') }}</div>
+@endif
                         </div>
                         <div class="col-sm-6 mt-3">
                             <input class="b form-control" type="text" placeholder="Cardholder full name" name="card_holder_name" value="{{ old('card_holder_name') }}" required>
@@ -252,10 +457,16 @@ $levels = $complete->applicant_status;
                             </select>
                         </div>
                         <div class="col-sm-4 mt-3">
-                            <input type="text" pattern="\d*" maxlength="4" class="form-control" placeholder="Year" name="year" value="{{ old('year') }}" required>
+                            <input type="text" pattern="\d*" maxlength="4" class="form-control" placeholder="Year" name="year" value="{{ old('year') }}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required>
+                            @if($errors->has('year'))
+    <div class="error">{{ $errors->first('year') }}</div>
+@endif
                         </div>
                         <div class="col-sm-4 mt-3">
-                            <input type="text" pattern="\d*" maxlength="3" class="form-control" placeholder="CVC" name=cvv value="{{ old('cvv') }}" required>
+                            <input type="text" pattern="\d*" maxlength="3" class="form-control" placeholder="CVC" name=cvv value="{{ old('cvv') }}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required>
+                            @if($errors->has('cvv'))
+    <div class="error">{{ $errors->first('cvv') }}</div>
+@endif
                         </div>
                     </div>
                     {{-- <div class="form-group row mt-6 payment-form1 ">
@@ -298,10 +509,10 @@ $levels = $complete->applicant_status;
                             </div>
                         </div>
                     </div> --}}
-                    @endforeach
+                   
                     <div class="form-group row mt-4">
                         <div class="form-check">
-                            <input type="checkbox" id="TnC" name="save_card" value="{{ old('save_card') }}" class="checkcolor" checked>
+                            <input type="checkbox" id="save_card" name="save_card" value="1" class="checkcolor" checked>
                             <label class="form-check-label" for="TnC">
                                 Save my details for future payment & Automatic deductions
                             </label>

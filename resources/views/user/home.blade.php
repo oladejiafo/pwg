@@ -72,12 +72,15 @@
                     <ul>
                         @foreach($package as $offer)
 
+                        @if($promo->first())
+                        @foreach($promo as $prom)
+            
                         <?php
                                         //    $offer_discount= $offer->prev_discount - $offer->discount;
-                                           if($offer->discount >0)
+                                           if($prom->discount_percent >0 && $prom->product_id == $offer->id)
                                            { 
                                             $icon = 'fa fa-minus-circle';
-                                            $offer_discount_msg = 'Promo Offer' .$offer->discount .'% off !';
+                                            $offer_discount_msg = 'Promo Offer: ' .$prom->discount_percent .'% off !';
                                         //    }
                                         //    else if($offer_discount < 0)
                                         //    { 
@@ -89,6 +92,12 @@
                                            }
                                            
                 ?>
+                        @endforeach
+                        @else 
+                        @php
+                        $icon = '';
+                                            $offer_discount_msg = '-'; @endphp
+                @endif
                         <!-- Start Column  -->
                         <li>
                             <div class="col-4 cellContainer">
@@ -139,12 +148,15 @@
 
             <div class="row">
                 @foreach($package as $offer)
+                @if($promo->first())
+                 @foreach($promo as $prom)
+
                 <?php
                                         //    $offer_discount= $offer->prev_discount - $offer->discount;
-                                           if($offer->discount >0)
+                                           if($prom->discount_percent >0 && $prom->product_id == $offer->id)
                                            { 
                                             $icon = 'fa fa-minus-circle';
-                                            $offer_discount_msg = 'Promo Offer' .$offer->discount .'% off !';
+                                            $offer_discount_msg = 'Promo Offer: ' .$prom->discount_percent .'% off !';
                                         //    }
                                         //    else if($offer_discount < 0)
                                         //    { 
@@ -156,6 +168,13 @@
                                            }
                                            
                 ?>
+                                 @endforeach
+
+                                 @else 
+                                 @php
+                        $icon = '';
+                                            $offer_discount_msg = '-'; @endphp
+                @endif
                 <!-- Start Column  -->
                 <div class="col-4 cellContainer">
                     <span class="product-item item-hints" href="#">
