@@ -28,15 +28,8 @@ $levels = $complete->applicant_status;
                 <div class="row">
                     <div class="tabs d-flex justify-content-center">
                         <div class="wrapper">
-                            <a href="{{ url('referal_details', $pid) }}">
-                                <div class="round-completed round1 m-2">1</div>
-                            </a>
-                            <div class="round-title">Refferal <br> Details</div>
-                        </div>
-                        <div class="linear"></div>
-                        <div class="wrapper">
                             <a href="{{ url('payment_form', $pid)}}">
-                                <div class="round-active round2 m-2">2</div>
+                                <div class="round-active round2 m-2">1</div>
                             </a>
                             <div class="col-2 round-title">Payment <br> Details</div>
                         </div>
@@ -44,21 +37,21 @@ $levels = $complete->applicant_status;
                         @if ($levels == '5' || $levels == '4' || $levels == '3' || $levels == '2')
                             <div class="wrapper">
                                 <a href="{{route('applicant', $pid)}}">
-                                    <div class="round3 m-2">3</div>
+                                    <div class="round3 m-2">2</div>
                                 </a>
                                 <div class="col-2 round-title">Application <br> Details</div>
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
                                 <a href="{{route('applicant.details')}}">
-                                    <div class="round4 m-2">4</div>
+                                    <div class="round4 m-2">3</div>
                                 </a>
                                 <div class="col-2 round-title">Applicant <br> Details</div>
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
                                 <a href="{{url('applicant/review')}}">
-                                    <div class="round5 m-2">5</div>
+                                    <div class="round5 m-2">4</div>
                                 </a>
                                 <div class="col-2 round-title">Application <br> Review</div>
                             </div>

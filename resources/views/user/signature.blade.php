@@ -1,3 +1,4 @@
+
 @include('user/header')
 
 <html>
@@ -20,82 +21,44 @@
 
 <script type="text/javascript" src="{{asset('user/js/jquery.signature.min.js')}}"></script>
 <!-- <script type="text/javascript" src="{{asset('user/js/jquery.signature.js')}}"></script> -->
-<style>
-    .kbw-signature {
-        width: 99%; 
-        height: 350px;
-        zoom:normal;
-        align-content: center;
-        padding: 0;
-        border-radius: 10px;
-        border-style: solid;
-        border-color: #ccc; /*#f0f3f4*/;
-        border-width: 1px;
-    }
+    <div class="login">
 
-    #sig canvas {
-        padding: 0;
-        width: 100% !important;
-        height: 345px;
-        z-index: 9099;
-        zoom:100%
-    }
-.append-title .btn.btn-primary {
-  color: #000;
-  background: none;
-  border-color: #C4C6CD;
-  border-radius: 10px;
-  border-width: thin;
-  border-style: solid;
-}
-
-.append-title .btn.btn-primary:hover {
-  background: linear-gradient(90deg, #FACB08 2.41%, #FAE008 90.98%);
-  border: none;
-  color: black
-}
-
-.append-title .btn.btn-primary::after {
-  color: #000;
-  background: none;
-  border-color: #C4C6CD !important;
-  border-radius: 10px;
-  border-width: thin;
-  border-style: solid;
-}
-</style>
-
-<div class="loginx">
-
-    <div class="container-fluid">
-        <div class="signature tt">
-            <div class="append">
-                <div class="append-title">
-                    <h1>Append Your Signature</h1>
-                    <p>To proceed to payment, please upload your signature</p>
-                    <form action="{{ url('upload_signature') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <input type="hidden" name="pid" value="{{$data->id}}">
-                        <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
-
-                        <div><br>
-                            <p>Signature Here:</p>
-                            <div id="sig" class="kbw-signature">
-                            
+        <div class="container">
+            <div class="col-12">
+                <div class="signature tt">
+                    <div class="append">
+                        <div class="append-title">
+                            <div class="col-4 offset-4 signatureLogo">
+                                <img src="{{asset('images/signature.svg')}}" width="100%" height="100%">
                             </div>
-                            <p style="clear: both;">
-                                <button id="clear" class="btn btn-primary" style="height: 55px;">Clear</button>
-                                <textarea name="signed" id="signature64" style="display:none" required></textarea>
-                            </p>
+                            <h1>Append Your Signature</h1>
+                            <p>To proceed to payment, please upload your signature</p>
+                            <div class="col-8 offset-2">
+                                <form action="{{ url('upload_signature') }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    <input type="hidden" name="pid" value="{{$data->id}}">
+                                    <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
 
+                                    <div><br>
+                                        <p>Signature Here:</p>
+                                        <div id="sig" class="kbw-signature">
+                                        
+                                        </div>
+                                        <p style="clear: both;">
+                                            <button id="clear" class="btn btn-primary" style="height: 55px; width:100%">CLEAR</button>
+                                            <textarea name="signed" id="signature64" style="display:none; " required></textarea>
+                                        </p>
+
+                                    </div>
+                                    <button class="btn btn-primary" style="height:60px;width:100%">SUBMIT</button>
+                                </form>
+                            </div>
                         </div>
-                        <button class="btn btn-primary" style="height:60px">SUBMIT</button>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 <script type="text/javascript">
     $(function() {
@@ -108,9 +71,7 @@
             sig.signature('clear');
             $("#signature64").val('');
         });
-
     });
-
     function resizeCanvas() {
   var ratio =  Math.max(window.devicePixelRatio || 1, 1);
   canvas.width = canvas.offsetWidth * ratio;
@@ -118,14 +79,10 @@
   canvas.getContext("2d").scale(ratio, ratio);
   signaturePad.clear(); // otherwise isEmpty() might return incorrect value
 }
-
 window.addEventListener("resize", resizeCanvas);
 resizeCanvas();
-
-
     var canvas = document.querySelector('canvas');
 fitToContainer(canvas);
-
 function fitToContainer(canvas){
   // Make it visually fill the positioned parent
   canvas.style.width ='100%';

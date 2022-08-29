@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Applicant;
+use App\Models\ApplicantExperience;
 use App\Constant;
 use Exception;
-use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -18,7 +18,7 @@ use Doctrine\Common\Annotations\Annotation\Required;
 class ApplicationController extends Controller
 {
 
-    public function applicanview($productId)
+    public function applicant($productId)
     {
         if (Auth::id()) {
             return view('user.applicant', compact('productId'));
@@ -40,7 +40,6 @@ class ApplicationController extends Controller
                 'applied_country' => 'required',
                 'job_type' => 'required',
                 'cv' => 'required|mimes:pdf',
-                'agent_phone' => 'required',
                 'embassy_country' => 'required',
                 'agree' => 'required'
             ]);
@@ -56,8 +55,7 @@ class ApplicationController extends Controller
                     'country' => $request->applied_country,
                     'job_type' => $request->job_type,
                     'resume' => $fileName,
-                    'agent_phone_number' => $request->agent_phone,
-                    'agent_name' => $request->agent_name,
+                    'agent_code' => $request->agent_code,
                     'embassy_country' => $request->embassy_country,
                     'applicant_status' => 3
                 ]);
@@ -69,16 +67,12 @@ class ApplicationController extends Controller
     {
         if (Auth::id()) {
             $user = User::find(Auth::id());
-            // $response = Http::post('https://bo.pwggroup.ae/api/get-job-category-list');
-            // $jobCategory = $response->body();
-            // $jobCategories = json_decode($jobCategory, true);
-            // dd($jobCategories);
-            $jobCategories = [];
             $productId = 1;
             $applicantId = Applicant::where('user_id', Auth::id())
                                     ->where('product_id', $productId)
-                                    ->find('id');
-            return view('user.application-next', compact('user', 'jobCategories', 'productId', 'applicantId'))->with('success', 'Data saved successfully!');
+                                    ->pluck('id')
+                                    ->first();
+            return view('user.application-next', compact('user', 'productId', 'applicantId'))->with('success', 'Data saved successfully!');
         } else {
             return back();
         }
@@ -188,8 +182,7 @@ class ApplicationController extends Controller
     {
         $user = User::find(Auth::id());
         $applicant = Applicant::where('user_id', Auth::id())->where('product_id', $productId)->first();
-        $jobCategories = [];
-        return view('user.application-review', compact('user', 'jobCategories', 'applicant', 'productId'))->with('success', 'Data saved successfully!');
+        return view('user.application-review', compact('user', 'applicant', 'productId'))->with('success', 'Data saved successfully!');
     }
 
     /**
@@ -288,9 +281,90 @@ class ApplicationController extends Controller
         return Response::json(array('success' => true), 200);
     }
 
+     /**
+     * Store applicant experience as step 4
+     * @param Request
+     *
+     * @return response
+     */
     public function addExperience(Request $request)
     {
-        dd($request);
+        $exist = ApplicantExperience::where('job_category_three_id', $request['job_category_three_id'])
+                                    ->where('job_category_four_id', $request['job_category_four_id'])
+                                    ->first();
+        if(!$exist) {
+            $exp = new ApplicantExperience();
+            $exp->applicant_id = $request['applicant_id'];
+            $exp->job_title = $request['job_title'];
+            $exp->job_category_one_id = $request['job_category_one_id'];
+            $exp->job_category_two_id = $request['job_category_two_id'];
+            $exp->job_category_three_id  = $request['job_category_three_id'];
+            $exp->job_category_four_id   = $request['job_category_four_id'];
+            $exp->created_by = Auth::id();
+            $exp->save();
+            return true;
+        } else {
+            return false;
+        }
     }
+
+     /**
+     * get applicant added experience
+     * @param Request
+     *
+     * @return response
+     */
+    public function getApplicantExperience(Request $request)
+    {
+        $exp = ApplicantExperience::where('applicant_id', $request->applicantId)->get();
+        return $exp;
+    }
+
+    public function removeExperience(Request $request)
+    {
+        ApplicantExperience::where('id', $request['expId'])
+                        ->where('applicant_id', $request['applicantId'])
+                        ->delete();
+        return true;
+    }
+
+    public function applicantReviewSubmit(Request $request)
+    {
+        $request->validate([
+            'first_name' => 'required',
+            'surname' => 'required',
+            'dob' => 'required',
+            'place_birth' => 'required',
+            'country_birth' => 'required',
+            'sex' => 'required',
+            'civil_status' => 'required',
+            'citizenship' => 'required',
+            'passport_number' => 'Required',
+            'passport_issue' => 'required',
+            'passport_expiry' => 'required',
+            'issued_by' => 'Required',
+            'passport_copy' => 'required',
+            'home_country' => 'required',
+            'state' => 'required',
+            'city' => 'required',
+            'postal_code' => 'required',
+            'address_1' => 'required',
+            'address_2' => 'required',
+            'current_country' => 'required',
+            'residence_id' => 'required',
+            'visa_validity'  => 'required',
+            'residence_copy' => 'required',
+            'current_job' => 'required',
+            'work_state' => 'required',
+            'work_city' => 'required',
+            'work_postal_code' => 'required',
+            'work_street' => 'required',
+            'is_schengen_visa_issued_last_five_year' => 'required',
+            'is_finger_print_collected_for_Schengen_visa' => 'required',
+        ]);
+        $applicantDetails = Applicant::find($request->applicantId)
+                                    ->first();
+    }   
+
 
 }

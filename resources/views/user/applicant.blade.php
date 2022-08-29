@@ -32,21 +32,16 @@
                     <div class="row">
                         <div class="tabs d-flex justify-content-center">
                             <div class="wrapper">
-                                <a href="{{ url('referal_details', $productId) }}" ><div class="round-completed round1  m-2">1</div></a>
-                                <div class="round-title">Refferal <br> Details</div>
-                            </div>
-                            <div class="linear"></div>
-                            <div class="wrapper">
                             @php 
                                 if ($levels == '2' || $levels == '5' || $levels == '4' || $levels == '3') {
                             @endphp    
-                                <a href="#" onclick="return alert('Payment Concluded Already!');"><div class="round-completed round2 m-2">2</div></a>
-                                <!-- <a href="{{ url('payment_form', $productId) }}" ><div class="round-completed round2  m-2">2</div></a> -->
+                                <a href="#" onclick="return alert('Payment Concluded Already!');"><div class="round-completed round2 m-2">1</div></a>
+                                <!-- <a href="{{ url('payment_form', $productId) }}" ><div class="round-completed round2  m-2">1</div></a> -->
                                 @php
                           } else {
                                 @endphp    
                                 <a href="{{ url('payment_form', $productId) }}" >
-                                    <div class="round2  m-2">2</div>
+                                    <div class="round-completed round2  m-2">1</div>
                                 </a>
                               @php   
                         }
@@ -55,7 +50,7 @@
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href="{{route('applicant', $productId)}}" ><div class="round-active  round3  m-2">3</div></a>
+                                <a href="{{route('applicant', $productId)}}" ><div class="round-active  round3  m-2">2</div></a>
                                 <div class="col-2 round-title">Application <br> Details</div>
                             </div>
                             <div class="linear"></div>
@@ -63,24 +58,24 @@
                                 if ($levels == '5' || $levels == '4' || $levels == '3') {
                             @endphp    
                             <div class="wrapper">
-                                <a href="{{route('applicant.details')}}" ><div class="round4 m-2">4</div></a>
+                                <a href="{{route('applicant.details')}}" ><div class="round4 m-2">3</div></a>
                                 <div class="col-2 round-title">Applicant <br> Details</div>
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href="{{url('applicant/review')}}" ><div class="round5 m-2">5</div></a>
+                                <a href="{{url('applicant/review')}}" ><div class="round5 m-2">4</div></a>
                                 <div class="col-2 round-title">Applicant <br> Reviews</div>
                             </div>
                             @php  
                                 } else {
                             @endphp
                             <div class="wrapper">
-                                <a href="#" onclick="return alert('You have to complete Application Details first');"><div class="round4 m-2">4</div></a>
+                                <a href="#" onclick="return alert('You have to complete Application Details first');"><div class="round4 m-2">3</div></a>
                                 <div class="col-2 round-title">Applicant <br> Details</div>
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                            <a href="#" onclick="return alert('You have to complete Application Details first');"><div class="round5 m-2">5</div></a>
+                            <a href="#" onclick="return alert('You have to complete Application Details first');"><div class="round5 m-2">4</div></a>
                                 <div class="col-2 round-title">Applicant <br> Reviews</div>
                             </div>
                             @php  
@@ -139,7 +134,7 @@
                                 </div>
                             </div>        
                             <div class="form-group row mt-3">
-                                <div class="mb-3">
+                                <div class="col-sm-6 mt-3">
                                     <input type="text" class="form-control" placeholder="Upload your cv (PDF only)*" name="cv" value="{{old('cv')}}" readonly required>
                                     <div class="input-group-btn">
                                         <span class="fileUpload btn">
@@ -149,8 +144,13 @@
                                     </div><!-- btn -->
                                     @error('cv') <span class="error">{{ $message }}</span> @enderror
                                 </div>
+                                <div class="col-sm-6 mt-3">
+
+                                    <input type="text" name="agent_code" class="form-control" placeholder="Please enter your agent code here" value="{{old('agent_code')}}" />
+                                    @error('agent_code') <span class="error">{{ $message }}</span> @enderror
+                                </div>
                             </div>
-                            <div class="form-group row">
+                            {{-- <div class="form-group row">
                                 <div class="col-sm-6 mt-3">
 
                                     <input id="phone" type="tel" name="agent_phone" class="form-control" placeholder="Your agent phone number" value="{{old('agent_phone')}}" />
@@ -160,7 +160,7 @@
                                     <input id="agent-name" type="tel" name="agent_name" class="form-control" placeholder="Your agent name" value="{{old('agent_name')}}" />
                                     @error('agent_name') <span class="error">{{ $message }}</span> @enderror
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="heading">
                                 <div class="first-heading">
                                     <h3>

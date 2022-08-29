@@ -2073,53 +2073,82 @@ __webpack_require__.r(__webpack_exports__);
 window.Vue = (__webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js")["default"]);
 var app = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]({
   el: '#app',
-  props: ['applicantId'],
   data: function data() {
     return {
       jobCategories: [],
       selectedJob: [],
-      search: null
+      search: null,
+      filterData: [],
+      applicantId: null
     };
   },
   methods: {
     getCategories: function getCategories() {
-      console.log(this.applicantId);
       axios__WEBPACK_IMPORTED_MODULE_1___default().post('https://bo.pwggroup.ae/api/get-job-category-list').then(function (response) {
         app.jobCategories = response.data;
-        console.log(app.jobCategories);
       })["catch"](function (error) {
         console.log(error);
       });
     },
     addExperience: function addExperience(cat1, cat2, cat3, cat4, jobTitle) {
-      console.log(this.applicantId);
-      this.selectedJob.push({
-        name: jobTitle,
-        cat1: cat1,
-        cat2: cat2,
-        cat3: cat3,
-        cat4: cat4
-      });
+      // this.selectedJob.push({ name: jobTitle, cat1: cat1, cat2: cat2, cat3: cat3, cat4: cat4});
       axios__WEBPACK_IMPORTED_MODULE_1___default().post('/add/experience', {
         applicant_id: this.applicantId,
         job_category_one_id: cat1,
         job_category_two_id: cat2,
         job_category_three_id: cat3,
-        job_category_four_id: cat4
+        job_category_four_id: cat4,
+        job_title: jobTitle
       }).then(function (response) {
-        console.log(response);
+        if (response) {
+          app.getSelectedExperience();
+        } else {
+          console.log('not here');
+          alert('You have to complete Payment first');
+        }
       })["catch"](function (error) {
         console.log(error);
       });
     },
-    removeJob: function removeJob(index) {
-      this.selectedJob.splice(index, 1);
+    removeJob: function removeJob(expId) {
+      axios__WEBPACK_IMPORTED_MODULE_1___default().post('/remove/selected/experience', {
+        expId: expId,
+        applicantId: this.applicantId
+      }).then(function (response) {
+        app.getSelectedExperience();
+      });
     },
-    getSelectedExperience: function getSelectedExperience() {},
+    getSelectedExperience: function getSelectedExperience() {
+      this.applicantId = this.$el.getAttribute('data-applicantId');
+      axios__WEBPACK_IMPORTED_MODULE_1___default().post('/get/selected/experience', {
+        applicantId: this.applicantId
+      }).then(function (response) {
+        if (response.data.length > 0) {
+          app.selectedJob = response.data;
+        }
+
+        console.log(app.selectedJob);
+      });
+    },
     filterJob: function filterJob() {
-      axios__WEBPACK_IMPORTED_MODULE_1___default().post('https://bo.pwggroup.ae/api/get-job-category-four-list').then(function (response) {
-        app.jobCategories = response.data;
-        console.log(app.jobCategories);
+      if (this.search) {
+        axios__WEBPACK_IMPORTED_MODULE_1___default().post('https://bo.pwggroup.ae/api/get-job-category-four-list', {
+          filter: this.search
+        }).then(function (response) {
+          app.filterData = response.data;
+        })["catch"](function (error) {
+          console.log(error);
+        });
+      } else {
+        app.filterData = [];
+        this.getCategories();
+      }
+    },
+    applicantReview: function applicantReview() {
+      axios__WEBPACK_IMPORTED_MODULE_1___default().post('/applicant/review/', {
+        applicantId: this.applicantId
+      }).then(function (response) {
+        console.log(response);
       })["catch"](function (error) {
         console.log(error);
       });
@@ -2128,6 +2157,8 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]({
   mounted: function mounted() {
     this.getCategories();
     this.getSelectedExperience();
+    this.applicantId = this.$el.getAttribute('data-applicantId');
+    console.log(this.applicantId);
   }
 });
 

@@ -106,7 +106,7 @@ class HomeController extends Controller
             // }
             $signature->save();
             
-            return \Redirect::route('referal', $request->pid)
+            return \Redirect::route('payment', $request->pid)
             ->with('info', 'Signature Uploaded Successfully!')
             ->with('info_sub','Proceed to application');
         } else {
@@ -256,7 +256,6 @@ class HomeController extends Controller
             }
 
             $id = Session::get('myproduct_id');
-
             // $applys = DB::table('applicants')
             // ->where('product_id', '=', $id)
             // ->where('user_id', '=', Auth::user()->id)
@@ -391,10 +390,10 @@ class HomeController extends Controller
     
                 $msg="Awesome! Payment Successful!";
 
-                return \Redirect::route('applicant', $request->pid)->with('info', $msg)->with('info_sub', 'You journey to ' .$dest_name. ' just began!');
-              
+                // return \Redirect::route('applicant', $request->pid)->with('info', $msg)->with('info_sub', 'You journey to ' .$dest_name. ' just began!');
+                return view('user.payment-success', compact('id'));
             } else {
-                return redirect()->back()->with('failed', 'Oppss! Something Went Wrong!');
+                return view('user.payment-fail', compact('id'));
             }
         } else {
             return redirect()->back()->with('failed', 'You are not authorized');
@@ -448,7 +447,11 @@ class HomeController extends Controller
     public function familyDetails(Request $request)
     {
         return \Redirect::route('product', $request->productId);
+    }
 
+    public function contract($productId)
+    {
+        return view('user.contract', compact('productId'));
     }
 
 }
