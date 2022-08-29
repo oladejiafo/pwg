@@ -41,14 +41,15 @@
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href="{{route('applicant.review')}}" ><div class=" round4 m-2">4</div></a>
+                                <a href="{{route('applicant.review', $productId)}}" ><div class=" round4 m-2">4</div></a>
                                 <div class="round-title"><p>Application</p><p> Review</p></div>
                             </div>
                            
                         </div>
                     </div>
                 </div>
-                {{-- <form> --}}
+                <form method="POST" id="applicationReview"  enctype="multipart/form-data">
+                    @csrf
                     <div class="applicant-detail-sec">
                         <div class="heading">
                             <div class="row">
@@ -81,8 +82,8 @@
                                     @php
                                         $name = explode(' ', $user['name']);
                                     @endphp
-                                    <form method="POST" enctype="multipart/form-data" id="applicant_details">
-                                        @csrf
+                                    {{-- <form method="POST" enctype="multipart/form-data" id="applicant_details">
+                                        @csrf --}}
                                         <input type="hidden" name="product_id" value="1">
                                         <div class="form-group row mt-4">
                                             <div class="col-sm-4 mt-3">
@@ -525,7 +526,7 @@
                                                 <span class="citizenship_errorClass"></span>
                                             </div>
                                             <div class="col-sm-4 mt-3">
-                                                <select name="sex"  aria-required="true" class="form-control form-select" required>
+                                                <select name="sex"  aria-required="true" class="form-control form-select" >
                                                     <option selected disabled>Sex *</option>
                                                     <option value="MALE">Male</option>
                                                     <option value="FEMALE">Female</option>
@@ -533,7 +534,7 @@
                                                 <span class="sex_errorClass"></span>
                                             </div>
                                             <div class="col-sm-4 mt-3">
-                                                <select name="civil_status" id="civil_status" required="" aria-required="true" class="form-control form-select">
+                                                <select name="civil_status" id="civil_status"  aria-required="true" class="form-control form-select">
                                                     <option selected disabled>Civil Status *</option>
                                                     <option value="Single">Single</option>
                                                     <option value="Married">Married</option>
@@ -547,10 +548,10 @@
                                         </div>
                                         <div class="form-group row mt-4">
                                             <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                                <button type="submit" class="btn btn-primary submitBtn applicantDetails" data-bs-toggle="collapse" data-bs-target="#collapseHome" aria-expanded="false" aria-controls="collapseHome">Continue</button>
+                                                <button type="button" class="btn btn-primary submitBtn applicantDetails" data-bs-toggle="collapse" data-bs-target="#collapseHome" aria-expanded="false" aria-controls="collapseHome">Continue</button>
                                             </div>
                                         </div>
-                                    </form>
+                                    {{-- </form> --}}
                                 </div>   
                             </div>
                         </div>
@@ -585,8 +586,8 @@
                         <div class="row">
                             <div class="collapse" id="collapseHome">
                                 <div class="form-sec">
-                                    <form method="POST" enctype="multipart/form-data" id="home_country_details">
-                                        @csrf
+                                    {{-- <form method="POST" enctype="multipart/form-data" id="home_country_details">
+                                        @csrf --}}
                                         <input type="hidden" name="product_id" value="1">
                                         <div class="form-group row mt-4">
                                             <div class="col-sm-12 mt-3">
@@ -856,10 +857,10 @@
                                         </div>
                                         <div class="form-group row mt-4">
                                             <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                                <button type="submit" class="btn btn-primary submitBtn homeCountryDetails" data-bs-toggle="collapse" data-bs-target="#collapseCurrent" aria-expanded="false" aria-controls="collapseCurrent">Continue</button>
+                                                <button type="button" class="btn btn-primary submitBtn homeCountryDetails" data-bs-toggle="collapse" data-bs-target="#collapseCurrent" aria-expanded="false" aria-controls="collapseCurrent">Continue</button>
                                             </div>
                                         </div>
-                                    </form>
+                                    {{-- </form> --}}
                                 </div>   
                             </div>
                         </div>
@@ -894,9 +895,9 @@
                         <div class="row">
                             <div class="collapse" id="collapseCurrent">
                                 <div class="form-sec">
-                                    <form method="POST" enctype="multipart/form-data" id="current_residency">
-                                        @csrf
-                                        <input type="hidden" name="product_id" value="1">
+                                    {{-- <form method="POST" enctype="multipart/form-data" id="current_residency"> --}}
+                                        {{-- @csrf --}}
+                                        {{-- <input type="hidden" name="product_id" value="1"> --}}
                                         <div class="form-group row mt-4">
                                             <div class="col-sm-6 mt-3">
                                                 <select class="form-select form-control" name="current_country" placeholder="current_country*" value="{{old('current_country')}}"  >
@@ -1176,10 +1177,10 @@
                                         </div>
                                         <div class="form-group row mt-4">
                                             <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                                <button type="submit" class="btn btn-primary submitBtn" data-bs-toggle="collapse" data-bs-target="#collapseSchengen" aria-expanded="false" aria-controls="collapseSchengen">Continue</button>
+                                                <button type="button" class="btn btn-primary submitBtn" data-bs-toggle="collapse" data-bs-target="#collapseSchengen" aria-expanded="false" aria-controls="collapseSchengen">Continue</button>
                                             </div>
                                         </div>
-                                    </form>
+                                    {{-- </form> --}}
                                 </div>   
                             </div>
                         </div>
@@ -1214,9 +1215,9 @@
                         <div class="row">
                             <div class="collapse" id="collapseSchengen">
                                 <div class="form-sec">
-                                    <form method="POST" enctype="multipart/form-data" id="schengen_details">
+                                    {{-- <form method="POST" enctype="multipart/form-data" id="schengen_details">
                                         @csrf
-                                        <input type="hidden" name="product_id" value="1">
+                                        <input type="hidden" name="product_id" value="1"> --}}
                                         <div class="form-group row mt-4">
                                             <div class="col-sm-12 mt-3">
                                                 <select name="is_schengen_visa_issued_last_five_year" id="is_schengen_visa_issued_last_five_year" aria-required="true" class="form-control form-select" autocomplete="off">
@@ -1250,10 +1251,10 @@
                                         </div>
                                         <div class="form-group row mt-4">
                                             <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                                <button type="submit" class="btn btn-primary submitBtn" data-bs-toggle="collapse" data-bs-target="#collapseExperience" aria-expanded="false" aria-controls="collapseExperience">Continue</button>
+                                                <button type="button" class="btn btn-primary submitBtn" data-bs-toggle="collapse" data-bs-target="#collapseExperience" aria-expanded="false" aria-controls="collapseExperience">Continue</button>
                                             </div>
                                         </div>
-                                    </form>
+                                    {{-- </form> --}}
                                 </div>
                             </div>
                         </div>
@@ -1460,7 +1461,7 @@
                             </div>
                         </div>
                     </div>
-                {{-- </form> --}}
+                </form>
             </div>
         </div>
     </div>
@@ -1704,13 +1705,31 @@
             });
         });
 
-        $('.applicantReview').click(function(){
+        $('#applicationReview').submit(function(e){
+            e.preventDefault(); 
+            $("#applicationReview :input").each(function(index, elm){
+                $("."+elm.name+"_errorClass").empty();
+            });
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
             $.ajax({
                 type: 'POST',
                 url: "{{ url('submit/applicant/review') }}",
-                data: {{$applicantId}}
+                data: new FormData(this),
+                processData: false,
+                contentType: false,
                 success: function (response) {
-                    console.log(response);
+                    if(response.success) {
+                        location.href = "{{url('applicant/review')}}/"+'{{$applicantId}}'
+                    } else {
+                        var validationError = response.errors;
+                        $.each(validationError, function(index, value) {
+                            $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                        });
+                    }
                 }
             });
         });

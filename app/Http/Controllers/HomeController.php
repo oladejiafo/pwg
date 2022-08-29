@@ -417,7 +417,7 @@ class HomeController extends Controller
                         ])->first();
                 if ($status === null) {
                 } else {
-                    $status->applicant_status = '2';
+                    $status->applicant_status = '1';
                     $status->save();
                 }
                 if ($res) {

@@ -20,7 +20,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 Route::post('srore/applicant/details', [ApplicationController::class,'storeApplicantDetails'])->name('store.applicant.details');
 Route::post('get-promo',[HomeController::class, 'getPromo'])->name('getPromo');
-Route::get('applicant/review', [ApplicationController::class, 'applicantReview'])->name('applicant.review');
+Route::get('applicant/review/{id}', [ApplicationController::class, 'applicantReview'])->name('applicant.review');
 
 Route::middleware([
     'auth:sanctum',

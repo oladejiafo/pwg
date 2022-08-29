@@ -9,7 +9,7 @@
 
 @php 
     $completed = DB::table('applicants')
-                ->where('product_id', '=', $productId)
+                ->where('product_id', '=', $applicant['productId'])
                 ->where('user_id', '=', Auth::user()->id)
                 ->get();
 
@@ -26,22 +26,22 @@
                     <div class="row">
                         <div class="tabs-detail d-flex justify-content-center">
                             <div class="wrapper">
-                                <a href="{{ url('payment_form', $productId) }}" ><div class="round-completed round1 m-2">1</div></a>
+                                <a href="{{ url('payment_form', $applicant['productId']) }}" ><div class="round-completed round1 m-2">1</div></a>
                                 <div class="round-title"><p>Payment</p><p> Details</p></div>
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href="{{route('applicant', $productId)}}" onclick="return alert('Payment Concluded Already!');"><div class="round-completed round2 m-2">2</div></a>
+                                <a href="{{url('applicant', $applicant['productId'])}}" onclick="return alert('Payment Concluded Already!');"><div class="round-completed round2 m-2">2</div></a>
                                 <div class="round-title"><p>Application</p><p> Details</p></div>
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href="{{route('applicant.details')}}" ><div class="round-completed  round3 m-2">3</div></a>
+                                <a href="{{url('applicant/details')}}" ><div class="round-completed  round3 m-2">3</div></a>
                                 <div class="round-title"><p>Applicant</p><p> Details</p></div>
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href="{{route('applicant.review')}}" ><div class="round-active round4 m-2">4</div></a>
+                                <a href="{{url('applicant/review', $applicant['productId'])}}" ><div class="round-active round4 m-2">4</div></a>
                                 <div class="round-title"><p>Application</p><p> Review</p></div>
                             </div>
                         </div>
@@ -522,8 +522,8 @@
                                         <div class="col-sm-4 mt-3">
                                             <select name="sex"  aria-required="true" class="form-control form-select" required>
                                                 <option selected disabled>Sex *</option>
-                                                <option {{($applicant['sex'] == 'Male') ? 'selected' : '' }}value="Male">Male</option>
-                                                <option {{($applicant['sex'] == 'Female') ? 'selected' : ''}} value="Female">Female</option>
+                                                <option {{($applicant['sex'] == 'MALE') ? 'selected' : '' }}value="Male">Male</option>
+                                                <option {{($applicant['sex'] == 'FEMALE') ? 'selected' : ''}} value="Female">Female</option>
                                             </select>
                                             <span class="sex_errorClass"></span>
                                         </div>
@@ -1456,7 +1456,7 @@
                             </div>
                             <div class="form-group row mt-4">
                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                    <button type="submit" class="btn btn-primary submitBtn">Review</button>
+                                    <button type="submit" class="btn btn-primary submitBtn">submit</button>
                                 </div>
                             </div>
                         </div>
