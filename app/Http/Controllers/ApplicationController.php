@@ -454,4 +454,11 @@ class ApplicationController extends Controller
 
         return Response::json(array('success' => true), 200);
     }   
+
+    public function submitApplicantDetails(Request $request)
+    {
+        Applicant::where('id', $request['applicantId'])
+                ->update(['applicant_status' => 5]);
+        return true;
+    }
 }

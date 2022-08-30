@@ -13,6 +13,7 @@ const app = new Vue({
             search: null,
             filterData: [],
             applicantId: null,
+            selectedJobTitle: [],
         }
     },
     methods: {
@@ -28,7 +29,7 @@ const app = new Vue({
         },
 
         addExperience(cat1, cat2, cat3, cat4, jobTitle) {
-            // this.selectedJob.push({ name: jobTitle, cat1: cat1, cat2: cat2, cat3: cat3, cat4: cat4});
+            console.log(jobTitle);
             axios.post('/add/experience', {
                 applicant_id: this.applicantId,
                 job_category_one_id : cat1,
@@ -70,7 +71,11 @@ const app = new Vue({
                 if(response.data.length > 0) {
                     app.selectedJob = response.data;
                 }
-                console.log(app.selectedJob);
+                for(var i = 0; i < app.selectedJob.length ; i++ ){
+                    var jobTitle = app.selectedJob[i].job_title;
+                    app.selectedJobTitle.push(jobTitle);
+                }
+                console.log(app.selectedJobTitle);
             })
 
         },

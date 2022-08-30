@@ -1,6 +1,6 @@
 <!-- Theme style  -->
 <link rel="stylesheet" href="{{asset('user/extra/css/styled.css')}}">
-
+@php $payNow = $whichPayment = 0;@endphp
 <div class="row card">
 
     <div class="col-md-12">
