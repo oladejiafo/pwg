@@ -2079,7 +2079,8 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]({
       selectedJob: [],
       search: null,
       filterData: [],
-      applicantId: null
+      applicantId: null,
+      selectedJobTitle: []
     };
   },
   methods: {
@@ -2091,7 +2092,7 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]({
       });
     },
     addExperience: function addExperience(cat1, cat2, cat3, cat4, jobTitle) {
-      // this.selectedJob.push({ name: jobTitle, cat1: cat1, cat2: cat2, cat3: cat3, cat4: cat4});
+      console.log(jobTitle);
       axios__WEBPACK_IMPORTED_MODULE_1___default().post('/add/experience', {
         applicant_id: this.applicantId,
         job_category_one_id: cat1,
@@ -2127,7 +2128,12 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]({
           app.selectedJob = response.data;
         }
 
-        console.log(app.selectedJob);
+        for (var i = 0; i < app.selectedJob.length; i++) {
+          var jobTitle = app.selectedJob[i].job_title;
+          app.selectedJobTitle.push(jobTitle);
+        }
+
+        console.log(app.selectedJobTitle);
       });
     },
     filterJob: function filterJob() {
@@ -2143,15 +2149,6 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]({
         app.filterData = [];
         this.getCategories();
       }
-    },
-    applicantReview: function applicantReview() {
-      axios__WEBPACK_IMPORTED_MODULE_1___default().post('/applicant/review/', {
-        applicantId: this.applicantId
-      }).then(function (response) {
-        console.log(response);
-      })["catch"](function (error) {
-        console.log(error);
-      });
     }
   },
   mounted: function mounted() {

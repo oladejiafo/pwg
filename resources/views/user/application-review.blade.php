@@ -1783,6 +1783,28 @@
             $('#visaCopyModal').modal('hide');
             $('#schengenVisatModal').modal('hide');
         });
+
+        $('.applicantSubmit').click(function(e){
+            if (confirm("After submit these details can't be changed")) {
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ url('submit/applicant/Details') }}",
+                    data: {applicantId : '{{$applicant['id']}}'},
+                    success: function (response) {
+                        location.href = "{{url('myapplication')}}"
+                    },
+                    errror: function (error) {
+                        
+                    }
+                });
+            }
+        });
     });
     function showPassport()
     {

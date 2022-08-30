@@ -18,7 +18,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 |
 */
 
-Route::post('srore/applicant/details', [ApplicationController::class,'storeApplicantDetails'])->name('store.applicant.details');
+Route::post('store/applicant/details', [ApplicationController::class,'storeApplicantDetails'])->name('store.applicant.details');
 Route::post('get-promo',[HomeController::class, 'getPromo'])->name('getPromo');
 Route::get('applicant/review/{id}', [ApplicationController::class, 'applicantReview'])->name('applicant.review');
 
@@ -85,4 +85,5 @@ Route::post('store/schengen/details', [ApplicationController::class,'storeScheng
 Route::post('/get/selected/experience', [ApplicationController::class,'getApplicantExperience'])->name('get.selected.experience');
 Route::post('/remove/selected/experience', [ApplicationController::class,'removeExperience'])->name('remove.selected.experience');
 Route::post('/submit/applicant/review/', [ApplicationController::class, 'applicantReviewSubmit'])->name('submit.applicant.review');
+Route::post('/submit/applicant/Details/', [ApplicationController::class, 'submitApplicantDetails'])->name('submit.applicant.details');
 
