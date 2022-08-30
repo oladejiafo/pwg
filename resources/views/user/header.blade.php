@@ -195,11 +195,11 @@
      </a>
    </div>
  @else
-   <div class="d-flex align-items-center justify-content-center jobber">
+   <!-- <div class="d-flex align-items-center justify-content-center jobber">
      <a class="nav-link btn create-new-button"  aria-expanded="false" href="{{route('login')}}">
      <span><img src="{{asset('images/icon1.png')}}"></span><span style="padding-top:5px">Applicants </span>
     </a>
-   </div>
+   </div> -->
    <!-- <div class="d-flex align-items-center justify-content-center jobber">
      <a class="nav-link btn create-new-button" aria-expanded="false" href="#">
      <span><img src="{{asset('images/icon2.png')}}"></span><span style="padding-top:5px">Affiliates</span>

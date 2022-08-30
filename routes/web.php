@@ -63,7 +63,6 @@ Route::get('/affiliate', [HomeController::class,'affiliate'])->name('affiliate')
 
 Route::post('/add-referrer', [HomeController::class,'addReferrer'])->name('add-referer');
 Route::put('family/details/submit', [HomeController::class, 'familyDetails'])->name('family.details.submit');
-Route::get('package/type/{id}', [HomeController::class,'packageType'])->name('package-type');
 Route::get('contract/{id}', [HomeController::class, 'contract'])->name('contract');
 Route::get('contract/view/{id}', [HomeController::class, 'contractReview'])->name('contract-review');
 // Reset Password
