@@ -93,18 +93,6 @@ const app = new Vue({
             }
            
         }, 
-
-        applicantReview() {
-            axios.post('/applicant/review/',{
-                applicantId : this.applicantId
-            })
-            .then(function (response){
-                console.log(response);
-            })
-            .catch(function (error){
-                console.log(error);
-            });
-        }
     },
     mounted: function() {
         this.getCategories();

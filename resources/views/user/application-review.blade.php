@@ -8,8 +8,8 @@
 
 
 @php 
-    $completed = DB::table('applicants')
-                ->where('product_id', '=', $applicant['productId'])
+     $completed = DB::table('applicants')
+                ->where('product_id', '=', $productId)
                 ->where('user_id', '=', Auth::user()->id)
                 ->get();
 
@@ -1228,7 +1228,7 @@
                                     </div>
                                     <div class="form-group row mt-4 schengen_visa">
                                         <div class="col-sm-12 mt-3">
-                                            <input type="text" class="form-control schengen_copy" name="schengen_copy" placeholder="Image of Schengen Or National Visa Issued During Last 5 Years" readonly >
+                                            <input type="text" class="form-control schengen_copy" name="schengen_copy" value="{{$applicant['schengen_visa']}}" placeholder="Image of Schengen Or National Visa Issued During Last 5 Years" readonly >
                                             <div class="input-group-btn">
                                                 <span class="fileUpload btn">
                                                     <span class="upl" id="upload">Choose File</span>
@@ -1300,8 +1300,8 @@
                                         </thead>
                                         <tbody>
                                             <tr v-for="(job, jobIndex) in selectedJob">
-                                                <td style="text-align: left;" data-bs-toggle="collapse" :data-bs-target="'#collapseExperienceFour'+job.cat1+job.cat2+job.cat3+job.cat4" aria-expanded="false" :aria-controls="'collapseExperienceFour'+job.cat1+job.cat2+job.cat3+job.cat4">@{{job.name}}</td>
-                                                <td style="text-align: right;"><a class="btn btn-danger remove" v-on:click="removeJob(jobIndex)">Remove</a></td>
+                                                <td style="text-align: left;" data-bs-toggle="collapse" :data-bs-target="'#collapseExperienceFour'+job.job_category_one_id+job.job_category_two_id+job.job_category_three_id+job.job_category_four_id" aria-expanded="false" :aria-controls="'collapseExperienceFour'+job.job_category_one_id+job.job_category_two_id+job.job_category_three_id+job.job_category_four_id">@{{job.job_title}}</td>
+                                                <td style="text-align: right;"><a class="btn btn-danger remove" v-on:click="removeJob(job.id)">Remove</a></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -1353,7 +1353,7 @@
                                                 </div>
                                                 <div class="form-group row mt-4" style="margin-bottom: 20px">
                                                     <div class="row">
-                                                        <button type="button" class="btn btn-primary submitBtn" v-on:click="addExperience(null,null,data.job_category_three_id,data.id,data.name)" style="line-height: 22px">Add Experience</button>
+                                                        <button type="button" class="btn btn-primary submitBtn" applicantId="{{$applicant['id']}}" v-on:click="addExperience(null,null,data.job_category_three_id,data.id,data.name)" style="line-height: 22px">Add Experience</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1440,7 +1440,7 @@
                                                                         </div>
                                                                         <div class="form-group row mt-4" style="margin-bottom: 20px">
                                                                             <div class="row">
-                                                                                <button type="button" class="btn btn-primary submitBtn" v-on:click="addExperience(jobCategoryOne.id,jobCategoryTwo.id,jobCategoryThree.id,jobCategoryFour.id,jobCategoryFour.name)" style="line-height: 22px">Add Experience</button>
+                                                                                <button type="button" class="btn btn-primary submitBtn" data-applicantId="{{$applicant['id']}}" v-on:click="addExperience(jobCategoryOne.id,jobCategoryTwo.id,jobCategoryThree.id,jobCategoryFour.id,jobCategoryFour.name)" style="line-height: 22px">Add Experience</button>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -1456,7 +1456,7 @@
                             </div>
                             <div class="form-group row mt-4">
                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                    <button type="submit" class="btn btn-primary submitBtn">submit</button>
+                                    <button type="button" class="btn btn-primary submitBtn applicantSubmit">Submit</button>
                                 </div>
                             </div>
                         </div>
@@ -1595,7 +1595,6 @@
                 data: formdata, 
                 success: function (data) {
                     if(data.success) {
-                        alert('Data added successfully !');
                     } else {
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
@@ -1627,7 +1626,6 @@
                 success: function (data) {
                     if(data.success) {
                         $('.passportFrame').src = data.passport;
-                        alert('Data added successfully !');
                     } else {
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
@@ -1658,7 +1656,6 @@
                 contentType: false,
                 success: function (data) {
                     if(data.success) {
-                        alert('Data added successfully !');
                     } else {
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
@@ -1744,7 +1741,6 @@
                 contentType: false,
                 success: function (data) {
                     if(data.success) {
-                        alert('Data added successfully !');
                     } else {
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
@@ -1784,6 +1780,8 @@
             $("#passportModal").modal('hide');
             $("#passportFormatModal").modal('hide');
             $('#residenceCopyModal').modal('hide');
+            $('#visaCopyModal').modal('hide');
+            $('#schengenVisatModal').modal('hide');
         });
     });
     function showPassport()

@@ -1723,7 +1723,7 @@
                 contentType: false,
                 success: function (response) {
                     if(response.success) {
-                        location.href = "{{url('applicant/review')}}/"+'{{$applicantId}}'
+                        location.href = "{{url('applicant/review')}}/"+'{{$productId}}'
                     } else {
                         var validationError = response.errors;
                         $.each(validationError, function(index, value) {

@@ -134,7 +134,6 @@ class ApplicationController extends Controller
             'passport_issue' => 'required',
             'passport_expiry' => 'required',
             'issued_by' => 'Required',
-            'passport_copy' => 'required',
             'home_country' => 'required',
             'state' => 'required',
             'city' => 'required',
@@ -150,11 +149,14 @@ class ApplicationController extends Controller
 
             ), 200); // 400 being the HTTP code for an invalid request.
         }
-
         $file = $request->file('passport_copy');
-        $fileName = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
-        $destinationPath = 'public/passportCopy';
-        $file->storeAs($destinationPath, $fileName);
+        if($request->hasFile('passport_copy')){
+            $fileName = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
+            $destinationPath = 'public/passportCopy';
+            $file->storeAs($destinationPath, $fileName);
+        } else {
+            $fileName = $request['passport_copy'];
+        }
         Applicant::where('user_id', Auth::id())
             ->where('product_id', $request->product_id)
             ->update([
@@ -178,11 +180,13 @@ class ApplicationController extends Controller
              200);
     }
 
-    public function applicantReview($applicantId)
+    public function applicantReview($productId)
     {
         $user = User::find(Auth::id());
-        $applicant = Applicant::where('id', $applicantId)->first();
-        return view('user.application-review', compact('user', 'applicant'))->with('success', 'Data saved successfully!');
+        $applicant = Applicant::where('user_id', Auth::id())
+                        ->where('product_id', $productId)
+                        ->first();
+        return view('user.application-review', compact('user', 'applicant', 'productId'))->with('success', 'Data saved successfully!');
     }
 
     /**
@@ -212,11 +216,15 @@ class ApplicationController extends Controller
 
             ), 200); // 400 being the HTTP code for an invalid request.
         }
-        $file = $request->file('residence_copy');
-        $residenceCopy = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
-        $destinationPath = 'public/residenceCopy';
-        $file->storeAs($destinationPath, $residenceCopy);
-        $visaCopy = null;
+        if ($request->hasFile('residence_copy')) {
+            $file = $request->file('residence_copy');
+            $residenceCopy = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
+            $destinationPath = 'public/residenceCopy';
+            $file->storeAs($destinationPath, $residenceCopy);
+        } else {
+            $residenceCopy = $request->file('residence_copy');
+        }
+        $visaCopy = $request['visa_copy'];
         if ($request->hasFile('visa_copy')) {
             $file = $request->file('visa_copy');
             $visaCopy = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());

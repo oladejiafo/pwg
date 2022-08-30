@@ -334,12 +334,12 @@ class HomeController extends Controller
             {
                     $applicant_id = $apply->id;
             } 
-            
+
             $validator = \Validator::make($request->all(), [
                 'card_number' => 'required|numeric|digits:16',
                 'card_holder_name' => 'required',
                 'month' => 'required|numeric',
-                'year' => 'required|numeric|digits:4',
+                'year' => 'required|numeric|digits:4|max:'.(date('Y')+100),
                 'cvv' => 'required|numeric|digits:3',
                 'totaldue' => 'required',
                 'totalpay' => 'numeric|gte:1000'
@@ -417,7 +417,7 @@ class HomeController extends Controller
                         ])->first();
                 if ($status === null) {
                 } else {
-                    $status->applicant_status = '1';
+                    $status->applicant_status = '1f';
                     $status->save();
                 }
                 if ($res) {

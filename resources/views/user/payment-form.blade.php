@@ -28,8 +28,6 @@ function changeLink(inputElement)
 </script>
 @section('content')
 @php
-$first_pay = 0; 
-$payNow = $pendMsg = $second_pay = $third_pay = $discount = $payNoww  = $whichPayment  = $which  = 0;
 $pid = Session::get('myproduct_id');
 $completed = DB::table('applicants')
 ->where('product_id', '=', $pid)
