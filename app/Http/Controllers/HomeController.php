@@ -14,9 +14,11 @@ use App\Models\product;
 use App\Models\product_payments;
 use App\Models\payment;
 use App\Models\product_details;
+use App\Models\family_breakdown;
 use DB;
 use Session;
 use Exception;
+
 
 class HomeController extends Controller
 {
@@ -25,9 +27,17 @@ class HomeController extends Controller
 
         if(session('prod_id'))
         {
-          $idd = Session::get('prod_id');
+          $id = Session::get('prod_id');
 
-          return \Redirect::route('product', $idd);
+          
+        $data = product::find($id);
+        $promo = promo::where('product_id', '=', $id)->where('validity', '>=', date('Y-m-d'))->get();
+        $ppay = product_payments::where('product_id', '=', $id)->get();
+        $proddet = product_details::where('product_id', '=', $id)->get();
+
+        session()->forget('prod_id');
+        return view('user.package', compact('data', 'ppay', 'proddet','promo'));
+        //   return \Redirect::route('product', $idd);
 
         } else{
                 $package = product::all()->sortBy("id");
@@ -44,27 +54,68 @@ class HomeController extends Controller
         return view('user.home', compact('package','promo'));
     }
 
-    public function packageType($productId)
-    {
-        $proddet = product_details::where('product_id', '=', $productId)->where('visa_type', 'BLUE AND PINK COLLAR JOBS')->get();
-        $whiteJobs = product_details::where('product_id', '=', $productId)->where('visa_type', 'WHITE COLLAR JOBS')->get();
-        return view('user.package-type', compact('proddet', 'productId', 'whiteJobs'));
+    public function createsession(Request $request) {
+        \Session::put('pers', $request->pers);
+        return redirect()->back();
     }
 
-    public function product($id)
+    public function packageType($productId)
     {
+        $parents = $_COOKIE['parents'];
+        $kids = $_COOKIE['pers'];
+
+        Session::put('mySpouse', $parents);
+        Session::put('myKids', $kids);
+        Session::put('myproduct_id', $productId);
+        $data = product::find($productId);
+
+
+        if (isset($parents) ) {
+
+        if($parents =="yes") { $parentt =2; } else { $parentt = 1; }
+
+        if($kids =="none") {
+            $kids = 1;
+        }
+            $famdet = family_breakdown::where('product_id', '=', $productId)
+            ->where('visa_type', 'FAMILY PACKAGE')
+            ->where('parent', $parentt)
+            ->where('children', $kids)
+            ->get();
+        } else {
+            $famdet = family_breakdown::where('product_id', '=', $productId)->where('visa_type', 'FAMILY PACKAGE')->get();
+        }
+
+        unset($_COOKIE['pers']);
+        unset($_COOKIE['parents']);
+
+        $proddet = product_details::where('product_id', '=', $productId)->where('visa_type', 'BLUE AND PINK COLLAR JOBS')->get();
+        $whiteJobs = product_details::where('product_id', '=', $productId)->where('visa_type', 'WHITE COLLAR JOBS')->get();
+        return view('user.package-type', compact('proddet','famdet', 'productId', 'whiteJobs','data'));
+    }
+
+    public function product(Request $request)
+    {
+        $id = Session::get('myproduct_id');
+        if(Session::get('packageType') == "FAMILY PACKAGE"){
+            Session::put('totalCost', $request->cost);
+            // Session::put('spouse', $request->spouse);
+            // Session::put('kids', $request->children);
+        } 
         $data = product::find($id);
         $promo = promo::where('product_id', '=', $id)->where('validity', '>=', date('Y-m-d'))->get();
         $ppay = product_payments::where('product_id', '=', $id)->get();
         $proddet = product_details::where('product_id', '=', $id)->get();
+
         session()->forget('prod_id');
         return view('user.package', compact('data', 'ppay', 'proddet','promo'));
     }
 
+
     public function signature(Request $request, $id)
     {
         if (Auth::id()) {
-            Session::put('myproduct_id', $id);
+           // Session::put('myproduct_id', $id);
             Session::put('mypay_option', $request->payall);
             $data = product::find($id);
             return view('user.signature', compact('data'));

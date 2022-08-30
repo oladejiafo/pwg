@@ -17,8 +17,9 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::put('family/details/submit', [HomeController::class, 'familyDetails'])->name('family.details.submit');
-Route::get('package/type/{id}', [HomeController::class,'packageType'])->name('package-type');
+
+// Route::put('family/details/submit', [HomeController::class, 'familyDetails'])->name('family.details.submit');
+// Route::get('package/type/{id}', [HomeController::class,'packageType'])->name('package-type');
 Route::get('applicant/review', [ApplicationController::class, 'applicantReview'])->name('applicant.review');
 Route::post('store/schengen/details', [ApplicationController::class,'storeSchengenDetails'])->name('store.schengen.details');
 
@@ -46,7 +47,11 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
-Route::get('/product/{id}',[HomeController::class,'product'])->name('product');
+Route::post('/product',[HomeController::class,'product'])->name('product');
+Route::get('/package/type/{id}',[HomeController::class,'packageType'])->name('packageType');
+
+Route::post('set_session', [HomeController::class, 'createsession'])->name('createsession');
+
 Route::get('append_signature/{id}',[HomeController::class,'signature'])->name('signature');
 Route::get('signature_success/{id}',[HomeController::class,'signature_success'])->name('signature_success');
 Route::get('/referal_details/{id}',[HomeController::class,'referal'])->name('referal');
