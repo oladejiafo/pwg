@@ -56,7 +56,7 @@ $icon = '';
            $offer_discount_msg = ''; @endphp
 @endif
 
-
+{{Session::get('packageType')}}
   <section class="product-section">
     <div class="container-fluid">
       <div class="row" style="margin-block: 50px;">

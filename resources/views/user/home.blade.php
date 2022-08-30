@@ -21,7 +21,7 @@
   float: left;
   background-image: url(../user/images/v1_17125.png) !important;
   background-color: rgba(6, 45, 83, 0.7);
-  height: auto;
+  height: 480px;
   padding-top: 30px;
   background-size: 100%;
   background-repeat: no-repeat;
@@ -115,9 +115,9 @@
                                         <p> 
                                             <i class="<?php echo $icon; ?>"></i> {{$offer_discount_msg}}
                                         </p>
-                                        <p><a class="btn btn-secondary" href="{{ url('package/type', $offer->id) }}">Buy Now</a></p>
+                                        <p><a class="btn btn-secondary" href="{{ url('package/type', $offer->id) }}">Apply Now</a></p>
 
-                                        {{-- <p><a class="btn btn-secondary" href="{{ url('product', $offer->id) }}">Buy Now</a></p> --}}
+                                        {{-- <p><a class="btn btn-secondary" href="{{ url('product', $offer->id) }}">Apply Now</a></p> --}}
 
                                     </span>
                                 </span>
@@ -193,9 +193,9 @@
                             <p>
                                 <i class="<?php echo $icon; ?>"></i> {{$offer_discount_msg}} 
                         </p>
-                            <p><a class="btn btn-secondary" href="{{ url('package/type', $offer->id) }}">Buy Now</a></p>
+                            <p><a class="btn btn-secondary" href="{{ url('package/type', $offer->id) }}">Apply Now</a></p>
 
-                            {{-- <p><a class="btn btn-secondary buy_now" href="{{ url('product', $offer->id) }}">Buy Now</a></p> --}}
+                            {{-- <p><a class="btn btn-secondary buy_now" href="{{ url('product', $offer->id) }}">Apply Now</a></p> --}}
 
                         </span>
                     </span>
@@ -205,8 +205,7 @@
                 <div class="col-4 cellContainer">
                     <span class="product-itemx" href="#">
                         <span class="positionAnchorx" data-position="1">
-                            <img src="../user/images/placeholder.png" style="height:458px" class="img-fluid product-thumbnailx home_img">
-          
+                            
                             <span class="bottom">
                                 <h3 class="product-title intro-excerpt" style="font-size: 35px; color:aliceblue"></h3>
                                 <p style="font-size:20px"></p>

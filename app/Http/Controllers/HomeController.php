@@ -55,7 +55,7 @@ class HomeController extends Controller
     }
 
     public function createsession(Request $request) {
-        \Session::put('pers', $request->pers);
+        \Session::put('packageType', $request->value);
         return redirect()->back();
     }
 
@@ -63,6 +63,12 @@ class HomeController extends Controller
     {
         $parents = $_COOKIE['parents'];
         $kids = $_COOKIE['pers'];
+
+
+        if(isset($_COOKIE['packageType']))
+        {
+         Session::put('packageType', $_COOKIE['packageType']);
+        }
 
         Session::put('mySpouse', $parents);
         Session::put('myKids', $kids);
@@ -96,7 +102,16 @@ class HomeController extends Controller
 
     public function product(Request $request)
     {
+
+        
+        if(isset($_COOKIE['packageType']))
+        {
+         Session::put('packageType', $_COOKIE['packageType']);
+        }
+        
         $id = Session::get('myproduct_id');
+        
+        session()->forget('totalCost');
         if(Session::get('packageType') == "FAMILY PACKAGE"){
             Session::put('totalCost', $request->cost);
             // Session::put('spouse', $request->spouse);

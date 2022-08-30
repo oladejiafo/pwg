@@ -3,16 +3,24 @@
 <link href="{{asset('user/css/products.css')}}" rel="stylesheet">
 @section('content')
 
-
+@if($famdet->first())
 @foreach($famdet as $fam)
 @if($loop->first)
-
 @php 
 $fam_cost = $fam->cost
 @endphp
+
 @endif
 @endforeach
-    <div class="container">
+
+@else
+@php 
+$fam_cost = 0
+@endphp
+@endif
+
+
+    <div class="container" style="margin-top: 150px;">
         <div class="col-12">
             <div class="package">
                 <div class="header">
@@ -33,18 +41,28 @@ $fam_cost = $fam->cost
                     </div>
                     <div class="col-4">
                         <div class="package-type  white-collar">
+                            
                             <div class="content">
                                 <img src="{{asset('images/yellowBlueCollar.svg')}}">
+                                @if($whiteJobs->first())
                                 @foreach($whiteJobs as $whiteJob)
                                 @if ($loop->first)
+                                
                                  @php                                   
                                    $whiteJob_cost = $whiteJob->cost + $data->unit_price
                                  @endphp 
+
                                  @endif
                                 @endforeach
+                                @else 
+                                @php                                   
+                                   $whiteJob_cost = $data->unit_price
+                                 @endphp
+                                @endif
                                 <h6>White Collar Package</h6>
                                 <p class="amountSection"><span class="amount">{{number_format($whiteJob_cost,0)}}</span><b>AED</b></p>
                             </div>
+                            
                         </div>
                     </div>
                     <div class="col-4">
@@ -60,51 +78,36 @@ $fam_cost = $fam->cost
                 <div class="row">
                     <div class="package-desc">
                         <div class="blue-desc">
-                        @if(session()->has('packageType')) 
-                           @php 
-                            session()->forget('packageType');
-                          @endphp
-                        @endif
-                        @php                            
-                         session(['packageType' => 'BLUE COLLAR JOBS']);
-                        @endphp
-
-                            @include('user.package-jobs')
+                            
+                           {{-- @include('user.package-jobs') --}}
                             <div class="form-group row" style="margin-top: 70px"> 
                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                    <a class="btn btn-primary" href="{{ url('product', $productId) }}" style="width: 100%;font-size: 24px;">Continue</a>
+                                <form method="POST" action="{{ url('product') }}">
+                                    @csrf
+                                    <input type="hidden" name="cost" value="{{$fam_cost}}">
+                                    <!-- <a class="btn btn-primary" href="{{ url('product') }}" style="width: 100%;font-size: 24px;">Continue</a> -->
+                                    <button type="submit" class="btn btn-primary" style="width: 100%;font-size: 24px;">Continue</button>
+                                </form>
                                 </div>
                             </div>
                         </div>
                         <div class="white-desc">
-                        @if(session()->has('packageType')) 
-                           @php 
-                            session()->forget('packageType');
-                          @endphp
-                        @endif
-                        @php                            
-                         session(['packageType' => 'WHITE COLLAR JOBS']);
-                        @endphp
-
-                            @include('user.white-collar-packge')
+                  
+                             {{-- @include('user.white-collar-packge') --}}
                         
                             <div class="form-group row" style="margin-top: 70px"> 
                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                    <a class="btn btn-primary" href="{{ url('product', $productId) }}" style="width: 100%;font-size: 24px;">Continue</a>
+                                <form method="POST" action="{{ url('product') }}">
+                                    @csrf
+                                    <input type="hidden" name="cost" value="{{$fam_cost}}">
+                                    <!-- <a class="btn btn-primary" href="{{ url('product') }}" style="width: 100%;font-size: 24px;">Continue</a> -->
+                                    <button type="submit" class="btn btn-primary" style="width: 100%;font-size: 24px;">Continue</button>
+                                </form>
                                 </div>
                             </div>
                         </div>
 
                         <div class="family-desc">
-
-                        @if(session()->has('packageType')) 
-                           @php 
-                            session()->forget('packageType');
-                          @endphp
-                        @endif
-                        @php                            
-                         session(['packageType' => 'FAMILY PACKAGE']);
-                        @endphp
 
                             <div class="header">
                                 <h4>Dependants Details</h4>
@@ -192,16 +195,22 @@ $fam_cost = $fam->cost
             $('.white-desc').hide();
             $('.family-desc').hide();
             $('.blue-collar').click(function(){
+                let bluej = "Blue Collar Jobs"
+                document.cookie = 'packageType='+bluej ;
                 $('.blue-desc').show();
                 $('.white-desc').hide();
                 $('.family-desc').hide();
             });
             $('.white-collar').click(function(){
+                let whitej = "White Collar Jobs"
+                document.cookie = 'packageType='+whitej ;
                 $('.blue-desc').hide();
                 $('.white-desc').show();
                 $('.family-desc').hide();
             });
             $('.family-package').click(function(){
+                let famj = "FAMILY PACKAGE"
+                document.cookie = 'packageType='+famj ;
                 $('.blue-desc').hide();
                 $('.white-desc').hide();
                 $('.family-desc').show();
@@ -230,7 +239,6 @@ function handleClick(spouse) {
     parents = spouse.value;
 
     // document.cookie = 'parents='+parents ;        
-    // window.location.href = "{{ route('packageType',$productId) }}";
 }
 
 function handleKids(children) {
