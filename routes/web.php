@@ -46,7 +46,11 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
-Route::get('/product/{id}',[HomeController::class,'product'])->name('product');
+Route::post('/product',[HomeController::class,'product'])->name('product');
+Route::get('/package/type/{id}',[HomeController::class,'packageType'])->name('packageType');
+
+Route::post('set_session', [HomeController::class, 'createsession'])->name('createsession');
+
 Route::get('append_signature/{id}',[HomeController::class,'signature'])->name('signature');
 Route::get('signature_success/{id}',[HomeController::class,'signature_success'])->name('signature_success');
 Route::get('/referal_details/{id}',[HomeController::class,'referal'])->name('referal');

@@ -55,6 +55,8 @@
 $icon = '';
            $offer_discount_msg = ''; @endphp
 @endif
+
+
   <section class="product-section">
     <div class="container-fluid">
       <div class="row" style="margin-block: 50px;">
@@ -68,7 +70,7 @@ $icon = '';
           <h1>{{$data->product_name}}</h1>
           <p class="subheading"><span>{{$data->slogan}}</span></p>
           <p>{{$data->description}}</p>
-          <h2>{{number_format($data->unit_price,2)}} {{$data->currency}}</h2>
+          <h2> @if (Session::get('totalCost') >0) {{ number_format(Session::get('totalCost'),2) }} @else  {{number_format($data->unit_price,2)}} @endif {{$data->currency}}</h2>
 
           <p class="subheading" style="margin-left: 0px;">
           <i class="<?php echo $icon; ?>"></i><i> {{$offer_discount_msg}} </i>
@@ -178,6 +180,15 @@ if ($data->full_payment_discount > 0) {
   </script>
 
  {{-- @include('user.package-jobs') --}}
+
+ 
+ {{ Session::get('myproduct_id') }}
+
+{{ Session::get('packageType') }}
+{{ Session::get('totalCost') }}
+{{ Session::get('mySpouse') }}
+{{ Session::get('myKids') }}
+
 </body>
 
 </html>
