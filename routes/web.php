@@ -18,10 +18,9 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 |
 */
 
-// Route::put('family/details/submit', [HomeController::class, 'familyDetails'])->name('family.details.submit');
-// Route::get('package/type/{id}', [HomeController::class,'packageType'])->name('package-type');
-Route::get('applicant/review', [ApplicationController::class, 'applicantReview'])->name('applicant.review');
-Route::post('store/schengen/details', [ApplicationController::class,'storeSchengenDetails'])->name('store.schengen.details');
+Route::post('store/applicant/details', [ApplicationController::class,'storeApplicantDetails'])->name('store.applicant.details');
+Route::post('get-promo',[HomeController::class, 'getPromo'])->name('getPromo');
+Route::get('applicant/review/{id}', [ApplicationController::class, 'applicantReview'])->name('applicant.review');
 
 Route::middleware([
     'auth:sanctum',
@@ -63,7 +62,10 @@ Route::get('/myapplication',[HomeController::class,'myapplication']);
 Route::get('/affiliate', [HomeController::class,'affiliate'])->name('affiliate');
 
 Route::post('/add-referrer', [HomeController::class,'addReferrer'])->name('add-referer');
-
+Route::put('family/details/submit', [HomeController::class, 'familyDetails'])->name('family.details.submit');
+Route::get('package/type/{id}', [HomeController::class,'packageType'])->name('package-type');
+Route::get('contract/{id}', [HomeController::class, 'contract'])->name('contract');
+Route::get('contract/view/{id}', [HomeController::class, 'contractReview'])->name('contract-review');
 // Reset Password
 
 Route::post('reset/password', [ResetPasswordController::class,'updatePassword'])->name('customize.password.update');
@@ -76,13 +78,15 @@ Route::get('payment_form/{id}',[HomeController::class,'payment'])->name('payment
 Route::post('/add_payment', [HomeController::class,'addpayment']);
 
 // Applicant
-Route::get('applicant/details', [ApplicantionController::class, 'applicantDetails'])->name('applicant.details');
-Route::get('applicant/{id}', [ApplicantionController::class,'applicanview'])->name('applicant');
-Route::post('store/applicant', [ApplicantionController::class,'storeApplicant'])->name('store.applicant');
-Route::post('srore/applicant/details', [ApplicantionController::class,'storeApplicantDetails'])->name('store.applicant.details');
-Route::post('store/home/country/details', [ApplicantionController::class,'storeHomeCountryDetails'])->name('store.home-country.details');
-Route::post('store/current/details', [ApplicantionController::class,'storeCurrentDetails'])->name('store.current.details');
-Route::post('upload/passport/copy', [ApplicantionController::class, 'uploadPassportCopy'])->name('upload.passport.copy');
-Route::post('/add/experience', [ApplicantionController::class,'addExperience'])->name('add.experience');
+Route::post('/add/experience', [ApplicationController::class,'addExperience'])->name('add.experience');
+Route::get('applicant/details', [ApplicationController::class, 'applicantDetails'])->name('applicant.details');
+Route::get('applicant/{id}', [ApplicationController::class,'applicant'])->name('applicant');
+Route::post('store/applicant', [ApplicationController::class,'storeApplicant'])->name('store.applicant');
+Route::post('store/home/country/details', [ApplicationController::class,'storeHomeCountryDetails'])->name('store.home-country.details');
+Route::post('store/current/details', [ApplicationController::class,'storeCurrentDetails'])->name('store.current.details');
+Route::post('upload/passport/copy', [ApplicationController::class, 'uploadPassportCopy'])->name('upload.passport.copy');
+Route::post('store/schengen/details', [ApplicationController::class,'storeSchengenDetails'])->name('store.schengen.details');
+Route::post('/get/selected/experience', [ApplicationController::class,'getApplicantExperience'])->name('get.selected.experience');
+Route::post('/remove/selected/experience', [ApplicationController::class,'removeExperience'])->name('remove.selected.experience');
+Route::post('/submit/applicant/review/', [ApplicationController::class, 'applicantReviewSubmit'])->name('submit.applicant.review');
 
-Route::post('get-promo',[HomeController::class, 'getPromo'])->name('getPromo');

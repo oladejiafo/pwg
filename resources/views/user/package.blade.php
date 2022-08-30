@@ -141,7 +141,7 @@ $icon = '';
 
           @if(Route::has('login'))
            @auth
-            <form action="{{ url('append_signature', $data->id) }}" method="GET">
+            <form action="{{ url('contract', $data->id) }}" method="GET">
           @else
             <form action="{{ url('login') }}">
               @php Session::put('prod_id', $data->id); @endphp  

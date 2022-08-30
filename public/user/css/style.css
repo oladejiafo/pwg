@@ -1336,7 +1336,7 @@ textarea {
 .linear {
   border: 0.25px solid #f0f3f4;
   width: 90px;
-  margin-top: -53px;
+  margin-top: -48px;
 }
 
 .passport_copy {
@@ -1860,27 +1860,28 @@ iframe img {
   text-align: center;
 }
 
-.package {
+.package, .contract {
   font-family: TT Norms Pro;
   width: 100%;
   max-width: 100%;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 150px;
+  /* margin-top: 150px; */
   background-color: #ffffff;
   margin-bottom: 420px;
   color: #636466;
   padding: 40px 150px 70px 150px;
 }
 
-.package h3 {
+.package h3,
+.contract h3 {
   font-family: TT Norms Pro;
   font-size: 36px;
   font-weight: 700;
   line-height: 43px;
   letter-spacing: 0em;
   text-align: left;
-  margin-top: 70px;
+  margin-top: 16px;
   color: #636466;
 }
 
@@ -1908,6 +1909,7 @@ iframe img {
   margin-right: 80px;
 }
 
+.invoice-later .switch,
 .package .switch {
   position: relative;
   display: inline-block;
@@ -1917,6 +1919,7 @@ iframe img {
   margin-left: 35px;
 }
 
+.invoice-later .switch input,
 .package .switch input { 
   opacity: 0;
   width: 0;
@@ -1924,6 +1927,7 @@ iframe img {
   margin-top: 20px;
 }
 
+.invoice-later .slider,
 .package .slider {
   position: absolute;
   cursor: pointer;
@@ -1936,6 +1940,7 @@ iframe img {
   transition: .4s;
 }
 
+.invoice-later .slider:before,
 .package .slider:before {
   position: absolute;
   content: "";
@@ -1948,14 +1953,17 @@ iframe img {
   transition: .4s;
 }
 
+.invoice-later input:checked + .slider,
 .package input:checked + .slider {
   background-color: #FAE008;
 }
 
+.invoice-later input:focus + .slider,
 .package input:focus + .slider {
   box-shadow: 0 0 1px #FAE008;
 }
 
+.invoice-later input:checked + .slider:before,
 .package input:checked + .slider:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
@@ -1963,12 +1971,14 @@ iframe img {
 }
 
 /* Rounded sliders */
+.invoice-later .slider.round,
 .package .slider.round {
   border-radius: 34px;
 }
 
+.invoice-later .slider.round:before,
 .package .slider.round:before {
-  border-radius: 50%;
+  border-radius: 70%;
 }
 
 .children-sec,
@@ -2028,7 +2038,66 @@ iframe img {
   border: none;
 }
 
+.contract h3 {
+  text-align: center;
+  margin-top: 12px;
+}
 
+.contract .bottom-title {
+  text-align: center;
+  font-family: 'TT Norms Pro';
+  font-style: normal;
+  font-weight: 300;
+  /* font-size: 24px; */
+  line-height: 28px;
+
+}
+
+.contractLogo {
+  width: 83px;
+  height: 84px;
+  margin-top: 16px;
+}
+
+.contractLogo img {
+  margin-left: 114px;
+}
+
+.zoomIcon {
+  width : 600px; 
+  height : 456px;
+  position: absolute;
+  z-index: 100;
+}
+
+.zoomIcon img {
+  margin: 40%;
+}
+
+.contractPdf {
+  filter: blur(10px);
+  -webkit-filter: blur(2px);
+  -moz-filter: blur(10px);
+  -o-filter: blur(10px);
+  -ms-filter: blur(10px)
+}
+
+.contract {
+  margin-top: 150px;
+}
+
+.agree {
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+.zoomOut {
+  cursor: pointer;
+}
+
+embed {
+  border: 1em solid red;
+}
 
 /*************Responsive Styles*****************/
 /***************iPhone Portrait**************/

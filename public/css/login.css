@@ -298,6 +298,7 @@ input {
     color: #636466;
 }
 
+.signature h3,
 .form-sec1 h3 {
     font-family: TT Norms Pro;
     font-size: 36px;
@@ -492,20 +493,26 @@ input {
 }
 
 .signature {
-    width:40%;
-    padding: 120px 120px 120px 120px;
-    background-color: #ffffff;
-    margin: 0 auto;
+    font-family: TT Norms Pro;
+    width: 92%;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
     margin-top: 150px;
-    margin-bottom: 120px;
-    color: #000;
-    align-content: center;
-    height: auto;
-    border-radius: 10px;
+    background-color: #ffffff;
+    margin-bottom: 420px;
+    color: #636466;
+    padding: 40px 150px 70px 150px;
 
 }
 
-.signature img {
+.signatureLogo {
+    width: 83px;
+    height: 84px;
+    margin-top: 16px;
+}
+
+/* .signature img {
     margin-block: 50px;
     margin-left: auto;
     margin-right: auto;
@@ -513,7 +520,7 @@ input {
     height: 280px;
     padding: 50px;
 
-}
+} */
 
 @media (min-width:375px) and (max-width:768px){
     .signature {
@@ -556,6 +563,65 @@ input {
     background-color: #f9bf29;
     border-color: #f9bf29;
 } 
+
+.signature .bottom-title {
+    text-align: center;
+}
+
+
+.kbw-signature {
+    width: 99%; 
+    height: 400px;
+    zoom:normal;
+    align-content: center;
+    padding: 0;
+    border-radius: 10px;
+    border-style: solid;
+    border-color: #ccc; /*#f0f3f4*/;
+    border-width: 1px;
+}
+
+.signature .bottom-title p {
+    margin: 0px;
+}
+
+#sig canvas {
+    padding: 0;
+    width: 100% !important;
+    height: 345px;
+    z-index: 9099;
+    zoom:100%
+}
+
+.invoice-now {
+    background: #F0F3F4;
+    height: 76px;
+    width: 310px;
+    border: 1px solid #F0F3F4;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.invoice-later {
+    background: #F0F3F4;
+    height: 76px;
+    width: 310px;
+    border: 1px solid #F0F3F4;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 15px;
+}
+
+.invoice-later p {
+    margin-left: 86px;
+    margin-top: -30px;
+    font-size: 19px;
+}
+
+.invoice-later .switch {
+    margin-left: 17px;
+    margin-top: 20px;
+}
 
 .resetPassword {
     margin-top: 195px;

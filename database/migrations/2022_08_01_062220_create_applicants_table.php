@@ -70,7 +70,8 @@ class CreateApplicantsTable extends Migration
             $table->string('applicant_status')->default('pending')->comment('1:referal; 2:payment; 3:applcant; 4:applicant details; 5:applicant review');
             $table->string('referrer_code')->nullable();
             $table->string('agent_code')->nullable();
-            $table->integer('visa_type')->comment('1:bluepinkjob; 2:whitejob; 3:familypackage')->nullable();
+            $table->string('visa_type')->nullable();
+            $table->string('contract')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

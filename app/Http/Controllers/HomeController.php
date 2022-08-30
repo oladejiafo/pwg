@@ -161,7 +161,7 @@ class HomeController extends Controller
             // }
             $signature->save();
             
-            return \Redirect::route('referal', $request->pid)
+            return \Redirect::route('payment', $request->pid)
             ->with('info', 'Signature Uploaded Successfully!')
             ->with('info_sub','Proceed to application');
         } else {
@@ -311,6 +311,18 @@ class HomeController extends Controller
             }
 
             $id = Session::get('myproduct_id');
+            // $applys = DB::table('applicants')
+            // ->where('product_id', '=', $id)
+            // ->where('user_id', '=', Auth::user()->id)
+            // ->get();
+
+            // $applied='0';
+            // foreach($applys as $apply) 
+            // {
+            //         $applied = $apply->applicant_status;
+            // } 
+
+            // if ($applied == '1') {
 
                 $data = product::find(Session::get('myproduct_id'));
                           
@@ -352,27 +364,33 @@ class HomeController extends Controller
         }
     }
 
+    
     public function addpayment(Request $request)
     {
         if (Auth::id()) {
 
             $id = Session::get('myproduct_id');
+            Applicant::updateOrCreate([
+                'product_id' => $id,
+                'user_id' => Auth::id()
+            ],[
+                'first_name'=> Auth::user()->first_name
+            ]);
             $applys = DB::table('applicants')
             ->where('product_id', '=', $id)
             ->where('user_id', '=', Auth::user()->id)
             ->get();
 
-
             foreach($applys as $apply) 
             {
                     $applicant_id = $apply->id;
             } 
-            
+
             $validator = \Validator::make($request->all(), [
                 'card_number' => 'required|numeric|digits:16',
                 'card_holder_name' => 'required',
                 'month' => 'required|numeric',
-                'year' => 'required|numeric|digits:4',
+                'year' => 'required|numeric|digits:4|max:'.(date('Y')+100),
                 'cvv' => 'required|numeric|digits:3',
                 'totaldue' => 'required',
                 'totalpay' => 'numeric|gte:1000'
@@ -382,88 +400,91 @@ class HomeController extends Controller
             if($validator->fails()) {
                 return Redirect::back()->withErrors($validator);
             } else {
-    if ($request->totalpay ==null || $request->totalpay=="" ||$request->totalpay < 1000) {
-        $totalpay = 0;
-    } else {
-        $totalpay = $request->totalpay;
-    }
+                if ($request->totalpay ==null || $request->totalpay=="" ||$request->totalpay < 1000) {
+                    $totalpay = 0;
+                } else {
+                    $totalpay = $request->totalpay;
+                }
 
-    // Save Payment Information
+                // Save Payment Information
 
-    if ($request->totaldue == $request->totalpay) {
-        $whatsPaid ="Paid";
-    } elseif ($request->totaldue > $request->totalpay && $request->totalpay>1000) {
-        $whatsPaid ="Partial";
-    } else {
-        $whatsPaid ="Paid";
-        $overPay = $request->totalpay - $request->totaldue;
-    }
-    $datas = payment::where([
-    ['product_payment_id', '=', $request->ppid],
-    ['payment_type', '=', $request->whichpayment],
-    ['application_id', '=', $applicant_id],
-            ])->first();
-    if ($datas === null) {
-        $data = new payment();
-        $data->product_payment_id = $request->ppid;
-        $data->application_id = $applicant_id;
-        $data->card_holder_name = $request->card_holder_name;
-        $data->total = $request->totaldue;
-        $data->total_paid = $totalpay;
-        $data->payment_status = $whatsPaid;
-        $data->payment_type = $request->whichpayment;
+                if ($request->totaldue == $request->totalpay) {
+                    $whatsPaid ="Paid";
+                } elseif ($request->totaldue > $request->totalpay && $request->totalpay>1000) {
+                    $whatsPaid ="Partial";
+                } else {
+                    $whatsPaid ="Paid";
+                    $overPay = $request->totalpay - $request->totaldue;
+                }
+                
+                $datas = payment::where([
+                ['product_payment_id', '=', $request->ppid],
+                ['payment_type', '=', $request->whichpayment],
+                ['application_id', '=', $applicant_id],
+                        ])->first();
+                if ($datas === null) {
+                    $data = new payment();
+                    $data->product_payment_id = $request->ppid;
+                    $data->application_id = $applicant_id;
+                    $data->card_holder_name = $request->card_holder_name;
+                    $data->total = $request->totaldue;
+                    $data->total_paid = $totalpay;
+                    $data->payment_status = $whatsPaid;
+                    $data->payment_type = $request->whichpayment;
 
-        if($request->save_card != null) {
-        $data->save_card_info = 1;
-        $data->card_number = $request->card_number;
-        $data->month = $request->month;
-        $data->year = $request->year;
-        $data->cvv = $request->cvv;
+                    if($request->save_card != null) {
+                    $data->save_card_info = 1;
+                    $data->card_number = $request->card_number;
+                    $data->month = $request->month;
+                    $data->year = $request->year;
+                    $data->cvv = $request->cvv;
+                    }
+                    $res = $data->save();
+                } else {
+                    $datas->product_payment_id = $request->ppid;
+                    $datas->application_id = $applicant_id;
+                    $datas->card_holder_name = $request->card_holder_name;
+                    $datas->total = $request->totaldue;
+                    $datas->total_paid = $totalpay;
+                    $datas->payment_status = $whatsPaid;
+                    $datas->payment_type = $request->whichpayment;
+
+            //        $isChecked = $request->save_card != null;
+                    if($request->save_card != null) {
+                    $datas->save_card_info = 1;
+                    $datas->card_number = $request->card_number;
+                    $datas->month = $request->month;
+                    $datas->year = $request->year;
+                    $datas->cvv = $request->cvv;
+                    }
+                    $res = $datas->save();
+                }
+
+                //Update Applicant status in APPPLICANT TABLE
+                $status = applicant::where([
+                ['user_id', '=', Auth::user()->id],
+                ['product_id', '=', $request->pid],
+                ['id', '=', $applicant_id],
+                        ])->first();
+                if ($status === null) {
+                } else {
+                    $status->applicant_status = '1f';
+                    $status->save();
+                }
+                if ($res) {
+                    $productId = $id;
+                    $dest = product::find($request->pid);
+                    $dest_name = $dest->product_name;
+
+                    $msg="Awesome! Payment Successful!";
+                    return view('user.payment-success', compact('id'));
+                    // return \Redirect::route('applicant', $request->pid)->with('info', $msg)->with('info_sub', 'You journey to ' .$dest_name. ' just began!');
+        } else {
+            return view('user.payment-fail', compact('id'));
+
+            // return redirect()->back()->with('failed', 'Oppss! Something Went Wrong!');
         }
-        $res = $data->save();
-    } else {
-        $datas->product_payment_id = $request->ppid;
-        $datas->application_id = $applicant_id;
-        $datas->card_holder_name = $request->card_holder_name;
-        $datas->total = $request->totaldue;
-        $datas->total_paid = $totalpay;
-        $datas->payment_status = $whatsPaid;
-        $datas->payment_type = $request->whichpayment;
-
-//        $isChecked = $request->save_card != null;
-        if($request->save_card != null) {
-        $datas->save_card_info = 1;
-        $datas->card_number = $request->card_number;
-        $datas->month = $request->month;
-        $datas->year = $request->year;
-        $datas->cvv = $request->cvv;
-        }
-        $res = $datas->save();
     }
-
-    //Update Applicant status in APPPLICANT TABLE
-    $status = applicant::where([
-    ['user_id', '=', Auth::user()->id],
-    ['product_id', '=', $request->pid],
-    ['id', '=', $applicant_id],
-            ])->first();
-    if ($status === null) {
-    } else {
-        $status->applicant_status = '2';
-        $status->save();
-    }
-    if ($res) {
-        $productId = $id;
-        $dest = product::find($request->pid);
-        $dest_name = $dest->product_name;
-
-        $msg="Awesome! Payment Successful!";
-
-        return \Redirect::route('applicant', $request->pid)->with('info', $msg)->with('info_sub', 'You journey to ' .$dest_name. ' just began!');
-    } else {
-        return redirect()->back()->with('failed', 'Oppss! Something Went Wrong!');
-    }
-}
         } else {
             return redirect()->back()->with('failed', 'You are not authorized');
         }
@@ -484,17 +505,14 @@ class HomeController extends Controller
                 $my_discount = $apply->discount_percent;
         } 
 
-if ($coupon->first()) {
-    Session::put('myDiscount', $my_discount);
-    Session::put('haveCoupon', 1);
-    return \Redirect::route('payment', $id);
-} else {
-    Session::put('haveCoupon', 0);
-    return \Redirect::route('payment', $id)->with('failed', 'Invalid Discount/Promo Code');
-}
-
-
-
+        if ($coupon->first()) {
+            Session::put('myDiscount', $my_discount);
+            Session::put('haveCoupon', 1);
+            return \Redirect::route('payment', $id);
+        } else {
+            Session::put('haveCoupon', 0);
+            return \Redirect::route('payment', $id)->with('failed', 'Invalid Discount/Promo Code');
+        }
     }
     
     // public function applicant()
@@ -543,7 +561,11 @@ if ($coupon->first()) {
     public function familyDetails(Request $request)
     {
         return \Redirect::route('product', $request->productId);
+    }
 
+    public function contract($productId)
+    {
+        return view('user.contract', compact('productId'));
     }
 
 }

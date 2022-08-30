@@ -1,9 +1,6 @@
 @extends('layouts.master')
 <link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
 <link href="{{asset('user/css/products.css')}}" rel="stylesheet">
-<style>
-
-</style>
 @section('content')
 
 

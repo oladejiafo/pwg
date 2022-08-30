@@ -8,7 +8,7 @@
 
 
 @php 
-    $completed = DB::table('applicants')
+     $completed = DB::table('applicants')
                 ->where('product_id', '=', $productId)
                 ->where('user_id', '=', Auth::user()->id)
                 ->get();
@@ -19,36 +19,29 @@
             $levels = $complete->applicant_status;
     } 
 @endphp
-    <div class="container" id="app">
-        <div class="col-12">
+<div class="container" id="app" data-applicantId="{{$applicant['id']}}">
+    <div class="col-12">
             <div class="row">
                 <div class="wizard-details bg-white">
                     <div class="row">
                         <div class="tabs-detail d-flex justify-content-center">
                             <div class="wrapper">
-                                <a href="{{ url('referal_details', $productId) }}" ><div class="round-completed round1 m-2">1</div></a>
-                                <div class="round-title"><p>Refferal</p><p> Details</p></div>
-                            </div>
-                            <div class="linear"></div>
-                            <div class="wrapper">
-                                <a href="#" onclick="return alert('Payment Concluded Already!');"><div class="round-completed round2 m-2">2</div></a>
-
-
+                                <a href="{{ url('payment_form', $applicant['productId']) }}" ><div class="round-completed round1 m-2">1</div></a>
                                 <div class="round-title"><p>Payment</p><p> Details</p></div>
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href="{{route('applicant', $productId)}}" ><div class="round-completed  round3 m-2">3</div></a>
+                                <a href="{{url('applicant', $applicant['productId'])}}" onclick="return alert('Payment Concluded Already!');"><div class="round-completed round2 m-2">2</div></a>
                                 <div class="round-title"><p>Application</p><p> Details</p></div>
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href="{{route('applicant.details')}}" ><div class="round-completed round4 m-2">4</div></a>
+                                <a href="{{url('applicant/details')}}" ><div class="round-completed  round3 m-2">3</div></a>
                                 <div class="round-title"><p>Applicant</p><p> Details</p></div>
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href="{{url('applicant/review')}}" ><div class="round-active round5 m-2">5</div></a>
+                                <a href="{{url('applicant/review', $applicant['productId'])}}" ><div class="round-active round4 m-2">4</div></a>
                                 <div class="round-title"><p>Application</p><p> Review</p></div>
                             </div>
                         </div>
@@ -529,8 +522,8 @@
                                         <div class="col-sm-4 mt-3">
                                             <select name="sex"  aria-required="true" class="form-control form-select" required>
                                                 <option selected disabled>Sex *</option>
-                                                <option {{($applicant['sex'] == 'Male') ? 'selected' : '' }}value="Male">Male</option>
-                                                <option {{($applicant['sex'] == 'Female') ? 'selected' : ''}} value="Female">Female</option>
+                                                <option {{($applicant['sex'] == 'MALE') ? 'selected' : '' }}value="Male">Male</option>
+                                                <option {{($applicant['sex'] == 'FEMALE') ? 'selected' : ''}} value="Female">Female</option>
                                             </select>
                                             <span class="sex_errorClass"></span>
                                         </div>
@@ -1235,7 +1228,7 @@
                                     </div>
                                     <div class="form-group row mt-4 schengen_visa">
                                         <div class="col-sm-12 mt-3">
-                                            <input type="text" class="form-control schengen_copy" name="schengen_copy" placeholder="Image of Schengen Or National Visa Issued During Last 5 Years" readonly >
+                                            <input type="text" class="form-control schengen_copy" name="schengen_copy" value="{{$applicant['schengen_visa']}}" placeholder="Image of Schengen Or National Visa Issued During Last 5 Years" readonly >
                                             <div class="input-group-btn">
                                                 <span class="fileUpload btn">
                                                     <span class="upl" id="upload">Choose File</span>
@@ -1298,7 +1291,7 @@
                         <div class="collapse show" id="collapseExperience">
                             <div class="form-sec">
                                 <div class="jobSelected">
-                                    <table class="table">
+                                    <table class="table" v-if="selectedJob.length > 0">
                                         <thead>
                                             <tr>
                                                 <td>Job Sector</td>
@@ -1306,87 +1299,124 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <th style="text-align: left;">2</th>
-                                                <td style="text-align: right;">Jacob</td>
+                                            <tr v-for="(job, jobIndex) in selectedJob">
+                                                <td style="text-align: left;" data-bs-toggle="collapse" :data-bs-target="'#collapseExperienceFour'+job.job_category_one_id+job.job_category_two_id+job.job_category_three_id+job.job_category_four_id" aria-expanded="false" :aria-controls="'collapseExperienceFour'+job.job_category_one_id+job.job_category_two_id+job.job_category_three_id+job.job_category_four_id">@{{job.job_title}}</td>
+                                                <td style="text-align: right;"><a class="btn btn-danger remove" v-on:click="removeJob(job.id)">Remove</a></td>
                                             </tr>
                                         </tbody>
-                                      </table>
+                                    </table>
                                 </div>
                                 <h4 style="margin-top:60px">Job Sector List</h4>
-                                <form method="POST" id="experience">
-                                    @csrf
-                                    <div class="form-group row mt-4 searchForm">
-                                        <div class="col-sm-10 mt-3" >
-                                            <input type="text" class="form-control" name="search" placeholder="Enter Job Title" >
-                                        </div>
-                                        <div class="col-sm-2 mt-3" style="padding-left: 0px">
-                                            <button class="btn btn-danger">Search</button>
-                                        </div>
+                                <div class="form-group row mt-4 searchForm">
+                                    <div class="col-sm-10 mt-3" >
+                                        <input type="text" class="form-control" v-model="search" name="search" placeholder="Enter Job Title" >
                                     </div>
-                                </form>
-                                <div class="jobCategory" v-if="jobCategories.length > 0" v-for='(jobCategoryOne, index) in jobCategories'>
-                                    <div class="experience-sec" data-bs-toggle="collapse" :data-bs-target="'#collapseExperience'+index" aria-expanded="false" :aria-controls="'collapseExperience'+index">
-                                        <div class="row">
-                                            <div class="col-11">
-                                                <p class="exp-font">@{{jobCategoryOne.name}}</p>
+                                    <div class="col-sm-2 mt-3" style="padding-left: 0px">
+                                        <button class="btn btn-danger" v-on:click="filterJob()">Search</button>
+                                    </div>
+                                </div>
+                                <div v-if="filterData.length > 0">
+                                    <div  v-for='(data, index) in filterData' class="filterData" >
+                                        <div class="experience-sec" data-bs-toggle="collapse" :data-bs-target="'#collapseExperience'+data.id" aria-expanded="false" :aria-controls="'collapseExperience'+data.id">
+                                            <div class="row">
+                                                <div class="col-11">
+                                                    <p class="exp-font">@{{data.name}}</p>
+                                                </div>
+                                                <div class="col-1 mx-auto my-auto">
+                                                    <div class="down-arrow" data-bs-toggle="collapse" :data-bs-target="'#collapseExperience'+data.id" aria-expanded="false" :aria-controls="'collapseExperience'+data.id">
+                                                        <img src="{{asset('images/down_arrow.png')}}" height="auto" class="exp-image">
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="col-1 mx-auto my-auto">
-                                                <div class="down-arrow" data-bs-toggle="collapse" :data-bs-target="'#collapseExperience'+index" aria-expanded="false" :aria-controls="'collapseExperience'+index">
-                                                    <img src="{{asset('images/down_arrow.png')}}" height="auto" class="exp-image">
+                                        </div>
+                                        <div class="collapse" :id="'collapseExperience'+data.id">
+                                            <div class="detail-sec">
+                                                <div class="row">
+                                                    <h5>Description</h5>
+                                                    <p v-html="data.description"></p>
+                                                </div>
+                                                <div class="row">
+                                                    <h5>Example Titles</h5>
+                                                    <p>@{{data.example_titles}}</p>
+                                                </div>
+                                                <div class="row">
+                                                    <h5>Main Duties</h5>
+                                                    <p >
+                                                        <span style="white-space: pre-line">@{{data.main_duties}}</span>
+                                                    </p>
+                                                </div>
+                                                <div class="row">
+                                                    <h5>Employement Requirment</h5>
+                                                    <p >
+                                                        <span style="white-space: pre-line">@{{data.employement_requirements}}</span>
+                                                    </p>
+                                                </div>
+                                                <div class="form-group row mt-4" style="margin-bottom: 20px">
+                                                    <div class="row">
+                                                        <button type="button" class="btn btn-primary submitBtn" applicantId="{{$applicant['id']}}" v-on:click="addExperience(null,null,data.job_category_three_id,data.id,data.name)" style="line-height: 22px">Add Experience</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="collapse" :id="'collapseExperience'+index" style="width: 95%; margin-left:2%">
-                                        <div class="jobCategoryTwo"  v-for='(jobCategoryTwo, indexTwo) in jobCategoryOne.job_category_two'>
-                                            <div class="experience-sec" data-bs-toggle="collapse" :data-bs-target="'#collapseExperienceTwo'+index+indexTwo" aria-expanded="false" :aria-controls="'collapseExperienceTwo'+index+indexTwo">
-                                                <div class="row">
-                                                    <div class="col-11">
-                                                        <p class="exp-font">@{{jobCategoryTwo.name}}</p>
+                                </div>
+                                <div v-else-if="jobCategories.length > 0" >
+                                    <div v-for='(jobCategoryOne, index) in jobCategories' class="jobCategory">
+                                        <div class="experience-sec" data-bs-toggle="collapse" :data-bs-target="'#collapseExperience'+index" aria-expanded="false" :aria-controls="'collapseExperience'+index">
+                                            <div class="row">
+                                                <div class="col-11">
+                                                    <p class="exp-font">@{{jobCategoryOne.name}}</p>
+                                                </div>
+                                                <div class="col-1 mx-auto my-auto">
+                                                    <div class="down-arrow" data-bs-toggle="collapse" :data-bs-target="'#collapseExperience'+index" aria-expanded="false" :aria-controls="'collapseExperience'+index">
+                                                        <img src="{{asset('images/down_arrow.png')}}" height="auto" class="exp-image">
                                                     </div>
-                                                    <div class="col-1 mx-auto my-auto">
-                                                        <div class="down-arrow" data-bs-toggle="collapse" :data-bs-target="'#collapseExperienceTwo'+index+indexTwo" aria-expanded="false" :aria-controls="'collapseExperienceTwo'+index+indexTwo">
-                                                            <img src="{{asset('images/down_arrow.png')}}" height="auto" class="exp-image">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="collapse" :id="'collapseExperience'+index" style="width: 95%; margin-left:2%">
+                                            <div class="jobCategoryTwo"  v-for='(jobCategoryTwo, indexTwo) in jobCategoryOne.job_category_two'>
+                                                <div class="experience-sec" data-bs-toggle="collapse" :data-bs-target="'#collapseExperienceTwo'+index+indexTwo" aria-expanded="false" :aria-controls="'collapseExperienceTwo'+index+indexTwo">
+                                                    <div class="row">
+                                                        <div class="col-11">
+                                                            <p class="exp-font">@{{jobCategoryTwo.name}}</p>
+                                                        </div>
+                                                        <div class="col-1 mx-auto my-auto">
+                                                            <div class="down-arrow" data-bs-toggle="collapse" :data-bs-target="'#collapseExperienceTwo'+index+indexTwo" aria-expanded="false" :aria-controls="'collapseExperienceTwo'+index+indexTwo">
+                                                                <img src="{{asset('images/down_arrow.png')}}" height="auto" class="exp-image">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="collapse" :id="'collapseExperienceTwo'+index+indexTwo" style="width: 95%; margin-left:2%">
-                                                <div class="jobCategoryThree" v-for='(jobCategoryThree, indexThree) in jobCategoryTwo.job_category_three'>
-                                                    <div class="experience-sec" data-bs-toggle="collapse" :data-bs-target="'#collapseExperienceThree'+index+indexTwo+indexThree" aria-expanded="false" :aria-controls="'collapseExperienceThree'+index+indexTwo+indexThree">
-                                                        <div class="row">
-                                                            <div class="col-11">
-                                                                <p class="exp-font">@{{jobCategoryThree.name}}</p>
-                                                            </div>
-                                                            <div class="col-1 mx-auto my-auto">
-                                                                <div class="down-arrow" data-bs-toggle="collapse" :data-bs-target="'#collapseExperienceThree'+index+indexTwo+indexThree" aria-expanded="false" :aria-controls="'collapseExperienceThree'+index+indexTwo+indexThree">
-                                                                    <img src="{{asset('images/down_arrow.png')}}" height="auto" class="exp-image">
+                                                <div class="collapse" :id="'collapseExperienceTwo'+index+indexTwo" style="width: 95%; margin-left:2%">
+                                                    <div class="jobCategoryThree" v-for='(jobCategoryThree, indexThree) in jobCategoryTwo.job_category_three'>
+                                                        <div class="experience-sec" data-bs-toggle="collapse" :data-bs-target="'#collapseExperienceThree'+index+indexTwo+indexThree" aria-expanded="false" :aria-controls="'collapseExperienceThree'+index+indexTwo+indexThree">
+                                                            <div class="row">
+                                                                <div class="col-11">
+                                                                    <p class="exp-font">@{{jobCategoryThree.name}}</p>
+                                                                </div>
+                                                                <div class="col-1 mx-auto my-auto">
+                                                                    <div class="down-arrow" data-bs-toggle="collapse" :data-bs-target="'#collapseExperienceThree'+index+indexTwo+indexThree" aria-expanded="false" :aria-controls="'collapseExperienceThree'+index+indexTwo+indexThree">
+                                                                        <img src="{{asset('images/down_arrow.png')}}" height="auto" class="exp-image">
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="collapse" :id="'collapseExperienceThree'+index+indexTwo+indexThree" style="width: 95%; margin-left:2%">
-                                                        <div class="jobCategoryThree" v-for='(jobCategoryFour, indexFour) in jobCategoryThree.job_category_four'>
-                                                            <div class="experience-sec" data-bs-toggle="collapse" :data-bs-target="'#collapseExperienceFour'+index+indexTwo+indexThree+indexFour" aria-expanded="false" :aria-controls="'collapseExperienceFour'+index+indexTwo+indexThree+indexFour">
-                                                                <div class="row">
-                                                                    <div class="col-11">
-                                                                        <p class="exp-font">@{{jobCategoryFour.name}}</p>
-                                                                    </div>
-                                                                    <div class="col-1 mx-auto my-auto">
-                                                                        <div class="down-arrow" data-bs-toggle="collapse" :data-bs-target="'#collapseExperienceFour'+index+indexTwo+indexThree+indexFour" aria-expanded="false" :aria-controls="'collapseExperienceFour'+index+indexTwo+indexThree+indexFour">
-                                                                            <img src="{{asset('images/down_arrow.png')}}" height="auto" class="exp-image">
+                                                        <div class="collapse" :id="'collapseExperienceThree'+index+indexTwo+indexThree" style="width: 95%; margin-left:2%">
+                                                            <div class="jobCategoryThree" v-for='(jobCategoryFour, indexFour) in jobCategoryThree.job_category_four'>
+                                                                <div class="experience-sec" data-bs-toggle="collapse" :data-bs-target="'#collapseExperienceFour'+index+indexTwo+indexThree+indexFour" aria-expanded="false" :aria-controls="'collapseExperienceFour'+index+indexTwo+indexThree+indexFour">
+                                                                    <div class="row">
+                                                                        <div class="col-11">
+                                                                            <p class="exp-font">@{{jobCategoryFour.name}}</p>
+                                                                        </div>
+                                                                        <div class="col-1 mx-auto my-auto">
+                                                                            <div class="down-arrow" data-bs-toggle="collapse" :data-bs-target="'#collapseExperienceFour'+index+indexTwo+indexThree+indexFour" aria-expanded="false" :aria-controls="'collapseExperienceFour'+index+indexTwo+indexThree+indexFour">
+                                                                                <img src="{{asset('images/down_arrow.png')}}" height="auto" class="exp-image">
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="collapse" :id="'collapseExperienceFour'+index+indexTwo+indexThree+indexFour">
-                                                                {{-- <form>
-                                                                    @csrf
-                                                                    <input type="hidden" name="jobCategoryone" value="{{$jobCategoryOne['id']}}">
-                                                                    <input type="hidden" name="jobCategorytwo" value="{{$jobCategoryTwo['id']}}">
-                                                                    <input type="hidden" name="jobCategorythree" value="{{$jobCategoryThree['id']}}">
-                                                                    <input type="hidden" name="jobCategoryfour" value="{{$jobCategoryFour['id']}}"> --}}
+                                                                <div class="collapse" :id="'collapseExperienceFour'+index+indexTwo+indexThree+indexFour">
                                                                     <div class="detail-sec">
                                                                         <div class="row">
                                                                             <h5>Description</h5>
@@ -1394,7 +1424,7 @@
                                                                         </div>
                                                                         <div class="row">
                                                                             <h5>Example Titles</h5>
-                                                                            <p><span  v-html="jobCategoryFour.example_titles"></span></p>
+                                                                            <p>@{{jobCategoryFour.example_titles}}</p>
                                                                         </div>
                                                                         <div class="row">
                                                                             <h5>Main Duties</h5>
@@ -1410,11 +1440,11 @@
                                                                         </div>
                                                                         <div class="form-group row mt-4" style="margin-bottom: 20px">
                                                                             <div class="row">
-                                                                                <button type="button" class="btn btn-primary submitBtn"  v-on:click="addExperience(index,indexTwo,indexThree,indexFour,jobCategoryFour.name, {{$applicantId}})" style="line-height: 22px">Add Experience</button>
+                                                                                <button type="button" class="btn btn-primary submitBtn" data-applicantId="{{$applicant['id']}}" v-on:click="addExperience(jobCategoryOne.id,jobCategoryTwo.id,jobCategoryThree.id,jobCategoryFour.id,jobCategoryFour.name)" style="line-height: 22px">Add Experience</button>
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                {{-- </form> --}}
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1426,7 +1456,7 @@
                             </div>
                             <div class="form-group row mt-4">
                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                    <button type="submit" class="btn btn-primary submitBtn">Submit</button>
+                                    <button type="button" class="btn btn-primary submitBtn applicantSubmit">Submit</button>
                                 </div>
                             </div>
                         </div>
@@ -1565,7 +1595,6 @@
                 data: formdata, 
                 success: function (data) {
                     if(data.success) {
-                        alert('Data added successfully !');
                     } else {
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
@@ -1597,7 +1626,6 @@
                 success: function (data) {
                     if(data.success) {
                         $('.passportFrame').src = data.passport;
-                        alert('Data added successfully !');
                     } else {
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
@@ -1628,7 +1656,6 @@
                 contentType: false,
                 success: function (data) {
                     if(data.success) {
-                        alert('Data added successfully !');
                     } else {
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
@@ -1714,7 +1741,6 @@
                 contentType: false,
                 success: function (data) {
                     if(data.success) {
-                        alert('Data added successfully !');
                     } else {
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
@@ -1754,6 +1780,8 @@
             $("#passportModal").modal('hide');
             $("#passportFormatModal").modal('hide');
             $('#residenceCopyModal').modal('hide');
+            $('#visaCopyModal').modal('hide');
+            $('#schengenVisatModal').modal('hide');
         });
     });
     function showPassport()
