@@ -72,6 +72,8 @@ class CreateApplicantsTable extends Migration
             $table->string('agent_code')->nullable();
             $table->string('visa_type')->nullable();
             $table->string('contract')->nullable();
+            $table->tinyInteger('is_spouse')->default(0)->comment('1:yes; 0:no')->nullable();
+            $table->integer('children_count')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

@@ -160,7 +160,15 @@ class HomeController extends Controller
             //         $signature->signature = $imagename;
             // }
             $signature->save();
-            
+            Applicant::updateOrCreate([
+                'product_id' => $request->pid,
+                'user_id' => Auth::id()
+            ],[
+                'first_name'=> Auth::user()->first_name,
+                'visa_type' => Session::get('packageType'),
+                'is_spouse' => Session::get('mySpouse'),
+                'children_count'=> Session::get('myKidsp'),
+            ]);
             return \Redirect::route('payment', $request->pid)
             ->with('info', 'Signature Uploaded Successfully!')
             ->with('info_sub','Proceed to application');
@@ -368,18 +376,11 @@ class HomeController extends Controller
     public function addpayment(Request $request)
     {
         if (Auth::id()) {
-
             $id = Session::get('myproduct_id');
-            Applicant::updateOrCreate([
-                'product_id' => $id,
-                'user_id' => Auth::id()
-            ],[
-                'first_name'=> Auth::user()->first_name
-            ]);
             $applys = DB::table('applicants')
-            ->where('product_id', '=', $id)
-            ->where('user_id', '=', Auth::user()->id)
-            ->get();
+                        ->where('product_id', '=', $id)
+                        ->where('user_id', '=', Auth::user()->id)
+                        ->get();
 
             foreach($applys as $apply) 
             {

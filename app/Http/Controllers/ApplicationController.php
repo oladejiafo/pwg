@@ -139,7 +139,8 @@ class ApplicationController extends Controller
             'city' => 'required',
             'postal_code' => 'required',
             'address_1' => 'required',
-            'address_2' => 'required'
+            'address_2' => 'required',
+            'passport_copy' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -344,111 +345,9 @@ class ApplicationController extends Controller
      */
     public function applicantReviewSubmit(Request $request)
     {
-        $validator = \Validator::make($request->all(), [
-            'first_name' => 'required',
-            'surname' => 'required',
-            'dob' => 'required',
-            'place_birth' => 'required',
-            'country_birth' => 'required',
-            'sex' => 'required',
-            'civil_status' => 'required',
-            'citizenship' => 'required',
-            'passport_number' => 'Required',
-            'passport_issue' => 'required',
-            'passport_expiry' => 'required',
-            'issued_by' => 'Required',
-            'passport_copy' => 'required',
-            'home_country' => 'required',
-            'state' => 'required',
-            'city' => 'required',
-            'postal_code' => 'required',
-            'address_1' => 'required',
-            'address_2' => 'required',
-            'current_country' => 'required',
-            'residence_id' => 'required',
-            'visa_validity'  => 'required',
-            'residence_copy' => 'required',
-            'current_job' => 'required',
-            'work_state' => 'required',
-            'work_city' => 'required',
-            'work_postal_code' => 'required',
-            'work_street' => 'required',
-            'is_schengen_visa_issued_last_five_year' => 'required',
-            'is_finger_print_collected_for_Schengen_visa' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return Response::json(array(
-                'success' => false,
-                'errors' => $validator->getMessageBag()->toArray()
-
-            ), 200); // 400 being the HTTP code for an invalid request.
-        }
-
-        $file = $request->file('passport_copy');
-        $passport = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
-        $destinationPath = 'public/passportCopy';
-        $file->storeAs($destinationPath, $passport);
-
-        $residence = $request->file('residence_copy');
-        $residenceCopy = time() . '_' . str_replace(' ', '_',  $residence->getClientOriginalName());
-        $destinationPath = 'public/residenceCopy';
-        $residence->storeAs($destinationPath, $residenceCopy);
-        $visaCopy = null;
-        if ($request->hasFile('visa_copy')) {
-            $visa = $request->file('visa_copy');
-            $visaCopy = time() . '_' . str_replace(' ', '_',  $visa->getClientOriginalName());
-            $destinationPath = 'public/visaCopy';
-            $visa->storeAs($destinationPath, $visaCopy);
-        }
-        $schengenCopy = null;
-        if ($request->hasFile('schengen_copy')) {
-            $schenegn = $request->file('schengen_copy');
-            $schengenCopy = time() . '_' . str_replace(' ', '_',  $schenegn->getClientOriginalName());
-            $destinationPath = 'public/schengenCopy';
-            $schenegn->storeAs($destinationPath, $schengenCopy);
-        }
         Applicant::where('user_id', Auth::id())
             ->where('product_id', $request->product_id)
             ->update([
-                'first_name' => $request['first_name'],
-                'middle_name' => $request['middle_name'],
-                'surname' => $request['surname'],
-                'dob' => date('Y-m-d', strtotime($request['dob'])),
-                'place_birth' => $request['place_birth'],
-                'country_birth' => $request['country_birth'],
-                'citizenship' => $request['citizenship'],
-                'sex' => $request['sex'],
-                'civil_status' => $request['civil_status'],
-                'passport_number'  => $request['passport_number'],
-                'passport_date_issue' =>  date('Y-m-d', strtotime($request['passport_issue'])),
-                'passport_date_expiry' => date('Y-m-d', strtotime($request['passport_expiry'])),
-                'issued_by' => $request['issued_by'],
-                'passport' => $passport,
-                'phone_number' => $request['home_phone_number'],
-                'home_country' => $request['home_country'],
-                'state' => $request['state'],
-                'city' => $request['city'],
-                'postal_code' => $request['postal_code'],
-                'address_1' => $request['address_1'],
-                'address_2' => $request['address_2'],
-                'current_residance_country' => $request->current_country,
-                'current_residance_mobile' => $request->current_residance_mobile,
-                'residence_id' => $request->residence_id,
-                'id_validity' => date('Y-m-d', strtotime($request->visa_validity)),
-                'residence_copy' => $residenceCopy,
-                'visa_copy' => $visaCopy,
-                'current_job' => $request->current_job,
-                'work_state' => $request->work_state,
-                'work_city' => $request->work_city,
-                'work_postal_code' => $request->work_postal_code,
-                'work_street_number' => $request->work_street,
-                'company_name' => $request->company_name,
-                'employer_phone_number' => $request->employer_phone,
-                'employer_email' => $request->employer_email,
-                'is_schengen_visa_issued'  => $request->is_schengen_visa_issued_last_five_year,
-                'schengen_visa' => $schengenCopy,
-                'is_fingerprint_collected' => $request->is_finger_print_collected_for_Schengen_visa,
                 'applicant_status'=> 4
             ]);
 
