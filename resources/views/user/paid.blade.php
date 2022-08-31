@@ -31,7 +31,8 @@
               $pay_id = $pay->id;
               $payment = $pay->payment;
               $amount = $pay->amount;
-
+              $ppid = $pay->id;
+              $ptid = $pd->product_payment_id;
               ?>
               <!-- Start Column  -->
               <li>
@@ -42,11 +43,11 @@
                       <span class="title" style="align: center;">
                         <h3 class="paid-title" style="font-size: 22px; color:aliceblue">{{$payment}}</h3>
                       </span>
-                      <strong class="paid-price">{{number_format($amount)}} | </strong>&nbsp;<amp>@foreach($prod as $pp) @if ($pp == reset($prod )) last Item: @endif {{$pp->product_name}} @endforeach<br>Package</amp>
+                      <strong class="paid-price">{{number_format($amount)}} | </strong>&nbsp;<amp style="margin-left:18px">@foreach($prod as $pp) @if ($pp == reset($prod )) last Item: @endif {{$pp->product_name}} @endforeach<br>Package</amp>
 
                       <p>
 
-                        @if( $countt == $pay_id)
+                        @if( $ptid == $ppid)
 
                         <a class="btn btn-secondary" href="#">Get Reciept</a>
 
@@ -139,17 +140,27 @@
 
 </div>
 
+@if(isset($pp->id))
+  @php  
+     $ppd = $pp->id; 
+  @endphp
 
 <div class="card d-flex aligns-items-center justify-content-center text-center wiggy" style="background-color:#000; color: #fff; padding-block:35px; font-weight: bold;font-family:'TT Norms Pro'">
   <h3 style="font-size:36px">Earn 5% discount when you pay full amount! </h3>
   <p style="margin-top: 5px;">
-  <form action="{{ route('payment',$pp->id) }}" method="GET">
-    <input type="hidden" name="pid" value="{{$pp->id}}">
+
+  <form action="{{ route('payment',$ppd) }}" method="GET">
+    <input type="hidden" name="pid" value="{{$ppd}}">
     <input type="hidden" name="payall" value="1">
     <button class="btn btn-secondary" style="border-width:thin; width:250px; height:60px; font-size:32px; font-weight:bold">Pay All Now</button>
   </form>
   </p>
 </div>
+@else
+@include('user.noapplication')
+@endif
+
+
 <!-- <script src="../user/assets/js/vendor/jquery-1.12.4.min.js"></script> -->
 <script>
   var button = document.getElementById('slide');

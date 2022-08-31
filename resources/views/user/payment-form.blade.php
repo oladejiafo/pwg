@@ -35,13 +35,24 @@ $completed = DB::table('applicants')
 $levels='0';
 foreach($completed as $complete)
 {
-$levels = $complete->applicant_status;
+ $levels = $complete->applicant_status;
+ $app_id= $complete->id;
 }
 
+$tryy = DB::table('payments')
+->where('application_id', '=', $app_id)
+->get();
 
 @endphp
-<div class="container">
+
+@if($tryy->first())
+@foreach($tryy as $tri)
+
+@endforeach
+@endif
+<div class="container" style="margin-top:150px">
     <div class="col-12">
+
         <!-- Check if application completed, then exclude the other processes link and allow for subsequent payments only -->
         @if($levels == '5')
         @else
@@ -156,67 +167,71 @@ jQuery(function(){
 });
 </script> -->
 
-
-
                     <form method="POST" action="{{ url('add_payment') }}">
                         @csrf
 
                         @foreach(($pays ? $pays : array()) as $pd)
 
-                        <?php
+                        @if(isset($pd->product_payment_id))
+                         @php
+                          $pp = $pd->product_payment_id;
+                         @endphp
+                        @else 
+                        @php
+                           $pp = 0;
+                         @endphp
+                        @endif
 
-$pp = $pd->product_payment_id;
-//     echo $instal = $det->amount;
-?>
                         @foreach($pdet as $index => $det)
 
+                         @if(session()->has('myDiscount') && session()->has('haveCoupon') && session()->get('haveCoupon')==1)
+                          @php
+                            $promo = session()->get('myDiscount')
+                          @endphp
+                         @else
+                          @php
+                           $promo =0
+                          @endphp
+                         @endif
 
+                         @if($index == 0)
+                           @php
+                             $first_pay = $det->amount
+                             
+                           @endphp
+                         @elseif($index == 1)
+                           @php
+                             $second_pay = $det->amount
+                           @endphp
+                         @else
+                           @php
+                             $third_pay = $det->amount
+                           @endphp
+                         @endif
+                    
 
-                        @if(session()->has('myDiscount') && session()->has('haveCoupon') && session()->get('haveCoupon')==1)
-                        @php
-                        $promo = session()->get('myDiscount')
-                        @endphp
-                        @else
-                        @php
-                        $promo =0
-                        @endphp
-                        @endif
+                         <?php  $nextt = $tri->product_payment_id +1; ?>
 
+                        @if($nextt == $det->id)
+                        
+                          <!-- if($index == $pp) -->
+                        
+                          <?php  $yy = $det->amount; $ppay = $det->payment; ?>
+                            @php $diff = $pd->total - $pd->total_paid @endphp
 
-                        @if($index == 0)
-                        @php
-                        $first_pay = $det->amount
-                        @endphp
-
-                        @elseif($index == 1)
-
-                        @php
-                        $second_pay = $det->amount
-                        @endphp
-
-                        @else
-                        @php
-                        $third_pay = $det->amount
-                        @endphp
-
-                        @endif
-
-                        @if($pd->product_payment_id != $det->id)
-                        @if($index == $pp)
-
-                        @php $diff = $pd->total - $pd->total_paid @endphp
-
-                        @if($diff > 0)
-                        @php
-                        $pends = $pd->total - $pd->total_paid;
-                        @endphp
-                        @elseif($diff < 0) @php $pends=$pd->total_paid - $pd->total;
-                            @endphp
-
+                            @if($diff > 0)
+                              @php
+                                 $pends = $pd->total - $pd->total_paid;
+                              @endphp
+                            @elseif($diff < 0) 
+                              @php 
+                                $pends=$pd->total_paid - $pd->total;
+                              @endphp
                             @endif
 
                             <?php
                             $det_id = $det->id;
+                        
                             if ($payall == 0) {
                                 $whichPayment =  $det->payment;
                                 if ($diff > 0 && $pd->total_paid > 0) {
@@ -264,18 +279,86 @@ $pp = $pd->product_payment_id;
 
                             list($which, $zzz) = explode(' ', $whichPayment);
                             ?>
+
+                        @else   
+                        @if($loop->first)
+                    
+                          <?php $yy = $det->amount;  $ppay = $det->payment; ?>
+                            @php $diff = $pd->total - $pd->total_paid @endphp
+
+                            @if($diff > 0)
+                              @php
+                                 $pends = $pd->total - $pd->total_paid;
+                              @endphp
+                            @elseif($diff < 0) 
+                              @php 
+                                $pends=$pd->total_paid - $pd->total;
+                              @endphp
                             @endif
 
-                            @endif
-                            @endforeach
-                            @endforeach
+                            <?php
+                            $det_id = $det->id;
+                        
+                            if ($payall == 0) {
+                                $whichPayment =  $det->payment;
+                                if ($diff > 0 && $pd->total_paid > 0) {
+                                    $payNow = $det->amount;
+                                    $payNoww = $det->amount + $pends;
+                                    $pendMsg = ' + ' . $pends . " carried over from previous payment";
+                                } elseif ($diff < 0 && $pd->total_paid > 0) {
+                                    $payNow = $det->amount;
+                                    $payNoww = $det->amount - $pends;
+                                    $pendMsg = ' - ' . $pends . " over paid from previous payment";
+                                } else {
+                                    $payNow = $det->amount;
+                                    $payNoww = $det->amount;
+                                    $pendMsg = "";
+                                }
+                                if ($promo > 0) {
+                                    $discountPercent = 'PROMO: ' . $promo . '%';
+                                    $discount = ($promo * $payNow) / 100;
+                                } else {
+                                    $discountPercent = '0%';
+                                    $discount = '0.00';
+                                }
+                            } else {
+                                if ($pp == 0 || $pp == null) {
+                                    $payNow = $data->unit_price;
+                                    $payNoww = $det->unit_price;
+                                    $pendMsg = "Full Payment";
+                                } else if ($pp == 1) {
+                                    $payNow = $data->unit_price - $pd->total;
+                                    $payNoww = $payNow;
+                                    $pendMsg = "Full Outstanding Payment";
+                                } else if ($pp == 2) {
+                                    $payNow = $det->amount;
+                                    $payNoww = $payNow;
+                                    $pendMsg = "";
+                                }
+
+                                $whichPayment =  "Full Payment";
+                                $discountPercent = $data->full_payment_discount . '%';
+                                $discount = ($data->unit_price * $data->full_payment_discount / 100);
+                            }
+                            $vatPercent = '5%';
+                            $vat = ($payNow * 5) / 100;
+                            $totalPay = ($payNow + $vat) - $discount;
+
+                            list($which, $zzz) = explode(' ', $whichPayment);
+                            ?>
+@endif
+                        @endif
+
+                          <!-- endif -->
+                         @endforeach
+                        @endforeach
                             <div class="row payament-sec">
                                 <div class="col-6" style="padding-right:20px">
                                     <div class="total">
                                         <div class="total-sec row mt-3">
                                             <div class="left-section col-6">
 
-                                                @if($first_pay == $payNow)
+                                                @if($first_pay == $yy && $ppay == "First Payment")
 
                                                 <b>First Payment</b> @if(strlen($pendMsg)>1) <br>
                                                 <font style='font-size:11px;color:red'><i fa fa-arrow-up></i>({{ $pendMsg }}) </font> @endif
@@ -285,7 +368,7 @@ $pp = $pd->product_payment_id;
                                                 @endif
                                             </div>
                                             <div class="right-section col-6" align="right">
-                                                @if($first_pay == $payNow)
+                                                @if($first_pay == $yy && $ppay == "First Payment")
 
                                                 <b>{{number_format($first_pay,2)}}</b>
 
@@ -297,7 +380,7 @@ $pp = $pd->product_payment_id;
                                         <div class="total-sec row mt-3">
                                             <div class="left-section col-6">
 
-                                                @if($second_pay == $payNow)
+                                                @if($second_pay == $yy && $ppay == "Second Payment")
                                                 <b>Second Payment</b> @if(strlen($pendMsg)>1) <br>
                                                 <font style='font-size:11px;color:red'><i fa fa-arrow-up></i>({{ $pendMsg }}) </font> @endif
                                                 @else
@@ -306,7 +389,7 @@ $pp = $pd->product_payment_id;
                                             </div>
                                             <div class="right-section col-6" align="right">
 
-                                                @if($second_pay == $payNow)
+                                                @if($second_pay == $yy && $ppay == "Second Payment")
 
                                                 <b>{{number_format($second_pay,2)}}</b>
 
@@ -318,7 +401,7 @@ $pp = $pd->product_payment_id;
                                         </div>
                                         <div class="total-sec row mt-3">
                                             <div class="left-section col-6">
-                                                @if($third_pay == $payNow)
+                                                @if($third_pay == $yy && $ppay == "Final Payment")
                                                 <b>Third Payment</b> @if(strlen($pendMsg)>1) <br>
                                                 <font style='font-size:11px;color:red'><i fa fa-arrow-up></i>({{ $pendMsg }}) </font> @endif
                                                 @else
@@ -326,7 +409,7 @@ $pp = $pd->product_payment_id;
                                                 @endif
                                             </div>
                                             <div class="right-section col-6" align="right">
-                                                @if($third_pay == $payNow)
+                                                @if($third_pay == $yy && $ppay == "Final Payment")
 
                                                 <b>{{number_format($third_pay,2)}}</b>
 
@@ -335,12 +418,18 @@ $pp = $pd->product_payment_id;
                                                 @endif
                                             </div>
                                         </div>
+                                        <hr>
                                         <div class="total-sec row mt-3">
                                             <div class="left-section col-6">
                                                 Total Payment
                                             </div>
                                             <div class="right-section col-6" align="right">
+                                                <?php  $ttot = Session::get('totalCost'); ?>
+                                              @if(isset($ttot) && $ttot > 0)  
+                                                {{number_format($ttot,2)}}
+                                              @else 
                                                 {{number_format($data->unit_price,2)}}
+                                              @endif
                                             </div>
                                         </div>
                                         <div class="total-sec row mt-3">
@@ -358,7 +447,9 @@ $pp = $pd->product_payment_id;
                                     </div>
                                 </div>
                                 <div class="col-6">
+                                @if($ppay =="First Payment")
                                     <div class="partial" style="height: 100%;">
+                                    
                                         <p>Pay {{strtolower($which)}} installment in partial</p>
                                         <input type="text" class="form-control" name="amount" id="amount" placeholder="Enter partial payment" style="text-align:left !important" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');">
                                         @if($errors->has('totalpay'))
@@ -383,10 +474,16 @@ $pp = $pd->product_payment_id;
                                         <?php
                                         echo $axx = "<script>document.write(ax)</script>"; 
                                         ?>
+                                        
                                     </div>
+                                    @endif
                                 </div>
                                 <div class="partial-total-sec">
-
+                                {{-- @if(isset($ttot) && $ttot > 0)  
+                                {{number_format($ttot,2)}}
+                                @else 
+                                {{number_format($data->unit_price,2)}}
+                                @endif --}}
                                     <h2 style="font-size: 20px;">Now you will pay {{strtolower($which)}} installment only <span id="amountLink"><b>{{number_format($payNoww)}}</b></span> AED</h2>
                                     <input type="hidden" id="amountLink2" name="totalpay" value="{{$payNoww}}">
                                     <input type="hidden" name="totaldue" value="{{$payNoww}}">

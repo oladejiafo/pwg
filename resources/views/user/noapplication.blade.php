@@ -9,4 +9,4 @@
     </div>
 </div>
 
-@include('user.earning')
+{{--@include('user.earning')--}}
