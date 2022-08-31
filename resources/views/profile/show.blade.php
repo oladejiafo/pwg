@@ -13,7 +13,7 @@
 
 <style>
     body {
-        background: #ccc !important;
+        background: #f0f3f4 !important;
         /* #f0f3f4 */
         font-family: 'TT Norms Pro' !important;
     }
@@ -266,7 +266,7 @@
                         <p style="margin-top: 5px;"> &nbsp; </p>
 
                         <!-- Tab Four -->
-                        <div class="panel panel-default card" style="border-radius: 10px;margin-top:1px">
+                        <!-- <div class="panel panel-default card" style="border-radius: 10px;margin-top:1px">
                             <div class="ppanel-heading" role="tab" id="headingFour">
                                 <h4 class="panel-title">
                                     <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour" style="vertical-align: middle;">
@@ -283,8 +283,6 @@
                                                 <path class="cls-1" d="M108.45,81.19A21.76,21.76,0,0,0,75.71,65.85a2.12,2.12,0,0,1-2.79-.23,40.39,40.39,0,0,0-6.65-4.5,49,49,0,0,0-6.79-3l-1.83-.68,1.63-1.09C67,51.12,71.36,44.41,72.51,35.78a27.58,27.58,0,0,0-7.37-23.25A28.62,28.62,0,0,0,25,10.81a27.14,27.14,0,0,0-9.33,19.94c-.34,10.92,4.41,19.67,14.1,26l1.52,1-2,.92C13.85,65.25,4.53,76.77,1.5,92.93c-.05.28-.07.58-.1.87A5.59,5.59,0,0,1,.94,96v6.46H1.8c1.13,0,2.25,0,3.38,0H5.8c0-.19,0-.42,0-.59a40.39,40.39,0,0,1,6.45-23.41A39.13,39.13,0,0,1,38.69,61.14a40,40,0,0,1,6.53-.54,38.69,38.69,0,0,1,24,8.23,1.66,1.66,0,0,1,.32,2.6,21.56,21.56,0,0,0-4.12,16A21.82,21.82,0,0,0,89.55,106a21.82,21.82,0,0,0,18.9-24.84ZM44.28,55.74h-.11A23.6,23.6,0,0,1,35,53.88a24,24,0,0,1-7.74-5.25A23.66,23.66,0,0,1,27.55,15,23.43,23.43,0,0,1,44.08,8.2h.18A23.72,23.72,0,0,1,60.87,48.85,23.45,23.45,0,0,1,44.28,55.74ZM98.92,96.31a16.84,16.84,0,0,1-12,5h-.08A16.88,16.88,0,0,1,70.07,84.49a16.93,16.93,0,0,1,16.77-17H87a16.89,16.89,0,0,1,12,28.79Z" />
                                                 <path class="cls-1" d="M96.72,86.86c-2.41,0-4.82,0-7.23,0H84.27c-2.38,0-4.75,0-7.13,0,0-1.7,0-3.4,0-4.89q9.78,0,19.56,0C96.69,83.34,96.67,85.08,96.72,86.86Z" />
                                             </svg>
-
-                                            <!-- <img src="{{asset('images/Icons_applicant_details.svg')}}" width="70px" height="auto" style="margin-right:50px"> -->
                                         </span>
                                         <span class="title" style="display:inline-block">
                                             |&nbsp; {{ __('Delete Account') }}
@@ -295,8 +293,8 @@
                             <hr style="height:1px;border:none;color:#ccc;background-color:#ccc;">
                             <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
                                 <div class="panel-body">
-
-
+                                                    -->
+{{--
                                     @if (Laravel\Jetstream\Jetstream::hasAccountDeletionFeatures())
                                     <x-jet-section-border />
 
@@ -304,11 +302,13 @@
                                         @livewire('profile.delete-user-form')
                                     </div>
                                     @endif
+--}}
+                                    <!--                                    
 
                                 </div>
                             </div>
                         </div>
-                        <p style="margin-top: 5px;"> &nbsp; </p>
+                        <p style="margin-top: 5px;"> &nbsp; </p> -->
 
 
                         <!-- Tab Five -->

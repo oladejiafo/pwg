@@ -237,7 +237,7 @@ display: none;  // Safari and Chrome
     }
   
     .product-section img {
-      margin-top: 15px;
+      /* margin-top: 15px; */
       margin-right: auto;
       vertical-align: middle;
       border-style: none;

@@ -1,6 +1,14 @@
 @extends('layouts.master')
 <link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
 <link href="{{asset('user/css/products.css')}}" rel="stylesheet">
+
+<style>
+  .selected path {
+    fill: #000;
+  }
+</style>
+
+
 @section('content')
 
 @if($famdet->first())
@@ -33,6 +41,9 @@ $fam_cost = 0
                     <div class="col-4">
                         <div class="package-type blue-collar">
                             <div class="content">
+                            <div class="dataCompleted" id="blueSelect" style="margin-top:-35px !important; margin-left:99% !important">
+                                <img class="selected" src="{{asset('images/CheckMark.svg')}}" alt="approved">
+                            </div>
                                 <img src="{{asset('images/yellowWhiteCollar.svg')}}">
                                 <h6>Blue Collar Package</h6>
                                 <p class="amountSection"><span class="amount">{{number_format($data->unit_price,0)}}</span><b>AED</b></p>
@@ -43,6 +54,9 @@ $fam_cost = 0
                         <div class="package-type  white-collar">
                             
                             <div class="content">
+                            <div class="dataCompleted" id="whiteSelect" style="margin-top:-35px !important; margin-left:99% !important">
+                                <img src="{{asset('images/CheckMark.svg')}}" alt="approved">
+                            </div>
                                 <img src="{{asset('images/yellowBlueCollar.svg')}}">
                                 @if($whiteJobs->first())
                                 @foreach($whiteJobs as $whiteJob)
@@ -68,6 +82,9 @@ $fam_cost = 0
                     <div class="col-4">
                         <div class="package-type family-package">
                             <div class="content">
+                            <div class="dataCompleted" id="familySelect" style="margin-top:-35px !important; margin-left:99% !important">
+                                <img src="{{asset('images/CheckMark.svg')}}" alt="approved">
+                            </div>
                                 <img src="{{asset('images/yellowFamily.svg')}}">
                                 <h6>Family Package</h6>
                                 <p class="amountSection"><span class="amount">{{ number_format($fam_cost) }}</span><b>AED</b></p>
@@ -194,12 +211,21 @@ $fam_cost = 0
             $('.blue-desc').hide();
             $('.white-desc').hide();
             $('.family-desc').hide();
+            
+            $('#blueSelect').hide()
+            $('#whiteSelect').hide()
+            $('#familySelect').hide()
+
             $('.blue-collar').click(function(){
                 let bluej = "Blue Collar Jobs"
                 document.cookie = 'packageType='+bluej ;
                 $('.blue-desc').show();
                 $('.white-desc').hide();
                 $('.family-desc').hide();
+
+                $('#blueSelect').show()
+                $('#whiteSelect').hide()
+                $('#familySelect').hide()
             });
             $('.white-collar').click(function(){
                 let whitej = "White Collar Jobs"
@@ -207,6 +233,10 @@ $fam_cost = 0
                 $('.blue-desc').hide();
                 $('.white-desc').show();
                 $('.family-desc').hide();
+
+                $('#blueSelect').hide()
+                $('#whiteSelect').show()
+                $('#familySelect').hide()
             });
             $('.family-package').click(function(){
                 let famj = "FAMILY PACKAGE"
@@ -214,6 +244,10 @@ $fam_cost = 0
                 $('.blue-desc').hide();
                 $('.white-desc').hide();
                 $('.family-desc').show();
+
+                $('#blueSelect').hide()
+                $('#whiteSelect').hide()
+                $('#familySelect').show()
             });
         });
 

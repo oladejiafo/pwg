@@ -22,62 +22,59 @@
     border-color: grey !important;
     border-style: solid !important;
   }
-
 </style>
 
 <body>
 
-@if($promo->first())
-                 @foreach($promo as $prom)
-<?php
+  @if($promo->first())
+  @foreach($promo as $prom)
+  <?php
   // $offer_discount= $data->prev_discount - $data->discount;
-  
-  if($prom->discount_percent >0)
 
-  { 
+  if ($prom->discount_percent > 0) {
     $icon = 'fa fa-minus-circle';
-    $offer_discount_msg = 'Promo Offer: ' . number_format($data->discount) .'% Off !';
-  //}
-  // else if($offer_discount < 0)
-  // { 
-  //   $icon = 'fa fa-plus-circle';
-  //  $offer_discount_msg = number_format(($offer_discount*-1)) .'% higher than last month';
+    $offer_discount_msg = 'Promo Offer: ' . number_format($data->discount) . '% Off !';
+    //}
+    // else if($offer_discount < 0)
+    // { 
+    //   $icon = 'fa fa-plus-circle';
+    //  $offer_discount_msg = number_format(($offer_discount*-1)) .'% higher than last month';
   } else {
     $icon = '';
-   $offer_discount_msg = '';
+    $offer_discount_msg = '';
   }
-  
-?>
-                                @endforeach
 
-@else 
-@php
-$icon = '';
-           $offer_discount_msg = ''; @endphp
-@endif
+  ?>
+  @endforeach
 
-{{Session::get('packageType')}}
+  @else
+  @php
+  $icon = '';
+  $offer_discount_msg = ''; @endphp
+  @endif
+
+  {{Session::get('packageType')}}
   <section class="product-section">
     <div class="container-fluid">
-      <div class="row" style="margin-block: 50px;">
+      <div class="row" style="margin-block: 50px; background-color:#fff; border-radius:10px">
 
         <!-- <p style="font-style: italics; text-decoration:none"><a href="/"><b><i>Packages </a> > {{$data->product_name}} </i></b></p> -->
 
-        <div class="col-md-6 col-sm-12 img-fluid" style="margin-bottom: 20px;">
-          <img src="../user/images/{{$data->image}}" width="100%" height="99%" border="0" alt="" />
+        <div class="col-md-6 col-sm-12 img-fluid" style="margin-bottom: 0px;">
+          <img src="../user/images/{{$data->image}}" style="border-radius:10px" width="100%" height="100%" border="0" alt="" />
         </div>
         <div class="col-md-6 col-sm-12 text">
           <h1>{{$data->product_name}}</h1>
           <p class="subheading"><span>{{$data->slogan}}</span></p>
           <p>{{$data->description}}</p>
-          <h2> @if (Session::get('totalCost') >0) {{ number_format(Session::get('totalCost'),2) }} @else  {{number_format($data->unit_price,2)}} @endif {{$data->currency}}</h2>
+          <h2> @if (Session::get('totalCost') >0) {{ number_format(Session::get('totalCost'),2) }} @else {{number_format($data->unit_price,2)}} @endif {{$data->currency}}</h2>
 
           <p class="subheading" style="margin-left: 0px;">
-          <i class="<?php echo $icon; ?>"></i><i> {{$offer_discount_msg}} </i>
-        </p><br>
+            <i class="<?php echo $icon; ?>"></i><i> {{$offer_discount_msg}} </i>
+          </p><br>
 
 
-        @if($ppay->first())
+          @if($ppay->first())
           <p>
           <h3>Payment Installments</h3>
           <table border=0 style="border-radius:10px">
@@ -121,9 +118,9 @@ $icon = '';
           </table>
 
           </p>
-@endif
-          
-<br>
+          @endif
+
+          <br>
           <h4>Working in {{$data->product_name}} provides several benefits not limited to:</h4>
 
           <p>
@@ -140,29 +137,30 @@ $icon = '';
           </p>
 
           @if(Route::has('login'))
-           @auth
-            <form action="{{ url('contract', $data->id) }}" method="GET">
-          @else
+          @auth
+          <form action="{{ url('contract', $data->id) }}" method="GET">
+            @else
             <form action="{{ url('login') }}">
-              @php Session::put('prod_id', $data->id); @endphp  
-           @endauth
-          @endif
-          <input type="hidden" value="{{$data->id}}">
-    
-<p style="margin-left:2px;font-weight:bold; font-size:1.4em">Please, select one of the following options:</p>
-          <?php
-if ($data->full_payment_discount > 0) {
-    ?>
-            <p style="margin-left:2px;font-weight:bold">Get {{number_format($data->full_payment_discount)}}% discount on Full Payment</p>
-            <?php
-}
+              @php Session::put('prod_id', $data->id); @endphp
+              @endauth
+              @endif
+              <input type="hidden" value="{{$data->id}}">
 
-?>
+              <p style="margin-left:2px;font-weight:bold; font-size:1.4em">Please, select one of the following options:</p>
+              <?php
+              if ($data->full_payment_discount > 0) {
+              ?>
+                <p style="margin-left:2px;font-weight:bold">Get {{number_format($data->full_payment_discount)}}% discount on Full Payment</p>
+              <?php
+              }
+
+              ?>
 
               <p><button class="btn btn-secondary se2" id="buy" value="1" name="payall" style="font-size:1.6em">Full Payment</button>
-                 <button class="btn btn-secondary" id="buy" value="0" name="payall" style="width:100%; font-size:1.6em">Pay in Installments</button></p>
+                <button class="btn btn-secondary" id="buy" value="0" name="payall" style="width:100%; font-size:1.6em">Pay in Installments</button>
+              </p>
 
-                 <p>&nbsp; <input type="checkbox" class="checkcolor" id="agree" style="font-size:25px;transform: scale(1.8); " required=""> &nbsp; By checking this box you accept our <a href="#" style="color:blue;margin:0">Terms & Conditions</a></p>     
+              <p>&nbsp; <input type="checkbox" class="checkcolor" id="agree" style="font-size:25px;transform: scale(1.8); " required=""> &nbsp; By checking this box you accept our <a href="#" style="color:blue;margin:0">Terms & Conditions</a></p>
             </form>
 
         </div>
@@ -179,15 +177,15 @@ if ($data->full_payment_discount > 0) {
     });
   </script>
 
- {{-- @include('user.package-jobs') --}}
+  {{-- @include('user.package-jobs') --}}
 
- 
- {{ Session::get('myproduct_id') }}
 
-{{ Session::get('packageType') }}
-{{ Session::get('totalCost') }}
-{{ Session::get('mySpouse') }}
-{{ Session::get('myKids') }}
+  {{ Session::get('myproduct_id') }}
+
+  {{ Session::get('packageType') }}
+  {{ Session::get('totalCost') }}
+  {{ Session::get('mySpouse') }}
+  {{ Session::get('myKids') }}
 
 </body>
 
