@@ -53,7 +53,6 @@
   $offer_discount_msg = ''; @endphp
   @endif
 
-  {{Session::get('packageType')}}
   <section class="product-section">
     <div class="container-fluid">
       <div class="row" style="margin-block: 50px; background-color:#fff; border-radius:10px">
@@ -73,18 +72,19 @@
             <i class="<?php echo $icon; ?>"></i><i> {{$offer_discount_msg}} </i>
           </p><br>
 
-
+         
           @if($ppay->first())
           <p>
           <h3>Payment Installments</h3>
           <table border=0 style="border-radius:10px">
             <tr>
+            <?php $cntt = 1; ?>
 
               @foreach($ppay as $ppays)
-
+              
               <td align="left" class="pie" style="border-color:#fff;">
 
-                <img src="../user/images/progress_payment_{{ $ppays->id}}.svg" alt="">
+                <img src="../user/images/progress_payment_{{ $cntt}}.svg" alt="">
 
                 @if(!$loop->last)
               </td>
@@ -92,7 +92,7 @@
                 <img src="../user/images/progress_bar.svg" alt="">
                 @endif
               </td>
-
+              <?php $cntt = $cntt + 1; ?>
               @endforeach
             </tr>
 
@@ -180,12 +180,12 @@
   {{-- @include('user.package-jobs') --}}
 
 
-  {{ Session::get('myproduct_id') }}
+  {{-- Session::get('myproduct_id') --}}
 
-  {{ Session::get('packageType') }}
-  {{ Session::get('totalCost') }}
-  {{ Session::get('mySpouse') }}
-  {{ Session::get('myKids') }}
+  {{-- Session::get('packageType') --}}
+  {{-- Session::get('totalCost') --}}
+  {{-- Session::get('mySpouse') --}}
+  {{-- Session::get('myKids') --}}
 
 </body>
 

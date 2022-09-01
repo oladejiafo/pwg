@@ -6,8 +6,9 @@
 @section('content')
 
 
+
 @php 
- $productId = 1; 
+ $productId = 1; //Session::get('myproduct_id');
     $completed = DB::table('applicants')
                 ->where('product_id', '=', $productId)
                 ->where('user_id', '=', Auth::user()->id)
@@ -48,11 +49,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="applicant-tab-sec">
+                <div class="applicant-tab-sec" style="border-radius:20px">
                     <div class="row">
                         @if($applicant['is_spouse'] != null && $applicant['children_count'] != null)
                             <div class="col-4">
-                                <div class="mainApplicant active" data-toggle="tab" role="tab">
+                                <div class="mainApplicant active" data-toggle="tab" role="tab" style="border-radius: 20px 0 0 20px;">
                                     <a  href="#mainApplicant">
                                         <h4>Main Applicant</h4> 
                                     </a>
@@ -67,7 +68,7 @@
                             </div>
                             <div class="col-4">
                                 <div class="children">
-                                    <a href="#children" data-toggle="tab" role="tab">
+                                    <a href="#children" data-toggle="tab" role="tab" style="border-radius: 0 20px 20px 0;">
                                         <h4>Children</h4>
                                     </a>
                                 </div>
@@ -144,6 +145,7 @@
                                             @php
                                                 $name = explode(' ', $user['name']);
                                             @endphp
+                                           
                                             <form method="POST" enctype="multipart/form-data" id="applicant_details">
                                                 @csrf
                                                 <input type="hidden" name="product_id" value="{{$productId}}">

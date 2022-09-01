@@ -39,7 +39,7 @@ class ApplicationController extends Controller
         if (Auth::id()) {
             $request->validate([
                 'applied_country' => 'required',
-                'job_type' => 'required',
+                // 'job_type' => 'required',
                 'cv' => 'required|mimes:pdf',
                 'embassy_country' => 'required',
                 'agree' => 'required'
@@ -54,7 +54,7 @@ class ApplicationController extends Controller
                 ->where('product_id', $request->product_id)
                 ->update([
                     'country' => $request->applied_country,
-                    'job_type' => $request->job_type,
+                    // 'job_type' => $request->job_type,
                     'resume' => $fileName,
                     'agent_code' => $request->agent_code,
                     'embassy_country' => $request->embassy_country,

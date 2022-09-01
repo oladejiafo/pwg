@@ -52,7 +52,7 @@
                             </div>
                             <div class="linear"></div>
                             @php 
-                                if ($levels == '5' || $levels == '4' || $levels == '3') {
+                                if ($levels == '5' || $levels == '4' || $levels == '3' ) {
                             @endphp    
                             <div class="wrapper">
                                 <a href="{{route('applicant.details')}}" ><div class="round4 m-2">3</div></a>
@@ -110,7 +110,7 @@
                                         <!-- <option selected disabled>Applied Country *</option> -->
                                         <option selected>@foreach($applied as $appliedc) {{$appliedc->product_name}} @endforeach</option>
                                         @foreach($products as $product)
-                                         <option value="{{$product->product_name}}">{{$product->product_name}}</option>
+                                         <!-- <option value="{{$product->product_name}}">{{$product->product_name}}</option> -->
                                         @endforeach 
                                         <!-- <option value="Canada">Canada</option>
 
@@ -122,16 +122,21 @@
                                     @error('applied_country') <span class="error">{{ $message }}</span> @enderror
                                 </div>
                                 <div class="col-sm-6 mt-3">
-                                    <select class="form-select form-control" id="inputLastname" name="job_type" placeholder="Are you apply for white collar job? *" value="{{old('job_type')}}" required>
+
+                                <input type="text" name="agent_code" class="form-control" placeholder="Please enter your agent code here if available" value="{{old('agent_code')}}" />
+                                @error('agent_code') <span class="error">{{ $message }}</span> @enderror
+                                </div>
+                                <!-- <div class="col-sm-6 mt-3"> -->
+                                    <!-- <select class="form-select form-control" id="inputLastname" name="job_type" placeholder="Are you apply for white collar job? *" value="{{old('job_type')}}" required>
                                         <option selected disabled>Are you apply for white collar job? *</option>
                                         <option value="yes">Yes</option>
                                         <option value="no">No</option>
-                                    </select>
-                                    @error('job_type') <span class="error">{{ $message }}</span> @enderror
-                                </div>
+                                    </select> -->
+                                     {{-- @error('job_type') <span class="error">{{ $message }}</span> @enderror --}}
+                                <!-- </div> -->
                             </div>        
                             <div class="form-group row mt-3">
-                                <div class="col-sm-6 mt-3">
+                                <div class="col-sm-12 mt-3">
                                     <input type="text" class="form-control cvupload" placeholder="Upload your cv (PDF only)*" name="cv" value="{{old('cv')}}" readonly required>
                                     <div class="input-group-btn">
                                         <span class="fileUpload btn">
@@ -141,11 +146,7 @@
                                     </div><!-- btn -->
                                     @error('cv') <span class="error">{{ $message }}</span> @enderror
                                 </div>
-                                <div class="col-sm-6 mt-3">
 
-                                    <input type="text" name="agent_code" class="form-control" placeholder="Please enter your agent code here" value="{{old('agent_code')}}" />
-                                    @error('agent_code') <span class="error">{{ $message }}</span> @enderror
-                                </div>
                             </div>
                             {{-- <div class="form-group row">
                                 <div class="col-sm-6 mt-3">

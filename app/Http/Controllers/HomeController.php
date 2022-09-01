@@ -54,35 +54,43 @@ class HomeController extends Controller
         return view('user.home', compact('package','promo'));
     }
 
-    public function createsession(Request $request) {
-        \Session::put('packageType', $request->value);
-        return redirect()->back();
-    }
+    // public function createsession(Request $request) {
+    //     \Session::put('packageType', $request->value);
+    //     return redirect()->back();
+    // }
 
     public function packageType($productId)
     {
-        $parents = $_COOKIE['parents'];
-        $kids = $_COOKIE['pers'];
-
-
+        session()->forget('mySpouse');
+        
         if(isset($_COOKIE['packageType']))
         {
          Session::put('packageType', $_COOKIE['packageType']);
         }
 
-        Session::put('mySpouse', $parents);
-        Session::put('myKids', $kids);
+        if(isset($_COOKIE['parents']))
+        {
+            Session::put('mySpouse', $_COOKIE['parents']);
+            Session::put('myKids', $_COOKIE['pers']);
+
+            unset($_COOKIE['pers']);
+            unset($_COOKIE['parents']);
+        }
+
         Session::put('myproduct_id', $productId);
         $data = product::find($productId);
 
 
-        if (isset($parents) ) {
+        if(Session::has('mySpouse') ) 
+        {
 
-        if($parents =="yes") { $parentt =2; } else { $parentt = 1; }
+          if(Session::get('mySpouse') =="yes") { $parentt =2; } else { $parentt = 1; }
 
-        if($kids =="none") {
-            $kids = 1;
-        }
+            if(Session::get('myKids') =="none" || Session::get('myKids') == 5) {
+                $kids = 1;
+            } else {
+                $kids = Session::get('myKids');
+            }
             $famdet = family_breakdown::where('product_id', '=', $productId)
             ->where('visa_type', 'FAMILY PACKAGE')
             ->where('parent', $parentt)
@@ -92,8 +100,7 @@ class HomeController extends Controller
             $famdet = family_breakdown::where('product_id', '=', $productId)->where('visa_type', 'FAMILY PACKAGE')->get();
         }
 
-        unset($_COOKIE['pers']);
-        unset($_COOKIE['parents']);
+  
 
         $proddet = product_details::where('product_id', '=', $productId)->where('visa_type', 'BLUE AND PINK COLLAR JOBS')->get();
         $whiteJobs = product_details::where('product_id', '=', $productId)->where('visa_type', 'WHITE COLLAR JOBS')->get();
@@ -106,20 +113,30 @@ class HomeController extends Controller
         
         if(isset($_COOKIE['packageType']))
         {
-         Session::put('packageType', $_COOKIE['packageType']);
+          Session::put('packageType', $_COOKIE['packageType']);
+        } else {
+            Session::put('packageType', $request->myPack);
         }
-        
+
         $id = Session::get('myproduct_id');
-        
+
         session()->forget('totalCost');
-        if(Session::get('packageType') == "FAMILY PACKAGE"){
-            Session::put('totalCost', $request->cost);
+        Session::put('totalCost', $request->cost);
+        Session::put('fam_id', $request->fam_id);
+        // if(Session::get('packageType') == "FAMILY PACKAGE"){
             // Session::put('spouse', $request->spouse);
             // Session::put('kids', $request->children);
-        } 
+        // } 
+
+         unset($_COOKIE['packageType']);
+
         $data = product::find($id);
         $promo = promo::where('product_id', '=', $id)->where('validity', '>=', date('Y-m-d'))->get();
-        $ppay = product_payments::where('product_id', '=', $id)->get();
+        $ppay = product_payments::where('product_id', '=', $id)
+        ->where('product_payments.visa_type', '=', Session::get('packageType'))
+        ->where('family_sub_id', '=', Session::get('fam_id'))
+      
+        ->get();
         $proddet = product_details::where('product_id', '=', $id)->get();
 
         session()->forget('prod_id');
@@ -161,32 +178,61 @@ class HomeController extends Controller
      
             $signature = user::find($request->user_id);
             $signature->signature = $signate;
-            // $save = new Signature;
-            // $save->name = $request->name;
-            // $save->signature = $signature
-            // $save->save();
-        
-
-            // if ($request->hasFile('image')) {
-            //         $image = $request->file('image');
-            //         $imagename = time() . '.' . $image->getClientOriginalName();
-            //         $destinationPath = 'public/signature';
-            //         $image->storeAs($destinationPath, $imagename);
-            //         $signature->signature = $imagename;
-            // }
             $signature->save();
-            Applicant::updateOrCreate([
-                'product_id' => $request->pid,
-                'user_id' => Auth::id()
-            ],[
-                'first_name'=> Auth::user()->first_name,
-                'visa_type' => Session::get('packageType'),
-                'is_spouse' => Session::get('mySpouse'),
-                'children_count'=> Session::get('myKidsp'),
-            ]);
-            return \Redirect::route('payment', $request->pid)
-            ->with('info', 'Signature Uploaded Successfully!')
-            ->with('info_sub','Proceed to application');
+           
+            // Applicant::updateOrCreate([
+            //     'product_id' => $request->pid,
+            //     'user_id' => Auth::id()
+            // ],[
+            //     'first_name'=> Auth::user()->first_name,
+            //     'visa_type' => Session::get('packageType'),
+            //     'is_spouse' => Session::get('mySpouse'),
+            //     'children_count'=> Session::get('myKids'),
+            // ]);
+
+            if(Session::get('mySpouse')=="yes")
+            {
+                $is_spouse = 1;
+            } else {
+                $is_spouse = 0;
+            }
+            $datas = applicant::where([
+                ['user_id', '=', Auth::user()->id],
+                ['product_id', '=', $request->pid],
+            ])->first();
+            if ($datas === null) {
+                $data = new applicant;
+
+                $data->user_id = Auth::user()->id;
+                $data->first_name = Auth::user()->name;
+                $data->visa_type = Session::get('packageType');
+                $data->is_spouse = $is_spouse;
+                $data->children_count = Session::get('myKids');
+                $data->applicant_status = 1;
+                $data->product_id = $request->pid;
+
+
+                $res = $data->save();
+            } else {
+                $datas->user_id = Auth::user()->id;
+                $datas->first_name = Auth::user()->name;
+                $datas->visa_type = Session::get('packageType');
+                $datas->is_spouse = $is_spouse;
+                $datas->children_count = Session::get('myKids');
+                $datas->applicant_status = 1;
+                $datas->product_id = $request->pid; 
+
+                $res = $datas->save();
+            }
+
+            if ($res) {
+                return \Redirect::route('payment', $request->pid)
+                ->with('info', 'Signature Uploaded Successfully!')
+                ->with('info_sub', 'Proceed to application');
+            } else {
+                return redirect()->back()->with('failed', 'Oppss! Something went wrong.');
+            }  
+
         } else {
             return redirect()->back()->with('message', 'You are not authorized');
         }
@@ -291,23 +337,47 @@ class HomeController extends Controller
             $id = Auth::user()->id;
 
             \DB::statement("SET SQL_MODE=''");
-            
+
+            $myPack = Session::get('packageType');
+            $family_id = Session::get('fam_id');
+
             $pays = DB::table('product_payments')
                 ->join('applicants', 'applicants.product_id', '=', 'product_payments.product_id')
                 ->select('product_payments.id', 'product_payments.payment', 'product_payments.amount', 'product_payments.product_id')
+                ->where('product_payments.visa_type', '=', $myPack)
+                ->where('family_sub_id', '=', $family_id)
                 ->where('applicants.user_id', '=', $id)
-                ->groupBy('product_payments.id')
+                ->groupBy('product_payments.payment')
                 ->get();
 
+
+                ###############################
+
+                // if($myPack =="FAMILY PACKAGE")
+                // {
+                //  $pdet = DB::table('product_payments')
+                //     ->where('product_id', '=', Session::get('myproduct_id'))
+                //     ->where('visa_type', '=', $myPack)
+                //     ->where('family_sub_id', '=', Session::get('fam_id'))
+                //     // ->groupBy('product_payments.id')
+                //     ->get();
+                // } else {
+                //     $pdet = DB::table('product_payments')
+                //     ->where('product_id', '=', Session::get('myproduct_id'))
+                //     ->where('visa_type', '=', Session::get('packageType'))
+                //     // ->groupBy('product_payments.id')
+                //     ->get();
+                // }    
+                #############################
             $paid = DB::table('payments')
                 ->join('applicants', 'payments.application_id', '=', 'applicants.id')
                 ->selectRaw('payments.*, applicants.*, COUNT(payments.id) as count')
 
                 ->where('applicants.user_id', '=', $id)
-                // ->groupBy('payments.id')
-                ->groupBy('applicants.id')
+                ->groupBy('payments.id')
+                // ->groupBy('applicants.id')
                 ->orderBy('applicants.id', 'desc')
-                // ->limit(2)
+                // ->limit(1)
                 ->get();
     
             $prod = DB::table('products')
@@ -375,10 +445,23 @@ class HomeController extends Controller
                     ->orderBy('payments.product_payment_id', 'desc')
                     ->limit(1)
                     ->get();
-                $pdet = DB::table('product_payments')
+
+                $myPack = Session::get('packageType');
+                if($myPack =="FAMILY PACKAGE")
+                {
+                 $pdet = DB::table('product_payments')
                     ->where('product_id', '=', Session::get('myproduct_id'))
+                    ->where('visa_type', '=', Session::get('packageType'))
+                    ->where('family_sub_id', '=', Session::get('fam_id'))
                     // ->groupBy('product_payments.id')
                     ->get();
+                } else {
+                    $pdet = DB::table('product_payments')
+                    ->where('product_id', '=', Session::get('myproduct_id'))
+                    ->where('visa_type', '=', Session::get('packageType'))
+                    // ->groupBy('product_payments.id')
+                    ->get();
+                }    
 
                 return view('user.payment-form', compact('data', 'pdet', 'pays', 'payall'));
 
@@ -484,7 +567,7 @@ class HomeController extends Controller
                         ])->first();
                 if ($status === null) {
                 } else {
-                    $status->applicant_status = '1f';
+                    $status->applicant_status = '2';
                     $status->save();
                 }
                 if ($res) {
@@ -508,7 +591,7 @@ class HomeController extends Controller
 
     public function getPromo(Request $request)
     {
-
+      if (Auth::id()) {
         $id = Session::get('myproduct_id');
         $coupon = DB::table('promos')
         ->select('discount_percent')
@@ -529,16 +612,28 @@ class HomeController extends Controller
             Session::put('haveCoupon', 0);
             return \Redirect::route('payment', $id)->with('failed', 'Invalid Discount/Promo Code');
         }
+     } else {
+        return redirect()->back()->with('failed', 'You are not authorized');
+     }  
     }
     
     public function familyDetails(Request $request)
     {
-        return \Redirect::route('product', $request->productId);
+        if (Auth::id()) {
+            return \Redirect::route('product', $request->productId);
+        } else {
+            return redirect()->back()->with('failed', 'You are not authorized');
+        }  
     }
 
     public function contract($productId)
     {
-        return view('user.contract', compact('productId'));
+        if (Auth::id()) 
+        {
+          return view('user.contract', compact('productId'));
+        } else {
+            return redirect()->back()->with('failed', 'You are not authorized');
+         }  
     }
 
 }

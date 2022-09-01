@@ -42,7 +42,7 @@ $fam_cost = 0
                         <div class="package-type blue-collar">
                             <div class="content">
                             <div class="dataCompleted" id="blueSelect" style="margin-top:-35px !important; margin-left:99% !important">
-                                <img class="selected" src="{{asset('images/CheckMark.svg')}}" alt="approved">
+                                <img class="selected" src="{{asset('images/Affiliate_Program_Section_Completed.svg')}}" alt="approved">
                             </div>
                                 <img src="{{asset('images/yellowWhiteCollar.svg')}}">
                                 <h6>Blue Collar Package</h6>
@@ -55,7 +55,7 @@ $fam_cost = 0
                             
                             <div class="content">
                             <div class="dataCompleted" id="whiteSelect" style="margin-top:-35px !important; margin-left:99% !important">
-                                <img src="{{asset('images/CheckMark.svg')}}" alt="approved">
+                                <img src="{{asset('images/Affiliate_Program_Section_Completed.svg')}}" alt="approved">
                             </div>
                                 <img src="{{asset('images/yellowBlueCollar.svg')}}">
                                 @if($whiteJobs->first())
@@ -83,7 +83,7 @@ $fam_cost = 0
                         <div class="package-type family-package">
                             <div class="content">
                             <div class="dataCompleted" id="familySelect" style="margin-top:-35px !important; margin-left:99% !important">
-                                <img src="{{asset('images/CheckMark.svg')}}" alt="approved">
+                                <img src="{{asset('images/Affiliate_Program_Section_Completed.svg')}}" alt="approved">
                             </div>
                                 <img src="{{asset('images/yellowFamily.svg')}}">
                                 <h6>Family Package</h6>
@@ -101,7 +101,9 @@ $fam_cost = 0
                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
                                 <form method="POST" action="{{ url('product') }}">
                                     @csrf
-                                    <input type="hidden" name="cost" value="{{$fam_cost}}">
+                                    <input type="hidden" name="cost" value="{{$data->unit_price}}">
+                                   
+                                     <input type="hidden" value="Blue Collar Jobs" name="myPack">
                                     <!-- <a class="btn btn-primary" href="{{ url('product') }}" style="width: 100%;font-size: 24px;">Continue</a> -->
                                     <button type="submit" class="btn btn-primary" style="width: 100%;font-size: 24px;">Continue</button>
                                 </form>
@@ -116,7 +118,8 @@ $fam_cost = 0
                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
                                 <form method="POST" action="{{ url('product') }}">
                                     @csrf
-                                    <input type="hidden" name="cost" value="{{$fam_cost}}">
+                                    <input type="hidden" name="cost" value="{{$whiteJob_cost}}">
+                                    <input type="hidden" value="White Collar Jobs" name="myPack">
                                     <!-- <a class="btn btn-primary" href="{{ url('product') }}" style="width: 100%;font-size: 24px;">Continue</a> -->
                                     <button type="submit" class="btn btn-primary" style="width: 100%;font-size: 24px;">Continue</button>
                                 </form>
@@ -140,6 +143,8 @@ $fam_cost = 0
                               
                                 <input type="hidden" name="productId" value="{{$productId}}">
                                 <input type="hidden" name="cost" value="{{$fam_cost}}">
+                                <input type="hidden" value="FAMILY PACKAGE" name="myPack">
+                                <input type="hidden" value="{{$fam->id}}" name="fam_id">
                                 <div class="partner-sec">
                                 <?php $XYZ = Session::get('mySpouse'); ?>
                                     <p style="height: 13px"><span class="header"> Partner/Spouse</span>
@@ -185,7 +190,7 @@ $fam_cost = 0
                                                 <label for="four">Four</label>
                                             </li>
                                             <li>
-                                                <input type="radio" id="five" name="children" @if($ABC == 5 ) checked="checked" @endif  onclick="handleKids(this);" value="5" />
+                                                <input type="radio" id="five" disabled="disabled" name="children" @if($ABC == 5 ) checked="checked" @endif  onclick="handleKids(this);" value="5" />
                                                 <label for="five">Five</label>
                                             </li>
                                         </ul>
@@ -219,6 +224,7 @@ $fam_cost = 0
             $('.blue-collar').click(function(){
                 let bluej = "Blue Collar Jobs"
                 document.cookie = 'packageType='+bluej ;
+               
                 $('.blue-desc').show();
                 $('.white-desc').hide();
                 $('.family-desc').hide();
@@ -230,6 +236,7 @@ $fam_cost = 0
             $('.white-collar').click(function(){
                 let whitej = "White Collar Jobs"
                 document.cookie = 'packageType='+whitej ;
+
                 $('.blue-desc').hide();
                 $('.white-desc').show();
                 $('.family-desc').hide();
@@ -241,6 +248,7 @@ $fam_cost = 0
             $('.family-package').click(function(){
                 let famj = "FAMILY PACKAGE"
                 document.cookie = 'packageType='+famj ;
+
                 $('.blue-desc').hide();
                 $('.white-desc').hide();
                 $('.family-desc').show();
@@ -251,19 +259,11 @@ $fam_cost = 0
             });
         });
 
-
-// $('a[data-booked]').click(function($e){
-//     $e.preventDefault();
-//      $.post("/ajax/add-book", {
-//         "packageType": $(this).data('book')
-//       });
-// });
 </script>
 @endpush
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
-<!-- https://www.jsdelivr.com/package/npm/jquery.session -->
 
 <script src="Scripts/jquery.session.js"></script>
 <script type="text/javascript">

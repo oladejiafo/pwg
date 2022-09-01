@@ -41,7 +41,11 @@
                                 $pay_id = $pay->id;
                                 $payment = $pay->payment;
                                 $amount = $pay->amount;
-
+                                
+                               
+                                $ppid = $pay->id;
+                                $ptid = $pd->product_payment_id;
+                                
                                 ?>
                                 <div class="row">
                                     <div class="col-md-3" align="left">
@@ -51,7 +55,7 @@
                                     </div>
                                     <div class="col-md-3" align="left">
                                         <p>
-                                            @if( $countt == $pay_id)
+                                        @if( $ptid == $ppid)
                                             Status PAID
                                             @else
                                             Status PENDING
@@ -62,7 +66,8 @@
                                     <div class="col-md-6" align="right">
                                         <p>
 
-                                            @if( $countt == $pay_id)
+                                           
+                                            @if( $ptid == $ppid)
 
                                             <a class="btn btn-secondary" style="font-family: 'TT Norms Pro';font-weight:700" href="#">Get Reciept</a>
                                             @else
@@ -108,14 +113,35 @@
                                 $pp = $item->product_payment_id;
                                 ?>
                                 @endforeach
-                                <?php
 
-                                ?>
+                                @php
+ $pid = Session::get('myproduct_id');
+$completed = DB::table('applicants')
+->where('product_id', '=', $pid)
+->where('user_id', '=', Auth::user()->id)
+->get();
 
-                                @if($pp != $pd->id)
+foreach($completed as $complete)
+{
+ $app_id= $complete->id;
+}
 
-                                @if($index == $pp)
+$tryy = DB::table('payments')
+->where('application_id', '=', $app_id)
+->get();
 
+@endphp
+
+@if($tryy->first())
+@foreach($tryy as $tri)
+
+@endforeach
+@endif
+
+<?php  $nextt = $tri->product_payment_id +1; ?>
+
+                        @if($nextt == $pd->id)
+                        
                                 <?php
 
                                 $payNow = $pd->amount;
@@ -125,7 +151,7 @@
                                 ?>
                                 @endif
 
-                                @endif
+                              
                                 @endforeach
                                 @endforeach
 
