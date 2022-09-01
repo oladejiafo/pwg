@@ -2080,7 +2080,10 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]({
       search: null,
       filterData: [],
       applicantId: null,
-      selectedJobTitle: []
+      selectedJobTitle: [],
+      dependentId: null,
+      dependentJob: [],
+      dependentJobTitle: []
     };
   },
   methods: {
@@ -2091,20 +2094,22 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]({
         console.log(error);
       });
     },
-    addExperience: function addExperience(cat1, cat2, cat3, cat4, jobTitle) {
-      console.log(jobTitle);
+    addExperience: function addExperience(cat1, cat2, cat3, cat4, jobTitle, userType) {
+      this.dependentId = this.$el.getAttribute('data-dependentId');
       axios__WEBPACK_IMPORTED_MODULE_1___default().post('/add/experience', {
         applicant_id: this.applicantId,
         job_category_one_id: cat1,
         job_category_two_id: cat2,
         job_category_three_id: cat3,
         job_category_four_id: cat4,
-        job_title: jobTitle
+        job_title: jobTitle,
+        userType: userType,
+        dependentId: app.dependentId
       }).then(function (response) {
         if (response) {
           app.getSelectedExperience();
+          app.getDependentExperience();
         } else {
-          console.log('not here');
           alert('You have to complete Payment first');
         }
       })["catch"](function (error) {
@@ -2117,6 +2122,7 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]({
         applicantId: this.applicantId
       }).then(function (response) {
         app.getSelectedExperience();
+        app.getDependentExperience();
       });
     },
     getSelectedExperience: function getSelectedExperience() {
@@ -2132,8 +2138,23 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]({
           var jobTitle = app.selectedJob[i].job_title;
           app.selectedJobTitle.push(jobTitle);
         }
+      });
+    },
+    getDependentExperience: function getDependentExperience() {
+      this.applicantId = this.$el.getAttribute('data-applicantId');
+      this.dependentId = this.$el.getAttribute('data-dependentId');
+      axios__WEBPACK_IMPORTED_MODULE_1___default().post('/get/dependent/selected/experience', {
+        applicantId: this.applicantId,
+        dependentId: this.dependentId
+      }).then(function (response) {
+        if (response.data.length > 0) {
+          app.dependentJob = response.data;
+        }
 
-        console.log(app.selectedJobTitle);
+        for (var i = 0; i < app.dependentJob.length; i++) {
+          var dependentTitle = app.dependentJob[i].job_title;
+          app.dependentJobTitle.push(dependentTitle);
+        }
       });
     },
     filterJob: function filterJob() {
@@ -2154,8 +2175,8 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]({
   mounted: function mounted() {
     this.getCategories();
     this.getSelectedExperience();
+    this.getDependentExperience();
     this.applicantId = this.$el.getAttribute('data-applicantId');
-    console.log(this.applicantId);
   }
 });
 
