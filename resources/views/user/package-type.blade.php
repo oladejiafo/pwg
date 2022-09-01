@@ -144,7 +144,7 @@ $fam_cost = 0
                                 <input type="hidden" name="productId" value="{{$productId}}">
                                 <input type="hidden" name="cost" value="{{$fam_cost}}">
                                 <input type="hidden" value="FAMILY PACKAGE" name="myPack">
-                                <input type="hidden" value="{{$fam->id}}" name="fam_id">
+                                {{-- <input type="hidden" value="{{$fam->id}}" name="fam_id"> --}}
                                 <div class="partner-sec">
                                 <?php $XYZ = Session::get('mySpouse'); ?>
                                     <p style="height: 13px"><span class="header"> Partner/Spouse</span>

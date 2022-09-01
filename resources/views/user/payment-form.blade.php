@@ -77,7 +77,7 @@ $tryy = DB::table('payments')
                         </div>
                         <div class="linear"></div>
                         <div class="wrapper">
-                            <a href="{{route('applicant.details')}}">
+                            <a href="{{route('applicant.details', $pid)}}">
                                 <div class="round4 m-2">3</div>
                             </a>
                             <div class="col-2 round-title">Applicant <br> Details</div>

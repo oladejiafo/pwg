@@ -78,7 +78,7 @@ Route::post('/add_payment', [HomeController::class,'addpayment']);
 
 // Applicant
 Route::post('/add/experience', [ApplicationController::class,'addExperience'])->name('add.experience');
-Route::get('applicant/details', [ApplicationController::class, 'applicantDetails'])->name('applicant.details');
+Route::get('applicant/details/{id}', [ApplicationController::class, 'applicantDetails'])->name('applicant.details');
 Route::get('applicant/{id}', [ApplicationController::class,'applicant'])->name('applicant');
 Route::post('store/applicant', [ApplicationController::class,'storeApplicant'])->name('store.applicant');
 Route::post('store/home/country/details', [ApplicationController::class,'storeHomeCountryDetails'])->name('store.home-country.details');
@@ -96,3 +96,7 @@ Route::post('store/spouse/home/country/details', [ApplicationController::class, 
 Route::post('store/spouse/current/details', [ApplicationController::class, 'storeSpouseCurrentDetails'])->name('store.spouse.current.details');
 Route::post('store/spouse/schengen/details', [ApplicationController::class, 'storeSpouseSchenegenDetails'])->name('store.spouse.schengen.details');
 Route::post('/get/dependent/selected/experience', [ApplicationController::class,'getDependentExperience'])->name('get.dependent.selected.experience');
+
+//children
+
+Route::post('store/children/details', [ApplicationController::class, 'storeChildrenDetails'])->name('store.children.details');

@@ -189,7 +189,7 @@ class HomeController extends Controller
             //     'is_spouse' => Session::get('mySpouse'),
             //     'children_count'=> Session::get('myKids'),
             // ]);
-
+            // dd(Session::get('mySpouse'), Session::get('myKids'));
             if(Session::get('mySpouse')=="yes")
             {
                 $is_spouse = 1;
