@@ -18,7 +18,7 @@
       @if($paid->first())
 
         @foreach($paid as $pd)
-
+        @endforeach
             @if( $pd->product_id > 0 && $pd->product_id != null && $paid->first())
 
               @include('user.paid')
@@ -27,7 +27,7 @@
             @else
               @include('user.noapplication')
             @endif
-        @endforeach
+
         
       @else 
        @include('user.noapplication')
