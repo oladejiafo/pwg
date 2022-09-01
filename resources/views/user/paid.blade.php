@@ -1,7 +1,7 @@
 <!--====== Style CSS ======-->
 <link rel="stylesheet" href="../user/assets/css/style.css">
 
-<div class="card d-flex aligns-items-center justify-content-center text-center">
+<div class="card d-flex aligns-items-center justify-content-center text-center" style="margin-top:120px">
   <div class="card-header" style="background-color:white;">My Applications</div>
   <div class="card-body paid-section" style="background-color:#FAE008;">
 
@@ -22,6 +22,7 @@
               }
 
               $ind = $index + 1;
+              $ptid = $pd->product_payment_id;
               ?>
 
               @endforeach
@@ -32,7 +33,7 @@
               $payment = $pay->payment;
               $amount = $pay->amount;
               $ppid = $pay->id;
-              $ptid = $pd->product_payment_id;
+
               ?>
               <!-- Start Column  -->
               <li>
@@ -114,9 +115,10 @@
 
               </li>
               <?php
-              while ($countt < $count) {
-                $countt = $countt + 1;
-              } ?>
+              // while ($countt < $count) {
+              //  $countt = $countt + 1;
+              // } 
+              ?>
               <!-- End Column  -->
               @endforeach
             </ul>

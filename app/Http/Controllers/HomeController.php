@@ -100,8 +100,6 @@ class HomeController extends Controller
             $famdet = family_breakdown::where('product_id', '=', $productId)->where('visa_type', 'FAMILY PACKAGE')->get();
         }
 
-  
-
         $proddet = product_details::where('product_id', '=', $productId)->where('visa_type', 'BLUE AND PINK COLLAR JOBS')->get();
         $whiteJobs = product_details::where('product_id', '=', $productId)->where('visa_type', 'WHITE COLLAR JOBS')->get();
         return view('user.package-type', compact('proddet','famdet', 'productId', 'whiteJobs','data'));
@@ -109,8 +107,6 @@ class HomeController extends Controller
 
     public function product(Request $request)
     {
-
-        
         if(isset($_COOKIE['packageType']))
         {
           Session::put('packageType', $_COOKIE['packageType']);
@@ -123,20 +119,24 @@ class HomeController extends Controller
         session()->forget('totalCost');
         Session::put('totalCost', $request->cost);
         Session::put('fam_id', $request->fam_id);
-        // if(Session::get('packageType') == "FAMILY PACKAGE"){
-            // Session::put('spouse', $request->spouse);
-            // Session::put('kids', $request->children);
-        // } 
 
          unset($_COOKIE['packageType']);
 
         $data = product::find($id);
         $promo = promo::where('product_id', '=', $id)->where('validity', '>=', date('Y-m-d'))->get();
-        $ppay = product_payments::where('product_id', '=', $id)
-        ->where('product_payments.visa_type', '=', Session::get('packageType'))
-        ->where('family_sub_id', '=', Session::get('fam_id'))
-      
-        ->get();
+
+        if(Session::get('packageType') =="FAMILY PACKAGE")
+        {
+            $ppay = product_payments::where('product_id', '=', $id)
+            ->where('product_payments.visa_type', '=', Session::get('packageType'))
+            ->where('family_sub_id', '=', Session::get('fam_id'))      
+            ->get();
+        } else {
+            $ppay = product_payments::where('product_id', '=', $id)
+            ->where('product_payments.visa_type', '=', Session::get('packageType'))
+            // ->where('family_sub_id', '=', Session::get('fam_id'))      
+            ->get();
+        }   
         $proddet = product_details::where('product_id', '=', $id)->get();
 
         session()->forget('prod_id');
@@ -252,9 +252,6 @@ class HomeController extends Controller
     public function referal($id)
     {
         if (Auth::id()) {
-            //Session::put('myproduct_id', $id);
-            // Session::put('payall', $payall);
-            // Session::get('variableName');
             $data = product::find($id);
             return view('user.referal-details', compact('data'));
         } else {
@@ -265,13 +262,11 @@ class HomeController extends Controller
     public function addreferal(Request $request)
     {
         if (Auth::id()) {
-            // Session::put('myapplication_id', $id);
             $request->validate([
                 'current_location' => 'required',
                 'pid' => 'required'
             ]);
 
-            // $data = new applicant;
             $datas = applicant::where([
                 ['user_id', '=', Auth::user()->id],
                 ['product_id', '=', $request->pid],
@@ -338,37 +333,78 @@ class HomeController extends Controller
 
             \DB::statement("SET SQL_MODE=''");
 
-            $myPack = Session::get('packageType');
-            $family_id = Session::get('fam_id');
+            $completed = DB::table('applicants')
+            ->where('user_id', '=', Auth::user()->id)
+            ->orderBy('id','desc')
+            ->get();
 
-            $pays = DB::table('product_payments')
-                ->join('applicants', 'applicants.product_id', '=', 'product_payments.product_id')
-                ->select('product_payments.id', 'product_payments.payment', 'product_payments.amount', 'product_payments.product_id')
-                ->where('product_payments.visa_type', '=', $myPack)
-                ->where('family_sub_id', '=', $family_id)
-                ->where('applicants.user_id', '=', $id)
-                ->groupBy('product_payments.payment')
-                ->get();
+            foreach($completed as $complete)
+            {
+              $app_id= $complete->id;
+              $p_id= $complete->product_id;
+              $hasSpouse = $complete->is_spouse;
+              $children = $complete->children_count;
+            }
+            if($hasSpouse == 1)
+            {
+                $yesSpouse = 2;
+            } else {
+                $yesSpouse = 1;
+            }
+
+            $families = DB::table('family_breakdowns')
+            ->where('children', '=', $children)
+            ->where('parent', '=', $yesSpouse)
+            ->where('visa_type', '=', 'FAMILY PACKAGE')
+            ->get();
+
+            foreach($families as $famili)
+            {
+                $famCode= $famili->id;
+            }
+
+            if(session()->get('myproduct_id')) {
+            } else {
+                Session::put('myproduct_id', $p_id);
+            }
+
+            if(Session::has('packageType'))
+            {
+                $packageType = Session::get('packageType');
+            } else {
+                $packageType = $complete->visa_type;
+            }
+
+            if(Session::has('fam_id'))
+            {
+              $family_id = Session::get('fam_id');
+            } else {
+              $family_id = $famCode;
+            }
 
 
-                ###############################
+                if($packageType =="FAMILY PACKAGE")
+                {
+                    $pays = DB::table('product_payments')
+                        ->join('applicants', 'applicants.product_id', '=', 'product_payments.product_id')
+                        ->select('product_payments.id', 'product_payments.payment', 'product_payments.amount', 'product_payments.product_id')
+                        ->where('product_payments.visa_type', '=', $packageType)
+                        ->where('family_sub_id', '=', $family_id)
+                        ->where('applicants.user_id', '=', $id)
+                        ->groupBy('product_payments.payment')
+                        ->get();
 
-                // if($myPack =="FAMILY PACKAGE")
-                // {
-                //  $pdet = DB::table('product_payments')
-                //     ->where('product_id', '=', Session::get('myproduct_id'))
-                //     ->where('visa_type', '=', $myPack)
-                //     ->where('family_sub_id', '=', Session::get('fam_id'))
-                //     // ->groupBy('product_payments.id')
-                //     ->get();
-                // } else {
-                //     $pdet = DB::table('product_payments')
-                //     ->where('product_id', '=', Session::get('myproduct_id'))
-                //     ->where('visa_type', '=', Session::get('packageType'))
-                //     // ->groupBy('product_payments.id')
-                //     ->get();
-                // }    
-                #############################
+                } else {
+                    $pays = DB::table('product_payments')
+                    ->join('applicants', 'applicants.product_id', '=', 'product_payments.product_id')
+                    ->select('product_payments.id', 'product_payments.payment', 'product_payments.amount', 'product_payments.product_id')
+                    ->where('product_payments.visa_type', '=', $packageType)
+                    ->where('applicants.user_id', '=', $id)
+                    ->groupBy('product_payments.payment')
+                    ->get();
+    
+                }    
+
             $paid = DB::table('payments')
                 ->join('applicants', 'payments.application_id', '=', 'applicants.id')
                 ->selectRaw('payments.*, applicants.*, COUNT(payments.id) as count')
@@ -387,7 +423,6 @@ class HomeController extends Controller
                 ->groupBy('products.id')
                 ->get();
 
-
             return view('user.myapplication', compact('paid', 'pays', 'prod'));
         } else {
             return redirect()->back()->with('message', 'You are not authorized');
@@ -398,28 +433,62 @@ class HomeController extends Controller
     {
         if (Auth::id()) 
         {
-            if (session()->get('myproduct_id')) {
+
+            $completed = DB::table('applicants')
+            ->where('user_id', '=', Auth::user()->id)
+            ->orderBy('id','desc')
+            ->get();
+
+            foreach($completed as $complete)
+            {
+              $app_id= $complete->id;
+              $p_id = $complete->product_id;
+              $hasSpouse = $complete->is_spouse;
+              $children = $complete->children_count;
+            }
+            if($hasSpouse == 1)
+            {
+                $yesSpouse = 2;
             } else {
+                $yesSpouse = 1;
+            }
+
+            $families = DB::table('family_breakdowns')
+            ->where('children', '=', $children)
+            ->where('parent', '=', $yesSpouse)
+            ->where('visa_type', '=', 'FAMILY PACKAGE')
+            ->get();
+
+            foreach($families as $famili)
+            {
+                $famCode= $famili->id;
+            }
+
+            if(session()->get('myproduct_id')) {
+            } else if(isset($request->id)) {
                 Session::put('myproduct_id', $request->id);
+            } else {
+                Session::put('myproduct_id', $p_id);
             }
 
             $id = Session::get('myproduct_id');
-            // $applys = DB::table('applicants')
-            // ->where('product_id', '=', $id)
-            // ->where('user_id', '=', Auth::user()->id)
-            // ->get();
 
-            // $applied='0';
-            // foreach($applys as $apply) 
-            // {
-            //         $applied = $apply->applicant_status;
-            // } 
+            if(Session::has('payall'))
+            {                          
+             $payall = Session::get('payall'); //$request->payall;
+            } else if(isset($request->payall)) {
+                $payall = $request->payall;
+            } else {
+                $payall = 0;
+            }
 
-            // if ($applied == '1') {
+            if(Session::has('packageType'))
+            {
+                $packageType = Session::get('packageType');
+            } else {
+                $packageType = $complete->visa_type;
+            }
 
-                $data = product::find(Session::get('myproduct_id'));
-                          
-                $payall = Session::get('payall'); //$request->payall;
 
         //         $coupons = DB::table('promos')
         //         ->select('discount_percent')
@@ -435,6 +504,7 @@ class HomeController extends Controller
         // if ($coupon->first()) {
         //     Session::put('myDiscount', $my_discount);
         // }
+                $data = product::find(Session::get('myproduct_id'));
 
                 $pays = DB::table('applicants')
                     ->leftJoin('payments', 'payments.application_id', '=', 'applicants.id')
@@ -446,19 +516,24 @@ class HomeController extends Controller
                     ->limit(1)
                     ->get();
 
-                $myPack = Session::get('packageType');
-                if($myPack =="FAMILY PACKAGE")
+
+                if($packageType =="FAMILY PACKAGE")
                 {
+                    if(Session::has('fam_id')) {
+                        $family_id = Session::get('fam_id');
+                    } else {
+                        $family_id = $famCode;
+                    }
                  $pdet = DB::table('product_payments')
                     ->where('product_id', '=', Session::get('myproduct_id'))
-                    ->where('visa_type', '=', Session::get('packageType'))
-                    ->where('family_sub_id', '=', Session::get('fam_id'))
+                    ->where('visa_type', '=', $packageType)
+                    ->where('family_sub_id', '=',  $family_id)
                     // ->groupBy('product_payments.id')
                     ->get();
                 } else {
                     $pdet = DB::table('product_payments')
                     ->where('product_id', '=', Session::get('myproduct_id'))
-                    ->where('visa_type', '=', Session::get('packageType'))
+                    ->where('visa_type', '=', $packageType)
                     // ->groupBy('product_payments.id')
                     ->get();
                 }    

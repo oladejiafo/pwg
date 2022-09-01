@@ -1,6 +1,6 @@
 <!-- Theme style  -->
 <link rel="stylesheet" href="{{asset('user/extra/css/styled.css')}}">
-@php $payNow = $whichPayment = 0;@endphp
+@php  //$payNow = $whichPayment = 0; @endphp
 <div class="row card">
 
     <div class="col-md-12">
@@ -90,12 +90,12 @@
                             </div>
                         </div>
                     </div>
+
+
                     <div class="row" style="font-size:18px">
                         <div style="align-items: left; align:left; float: left; padding-left:40px;padding-right:40px" class="col-12">Your next payment is <b>
 
-                                @foreach($prod as $pdd) <?php $pdd = $pdd->id; ?> @endforeach
-                                @foreach($pays as $index => $pd)
-                                @foreach($paid as $det)
+                                @foreach($prod as $pdd) <?php  $pdd = $pdd->id; ?> @endforeach
 
                                 <?php
                                 $items = DB::table('applicants')
@@ -104,7 +104,7 @@
                                     ->select('product_payments.*', 'payments.product_payment_id', 'payments.total')
                                     ->where('applicants.user_id', '=', Auth::user()->id)
                                     ->where('applicants.product_id', '=', $pdd)
-                                    ->orderBy('payments.product_payment_id', 'desc')
+                                    ->orderBy('payments.id', 'desc')
                                     ->limit(1)
                                     ->get();
                                 ?>
@@ -114,29 +114,39 @@
                                 ?>
                                 @endforeach
 
+
+                                @foreach($pays as $index => $pd)
+                                @foreach($paid as $det)
                                 @php
- $pid = Session::get('myproduct_id');
-$completed = DB::table('applicants')
-->where('product_id', '=', $pid)
-->where('user_id', '=', Auth::user()->id)
-->get();
 
-foreach($completed as $complete)
-{
- $app_id= $complete->id;
-}
+                                $completed = DB::table('applicants')
+                                ->where('user_id', '=', Auth::user()->id)
+                                ->get();
 
-$tryy = DB::table('payments')
-->where('application_id', '=', $app_id)
-->get();
+                                foreach($completed as $complete)
+                                {
+                                $app_id= $complete->id;
+                                }
 
-@endphp
+                                if(Session::has('myproduct_id'))
+                                {
+                                $pid = Session::get('myproduct_id');
+                                } else {
+                                $pid =$app_id;  
+                                }
 
-@if($tryy->first())
-@foreach($tryy as $tri)
+                                $tryy = DB::table('payments')
+                                ->where('application_id', '=', $app_id)
+                                ->get();
 
-@endforeach
-@endif
+                                @endphp
+
+    @if($tryy->first())
+    @foreach($tryy as $tri)
+
+    @endforeach
+    @endif
+
 
 <?php  $nextt = $tri->product_payment_id +1; ?>
 
@@ -149,8 +159,16 @@ $tryy = DB::table('payments')
                                 $whichPayment =  $pd->payment;
 
                                 ?>
-                                @endif
+                                @else 
 
+                                 @if($index==0 && $loop->first)
+     
+                                 <?php
+                                 $payNow = $pd->amount;
+                                 $whichPayment =  $pd->payment;
+                                 ?>
+                                 @endif
+                                @endif
                               
                                 @endforeach
                                 @endforeach

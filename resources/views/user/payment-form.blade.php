@@ -25,11 +25,12 @@
     }
 </script>
 @section('content')
+<!-- //->where('product_id', '=', $pid) -->
 @php
-$pid = Session::get('myproduct_id');
+
 $completed = DB::table('applicants')
-->where('product_id', '=', $pid)
 ->where('user_id', '=', Auth::user()->id)
+->orderBy('id','desc')
 ->get();
 
 $levels='0';
@@ -38,6 +39,14 @@ foreach($completed as $complete)
  $levels = $complete->applicant_status;
  $app_id= $complete->id;
 }
+
+if(Session::has('myproduct_id'))
+{
+ $pid = Session::get('myproduct_id');
+} else {
+ $pid = $app_id;  
+}
+
 
 $tryy = DB::table('payments')
 ->where('application_id', '=', $app_id)
@@ -208,7 +217,14 @@ jQuery(function(){
                              $third_pay = $det->amount
                            @endphp
                          @endif
-                    
+
+                         @if($first_pay == null || $first_pay == "") 
+                         
+                         @php 
+                           $first_pay=0 
+                         @endphp
+                         
+                         @endif 
 
                          <?php  $nextt = $tri->product_payment_id +1; ?>
 
@@ -231,7 +247,7 @@ jQuery(function(){
 
                             <?php
                             $det_id = $det->id;
-                        
+                       
                             if ($payall == 0) {
                                 $whichPayment =  $det->payment;
                                 if ($diff > 0 && $pd->total_paid > 0) {
@@ -273,6 +289,7 @@ jQuery(function(){
                                 $discountPercent = $data->full_payment_discount . '%';
                                 $discount = ($data->unit_price * $data->full_payment_discount / 100);
                             }
+                            $payNow =0;
                             $vatPercent = '5%';
                             $vat = ($payNow * 5) / 100;
                             $totalPay = ($payNow + $vat) - $discount;
@@ -298,7 +315,7 @@ jQuery(function(){
 
                             <?php
                             $det_id = $det->id;
-                        
+                          //  $payall=0;
                             if ($payall == 0) {
                                 $whichPayment =  $det->payment;
                                 if ($diff > 0 && $pd->total_paid > 0) {
@@ -322,24 +339,39 @@ jQuery(function(){
                                     $discount = '0.00';
                                 }
                             } else {
+                                
                                 if ($pp == 0 || $pp == null) {
+                                  
                                     $payNow = $data->unit_price;
-                                    $payNoww = $det->unit_price;
+                                    $payNoww = $det->amount;
                                     $pendMsg = "Full Payment";
                                 } else if ($pp == 1) {
+                                    
                                     $payNow = $data->unit_price - $pd->total;
                                     $payNoww = $payNow;
                                     $pendMsg = "Full Outstanding Payment";
                                 } else if ($pp == 2) {
-                                    $payNow = $det->amount;
+                                   
+                                    $payNow = 600;//$det->amount;
                                     $payNoww = $payNow;
                                     $pendMsg = "";
+                                } else {
+                                    if(isset($ttot) && $ttot > 0)
+                                    {
+                                        $payNow = $ttot;
+                                        $payNoww = $ttot;
+                                    }  else {
+                                        $payNow = $data->unit_price;
+                                        $payNoww = $data->unit_price;
+                                    }
+                                    $pendMsg = "Full Payment";
                                 }
 
                                 $whichPayment =  "Full Payment";
                                 $discountPercent = $data->full_payment_discount . '%';
                                 $discount = ($data->unit_price * $data->full_payment_discount / 100);
                             }
+          
                             $vatPercent = '5%';
                             $vat = ($payNow * 5) / 100;
                             $totalPay = ($payNow + $vat) - $discount;
@@ -361,7 +393,7 @@ jQuery(function(){
                                                 @if($first_pay == $yy && $ppay == "First Payment")
 
                                                 <b>First Payment</b> @if(strlen($pendMsg)>1) <br>
-                                                <font style='font-size:11px;color:red'><i fa fa-arrow-up></i>({{ $pendMsg }}) </font> @endif
+                                                <font style='font-size:11px;color:red'><i fa fa-arrow-up></i> {{-- {{ $pendMsg }} --}} </font> @endif 
                                                 @else
                                                 First Payment
 
@@ -382,7 +414,7 @@ jQuery(function(){
 
                                                 @if($second_pay == $yy && $ppay == "Second Payment")
                                                 <b>Second Payment</b> @if(strlen($pendMsg)>1) <br>
-                                                <font style='font-size:11px;color:red'><i fa fa-arrow-up></i>({{ $pendMsg }}) </font> @endif
+                                                <font style='font-size:11px;color:red'><i fa fa-arrow-up></i>{{-- {{ $pendMsg }} --}} </font> @endif 
                                                 @else
                                                 Second Payment
                                                 @endif
@@ -403,7 +435,7 @@ jQuery(function(){
                                             <div class="left-section col-6">
                                                 @if($third_pay == $yy && $ppay == "Final Payment")
                                                 <b>Third Payment</b> @if(strlen($pendMsg)>1) <br>
-                                                <font style='font-size:11px;color:red'><i fa fa-arrow-up></i>({{ $pendMsg }}) </font> @endif
+                                                <font style='font-size:11px;color:red'><i fa fa-arrow-up></i>{{-- {{ $pendMsg }}--}} </font> @endif
                                                 @else
                                                 Third Payment
                                                 @endif
