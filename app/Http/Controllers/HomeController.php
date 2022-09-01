@@ -692,49 +692,6 @@ class HomeController extends Controller
      }  
     }
     
-    // public function applicant()
-    // {
-    //     return view('user.applicant');
-    // }
-
-    // /**
-    //  * Store applicant details at step 3
-    //  * @param Request
-    //  *
-    //  * @return void
-    //  */
-    // public function applicantDetails(Request $request)
-    // {
-    //     $request->validate([
-    //         'applied_country' => 'required',
-    //         'job_type' => 'required',
-    //         'cv' => 'required|mimes:pdf',
-    //         'agent_phone' => 'required',
-    //         'agent_name' => 'required',
-    //         'embassy_country' => 'required',
-    //         'agree' => 'required'
-    //     ]);
-    //     $file = $request->file('cv');
-    //     $fileName = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
-
-    //     $destinationPath = 'public/resumes';
-    //     $file->storeAs($destinationPath, $fileName);
-
-    //     Applicant::where('user_id', Auth::id())
-    //         ->where('product_id', $request->product_id)
-    //         ->update([
-    //             'country' => $request->applied_country,
-    //             'job_type' => $request->job_type,
-    //             'resume' => $fileName,
-    //             'agent_phone_number' => $request->agent_phone,
-    //             'agent_name' => $request->agent_name,
-    //             'embassy_country' => $request->embassy_country,
-    //         ]);
-
-    //     return view('user.application-next')->with('success', 'Data saved successfully!');
-    // }
-
-    
     public function familyDetails(Request $request)
     {
         if (Auth::id()) {

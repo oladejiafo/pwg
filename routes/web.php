@@ -90,3 +90,9 @@ Route::post('/remove/selected/experience', [ApplicationController::class,'remove
 Route::post('/submit/applicant/review/', [ApplicationController::class, 'applicantReviewSubmit'])->name('submit.applicant.review');
 Route::post('/submit/applicant/Details/', [ApplicationController::class, 'submitApplicantDetails'])->name('submit.applicant.details');
 
+//Dependent
+Route::post('store/dependent/details', [ApplicationController::class, 'storeDependentDetails'])->name('store.dependent.details');
+Route::post('store/spouse/home/country/details', [ApplicationController::class, 'storeDependentHomeContryDetails'])->name('store.spouse.home.country.details');
+Route::post('store/spouse/current/details', [ApplicationController::class, 'storeSpouseCurrentDetails'])->name('store.spouse.current.details');
+Route::post('store/spouse/schengen/details', [ApplicationController::class, 'storeSpouseSchenegenDetails'])->name('store.spouse.schengen.details');
+Route::post('/get/dependent/selected/experience', [ApplicationController::class,'getDependentExperience'])->name('get.dependent.selected.experience');

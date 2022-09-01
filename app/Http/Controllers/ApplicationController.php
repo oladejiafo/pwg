@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Applicant;
 use App\Models\ApplicantExperience;
+use App\Models\FamilyDetail;
 use App\Constant;
 use Exception;
 use Illuminate\Http\Request;
@@ -68,11 +69,14 @@ class ApplicationController extends Controller
         if (Auth::id()) {
             $user = User::find(Auth::id());
             $productId = 1;
-            $applicantId = Applicant::where('user_id', Auth::id())
+            $applicant = Applicant::where('user_id', Auth::id())
                                     ->where('product_id', $productId)
+                                    ->first();
+            $dependent = FamilyDetail::where('product_id', $productId)
+                                    ->where('applicant_id', $applicant->id)
                                     ->pluck('id')
                                     ->first();
-            return view('user.application-next', compact('user', 'productId', 'applicantId'))->with('success', 'Data saved successfully!');
+            return view('user.application-next', compact('user', 'productId', 'applicant', 'dependent'))->with('success', 'Data saved successfully!');
         } else {
             return back();
         }
@@ -298,22 +302,46 @@ class ApplicationController extends Controller
      */
     public function addExperience(Request $request)
     {
-        $exist = ApplicantExperience::where('job_category_three_id', $request['job_category_three_id'])
-                                    ->where('job_category_four_id', $request['job_category_four_id'])
-                                    ->first();
-        if(!$exist) {
-            $exp = new ApplicantExperience();
-            $exp->applicant_id = $request['applicant_id'];
-            $exp->job_title = $request['job_title'];
-            $exp->job_category_one_id = $request['job_category_one_id'];
-            $exp->job_category_two_id = $request['job_category_two_id'];
-            $exp->job_category_three_id  = $request['job_category_three_id'];
-            $exp->job_category_four_id   = $request['job_category_four_id'];
-            $exp->created_by = Auth::id();
-            $exp->save();
-            return true;
+        if($request['userType'] == 'dependent'){
+            $exist = ApplicantExperience::where('applicant_id', $request['applicant_id'])
+                    ->where('dependant_id', $request['dependentId'])
+                    ->where('job_category_three_id', $request['job_category_three_id'])
+                    ->where('job_category_four_id', $request['job_category_four_id'])
+                    ->first();
+            if(!$exist) {
+                $exp = new ApplicantExperience();
+                $exp->applicant_id = $request['applicant_id'];
+                $exp->dependant_id =  $request['dependentId'];
+                $exp->job_title = $request['job_title'];
+                $exp->job_category_one_id = $request['job_category_one_id'];
+                $exp->job_category_two_id = $request['job_category_two_id'];
+                $exp->job_category_three_id  = $request['job_category_three_id'];
+                $exp->job_category_four_id   = $request['job_category_four_id'];
+                $exp->created_by = Auth::id();
+                $exp->save();
+                return true;
+            } else {
+                return false;
+            }
         } else {
-            return false;
+            $exist = ApplicantExperience::where('applicant_id', $request['applicant_id'])
+                    ->where('job_category_three_id', $request['job_category_three_id'])
+                    ->where('job_category_four_id', $request['job_category_four_id'])
+                    ->first();
+            if(!$exist) {
+                $exp = new ApplicantExperience();
+                $exp->applicant_id = $request['applicant_id'];
+                $exp->job_title = $request['job_title'];
+                $exp->job_category_one_id = $request['job_category_one_id'];
+                $exp->job_category_two_id = $request['job_category_two_id'];
+                $exp->job_category_three_id  = $request['job_category_three_id'];
+                $exp->job_category_four_id   = $request['job_category_four_id'];
+                $exp->created_by = Auth::id();
+                $exp->save();
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 
@@ -325,7 +353,9 @@ class ApplicationController extends Controller
      */
     public function getApplicantExperience(Request $request)
     {
-        $exp = ApplicantExperience::where('applicant_id', $request->applicantId)->get();
+        $exp = ApplicantExperience::where('applicant_id', $request->applicantId)
+                                    ->Where('dependant_id', null)
+                                    ->get();
         return $exp;
     }
 
@@ -359,5 +389,221 @@ class ApplicationController extends Controller
         Applicant::where('id', $request['applicantId'])
                 ->update(['applicant_status' => 5]);
         return true;
+    }
+
+    public function storeDependentDetails(Request $request)
+    {
+        $validator = \Validator::make($request->all(), [
+            'dependent_first_name' => 'required',
+            'dependent_surname' => 'required',
+            'dependent_email' => 'required',
+            'dependent_phone_number' => 'required',
+            'dependent_resume' => 'required',
+            'dependent_dob' => 'required',
+            'dependent_place_birth' =>  'required',
+            'dependent_country_birth' => 'required',
+            'dependent_sex' => 'required',
+            'dependent_civil_status' => 'required',
+            'dependent_citizenship' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return Response::json(array(
+                'success' => false,
+                'errors' => $validator->getMessageBag()->toArray()
+
+            ), 200); // 400 being the HTTP code for an invalid request.
+        }
+        $resumes = null;
+        if ($request->hasFile('dependent_resume')) {
+            $file = $request->file('dependent_resume');
+            $resumes = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
+            $destinationPath = 'public/resumes';
+            $file->storeAs($destinationPath, $resumes);
+        }
+
+        $familyDetail = FamilyDetail::updateOrCreate([
+                'applicant_id' => $request->applicant_id,
+                'product_id' => $request->product_id,
+            ],[     
+                'first_name' => $request['dependent_first_name'],
+                'middle_name' => $request['dependent_middle_name'],
+                'surname' => $request['dependent_surname'],
+                'email'  => $request['dependent_email'],
+                'phone_number' => $request['dependent_phone_number'],
+                'dob' => date('Y-m-d', strtotime($request['dependent_dob'])),
+                'place_birth' => $request['dependent_place_birth'],
+                'country_birth' => $request['dependent_country_birth'],
+                'citizenship' => $request['dependent_citizenship'],
+                'sex' => $request['dependent_sex'],
+                'civil_status' => $request['dependent_civil_status'],
+                'resume' => $resumes
+            ]);
+        return Response::json(array(
+            'dependentId' => $familyDetail['id'],
+            'success' => true
+        ), 200);
+    }
+
+    public function storeDependentHomeContryDetails(Request $request)
+    {
+        $validator = \Validator::make($request->all(), [
+            'dependent_passport_number' => 'Required',
+            'dependent_passport_issue' => 'required',
+            'dependent_passport_expiry' => 'required',
+            'dependent_issued_by' => 'Required',
+            'dependent_home_country' => 'required',
+            'dependent_state' => 'required',
+            'dependent_city' => 'required',
+            'dependent_postal_code' => 'required',
+            'dependent_address_1' => 'required',
+            'dependent_address_2' => 'required',
+            'dependent_passport_copy' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return Response::json(array(
+                'success' => false,
+                'errors' => $validator->getMessageBag()->toArray()
+
+            ), 200); // 400 being the HTTP code for an invalid request.
+        }
+
+        $file = $request->file('dependent_passport_copy');
+        if($request->hasFile('dependent_passport_copy')){
+            $fileName = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
+            $destinationPath = 'public/passportCopy';
+            $file->storeAs($destinationPath, $fileName);
+        } else {
+            $fileName = $request['dependent_passport_copy'];
+        }
+
+        $familyDetail = FamilyDetail::where('applicant_id', $request->applicant_id)
+            ->where('product_id', $request->product_id)
+            ->update([
+                'passport_number'  => $request['dependent_passport_number'],
+                'passport_date_issue' =>  date('Y-m-d', strtotime($request['dependent_passport_issue'])),
+                'passport_date_expiry' => date('Y-m-d', strtotime($request['dependent_passport_expiry'])),
+                'issued_by' => $request['dependent_issued_by'],
+                'passport' => $fileName,
+                'phone_number' => $request['dependent_home_country'],
+                'home_country' => $request['dependent_home_country'],
+                'state' => $request['dependent_state'],
+                'city' => $request['dependent_city'],
+                'postal_code' => $request['dependent_postal_code'],
+                'address_1' => $request['dependent_address_1'],
+                'address_2' => $request['dependent_address_2']
+            ]);
+
+        return Response::json(array(
+            'dependentId' => $familyDetail['id'],
+            'success' => true,
+            'passport' => storage_path('passportCopy/'.$fileName)
+        ),
+        200);
+    }
+
+    public function storeSpouseCurrentDetails(Request $request)
+    {
+        $validator = \Validator::make($request->all(), [
+            'dependent_current_country' => 'required',
+            'dependent_residence_id' => 'required',
+            'dependent_visa_validity'  => 'required',
+            'dependent_residence_copy' => 'required',
+            'dependent_current_job' => 'required',
+            'dependent_work_state' => 'required',
+            'dependent_work_city' => 'required',
+            'dependent_work_postal_code' => 'required',
+            'dependent_work_street' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return Response::json(array(
+                'success' => false,
+                'errors' => $validator->getMessageBag()->toArray()
+
+            ), 200); // 400 being the HTTP code for an invalid request.
+        }
+        if ($request->hasFile('dependent_residence_copy')) {
+            $file = $request->file('dependent_residence_copy');
+            $residenceCopy = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
+            $destinationPath = 'public/residenceCopy';
+            $file->storeAs($destinationPath, $residenceCopy);
+        } else {
+            $residenceCopy = $request->file('dependent_residence_copy');
+        }
+        $visaCopy = $request['dependent_visa_copy'];
+        if ($request->hasFile('dependent_visa_copy')) {
+            $file = $request->file('dependent_visa_copy');
+            $visaCopy = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
+            $destinationPath = 'public/visaCopy';
+            $file->storeAs($destinationPath, $visaCopy);
+        }
+        $familyDetail = FamilyDetail::where('applicant_id', $request['applicant_id'])
+            ->where('product_id', $request->product_id)
+            ->update([
+                'current_residance_country' => $request->dependent_current_country,
+                'current_residance_mobile' => $request->dependent_current_residance_mobile,
+                'residence_id' => $request->dependent_residence_id,
+                'id_validity' => date('Y-m-d', strtotime($request->dependent_visa_validity)),
+                'residence_copy' => $residenceCopy,
+                'visa_copy' => $visaCopy,
+                'current_job' => $request->dependent_current_job,
+                'work_state' => $request->dependent_work_state,
+                'work_city' => $request->dependent_work_city,
+                'work_postal_code' => $request->dependent_work_postal_code,
+                'work_street_number' => $request->dependent_work_street,
+                'company_name' => $request->dependent_company_name,
+                'employer_phone_number' => $request->dependent_employer_phone,
+                'employer_email' => $request->dependent_employer_email
+            ]);
+        return Response::json(array(
+            'dependentId' => $familyDetail['id'],
+            'success' => true
+        ), 200);
+    }
+
+    public function storeSpouseSchenegenDetails(Request $request)
+    {
+        $validator = \Validator::make($request->all(), [
+            'is_dependent_schengen_visa_issued_last_five_year' => 'required',
+            'is_dependent_finger_print_collected_for_Schengen_visa' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return Response::json(array(
+                'success' => false,
+                'errors' => $validator->getMessageBag()->toArray()
+
+            ), 200); // 400 being the HTTP code for an invalid request.
+        }
+        $schengenCopy = null;
+        if ($request->hasFile('dependent_schengen_copy')) {
+            $file = $request->file('dependent_schengen_copy');
+            $schengenCopy = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
+            $destinationPath = 'public/schengenCopy';
+            $file->storeAs($destinationPath, $schengenCopy);
+        }
+        $familyDetail = FamilyDetail::where('applicant_id', $request->applicant_id)
+            ->where('product_id', $request->product_id)
+            ->update([
+                'is_schengen_visa_issued'  => $request->is_dependent_schengen_visa_issued_last_five_year,
+                'schengen_visa' => $schengenCopy,
+                'is_fingerprint_collected' => $request->is_dependent_finger_print_collected_for_Schengen_visa
+            ]);
+        return Response::json(array(
+            'dependentId' => $familyDetail['id'],
+            'success' => true
+        ), 200);
+    }
+
+    public function getDependentExperience(Request $request)
+    {
+        $exp = ApplicantExperience::where('applicant_id', $request->applicantId)
+                            ->where(function ($query) use ($request) {
+                                return $query->Where('dependant_id', $request->dependentId)
+                                    ->where('dependant_id', '>', 0 );
+                            })
+                            ->get();
+        return $exp;
     }
 }
