@@ -5,46 +5,75 @@
 <meta name="csrf-token" content="{{ csrf_token() }}" />
 @section('content')
 
-
-
 @php 
  //Session::get('myproduct_id');
     $completed = DB::table('applicants')
                 ->where('product_id', '=', $productId)
                 ->where('user_id', '=', Auth::user()->id)
-                ->get();
+                ->first();
 
-    $levels='0';
-    foreach($completed as $complete) 
-    {
-            $levels = $complete->applicant_status;
-    } 
+   $levels = $completed->applicant_status;
 @endphp
+
     <div class="container" id="app" data-applicantId="{{$applicant['id']}}" data-dependentId="{{$dependent}}">
         <div class="col-12">
             <div class="row">
                 <div class="wizard-details bg-white">
                     <div class="row">
                         <div class="tabs-detail d-flex justify-content-center">
-                            <div class="wrapper">
-                                <a href="{{ url('payment_form', $productId) }}" ><div class="round-completed round1 m-2">1</div></a>
-                                <div class="round-title"><p>Payment</p><p> Details</p></div>
+                            
+                        <div class="wrapper">
+                              @php 
+                                if ($levels == '2' || $levels == '5' || $levels == '4' || $levels == '3') 
+                                {
+                              @endphp    
+                                <a href="#" onclick="return alert('Payment Concluded Already!');"><div class="round-completed round2 m-2">1</div></a>
+                              @php
+                                } else {
+                              @endphp    
+                                <a href="{{ url('payment_form', $productId) }}" >
+                                    <div class="round-completed round2  m-2">1</div>
+                                </a>
+                              @php   
+                                }
+                              @endphp
+                              <div class="col-2 round-title">Payment <br> Details</div>
                             </div>
                             <div class="linear"></div>
+                            
+
                             <div class="wrapper">
-                                <a href="{{route('applicant', $productId)}}" onclick="return alert('Payment Concluded Already!');"><div class="round-completed round2 m-2">2</div></a>
-                                <div class="round-title"><p>Application</p><p> Details</p></div>
+                                <a href="{{route('applicant', $productId)}}" ><div class="round-completed round3  m-2">2</div></a>
+                                <div class="col-2 round-title">Application <br> Details</div>
                             </div>
                             <div class="linear"></div>
+
+
                             <div class="wrapper">
-                                <a href="{{route('applicant.details',  $productId)}}" ><div class="round-active  round3 m-2">3</div></a>
-                                <div class="round-title"><p>Applicant</p><p> Details</p></div>
+                                <a href="{{route('applicant.details',  $productId)}}" ><div class="round-active  round4 m-2">3</div></a>
+                                <div class="col-2 round-title">Applicant <br> Details</div>
                             </div>
                             <div class="linear"></div>
+
+
+                            @php 
+                              if ($levels == '5' || $levels == '4') {
+                            @endphp     
                             <div class="wrapper">
-                                <a href="{{route('applicant.review', $productId)}}" ><div class=" round4 m-2">4</div></a>
-                                <div class="round-title"><p>Application</p><p> Review</p></div>
+                                <a href="{{url('applicant/review',  $productId)}}" ><div class="round5 m-2">4</div></a>
+                                <div class="col-2 round-title">Applicant <br> Reviews</div>
                             </div>
+                            
+                            @php  
+                              } else {
+                            @endphp
+                            <div class="wrapper">
+                                <a href="#" onclick="return alert('You have to complete Applicants Details first');"><div class="round5 m-2">4</div></a>
+                                <div class="col-2 round-title">Applicant <br> Reviews</div>
+                            </div>
+                            @php  
+                              }
+                            @endphp
                            
                         </div>
                     </div>

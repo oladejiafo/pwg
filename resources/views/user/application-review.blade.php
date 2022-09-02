@@ -11,13 +11,9 @@
      $completed = DB::table('applicants')
                 ->where('product_id', '=', $productId)
                 ->where('user_id', '=', Auth::user()->id)
-                ->get();
+                ->first();
 
-    $levels='0';
-    foreach($completed as $complete) 
-    {
-            $levels = $complete->applicant_status;
-    } 
+    $levels = $completed->applicant_status;
 @endphp
 <div class="container" id="app" data-applicantId="{{$applicant['id']}}" data-dependentId="{{($dependent != null) ? $dependent['id']  : ''}}">
     <div class="col-12">
@@ -25,25 +21,48 @@
                 <div class="wizard-details bg-white">
                     <div class="row">
                         <div class="tabs-detail d-flex justify-content-center">
-                            <div class="wrapper">
-                                <a href="{{ url('payment_form', $applicant['productId']) }}" ><div class="round-completed round1 m-2">1</div></a>
-                                <div class="round-title"><p>Payment</p><p> Details</p></div>
+
+
+
+                        <div class="wrapper">
+                              @php 
+                                if ($levels == '2' || $levels == '5' || $levels == '4' || $levels == '3') 
+                                {
+                              @endphp    
+                                <a href="#" onclick="return alert('Payment Concluded Already!');"><div class="round-completed round2 m-2">1</div></a>
+                              @php
+                                } else {
+                              @endphp    
+                                <a href="{{ url('payment_form', $productId) }}" >
+                                    <div class="round-completed round2  m-2">1</div>
+                                </a>
+                              @php   
+                                }
+                              @endphp
+                              <div class="col-2 round-title">Payment <br> Details</div>
                             </div>
                             <div class="linear"></div>
+                            
                             <div class="wrapper">
-                                <a href="{{url('applicant', $applicant['productId'])}}" onclick="return alert('Payment Concluded Already!');"><div class="round-completed round2 m-2">2</div></a>
-                                <div class="round-title"><p>Application</p><p> Details</p></div>
+                                <a href="{{route('applicant', $productId)}}" ><div class="round-completed round3  m-2">2</div></a>
+                                <div class="col-2 round-title">Application <br> Details</div>
                             </div>
                             <div class="linear"></div>
+
                             <div class="wrapper">
-                                <a href="{{url('applicant/details', $applicant['productId'])}}" ><div class="round-completed  round3 m-2">3</div></a>
-                                <div class="round-title"><p>Applicant</p><p> Details</p></div>
+                                <a href="{{route('applicant.details',  $productId)}}" ><div class="round-completed round4 m-2">3</div></a>
+                                <div class="col-2 round-title">Applicant <br> Details</div>
                             </div>
                             <div class="linear"></div>
+
                             <div class="wrapper">
-                                <a href="{{url('applicant/review', $applicant['productId'])}}" ><div class="round-active round4 m-2">4</div></a>
-                                <div class="round-title"><p>Application</p><p> Review</p></div>
+                                <a href="{{url('applicant/review',  $productId)}}" ><div class="round-active round5 m-2">4</div></a>
+                                <div class="col-2 round-title">Applicant <br> Reviews</div>
                             </div>
+                            
+
+
+
                         </div>
                     </div>
                 </div>
@@ -138,7 +157,7 @@
                                     <div class="form-sec">
                                         <form method="POST" id="applicant_details">
                                             @csrf
-                                            <input type="hidden" name="product_id" value="1">
+                                            <input type="hidden" name="product_id" value="{{$productId}}">
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-4 mt-3">
                                                     <input type="tel" name="first_name" class="form-control" placeholder="First Name*" value="{{$applicant['first_name']}}" autocomplete="off" required/>

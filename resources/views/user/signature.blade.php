@@ -25,7 +25,14 @@
   </script>
 </head>
 <body>
-
+@if(session()->has('failed'))
+            <div class="alert alert-danger" style="margin-left:auto;margin-right:auto; width:40%; text-align:center;margin-bottom:20px">
+            <button type="button" class="close" data-dismiss="alert" style="float:right;border-style:none;background-color: transparent"><i class="fa fa-times-circle" aria-hidden="true" style="color:#000; font-size:25px";></i>
+                    
+                    </button>
+                <strong>{{ session()->get('failed') }}</strong>
+            </div>
+        @endif
 <div class="login">
 
   <div class="container">
@@ -53,7 +60,7 @@
                                 <div class="description">Sign above</div>
 
                                 <div class="signature-pad--actions">
-                                    <textarea name="signed" id="signature64" ></textarea>
+                                    <textarea name="signed" id="signature64" style="display:none" required=""></textarea>
                                     <div>
                                     <button type="button" class="btn btn-primary clear" id="clear" data-action="clear">CLEAR</button>
                                     <!-- <button type="button" class="button" data-action="change-color">Change color</button>
@@ -61,7 +68,7 @@
 
                                     </div>
                                     <div>
-                                    <button type="button" class="btn btn-primary">SUBMIT</button>
+                                    <button type="buttonx" class="btn btn-primary">SUBMIT</button>
                                      <!-- <button type="button" class="button save" data-action="save-png">Save as PNG</button>  -->
                                     <!-- <button type="button" class="button save" data-action="save-jpg">Save as JPG</button> -->
                                     <!-- <button type="button" class="button save" data-action="save-svg">Save as SVG</button> -->
