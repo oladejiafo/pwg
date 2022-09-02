@@ -526,10 +526,14 @@ input {
     .signature {
         width:96%;
         padding: 20px 10px 70px 10px;
-        margin: 0 auto;
         margin-bottom: 70px;
         height: auto;
+    }
 
+    .signatureLogo{
+        width: 180px;
+        height: 200px;
+        height: 0px;
     }
 
     .signature h1 {
@@ -537,8 +541,6 @@ input {
     }
 
     .signature img {
-        width: 180px;
-        height: 200px;
         padding: 50px;
     }
 }

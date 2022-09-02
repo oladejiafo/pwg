@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-2">
                     <div class="image my-auto">
-                        <img src="{{asset('images/Icons_applicant_details.svg')}}" width="70%" height="auto">
+                        <img src="{{asset('images/Icons_applicant_details.svg')}}" width="100%" height="auto">
                     </div>
                 </div>
                 <div class="col-1">
@@ -140,7 +140,7 @@
             <div class="row">
                 <div class="col-2 my-auto">
                     <div class="image">
-                        <img src="{{asset('images/Icons_home_country_details.svg')}}" width="70%" height="auto">
+                        <img src="{{asset('images/Icons_home_country_details.svg')}}" width="100%" height="100%">
                     </div>
                 </div>
                 <div class="col-1">
@@ -260,7 +260,7 @@
             <div class="row">
                 <div class="col-2 my-auto">
                     <div class="image">
-                        <img src="{{asset('images/Icons_current_residency_and_work_details.svg')}}" width="70%" height="100px">
+                        <img src="{{asset('images/Icons_current_residency_and_work_details.svg')}}" width="100%" height="100%">
                     </div>
                 </div>
                 <div class="col-1">
@@ -391,7 +391,7 @@
             <div class="row">
                 <div class="col-2 my-auto">
                     <div class="image">
-                        <img src="{{asset('images/Icons_schengen_details.svg')}}" width="70%" height="auto">
+                        <img src="{{asset('images/Icons_schengen_details.svg')}}" width="100%" height="100%">
                     </div>
                 </div>
                 <div class="col-1">
@@ -470,7 +470,7 @@
             <div class="row">
                 <div class="col-2 my-auto">
                     <div class="image">
-                        <img src="{{asset('images/Icons_experience_details.svg')}}" width="70%" height="auto">
+                        <img src="{{asset('images/Icons_experience_details.svg')}}" width="100%" height="100%">
                     </div>
                 </div>
                 <div class="col-1">
@@ -481,9 +481,9 @@
                         <h3>
                             Experience
                         </h3>
-                        <div class="dataCompleted experienceData" v-if="dependentJob.length > 0">
+                        {{-- <div class="dataCompleted experienceData" v-if="dependentJob.length > 0">
                             <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved">
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
                 <div class="col-1"></div>

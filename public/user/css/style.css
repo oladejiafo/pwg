@@ -1383,6 +1383,7 @@ textarea {
   margin-top: 20px;
   border-radius: 20px;
   box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.05);
+  /* height: 180px; */
 }
 
 .experience-sec {
@@ -1468,9 +1469,9 @@ textarea {
   margin-bottom: 20px; */
 }
 
-/* .applicant-detail-sec .heading {
-  height: 90px;
-} */
+.applicant-detail-sec .heading {
+  height: 93px;
+}
 
 .down-arrow img {
   float: right;
@@ -2081,7 +2082,24 @@ iframe img {
   -webkit-filter: blur(2px);
   -moz-filter: blur(10px);
   -o-filter: blur(10px);
-  -ms-filter: blur(10px)
+  -ms-filter: blur(10px);
+  width:600px;
+  height: 600px;
+}
+
+.contractPdf embed {
+  width: 100%;
+  height: 100%;
+}
+
+.contractPreview {
+  width: 100%;
+  height: 700px;
+}
+
+.contractPreview embed {
+  width: 100%;
+  height: 100%;
 }
 
 .contract {
@@ -2132,7 +2150,14 @@ iframe img {
   background: #FACB08;
 }
 
+.applicant-detail-sec .heading .image {
+  width: 100%;
+  height: 100px;
+}
 
+.applicant-detail-sec .applicantsec {
+  margin-top: 10px;
+}
 
 /*************Responsive Styles*****************/
 /***************iPhone Portrait**************/
@@ -2176,6 +2201,60 @@ iframe img {
   .first-heading {
     margin-top: 30px;
   }
+
+  .contractLogo img {
+    margin-left: 22px;
+  }
+
+  .contract {
+    padding: 20px;
+  }
+
+  .contractPdf {
+    width: 335px;
+    height: 400px;
+  }
+
+  .zoomIcon img {
+    margin: 20%;
+  }
+
+  .contractPreview {
+    width: 100%;
+    height: 100%;
+  }
+
+  .applicant-detail-sec {
+    padding: 15px 35px 15px 35px;
+
+  }
+
+  .applicant-detail-sec h3 {
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  .dataCompleted {
+    margin-top: 0px;
+    width: 17px;
+  }
+
+  .searchForm button {
+    width: 130px !important;
+  }
+
+  .table, .exp-font {
+    font-size: 12px;
+  }
+
+  .exp-image {
+    width: 14px;
+  }
+
+  .experience-sec {
+    padding: 0px 15px 0px 15px;
+  }
+
 }
 
 @media only screen and (max-width: 1024px) and (min-width: 986px) {
