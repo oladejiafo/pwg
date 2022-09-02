@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\BotmanController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ResetPasswordController;
@@ -45,6 +46,8 @@ Route::get('/home', [HomeController::class, 'redirect'] );
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
+
+Route::match(['get', 'post'], '/chatbox', [BotmanController::class, 'enterRequest'])->name('enterRequest');
 
 Route::post('/product',[HomeController::class,'product'])->name('product');
 Route::get('/package/type/{id}',[HomeController::class,'packageType'])->name('packageType');
