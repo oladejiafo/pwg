@@ -83,7 +83,7 @@ Route::post('/add_payment', [HomeController::class,'addpayment']);
 Route::post('/add/experience', [ApplicationController::class,'addExperience'])->name('add.experience');
 Route::get('applicant/details/{id}', [ApplicationController::class, 'applicantDetails'])->name('applicant.details');
 Route::get('applicant/{id}', [ApplicationController::class,'applicant'])->name('applicant');
-Route::post('store/applicant', [ApplicationController::class,'storeApplicant'])->name('store.applicant');
+Route::post('store/applicant/{id}', [ApplicationController::class,'storeApplicant'])->name('store.applicant');
 Route::post('store/home/country/details', [ApplicationController::class,'storeHomeCountryDetails'])->name('store.home-country.details');
 Route::post('store/current/details', [ApplicationController::class,'storeCurrentDetails'])->name('store.current.details');
 Route::post('upload/passport/copy', [ApplicationController::class, 'uploadPassportCopy'])->name('upload.passport.copy');

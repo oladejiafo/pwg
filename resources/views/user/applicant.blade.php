@@ -14,13 +14,9 @@
     $completed = DB::table('applicants')
                 ->where('product_id', '=', $productId)
                 ->where('user_id', '=', Auth::user()->id)
-                ->get();
+                ->first();
 
-    $levels='0';
-    foreach($completed as $complete) 
-    {
-            $levels = $complete->applicant_status;
-    } 
+    $levels = $completed->applicant_status;
 @endphp
     <div class="container">
         <div class="col-12">
@@ -28,31 +24,35 @@
                 <div class="wizard bg-white">
                     <div class="row">
                         <div class="tabs d-flex justify-content-center">
-                            <div class="wrapper">
-                            @php 
-                                if ($levels == '2' || $levels == '5' || $levels == '4' || $levels == '3') {
-                            @endphp    
+                            
+
+                        <div class="wrapper">
+                              @php 
+                                if ($levels == '2' || $levels == '5' || $levels == '4' || $levels == '3') 
+                                {
+                              @endphp    
                                 <a href="#" onclick="return alert('Payment Concluded Already!');"><div class="round-completed round2 m-2">1</div></a>
-                                <!-- <a href="{{ url('payment_form', $productId) }}" ><div class="round-completed round2  m-2">1</div></a> -->
-                                @php
-                          } else {
-                                @endphp    
+                              @php
+                                } else {
+                              @endphp    
                                 <a href="{{ url('payment_form', $productId) }}" >
                                     <div class="round-completed round2  m-2">1</div>
                                 </a>
                               @php   
-                        }
-                            @endphp
-                                <div class="col-2 round-title">Payment <br> Details</div>
+                                }
+                              @endphp
+                              <div class="col-2 round-title">Payment <br> Details</div>
                             </div>
                             <div class="linear"></div>
+                            
                             <div class="wrapper">
                                 <a href="{{route('applicant', $productId)}}" ><div class="round-active  round3  m-2">2</div></a>
                                 <div class="col-2 round-title">Application <br> Details</div>
                             </div>
                             <div class="linear"></div>
+
                             @php 
-                                if ($levels == '5' || $levels == '4' || $levels == '3' ) {
+                              if ($levels == '5' || $levels == '4' || $levels == '3' ) {
                             @endphp    
                             <div class="wrapper">
                                 <a href="{{route('applicant.details',  $productId)}}" ><div class="round4 m-2">3</div></a>
@@ -63,21 +63,24 @@
                                 <a href="{{url('applicant/review',  $productId)}}" ><div class="round5 m-2">4</div></a>
                                 <div class="col-2 round-title">Applicant <br> Reviews</div>
                             </div>
+                            
                             @php  
-                                } else {
+                              } else {
                             @endphp
+
                             <div class="wrapper">
                                 <a href="#" onclick="return alert('You have to complete Application Details first');"><div class="round4 m-2">3</div></a>
                                 <div class="col-2 round-title">Applicant <br> Details</div>
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                            <a href="#" onclick="return alert('You have to complete Application Details first');"><div class="round5 m-2">4</div></a>
+                                <a href="#" onclick="return alert('You have to complete Application Details first');"><div class="round5 m-2">4</div></a>
                                 <div class="col-2 round-title">Applicant <br> Reviews</div>
                             </div>
                             @php  
-                                }
+                              }
                             @endphp
+
                         </div>
                     </div>
                 </div>
@@ -101,7 +104,7 @@
                     @endphp    
 
                     <div class="form-sec">
-                        <form method="POST" action="{{route('store.applicant')}}" enctype="multipart/form-data">
+                        <form method="POST" action="{{route('store.applicant',$productId)}}" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" name="product_id" value="{{$productId}}">
                             <div class="form-group row mt-4">
