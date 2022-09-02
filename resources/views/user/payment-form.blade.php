@@ -53,12 +53,20 @@ $tryy = DB::table('payments')
 ->where('application_id', '=', $app_id)
 ->get();
 
+$first_pay = 0;
+$yy = 0;
+$ppay = 0;
+$pendMsg = null;
+$second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNow = $famCode  = 0;
 @endphp
 
 @if($tryy->first())
 @foreach($tryy as $tri)
+<?php  $nextt = $tri->product_payment_id +1; ?>
 
-@endforeach
+@endforeach 
+@else 
+<?php  $nextt = 0; ?>
 @endif
 <div class="container" style="margin-top:150px">
     <div class="col-12">
@@ -87,21 +95,20 @@ $tryy = DB::table('payments')
                         </div>
                         <div class="linear"></div>
                         <div class="wrapper">
-                            <a href="{{route('applicant.details')}}">
+                            <a href="{{route('applicant.details', $pid)}}">
                                 <div class="round4 m-2">3</div>
                             </a>
                             <div class="col-2 round-title">Applicant <br> Details</div>
                         </div>
                         <div class="linear"></div>
                         <div class="wrapper">
-                            <a href="{{url('applicant/review')}}">
+                            <a href="{{url('applicant/review', $pid)}}">
                                 <div class="round5 m-2">4</div>
                             </a>
                             <div class="col-2 round-title">Application <br> Review</div>
                         </div>
                         @else
                         <div class="wrapper">
-                            <!-- <a href="{{route('applicant', $pid)}}" ><div class="round3 m-2">3</div></a> -->
                             <a href="#" onclick="return alert('You have to complete Payment first');">
                                 <div class="round3 m-2">2</div>
                             </a>
@@ -109,7 +116,6 @@ $tryy = DB::table('payments')
                         </div>
                         <div class="linear"></div>
                         <div class="wrapper">
-                            <!-- <a href="{{route('applicant.details')}}" ><div class="round4 m-2">4</div></a> -->
                             <a href="#" onclick="return alert('You have to complete Payment first');">
                                 <div class="round4 m-2">3</div>
                             </a>
@@ -117,7 +123,6 @@ $tryy = DB::table('payments')
                         </div>
                         <div class="linear"></div>
                         <div class="wrapper">
-                            <!-- <a href="{{url('applicant/review')}}" ><div class="round5 m-2">5</div></a> -->
                             <a href="#" onclick="return alert('You have to complete Payment first');">
                                 <div class="round5 m-2">4</div>
                             </a>
@@ -227,6 +232,7 @@ jQuery(function(){
                          
                          @endif 
 
+
                          <?php  
 if ($tryy->first()) {
     $nextt = $tri->product_payment_id +1;
@@ -235,6 +241,10 @@ if ($tryy->first()) {
 }
                             ?>
  
+
+                         <?php // $nextt = $tri->product_payment_id +1; ?>
+
+
                         @if($nextt == $det->id)
                         
                           <!-- if($index == $pp) -->

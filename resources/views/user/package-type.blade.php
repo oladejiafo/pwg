@@ -142,6 +142,7 @@
                                 <input type="hidden" class="hiddenFamAmount" name="cost" value="{{($famdet) ?  number_format($famdet['cost']) : 0 }}">
                                 <input type="hidden" value="FAMILY PACKAGE" name="myPack">
                                 <input type="hidden" value="{{($famdet) ? $famdet->id : 0 }}" name="fam_id">
+
                                 <div class="partner-sec">
                                 <?php $XYZ = Session::get('mySpouse'); ?>
                                     <p style="height: 13px"><span class="header"> Partner/Spouse</span>

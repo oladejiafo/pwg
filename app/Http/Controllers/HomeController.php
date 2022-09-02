@@ -18,7 +18,7 @@ use App\Models\family_breakdown;
 use DB;
 use Session;
 use Exception;
-
+use Illuminate\Contracts\Session\Session as SessionSession;
 
 class HomeController extends Controller
 {
@@ -91,6 +91,7 @@ class HomeController extends Controller
           if(Session::get('mySpouse') =="yes") { $parentt =2; } else { $parentt = 1; }
 
             if(Session::get('myKids') ==0 || Session::get('myKids') =="none" || Session::get('myKids') == 5 || Session::get('myKids') ==null) {
+
                 $kids = 1;
             } else {
                 $kids = Session::get('myKids');
@@ -191,7 +192,7 @@ class HomeController extends Controller
             //     'is_spouse' => Session::get('mySpouse'),
             //     'children_count'=> Session::get('myKids'),
             // ]);
-
+            // dd(Session::get('mySpouse'), Session::get('myKids'));
             if(Session::get('mySpouse')=="yes")
             {
                 $is_spouse = 1;
@@ -433,6 +434,7 @@ class HomeController extends Controller
 
     public function payment(Request $request)
     {
+        $famCode = 0;
         if (Auth::id()) 
         {
 

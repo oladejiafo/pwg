@@ -19,6 +19,8 @@ class CreateProductPaymentsTable extends Migration
             $table->string('payment')->nullable();
             $table->decimal('amount')->nullable();
             $table->integer('status')->nullable();
+            $table->string('visa_type')->nullable();
+            $table->integer('family_sub_id')->nullable();
             $table->timestamps();
         });
     }

@@ -7,6 +7,7 @@ use App\Models\Applicant;
 use App\Models\ApplicantExperience;
 use App\Models\FamilyDetail;
 use App\Constant;
+use App\Models\ChildrenDetail;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -60,15 +61,14 @@ class ApplicationController extends Controller
                     'embassy_country' => $request->embassy_country,
                     'applicant_status' => 3
                 ]);
-            return Redirect::route('applicant.details', $request->pid);
+            return Redirect::route('applicant.details', $request->product_id);
         }
     }
 
-    public function applicantDetails($productId = 1)
+    public function applicantDetails($productId)
     {
         if (Auth::id()) {
             $user = User::find(Auth::id());
-            $productId = 1;
             $applicant = Applicant::where('user_id', Auth::id())
                                     ->where('product_id', $productId)
                                     ->first();
@@ -191,7 +191,14 @@ class ApplicationController extends Controller
         $applicant = Applicant::where('user_id', Auth::id())
                         ->where('product_id', $productId)
                         ->first();
-        return view('user.application-review', compact('user', 'applicant', 'productId'))->with('success', 'Data saved successfully!');
+
+        $dependent = FamilyDetail::where('product_id', $productId)
+                        ->where('applicant_id', $applicant->id)
+                        ->first();
+
+        $children = ChildrenDetail::where('applicant_id', $applicant->id)
+                                ->get();
+        return view('user.application-review', compact('user', 'applicant', 'productId', 'dependent', 'children'))->with('success', 'Data saved successfully!');
     }
 
     /**
@@ -421,7 +428,7 @@ class ApplicationController extends Controller
             $file->storeAs($destinationPath, $resumes);
         }
 
-        $familyDetail = FamilyDetail::updateOrCreate([
+        FamilyDetail::updateOrCreate([
                 'applicant_id' => $request->applicant_id,
                 'product_id' => $request->product_id,
             ],[     
@@ -438,8 +445,10 @@ class ApplicationController extends Controller
                 'civil_status' => $request['dependent_civil_status'],
                 'resume' => $resumes
             ]);
+
+       
         return Response::json(array(
-            'dependentId' => $familyDetail['id'],
+            'dependentId' => $this->getFamilyId($request->applicant_id,  $request->product_id),
             'success' => true
         ), 200);
     }
@@ -477,7 +486,7 @@ class ApplicationController extends Controller
             $fileName = $request['dependent_passport_copy'];
         }
 
-        $familyDetail = FamilyDetail::where('applicant_id', $request->applicant_id)
+        FamilyDetail::where('applicant_id', $request->applicant_id)
             ->where('product_id', $request->product_id)
             ->update([
                 'passport_number'  => $request['dependent_passport_number'],
@@ -485,7 +494,7 @@ class ApplicationController extends Controller
                 'passport_date_expiry' => date('Y-m-d', strtotime($request['dependent_passport_expiry'])),
                 'issued_by' => $request['dependent_issued_by'],
                 'passport' => $fileName,
-                'phone_number' => $request['dependent_home_country'],
+                'phone_number' => $request['dependent_home_phone_number'],
                 'home_country' => $request['dependent_home_country'],
                 'state' => $request['dependent_state'],
                 'city' => $request['dependent_city'],
@@ -493,9 +502,8 @@ class ApplicationController extends Controller
                 'address_1' => $request['dependent_address_1'],
                 'address_2' => $request['dependent_address_2']
             ]);
-
         return Response::json(array(
-            'dependentId' => $familyDetail['id'],
+            'dependentId' => $this->getFamilyId($request->applicant_id,  $request->product_id),
             'success' => true,
             'passport' => storage_path('passportCopy/'.$fileName)
         ),
@@ -538,7 +546,8 @@ class ApplicationController extends Controller
             $destinationPath = 'public/visaCopy';
             $file->storeAs($destinationPath, $visaCopy);
         }
-        $familyDetail = FamilyDetail::where('applicant_id', $request['applicant_id'])
+
+        FamilyDetail::where('applicant_id', $request['applicant_id'])
             ->where('product_id', $request->product_id)
             ->update([
                 'current_residance_country' => $request->dependent_current_country,
@@ -557,7 +566,7 @@ class ApplicationController extends Controller
                 'employer_email' => $request->dependent_employer_email
             ]);
         return Response::json(array(
-            'dependentId' => $familyDetail['id'],
+            'dependentId' => $this->getFamilyId($request->applicant_id,  $request->product_id),
             'success' => true
         ), 200);
     }
@@ -583,15 +592,17 @@ class ApplicationController extends Controller
             $destinationPath = 'public/schengenCopy';
             $file->storeAs($destinationPath, $schengenCopy);
         }
-        $familyDetail = FamilyDetail::where('applicant_id', $request->applicant_id)
+
+        FamilyDetail::where('applicant_id', $request->applicant_id)
             ->where('product_id', $request->product_id)
             ->update([
                 'is_schengen_visa_issued'  => $request->is_dependent_schengen_visa_issued_last_five_year,
                 'schengen_visa' => $schengenCopy,
                 'is_fingerprint_collected' => $request->is_dependent_finger_print_collected_for_Schengen_visa
             ]);
+
         return Response::json(array(
-            'dependentId' => $familyDetail['id'],
+            'dependentId' => $this->getFamilyId($request->applicant_id,  $request->product_id),
             'success' => true
         ), 200);
     }
@@ -605,5 +616,52 @@ class ApplicationController extends Controller
                             })
                             ->get();
         return $exp;
+    }
+
+    public function storeChildrenDetails(Request $request)
+    {
+        
+        for($i = 1; $i <= $request['childrenCount']; $i++ ){
+            $validator = \Validator::make($request->all(), [
+                "child_".$i."_first_name" => 'required',
+                "child_".$i."_surname" => 'required',
+                "child_".$i."_dob" => 'required',
+                "child_".$i."_gender" => 'required',
+            ]);
+            if ($validator->fails()) {
+                return Response::json(array(
+                    'success' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+    
+                ), 200); // 400 being the HTTP code for an invalid request.
+            }
+        }
+        
+        ChildrenDetail::where('applicant_id', $request['applicant_id'])->delete();
+        for($i = 1; $i <= $request['childrenCount']; $i++ ){
+            ChildrenDetail::create([
+                'applicant_id' => $request['applicant_id'],
+                'first_name' => $request['child_'.$i.'_first_name'],
+                'middle_name' => $request['child_'.$i.'_middle_name'],
+                'surname' => $request['child_'.$i.'_surname'],
+                'dob' => date('Y-m-d', strtotime($request['child_'.$i.'_dob'])),
+                'gender' => $request['child_'.$i.'_gender'],
+            ]);
+        }
+
+        Applicant::where('id', $request['applicant_id'])
+                ->update(['applicant_status' =>  3]);
+
+        return Response::json(array(
+            'success' => true
+        ), 200);
+    }
+
+    private static function getFamilyId($applicant_id, $product_id)
+    {
+        return FamilyDetail::where('applicant_id', $applicant_id)
+                            ->where('product_id', $product_id)
+                            ->pluck('id')
+                            ->first();
     }
 }

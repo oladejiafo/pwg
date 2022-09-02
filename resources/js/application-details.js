@@ -97,6 +97,7 @@ const app = new Vue({
                 if(response.data.length > 0) {
                     app.dependentJob = response.data;
                 }
+
                 for(var i = 0; i < app.dependentJob.length ; i++ ){
                     var dependentTitle = app.dependentJob[i].job_title;
                     app.dependentJobTitle.push(dependentTitle);

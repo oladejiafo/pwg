@@ -2107,7 +2107,7 @@ iframe img {
   color: #636466;
   padding: 0px;
   margin-top: 20px;
-  /* border-radius: 20px; */
+  border-radius: 20px;
   box-shadow: 0px 6px 20px rgb(0 0 0 / 5%);
 }
 
