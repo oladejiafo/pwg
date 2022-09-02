@@ -150,6 +150,28 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                         <div class="col-6 offset-3">
                             <div class="mb-3">
                                 <div class="inputs">
+                                    <select title="Current Location" class="form-control  current_location form-select" name="current_location" required="">
+                                        <option selected disabled>--Current Location--</option>
+                                        <option value="United Arab Emirates">United Arab Emirates</option>
+                                        @foreach (Constant::countries as $key => $item)
+                                            <option value="{{$key}}">{{$item}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-3">    
+                                <div class="inputs">
+                                    <select title="Current Location" class="form-control  current_location form-select" name="embassy_appearance" required="">
+                                        <option selected disabled>--Country of Embassy Appearnce--</option>
+                                        <option value="United Arab Emirates">United Arab Emirates</option>
+                                        @foreach (Constant::countries as $key => $item)
+                                            <option value="{{$key}}">{{$item}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-3">    
+                                <div class="inputs">
                                     <input type="text" class="form-control dicount_code" name="discount_code" id="discount_code" aria-describedby="emailHelp" autocomplete="off" placeholder="########">
                                 </div>
                             </div>
@@ -450,9 +472,19 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                                                     Total Payment
                                                 </div>
                                                 <div class="right-section col-6" align="right">
-                                                    <?php $ttot = Session::get('totalCost'); ?>
+                                                    <?php 
+                                                                  $totalCost = Session::get('totalCost');  
+                                                                  if (is_numeric($totalCost))
+                                                                  {
+                                                                    $ttot = number_format($totalCost,2);
+                                                                  } else {
+                                                                    $ttot = $totalCost;
+                                                                  }
+                                                                ?> 
+                                                        <!-- $ttot = Session::get('totalCost');  -->
+                                                      ?>
                                                     @if(isset($ttot) && $ttot > 0)
-                                                    {{number_format($ttot,2)}}
+                                                    {{ $ttot }}
                                                     @else
                                                     {{number_format($data->unit_price,2)}}
                                                     @endif

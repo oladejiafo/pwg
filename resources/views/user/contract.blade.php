@@ -20,11 +20,12 @@
                                 <img src="{{asset('images/Magnifying_Glass.svg')}}" width="124px" height="124px" class="zoomOut">
                             </div>
                             <div class="contractPdf">
-                                <embed src="{{asset('pdf/PROMO_July_Poland_BC_Contract.pdf')}}#toolbar=0" type="application/pdf" frameBorder="0" width="600" height="600" alt="pdf" borders="false" style="border: none" />
+                                <embed src="{{asset('pdf/PROMO_July_Poland_BC_Contract.pdf')}}" type="application/pdf" frameBorder="0" width="600" height="600" alt="pdf" borders="false" style="border: none"  />
                             </div>
                         </div>
                         <div class="contractPreview">
                             <embed src="{{ asset('pdf/PROMO_July_Poland_BC_Contract.pdf') }}" type="application/pdf"frameBorder="0" width="100%" height="700" alt="pdf" borders="false" style="border: none" />
+                          
                         </div>
                         <div class="col-8 offset-2">
                             <div class="agree">
