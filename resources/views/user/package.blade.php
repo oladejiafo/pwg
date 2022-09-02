@@ -66,13 +66,30 @@
           <h1>{{$data->product_name}}</h1>
           <p class="subheading"><span>{{$data->slogan}}</span></p>
           <p>{{$data->description}}</p>
-          <h2> @if (Session::get('totalCost') >0) {{ number_format(Session::get('totalCost'),2) }} @else {{number_format($data->unit_price,2)}} @endif {{$data->currency}}</h2>
+          <h2>
+            <?php
+             $totalCost = Session::get('totalCost');  
+              if (is_numeric($totalCost))
+              {
+                $totalCost = number_format($totalCost,2);
+              } else {
+                $totalCost = $totalCost;
+              }
+            ?> 
+            @if (Session::get('totalCost') >0)
+             
+               {{ $totalCost }} 
+            @else
+               {{number_format($data->unit_price,2)}} 
+            @endif 
+            {{$data->currency}}
+          </h2>
 
           <p class="subheading" style="margin-left: 0px;">
             <i class="<?php echo $icon; ?>"></i><i> {{$offer_discount_msg}} </i>
           </p><br>
 
-         
+     
           @if($ppay->first())
           <p>
           <h3>Payment Installments</h3>

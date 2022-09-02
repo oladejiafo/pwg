@@ -49,6 +49,18 @@ class HomeController extends Controller
 
     public function index()
     {
+
+        // if(isset($_COOKIE['parents']))
+        // {
+        //     unset($_COOKIE['pers']);
+        //     unset($_COOKIE['parents']);
+        // }
+        // if(Session::has('mySpouse'))
+        // {
+        //     session()->forget('mySpouse');
+        //     session()->forget('myKids');
+        // }
+
         $package = product::all()->sortBy("id");
         $promo = promo::where('validity', '>=', date('Y-m-d'))->get();
         return view('user.home', compact('package','promo'));
@@ -59,45 +71,41 @@ class HomeController extends Controller
     //     return redirect()->back();
     // }
 
-    public function packageType($productId)
+    public function packageType($productId, Request $request)
     {
-        session()->forget('mySpouse');
+   
+        Session::forget('mySpouse');
+        Session::forget('myKids');
         
-        if(isset($_COOKIE['packageType']))
+        if(isset($request->parents))
         {
-         Session::put('packageType', $_COOKIE['packageType']);
+            Session::put('mySpouse', $request['parents']);
+            Session::put('myKids', $request['kid']);
         }
-
-        if(isset($_COOKIE['parents']))
-        {
-            Session::put('mySpouse', $_COOKIE['parents']);
-            Session::put('myKids', $_COOKIE['pers']);
-
-            unset($_COOKIE['pers']);
-            unset($_COOKIE['parents']);
-        }
-
+      
         Session::put('myproduct_id', $productId);
         $data = product::find($productId);
 
-
         if(Session::has('mySpouse') ) 
         {
-
           if(Session::get('mySpouse') =="yes") { $parentt =2; } else { $parentt = 1; }
 
-            if(Session::get('myKids') =="none" || Session::get('myKids') == 5) {
+            if(Session::get('myKids') ==0 || Session::get('myKids') =="none" || Session::get('myKids') == 5 || Session::get('myKids') ==null) {
                 $kids = 1;
             } else {
                 $kids = Session::get('myKids');
             }
+       
             $famdet = family_breakdown::where('product_id', '=', $productId)
             ->where('visa_type', 'FAMILY PACKAGE')
             ->where('parent', $parentt)
             ->where('children', $kids)
-            ->get();
+            ->first();
+            if($request->response == 1){
+                return $famdet;
+            }
         } else {
-            $famdet = family_breakdown::where('product_id', '=', $productId)->where('visa_type', 'FAMILY PACKAGE')->get();
+            $famdet = family_breakdown::where('product_id', '=', $productId)->where('visa_type', 'FAMILY PACKAGE')->first();
         }
 
         $proddet = product_details::where('product_id', '=', $productId)->where('visa_type', 'BLUE AND PINK COLLAR JOBS')->get();
@@ -107,20 +115,14 @@ class HomeController extends Controller
 
     public function product(Request $request)
     {
-        if(isset($_COOKIE['packageType']))
-        {
-          Session::put('packageType', $_COOKIE['packageType']);
-        } else {
-            Session::put('packageType', $request->myPack);
-        }
-
+       
+        Session::put('packageType', $request->myPack);
         $id = Session::get('myproduct_id');
 
         session()->forget('totalCost');
         Session::put('totalCost', $request->cost);
         Session::put('fam_id', $request->fam_id);
 
-         unset($_COOKIE['packageType']);
 
         $data = product::find($id);
         $promo = promo::where('product_id', '=', $id)->where('validity', '>=', date('Y-m-d'))->get();

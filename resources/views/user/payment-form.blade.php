@@ -24,6 +24,7 @@
         //console.log($('#donateLink').attr("href"));
     }
 </script>
+<script src="https://paypage.sandbox.ngenius-payments.com/hosted-sessions/sdk.js"></script>
 @section('content')
 <!-- //->where('product_id', '=', $pid) -->
 @php
@@ -226,8 +227,14 @@ jQuery(function(){
                          
                          @endif 
 
-                         <?php  $nextt = $tri->product_payment_id +1; ?>
-
+                         <?php  
+if ($tryy->first()) {
+    $nextt = $tri->product_payment_id +1;
+} else {
+    $nextt=0;
+}
+                            ?>
+ 
                         @if($nextt == $det->id)
                         
                           <!-- if($index == $pp) -->
@@ -650,6 +657,8 @@ jQuery(function(){
         </div>
     </div>
     </form>
+
+    <div id="mount-id">gjkgk</div>
 </div>
 </div>
 </div>
@@ -657,6 +666,26 @@ jQuery(function(){
 </div>
 </div>
 
+
+
+  <script>
+    /* Method call to mount the card input on your website */
+    window.NI.mountCardInput('mount-id'/* the mount id*/, {
+      style, // Style configuration you can pass to customize the UI
+      MmM2ODJiOGMtOGFmNS00NzUyLTg2MjUtM2Y5MTg3OWU5YjRlOjViMzhjM2I5LTUyMDItNDBmZi1hNzAyLTFlYTIwZDkwYjhiMQ==, //hostedSessionApiKey, // // Hosted Session Key which is used to generate Session ID
+      15d885ec-682a-4398-89d9-247254d71c18, //outletRef, // outlet reference from the portal
+      onSuccess, // Success callback if hostedSessionApiKey validation succeeds
+      onFail, // Fail callback if hostedSessionApiKey validation fails
+      onChangeValidStatus: ({
+            isCVVValid,
+            isExpiryValid,
+            isNameValid,
+            isPanValid
+        }) => {
+            console.log(isCVVValid, isExpiryValid, isNameValid, isPanValid);
+        }
+    });
+  </script>
 @endsection
 
 <script src="{{asset('js/alert.js')}}"></script>

@@ -11,21 +11,6 @@
 
 @section('content')
 
-@if($famdet->first())
-@foreach($famdet as $fam)
-@if($loop->first)
-@php 
-$fam_cost = $fam->cost
-@endphp
-
-@endif
-@endforeach
-
-@else
-@php 
-$fam_cost = 0
-@endphp
-@endif
 
 
     <div class="container" style="margin-top: 150px;">
@@ -70,11 +55,18 @@ $fam_cost = 0
                                 @endforeach
                                 @else 
                                 @php                                   
-                                   $whiteJob_cost = $data->unit_price
+                                   $whiteJob_cost = 0
                                  @endphp
                                 @endif
                                 <h6>White Collar Package</h6>
-                                <p class="amountSection"><span class="amount">{{number_format($whiteJob_cost,0)}}</span><b>AED</b></p>
+                                <p class="amountSection"><span class="amount">{{($whiteJob_cost > 0) ? number_format($whiteJob_cost,0) : 0}}</span><b>AED</b></p>
+                                                      
+                                   @if($whiteJob_cost == 0)
+                                   <p style="font-size: 14px">
+                                     Package Not Available 
+                                   </p> 
+                                   @endif
+                                
                             </div>
                             
                         </div>
@@ -87,7 +79,12 @@ $fam_cost = 0
                             </div>
                                 <img src="{{asset('images/yellowFamily.svg')}}">
                                 <h6>Family Package</h6>
-                                <p class="amountSection"><span class="amount">{{ number_format($fam_cost) }}</span><b>AED</b></p>
+                                <p class="amountSection"><span class="Famamount">{{($famdet) ?  number_format($famdet['cost'],0) : 0 }}</span><b>AED</b></p>
+                                   @if(!$famdet)
+                                   <p style="font-size: 14px">
+                                     Package Not Available 
+                                   </p> 
+                                   @endif
                             </div>
                         </div>
                     </div>
@@ -142,9 +139,9 @@ $fam_cost = 0
                                 @csrf
                               
                                 <input type="hidden" name="productId" value="{{$productId}}">
-                                <input type="hidden" name="cost" value="{{$fam_cost}}">
+                                <input type="hidden" class="hiddenFamAmount" name="cost" value="{{($famdet) ?  number_format($famdet['cost']) : 0 }}">
                                 <input type="hidden" value="FAMILY PACKAGE" name="myPack">
-                                <input type="hidden" value="{{$fam->id}}" name="fam_id">
+                                <input type="hidden" value="{{($famdet) ? $famdet->id : 0 }}" name="fam_id">
                                 <div class="partner-sec">
                                 <?php $XYZ = Session::get('mySpouse'); ?>
                                     <p style="height: 13px"><span class="header"> Partner/Spouse</span>
@@ -155,7 +152,7 @@ $fam_cost = 0
                                         </label>
                                         
                                         No<label class="switch">
-                                            <input type="radio" id="mySpouse" name="spouse" @if($XYZ == 'no' ) checked="checked" @endif onclick="handleClick(this);" value="no">
+                                            <input type="radio" id="mySpouse" name="spouse" @if($XYZ == 'no' || $XYZ == null) checked="checked" @endif onclick="handleClick(this);" value="no">
                                             <span class="slider round"></span>
                                         </label>
                                     </p>
@@ -170,7 +167,7 @@ $fam_cost = 0
                                         <span class="header"> Children</span>
                                         <ul class="children">
                                             <li>
-                                                <input type="radio" id="none" name="children" @if($ABC == 0 || $ABC==null ) checked="checked" @endif value="0"/>
+                                                <input type="radio" id="none" name="children" @if($ABC == 0 || $ABC==null ) checked="checked" @endif  onclick="handleKids(this);" value="0"/>
                                                 <label for="none">None</label>
                                             </li>
                                             <li>
@@ -208,7 +205,11 @@ $fam_cost = 0
                 </div>
             </div>
         </div>
+
     </div>
+
+
+
 @endSection
 @push('custom-scripts')
 <script>
@@ -271,18 +272,39 @@ $fam_cost = 0
 function handleClick(spouse) {
  
     parents = spouse.value;
+    kidd = $('input[name="children"]:checked').val();
+    
 
+
+    getCost(kidd,parents);
     // document.cookie = 'parents='+parents ;        
 }
 
 function handleKids(children) {
 let kidd = children.value;
+parent = $("input[name=spouse]:checked").val();
 
- document.cookie = 'parents='+parents ;
- document.cookie = 'pers='+kidd ; 
+getCost(kidd,parent);
 
+//  document.cookie = 'pers='+kidd ; 
+//  window.location.href = "{{ route('packageType',$productId) }}";
+}
 
- window.location.href = "{{ route('packageType',$productId) }}";
+function getCost(kidd, parents)
+{
+    $.ajax({
+        type: 'GET',
+        url: "{{ route('packageType',$productId)  }}",
+        data: {kid : kidd, parents: parents , response : 1}, 
+        success: function (data) {
+            console.log(data)
+
+            $('.Famamount').text(parseFloat(data.cost).toLocaleString());
+            $('.hiddenFamAmount').val(data.cost);
+        },
+        errror: function (error) {
+        }
+    });
 }
 
 </script>

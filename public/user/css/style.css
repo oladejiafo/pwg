@@ -1894,10 +1894,12 @@ iframe img {
   margin-bottom: 50px;
 }
 
-.package .amount {
+.package .amount,
+.package .Famamount {
   font-family: 'TT Norms Pro';
   font-weight: bolder;
   font-size: 47px;
+  
 }
 
 .package-desc {
