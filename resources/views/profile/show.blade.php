@@ -370,4 +370,12 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
 <!-- Bootstrap -->
 <!-- <script src="{{asset('user/extra/js/bootstrap.min.js')}}"></script> -->
+<script>
+    $(document).ready(function(){
+        $('.otp-profile').hide();
+        $('.updatePassword').click(function(){
+            $('.otp-profile').show();
+        });
+    });
+</script>
 @livewireScripts
