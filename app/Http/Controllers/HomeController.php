@@ -160,74 +160,73 @@ class HomeController extends Controller
 
     public function upload(Request $request)
     {
-        if (Auth::id()) {
+    if (Auth::id()) {
+        $folderPath = public_path('storage/signature/');
 
-            $folderPath = public_path('storage/signature/');
+        list($part_a, $image_parts) = explode(";base64,", $request->signed);
 
-            list($part_a, $image_parts) = explode(";base64,", $request->signed);
+        $image_type_aux = explode("image/", $part_a);
 
-            $image_type_aux = explode("image/", $part_a);
+        $image_type = $image_type_aux[1];
 
-            $image_type = $image_type_aux[1];
+        $image_base64 = base64_decode($image_parts);
 
-            $image_base64 = base64_decode($image_parts);
+        $signate = time() . '.'.$image_type;
 
-            $signate = time() . '.' . $image_type;
+        $file = $folderPath . $signate;
 
-            $file = $folderPath . $signate;
+        file_put_contents($file, $image_base64);
 
-            file_put_contents($file, $image_base64);
-
-            $signature = user::find($request->user_id);
-            $signature->signature = $signate;
-            $signature->save();
-
-
-            if (Session::get('mySpouse') == "yes") {
-                $is_spouse = 1;
-            } else {
-                $is_spouse = 0;
-            }
-            $datas = applicant::where([
-                ['user_id', '=', Auth::user()->id],
-                ['product_id', '=', $request->pid],
-            ])->first();
-            if ($datas === null) {
-                $data = new applicant();
-
-                $data->user_id = Auth::user()->id;
-                $data->first_name = Auth::user()->name;
-                $data->visa_type = Session::get('packageType');
-                $data->is_spouse = $is_spouse;
-                $data->children_count = Session::get('myKids');
-                $data->applicant_status = 1;
-                $data->product_id = $request->pid;
+        $signature = user::find($request->user_id);
+        $signature->signature = $signate;
+        $signature->save();
 
 
-                $res = $data->save();
-            } else {
-                $datas->user_id = Auth::user()->id;
-                $datas->first_name = Auth::user()->name;
-                $datas->visa_type = Session::get('packageType');
-                $datas->is_spouse = $is_spouse;
-                $datas->children_count = Session::get('myKids');
-                $datas->applicant_status = 1;
-                $datas->product_id = $request->pid;
-
-                $res = $datas->save();
-            }
-
-            if ($res) {
-                return \Redirect::route('payment', $request->pid)
-                    ->with('info', 'Signature Uploaded Successfully!')
-                    ->with('info_sub', 'Proceed to application');
-            } else {
-                return redirect()->back()->with('failed', 'Oppss! Something went wrong.');
-            }
+        if (Session::get('mySpouse')=="yes") {
+            $is_spouse = 1;
         } else {
-            return redirect()->back()->with('message', 'You are not authorized');
+            $is_spouse = 0;
         }
+        $datas = applicant::where([
+            ['user_id', '=', Auth::user()->id],
+            ['product_id', '=', $request->pid],
+        ])->first();
+        if ($datas === null) {
+            $data = new applicant();
+
+            $data->user_id = Auth::user()->id;
+            $data->first_name = Auth::user()->name;
+            $data->visa_type = Session::get('packageType');
+            $data->is_spouse = $is_spouse;
+            $data->children_count = Session::get('myKids');
+            $data->applicant_status = 1;
+            $data->product_id = $request->pid;
+
+
+            $res = $data->save();
+        } else {
+            $datas->user_id = Auth::user()->id;
+            $datas->first_name = Auth::user()->name;
+            $datas->visa_type = Session::get('packageType');
+            $datas->is_spouse = $is_spouse;
+            $datas->children_count = Session::get('myKids');
+            $datas->applicant_status = 1;
+            $datas->product_id = $request->pid;
+
+            $res = $datas->save();
+        }
+
+        if ($res) {
+            return \Redirect::route('payment', $request->pid)
+            ->with('info', 'Signature Uploaded Successfully!')
+            ->with('info_sub', 'Proceed to application');
+        } else {
+            return redirect()->back()->with('failed', 'Oppss! Something went wrong.');
+        }
+    } else {
+        return redirect()->back()->with('message', 'You are not authorized');
     }
+}
 
     public function signature_success($id)
     {

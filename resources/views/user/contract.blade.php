@@ -11,7 +11,7 @@
                     <div class="header">
                         <h3>Contract</h3>
                         <div class="bottom-title">
-                            <p>Please review  the contract carefully</p>
+                            <p>Please review the contract carefully</p>
                         </div>
                     </div>
                     <div class="contract-section">
