@@ -37,7 +37,6 @@
 
     </div>
     <!-- End Product Section -->
-
-</body>
+    </body>
 
 </html>

@@ -82,11 +82,11 @@
             <x-jet-input-error for="name" class="mt-2" />
         </div>
         <!-- Phone -->
-        <!-- <div class="cols col-span-12 sm:col-span-12" style="width:70%; margin: 0 auto; margin-bottom:20px">
+        <div class="cols col-span-12 sm:col-span-12" style="width:70%; margin: 0 auto; margin-bottom:20px">
             <x-jet-label for="phone" value="{{ __('Phone') }}" />
-            <x-jet-input id="phone" type="text" class="mt-1 block w-full" wire:model.defer="state.phone" autocomplete="phone" />
+            <x-jet-input id="phone_number" type="text" class="mt-1 block w-full" wire:model.defer="state.phone_number" autocomplete="phone" />
             <x-jet-input-error for="phone" class="mt-2" />
-        </div> -->
+        </div>
 
         <!-- Email -->
         <div class="cols col-span-12 sm:col-span-12" style="width:70%; margin: 0 auto">

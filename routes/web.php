@@ -47,7 +47,6 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
-Route::match(['get', 'post'], '/chatbox', [BotmanController::class, 'enterRequest'])->name('enterRequest');
 
 Route::post('/product',[HomeController::class,'product'])->name('product');
 Route::get('/package/type/{id}',[HomeController::class,'packageType'])->name('packageType');
@@ -68,15 +67,13 @@ Route::post('/add-referrer', [HomeController::class,'addReferrer'])->name('add-r
 Route::put('family/details/submit', [HomeController::class, 'familyDetails'])->name('family.details.submit');
 Route::get('contract/{id}', [HomeController::class, 'contract'])->name('contract');
 Route::get('contract/view/{id}', [HomeController::class, 'contractReview'])->name('contract-review');
-// Reset Password
 
+// Reset Password
 Route::post('reset/password', [ResetPasswordController::class,'updatePassword'])->name('customize.password.update');
 Route::post('reset/forgot/password', [ResetPasswordController::class,'forgotPassword'])->name('customize.forgot.password');
 
-// Route::get('payment-form/{id}', [HomeController::class,'payment'])->name('payment');
-
+//Payments
 Route::get('payment_form/{id}',[HomeController::class,'payment'])->name('payment');
-
 Route::post('/add_payment', [HomeController::class,'addpayment']);
 
 // Applicant
@@ -101,5 +98,9 @@ Route::post('store/spouse/schengen/details', [ApplicationController::class, 'sto
 Route::post('/get/dependent/selected/experience', [ApplicationController::class,'getDependentExperience'])->name('get.dependent.selected.experience');
 
 //children
-
 Route::post('store/children/details', [ApplicationController::class, 'storeChildrenDetails'])->name('store.children.details');
+
+//notifications
+// Route::get('user/notifications', [HomeController::class, 'notifications'])->name('notifications');
+
+Route::post('card_details', [HomeController::class, 'card_details'])->name('card_details');

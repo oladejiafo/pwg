@@ -343,7 +343,7 @@
                                                 <!-- <img src="{{asset('images/Icons_applicant_details.svg')}}" width="70px" height="auto" style="margin-right:50px"> -->
                                         </span>
                                         <span class="title" style="display:inline-block">
-                                            |&nbsp; {{ __('Payments & Payouts') }}
+                                            |&nbsp; {{ __('Payment Card Information') }}
                                         </span>
                                     </a>
                                 </h4>
@@ -352,7 +352,7 @@
                             <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
                                 <div class="panel-body">
 
-                                    <!-- Coming -->
+                                    @include('profile.card-info')
 
                                 </div>
                             </div>
