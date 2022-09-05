@@ -45,7 +45,7 @@
                     </div>
                     <h1>Append Your Signature</h1>
                     <p>To proceed to payment, please upload your signature</p>
-                    <div class="col-8 offset-2">
+                    <div class="col-12 col-md-8 col-lg-8 offset-md-2 offset-lg-2">
                         <form action="{{ url('upload_signature') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" name="pid" value="{{$data->id}}">
@@ -60,24 +60,15 @@
                                 <div class="description">Sign above</div>
 
                                 <div class="signature-pad--actions">
-                                    <textarea name="signed" id="signature64" style="display:none" required=""></textarea>
-                                    <div>
-                                    <button type="button" class="btn btn-primary clear" id="clear" data-action="clear">CLEAR</button>
-                                    <!-- <button type="button" class="button" data-action="change-color">Change color</button>
-                                    <button type="button" class="button" data-action="undo">Undo</button> -->
-
-                                    </div>
-                                    <div>
-                                    <button type="buttonx" class="btn btn-primary">SUBMIT</button>
-                                     <!-- <button type="button" class="button save" data-action="save-png">Save as PNG</button>  -->
-                                    <!-- <button type="button" class="button save" data-action="save-jpg">Save as JPG</button> -->
-                                    <!-- <button type="button" class="button save" data-action="save-svg">Save as SVG</button> -->
-                                    </div>
-                                </div>
+                                    <textarea name="signed" id="signature64" style="display:none" required></textarea>
+                                      <div class="col-6">
+                                        <button type="button" class="btn btn-primary clear" id="clear" data-action="clear">CLEAR</button>
+                                      </div>
+                                      <div class="col-6">
+                                        <button type="buttonx" class="btn btn-primary">SUBMIT</button>
+                                      </div>
                                 </div>
                             </div>
-                            
-
                         </form>
                     </div>
                 </div>
@@ -95,7 +86,6 @@
     $("#sig").mouseout(function(event) {
         var canvass = document.getElementById('sig');
         var src  = canvass.toDataURL("image/png");
-        // alert(src);
         // $("#signature64").val('');
         $("#signature64").val(src);
     });

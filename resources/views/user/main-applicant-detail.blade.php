@@ -603,7 +603,7 @@
                                                 <div class="jobCategoryThree" v-for='(jobCategoryFour, indexFour) in jobCategoryThree.job_category_four'>
                                                     <div class="experience-sec" data-bs-toggle="collapse" :data-bs-target="'#collapseExperienceFour'+index+indexTwo+indexThree+indexFour" aria-expanded="false" :aria-controls="'collapseExperienceFour'+index+indexTwo+indexThree+indexFour">
                                                         <div class="row">
-                                                            <div class="col-11">
+                                                            <div class="col-10">
                                                                 <p class="exp-font">@{{jobCategoryFour.name}}</p>
                                                             </div>
                                                             <div class="col-1 mx-auto my-auto">

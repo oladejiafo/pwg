@@ -18,7 +18,7 @@
     <div class="container" id="app" data-applicantId="{{$applicant['id']}}" data-dependentId="{{$dependent}}">
         <div class="col-12">
             <div class="row">
-                <div class="wizard-details bg-white">
+                <div class="wizard bg-white">
                     <div class="row">
                         <div class="tabs-detail d-flex justify-content-center">
                             

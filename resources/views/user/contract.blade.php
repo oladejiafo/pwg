@@ -24,7 +24,7 @@
                             </div>
                         </div>
                         <div class="contractPreview">
-                            <embed src="{{ asset('pdf/PROMO_July_Poland_BC_Contract.pdf') }}" type="application/pdf"frameBorder="0" alt="pdf" borders="false" style="border: none" />
+                            <embed src="{{ asset('pdf/PROMO_July_Poland_BC_Contract.pdf') }}#toolbar=0" type="application/pdf"frameBorder="0" alt="pdf" borders="false" style="border: none" />
                         </div>
                         <div class="col-12 col-md-8 col-lg-8 offset-md-2 offset-lg-2">
                             <div class="agree">

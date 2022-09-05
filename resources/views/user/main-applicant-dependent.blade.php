@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-2">
                     <div class="image my-auto">
-                        <img src="{{asset('images/Icons_applicant_details.svg')}}" width="100%" height="auto">
+                        <img src="{{asset('images/Icons_applicant_details.svg')}}" width="100%" height="100%">
                     </div>
                 </div>
                 <div class="col-1">
@@ -15,12 +15,13 @@
                         <h3>
                             Spouse/Dependant Details 
                         </h3>
-                        <div class="dataCompleted spouseApplicantData">
-                            <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved">
-                        </div>
                     </div>
                 </div>
-                <div class="col-1"></div>
+                <div class="col-1">
+                    <div class="dataCompleted spouseApplicantData">
+                        <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved">
+                    </div>
+                </div>
                 <div class="col-2 mx-auto my-auto">
                     <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapsespouseapplicant" aria-expanded="false" aria-controls="collapsespouseapplicant">
                         <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
@@ -151,12 +152,13 @@
                         <h3>
                             Home Country Details
                         </h3>
-                        <div class="dataCompleted spouseHomeCountryData">
-                            <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved">
-                        </div>
                     </div>
                 </div>
-                <div class="col-1"></div>
+                <div class="col-1">
+                    <div class="dataCompleted spouseHomeCountryData">
+                        <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved">
+                    </div>
+                </div>
                 <div class="col-2 mx-auto my-auto">
                     <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapsespouseHome" aria-expanded="false" aria-controls="collapsespouseHome">
                         <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
@@ -271,12 +273,13 @@
                         <h3>
                             Current Residency and Work Details
                         </h3>
-                        <div class="dataCompleted spouseCurrentCountryData">
-                            <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved">
-                        </div>
                     </div>
                 </div>
-                <div class="col-1"></div>
+                <div class="col-1">
+                    <div class="dataCompleted spouseCurrentCountryData">
+                        <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved">
+                    </div>
+                </div>
                 <div class="col-2 mx-auto my-auto">
                     <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseSpouseCurrent" aria-expanded="false" aria-controls="collapseSpouseCurrent">
                         <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
@@ -402,12 +405,13 @@
                         <h3>
                             Schengen Details
                         </h3>
-                        <div class="dataCompleted spouseSchengenData">
-                            <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved">
-                        </div>
                     </div>
                 </div>
-                <div class="col-1"></div>
+                <div class="col-1">
+                    <div class="dataCompleted spouseSchengenData">
+                        <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved">
+                    </div>
+                </div>
                 <div class="col-2 mx-auto my-auto">
                     <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseSpouseSchengen" aria-expanded="false" aria-controls="collapseSpouseSchengen">
                         <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
@@ -486,7 +490,11 @@
                         </div> --}}
                     </div>
                 </div>
-                <div class="col-1"></div>
+                <div class="col-1">
+                    <div class="dataCompleted spouseSchengenData">
+                        <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved">
+                    </div>
+                </div>
                 <div class="col-2 mx-auto my-auto">
                     <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseSpouseExperience" aria-expanded="false" aria-controls="collapseSpouseExperience">
                         <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
@@ -517,10 +525,10 @@
                     </h3>
                     <h4 style="margin-top:60px">Job Sector List</h4>
                     <div class="form-group row mt-4 searchForm">
-                        <div class="col-sm-10 mt-3" >
+                        <div class="col-8 col-md-10 col-lg-10 mt-3" >
                             <input type="text" class="form-control" v-model="search" name="search" placeholder="Enter Job Title" >
                         </div>
-                        <div class="col-sm-2 mt-3" style="padding-left: 0px">
+                        <div class="col-4 col-md-2 col-lg-2 mt-3" style="padding-left: 0px">
                             <button class="btn btn-danger" v-on:click="filterJob()">Search</button>
                         </div>
                     </div>
@@ -602,7 +610,7 @@
                                         <div class="jobCategoryThree" v-for='(jobCategoryThree, indexThree) in jobCategoryTwo.job_category_three'>
                                             <div class="experience-sec" data-bs-toggle="collapse" :data-bs-target="'#collapseExperienceThree'+index+indexTwo+indexThree" aria-expanded="false" :aria-controls="'collapseExperienceThree'+index+indexTwo+indexThree">
                                                 <div class="row">
-                                                    <div class="col-11">
+                                                    <div class="col-10">
                                                         <p class="exp-font">@{{jobCategoryThree.name}}</p>
                                                     </div>
                                                     <div class="col-1 mx-auto my-auto">

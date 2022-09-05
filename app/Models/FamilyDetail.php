@@ -16,6 +16,7 @@ class FamilyDetail extends Model
         'middle_name',
         'surname',
         'email',
+        'personal_phone_number',
         'country',
         'job_type',
         'resume',

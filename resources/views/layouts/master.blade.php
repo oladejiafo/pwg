@@ -39,12 +39,12 @@
             </div>
         @endif
         @if(session()->has('info'))
-            <div class="alert alert-infox alert-block" style="color:#fff; padding:2px; margin-left:auto;margin-right:auto; width:40%;height:120px; text-align:center;margin-bottom:-80px;background-color:green;border-radius:10px;">
+            <div class="alert alert-infox alert-block">
                 <button type="button" class="close" data-dismiss="alert" style="float:right;border-style:none;background-color: transparent"><i class="fa fa-times-circle" aria-hidden="true" style="color:#fff; font-size:25px";></i>
                     
                 </button>
                 <p style="padding-top: 20px;font-size: 1.8em;line-height:0px">
-                <svg height="70px" width="70px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 300 300">
+                <svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 300 300">
                     <defs>
                         <style>
                         .cls-1{fill:url(#linear-gradient);}

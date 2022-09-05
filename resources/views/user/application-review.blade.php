@@ -846,6 +846,7 @@
                                                             <input type="file" class="upload up dependent_resume" id="up"  name="dependent_resume" accept="application/pdf" />
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
+                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#resumeModal" onclick="showResume()">click to view uploaded resume</a>
                                                     <span class="dependent_resume_errorClass"></span>
                                                 </div>
                                             </div>
@@ -879,7 +880,7 @@
                                                     <span class="dependent_citizenship_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-4 mt-3">
-                                                    <select name="sex"  aria-required="true" class="form-control form-select dependent_sex">
+                                                    <select name="dependent_sex"  aria-required="true" class="form-control form-select dependent_sex">
                                                         <option selected disabled>Sex *</option>
                                                         <option {{($dependent['sex'] == 'MALE') ? 'selected' : '' }}value="Male">Male</option>
                                                         <option {{($dependent['sex'] == 'FEMALE') ? 'selected' : ''}} value="Female">Female</option>
@@ -887,7 +888,7 @@
                                                     <span class="dependent_sex_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-4 mt-3">
-                                                    <select name="civil_status" id="civil_status" required="" aria-required="true" class="form-control form-select">
+                                                    <select name="dependent_civil_status" id="civil_status" required="" aria-required="true" class="form-control form-select">
                                                         <option selected disabled>Civil Status *</option>
                                                         <option  {{($dependent['civil_status'] == 'Single') ? 'selected' : '' }} value="Single">Single</option>
                                                         <option  {{($dependent['civil_status'] == 'Married') ? 'selected' : '' }} value="Married">Married</option>
@@ -979,6 +980,7 @@
                                                             <input type="file" class="upload up dependent_passport_copy" id="up"  name="dependent_passport_copy" />
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
+                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#dependentPassword" onclick="dependentPassword()">click to view uploaded passport copy</a>
                                                     <span class="dependent_passport_copy_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-6 mt-3">
@@ -1100,6 +1102,7 @@
                                                             <input type="file" class="upload dependent_residence_copy" id="up"  name="dependent_residence_copy" />
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
+                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#dependentResidence" onclick="dependentResidence()">click to view uploaded residence copy</a>
                                                     <span class="dependent_residence_copy_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-6 mt-3">
@@ -1110,6 +1113,7 @@
                                                             <input type="file" class="upload dependent_visa_copy" id="up"  name="dependent_visa_copy" />
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
+                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#dependentVisa" onclick="dependentVisa()">click to view uploaded visa copy</a>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
@@ -1209,13 +1213,16 @@
                                             </div>
                                             <div class="form-group row mt-4 dependent_schengen_visa">
                                                 <div class="col-sm-12 mt-3">
-                                                    <input type="text" class="form-control dependent_schengen_copy" name="dependent_schengen_copy" placeholder="Image of Schengen Or National Visa Issued During Last 5 Years" readonly >
+                                                    <input type="text" class="form-control dependent_schengen_copy" name="dependent_schengen_copy" value="{{$dependent['schengen_visa']}}" placeholder="Image of Schengen Or National Visa Issued During Last 5 Years" readonly >
                                                     <div class="input-group-btn">
                                                         <span class="fileUpload btn">
                                                             <span class="upl" id="upload">Choose File</span>
                                                             <input type="file" class="upload dependent_schengen_copy" accept="image/png, image/gif, image/jpeg" name="schengen_copy" />
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
+                                                    @if($dependent['schengen_visa'])
+                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#dependentSchengenVisatModal" onclick="dependentSchengenVisatModal()">click to view uploaded schengen visa copy</a>
+                                                    @endif
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
@@ -1617,6 +1624,66 @@
                 </div>
             </div>
         </div>
+        <div id="resumeModal" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <iframe src ="{{asset('storage/resumes/'.$dependent['resume'])}}"  width="100%" height="400px"></iframe>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="dependentPassword" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <iframe src ="{{asset('storage/passportCopy/'.$dependent['passport'])}}" width="100%" height="400px" style="margin: auto"></iframe>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="dependentResidence" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <iframe src ="{{asset('storage/residenceCopy/'.$dependent['residence_copy'])}}" width="100%" height="400px" style="margin: auto"></iframe>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="dependentVisa" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <iframe src ="{{asset('storage/visaCopy/'.$dependent['visa_copy'])}}" width="100%" height="400px" style="margin: auto"></iframe>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="dependentSchengenVisatModal" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <iframe src ="{{asset('storage/schengenCopy/'.$dependent['schengen_visa'])}}" width="100%" height="400px" style="margin: auto"></iframe>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 @endSection  
 @push('custom-scripts')
@@ -1656,6 +1723,13 @@
         } else {
             $('.schengen_visa').hide();
         }
+
+        if($('#is_dependent_schengen_visa_issued_last_five_year').val() == 'Yes') {
+            $('.dependent_schengen_visa').show();
+        } else {
+            $('.dependent_schengen_visa').hide();
+        }
+
         const phoneInputField = document.querySelector("#phone");
         const phoneInput = window.intlTelInput(phoneInputField, {
             initialCountry: "ae",
@@ -1864,6 +1938,10 @@
             $('#residenceCopyModal').modal('hide');
             $('#visaCopyModal').modal('hide');
             $('#schengenVisatModal').modal('hide');
+            $('#resumeModal').modal('hide');
+            $('#dependentPassword').modal('hide');
+            $('#dependentVisa').modal('hide');
+            $('#dependentResidence').modal('hide');
         });
 
         $('.applicantSubmit, .submitChild, .dependentReview').click(function(e){
@@ -2229,6 +2307,30 @@
         $('#schengenVisatModal').modal('show');
     }
 
+    function showResume()
+    {
+        $('#resumeModal').modal('show');
+    }
+
+    function dependentPassword()
+    {
+        $('#dependentPassword').modal('show');
+    }
+
+    function dependentVisa()
+    {
+        $('#dependentVisa').modal('show');
+    }
+
+    function dependentResidence()
+    {
+        $('#dependentResidence').modal('show');
+    }
+
+    function dependentSchengenVisatModal()
+    {
+        $('#dependentSchengenVisatModal').modal('show');
+    }
 </script>
 <script src="https://unpkg.com/vue@next"></script>
 <script src="{{ asset('js/application-details.js') }}" type="text/javascript"></script>

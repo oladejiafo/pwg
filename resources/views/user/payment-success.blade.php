@@ -77,7 +77,7 @@
                         </div>
                         <form action="{{ route('applicant',$id) }}" method="GET">
                             <input type="hidden" name="pid" value="{{$id}}">
-                            <button  style="font-size:20px" class="btn btn-primary ose">APPLICATION DETAILS</button>
+                            <button  style="font-size:18px" class="btn btn-primary ose">APPLICATION DETAILS</button>
                         </form>
                     </div>
                 </div>
