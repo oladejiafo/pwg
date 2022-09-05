@@ -222,18 +222,25 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a target="_blank" class="nav-link" href="https://wa.link/uvaw3f" title="Click Here To Chat on WhatsAPP">
                   <!-- <i class="mdi mdi-email" style="width: 30px; height: 30px;"></i> -->
                   <img src="{{asset('user/images/Chat.svg')}}" width="30px" height="30px" alt="icon3">
                   <span class="count bg-success"></span>
                 </a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">
+              <li class="nav-item dropdown border-left">
+                <a class="nav-link"  id="notificationDropdown" href="#" data-toggle="dropdown">
                   <!-- <i class="mdi mdi-bell" style="width: 30px; height: 30px;"></i> -->
                   <img src="{{asset('user/images/Notification.svg')}}" width="30px" height="30px" alt="icon3">
                   <span class="count bg-danger"></span>
                 </a>
+                <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
+                  <h6 class="p-3 mb-0">Notifications</h6>
+                  <div class="dropdown-divider"></div>
+                  
+                  @include('user.notifications')
+       
+                </div>
               </li>
 
               <li class="nav-item dropdown">
@@ -244,7 +251,8 @@
                     <i class="mdi mdi-menu-down d-none d-sm-block"></i>
                   </div>
                 </a>
-                <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="profileDropdown">
+                
+                <div class="dropdown-menu dropdown-menu-left navbar-dropdown preview-list" style="left:-10px;  min-width: 150px;" aria-labelledby="profileDropdown">
                   
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item preview-item">
@@ -252,7 +260,7 @@
                     <form method="GET" action="{{ route('profile.show') }}" x-data>
                             @csrf  
                       <button style="border-color: #fff; padding:3px; margin:0; width:100px; background-color:#fff; shadow:none;">Profile</button>
-                      </form>
+                    </form>
                       <!-- <p class="preview-subject mb-1"><a href="{{ route('profile.show') }}">Profile</a></p> -->
                     </div>
                   </a>

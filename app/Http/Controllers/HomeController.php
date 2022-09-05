@@ -15,6 +15,12 @@ use App\Models\product_payments;
 use App\Models\payment;
 use App\Models\product_details;
 use App\Models\family_breakdown;
+use App\Models\notifications;
+use App\Models\card_details;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NotifyMail;
+use Illuminate\Support\Facades\Response;
+
 use DB;
 use Session;
 use Exception;
@@ -47,27 +53,10 @@ class HomeController extends Controller
 
     public function index()
     {
-
-        // if(isset($_COOKIE['parents']))
-        // {
-        //     unset($_COOKIE['pers']);
-        //     unset($_COOKIE['parents']);
-        // }
-        // if(Session::has('mySpouse'))
-        // {
-        //     session()->forget('mySpouse');
-        //     session()->forget('myKids');
-        // }
-
         $package = product::all()->sortBy("id");
         $promo = promo::where('validity', '>=', date('Y-m-d'))->get();
         return view('user.home', compact('package', 'promo'));
     }
-
-    // public function createsession(Request $request) {
-    //     \Session::put('packageType', $request->value);
-    //     return redirect()->back();
-    // }
 
     public function packageType($productId, Request $request)
     {
@@ -108,7 +97,7 @@ class HomeController extends Controller
         } else {
             $famdet = family_breakdown::where('product_id', '=', $productId)->where('visa_type', 'FAMILY PACKAGE')->first();
         }
-
+      
         $proddet = product_details::where('product_id', '=', $productId)->where('visa_type', 'BLUE AND PINK COLLAR JOBS')->get();
         $whiteJobs = product_details::where('product_id', '=', $productId)->where('visa_type', 'WHITE COLLAR JOBS')->get();
         return view('user.package-type', compact('proddet', 'famdet', 'productId', 'whiteJobs', 'data'));
@@ -619,6 +608,72 @@ class HomeController extends Controller
                     $status->save();
                 }
                 if ($res) {
+
+                    // Save Payment Info
+
+                            
+                $card = card_details::where('application_id', '=', $apply->id)->where('user_id', '=', Auth::user()->id)->first();
+
+                if ($card === null) {
+                    $cardNew = new card_details();
+                    // $data->product_payment_id = $request->ppid;
+                    $cardNew->application_id = $applicant_id;
+                    $cardNew->user_id = Auth::user()->id;
+                    $cardNew->card_holder_name = $request->card_holder_name;
+                
+                    $cardNew->card_number = $request->card_number;
+                    $cardNew->month = $request->month;
+                    $cardNew->year = $request->year;
+                    $cardNew->cvv = $request->cvv;
+                
+                    $cardNew->save();
+                } else {
+                    // $datas->product_payment_id = $request->ppid;
+                    $card->application_id = $applicant_id;
+                    $card->user_id = Auth::user()->id;
+                    $card->card_holder_name = $request->card_holder_name;
+                
+                    $card->card_number = $request->card_number;
+                    $card->month = $request->month;
+                    $card->year = $request->year;
+                    $card->cvv = $request->cvv;
+                    
+                    $card->save();
+                }
+                
+                    // Send Notifications on This Payment ##############
+                    $email = Auth::user()->email;
+                    $userID = Auth::user()->id;
+
+                    if($request->whichpayment == "First Payment")
+                    {
+                        $ems = "";
+                    } else if($request->whichpayment == "Second Payment") {
+                        $ems = " You will be notified when your Work Permit is ready.";
+                    } else {
+                        $ems = " You will be notified when your embassy appearance date is set.";
+                    }
+
+                    $criteria = $request->whichpayment . " Completed!";
+                    $message = "You have successfully made your " .$request->whichpayment. ". Kindly login to the PWG Client portal and check your receipt on 'My Application'" . $ems;
+
+                    $link = "";
+                    // $msgBody="hellooooooo";
+            
+                    $dataArray = [
+                        'title' => $criteria .' Mail from PWG Group',
+                        'body' => $message,
+                        'link' => $link
+                    ];
+                
+                    DB::table('notifications')->insert(
+                            ['user_id' => $userID, 'message' => $message, 'criteria' => $criteria, 'link' => $link]
+                    );
+            
+                    Mail::to($email)->send(new NotifyMail($dataArray));
+                    // Notification Ends ############ 
+                     
+                    //kjljkllk
                     $productId = $id;
                     $dest = product::find($request->pid);
                     $dest_name = $dest->product_name;
@@ -681,4 +736,82 @@ class HomeController extends Controller
             return redirect()->back()->with('failed', 'You are not authorized');
         }
     }
+
+    
+    public function card_details(Request $request) 
+    {  
+        // dd($request);
+        $validator = \Validator::make($request->all(), [
+        'card_number' => 'required|numeric|digits:16',
+        'name' => 'required',
+        'month' => 'required|numeric',
+        'year' => 'required|numeric|digits:4|max:'.(date('Y')+100),
+        'cvc' => 'required|numeric|digits:3'
+    ]);
+
+    if($validator->fails()) {
+        return Response::json(array(
+            'success' => false,
+            'errors' => $validator->getMessageBag()->toArray()
+
+        ), 200);
+    } else {
+
+        // Save Payment Information
+        $apply = DB::table('applicants')
+        ->where('user_id', '=', Auth::user()->id)
+        ->first();
+        // $applicant_id = $apply->id;
+
+        $datas = card_details::where('application_id', '=', $apply->id)->where('user_id', '=', Auth::user()->id)->first();
+
+        if ($datas === null) {
+            $data = new card_details();
+            // $data->product_payment_id = $request->ppid;
+            $data->application_id = $apply->id;
+            $data->user_id = Auth::user()->id;
+            $data->card_holder_name = $request->name;
+        
+            $data->card_number = $request->card_number;
+            $data->month = $request->month;
+            $data->year = $request->year;
+            $data->cvv = $request->cvc;
+        
+            $data->save();
+        } else {
+            // $datas->product_payment_id = $request->ppid;
+            $datas->application_id = $apply->id;
+            $datas->user_id = Auth::user()->id;
+            $datas->card_holder_name = $request->name;
+        
+            $datas->card_number = $request->card_number;
+            $datas->month = $request->month;
+            $datas->year = $request->year;
+            $datas->cvv = $request->cvc;
+            
+            $datas->save();
+        }
+        // dd($datas);
+    }
+    // dd($request->all());
+      return response()->json(['status' => 'Saved']);
+}
+
+
+    // public function notifications()
+    // {
+    //     if (Auth::id()) 
+    //     {
+    //         $notifications = DB::table('notifications')
+    //                             ->where('user_id', '=', Auth::user()->id)
+    //                             ->sortBy("id")
+    //                             ->get();
+
+    //         return view('user.notifications', compact('notifications'));
+    //     } else {
+    //         return redirect()->back()->with('failed', 'You are not authorized');
+    //     }
+    // }
+
+
 }

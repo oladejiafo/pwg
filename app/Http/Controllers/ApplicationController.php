@@ -385,16 +385,38 @@ class ApplicationController extends Controller
         Applicant::where('user_id', Auth::id())
             ->where('product_id', $request->product_id)
             ->update([
-                'applicant_status'=> 4
+                'applicant_status'=> 5
             ]);
 
+            // Send Notifications on This Payment ##############
+            $email = Auth::user()->email;
+            $userID = Auth::user()->id;
+            
+            $criteria = "Application Completed!";
+            $message = "You have completed and submitted your application successfully. Kindly login to the PWG Client portal and check your receipt on 'My Application' for further updates";
+
+            $link = "";
+    
+            $dataArray = [
+                'title' => $criteria .'Mail from PWG Group',
+                'body' => $message,
+                'link' => $link
+            ];
+        
+            DB::table('notifications')->insert(
+                    ['user_id' => $userID, 'message' => $message, 'criteria' => $criteria, 'link' => $link]
+            );
+    
+            Mail::to($email)->send(new NotifyMail($dataArray));
+            // Notification Ends ############ 
+            
         return Response::json(array('success' => true), 200);
     }   
 
     public function submitApplicantDetails(Request $request)
     {
         Applicant::where('id', $request['applicantId'])
-                ->update(['applicant_status' => 5]);
+                ->update(['applicant_status' => 4]);
         return true;
     }
 
@@ -649,8 +671,8 @@ class ApplicationController extends Controller
             ]);
         }
 
-        Applicant::where('id', $request['applicant_id'])
-                ->update(['applicant_status' =>  3]);
+        // Applicant::where('id', $request['applicant_id'])
+        //         ->update(['applicant_status' =>  3]);
 
         return Response::json(array(
             'success' => true

@@ -6,8 +6,6 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
-        "botman/botman": "^2.7",
-        "botman/driver-web": "^1.5",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.4",
         "laravel-validation-rules/credit-card": "^1.7",
