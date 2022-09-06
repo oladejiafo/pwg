@@ -26,7 +26,7 @@
                     <div class="col-4">
                         <div class="package-type blue-collar">
                             <div class="content">
-                            <div class="dataCompleted" id="blueSelect" style="margin-top:-35px !important; margin-left:99% !important">
+                            <div class="dataCompleted" id="blueSelect">
                                 <img class="selected" src="{{asset('images/Affiliate_Program_Section_Completed.svg')}}" alt="approved">
                             </div>
                                 <img src="{{asset('images/yellowWhiteCollar.svg')}}">
@@ -39,7 +39,7 @@
                         <div class="package-type  white-collar">
                             
                             <div class="content">
-                            <div class="dataCompleted" id="whiteSelect" style="margin-top:-35px !important; margin-left:99% !important">
+                            <div class="dataCompleted" id="whiteSelect">
                                 <img src="{{asset('images/Affiliate_Program_Section_Completed.svg')}}" alt="approved">
                             </div>
                                 <img src="{{asset('images/yellowBlueCollar.svg')}}">
@@ -74,7 +74,7 @@
                     <div class="col-4">
                         <div class="package-type family-package">
                             <div class="content">
-                            <div class="dataCompleted" id="familySelect" style="margin-top:-35px !important; margin-left:99% !important">
+                            <div class="dataCompleted" id="familySelect">
                                 <img src="{{asset('images/Affiliate_Program_Section_Completed.svg')}}" alt="approved">
                             </div>
                                 <img src="{{asset('images/yellowFamily.svg')}}">
@@ -187,16 +187,16 @@
                                                 <input type="radio" id="four" name="children" @if($ABC == 4 ) checked="checked" @endif onclick="handleKids(this);" value="4" />
                                                 <label for="four">Four</label>
                                             </li>
-                                            <li>
+                                            {{-- <li>
                                                 <input type="radio" id="five" disabled="disabled" name="children" @if($ABC == 5 ) checked="checked" @endif  onclick="handleKids(this);" value="5" />
                                                 <label for="five">Five</label>
-                                            </li>
+                                            </li> --}}
                                         </ul>
                                     </p>
                                 </div>
 
                                 <div class="form-group row" style="margin-top: 140px"> 
-                                    <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
+                                    <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-12">
                                         <button type="submit" class="btn btn-primary" style="width: 100%;font-size: 24px;">Continue</button>
                                     </div>
                                 </div>

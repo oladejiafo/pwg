@@ -1,10 +1,10 @@
 <div class="tab-pane active" id="mainApplicant">
     <div class="applicant-detail-sec">
-        <div class="heading">
+        <div class="heading applicantsec">
             <div class="row">
                 <div class="col-2">
                     <div class="image my-auto">
-                        <img src="{{asset('images/Icons_applicant_details.svg')}}" width="70%" height="auto">
+                        <img src="{{asset('images/Icons_applicant_details.svg')}}" width="100%" height="100%">
                     </div>
                 </div>
                 <div class="col-1">
@@ -16,7 +16,7 @@
                             Applicants Details 
                         </h3>
                         <div class="dataCompleted applicantData">
-                            <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved">
+                            <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved" >
                         </div>
                     </div>
                 </div>
@@ -128,7 +128,7 @@
             <div class="row">
                 <div class="col-2 my-auto">
                     <div class="image">
-                        <img src="{{asset('images/Icons_home_country_details.svg')}}" width="70%" height="auto">
+                        <img src="{{asset('images/Icons_home_country_details.svg')}}" width="100%" height="100%">
                     </div>
                 </div>
                 <div class="col-1">
@@ -247,7 +247,7 @@
             <div class="row">
                 <div class="col-2 my-auto">
                     <div class="image">
-                        <img src="{{asset('images/Icons_current_residency_and_work_details.svg')}}" width="70%" height="100px">
+                        <img src="{{asset('images/Icons_current_residency_and_work_details.svg')}}" width="100%" height="100%">
                     </div>
                 </div>
                 <div class="col-1">
@@ -377,7 +377,7 @@
             <div class="row">
                 <div class="col-2 my-auto">
                     <div class="image">
-                        <img src="{{asset('images/Icons_schengen_details.svg')}}" width="70%" height="auto">
+                        <img src="{{asset('images/Icons_schengen_details.svg')}}" width="100%" height="100%">
                     </div>
                 </div>
                 <div class="col-1">
@@ -455,7 +455,7 @@
             <div class="row">
                 <div class="col-2 my-auto">
                     <div class="image">
-                        <img src="{{asset('images/Icons_experience_details.svg')}}" width="70%" height="auto">
+                        <img src="{{asset('images/Icons_experience_details.svg')}}" width="100%" height="100%">
                     </div>
                 </div>
                 <div class="col-1">
@@ -466,9 +466,9 @@
                         <h3>
                             Experience
                         </h3>
-                        <div class="dataCompleted experiencenData" v-if="selectedJob.length > 0">
+                        {{-- <div class="dataCompleted experiencenData" v-if="selectedJob.length > 0">
                             <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved">
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
                 <div class="col-1"></div>
@@ -501,12 +501,14 @@
                     <h3>Please add your experience very carefully, and add multiple experiences if you have worked in more than one job sector
                     </h3>
                     <h4 style="margin-top:60px">Job Sector List</h4>
-                    <div class="form-group row mt-4 searchForm">
-                        <div class="col-sm-10 mt-3" >
-                            <input type="text" class="form-control" v-model="search" name="search" placeholder="Enter Job Title" >
-                        </div>
-                        <div class="col-sm-2 mt-3" style="padding-left: 0px">
-                            <button class="btn btn-danger" v-on:click="filterJob()">Search</button>
+                    <div class="form-group mt-4 searchForm">
+                        <div class="row">
+                            <div class="col-8 col-md-10 col-lg-10 mt-3" >
+                                <input type="text" class="form-control" v-model="search" name="search" placeholder="Enter Job Title" >
+                            </div>
+                            <div class="col-4 col-md-2 col-lg-2 mt-3" style="padding-left: 0px">
+                                <button class="btn btn-danger" v-on:click="filterJob()">Search</button>
+                            </div>
                         </div>
                     </div>
                     <div v-if="filterData.length > 0">
@@ -601,7 +603,7 @@
                                                 <div class="jobCategoryThree" v-for='(jobCategoryFour, indexFour) in jobCategoryThree.job_category_four'>
                                                     <div class="experience-sec" data-bs-toggle="collapse" :data-bs-target="'#collapseExperienceFour'+index+indexTwo+indexThree+indexFour" aria-expanded="false" :aria-controls="'collapseExperienceFour'+index+indexTwo+indexThree+indexFour">
                                                         <div class="row">
-                                                            <div class="col-11">
+                                                            <div class="col-10">
                                                                 <p class="exp-font">@{{jobCategoryFour.name}}</p>
                                                             </div>
                                                             <div class="col-1 mx-auto my-auto">

@@ -59,10 +59,10 @@
 
         <!-- <p style="font-style: italics; text-decoration:none"><a href="/"><b><i>Packages </a> > {{$data->product_name}} </i></b></p> -->
 
-        <div class="col-md-6 col-sm-12 img-fluid" style="margin-bottom: 0px;">
+        <div class="col-12 col-md-12 col-lg-6 img-fluid packageImage" style="margin-bottom: 0px;">
           <img src="../user/images/{{$data->image}}" style="border-radius:10px" width="100%" height="100%" border="0" alt="" />
         </div>
-        <div class="col-md-6 col-sm-12 text">
+        <div class="col-12 col-md-12 col-lg-6 text">
           <h1>{{$data->product_name}}</h1>
           <p class="subheading"><span>{{$data->slogan}}</span></p>
           <p>{{$data->description}}</p>

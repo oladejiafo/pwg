@@ -11,11 +11,12 @@ body {
   background: #f0f3f4 !important;
 }
 
-.table tbody{
+.table tbody {
   border-top: 0.25px solid #e2e5e9 !important;
 }
 
-.table tbody td, .table tbody th {
+.table tbody td,
+.table tbody th {
   text-align: left;
   padding: 25px 25px 25px 8px;
 }
@@ -458,9 +459,11 @@ a.more {
   .product-section .product-item .btn {
     width: 95%;
   }
+
   .product-section .product-item img {
     width: 100%;
   }
+
   .product-section .product-item .text {
     padding-top: 30px;
   }
@@ -1340,8 +1343,8 @@ textarea {
 }
 
 .passport_copy {
-   width: 95%;
-   display: inline;
+  width: 95%;
+  display: inline;
 }
 
 .content-box {
@@ -1383,6 +1386,7 @@ textarea {
   margin-top: 20px;
   border-radius: 20px;
   box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.05);
+  /* height: 180px; */
 }
 
 .experience-sec {
@@ -1397,7 +1401,8 @@ textarea {
   margin-top: 20px;
   border-radius: 10px;
   /* box-shadow: 0px 6px 5px rgb(0 0 0 / 5%); */
-  box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;;
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+  ;
   height: auto;
   border: 0.5px solid white;
   cursor: pointer;
@@ -1422,7 +1427,7 @@ textarea {
 
 
 
-  .detail-sec {
+.detail-sec {
   width: 100%;
   max-width: 100%;
   margin-left: auto;
@@ -1437,7 +1442,7 @@ textarea {
   line-height: 18px;
 }
 
-.detail-sec button{
+.detail-sec button {
   width: auto !important;
   font-size: 20px !important;
   margin-left: 12px;
@@ -1468,9 +1473,9 @@ textarea {
   margin-bottom: 20px; */
 }
 
-/* .applicant-detail-sec .heading {
-  height: 90px;
-} */
+.applicant-detail-sec .heading {
+  height: 93px;
+}
 
 .down-arrow img {
   float: right;
@@ -1582,15 +1587,19 @@ input[type="checkbox"]:hover {
   background: white;
 }
 
-.ui-state-default, .ui-widget-content .ui-state-default, 
-.ui-widget-header .ui-state-default, .ui-button, 
-html .ui-button.ui-state-disabled:hover, 
+.ui-state-default,
+.ui-widget-content .ui-state-default,
+.ui-widget-header .ui-state-default,
+.ui-button,
+html .ui-button.ui-state-disabled:hover,
 html .ui-button.ui-state-disabled:active {
   color: #000;
   background: white;
 }
 
-.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
+.ui-state-highlight,
+.ui-widget-content .ui-state-highlight,
+.ui-widget-header .ui-state-highlight {
   border: 1px solid black;
   background: black;
   color: white;
@@ -1696,8 +1705,8 @@ form .input-group-btn {
   color: red;
 }
 
-.passportFormatModal  .input-group-btn{
-  margin: 0px !important; 
+.passportFormatModal .input-group-btn {
+  margin: 0px !important;
 }
 
 .input-group-btn .btn:hover {
@@ -1716,7 +1725,8 @@ form .input-group-btn {
   padding: 40px 150px 70px 150px;
 }
 
-.form-control:disabled, .form-control[readonly] {
+.form-control:disabled,
+.form-control[readonly] {
   background: white;
 }
 
@@ -1758,6 +1768,7 @@ iframe img {
   margin-left: 148px !important;
   margin-top: 97px !important;
 }
+
 /*************** ToolTip Styles for Home page ******************/
 
 .item-hints .hint[data-position="1"] .hint-content {
@@ -1765,6 +1776,7 @@ iframe img {
   left: 30%;
   margin-left: 56px;
 }
+
 .item-hints .hint-content {
   color: #fff;
   width: 300px;
@@ -1780,6 +1792,7 @@ iframe img {
   visibility: hidden;
   pointer-events: none;
 }
+
 .item-hints .hint:hover .hint-content {
   color: white;
   width: 300px;
@@ -1795,6 +1808,7 @@ iframe img {
   visibility: hidden;
   pointer-events: none;
 }
+
 .item-hints .hint-content::before {
   width: 0px;
   bottom: 0;
@@ -1805,10 +1819,12 @@ iframe img {
   position: absolute;
   transition: width 0.4s;
 }
+
 .item-hints .hint:hover .hint-content::before {
   width: 180px;
   transition: width 0.4s;
 }
+
 .item-hints .hint-content::after {
   -webkit-transform-origin: 0 50%;
   transform-origin: 0 50%;
@@ -1818,7 +1834,7 @@ iframe img {
   left: 0;
   width: 80px;
   content: "";
-  background-color:gold;
+  background-color: gold;
   height: 1px;
   position: absolute;
   opacity: 1;
@@ -1828,10 +1844,12 @@ iframe img {
   -webkit-transition-delay: 0s;
   transition-delay: 0s;
 }
+
 .item-hints .hint:hover .hint-content::after {
   opacity: 1;
   visibility: visible;
 }
+
 .item-hints .hint[data-position="4"] .hint-content {
   bottom: 85px;
   left: 50%;
@@ -1848,7 +1866,7 @@ iframe img {
   cursor: pointer;
 }
 
-.amountSection{
+.amountSection {
   margin-top: 40px;
 }
 
@@ -1860,7 +1878,8 @@ iframe img {
   text-align: center;
 }
 
-.package, .contract {
+.package,
+.contract {
   font-family: TT Norms Pro;
   width: 100%;
   max-width: 100%;
@@ -1899,7 +1918,7 @@ iframe img {
   font-family: 'TT Norms Pro';
   font-weight: bolder;
   font-size: 47px;
-  
+
 }
 
 .package-desc {
@@ -1922,7 +1941,7 @@ iframe img {
 }
 
 .invoice-later .switch input,
-.package .switch input { 
+.package .switch input {
   opacity: 0;
   width: 0;
   height: 0;
@@ -1955,18 +1974,18 @@ iframe img {
   transition: .4s;
 }
 
-.invoice-later input:checked + .slider,
-.package input:checked + .slider {
+.invoice-later input:checked+.slider,
+.package input:checked+.slider {
   background-color: #FAE008;
 }
 
-.invoice-later input:focus + .slider,
-.package input:focus + .slider {
+.invoice-later input:focus+.slider,
+.package input:focus+.slider {
   box-shadow: 0 0 1px #FAE008;
 }
 
-.invoice-later input:checked + .slider:before,
-.package input:checked + .slider:before {
+.invoice-later input:checked+.slider:before,
+.package input:checked+.slider:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(26px);
@@ -2066,8 +2085,8 @@ iframe img {
 }
 
 .zoomIcon {
-  width : 600px; 
-  height : 456px;
+  width: 600px;
+  height: 456px;
   position: absolute;
   z-index: 100;
 }
@@ -2081,7 +2100,24 @@ iframe img {
   -webkit-filter: blur(2px);
   -moz-filter: blur(10px);
   -o-filter: blur(10px);
-  -ms-filter: blur(10px)
+  -ms-filter: blur(10px);
+  width: 600px;
+  height: 600px;
+}
+
+.contractPdf embed {
+  width: 100%;
+  height: 100%;
+}
+
+.contractPreview {
+  width: 100%;
+  height: 700px;
+}
+
+.contractPreview embed {
+  width: 100%;
+  height: 100%;
 }
 
 .contract {
@@ -2114,8 +2150,7 @@ iframe img {
 .dataCompleted {
   width: 25px;
   height: auto;
-  margin-top: 10px;
-  margin-left: 7px;
+  margin-top: 33px;
 }
 
 .applicant-tab-sec h4 {
@@ -2132,7 +2167,33 @@ iframe img {
   background: #FACB08;
 }
 
+.applicant-detail-sec .heading .image {
+  width: 100%;
+  height: 100px;
+}
 
+.applicant-detail-sec .applicantsec {
+  margin-top: 10px;
+}
+
+.alert-infox {
+  color: #fff;
+  padding: 2px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 40%;
+  height: 120px;
+  text-align: center;
+  margin-bottom: -80px;
+  background-color: green;
+  border-radius: 10px;
+}
+
+.alert-infox svg {
+  height: 70px;
+  width: 70px;
+  margin-left: -4px;
+}
 
 /*************Responsive Styles*****************/
 /***************iPhone Portrait**************/
@@ -2141,7 +2202,7 @@ iframe img {
 
   .applicant-sec,
   .referal-sec {
-    padding: 29px 50px 70px 50px;
+    padding: 30px 10px 70px 10px;
     width: 90%;
   }
 
@@ -2174,7 +2235,164 @@ iframe img {
   }
 
   .first-heading {
-    margin-top: 30px;
+    margin-top: 11px;
+  }
+
+  .contractLogo img {
+    margin-left: 22px;
+  }
+
+  .contract {
+    padding: 20px;
+  }
+
+  .contractPdf {
+    width: 335px;
+    height: 400px;
+  }
+
+  .zoomIcon img {
+    margin: 20%;
+  }
+
+  .contractPreview {
+    width: 100%;
+    height: 100%;
+  }
+
+  .applicant-detail-sec {
+    padding: 20px 20px 20px 20px;
+    width: 90%;
+  }
+
+  .applicant-detail-sec h3 {
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  .dataCompleted {
+    margin-top: -31px !important;
+    margin-left: 71% !important;
+    width: 17px;
+  }
+
+  .searchForm button {
+    width: 130px !important;
+  }
+
+  .table,
+  .exp-font {
+    font-size: 12px;
+  }
+
+  .exp-image {
+    width: 14px;
+  }
+
+  .experience-sec {
+    padding: 0px 15px 0px 15px;
+  }
+
+  .detail-sec {
+    font-size: 12px;
+  }
+
+  .remove i {
+    font-size: 12px;
+  }
+
+  .applicant-tab-sec h4 {
+    font-size: 11px
+  }
+
+  select option {
+    overflow-x: hidden;
+    overflow-wrap: break-word;
+  }
+
+  .applicant-tab-sec {
+    width: 90%;
+  }
+
+  .package,
+  .contract {
+    padding: 30px 10px 70px 10px;
+    width: 90%;
+  }
+
+  .package h3,
+  .contract h3 {
+    font-size: 33px;
+  }
+
+  .package-type {
+    height: 260px;
+  }
+
+  .package .content {
+    padding: 6px;
+    margin: 0;
+    padding-top: 44px;
+    margin-top: 6px;
+  }
+
+  .package .amount,
+  .package .Famamount {
+    font-size: 16px;
+  }
+
+  .amountSection b {
+    font-size: 12px;
+  }
+
+  .content h6 {
+    font-size: 13px;
+  }
+
+  .package-desc {
+    margin-top: 60px;
+  }
+
+  .family-desc .bottoom-title p {
+    font-size: 14px;
+  }
+
+  .family-desc .children {
+    margin-top: 0px;
+    margin-left: 0px;
+  }
+
+  .family-desc .children li {
+    float: left;
+    margin: 5px 14px 0 0;
+  }
+
+  .children li {
+    font-size: 16px;
+  }
+
+  .partner-sec p {
+    font-size: 14px;
+  }
+
+  .package .header {
+    margin-right: 10px;
+  }
+
+  .package .switch {
+    margin-right: 0px;
+    width: 57px;
+    height: 32px;
+    margin-left: 15px;
+  }
+
+  .alert-infox {
+    width: 100%;
+  }
+
+
+  .applicant-detail-sec .heading {
+    height: 90px;
   }
 }
 
@@ -2182,11 +2400,91 @@ iframe img {
   input[type="checkbox"] {
     margin-right: 2px;
   }
+
+  .packageImage img {
+    object-fit: cover;
+  }
+
+  .product-section {
+    padding: 0;
+    margin: 0;
+  }
+
+  .package {
+    padding: 40px 60px 70px 60px;
+  }
+
+  .package .content {
+    padding: 50px 10px 20px 10px;
+  }
+
+  .dataCompleted {
+    margin-left: 86%;
+  }
+
+  .content h6 {
+    font-size: 21px;
+  }
+
+  .package .switch {
+    margin-right: 157px;
+  }
 }
 
 @media only screen and (max-width: 985px) and (min-width: 768px) {
   .agree-terms {
     margin-left: 81px;
+  }
+
+  .applicant-detail-sec {
+    padding: 40px 60px 40px 60px;
+  }
+
+  .detail-sec {
+    font-size: 14px;
+  }
+
+  .applicant-tab-sec h4 {
+    font-size: 12px
+  }
+
+  .package,
+  .contract {
+    padding: 40px 40px 70px 40px;
+  }
+
+  .package .content {
+    padding: 50px 10px 20px 10px;
+  }
+
+  .package .amount,
+  .package .Famamount {
+    font-size: 30px;
+  }
+
+  .content h6 {
+    font-size: 14px;
+  }
+
+  .package-type {
+    height: 362px;
+  }
+
+  .dataCompleted {
+    margin-left: 86%;
+  }
+
+  .package .header {
+    margin-right: 16px
+  }
+
+  .package .switch {
+    margin-right: 100px;
+    margin-left: 28px;
+  }
+
+  .family-desc .children {
+    margin-left: 134px;
   }
 }
 

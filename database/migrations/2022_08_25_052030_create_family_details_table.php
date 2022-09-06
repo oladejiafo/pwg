@@ -24,6 +24,7 @@ class CreateFamilyDetailsTable extends Migration
             $table->string('middle_name')->nullable();
             $table->string('surname')->nullable();
             $table->string('email')->nullable()->unique();
+            $table->string('personal_phone_number')->nullable();
             $table->string('country')->nullable();
             $table->string('job_type')->nullable();
             $table->string('resume')->nullable();

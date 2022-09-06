@@ -7,7 +7,7 @@
                     <div class="row">
                         <div class="col-2 my-auto">
                             <div class="image">
-                                <img src="{{asset('images/child.svg')}}" width="70%" height="auto">
+                                <img src="{{asset('images/child.svg')}}" width="100%" height="100%">
                             </div>
                         </div>
                         <div class="col-1">

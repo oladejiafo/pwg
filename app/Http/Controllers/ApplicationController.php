@@ -458,7 +458,7 @@ class ApplicationController extends Controller
                 'middle_name' => $request['dependent_middle_name'],
                 'surname' => $request['dependent_surname'],
                 'email'  => $request['dependent_email'],
-                'phone_number' => $request['dependent_phone_number'],
+                'personal_phone_number' => $request['dependent_phone_number'],
                 'dob' => date('Y-m-d', strtotime($request['dependent_dob'])),
                 'place_birth' => $request['dependent_place_birth'],
                 'country_birth' => $request['dependent_country_birth'],

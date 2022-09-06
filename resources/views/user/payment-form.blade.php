@@ -65,7 +65,7 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
 @else
 <?php $nextt = 0; ?>
 @endif
-<div class="container" style="margin-top:150px">
+<div class="container">
     <div class="col-12">
 
 
@@ -150,7 +150,7 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                 <div class="form-sec discountForm">
                     <form id="discountForm" method="POST" >
                         @csrf
-                        <div class="col-6 offset-3">
+                        <div class="col-lg-6 col-md-6 col-12 offset-md-3 offset-lg-3 ">
                             <div class="mb-3">
                                 <div class="inputs">
                                     <select title="Current Location" class="form-control  current_location form-select" id="current_location" name="current_location" required="">
@@ -479,16 +479,17 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                                                 </div>
                                                 <div class="right-section col-6" align="right">
                                                     <?php 
-                                                                  $totalCost = Session::get('totalCost');  
-                                                                  if (is_numeric($totalCost))
-                                                                  {
-                                                                    $ttot = number_format($totalCost,2);
-                                                                  } else {
-                                                                    $ttot = $totalCost;
-                                                                  }
-                                                                ?> 
-                                                        <!-- $ttot = Session::get('totalCost');  -->
-                                                      
+
+                                                        $totalCost = Session::get('totalCost');  
+                                                        if (is_numeric($totalCost))
+                                                        {
+                                                            $ttot = number_format($totalCost,2);
+                                                        } else {
+                                                            $ttot = $totalCost;
+                                                        }
+                                                    ?> 
+                                                    <!-- $ttot = Session::get('totalCost');  -->
+
                                                     @if(isset($ttot) && $ttot > 0)
                                                     {{ $ttot }}
                                                     @else
