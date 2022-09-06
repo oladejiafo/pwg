@@ -422,6 +422,7 @@ class ApplicationController extends Controller
 
     public function storeDependentDetails(Request $request)
     {
+        // dd($request);
         $validator = \Validator::make($request->all(), [
             'dependent_first_name' => 'required',
             'dependent_surname' => 'required',
@@ -614,7 +615,6 @@ class ApplicationController extends Controller
             $destinationPath = 'public/schengenCopy';
             $file->storeAs($destinationPath, $schengenCopy);
         }
-
         FamilyDetail::where('applicant_id', $request->applicant_id)
             ->where('product_id', $request->product_id)
             ->update([

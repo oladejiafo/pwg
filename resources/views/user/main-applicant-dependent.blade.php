@@ -491,7 +491,7 @@
                     </div>
                 </div>
                 <div class="col-1">
-                    <div class="dataCompleted spouseSchengenData">
+                    <div class="dataCompleted experienceData">
                         <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved">
                     </div>
                 </div>
