@@ -106,3 +106,4 @@ Route::post('store/children/details', [ApplicationController::class, 'storeChild
 // Route::get('user/notifications', [HomeController::class, 'notifications'])->name('notifications');
 
 Route::post('card_details', [HomeController::class, 'card_details'])->name('card_details');
+Route::post('mark_read', [HomeController::class, 'mark_read'])->name('mark_read');

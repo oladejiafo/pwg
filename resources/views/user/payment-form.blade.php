@@ -4,9 +4,11 @@
 <link href="{{asset('css/payment-form.css')}}" rel="stylesheet">
 <link href="{{asset('css/alert.css')}}" rel="stylesheet">
 
+<!-- <script src="https://paypage-uat.ngenius-payments.com/hosted-sessions/sdk.js"></script> -->
 <style>
     input {
         text-align: left;
+
     }
 
     .dicount_code::placeholder {
@@ -25,6 +27,7 @@
     }
 </script>
 <script src="https://paypage.sandbox.ngenius-payments.com/hosted-sessions/sdk.js"></script>
+
 @section('content')
 
 @php
@@ -145,12 +148,12 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                     </div>
                 </div>
                 <div class="form-sec discountForm">
-                    <form id="discountForm" method="POST" action="{{route('getPromo')}}">
+                    <form id="discountForm" method="POST" >
                         @csrf
                         <div class="col-lg-6 col-md-6 col-12 offset-md-3 offset-lg-3 ">
                             <div class="mb-3">
                                 <div class="inputs">
-                                    <select title="Current Location" class="form-control  current_location form-select" name="current_location" required="">
+                                    <select title="Current Location" class="form-control  current_location form-select" id="current_location" name="current_location" required="">
                                         <option selected disabled>--Current Location--</option>
                                         <option value="United Arab Emirates">United Arab Emirates</option>
                                         @foreach (Constant::countries as $key => $item)
@@ -161,7 +164,7 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                             </div>
                             <div class="mb-3">    
                                 <div class="inputs">
-                                    <select title="Current Location" class="form-control  current_location form-select" name="embassy_appearance" required="">
+                                    <select title="Current Location" class="form-control  current_location form-select" id="embassy_appearance" name="embassy_appearance" required="">
                                         <option selected disabled>--Country of Embassy Appearnce--</option>
                                         <option value="United Arab Emirates">United Arab Emirates</option>
                                         @foreach (Constant::countries as $key => $item)
@@ -180,6 +183,8 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                     </form>
 
                     <form method="POST" action="{{ url('add_payment') }}">
+                    <!-- <form method="POST"> -->
+                            
                         @csrf
 
                         @foreach(($pays ? $pays : array()) as $pd)
@@ -216,7 +221,8 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                         @endphp
                         @else
                         @php
-                        $third_pay = $det->amount
+                        $third_pay = $det->amount;
+                        $tot_pay = $first_pay + $second_pay + $third_pay;
                         @endphp
                         @endif
 
@@ -473,6 +479,7 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                                                 </div>
                                                 <div class="right-section col-6" align="right">
                                                     <?php 
+
                                                         $totalCost = Session::get('totalCost');  
                                                         if (is_numeric($totalCost))
                                                         {
@@ -482,10 +489,12 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                                                         }
                                                     ?> 
                                                     <!-- $ttot = Session::get('totalCost');  -->
+
                                                     @if(isset($ttot) && $ttot > 0)
                                                     {{ $ttot }}
                                                     @else
-                                                    {{number_format($data->unit_price,2)}}
+                                                    {{ number_format($tot_pay,2)}}
+                                                    {{-- {{number_format($data->unit_price,2)}} --}}
                                                     @endif
                                                 </div>
                                             </div>
@@ -643,5 +652,25 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                     </form>
                 {{-- </div> --}}
 @endsection
+<script>
+    $('#discountForm').on('submit', function(e){
+        e.preventDefault(); 
 
+        var $this = $(this); 
+        $.ajax({ 
+            url: '{{ route("getPromo") }} ',
+            method: 'POST',
+            data: {
+                "_token": "{{ csrf_token() }}",
+            }
+        }).done( function (response) {
+        
+            if (response) {
+                alert(response.status)
+                // $('#target-div').html(response.status); 
+            }
+        });
+    });
+</script>
+@endpush
 <script src="{{asset('js/alert.js')}}"></script>

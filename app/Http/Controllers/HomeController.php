@@ -176,6 +176,13 @@ class HomeController extends Controller
         } else {
             $is_spouse = 0;
         }
+
+        if(Session::has('myKids'))
+        {
+            $children = Session::get('myKids');
+        } else {
+            $children = 0;
+        }
         $datas = applicant::where([
             ['user_id', '=', Auth::user()->id],
             ['product_id', '=', $request->pid],
@@ -187,7 +194,7 @@ class HomeController extends Controller
             $data->first_name = Auth::user()->name;
             $data->visa_type = Session::get('packageType');
             $data->is_spouse = $is_spouse;
-            $data->children_count = Session::get('myKids');
+            $data->children_count = $children;
             $data->applicant_status = 1;
             $data->product_id = $request->pid;
 
@@ -198,7 +205,7 @@ class HomeController extends Controller
             $datas->first_name = Auth::user()->name;
             $datas->visa_type = Session::get('packageType');
             $datas->is_spouse = $is_spouse;
-            $datas->children_count = Session::get('myKids');
+            $datas->children_count = $children;
             $datas->applicant_status = 1;
             $datas->product_id = $request->pid;
 
@@ -312,20 +319,29 @@ class HomeController extends Controller
             \DB::statement("SET SQL_MODE=''");
 
             $completed = DB::table('applicants')
-                ->where('user_id', '=', Auth::user()->id)
-                ->orderBy('id', 'desc')
-                ->get();
 
-            foreach ($completed as $complete) {
-                $app_id = $complete->id;
-                $p_id = $complete->product_id;
-                $hasSpouse = $complete->is_spouse;
-                $children = $complete->children_count;
-            }
-            if ($hasSpouse == 1) {
+            ->where('user_id', '=', Auth::user()->id)
+            ->orderBy('id','desc')
+            ->get();
+
+            foreach($completed as $complete)
+            // {
+            // if($completed->first())
+            {
+              $app_id= $complete->id;
+              $p_id= $complete->product_id;
+              $hasSpouse = $complete->is_spouse;
+              $children = $complete->children_count;
+             }
+            if(isset($hasSpouse) && $hasSpouse == 1)
+            {
                 $yesSpouse = 2;
             } else {
                 $yesSpouse = 1;
+            }
+
+            if(!isset($children)){
+                $children =0;
             }
 
             $families = DB::table('family_breakdowns')
@@ -352,7 +368,13 @@ class HomeController extends Controller
             if (Session::has('fam_id')) {
                 $family_id = Session::get('fam_id');
             } else {
-                $family_id = $famCode;
+
+                if (isset($famCode)) {
+                    $family_id = $famCode;
+                } else {
+                    $family_id = 0;
+                }
+
             }
 
 
@@ -815,7 +837,6 @@ class HomeController extends Controller
 
     public function getPromo(Request $request)
     {
-        if (Auth::id()) {
             $id = Session::get('myproduct_id');
             $coupon = DB::table('promos')
                 ->select('discount_percent')
@@ -827,16 +848,18 @@ class HomeController extends Controller
                 $my_discount = $apply->discount_percent;
             }
 
-            if ($coupon->first()) {
-                Session::put('myDiscount', $my_discount);
-                Session::put('haveCoupon', 1);
-                return \Redirect::route('payment', $id);
-            } else {
-                Session::put('haveCoupon', 0);
-                return \Redirect::route('payment', $id)->with('failed', 'Invalid Discount/Promo Code');
-            }
+
+        if ($coupon->first()) {
+            Session::put('myDiscount', $my_discount);
+            Session::put('haveCoupon', 1);
+
+            return response()->json(['status' => 'Success']);
+            // return \Redirect::route('payment', $id);
         } else {
-            return redirect()->back()->with('failed', 'You are not authorized');
+            Session::put('haveCoupon', 0);
+            return response()->json(['status' => 'Invalid Discount/Promo Code']);
+            // return \Redirect::route('payment', $id)->with('failed', 'Invalid Discount/Promo Code');
+
         }
     }
 
@@ -918,6 +941,19 @@ class HomeController extends Controller
       return response()->json(['status' => 'Saved']);
 }
 
+public function mark_read(Request $request) {
+
+           $notis = notifications::where('user_id', '=', Auth::user()->id)->get();
+
+           if ($notis) {
+                foreach($notis as $noti)
+                {
+                    $noti->status = 'Read';
+                    $noti->save();
+                }    
+           }
+            return response()->json(['status' => 'Cleared']);
+}
 
     // public function notifications()
     // {

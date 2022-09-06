@@ -231,14 +231,12 @@
               <li class="nav-item dropdown border-left">
                 <a class="nav-link"  id="notificationDropdown" href="#" data-toggle="dropdown">
                   <!-- <i class="mdi mdi-bell" style="width: 30px; height: 30px;"></i> -->
-                  <img src="{{asset('user/images/Notification.svg')}}" width="30px" height="30px" alt="icon3">
+                  <img src="{{asset('user/images/NotificationNo.svg')}}" width="30px" height="30px" alt="icon3">
                   <span class="count bg-danger"></span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
-                  <h6 class="p-3 mb-0">Notifications</h6>
-                  <div class="dropdown-divider"></div>
                   
-                  @include('user.notifications')
+                   @include('user.notifications')
        
                 </div>
               </li>
