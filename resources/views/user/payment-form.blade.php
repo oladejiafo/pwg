@@ -4,9 +4,11 @@
 <link href="{{asset('css/payment-form.css')}}" rel="stylesheet">
 <link href="{{asset('css/alert.css')}}" rel="stylesheet">
 
+<!-- <script src="https://paypage-uat.ngenius-payments.com/hosted-sessions/sdk.js"></script> -->
 <style>
     input {
         text-align: left;
+
     }
 
     .dicount_code::placeholder {
@@ -25,6 +27,7 @@
     }
 </script>
 <script src="https://paypage.sandbox.ngenius-payments.com/hosted-sessions/sdk.js"></script>
+
 @section('content')
 
 @php
@@ -145,12 +148,12 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                     </div>
                 </div>
                 <div class="form-sec discountForm">
-                    <form id="discountForm" method="POST" action="{{route('getPromo')}}">
+                    <form id="discountForm" method="POST" >
                         @csrf
                         <div class="col-6 offset-3">
                             <div class="mb-3">
                                 <div class="inputs">
-                                    <select title="Current Location" class="form-control  current_location form-select" name="current_location" required="">
+                                    <select title="Current Location" class="form-control  current_location form-select" id="current_location" name="current_location" required="">
                                         <option selected disabled>--Current Location--</option>
                                         <option value="United Arab Emirates">United Arab Emirates</option>
                                         @foreach (Constant::countries as $key => $item)
@@ -161,7 +164,7 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                             </div>
                             <div class="mb-3">    
                                 <div class="inputs">
-                                    <select title="Current Location" class="form-control  current_location form-select" name="embassy_appearance" required="">
+                                    <select title="Current Location" class="form-control  current_location form-select" id="embassy_appearance" name="embassy_appearance" required="">
                                         <option selected disabled>--Country of Embassy Appearnce--</option>
                                         <option value="United Arab Emirates">United Arab Emirates</option>
                                         @foreach (Constant::countries as $key => $item)
@@ -180,6 +183,8 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                     </form>
 
                     <form method="POST" action="{{ url('add_payment') }}">
+                    <!-- <form method="POST"> -->
+                            
                         @csrf
 
                         @foreach(($pays ? $pays : array()) as $pd)
@@ -216,7 +221,8 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                         @endphp
                         @else
                         @php
-                        $third_pay = $det->amount
+                        $third_pay = $det->amount;
+                        $tot_pay = $first_pay + $second_pay + $third_pay;
                         @endphp
                         @endif
 
@@ -482,11 +488,12 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                                                                   }
                                                                 ?> 
                                                         <!-- $ttot = Session::get('totalCost');  -->
-                                                      ?>
+                                                      
                                                     @if(isset($ttot) && $ttot > 0)
                                                     {{ $ttot }}
                                                     @else
-                                                    {{number_format($data->unit_price,2)}}
+                                                    {{ number_format($tot_pay,2)}}
+                                                    {{-- {{number_format($data->unit_price,2)}} --}}
                                                     @endif
                                                 </div>
                                             </div>
@@ -631,6 +638,7 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
             @error('save_card') <span class="error">{{ $message }}</span> @enderror
         </div>
     </div>
+
     <div class="form-group row mt-4" style="margin-bottom: 70px">
         <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
             <button type="submit" class="btn btn-primary submitBtn">Continue</button>
@@ -638,29 +646,76 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
     </div>
     </form>
 
-    <!-- <div id="mount-id">gjkgk</div> -->
+<div  id="payment">
+<button onclick="createSession()" class="btn btn-primary checkoutButton" style="display: block;">
+              Check out
+      </button>
 </div>
 
+</div>
+
+@endsection
+@push('custom-scripts')
 
 
-<!-- <script>
-    /* Method call to mount the card input on your website */
-    window.NI.mountCardInput('mount-id'/* the mount id*/, {
-      style, // Style configuration you can pass to customize the UI
-      MmM2ODJiOGMtOGFmNS00NzUyLTg2MjUtM2Y5MTg3OWU5YjRlOjViMzhjM2I5LTUyMDItNDBmZi1hNzAyLTFlYTIwZDkwYjhiMQ==, //hostedSessionApiKey, // // Hosted Session Key which is used to generate Session ID
-      15d885ec-682a-4398-89d9-247254d71c18, //outletRef, // outlet reference from the portal
-      onSuccess, // Success callback if hostedSessionApiKey validation succeeds
-      onFail, // Fail callback if hostedSessionApiKey validation fails
-      onChangeValidStatus: ({
-            isCVVValid,
-            isExpiryValid,
-            isNameValid,
-            isPanValid
-        }) => {
-            console.log(isCVVValid, isExpiryValid, isNameValid, isPanValid);
+
+<script>
+  /* Method call to mount the card input on your website */
+  "use strict";
+  window.NI.mountCardInput('payment'
+  /* the mount id*/
+  , {
+    style: {
+    width: 500,
+    height: 1500
+  },
+    // style: style,
+    // Style configuration you can pass to customize the UI
+    apiKey: "MmM2ODJiOGMtOGFmNS00NzUyLTg2MjUtM2Y5MTg3OWU5YjRlOjViMzhjM2I5LTUyMDItNDBmZi1hNzAyLTFlYTIwZDkwYjhiMQ==",
+    // API Key for WEB SDK from the portal
+    outletRef: "15d885ec-682a-4398-89d9-247254d71c18",
+    // outlet reference from the portal
+    // onSuccess: onSuccess,
+    // Success callback if apiKey validation succeeds
+    // onFail: onFail, // Fail callback if apiKey validation fails
+    onChangeValidStatus: (function (_ref) {
+          var isCVVValid = _ref.isCVVValid,
+      isExpiryValid = _ref.isExpiryValid,
+      isNameValid = _ref.isNameValid,
+      isPanValid = _ref.isPanValid;
+          console.log(isCVVValid, isExpiryValid, isNameValid, isPanValid);
+          })
+  });
+  var sessionId;
+function createSession() {
+  window.NI.generateSessionId().then(function (response) {
+    sessionId = response.session_id;
+    alert(sessionId);
+  }).catch(function (error) {
+    return console.error(error);
+  });
+}
+
+
+$('#discountForm').on('submit', function(e){
+    e.preventDefault(); 
+
+    var $this = $(this); 
+    $.ajax({ 
+        url: '{{ route("getPromo") }} ',
+        method: 'POST',
+        data: {
+            "_token": "{{ csrf_token() }}",
+        }
+    }).done( function (response) {
+     
+        if (response) {
+            alert(response.status)
+            // $('#target-div').html(response.status); 
         }
     });
-  </script> -->
-@endsection
+});
 
+</script>
+@endpush
 <script src="{{asset('js/alert.js')}}"></script>
