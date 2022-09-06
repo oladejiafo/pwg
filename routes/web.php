@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ResetPasswordController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Laravel\Jetstream\Rules\Role;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +19,8 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('payment/success/{id}',[HomeController::class,'paymentSuccess'])->name('payment-success');
+Route::get('payment/fail/{id}',[HomeController::class,'paymentFail'])->name('payment-fail');
 Route::post('store/applicant/details', [ApplicationController::class,'storeApplicantDetails'])->name('store.applicant.details');
 Route::post('get-promo',[HomeController::class, 'getPromo'])->name('getPromo');
 Route::get('applicant/review/{id}', [ApplicationController::class, 'applicantReview'])->name('applicant.review');

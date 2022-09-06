@@ -546,15 +546,21 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                                         <input type="hidden" name="totaldue" value="{{$payNoww}}">
                                     </div>
                                 </div>
-                </div>
-                <div class="heading">
+                            </div>
+                            <div class="form-group row mt-4" style="margin-bottom: 70px">
+                                <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
+                                    <button type="submit" class="btn btn-primary submitBtn">Continue</button>
+                                </div>
+                            </div>
+                        {{-- </form> --}}
+                {{-- <div class="heading">
                     <div class="first-heading">
                         <h3>
                             Card Details
                         </h3>
                     </div>
-                </div>
-                <div class="form-sec">
+                </div> --}}
+                {{-- <div class="form-sec"> --}}
 
                     <input type="hidden" name="pid" value="{{$data->id}}">
                     <input type="hidden" name="ppid" value="{{(isset($det_id))?$det_id:''}}">
@@ -576,7 +582,7 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                             </div>
                         </div>
                     </div> -->
-                    <div class="form-group row mt-4">
+                    {{-- <div class="form-group row mt-4">
                         <div class="col-sm-6 mt-3">
                             <input type="text" class="form-control" placeholder="Card Number" name="card_number" pattern="\d*" maxlength="16" value="{{ old('card_number') }}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required>
                             @if($errors->has('card_number'))
@@ -586,8 +592,8 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                         <div class="col-sm-6 mt-3">
                             <input class="b form-control" type="text" placeholder="Cardholder full name" name="card_holder_name" value="{{ old('card_holder_name') }}" required>
                         </div>
-                    </div>
-                    <div class="form-group row mt-4">
+                    </div> --}}
+                    {{-- <div class="form-group row mt-4">
                         <div class="col-sm-4 mt-3">
                             <select name="month" class="form-control form-select" name="month" value="{{ old('month') }}" required>
                                 <option selected disabled>Month</option>
@@ -617,49 +623,25 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                             <div class="error">{{ $errors->first('cvv') }}</div>
                             @endif
                         </div>
-                    </div>
+                    </div> --}}
 
-
-    <div class="form-group row mt-4">
-        <div class="form-check">
-            <input type="checkbox" id="save_card" name="save_card" value="1" class="checkcolor" checked>
-            <label class="form-check-label" for="TnC">
-                Save my details for future payment & Automatic deductions
-            </label>
-            <label class="form-check-label text-danger" id="TnCAlert"></label>
-            @error('save_card') <span class="error">{{ $message }}</span> @enderror
-        </div>
-    </div>
-    <div class="form-group row mt-4" style="margin-bottom: 70px">
-        <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-            <button type="submit" class="btn btn-primary submitBtn">Continue</button>
-        </div>
-    </div>
-    </form>
-
-    <!-- <div id="mount-id">gjkgk</div> -->
-</div>
-
-
-
-<!-- <script>
-    /* Method call to mount the card input on your website */
-    window.NI.mountCardInput('mount-id'/* the mount id*/, {
-      style, // Style configuration you can pass to customize the UI
-      MmM2ODJiOGMtOGFmNS00NzUyLTg2MjUtM2Y5MTg3OWU5YjRlOjViMzhjM2I5LTUyMDItNDBmZi1hNzAyLTFlYTIwZDkwYjhiMQ==, //hostedSessionApiKey, // // Hosted Session Key which is used to generate Session ID
-      15d885ec-682a-4398-89d9-247254d71c18, //outletRef, // outlet reference from the portal
-      onSuccess, // Success callback if hostedSessionApiKey validation succeeds
-      onFail, // Fail callback if hostedSessionApiKey validation fails
-      onChangeValidStatus: ({
-            isCVVValid,
-            isExpiryValid,
-            isNameValid,
-            isPanValid
-        }) => {
-            console.log(isCVVValid, isExpiryValid, isNameValid, isPanValid);
-        }
-    });
-  </script> -->
+                        {{-- <div class="form-group row mt-4">
+                            <div class="form-check">
+                                <input type="checkbox" id="save_card" name="save_card" value="1" class="checkcolor" checked>
+                                <label class="form-check-label" for="TnC">
+                                    Save my details for future payment & Automatic deductions
+                                </label>
+                                <label class="form-check-label text-danger" id="TnCAlert"></label>
+                                @error('save_card') <span class="error">{{ $message }}</span> @enderror
+                            </div>
+                        </div> --}}
+                        <div class="form-group row mt-4" style="margin-bottom: 70px">
+                            <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
+                                <button type="submit" class="btn btn-primary submitBtn">Continue</button>
+                            </div>
+                        </div>
+                    </form>
+                {{-- </div> --}}
 @endsection
 
 <script src="{{asset('js/alert.js')}}"></script>

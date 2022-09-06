@@ -491,9 +491,9 @@
                     </div>
                 </div>
                 <div class="col-1">
-                    <div class="dataCompleted experienceData">
+                    {{-- <div class="dataCompleted experienceData">
                         <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved">
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="col-2 mx-auto my-auto">
                     <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseSpouseExperience" aria-expanded="false" aria-controls="collapseSpouseExperience">

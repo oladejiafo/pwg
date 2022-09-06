@@ -508,6 +508,27 @@ class HomeController extends Controller
         }
     }
 
+    public static function invokeCurlRequest($type, $url, $headers, $post) {
+	
+		$ch = curl_init();
+
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);		
+
+		if ($type == "POST") {
+		
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+		
+		}
+
+		$server_output = curl_exec ($ch);
+		curl_close ($ch);
+		
+		return $server_output;
+		
+	}
 
     public function addpayment(Request $request)
     {
@@ -523,11 +544,11 @@ class HomeController extends Controller
             }
 
             $validator = \Validator::make($request->all(), [
-                'card_number' => 'required|numeric|digits:16',
-                'card_holder_name' => 'required',
-                'month' => 'required|numeric',
-                'year' => 'required|numeric|digits:4|max:' . (date('Y') + 100),
-                'cvv' => 'required|numeric|digits:3',
+                // 'card_number' => 'required|numeric|digits:16',
+                // 'card_holder_name' => 'required',
+                // 'month' => 'required|numeric',
+                // 'year' => 'required|numeric|digits:4|max:' . (date('Y') + 100),
+                // 'cvv' => 'required|numeric|digits:3',
                 'totaldue' => 'required',
                 'totalpay' => 'numeric|gte:1000'
 
@@ -536,6 +557,63 @@ class HomeController extends Controller
             if ($validator->fails()) {
                 return Redirect::back()->withErrors($validator);
             } else {
+                set_time_limit(0);
+                $outletRef 	 	 = "15d885ec-682a-4398-89d9-247254d71c18";  
+                $apikey 		 = "MmM2ODJiOGMtOGFmNS00NzUyLTg2MjUtM2Y5MTg3OWU5YjRlOjViMzhjM2I5LTUyMDItNDBmZi1hNzAyLTFlYTIwZDkwYjhiMQ==";
+
+
+                // Test URLS 
+                $idServiceURL  = "https://identity.sandbox.ngenius-payments.com/auth/realms/ni/protocol/openid-connect/token";           // set the identity service URL (example only)
+                $txnServiceURL = "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/".$outletRef."/orders"; 
+
+                // LIVE URLS 
+                //$idServiceURL  = "https://identity.ngenius-payments.com/auth/realms/NetworkInternational/protocol/openid-connect/token";           // set the identity service URL (example only)
+                //$txnServiceURL = "https://api-gateway.ngenius-payments.com/transactions/outlets/".$outletRef."/orders"; 
+
+                $tokenHeaders  = array("Authorization: Basic ".$apikey, "Content-Type: application/x-www-form-urlencoded");
+                $tokenResponse = $this->invokeCurlRequest("POST", $idServiceURL, $tokenHeaders, http_build_query(array('grant_type' => 'client_credentials')));
+                $tokenResponse = json_decode($tokenResponse);
+
+
+                $access_token  = $tokenResponse->access_token;
+
+
+                $order = array();	
+                $successUrl = url('/').'/payment/success/'.$id;
+                $failUrl =  url('/')."/payment/fail/".$id;
+                $order['action'] 				 	  = "SALE";                                        // Transaction mode ("AUTH" = authorize only, no automatic settle/capture, "SALE" = authorize + automatic settle/capture)
+                $order['amount']['currencyCode'] 	  = "AED";                           // Payment currency ('AED' only for now)
+                $order['amount']['value'] 		 	  = $request->totalpay;                                   // Minor units (1000 = 10.00 AED)
+                $order['language'] 					  = "en";      						// Payment page language ('en' or 'ar' only)
+                $order['emailAddress'] 			 	  = "pwggroup@pwggroup.pl";      
+                $order['billingAddress']['firstName'] = "PWG";      
+                $order['billingAddress']['lastName']  = "Group";      
+                $order['billingAddress']['address1']  = "The Oberoi Center";      
+                $order['billingAddress']['city']  	  = "Business Bay";      
+                $order['billingAddress']['countryCode'] = "UAE";      
+                $order['merchantOrderReference'] = time();
+                $order['merchantAttributes']['redirectUrl'] = $successUrl;
+                $order['merchantAttributes']['skipConfirmationPage'] = true;
+                $order['merchantAttributes']['cancelUrl']   = $failUrl;
+                $order['merchantAttributes']['cancelText']  = 'Cancel';
+
+                $order = json_encode($order);  
+                $orderCreateHeaders  = array("Authorization: Bearer ".$access_token, "Content-Type: application/vnd.ni-payment.v2+json", "Accept: application/vnd.ni-payment.v2+json");
+                //$orderCreateResponse = invokeCurlRequest("POST", $txnServiceURL, $orderCreateHeaders, $payment);
+                $orderCreateResponse = $this->invokeCurlRequest("POST", $txnServiceURL, $orderCreateHeaders, $order);
+
+                $orderCreateResponse = json_decode($orderCreateResponse);
+
+                // dd($orderCreateResponse);
+                $paymentLink 		   = $orderCreateResponse->_links->payment->href; 
+
+                header("Location: ".$paymentLink); 
+                die;
+
+
+	
+	
+                //////////////////////////////////
                 if ($request->totalpay == null || $request->totalpay == "" || $request->totalpay < 1000) {
                     $totalpay = 0;
                 } else {
@@ -692,6 +770,49 @@ class HomeController extends Controller
         }
     }
 
+    public function addPaymentDetails($request)
+    {
+        $id = Session::get('myproduct_id');
+
+        // Send Notifications on This Payment ##############
+        $email = Auth::user()->email;
+        $userID = Auth::user()->id;
+
+        if($request->whichpayment == "First Payment")
+        {
+            $ems = "";
+        } else if($request->whichpayment == "Second Payment") {
+            $ems = " You will be notified when your Work Permit is ready.";
+        } else {
+            $ems = " You will be notified when your embassy appearance date is set.";
+        }
+
+        $criteria = $request->whichpayment . " Completed!";
+        $message = "You have successfully made your " .$request->whichpayment. ". Kindly login to the PWG Client portal and check your receipt on 'My Application'" . $ems;
+
+        $link = "";
+        // $msgBody="hellooooooo";
+
+        $dataArray = [
+            'title' => $criteria .' Mail from PWG Group',
+            'body' => $message,
+            'link' => $link
+        ];
+
+        DB::table('notifications')->insert(
+                ['user_id' => $userID, 'message' => $message, 'criteria' => $criteria, 'link' => $link]
+        );
+
+        Mail::to($email)->send(new NotifyMail($dataArray));
+        // Notification Ends ############ 
+        
+        //kjljkllk
+        $productId = $id;
+        $dest = product::find($request->pid);
+        $dest_name = $dest->product_name;
+
+    }
+
     public function getPromo(Request $request)
     {
         if (Auth::id()) {
@@ -813,5 +934,15 @@ class HomeController extends Controller
     //     }
     // }
 
+    public function paymentSuccess($id)
+    {
+        
+        return view('user.payment-success', compact('id'));
+    }
+
+    public function paymentFail($id)
+    {
+        return view('user.payment-fail', compact('id'));
+    }
 
 }
