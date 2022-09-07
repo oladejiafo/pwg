@@ -275,8 +275,13 @@
                                 contentType: false,
                                 success: function (response) {
                                     if(response.success) {
-                                        location.href = "{{url('applicant/review')}}/"+'{{$productId}}'
-                                    } else {
+                                        checkdata = checkStatus('{{$applicant['id']}}', '{{$productId}}');
+                                        if(checkdata.status){
+                                            location.href = "{{url('applicant/review')}}/"+'{{$productId}}';
+                                        } else {
+                                            alert(checkdata.message);
+                                        }
+                                        } else {
                                         var validationError = response.errors;
                                         $.each(validationError, function(index, value) {
                                             $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
@@ -316,11 +321,13 @@
                     if($('.currentCountryCompleted').val() == 1) {
                         if($('.schengenCompleted').val() == 1) {
                             if('{{$applicant['is_spouse']}}' == null || '{{$applicant['is_spouse']}}' == 0){
+                                updateStatus('applicant', '{{$applicant['id']}}', '{{$productId}}'); 
                                 $('#children').show();
                                 $('#mainApplicant, #dependant').hide();
                                 $('.children').addClass('active');
                                 $('.mainApplicant, .dependant').removeClass('active');
                             } else {
+                                updateStatus('applicant', '{{$applicant['id']}}', '{{$productId}}'); 
                                 $('#dependant').show();
                                 $('#mainApplicant, #children').hide();
                                 $('.dependant').addClass('active');
@@ -786,7 +793,12 @@
                 contentType: false,
                 success: function (data) {
                     if(data.success) {
-                        location.href = "{{url('applicant/review')}}/"+'{{$productId}}'
+                        checkdata = checkStatus('{{$applicant['id']}}', '{{$productId}}');
+                        if(checkdata.status){
+                            location.href = "{{url('applicant/review')}}/"+'{{$productId}}';
+                        } else {
+                            alert(checkdata.message);
+                        }
                     } else {
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
@@ -813,7 +825,12 @@
                                 contentType: false,
                                 success: function (response) {
                                     if(response.success) {
-                                        location.href = "{{url('applicant/review')}}/"+'{{$productId}}'
+                                        checkdata = checkStatus('{{$applicant['id']}}', '{{$productId}}');
+                                        if(checkdata.status){
+                                            location.href = "{{url('applicant/review')}}/"+'{{$productId}}';
+                                        } else {
+                                            alert(checkdata.message);
+                                        }
                                     } else {
                                         var validationError = response.errors;
                                         $.each(validationError, function(index, value) {
@@ -854,6 +871,7 @@
                     if($('.spouseCurrentCountryCompleted').val() == 1) {
                         if($('.schengenSpouseCompleted').val() == 1) {
                             if('{{$applicant['children_count']}}' != null || '{{$applicant['children_count']}}' != 0){
+                                updateStatus('family', '{{$applicant['id']}}', '{{$productId}}'); 
                                 $('#children').show();
                                 $('#mainApplicant, #dependant').hide();
                                 $('.children').addClass('active');
@@ -889,6 +907,54 @@
     function showPassportFormat()
     {
         $("#passportFormatModal").modal('show');
+    }
+
+    function updateStatus(userType, applicantId, productId)
+    {        
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            type: 'POST',
+            url: "{{ url('update/applicant/status') }}",
+            data: {
+                _token: "{{ csrf_token() }}",
+                id: applicantId,
+                userType: userType,
+                product_id: productId
+            },
+            success: function (response) {
+                if(response.status){
+                    return true;
+                }
+            }
+        });
+    }
+
+    function checkStatus(applicantId, productId)
+    {
+        var returnValue;
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            type: 'POST',
+            async: false,
+            url: "{{ url('check/applicant/status') }}",
+            data: {
+                "_token": "{{ csrf_token() }}",
+                id: applicantId,
+                product_id: productId
+            },
+            success: function (response) {
+                returnValue = response;
+            }
+        });
+        return returnValue;
     }
 
 </script>

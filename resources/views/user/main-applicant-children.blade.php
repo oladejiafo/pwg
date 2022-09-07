@@ -18,12 +18,13 @@
                                 <h3>
                                     Child {{$i}}
                                 </h3>
-                                <div class="dataCompleted childData{{$i}}">
-                                    <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved">
-                                </div>
                             </div>
                         </div>
-                        <div class="col-1"></div>
+                        <div class="col-1">
+                            <div class="dataCompleted childData{{$i}}">
+                                <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved">
+                            </div>
+                        </div>
                         <div class="col-2 mx-auto my-auto">
                             <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapsechild{{$i}}" aria-expanded="false" aria-controls="collapsechild{{$i}}">
                                 <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">

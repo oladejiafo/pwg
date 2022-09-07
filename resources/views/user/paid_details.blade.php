@@ -135,17 +135,12 @@
                                 $pid =$app_id;  
                                 }
 
-                                $tryy = DB::table('payments')
+                                $tri = DB::table('payments')
                                 ->where('application_id', '=', $app_id)
-                                ->get();
-
+                                ->first();
+                                var_dump($tri);die;
                                 @endphp
 
-    @if($tryy->first())
-    @foreach($tryy as $tri)
-
-    @endforeach
-    @endif
 
 
 <?php  $nextt = $tri->product_payment_id +1; ?>

@@ -125,6 +125,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Network payment integration
+    |--------------------------------------------------------------------------
+    |
+    | Api key and reference are adding here will be automtically loaded on the request on 
+    | your appliction
+    |
+    */
+
+    'payment_api_key' => 'MmM2ODJiOGMtOGFmNS00NzUyLTg2MjUtM2Y5MTg3OWU5YjRlOjViMzhjM2I5LTUyMDItNDBmZi1hNzAyLTFlYTIwZDkwYjhiMQ==',
+    'payment_reference' => '15d885ec-682a-4398-89d9-247254d71c18', 
+
+    /*
+    |--------------------------------------------------------------------------
     | Autoloaded Service Providers
     |--------------------------------------------------------------------------
     |

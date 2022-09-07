@@ -64,7 +64,7 @@ class CreateFamilyDetailsTable extends Migration
             $table->string('is_schengen_visa_issued')->comment('is schengen visa issued in past 5 years')->nullable();
             $table->string('schengen_visa')->nullable();
             $table->string('is_fingerprint_collected')->comment('is fingerprint collected for schengen visa application')->nullable();
-            $table->string('status')->nullable();
+            $table->integer('status')->default(0)->comment('1: completed; 0 not completed')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

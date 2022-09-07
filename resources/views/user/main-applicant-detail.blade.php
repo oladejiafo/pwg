@@ -15,12 +15,13 @@
                         <h3>
                             Applicants Details 
                         </h3>
-                        <div class="dataCompleted applicantData">
-                            <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved" >
-                        </div>
                     </div>
                 </div>
-                <div class="col-1"></div>
+                <div class="col-1">
+                    <div class="dataCompleted applicantData">
+                        <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved" >
+                    </div>
+                </div>
                 <div class="col-2 mx-auto my-auto">
                     <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseapplicant" aria-expanded="false" aria-controls="collapseapplicant">
                         <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
@@ -48,7 +49,7 @@
                                 <input type="text" name="middle_name" class="form-control" placeholder="Middle Name" value="{{old('middle_name')}}"  autocomplete="off"/>
                             </div>
                             <div class="col-sm-4 mt-3">
-                                <input type="text" name="surname" class="form-control surname" placeholder="Surname*" value="{{$name[count($name)-1]}}" autocomplete="off"  />
+                                <input type="text" name="surname" class="form-control surname" @if(count($name) > 1)   value="$name[count($name)-1]" @else  placeholder="Surname*" @endif autocomplete="off"  />
                                 <span class="surname_errorClass"></span>
                             </div>
                         </div>
@@ -139,12 +140,13 @@
                         <h3>
                             Home Country Details
                         </h3>
-                        <div class="dataCompleted homeCountryData">
-                            <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved">
-                        </div>
                     </div>
                 </div>
-                <div class="col-1"></div>
+                <div class="col-1">
+                    <div class="dataCompleted homeCountryData">
+                        <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved" >
+                    </div>
+                </div>
                 <div class="col-2 mx-auto my-auto">
                     <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseHome" aria-expanded="false" aria-controls="collapseHome">
                         <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
@@ -258,12 +260,13 @@
                         <h3>
                             Current Residency and Work Details
                         </h3>
-                        <div class="dataCompleted currentCountryData">
-                            <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved">
-                        </div>
                     </div>
                 </div>
-                <div class="col-1"></div>
+                <div class="col-1">
+                    <div class="dataCompleted currentCountryData">
+                        <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved">
+                    </div>
+                </div>
                 <div class="col-2 mx-auto my-auto">
                     <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseCurrent" aria-expanded="false" aria-controls="collapseCurrent">
                         <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
@@ -388,12 +391,13 @@
                         <h3>
                             Schengen Details
                         </h3>
-                        <div class="dataCompleted schengenData">
-                            <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved">
-                        </div>
                     </div>
                 </div>
-                <div class="col-1"></div>
+                <div class="col-1">
+                    <div class="dataCompleted schengenData">
+                        <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved">
+                    </div>
+                </div>
                 <div class="col-2 mx-auto my-auto">
                     <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseSchengen" aria-expanded="false" aria-controls="collapseSchengen">
                         <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">

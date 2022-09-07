@@ -790,9 +790,6 @@
                                             <h3>
                                                 Spouse/Dependant Details 
                                             </h3>
-                                            <div class="dataCompleted spouseApplicantData">
-                                                <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved">
-                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-1"></div>
@@ -833,7 +830,7 @@
                                                     <span class="dependent_email_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="tel" name="dependent_phone_number" class="form-control dependent_phone_number" id="phone" placeholder="Phone Number*" value="{{$dependent['phone_number']}}" autocomplete="off"  />
+                                                    <input type="tel" name="dependent_phone_number" class="form-control dependent_phone_number" id="phone" placeholder="Phone Number*" value="{{$dependent['personal_phone_number']}}" autocomplete="off"  />
                                                     <span class="dependent_phone_number_errorClass"></span>
                                                 </div>
                                             </div>
@@ -843,7 +840,7 @@
                                                     <div class="input-group-btn">
                                                         <span class="fileUpload btn">
                                                             <span class="upl" id="upload">Choose File</span>
-                                                            <input type="file" class="upload up dependent_resume" id="up"  name="dependent_resume" accept="application/pdf" />
+                                                            <input type="file" class="upload up dependent_resume" id="up"  name="dependent_resume" accept="application/pdf" value="{{$dependent['resume']}}"/>
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
                                                     <a href="javascript:void(0)" data-toggle="modal" data-target="#resumeModal" onclick="showResume()">click to view uploaded resume</a>
@@ -882,8 +879,8 @@
                                                 <div class="col-sm-4 mt-3">
                                                     <select name="dependent_sex"  aria-required="true" class="form-control form-select dependent_sex">
                                                         <option selected disabled>Sex *</option>
-                                                        <option {{($dependent['sex'] == 'MALE') ? 'selected' : '' }}value="Male">Male</option>
-                                                        <option {{($dependent['sex'] == 'FEMALE') ? 'selected' : ''}} value="Female">Female</option>
+                                                        <option {{($dependent['sex'] == 'Male') ? 'selected' : '' }} value="Male">Male</option>
+                                                        <option {{($dependent['sex'] == 'Female') ? 'selected' : ''}} value="Female">Female</option>
                                                     </select>
                                                     <span class="dependent_sex_errorClass"></span>
                                                 </div>
@@ -927,9 +924,6 @@
                                             <h3>
                                                 Home Country Details
                                             </h3>
-                                            <div class="dataCompleted spouseHomeCountryData">
-                                                <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved">
-                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-1"></div>
@@ -1047,9 +1041,6 @@
                                             <h3>
                                                 Current Residency and Work Details
                                             </h3>
-                                            <div class="dataCompleted spouseCurrentCountryData">
-                                                <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved">
-                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-1"></div>
@@ -1180,9 +1171,6 @@
                                             <h3>
                                                 Schengen Details
                                             </h3>
-                                            <div class="dataCompleted spouseSchengenData">
-                                                <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved">
-                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-1"></div>
@@ -1217,7 +1205,7 @@
                                                     <div class="input-group-btn">
                                                         <span class="fileUpload btn">
                                                             <span class="upl" id="upload">Choose File</span>
-                                                            <input type="file" class="upload dependent_schengen_copy" accept="image/png, image/gif, image/jpeg" name="schengen_copy" />
+                                                            <input type="file" class="upload dependent_schengen_copy" accept="image/png, image/gif, image/jpeg" name="dependent_schengen_copy" />
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
                                                     @if($dependent['schengen_visa'])
@@ -1262,9 +1250,6 @@
                                             <h3>
                                                 Experience
                                             </h3>
-                                            <div class="dataCompleted experienceData" v-if="dependentJob.length > 0">
-                                                <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved">
-                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-1"></div>
@@ -1481,12 +1466,13 @@
                                                 <h3>
                                                     Child {{$key+1}}
                                                 </h3>
-                                                <div class="dataCompleted childData{{$key+1}}">
-                                                    <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved">
-                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-1"></div>
+                                        <div class="col-1">
+                                            {{-- <div class="dataCompleted childData{{$key+1}}">
+                                                <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved">
+                                            </div> --}}
+                                        </div>
                                         <div class="col-2 mx-auto my-auto">
                                             <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapsechild{{$key+1}}" aria-expanded="true" aria-controls="collapsechild{{$key+1}}">
                                                 <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
@@ -1568,7 +1554,8 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <iframe src ="{{asset('storage/passportCopy/'.$applicant['passport'])}}" width="100%" height="400px" style="margin: auto"></iframe>
+                        {{-- <embed src ="{{asset('storage/passportCopy/'.$applicant['passport'])}}"  style="margin: auto" /> --}}
+                        <embed src="{{asset('storage/passportCopy/'.$applicant['passport'])}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
@@ -1580,7 +1567,7 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <iframe src ="{{asset('storage/residenceCopy/'.$applicant['residence_copy'])}}"  width="100%" height="400px"></iframe>
+                        <embed src="{{asset('storage/residenceCopy/'.$applicant['residence_copy'])}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />    
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
@@ -1588,23 +1575,12 @@
                 </div>
             </div>
         </div>
-        <div id="residenceCopyModal" class="modal fade" tabindex="-1">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <iframe src ="{{asset('storage/residenceCopy/'.$applicant['residence_copy'])}}"  width="100%" height="400px"></iframe>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
         <div id="visaCopyModal" class="modal fade" tabindex="-1">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <iframe src ="{{asset('storage/visaCopy/'.$applicant['visa_copy'])}}"  width="100%" height="400px"></iframe>
+                        <embed src="{{asset('storage/visaCopy/'.$applicant['visa_copy'])}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
@@ -1616,7 +1592,7 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <iframe src ="{{asset('storage/schengenCopy/'.$applicant['schengen_visa'])}}"  width="100%" height="400px"></iframe>
+                        <embed src="{{asset('storage/schengenCopy/'.$applicant['schengen_visa'])}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
@@ -1624,66 +1600,68 @@
                 </div>
             </div>
         </div>
-        <div id="resumeModal" class="modal fade" tabindex="-1">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <iframe src ="{{asset('storage/resumes/'.$dependent['resume'])}}"  width="100%" height="400px"></iframe>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="dependentPassword" class="modal fade" tabindex="-1">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <iframe src ="{{asset('storage/passportCopy/'.$dependent['passport'])}}" width="100%" height="400px" style="margin: auto"></iframe>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
+        @if($dependent)
+            <div id="resumeModal" class="modal fade" tabindex="-1">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <embed src="{{asset('storage/resumes/'.$dependent['resume'])}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div id="dependentResidence" class="modal fade" tabindex="-1">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <iframe src ="{{asset('storage/residenceCopy/'.$dependent['residence_copy'])}}" width="100%" height="400px" style="margin: auto"></iframe>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="dependentVisa" class="modal fade" tabindex="-1">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <iframe src ="{{asset('storage/visaCopy/'.$dependent['visa_copy'])}}" width="100%" height="400px" style="margin: auto"></iframe>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
+            <div id="dependentPassword" class="modal fade" tabindex="-1">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <embed src="{{asset('storage/passportCopy/'.$dependent['passport'])}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div id="dependentSchengenVisatModal" class="modal fade" tabindex="-1">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <iframe src ="{{asset('storage/schengenCopy/'.$dependent['schengen_visa'])}}" width="100%" height="400px" style="margin: auto"></iframe>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
+            <div id="dependentResidence" class="modal fade" tabindex="-1">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <embed src="{{asset('storage/residenceCopy/'.$dependent['residence_copy'])}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+            <div id="dependentVisa" class="modal fade" tabindex="-1">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <embed src="{{asset('storage/visaCopy/'.$dependent['visa_copy'])}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="dependentSchengenVisatModal" class="modal fade" tabindex="-1">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <embed src="{{asset('storage/schengenCopy/'.$dependent['schengen_visa'])}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
     </div>
 @endSection  
 @push('custom-scripts')
@@ -1942,9 +1920,11 @@
             $('#dependentPassword').modal('hide');
             $('#dependentVisa').modal('hide');
             $('#dependentResidence').modal('hide');
+            $('#dependentSchengenVisatModal').modal('hide');
+
         });
 
-        $('.applicantSubmit, .submitChild, .dependentReview').click(function(e){
+        $('.applicantReview, .submitChild, .dependentReview').click(function(e){
             if (confirm("After submit these details can't be changed")) {
                 $.ajaxSetup({
                     headers: {
@@ -2022,7 +2002,6 @@
                 contentType: false,
                 success: function (data) {
                     if(data.success) {
-                        $('#collapsespouseapplicant').removeClass('show');
                         $('.spouseApplicantData').show();
                         $('#collapsespouseHome').addClass('show');
                         $('.dependentApplicantCompleted').val(1);
@@ -2057,7 +2036,6 @@
                 contentType: false,
                 success: function (data) {
                     if(data.success) {
-                        $('#collapsespouseHome').removeClass('show');
                         $('.spouseHomeCountryData').show();
                         $('#collapseSpouseCurrent').addClass('show');
                         $('.spouseHomeCountryCompleted').val(1);
@@ -2092,7 +2070,6 @@
                 contentType: false,
                 success: function (data) {
                     if(data.success) {
-                        $('#collapseSpouseCurrent').removeClass('show');
                         $('.spouseCurrentCountryData').show();
                         $('#collapseSpouseSchengen').addClass('show');
                         $('.spouseCurrentCountryCompleted').val(1);
@@ -2128,7 +2105,6 @@
                 contentType: false,
                 success: function (data) {
                     if(data.success) {
-                        $('#collapseSpouseSchengen').removeClass('show');
                         $('.spouseSchengenData').show();
                         $('#collapseSpouseExperience').addClass('show');
                         $('.schengenSpouseCompleted').val(1);

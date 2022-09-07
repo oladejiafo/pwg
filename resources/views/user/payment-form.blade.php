@@ -555,15 +555,21 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                                         <input type="hidden" name="totaldue" value="{{$payNoww}}">
                                     </div>
                                 </div>
-                </div>
-                <div class="heading">
+                            </div>
+                            {{-- <div class="form-group row mt-4" style="margin-bottom: 70px">
+                                <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
+                                    <button type="submit" class="btn btn-primary submitBtn">Continue</button>
+                                </div>
+                            </div> --}}
+                        {{-- </form> --}}
+                {{-- <div class="heading">
                     <div class="first-heading">
                         <h3>
                             Card Details
                         </h3>
                     </div>
-                </div>
-                <div class="form-sec">
+                </div> --}}
+                {{-- <div class="form-sec"> --}}
 
                     <input type="hidden" name="pid" value="{{$data->id}}">
                     <input type="hidden" name="ppid" value="{{(isset($det_id))?$det_id:''}}">
@@ -585,7 +591,7 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                             </div>
                         </div>
                     </div> -->
-                    <div class="form-group row mt-4">
+                    {{-- <div class="form-group row mt-4">
                         <div class="col-sm-6 mt-3">
                             <input type="text" class="form-control" placeholder="Card Number" name="card_number" pattern="\d*" maxlength="16" value="{{ old('card_number') }}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required>
                             @if($errors->has('card_number'))
@@ -595,8 +601,8 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                         <div class="col-sm-6 mt-3">
                             <input class="b form-control" type="text" placeholder="Cardholder full name" name="card_holder_name" value="{{ old('card_holder_name') }}" required>
                         </div>
-                    </div>
-                    <div class="form-group row mt-4">
+                    </div> --}}
+                    {{-- <div class="form-group row mt-4">
                         <div class="col-sm-4 mt-3">
                             <select name="month" class="form-control form-select" name="month" value="{{ old('month') }}" required>
                                 <option selected disabled>Month</option>
@@ -626,97 +632,46 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                             <div class="error">{{ $errors->first('cvv') }}</div>
                             @endif
                         </div>
-                    </div>
+                    </div> --}}
 
-
-    <div class="form-group row mt-4">
-        <div class="form-check">
-            <input type="checkbox" id="save_card" name="save_card" value="1" class="checkcolor" checked>
-            <label class="form-check-label" for="TnC">
-                Save my details for future payment & Automatic deductions
-            </label>
-            <label class="form-check-label text-danger" id="TnCAlert"></label>
-            @error('save_card') <span class="error">{{ $message }}</span> @enderror
-        </div>
-    </div>
-
-    <div class="form-group row mt-4" style="margin-bottom: 70px">
-        <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-            <button type="submit" class="btn btn-primary submitBtn">Continue</button>
-        </div>
-    </div>
-    </form>
-
-<div  id="payment">
-<button onclick="createSession()" class="btn btn-primary checkoutButton" style="display: block;">
-              Check out
-      </button>
-</div>
-
-</div>
-
+                        {{-- <div class="form-group row mt-4">
+                            <div class="form-check">
+                                <input type="checkbox" id="save_card" name="save_card" value="1" class="checkcolor" checked>
+                                <label class="form-check-label" for="TnC">
+                                    Save my details for future payment & Automatic deductions
+                                </label>
+                                <label class="form-check-label text-danger" id="TnCAlert"></label>
+                                @error('save_card') <span class="error">{{ $message }}</span> @enderror
+                            </div>
+                        </div> --}}
+                        <div class="form-group row mt-4" style="margin-bottom: 70px">
+                            <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
+                                <button type="submit" class="btn btn-primary submitBtn">Continue</button>
+                            </div>
+                        </div>
+                    </form>
+                {{-- </div> --}}
 @endsection
 @push('custom-scripts')
-
-
-
 <script>
-  /* Method call to mount the card input on your website */
-  "use strict";
-  window.NI.mountCardInput('payment'
-  /* the mount id*/
-  , {
-    style: {
-    width: 500,
-    height: 1500
-  },
-    // style: style,
-    // Style configuration you can pass to customize the UI
-    apiKey: "MmM2ODJiOGMtOGFmNS00NzUyLTg2MjUtM2Y5MTg3OWU5YjRlOjViMzhjM2I5LTUyMDItNDBmZi1hNzAyLTFlYTIwZDkwYjhiMQ==",
-    // API Key for WEB SDK from the portal
-    outletRef: "15d885ec-682a-4398-89d9-247254d71c18",
-    // outlet reference from the portal
-    // onSuccess: onSuccess,
-    // Success callback if apiKey validation succeeds
-    // onFail: onFail, // Fail callback if apiKey validation fails
-    onChangeValidStatus: (function (_ref) {
-          var isCVVValid = _ref.isCVVValid,
-      isExpiryValid = _ref.isExpiryValid,
-      isNameValid = _ref.isNameValid,
-      isPanValid = _ref.isPanValid;
-          console.log(isCVVValid, isExpiryValid, isNameValid, isPanValid);
-          })
-  });
-  var sessionId;
-function createSession() {
-  window.NI.generateSessionId().then(function (response) {
-    sessionId = response.session_id;
-    alert(sessionId);
-  }).catch(function (error) {
-    return console.error(error);
-  });
-}
+    $('#discountForm').on('submit', function(e){
+        e.preventDefault(); 
 
-
-$('#discountForm').on('submit', function(e){
-    e.preventDefault(); 
-
-    var $this = $(this); 
-    $.ajax({ 
-        url: '{{ route("getPromo") }} ',
-        method: 'POST',
-        data: {
-            "_token": "{{ csrf_token() }}",
-        }
-    }).done( function (response) {
-     
-        if (response) {
-            alert(response.status)
-            // $('#target-div').html(response.status); 
-        }
+        var $this = $(this); 
+        $.ajax({ 
+            url: '{{ route("getPromo") }} ',
+            method: 'POST',
+            data: {
+                "_token": "{{ csrf_token() }}",
+            }
+        }).done( function (response) {
+        
+            if (response) {
+                alert(response.status)
+                // $('#target-div').html(response.status); 
+            }
+        });
     });
-});
-
 </script>
 @endpush
 <script src="{{asset('js/alert.js')}}"></script>
