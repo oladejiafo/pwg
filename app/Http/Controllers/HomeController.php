@@ -597,7 +597,6 @@ class HomeController extends Controller
                     'total' => $request->totaldue,
                     'total_paid' => $totalpay,
                     'payment_status' => $whatsPaid,
-
                 ]);
 
                 $datas = payment::where([
@@ -631,7 +630,7 @@ class HomeController extends Controller
                 $failUrl =  url('/').'/payment/fail/'.$datas['id'];
                 $order['action'] 				 	  = "PURCHASE";                                        // Transaction mode ("AUTH" = authorize only, no automatic settle/capture, "SALE" = authorize + automatic settle/capture)
                 $order['amount']['currencyCode'] 	  = "AED";                           // Payment currency ('AED' only for now)
-                $order['amount']['value'] 		 	  = ($amount * 100);                                   // Minor units (1000 = 10.00 AED)
+                $order['amount']['value'] 		 	  = ($amount)*100;                                   // Minor units (1000 = 10.00 AED)
                 $order['language'] 					  = "en";      						// Payment page language ('en' or 'ar' only)
                 $order['emailAddress'] 			 	  = "pwggroup@pwggroup.pl";      
                 $order['billingAddress']['firstName'] = "PWG";      
@@ -650,9 +649,10 @@ class HomeController extends Controller
                 $orderCreateResponse = $this->invokeCurlRequest("POST", $txnServiceURL, $orderCreateHeaders, $order);
 
                 $orderCreateResponse = json_decode($orderCreateResponse);
+                // dd($orderCreateResponse);
+
                 $paymentLink 		   = $orderCreateResponse->_links->payment->href; 
-                header("Location: ".$paymentLink); 
-                die;
+                return Redirect::to($paymentLink);
             }
         } else {
             return redirect()->back()->with('failed', 'You are not authorized');
@@ -844,7 +844,7 @@ public function mark_read(Request $request) {
     public function paymentSuccess($paymentId)
     {
         session_start();
-    
+        $id = Session::get('myproduct_id');
         $outletRef 	 	 = config('app.payment_reference');   
         $apikey 		 = config('app.payment_api_key'); 
         $orderReference  = $_GET['ref']; 
@@ -869,9 +869,9 @@ public function mark_read(Request $request) {
             if($paymentResponse->authResponse->success == true && $paymentResponse->authResponse->resultCode == "00"){
                 $paymentDetails = Payment::where('id', $paymentId)->first();
                 $paymentDetails->update([
-                    'currency_code' => $paymentResponse->amount->currencyCode
+                    'currency_code' => $paymentResponse->amount->currencyCode,
+                    'card_type' => $paymentResponse->paymentMethod->name
                 ]);
-                $id = Session::get('myproduct_id');
                 $monthYear = explode('-', $paymentResponse->paymentMethod->expiry);
                 $res = cardDetail::updateOrCreate([
                     'user_id' => Auth::id(),
@@ -940,20 +940,20 @@ public function mark_read(Request $request) {
                     $msg = "Awesome! Payment Successful!";
                     return view('user.payment-success', compact('id'));
                 } else {
-                    return view('user.payment-fail', compact('id'));
+                    return \Redirect::route('payment-fail', $id);
                 }
             } else {
-                return view('user.payment-fail', compact('id'));
+                return \Redirect::route('payment-fail', $id);
             }
         } else {
-            return view('user.payment-fail', compact('id'));
+            return \Redirect::route('payment-fail', $id);
         }
     }
 
     public function paymentFail($paymentId)
     {
-        $id = Session::get('myproduct_id');
         Payment::where('id', $paymentId)->delete();
+        $id = Session::get('myproduct_id');
         return view('user.payment-fail', compact('id'));
     }
 
