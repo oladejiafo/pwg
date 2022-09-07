@@ -19,14 +19,9 @@ class CreatePaymentsTable extends Migration
                 ->constrained('applicants')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->integer('product_payment_id');
-            $table->string('card_number');
-            $table->string('card_holder_name');
-            $table->integer('month');
-            $table->year('year');
-            $table->integer('cvv');
-            $table->decimal('total');
-            $table->decimal('total_paid');
+            $table->integer('product_payment_id')->nullable();
+            $table->decimal('total')->nullable();
+            $table->decimal('total_paid')->nullable();
             $table->string('currency_code')->nullable();
             $table->string('payment_status')->nullable();
             $table->string('transaction_id')->nullable();

@@ -16,7 +16,7 @@ use App\Models\payment;
 use App\Models\product_details;
 use App\Models\family_breakdown;
 use App\Models\notifications;
-use App\Models\card_details;
+use App\Models\cardDetail;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NotifyMail;
 use Illuminate\Support\Facades\Response;
@@ -556,7 +556,7 @@ class HomeController extends Controller
     public function addpayment(Request $request)
     {
         if (Auth::id()) {
-            $amount = ($request->amount) ?? $request->totalpay;
+            $amount = $request->totalpay;
             $id = Session::get('myproduct_id');
             $applys = DB::table('applicants')
                 ->where('product_id', '=', $id)
@@ -568,19 +568,44 @@ class HomeController extends Controller
             }
 
             $validator = \Validator::make($request->all(), [
-                // 'card_number' => 'required|numeric|digits:16',
-                // 'card_holder_name' => 'required',
-                // 'month' => 'required|numeric',
-                // 'year' => 'required|numeric|digits:4|max:' . (date('Y') + 100),
-                // 'cvv' => 'required|numeric|digits:3',
                 'totaldue' => 'required',
                 'totalpay' => 'numeric|gte:1000'
-
             ]);
 
             if ($validator->fails()) {
                 return Redirect::back()->withErrors($validator);
             } else {
+                if ($request->totalpay == null || $request->totalpay == "" || $request->totalpay < 1000) {
+                    $totalpay = 0;
+                } else {
+                    $totalpay = $request->totalpay;
+                }
+                if ($request->totaldue == $request->totalpay) {
+                    $whatsPaid = "Paid";
+                } elseif ($request->totaldue > $request->totalpay && $request->totalpay > 1000) {
+                    $whatsPaid = "Partial";
+                } else {
+                    $whatsPaid = "Paid";
+                    $overPay = $request->totalpay - $request->totaldue;
+                }
+                
+                payment::updateOrCreate([
+                    'product_payment_id' => $request->ppid,
+                    'payment_type' => $request->whichpayment,
+                    'application_id' => $applicant_id
+                ], [
+                    'total' => $request->totaldue,
+                    'total_paid' => $totalpay,
+                    'payment_status' => $whatsPaid,
+
+                ]);
+
+                $datas = payment::where([
+                    ['product_payment_id', '=', $request->ppid],
+                    ['payment_type', '=', $request->whichpayment],
+                    ['application_id', '=', $applicant_id],
+                ])->first();
+
                 set_time_limit(0);
                 $outletRef 	 	 = config('app.payment_reference');   
                 $apikey 		 = config('app.payment_api_key'); 
@@ -602,8 +627,8 @@ class HomeController extends Controller
 
 
                 $order = array();	
-                $successUrl = url('/').'/payment/success/'.$id;
-                $failUrl =  url('/')."/payment/fail/".$id;
+                $successUrl = url('/').'/payment/success/'.$datas['id'];
+                $failUrl =  url('/').'/payment/fail/'.$datas['id'];
                 $order['action'] 				 	  = "PURCHASE";                                        // Transaction mode ("AUTH" = authorize only, no automatic settle/capture, "SALE" = authorize + automatic settle/capture)
                 $order['amount']['currencyCode'] 	  = "AED";                           // Payment currency ('AED' only for now)
                 $order['amount']['value'] 		 	  = ($amount * 100);                                   // Minor units (1000 = 10.00 AED)
@@ -619,226 +644,67 @@ class HomeController extends Controller
                 $order['merchantAttributes']['skipConfirmationPage'] = true;
                 $order['merchantAttributes']['cancelUrl']   = $failUrl;
                 $order['merchantAttributes']['cancelText']  = 'Cancel';
-
                 $order = json_encode($order);  
                 $orderCreateHeaders  = array("Authorization: Bearer ".$access_token, "Content-Type: application/vnd.ni-payment.v2+json", "Accept: application/vnd.ni-payment.v2+json");
                 //$orderCreateResponse = invokeCurlRequest("POST", $txnServiceURL, $orderCreateHeaders, $payment);
                 $orderCreateResponse = $this->invokeCurlRequest("POST", $txnServiceURL, $orderCreateHeaders, $order);
 
                 $orderCreateResponse = json_decode($orderCreateResponse);
-                // dd($orderCreateResponse);
                 $paymentLink 		   = $orderCreateResponse->_links->payment->href; 
                 header("Location: ".$paymentLink); 
                 die;
-
-
-	
-	
-                //////////////////////////////////
-                if ($request->totalpay == null || $request->totalpay == "" || $request->totalpay < 1000) {
-                    $totalpay = 0;
-                } else {
-                    $totalpay = $request->totalpay;
-                }
-
-                // Save Payment Information
-
-                if ($request->totaldue == $request->totalpay) {
-                    $whatsPaid = "Paid";
-                } elseif ($request->totaldue > $request->totalpay && $request->totalpay > 1000) {
-                    $whatsPaid = "Partial";
-                } else {
-                    $whatsPaid = "Paid";
-                    $overPay = $request->totalpay - $request->totaldue;
-                }
-
-                $datas = payment::where([
-                    ['product_payment_id', '=', $request->ppid],
-                    ['payment_type', '=', $request->whichpayment],
-                    ['application_id', '=', $applicant_id],
-                ])->first();
-                if ($datas === null) {
-                    $data = new payment();
-                    $data->product_payment_id = $request->ppid;
-                    $data->application_id = $applicant_id;
-                    $data->card_holder_name = $request->card_holder_name;
-                    $data->total = $request->totaldue;
-                    $data->total_paid = $totalpay;
-                    $data->payment_status = $whatsPaid;
-                    $data->payment_type = $request->whichpayment;
-
-                    if ($request->save_card != null) {
-                        $data->save_card_info = 1;
-                        $data->card_number = $request->card_number;
-                        $data->month = $request->month;
-                        $data->year = $request->year;
-                        $data->cvv = $request->cvv;
-                    }
-                    $res = $data->save();
-                } else {
-                    $datas->product_payment_id = $request->ppid;
-                    $datas->application_id = $applicant_id;
-                    $datas->card_holder_name = $request->card_holder_name;
-                    $datas->total = $request->totaldue;
-                    $datas->total_paid = $totalpay;
-                    $datas->payment_status = $whatsPaid;
-                    $datas->payment_type = $request->whichpayment;
-
-                    //        $isChecked = $request->save_card != null;
-                    if ($request->save_card != null) {
-                        $datas->save_card_info = 1;
-                        $datas->card_number = $request->card_number;
-                        $datas->month = $request->month;
-                        $datas->year = $request->year;
-                        $datas->cvv = $request->cvv;
-                    }
-                    $res = $datas->save();
-                }
-
-                //Update Applicant status in APPPLICANT TABLE
-                $status = applicant::where([
-                    ['user_id', '=', Auth::user()->id],
-                    ['product_id', '=', $request->pid],
-                    ['id', '=', $applicant_id],
-                ])->first();
-                if ($status === null) {
-                } else {
-                    $status->applicant_status = '2';
-                    $status->save();
-                }
-                if ($res) {
-
-                    // Save Payment Info
-
-                            
-                $card = card_details::where('application_id', '=', $apply->id)->where('user_id', '=', Auth::user()->id)->first();
-
-                if ($card === null) {
-                    $cardNew = new card_details();
-                    // $data->product_payment_id = $request->ppid;
-                    $cardNew->application_id = $applicant_id;
-                    $cardNew->user_id = Auth::user()->id;
-                    $cardNew->card_holder_name = $request->card_holder_name;
-                
-                    $cardNew->card_number = $request->card_number;
-                    $cardNew->month = $request->month;
-                    $cardNew->year = $request->year;
-                    $cardNew->cvv = $request->cvv;
-                
-                    $cardNew->save();
-                } else {
-                    // $datas->product_payment_id = $request->ppid;
-                    $card->application_id = $applicant_id;
-                    $card->user_id = Auth::user()->id;
-                    $card->card_holder_name = $request->card_holder_name;
-                
-                    $card->card_number = $request->card_number;
-                    $card->month = $request->month;
-                    $card->year = $request->year;
-                    $card->cvv = $request->cvv;
-                    
-                    $card->save();
-                }
-                
-                    // Send Notifications on This Payment ##############
-                    $email = Auth::user()->email;
-                    $userID = Auth::user()->id;
-
-                    if($request->whichpayment == "First Payment")
-                    {
-                        $ems = "";
-                    } else if($request->whichpayment == "Second Payment") {
-                        $ems = " You will be notified when your Work Permit is ready.";
-                    } else {
-                        $ems = " You will be notified when your embassy appearance date is set.";
-                    }
-
-                    $criteria = $request->whichpayment . " Completed!";
-                    $message = "You have successfully made your " .$request->whichpayment. ". Kindly login to the PWG Client portal and check your receipt on 'My Application'" . $ems;
-
-                    $link = "";
-                    // $msgBody="hellooooooo";
-            
-                    $dataArray = [
-                        'title' => $criteria .' Mail from PWG Group',
-                        'body' => $message,
-                        'link' => $link
-                    ];
-                
-                    $check_noti = notifications::where('criteria', '=', $criteria)->where('user_id', '=', Auth::user()->id)->first();
-
-                    if ($check_noti === null) 
-                    {
-
-                        DB::table('notifications')->insert(
-                                ['user_id' => $userID, 'message' => $message, 'criteria' => $criteria, 'link' => $link]
-                        );
-                
-                        Mail::to($email)->send(new NotifyMail($dataArray));
-                    } 
-                    // Notification Ends ############ 
-
-                    //kjljkllk
-                    $productId = $id;
-                    $dest = product::find($request->pid);
-                    $dest_name = $dest->product_name;
-
-                    $msg = "Awesome! Payment Successful!";
-                    return view('user.payment-success', compact('id'));
-                    // return \Redirect::route('applicant', $request->pid)->with('info', $msg)->with('info_sub', 'You journey to ' .$dest_name. ' just began!');
-                } else {
-                    return view('user.payment-fail', compact('id'));
-
-                    // return redirect()->back()->with('failed', 'Oppss! Something Went Wrong!');
-                }
             }
         } else {
             return redirect()->back()->with('failed', 'You are not authorized');
         }
     }
 
-    public function addPaymentDetails($request)
-    {
-        $id = Session::get('myproduct_id');
+    /**
+     * 
+     * add payment some code
+     */
+    // public function addPaymentDetails($request)
+    // {
+    //     $id = Session::get('myproduct_id');
 
-        // Send Notifications on This Payment ##############
-        $email = Auth::user()->email;
-        $userID = Auth::user()->id;
+    //     // Send Notifications on This Payment ##############
+    //     $email = Auth::user()->email;
+    //     $userID = Auth::user()->id;
 
-        if($request->whichpayment == "First Payment")
-        {
-            $ems = "";
-        } else if($request->whichpayment == "Second Payment") {
-            $ems = " You will be notified when your Work Permit is ready.";
-        } else {
-            $ems = " You will be notified when your embassy appearance date is set.";
-        }
+    //     if($request->whichpayment == "First Payment")
+    //     {
+    //         $ems = "";
+    //     } else if($request->whichpayment == "Second Payment") {
+    //         $ems = " You will be notified when your Work Permit is ready.";
+    //     } else {
+    //         $ems = " You will be notified when your embassy appearance date is set.";
+    //     }
 
-        $criteria = $request->whichpayment . " Completed!";
-        $message = "You have successfully made your " .$request->whichpayment. ". Kindly login to the PWG Client portal and check your receipt on 'My Application'" . $ems;
+    //     $criteria = $request->whichpayment . " Completed!";
+    //     $message = "You have successfully made your " .$request->whichpayment. ". Kindly login to the PWG Client portal and check your receipt on 'My Application'" . $ems;
 
-        $link = "";
-        // $msgBody="hellooooooo";
+    //     $link = "";
+    //     // $msgBody="hellooooooo";
 
-        $dataArray = [
-            'title' => $criteria .' Mail from PWG Group',
-            'body' => $message,
-            'link' => $link
-        ];
+    //     $dataArray = [
+    //         'title' => $criteria .' Mail from PWG Group',
+    //         'body' => $message,
+    //         'link' => $link
+    //     ];
 
-        DB::table('notifications')->insert(
-                ['user_id' => $userID, 'message' => $message, 'criteria' => $criteria, 'link' => $link]
-        );
+    //     DB::table('notifications')->insert(
+    //             ['user_id' => $userID, 'message' => $message, 'criteria' => $criteria, 'link' => $link]
+    //     );
 
-        Mail::to($email)->send(new NotifyMail($dataArray));
-        // Notification Ends ############ 
+    //     Mail::to($email)->send(new NotifyMail($dataArray));
+    //     // Notification Ends ############ 
         
-        //kjljkllk
-        $productId = $id;
-        $dest = product::find($request->pid);
-        $dest_name = $dest->product_name;
+    //     //kjljkllk
+    //     $productId = $id;
+    //     $dest = product::find($request->pid);
+    //     $dest_name = $dest->product_name;
 
-    }
+    // }
 
     public function getPromo(Request $request)
     {
@@ -886,63 +752,63 @@ class HomeController extends Controller
         }
     }
 
-    
+    /**
+     * profile card details
+     * 
+     */
     public function card_details(Request $request) 
     {  
-        // dd($request);
         $validator = \Validator::make($request->all(), [
-        'card_number' => 'required|numeric|digits:16',
-        'name' => 'required',
-        'month' => 'required|numeric',
-        'year' => 'required|numeric|digits:4|max:'.(date('Y')+100),
-        'cvc' => 'required|numeric|digits:3'
-    ]);
+            'card_number' => 'required|numeric|digits:16',
+            'name' => 'required',
+            'month' => 'required|numeric',
+            'year' => 'required|numeric|digits:4|max:'.(date('Y')+100),
+            'cvc' => 'required|numeric|digits:3'
+        ]);
 
-    if($validator->fails()) {
-        return Response::json(array(
-            'success' => false,
-            'errors' => $validator->getMessageBag()->toArray()
+        if($validator->fails()) {
+            return Response::json(array(
+                'success' => false,
+                'errors' => $validator->getMessageBag()->toArray()
 
-        ), 200);
-    } else {
-
-        // Save Payment Information
-        $apply = DB::table('applicants')
-        ->where('user_id', '=', Auth::user()->id)
-        ->first();
-        // $applicant_id = $apply->id;
-
-        $datas = card_details::where('application_id', '=', $apply->id)->where('user_id', '=', Auth::user()->id)->first();
-
-        if ($datas === null) {
-            $data = new card_details();
-            // $data->product_payment_id = $request->ppid;
-            $data->application_id = $apply->id;
-            $data->user_id = Auth::user()->id;
-            $data->card_holder_name = $request->name;
-        
-            $data->card_number = $request->card_number;
-            $data->month = $request->month;
-            $data->year = $request->year;
-            $data->cvv = $request->cvc;
-        
-            $data->save();
+            ), 200);
         } else {
-            // $datas->product_payment_id = $request->ppid;
-            $datas->application_id = $apply->id;
-            $datas->user_id = Auth::user()->id;
-            $datas->card_holder_name = $request->name;
-        
-            $datas->card_number = $request->card_number;
-            $datas->month = $request->month;
-            $datas->year = $request->year;
-            $datas->cvv = $request->cvc;
+
+            // Save Payment Information
+            $apply = DB::table('applicants')
+            ->where('user_id', '=', Auth::user()->id)
+            ->first();
+            // $applicant_id = $apply->id;
+
+            $datas = cardDetail::where('application_id', '=', $apply->id)->where('user_id', '=', Auth::user()->id)->first();
+            if ($datas === null) {
+                $data = new cardDetail();
+                // $data->product_payment_id = $request->ppid;
+                $data->application_id = $apply->id;
+                $data->user_id = Auth::user()->id;
+                $data->card_holder_name = $request->name;
             
-            $datas->save();
+                $data->card_number = $request->card_number;
+                $data->month = $request->month;
+                $data->year = $request->year;
+                $data->cvv = $request->cvc;
+            
+                $data->save();
+            } else {
+                // $datas->product_payment_id = $request->ppid;
+                $datas->application_id = $apply->id;
+                $datas->user_id = Auth::user()->id;
+                $datas->card_holder_name = $request->name;
+            
+                $datas->card_number = $request->card_number;
+                $datas->month = $request->month;
+                $datas->year = $request->year;
+                $datas->cvv = $request->cvc;
+                
+                $datas->save();
+            }
+            // dd($datas);
         }
-        // dd($datas);
-    }
-    // dd($request->all());
       return response()->json(['status' => 'Saved']);
 }
 
@@ -975,7 +841,7 @@ public function mark_read(Request $request) {
     //     }
     // }
 
-    public function paymentSuccess($id)
+    public function paymentSuccess($paymentId)
     {
         session_start();
     
@@ -997,35 +863,97 @@ public function mark_read(Request $request) {
 
         $responseHeaders  = array("Authorization: Bearer ".$access_token, "Content-Type: application/vnd.ni-payment.v2+json", "Accept: application/vnd.ni-payment.v2+json");
         $orderResponse 	  = $this->invokeCurlRequest("GET", $residServiceURL, $responseHeaders, '');
-        dd($orderResponse);
+        $paymentResponse = json_decode($orderResponse);
+        if(isset($paymentResponse->_embedded->payment[0]->authResponse)){
+            $paymentResponse = $paymentResponse->_embedded->payment[0];
+            if($paymentResponse->authResponse->success == true && $paymentResponse->authResponse->resultCode == "00"){
+                $paymentDetails = Payment::where('id', $paymentId)->first();
+                $paymentDetails->update([
+                    'currency_code' => $paymentResponse->amount->currencyCode
+                ]);
+                $id = Session::get('myproduct_id');
+                $monthYear = explode('-', $paymentResponse->paymentMethod->expiry);
+                $res = cardDetail::updateOrCreate([
+                    'user_id' => Auth::id(),
+                    'application_id' => $paymentDetails['application_id'],
+                ],[
+                    'card_number' => $paymentResponse->paymentMethod->pan,
+                    'card_holder_name' => $paymentResponse->paymentMethod->cardholderName,
+                    'month' => $monthYear[0],
+                    'year' =>  $monthYear[1],
+                ]);
 
-        echo json_encode($orderResponse);
-        return view('user.payment-success', compact('id'));
+                if ($res) {
+                    //Update Applicant status in APPPLICANT TABLE
+                    $status = applicant::where([
+                        ['user_id', '=', Auth::user()->id],
+                        ['product_id', '=', $id],
+                        ['id', '=', $paymentDetails['application_id ']],
+                    ])->first();
+                    if ($status === null) {
+                    } else {
+                        $status->applicant_status = '2';
+                        $status->save();
+                    }
+                    // Save Payment Info
+                    $card = cardDetail::where('application_id', '=', $paymentDetails['application_id '])->where('user_id', '=', Auth::user()->id)->first();
+
+                    // Send Notifications on This Payment ##############
+                    $email = Auth::user()->email;
+                    $userID = Auth::user()->id;
+
+                    if($paymentDetails['payment_type '] == "First Payment")
+                    {
+                        $ems = "";
+                    } else if($paymentDetails['payment_type '] == "Second Payment") {
+                        $ems = " You will be notified when your Work Permit is ready.";
+                    } else {
+                        $ems = " You will be notified when your embassy appearance date is set.";
+                    }
+
+                    $criteria = $paymentDetails['payment_type '] . " Completed!";
+                    $message = "You have successfully made your " .$paymentDetails['payment_type ']. ". Kindly login to the PWG Client portal and check your receipt on 'My Application'" . $ems;
+
+                    $link = "";
+            
+                    $dataArray = [
+                        'title' => $criteria .' Mail from PWG Group',
+                        'body' => $message,
+                        'link' => $link
+                    ];
+                
+                    $check_noti = notifications::where('criteria', '=', $criteria)->where('user_id', '=', Auth::user()->id)->first();
+
+                    if ($check_noti === null) 
+                    {
+
+                        DB::table('notifications')->insert(
+                                ['user_id' => $userID, 'message' => $message, 'criteria' => $criteria, 'link' => $link]
+                        );
+                
+                        Mail::to($email)->send(new NotifyMail($dataArray));
+                    } 
+                    // Notification Ends ############ 
+                    $dest = product::find($id);
+                    $dest_name = $dest->product_name;
+
+                    $msg = "Awesome! Payment Successful!";
+                    return view('user.payment-success', compact('id'));
+                } else {
+                    return view('user.payment-fail', compact('id'));
+                }
+            } else {
+                return view('user.payment-fail', compact('id'));
+            }
+        } else {
+            return view('user.payment-fail', compact('id'));
+        }
     }
 
-    public function paymentFail($id)
+    public function paymentFail($paymentId)
     {
-        session_start();
-    
-        $outletRef 	 	 = config('app.payment_reference');   
-        $apikey 		 = config('app.payment_api_key'); 
-        $orderReference  = $_GET['ref']; 
-        //$orderReference  = 'd4008299-a923-4fde-9107-e0af33114549'; 
-        //$idServiceURL    = "https://identity.ngenius-payments.com/auth/realms/Networkinternational/protocol/openid-connect/token";           // set the identity service URL (example only)
-        //$residServiceURL = "https://api-gateway.ngenius-payments.com/transactions/outlets/".$outletRef."/orders/".$orderReference; 
-
-        $idServiceURL    = "https://identity.sandbox.ngenius-payments.com/auth/realms/ni/protocol/openid-connect/token";           // set the identity service URL (example only)
-        $residServiceURL = "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/".$outletRef."/orders/".$orderReference; 
-
-
-        $tokenHeaders    = array("Authorization: Basic ".$apikey, "Content-Type: application/x-www-form-urlencoded");
-        $tokenResponse   = $this->invokeCurlRequest("POST", $idServiceURL, $tokenHeaders, http_build_query(array('grant_type' => 'client_credentials')));
-        $tokenResponse   = json_decode($tokenResponse);
-        $access_token 	 = $tokenResponse->access_token;
-
-        $responseHeaders  = array("Authorization: Bearer ".$access_token, "Content-Type: application/vnd.ni-payment.v2+json", "Accept: application/vnd.ni-payment.v2+json");
-        $orderResponse 	  = $this->invokeCurlRequest("GET", $residServiceURL, $responseHeaders, '');
-        dd(json_decode($orderResponse));
+        $id = Session::get('myproduct_id');
+        Payment::where('id', $paymentId)->delete();
         return view('user.payment-fail', compact('id'));
     }
 
