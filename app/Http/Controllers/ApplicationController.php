@@ -194,7 +194,7 @@ class ApplicationController extends Controller
         $applicant = Applicant::where('user_id', Auth::id())
                         ->where('product_id', $productId)
                         ->first();
-
+        $this->_updateApplicationStatus($productId, $applicant->id, 'applicant');
         $dependent = FamilyDetail::where('product_id', $productId)
                         ->where('applicant_id', $applicant->id)
                         ->first();
@@ -385,33 +385,37 @@ class ApplicationController extends Controller
      */
     public function applicantReviewSubmit(Request $request)
     {
-        Applicant::where('user_id', Auth::id())
-            ->where('product_id', $request->product_id)
-            ->update([
-                'applicant_status'=> 5
-            ]);
+        $applicant =  Applicant::where('user_id', Auth::id())
+                    ->where('product_id', $request->product_id)
+                    ->first();
 
-            // Send Notifications on This Payment ##############
-            $email = Auth::user()->email;
-            $userID = Auth::user()->id;
-            
-            $criteria = "Application Completed!";
-            $message = "You have completed and submitted your application successfully. Kindly login to the PWG Client portal and check your receipt on 'My Application' for further updates";
+        $applicant->update([
+            'applicant_status'=> 5
+        ]);
 
-            $link = "";
-    
-            $dataArray = [
-                'title' => $criteria .'Mail from PWG Group',
-                'body' => $message,
-                'link' => $link
-            ];
+        $this->_updateApplicationStatus($request->product_id,$applicant['id'], 'family');
+
+        // Send Notifications on This Payment ##############
+        $email = Auth::user()->email;
+        $userID = Auth::user()->id;
         
-            DB::table('notifications')->insert(
-                    ['user_id' => $userID, 'message' => $message, 'criteria' => $criteria, 'link' => $link]
-            );
+        $criteria = "Application Completed!";
+        $message = "You have completed and submitted your application successfully. Kindly login to the PWG Client portal and check your receipt on 'My Application' for further updates";
+
+        $link = "";
+
+        $dataArray = [
+            'title' => $criteria .'Mail from PWG Group',
+            'body' => $message,
+            'link' => $link
+        ];
     
-            Mail::to($email)->send(new NotifyMail($dataArray));
-            // Notification Ends ############ 
+        DB::table('notifications')->insert(
+                ['user_id' => $userID, 'message' => $message, 'criteria' => $criteria, 'link' => $link]
+        );
+
+        Mail::to($email)->send(new NotifyMail($dataArray));
+        // Notification Ends ############ 
             
         return Response::json(array('success' => true), 200);
     }   
@@ -665,12 +669,14 @@ class ApplicationController extends Controller
         ChildrenDetail::where('applicant_id', $request['applicant_id'])->delete();
         for($i = 1; $i <= $request['childrenCount']; $i++ ){
             ChildrenDetail::create([
+                'product_id' => $request['product_id'],
                 'applicant_id' => $request['applicant_id'],
                 'first_name' => $request['child_'.$i.'_first_name'],
                 'middle_name' => $request['child_'.$i.'_middle_name'],
                 'surname' => $request['child_'.$i.'_surname'],
                 'dob' => date('Y-m-d', strtotime($request['child_'.$i.'_dob'])),
                 'gender' => $request['child_'.$i.'_gender'],
+                'status' => 1
             ]);
         }
 
@@ -688,5 +694,64 @@ class ApplicationController extends Controller
                             ->where('product_id', $product_id)
                             ->pluck('id')
                             ->first();
+    }
+
+    public function updateApplicantStatus(Request $request)
+    {
+        $response['status'] = false;
+        $response['status'] = $this->_updateApplicationStatus($request['product_id'], $request['id'], $request['userType']);
+        return $response;
+    }
+
+    private static function _updateApplicationStatus($productId, $applicantId, $user)
+    {
+        if($user == 'applicant'){
+            Applicant::where('id', $applicantId)
+            ->update([
+                'status' => 1,
+            ]);
+            return true;
+        } else if($user == 'family') {
+            FamilyDetail::where('product_id', $productId)
+                        ->where('applicant_id', $applicantId)
+                        ->update(['status' => 1]);
+            return true;
+        } else if($user == 'children') {
+            ChildrenDetail::where('product_id', $productId)
+                ->where('applicant_id', $applicantId)
+                ->update(['status' => 1]);
+            return true;
+        }
+    }
+
+    public function checkApplicationStatus(Request $request)
+    {
+        $response['status'] = false;
+        $applicant = Applicant::where('id', $request->id)
+                                ->where('status', 1)
+                                ->first();
+        if($applicant){
+            $family = FamilyDetail::where('product_id', $request->product_id)
+                                ->where('applicant_id', $request->id)
+                                ->where('status', 1)
+                                ->first();
+            if($family) {
+                $children = ChildrenDetail::where('product_id', $request->product_id)
+                            ->where('applicant_id', $request->id)
+                            ->where('status', 1)
+                            ->first();
+                if($children) {
+                    $response['status'] = true;
+                } else {
+                    $response['message'] = 'Children details should be completed before proceeding';
+                }
+            } else {
+                $response['message'] = 'Family details should be completed before proceeding';
+            }
+        } else {
+            $response['message'] = 'Applicant details should be completed before proceeding';
+        }
+
+        return $response;
     }
 }

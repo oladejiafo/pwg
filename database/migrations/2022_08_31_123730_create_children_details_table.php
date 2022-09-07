@@ -15,6 +15,7 @@ class CreateChildrenDetailsTable extends Migration
     {
         Schema::create('children_details', function (Blueprint $table) {
             $table->id();
+            $table->integer('product_id')->nullable();
             $table->foreignId('applicant_id')
                 ->constrained('applicants')
                 ->onUpdate('cascade')
@@ -24,6 +25,7 @@ class CreateChildrenDetailsTable extends Migration
             $table->string('surname')->nullable();
             $table->date('dob')->nullable();
             $table->string('gender')->nullable();
+            $table->integer('status')->default(0)->comment('1: completed; 0 not completed')->nullable();
             $table->timestamps();
         });
     }

@@ -556,6 +556,7 @@ class HomeController extends Controller
     public function addpayment(Request $request)
     {
         if (Auth::id()) {
+            $amount = ($request->amount) ?? $request->totalpay;
             $id = Session::get('myproduct_id');
             $applys = DB::table('applicants')
                 ->where('product_id', '=', $id)
@@ -603,9 +604,9 @@ class HomeController extends Controller
                 $order = array();	
                 $successUrl = url('/').'/payment/success/'.$id;
                 $failUrl =  url('/')."/payment/fail/".$id;
-                $order['action'] 				 	  = "SALE";                                        // Transaction mode ("AUTH" = authorize only, no automatic settle/capture, "SALE" = authorize + automatic settle/capture)
+                $order['action'] 				 	  = "PURCHASE";                                        // Transaction mode ("AUTH" = authorize only, no automatic settle/capture, "SALE" = authorize + automatic settle/capture)
                 $order['amount']['currencyCode'] 	  = "AED";                           // Payment currency ('AED' only for now)
-                $order['amount']['value'] 		 	  = $request->totalpay;                                   // Minor units (1000 = 10.00 AED)
+                $order['amount']['value'] 		 	  = ($amount * 100);                                   // Minor units (1000 = 10.00 AED)
                 $order['language'] 					  = "en";      						// Payment page language ('en' or 'ar' only)
                 $order['emailAddress'] 			 	  = "pwggroup@pwggroup.pl";      
                 $order['billingAddress']['firstName'] = "PWG";      
@@ -1024,7 +1025,7 @@ public function mark_read(Request $request) {
 
         $responseHeaders  = array("Authorization: Bearer ".$access_token, "Content-Type: application/vnd.ni-payment.v2+json", "Accept: application/vnd.ni-payment.v2+json");
         $orderResponse 	  = $this->invokeCurlRequest("GET", $residServiceURL, $responseHeaders, '');
-        dd($orderResponse);
+        dd(json_decode($orderResponse));
         return view('user.payment-fail', compact('id'));
     }
 

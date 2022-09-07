@@ -49,7 +49,7 @@
                                 <input type="text" name="middle_name" class="form-control" placeholder="Middle Name" value="{{old('middle_name')}}"  autocomplete="off"/>
                             </div>
                             <div class="col-sm-4 mt-3">
-                                <input type="text" name="surname" class="form-control surname" placeholder="Surname*" value="{{ (count($name) > 1) ? $name[count($name)-1]: '' }} " autocomplete="off"  />
+                                <input type="text" name="surname" class="form-control surname" @if(count($name) > 1)   value="$name[count($name)-1]" @else  placeholder="Surname*" @endif autocomplete="off"  />
                                 <span class="surname_errorClass"></span>
                             </div>
                         </div>

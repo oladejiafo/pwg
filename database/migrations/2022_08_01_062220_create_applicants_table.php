@@ -74,6 +74,7 @@ class CreateApplicantsTable extends Migration
             $table->string('contract')->nullable();
             $table->tinyInteger('is_spouse')->default(0)->comment('1:yes; 0:no')->nullable();
             $table->integer('children_count')->nullable();
+            $table->integer('status')->default(0)->comment('1: completed; 0 not completed')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

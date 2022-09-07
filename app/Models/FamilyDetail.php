@@ -57,6 +57,7 @@ class FamilyDetail extends Model
         'schengen_visa',
         'is_fingerprint_collected', 
         'embassy_country',
+        'status'
     ];
 
     public function applicant()

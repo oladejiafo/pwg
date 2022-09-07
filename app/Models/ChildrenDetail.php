@@ -11,10 +11,12 @@ class ChildrenDetail extends Model
 
     protected $fillable = [
         'applicant_id',
+        'product_id',
         'first_name',
         'middle_name',
         'surname',
         'dob',
-        'gender'
+        'gender',
+        'status'
     ];
 }
