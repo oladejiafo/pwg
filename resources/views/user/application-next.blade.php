@@ -191,8 +191,19 @@
         const phoneInputField = document.querySelector("#phone");
         const phoneInput = window.intlTelInput(phoneInputField, {
             initialCountry: "ae",
+            allowDropdown: true,
+            autoHideDialCode: true,
+            autoPlaceholder: "off",
+            nationalMode: false,
+            preferredCountries: ['ae'],
+            separateDialCode: false,
             utilsScript:
                 "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        });
+
+        $("form").submit(function() {
+          var full_number = phone_number.getNumber(intlTelInputUtils.numberFormat.E164);
+          $("input[id='phone'").val(full_number);
         });
 
         $(document).on('change','.up', function(){

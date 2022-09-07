@@ -25,6 +25,11 @@ body {
   line-height: 0.5px !important;
 }
 
+.selected {
+  margin-left: 85% !important;
+  margin-top: -20px !important;
+}
+
 .checkcolor {
   accent-color: #f9bf29;
 }
@@ -2152,6 +2157,11 @@ iframe img {
   height: auto;
   margin-top: 33px;
 }
+.dataCompletedd {
+  width: 25px;
+  height: auto;
+  margin-top: 33px;
+}
 
 .applicant-tab-sec h4 {
   text-align: center;
@@ -2275,6 +2285,7 @@ iframe img {
     margin-left: 71% !important;
     width: 17px;
   }
+
 
   .searchForm button {
     width: 130px !important;
@@ -2472,6 +2483,11 @@ iframe img {
 
   .dataCompleted {
     margin-left: 86%;
+  }
+
+  .dataCompletedd {
+    margin-left: 99%;
+    /* left:99%; */
   }
 
   .package .header {

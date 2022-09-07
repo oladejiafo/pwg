@@ -367,7 +367,7 @@
 </body>
 
 <script src="{{asset('user/extra/js/jquery.min.js')}}"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script> -->
 <!-- Bootstrap -->
 <!-- <script src="{{asset('user/extra/js/bootstrap.min.js')}}"></script> -->
 <script>

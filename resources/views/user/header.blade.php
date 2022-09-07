@@ -256,7 +256,7 @@
                   <a class="dropdown-item preview-item">
                     <div class="preview-item-content">
                     <form method="GET" action="{{ route('profile.show') }}" x-data>
-                            @csrf  
+                           
                       <button style="border-color: #fff; padding:3px; margin:0; width:100px; background-color:#fff; shadow:none;">Profile</button>
                     </form>
                       <!-- <p class="preview-subject mb-1"><a href="{{ route('profile.show') }}">Profile</a></p> -->
@@ -311,3 +311,5 @@
     <script src="{{asset('user/extra/assets/js/jquery.easing.min.js')}}"></script> 
     <script src="{{asset('user/extra/assets/js/form-validator.min.js')}}"></script>
     <script src="{{asset('user/extra/assets/js/contact-form-script.min.js')}}"></script> --}}
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>

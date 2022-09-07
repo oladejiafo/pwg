@@ -2,8 +2,13 @@
 <link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous"> -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" /> -->
 <link href="{{asset('css/alert.css')}}" rel="stylesheet">
+<!-- <link rel="stylesheet" href="{{ asset('user/css/intlTelInput.css') }}"> -->
+
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/css/intlTelInput.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/intlTelInput.min.js"></script>
 
 <style>
     .form-sec-content {
@@ -55,7 +60,7 @@
         border-color: #C4C4C4;
     }
 </style>
-@section('content')
+
 @php
 $completed = DB::table('applicants')
 ->where('product_id', '=', $data->id)
@@ -217,6 +222,7 @@ $levels = $complete->applicant_status;
                                 @error('nationality') <span class="error">{{ $message }}</span> @enderror
                             </div>
                         </div>
+                        <input type="tel" name="phone_number[main]" id="phone_number" />
                         <div class="form-group row mt-4" style="margin-bottom: 70px">
                             <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
                                 <button type="submit" class="btn btn-primary submitBtn">Continue</button>
@@ -227,7 +233,7 @@ $levels = $complete->applicant_status;
             </div>
         </div>
     </div>
-    @endsection
+
     @push('custom-scripts')
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js" integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous"></script>
@@ -235,3 +241,51 @@ $levels = $complete->applicant_status;
 
 
     <script src="{{asset('js/alert.js')}}"></script>
+
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+
+<script src="{{ asset('user/js/intlTelInput-jquery.min.js') }}"></script>
+
+<script>
+
+// var phone_number = window.intlTelInput(document.querySelector("#phone_number"), {
+//   separateDialCode: true,
+//   preferredCountries:["in"],
+//   hiddenInput: "full",
+//   utilsScript: "//cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.js"
+// });
+
+
+var input = document.querySelector("#phone_number");
+    window.intlTelInput(input, {
+       allowDropdown: true,
+       autoHideDialCode: true,
+       autoPlaceholder: "polite",
+      // dropdownContainer: document.body,
+      // excludeCountries: ["us"],
+      // formatOnDisplay: false,
+      geoIpLookup: function(callback) {
+        $.get("http://ipinfo.io", function() {}, "jsonp").always(function(resp) {
+          var countryCode = (resp && resp.country) ? resp.country : "";
+          callback(countryCode);
+        });
+      },
+       hiddenInput: "full",
+    //    initialCountry: "ae",
+       localizedCountries: { 'de': 'Deutschland' },
+       nationalMode: false,
+      // onlyCountries: ['us', 'gb', 'ch', 'ca', 'do'],
+      // placeholderNumberType: "MOBILE",
+       preferredCountries: ['ae', 'ng'],
+       separateDialCode: true,
+      utilsScript: "../user/js/utils.js",
+    });
+
+
+// $("form").submit(function() {
+//   var full_number = input.getNumber(intlTelInputUtils.numberFormat.E164);
+// $("input[name='phone_number[full]'").val(full_number);
+//   alert(full_number)
+  
+// });
+</script>

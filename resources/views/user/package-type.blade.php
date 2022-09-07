@@ -26,7 +26,7 @@
                     <div class="col-4">
                         <div class="package-type blue-collar">
                             <div class="content">
-                            <div class="dataCompleted" id="blueSelect">
+                            <div class="dataCompletedx" id="blueSelect">
                                 <img class="selected" src="{{asset('images/Affiliate_Program_Section_Completed.svg')}}" alt="approved">
                             </div>
                                 <img src="{{asset('images/yellowWhiteCollar.svg')}}">
@@ -71,8 +71,8 @@
                         <!-- <div class="package-type  white-collar"> -->
                             
                             <div class="content">
-                             <div class="dataCompleted" id="whiteSelect">
-                                <img src="{{asset('images/Affiliate_Program_Section_Completed.svg')}}" alt="approved">
+                             <div class="dataCompletedx" id="whiteSelect">
+                                <img class="selected" src="{{asset('images/Affiliate_Program_Section_Completed.svg')}}" alt="approved">
                              </div>
                                 <img src="{{asset('images/yellowBlueCollar.svg')}}">
 
@@ -108,8 +108,8 @@
 
                         <!-- <div class="package-type family-package"> -->
                             <div class="content">
-                            <div class="dataCompleted" id="familySelect">
-                                <img src="{{asset('images/Affiliate_Program_Section_Completed.svg')}}" alt="approved">
+                            <div class="dataCompletedx" id="familySelect">
+                                <img class="selected" src="{{asset('images/Affiliate_Program_Section_Completed.svg')}}" alt="approved">
                             </div>
                                 <img src="{{asset('images/yellowFamily.svg')}}">
                                 <h6>Family Package</h6>

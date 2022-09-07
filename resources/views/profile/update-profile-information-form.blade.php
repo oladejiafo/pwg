@@ -1,3 +1,4 @@
+
 <x-jet-form-section submit="updateProfileInformation">
     <!-- <x-slot name="title">
       {{--  {{ __('Profile Information') }}  --}}
@@ -84,7 +85,7 @@
         <!-- Phone -->
         <div class="cols col-span-12 sm:col-span-12" style="width:70%; margin: 0 auto; margin-bottom:20px">
             <x-jet-label for="phone" value="{{ __('Phone') }}" />
-            <x-jet-input id="phone_number" type="text" class="mt-1 block w-full" wire:model.defer="state.phone_number" autocomplete="phone" />
+            <x-jet-input id="phone_number" name="phone_number" type="tel" class="mt-1 block w-full" wire:model.defer="state.phone_number" autocomplete="phone" />
             <x-jet-input-error for="phone" class="mt-2" />
         </div>
 
@@ -110,8 +111,7 @@
                 @endif
             @endif
         </div>
-
-
+ 
         <x-slot name="actions">
         <x-jet-action-message class="mr-3" on="saved">
             {{ __('Saved.') }}
@@ -125,3 +125,55 @@
 
 
 </x-jet-form-section>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/css/intlTelInput.min.css" rel="stylesheet"/>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/intlTelInput.min.js"></script>
+
+<!-- <script src="https://code.jquery.com/jquery-latest.min.js"></script> -->
+<!-- <script src="{{ asset('user/js/intlTelInput-jquery.min.js') }}"></script> -->
+
+<script>
+
+// var phone_number = document.querySelector("#phone_number");
+//     window.intlTelInput(phone_number, {
+//        allowDropdown: true,
+//        autoHideDialCode: true,
+//        autoPlaceholder: "off",
+//       // dropdownContainer: document.body,
+//       // excludeCountries: ["us"],
+//       // formatOnDisplay: false,
+//       geoIpLookup: function(callback) {
+//         $.get("http://ipinfo.io", function() {}, "jsonp").always(function(resp) {
+//           var countryCode = (resp && resp.country) ? resp.country : "";
+//           callback(countryCode);
+//         });
+//       },
+//     //    hiddenInput: "full",
+//     //    initialCountry: "ae",
+//        localizedCountries: { 'de': 'Deutschland' },
+//        nationalMode: false,
+//       // onlyCountries: ['us', 'gb', 'ch', 'ca', 'do'],
+//       // placeholderNumberType: "MOBILE",
+//        preferredCountries: ['ae'],
+//        separateDialCode: true,
+//       utilsScript: "../user/js/utils.js",
+//     });
+
+var phone_number = window.intlTelInput(document.querySelector("#phone_number"), {
+  separateDialCode: false,
+  preferredCountries:["ae"],
+  nationalMode: false,
+  hiddenInput: "full",
+  autoHideDialCode: false,
+  utilsScript: "//cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.js"
+});
+
+$("form").submit(function() {
+  var full_number = phone_number.getNumber(intlTelInputUtils.numberFormat.E164);
+
+  $("input[id='phone_number'").val(full_number);
+  
+//   alert(full_number)
+  
+});
+</script>
