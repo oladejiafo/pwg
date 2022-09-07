@@ -664,7 +664,7 @@ hr {
   display: none;
   position: absolute;
   z-index: 99;
-  left: -130px;
+  left: -180px;
   width:400px;
   min-width: 200px;
   background-color: #fff;
@@ -707,7 +707,7 @@ hr {
 }
 
 .dropdown .dropdown-menu .dropdown-item {
-  width: 100% !important;
+  width: 95% !important;
   padding: 12px 10px;
   font-size: 14px;
   word-wrap: break-word !important;

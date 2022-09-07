@@ -764,13 +764,19 @@ class HomeController extends Controller
                         'link' => $link
                     ];
                 
-                    DB::table('notifications')->insert(
-                            ['user_id' => $userID, 'message' => $message, 'criteria' => $criteria, 'link' => $link]
-                    );
-            
-                    Mail::to($email)->send(new NotifyMail($dataArray));
+                    $check_noti = notifications::where('criteria', '=', $criteria)->where('user_id', '=', Auth::user()->id)->first();
+
+                    if ($check_noti === null) 
+                    {
+
+                        DB::table('notifications')->insert(
+                                ['user_id' => $userID, 'message' => $message, 'criteria' => $criteria, 'link' => $link]
+                        );
+                
+                        Mail::to($email)->send(new NotifyMail($dataArray));
+                    } 
                     // Notification Ends ############ 
-                     
+
                     //kjljkllk
                     $productId = $id;
                     $dest = product::find($request->pid);

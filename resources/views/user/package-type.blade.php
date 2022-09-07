@@ -36,28 +36,46 @@
                         </div>
                     </div>
                     <div class="col-4">
+                        @if($whiteJobs->first())
+                        @foreach($whiteJobs as $whiteJob)
+                        @if ($loop->first)
+                        
+                            @php                                   
+                            $whiteJob_cost = $whiteJob->cost + $data->unit_price
+                            @endphp 
+
+                            @endif
+                        @endforeach
+                        @else 
+                        @php                                   
+                            $whiteJob_cost = 0
+                            @endphp
+                        @endif
+
+                       @if(isset($whiteJob_cost) && $whiteJob_cost == 0)
+                        <style>
+                            .package-types {
+                                align-items: center;
+                                background: #FFFFFF;
+                                box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.04);
+                                border-radius: 26px;
+                                height: 400px;
+                            }
+                        </style>
+                        <div class="package-types">
+                        @else     
                         <div class="package-type  white-collar">
+                        @endif
+
+
+                        <!-- <div class="package-type  white-collar"> -->
                             
                             <div class="content">
-                            <div class="dataCompleted" id="whiteSelect">
+                             <div class="dataCompleted" id="whiteSelect">
                                 <img src="{{asset('images/Affiliate_Program_Section_Completed.svg')}}" alt="approved">
-                            </div>
+                             </div>
                                 <img src="{{asset('images/yellowBlueCollar.svg')}}">
-                                @if($whiteJobs->first())
-                                @foreach($whiteJobs as $whiteJob)
-                                @if ($loop->first)
-                                
-                                 @php                                   
-                                   $whiteJob_cost = $whiteJob->cost + $data->unit_price
-                                 @endphp 
 
-                                 @endif
-                                @endforeach
-                                @else 
-                                @php                                   
-                                   $whiteJob_cost = 0
-                                 @endphp
-                                @endif
                                 <h6>White Collar Package</h6>
                                 <p class="amountSection"><span class="amount">{{($whiteJob_cost > 0) ? number_format($whiteJob_cost,0) : 0}}</span><b>AED</b></p>
                                                       
@@ -72,7 +90,23 @@
                         </div>
                     </div>
                     <div class="col-4">
+
+                    @if(!$famdet)
+                        <style>
+                            .package-typed {
+                                align-items: center;
+                                background: #FFFFFF;
+                                box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.04);
+                                border-radius: 26px;
+                                height: 400px;
+                            }
+                        </style>
+                        <div class="package-typed">
+                    @else     
                         <div class="package-type family-package">
+                    @endif
+
+                        <!-- <div class="package-type family-package"> -->
                             <div class="content">
                             <div class="dataCompleted" id="familySelect">
                                 <img src="{{asset('images/Affiliate_Program_Section_Completed.svg')}}" alt="approved">
@@ -107,8 +141,18 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="white-desc">
-                  
+                     
+                        
+                       @if(isset($whiteJob_cost) && $whiteJob_cost == 0)
+                        
+                        <script>
+        $(document).ready(function(){
+            $('.white-desc').hide();
+            </script>
+                       @else     
+                       
+                       @endif
+                       <div class="white-desc">
                              {{-- @include('user.white-collar-packge') --}}
                         
                             <div class="form-group row" style="margin-top: 70px"> 
