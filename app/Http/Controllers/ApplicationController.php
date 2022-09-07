@@ -9,13 +9,16 @@ use App\Models\FamilyDetail;
 use App\Constant;
 use App\Models\ChildrenDetail;
 use Exception;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Response;
+use App\Mail\NotifyMail;
 use Doctrine\Common\Annotations\Annotation\Required;
+use DB;
 
 class ApplicationController extends Controller
 {

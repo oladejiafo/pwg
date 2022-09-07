@@ -556,11 +556,11 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group row mt-4" style="margin-bottom: 70px">
+                            {{-- <div class="form-group row mt-4" style="margin-bottom: 70px">
                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
                                     <button type="submit" class="btn btn-primary submitBtn">Continue</button>
                                 </div>
-                            </div>
+                            </div> --}}
                         {{-- </form> --}}
                 {{-- <div class="heading">
                     <div class="first-heading">
@@ -652,6 +652,7 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                     </form>
                 {{-- </div> --}}
 @endsection
+@push('custom-scripts')
 <script>
     $('#discountForm').on('submit', function(e){
         e.preventDefault(); 

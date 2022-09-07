@@ -1600,66 +1600,68 @@
                 </div>
             </div>
         </div>
-        <div id="resumeModal" class="modal fade" tabindex="-1">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <embed src="{{asset('storage/resumes/'.$dependent['resume'])}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="dependentPassword" class="modal fade" tabindex="-1">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <embed src="{{asset('storage/passportCopy/'.$dependent['passport'])}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
+        @if($dependent)
+            <div id="resumeModal" class="modal fade" tabindex="-1">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <embed src="{{asset('storage/resumes/'.$dependent['resume'])}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div id="dependentResidence" class="modal fade" tabindex="-1">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <embed src="{{asset('storage/residenceCopy/'.$dependent['residence_copy'])}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="dependentVisa" class="modal fade" tabindex="-1">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <embed src="{{asset('storage/visaCopy/'.$dependent['visa_copy'])}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
+            <div id="dependentPassword" class="modal fade" tabindex="-1">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <embed src="{{asset('storage/passportCopy/'.$dependent['passport'])}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div id="dependentSchengenVisatModal" class="modal fade" tabindex="-1">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <embed src="{{asset('storage/schengenCopy/'.$dependent['schengen_visa'])}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
+            <div id="dependentResidence" class="modal fade" tabindex="-1">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <embed src="{{asset('storage/residenceCopy/'.$dependent['residence_copy'])}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+            <div id="dependentVisa" class="modal fade" tabindex="-1">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <embed src="{{asset('storage/visaCopy/'.$dependent['visa_copy'])}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="dependentSchengenVisatModal" class="modal fade" tabindex="-1">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <embed src="{{asset('storage/schengenCopy/'.$dependent['schengen_visa'])}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
     </div>
 @endSection  
 @push('custom-scripts')
@@ -1922,7 +1924,7 @@
 
         });
 
-        $('.applicantSubmit, .submitChild, .dependentReview').click(function(e){
+        $('.applicantReview, .submitChild, .dependentReview').click(function(e){
             if (confirm("After submit these details can't be changed")) {
                 $.ajaxSetup({
                     headers: {

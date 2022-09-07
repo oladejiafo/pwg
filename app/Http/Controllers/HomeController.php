@@ -20,6 +20,7 @@ use App\Models\card_details;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NotifyMail;
 use Illuminate\Support\Facades\Response;
+use Config;
 
 use DB;
 use Session;
@@ -580,9 +581,8 @@ class HomeController extends Controller
                 return Redirect::back()->withErrors($validator);
             } else {
                 set_time_limit(0);
-                $outletRef 	 	 = "15d885ec-682a-4398-89d9-247254d71c18";  
-                $apikey 		 = "MmM2ODJiOGMtOGFmNS00NzUyLTg2MjUtM2Y5MTg3OWU5YjRlOjViMzhjM2I5LTUyMDItNDBmZi1hNzAyLTFlYTIwZDkwYjhiMQ==";
-
+                $outletRef 	 	 = config('app.payment_reference');   
+                $apikey 		 = config('app.payment_api_key'); 
 
                 // Test URLS 
                 $idServiceURL  = "https://identity.sandbox.ngenius-payments.com/auth/realms/ni/protocol/openid-connect/token";           // set the identity service URL (example only)
@@ -625,10 +625,8 @@ class HomeController extends Controller
                 $orderCreateResponse = $this->invokeCurlRequest("POST", $txnServiceURL, $orderCreateHeaders, $order);
 
                 $orderCreateResponse = json_decode($orderCreateResponse);
-
                 // dd($orderCreateResponse);
                 $paymentLink 		   = $orderCreateResponse->_links->payment->href; 
-
                 header("Location: ".$paymentLink); 
                 die;
 
@@ -972,12 +970,55 @@ public function mark_read(Request $request) {
 
     public function paymentSuccess($id)
     {
-        
+        session_start();
+    
+        $outletRef 	 	 = config('app.payment_reference');   
+        $apikey 		 = config('app.payment_api_key'); 
+        $orderReference  = $_GET['ref']; 
+        //$orderReference  = 'd4008299-a923-4fde-9107-e0af33114549'; 
+        //$idServiceURL    = "https://identity.ngenius-payments.com/auth/realms/Networkinternational/protocol/openid-connect/token";           // set the identity service URL (example only)
+        //$residServiceURL = "https://api-gateway.ngenius-payments.com/transactions/outlets/".$outletRef."/orders/".$orderReference; 
+
+        $idServiceURL    = "https://identity.sandbox.ngenius-payments.com/auth/realms/ni/protocol/openid-connect/token";           // set the identity service URL (example only)
+        $residServiceURL = "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/".$outletRef."/orders/".$orderReference; 
+
+
+        $tokenHeaders    = array("Authorization: Basic ".$apikey, "Content-Type: application/x-www-form-urlencoded");
+        $tokenResponse   = $this->invokeCurlRequest("POST", $idServiceURL, $tokenHeaders, http_build_query(array('grant_type' => 'client_credentials')));
+        $tokenResponse   = json_decode($tokenResponse);
+        $access_token 	 = $tokenResponse->access_token;
+
+        $responseHeaders  = array("Authorization: Bearer ".$access_token, "Content-Type: application/vnd.ni-payment.v2+json", "Accept: application/vnd.ni-payment.v2+json");
+        $orderResponse 	  = $this->invokeCurlRequest("GET", $residServiceURL, $responseHeaders, '');
+        dd($orderResponse);
+
+        echo json_encode($orderResponse);
         return view('user.payment-success', compact('id'));
     }
 
     public function paymentFail($id)
     {
+        session_start();
+    
+        $outletRef 	 	 = config('app.payment_reference');   
+        $apikey 		 = config('app.payment_api_key'); 
+        $orderReference  = $_GET['ref']; 
+        //$orderReference  = 'd4008299-a923-4fde-9107-e0af33114549'; 
+        //$idServiceURL    = "https://identity.ngenius-payments.com/auth/realms/Networkinternational/protocol/openid-connect/token";           // set the identity service URL (example only)
+        //$residServiceURL = "https://api-gateway.ngenius-payments.com/transactions/outlets/".$outletRef."/orders/".$orderReference; 
+
+        $idServiceURL    = "https://identity.sandbox.ngenius-payments.com/auth/realms/ni/protocol/openid-connect/token";           // set the identity service URL (example only)
+        $residServiceURL = "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/".$outletRef."/orders/".$orderReference; 
+
+
+        $tokenHeaders    = array("Authorization: Basic ".$apikey, "Content-Type: application/x-www-form-urlencoded");
+        $tokenResponse   = $this->invokeCurlRequest("POST", $idServiceURL, $tokenHeaders, http_build_query(array('grant_type' => 'client_credentials')));
+        $tokenResponse   = json_decode($tokenResponse);
+        $access_token 	 = $tokenResponse->access_token;
+
+        $responseHeaders  = array("Authorization: Bearer ".$access_token, "Content-Type: application/vnd.ni-payment.v2+json", "Accept: application/vnd.ni-payment.v2+json");
+        $orderResponse 	  = $this->invokeCurlRequest("GET", $residServiceURL, $responseHeaders, '');
+        dd($orderResponse);
         return view('user.payment-fail', compact('id'));
     }
 
