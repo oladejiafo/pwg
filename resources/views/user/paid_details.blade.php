@@ -119,14 +119,11 @@
                                 @foreach($paid as $det)
                                 @php
 
-                                $completed = DB::table('applicants')
+                                $complete = DB::table('applicants')
                                 ->where('user_id', '=', Auth::user()->id)
-                                ->get();
+                                ->first();
 
-                                foreach($completed as $complete)
-                                {
                                 $app_id= $complete->id;
-                                }
 
                                 if(Session::has('myproduct_id'))
                                 {
@@ -138,7 +135,7 @@
                                 $tri = DB::table('payments')
                                 ->where('application_id', '=', $app_id)
                                 ->first();
-                                var_dump($tri);die;
+                             
                                 @endphp
 
 

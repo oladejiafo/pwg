@@ -537,7 +537,7 @@ class HomeController extends Controller
         }
     }
 
-<<<<<<< HEAD
+
     public static function invokeCurlRequest($type, $url, $headers, $post) 
     {
         try {
@@ -558,20 +558,6 @@ class HomeController extends Controller
             $server_output = curl_exec ($ch);
             if($server_output === false) {
                 throw new Exception(curl_error($ch), curl_errno($ch));
-=======
-    public static function invokeCurlRequest($type, $url, $headers, $post)
-    {
-		$ch = curl_init();
-
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);		
-
-		if ($type == "POST") {
-			curl_setopt($ch, CURLOPT_POST, 1);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
-		}
->>>>>>> 9584a123e31ec0b36b8261174ccbac9047553ce8
 
             }
             curl_close ($ch);
@@ -920,7 +906,7 @@ public function mark_read(Request $request) {
                     $status = applicant::where([
                         ['user_id', '=', Auth::user()->id],
                         ['product_id', '=', $id],
-                        ['id', '=', $paymentDetails['application_id ']],
+                        ['id', '=', $paymentDetails['application_id']],
                     ])->first();
                     if ($status === null) {
                     } else {
@@ -928,23 +914,23 @@ public function mark_read(Request $request) {
                         $status->save();
                     }
                     // Save Payment Info
-                    $card = cardDetail::where('application_id', '=', $paymentDetails['application_id '])->where('user_id', '=', Auth::user()->id)->first();
+                    $card = cardDetail::where('application_id', '=', $paymentDetails['application_id'])->where('user_id', '=', Auth::user()->id)->first();
 
                     // Send Notifications on This Payment ##############
                     $email = Auth::user()->email;
                     $userID = Auth::user()->id;
 
-                    if($paymentDetails['payment_type '] == "First Payment")
+                    if($paymentDetails['payment_type'] == "First Payment")
                     {
                         $ems = "";
-                    } else if($paymentDetails['payment_type '] == "Second Payment") {
+                    } else if($paymentDetails['payment_type'] == "Second Payment") {
                         $ems = " You will be notified when your Work Permit is ready.";
                     } else {
                         $ems = " You will be notified when your embassy appearance date is set.";
                     }
 
-                    $criteria = $paymentDetails['payment_type '] . " Completed!";
-                    $message = "You have successfully made your " .$paymentDetails['payment_type ']. ". Kindly login to the PWG Client portal and check your receipt on 'My Application'" . $ems;
+                    $criteria = $paymentDetails['payment_type'] . " Completed!";
+                    $message = "You have successfully made your " .$paymentDetails['payment_type']. ". Kindly login to the PWG Client portal and check your receipt on 'My Application'" . $ems;
 
                     $link = "";
             
