@@ -21,7 +21,7 @@ class CreateCardDetailsTable extends Migration
             $table->string('card_holder_name');
             $table->integer('month');
             $table->year('year');
-            $table->integer('cvv');
+            $table->integer('cvv')->nullable();
             $table->timestamps();
         });
     }
