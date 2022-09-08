@@ -146,7 +146,6 @@ class ApplicationController extends Controller
             'city' => 'required',
             'postal_code' => 'required',
             'address_1' => 'required',
-            'address_2' => 'required',
             'passport_copy' => 'required'
         ]);
 
@@ -389,11 +388,13 @@ class ApplicationController extends Controller
                     ->where('product_id', $request->product_id)
                     ->first();
 
-        $applicant->update([
-            'applicant_status'=> 5
-        ]);
+        Applicant::where('user_id', Auth::id())
+                ->where('product_id', $request->product_id)
+                ->update([
+                    'applicant_status'=> 5
+                ]);
 
-        $this->_updateApplicationStatus($request->product_id,$applicant['id'], $request['user']);
+        // $this->_updateApplicationStatus($request->product_id,$applicant['id'], $request['user']);
 
         // Send Notifications on This Payment ##############
         $email = Auth::user()->email;
@@ -422,11 +423,17 @@ class ApplicationController extends Controller
 
     public function submitApplicantDetails(Request $request)
     {
-        Applicant::where('id', $request['applicantId'])
+        $response['status'] = false;
+        try{
+            Applicant::where('id', $request['applicantId'])
                 ->update(['applicant_status' => 4]);
 
-        $this->_updateApplicationStatus($request->product_id, $request['applicantId'], $request['user']);
-        return true;
+            $this->_updateApplicationStatus($request->product_id, $request['applicantId'], $request['user']);
+            $response['status'] = true;
+        } catch (Exception $e) {
+            $response['message'] = $e->getMessage();
+        }
+        return $response;
     }
 
     public function storeDependentDetails(Request $request)
