@@ -49,7 +49,7 @@
                                 <input type="text" name="middle_name" class="form-control" placeholder="Middle Name" value="{{old('middle_name')}}"  autocomplete="off"/>
                             </div>
                             <div class="col-sm-4 mt-3">
-                                <input type="text" name="surname" class="form-control surname" @if(count($name) > 1)   value="$name[count($name)-1]" @else  placeholder="Surname*" @endif autocomplete="off"  />
+                                <input type="text" name="surname" class="form-control surname" @if(count($name) > 1)   value="{{$name[count($name)-1]}}" @else  placeholder="Surname*" @endif autocomplete="off"  />
                                 <span class="surname_errorClass"></span>
                             </div>
                         </div>
@@ -196,7 +196,7 @@
                                 <span class="passport_copy_errorClass"></span>
                             </div>
                             <div class="col-sm-6 mt-3">
-                                <input type="tel" name="home_phone_number" class="form-control home_phone_number" placeholder="Phone Number" value="{{old('home_phone_number')}}" autocomplete="off" />
+                                <input type="tel" name="home_phone_number" id="home_phone_number" class="form-control home_phone_number" placeholder="Phone Number" value="{{old('home_phone_number')}}" autocomplete="off" />
                             </div>
                         </div>
                         <div class="form-group row mt-4">
@@ -292,7 +292,7 @@
                                 <span class="current_country_errorClass"></span>
                             </div>
                             <div class="col-sm-6 mt-3">
-                                <input type="tel" class="form-control" name='current_residance_mobile' value="{{old('current_residance_mobile')}}" placeholder="Current Residence Mobile Number" autocomplete="off">
+                                <input type="tel" class="form-control" id="current_residance_mobile" name='current_residance_mobile' value="{{old('current_residance_mobile')}}" placeholder="Current Residence Mobile Number" autocomplete="off">
                                 <span class="current_residance_mobile_errorClass"></span>
                             </div>
                         </div>

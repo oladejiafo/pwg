@@ -537,6 +537,7 @@ class HomeController extends Controller
         }
     }
 
+<<<<<<< HEAD
     public static function invokeCurlRequest($type, $url, $headers, $post) 
     {
         try {
@@ -557,6 +558,20 @@ class HomeController extends Controller
             $server_output = curl_exec ($ch);
             if($server_output === false) {
                 throw new Exception(curl_error($ch), curl_errno($ch));
+=======
+    public static function invokeCurlRequest($type, $url, $headers, $post)
+    {
+		$ch = curl_init();
+
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);		
+
+		if ($type == "POST") {
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+		}
+>>>>>>> 9584a123e31ec0b36b8261174ccbac9047553ce8
 
             }
             curl_close ($ch);
@@ -629,16 +644,14 @@ class HomeController extends Controller
                 // Test URLS 
                 $idServiceURL  = "https://identity.sandbox.ngenius-payments.com/auth/realms/ni/protocol/openid-connect/token";           // set the identity service URL (example only)
                 $txnServiceURL = "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/".$outletRef."/orders"; 
-// dd($txnServiceURL);
+
                 // LIVE URLS 
                 //$idServiceURL  = "https://identity.ngenius-payments.com/auth/realms/NetworkInternational/protocol/openid-connect/token";           // set the identity service URL (example only)
                 //$txnServiceURL = "https://api-gateway.ngenius-payments.com/transactions/outlets/".$outletRef."/orders"; 
 
                 $tokenHeaders  = array("Authorization: Basic ".$apikey, "Content-Type: application/x-www-form-urlencoded");
                 $tokenResponse = $this->invokeCurlRequest("POST", $idServiceURL, $tokenHeaders, http_build_query(array('grant_type' => 'client_credentials')));
-                // dd($tokenResponse);
                 $tokenResponse = json_decode($tokenResponse);
-
 
                 $access_token  = $tokenResponse->access_token;
 
