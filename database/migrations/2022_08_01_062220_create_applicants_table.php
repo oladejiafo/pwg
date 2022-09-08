@@ -68,6 +68,7 @@ class CreateApplicantsTable extends Migration
             $table->string('is_fingerprint_collected')->comment('is fingerprint collected for schengen visa application')->nullable();
             $table->string('embassy_country')->nullable();
             $table->string('applicant_status')->default('pending')->comment('1:referal; 2:payment; 3:applcant; 4:applicant details; 5:applicant review');
+            $table->string('status')->nullable();
             $table->string('referrer_code')->nullable();
             $table->string('agent_code')->nullable();
             $table->string('visa_type')->nullable();

@@ -392,6 +392,7 @@ class HomeController extends Controller
                     ->where('product_payments.visa_type', '=', $packageType)
                     ->where('family_sub_id', '=', $family_id)
                     ->where('applicants.user_id', '=', $id)
+                    ->orderBy('product_payments.id')
                     ->groupBy('product_payments.payment')
                     ->get();
             } else {
@@ -400,6 +401,7 @@ class HomeController extends Controller
                     ->select('product_payments.id', 'product_payments.payment', 'product_payments.amount', 'product_payments.product_id')
                     ->where('product_payments.visa_type', '=', $packageType)
                     ->where('applicants.user_id', '=', $id)
+                    ->orderBy('product_payments.id')
                     ->groupBy('product_payments.payment')
                     ->get();
             }
