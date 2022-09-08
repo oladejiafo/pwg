@@ -64,7 +64,7 @@
                 </div>
                 <div class="applicant-tab-sec">
                     <div class="row">
-                        @if(($applicant['is_spouse'] != null || $applicant['is_spouse'] != 0) && ($applicant['children_count'] != null || $applicant['children_count'] != 0))
+                        @if(($applicant['visa_type'] == 'FAMILY PACKAGE') && ($applicant['is_spouse'] != null || $applicant['is_spouse'] != 0) && ($applicant['children_count'] != null || $applicant['children_count'] != 0))
                             <div class="col-4">
                                 <div class="mainApplicant active" data-toggle="tab" role="tab" style="border-radius: 20px 0 0 20px;">
                                     <a  href="#mainApplicant">
@@ -86,7 +86,7 @@
                                     </a>
                                 </div>
                             </div>
-                        @elseif(($applicant['is_spouse'] != null || $applicant['is_spouse'] != 0) &&  ($applicant['children_count'] == null || $applicant['children_count'] == 0))
+                        @elseif(($applicant['visa_type'] == 'FAMILY PACKAGE') && ($applicant['is_spouse'] != null || $applicant['is_spouse'] != 0) &&  ($applicant['children_count'] == null || $applicant['children_count'] == 0))
                             <div class="col-6">
                                 <div class="mainApplicant active" data-toggle="tab" role="tab" style="border-radius: 20px 0 0 20px;">
                                     <a  href="#mainApplicant">
@@ -1736,38 +1736,40 @@
                 "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
         });
 
-        const dependentPhone = document.querySelector("#dependent_phone");
-        const dependenthomephonenumber = document.querySelector("#dependent_home_phone_number");
-        const dependentcurrentresidancemobile = document.querySelector("#dependent_current_residance_mobile");
-        const dependentPhoneInput = window.intlTelInput(dependentPhone, {
-            separateDialCode: false,
-            preferredCountries:["ae"],
-            nationalMode: false,
-            hiddenInput: "full",
-            autoHideDialCode: false,
-            utilsScript:
-                "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-        });
+        if(('{{$applicant['visa_type']}}' == 'FAMILY PACKAGE') && ($applicant['is_spouse'] > 0)){
+            const dependentPhone = document.querySelector("#dependent_phone");
+            const dependentPhoneInput = window.intlTelInput(dependentPhone,{
+                separateDialCode: false,
+                preferredCountries:["ae"],
+                nationalMode: false,
+                hiddenInput: "full",
+                autoHideDialCode: false,
+                utilsScript:
+                    "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+            });
 
-        const dependenthomephonenumberInput = window.intlTelInput(dependenthomephonenumber, {
-            separateDialCode: false,
-            preferredCountries:["ae"],
-            nationalMode: false,
-            hiddenInput: "full",
-            autoHideDialCode: false,
-            utilsScript:
-                "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-        });
+            const dependenthomephonenumber = document.querySelector("#dependent_home_phone_number");
+            const dependenthomephonenumberInput = window.intlTelInput(dependenthomephonenumber,{
+                separateDialCode: false,
+                preferredCountries:["ae"],
+                nationalMode: false,
+                hiddenInput: "full",
+                autoHideDialCode: false,
+                utilsScript:
+                    "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+            });
 
-        const dependentcurrentresidancemobileInput = window.intlTelInput(dependentcurrentresidancemobile, {
-            separateDialCode: false,
-            preferredCountries:["ae"],
-            nationalMode: false,
-            hiddenInput: "full",
-            autoHideDialCode: false,
-            utilsScript:
-                "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-        });
+            const dependentcurrentresidancemobile = document.querySelector("#dependent_current_residance_mobile");
+            const dependentcurrentresidancemobileInput = window.intlTelInput(dependentcurrentresidancemobile,{
+                separateDialCode: false,
+                preferredCountries:["ae"],
+                nationalMode: false,
+                hiddenInput: "full",
+                autoHideDialCode: false,
+                utilsScript:
+                    "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+            });
+        }
 
         $(".applicantDetails").click(function(e){
             e.preventDefault(); 
@@ -1807,7 +1809,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            
+
             $.ajax({
                 type: 'POST',
                 url: "{{ url('store/home/country/details') }}",
@@ -1992,7 +1994,9 @@
                 $.ajax({
                     type: 'POST',
                     url: "{{ url('submit/applicant/review/') }}",
-                    data: {applicantId : '{{$applicant['id']}}'},
+                    data: {
+                        product_id : '{{$productId}}'
+                    },
                     success: function (response) {
                         location.href = "{{url('myapplication')}}"
                     },

@@ -324,14 +324,14 @@
                                     user: 'applicant',
                                 },
                                 success: function (response) {
-                                    if(response.success) {
+                                    if(response.status) {
                                         checkdata = checkStatus('{{$applicant['id']}}', '{{$productId}}');
                                         if(checkdata.status){
                                             location.href = "{{url('applicant/review')}}/"+'{{$productId}}';
                                         } else {
                                             alert(checkdata.message);
                                         }
-                                        } else {
+                                    } else {
                                         var validationError = response.errors;
                                         $.each(validationError, function(index, value) {
                                             $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
