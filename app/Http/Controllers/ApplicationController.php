@@ -420,6 +420,15 @@ class ApplicationController extends Controller
         return Response::json(array('success' => true), 200);
     }   
 
+    public function submitApplicantDetails(Request $request)
+    {
+        Applicant::where('id', $request['applicantId'])
+                ->update(['applicant_status' => 4]);
+
+        $this->_updateApplicationStatus($request->product_id, $request['applicantId'], $request['user']);
+        return true;
+    }
+
     public function storeDependentDetails(Request $request)
     {
         // dd($request);
@@ -672,8 +681,8 @@ class ApplicationController extends Controller
             ]);
         }
 
-        // Applicant::where('id', $request['applicant_id'])
-        //         ->update(['applicant_status' =>  3]);
+        Applicant::where('id', $request['applicant_id'])
+                ->update(['applicant_status' =>  4]);
 
         return Response::json(array(
             'success' => true
