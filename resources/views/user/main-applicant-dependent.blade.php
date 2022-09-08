@@ -675,7 +675,7 @@
                 <div class="form-group row mt-4">
                     <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
                         @if($applicant['is_spouse'] != null && $applicant['children_count'] == null)
-                            <button type="submit" class="btn btn-primary submitBtn dependentReview">Submit</button>
+                            <button type="submit" class="btn btn-primary submitBtn dependentReview">Submit  <i class="fa fa-spinner fa-spin dependentReviewSpin"></i></button>
                         @else 
                             <button type="submit" class="btn btn-primary submitBtn dependentNext">Next</button>
                         @endif

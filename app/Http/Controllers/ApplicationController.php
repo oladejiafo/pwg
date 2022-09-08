@@ -537,8 +537,7 @@ class ApplicationController extends Controller
                 'state' => $request['dependent_state'],
                 'city' => $request['dependent_city'],
                 'postal_code' => $request['dependent_postal_code'],
-                'address_1' => $request['dependent_address_1'],
-                'address_2' => $request['dependent_address_2']
+                'address_1' => $request['dependent_address_1']
             ]);
         return Response::json(array(
             'dependentId' => $this->getFamilyId($request->applicant_id,  $request->product_id),

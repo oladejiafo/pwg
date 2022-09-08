@@ -660,7 +660,7 @@
                         @if($applicant['is_spouse'] != null || $applicant['children_count'] != null) 
                             <button type="submit" class="btn btn-primary submitBtn applicantNext">  Next </button>
                         @else
-                            <button type="submit" class="btn btn-primary submitBtn applicantReview">  Submit </button>
+                            <button type="submit" class="btn btn-primary submitBtn applicantReview">  Submit <i class="fa fa-spinner fa-spin applicantReviewSpin"></i></button>
                         @endif
                     </div>
                 </div>

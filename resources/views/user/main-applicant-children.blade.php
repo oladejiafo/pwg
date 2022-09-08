@@ -76,7 +76,7 @@
                         <div class="form-group row mt-4">
                             <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
                                 @if($i ==  $applicant['children_count'])
-                                    <button type="submit" class="btn btn-primary submitBtn">Submit</button>  
+                                    <button type="submit" class="btn btn-primary submitBtn">Submit <i class="fa fa-spinner fa-spin childReviewSpin"></i></button>  
                                 @else 
                                     <button type="button" class="btn btn-primary submitBtn collapsechild{{$i+1}}" data-bs-toggle="collapse" data-bs-target="#collapsechild{{$i+1}}" aria-expanded="false" aria-controls="collapsechild{{$i+1}}">Continue</button>  
                                 @endif

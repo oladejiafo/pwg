@@ -163,6 +163,7 @@
 <script>
     $(document).ready(function(){
         // Main Applicant
+        $('.applicantReviewSpin, .dependentReviewSpin, .childReviewSpin').hide();
         $('.schengen_visa, .applicantData, .homeCountryData, .currentCountryData, .schengenData, .dependent_schengen_visa').hide();
         $('.datepicker, .dependent_datepicker, .child-dob').datepicker({
             maxDate : 0,
@@ -310,6 +311,7 @@
         });
 
         $('.applicantReview').click(function(e){
+            $('.applicantReviewSpin').show();
             e.preventDefault(); 
             if($('.applicantCompleted').val() == 1){
                 if($('.homeCountryCompleted').val() == 1) {
@@ -319,19 +321,20 @@
                                 type: 'POST',
                                 url: "{{ url('/submit/applicant/Details/') }}",
                                 data: {
-                                    product_id: '{{$productId}}',
                                     applicantId: '{{$applicant['id']}}',
                                     user: 'applicant',
                                 },
                                 success: function (response) {
                                     if(response.status) {
                                         checkdata = checkStatus('{{$applicant['id']}}', '{{$productId}}');
+                                        $('.applicantReviewSpin').hide();
                                         if(checkdata.status){
                                             location.href = "{{url('applicant/review')}}/"+'{{$productId}}';
                                         } else {
                                             alert(checkdata.message);
                                         }
                                     } else {
+                                        $('.applicantReviewSpin').hide();
                                         var validationError = response.errors;
                                         $.each(validationError, function(index, value) {
                                             $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
@@ -657,7 +660,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            var full_number = dependenthomephonenumber.getNumber(intlTelInputUtils.numberFormat.E164);
+            var full_number = dependenthomephonenumberInput.getNumber(intlTelInputUtils.numberFormat.E164);
             $("input[id='dependent_home_phone_number'").val(full_number);
             $.ajax({
                 type: 'POST',
@@ -694,7 +697,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            var full_number = dependentcurrentresidancemobile.getNumber(intlTelInputUtils.numberFormat.E164);
+            var full_number = dependentcurrentresidancemobileInput.getNumber(intlTelInputUtils.numberFormat.E164);
             $("input[id='dependent_current_residance_mobile'").val(full_number);
             $.ajax({
                 type: 'POST',
@@ -839,6 +842,7 @@
 
         $('#child_details').submit(function(e){
             e.preventDefault(); 
+            $('.childReviewSpin').show();
             $("#child_details :input").each(function(index, elm){
                 $("."+elm.name+"_errorClass").empty();
             });
@@ -856,12 +860,14 @@
                 success: function (data) {
                     if(data.success) {
                         checkdata = checkStatus('{{$applicant['id']}}', '{{$productId}}');
+                        $('.childReviewSpin').hide();
                         if(checkdata.status){
                             location.href = "{{url('applicant/review')}}/"+'{{$productId}}';
                         } else {
                             alert(checkdata.message);
                         }
                     } else {
+                        $('.childReviewSpin').hide();
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
                             $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
@@ -875,6 +881,7 @@
 
         $('.dependentReview').click(function(e){
             e.preventDefault(); 
+            $('.dependentReviewSpin').show();
             if($('.dependentApplicantCompleted').val() == 1){
                 if($('.spouseHomeCountryCompleted').val() == 1) {
                     if($('.spouseCurrentCountryCompleted').val() == 1) {
@@ -883,21 +890,20 @@
                                 type: 'POST',
                                 url: "{{ url('/submit/applicant/Details/') }}",
                                 data: {
-                                        applicantId: '{{$applicant['id']}}',
-                                        product_id: '{{$productId}}',
-                                        user: 'family',
-                                    },
-                                processData: false,
-                                contentType: false,
+                                    applicantId: '{{$applicant['id']}}',
+                                    user: 'family',
+                                },
                                 success: function (response) {
-                                    if(response.success) {
+                                    if(response.status) {
                                         checkdata = checkStatus('{{$applicant['id']}}', '{{$productId}}');
+                                        $('.dependentReviewSpin').hide();
                                         if(checkdata.status){
                                             location.href = "{{url('applicant/review')}}/"+'{{$productId}}';
                                         } else {
                                             alert(checkdata.message);
                                         }
                                     } else {
+                                        $('.dependentReviewSpin').hide();
                                         var validationError = response.errors;
                                         $.each(validationError, function(index, value) {
                                             $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
