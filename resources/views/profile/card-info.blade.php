@@ -69,14 +69,14 @@ $card = DB::table('card_details')
    </div>
   </div> 
   <div class="row mb-3" style="width:70%; margin: 0 auto; margin-bottom:20px">
-  <div class="col-4">
+  <!-- <div class="col-4">
     <label for="cvc" class="form-label">CVC</label>
     <input type="text" class="form-control" name="cvc" id="cvc" pattern="\d*" maxlength="3" value="{{(isset($card->cvv)) ? $card->cvv : ''}}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required>
-    @if($errors->has('cvv'))
+   {{-- @if($errors->has('cvv')) --}}
     <div class="error">{{ $errors->first('cvv') }}</div>
-    @endif
-   </div>
-   <div class="col-4">
+    {{-- @endif --}}
+   </div> -->
+   <div class="col-6">
     <label for="month" class="form-label">Expiry Month</label>
     <select name="month" class="form-control" id="month" value="{{ old('month') }}" required>
         <option selected>{{ (isset($card->month)) ? $card->month : '' }}</option>
@@ -95,7 +95,7 @@ $card = DB::table('card_details')
     </select>
    
    </div>
-   <div class="col-4">
+   <div class="col-6">
     <label for="year" class="form-label">Expiry Year</label>
     <input type="text" class="form-control" name="year" id="year" pattern="\d*" maxlength="4" value="{{(isset($card->year)) ? $card->year : '' }}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required>
     @if($errors->has('year'))
