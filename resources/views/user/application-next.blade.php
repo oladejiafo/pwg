@@ -187,7 +187,7 @@
             changeYear: true,
             constrainInput: false   
         });
-        const phoneInputField = document.querySelector("#phone ");
+        const phoneInputField = document.querySelector("#phone");
         const phoneInput = window.intlTelInput(phoneInputField, {
             separateDialCode: false,
             preferredCountries:["ae"],
@@ -198,7 +198,7 @@
                 "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
         });
 
-        const phoneHomeInputField = document.querySelector("#home_phone_number ");
+        const phoneHomeInputField = document.querySelector("#home_phone_number");
         const phoneHomeInput = window.intlTelInput(phoneHomeInputField, {
             separateDialCode: false,
             preferredCountries:["ae"],
@@ -209,7 +209,7 @@
                 "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
         });
 
-        const phoneCurrentInputField = document.querySelector("#current_residance_mobile ");
+        const phoneCurrentInputField = document.querySelector("#current_residance_mobile");
         const phoneCurrentInput = window.intlTelInput(phoneCurrentInputField, {
             separateDialCode: false,
             preferredCountries:["ae"],
@@ -220,10 +220,39 @@
                 "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
         });
 
-        // $("form").submit(function() {
-        //   var full_number = phone_number.getNumber(intlTelInputUtils.numberFormat.E164);
-        //   $("input[id='phone'").val(full_number);
-        // });
+        const dependentPhone = document.querySelector("#dependent_phone");
+        const dependenthomephonenumber = document.querySelector("#dependent_home_phone_number");
+        const dependentcurrentresidancemobile = document.querySelector("#dependent_current_residance_mobile");
+        const dependentPhoneInput = window.intlTelInput(dependentPhone, {
+            separateDialCode: false,
+            preferredCountries:["ae"],
+            nationalMode: false,
+            hiddenInput: "full",
+            autoHideDialCode: false,
+            utilsScript:
+                "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        });
+
+        const dependenthomephonenumberInput = window.intlTelInput(dependenthomephonenumber, {
+            separateDialCode: false,
+            preferredCountries:["ae"],
+            nationalMode: false,
+            hiddenInput: "full",
+            autoHideDialCode: false,
+            utilsScript:
+                "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        });
+
+        const dependentcurrentresidancemobileInput = window.intlTelInput(dependentcurrentresidancemobile, {
+            separateDialCode: false,
+            preferredCountries:["ae"],
+            nationalMode: false,
+            hiddenInput: "full",
+            autoHideDialCode: false,
+            utilsScript:
+                "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        });
+
 
         $(document).on('change','.up', function(){
             $("#passportFormatModal").modal('hide');
@@ -289,7 +318,10 @@
                             $.ajax({
                                 type: 'POST',
                                 url: "{{ url('submit/applicant/review') }}",
-                                data: {product_id: '{{$productId}}'},
+                                data: {
+                                    product_id: '{{$productId}}',
+                                    user: 'applicant'
+                                },
                                 success: function (response) {
                                     if(response.success) {
                                         checkdata = checkStatus('{{$applicant['id']}}', '{{$productId}}');
@@ -587,6 +619,8 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+            var full_number = dependentPhoneInput.getNumber(intlTelInputUtils.numberFormat.E164);
+            $("input[id='dependent_phone'").val(full_number);
             $.ajax({
                 type: 'POST',
                 url: "{{ route('store.dependent.details') }}",
@@ -622,6 +656,8 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+            var full_number = dependenthomephonenumber.getNumber(intlTelInputUtils.numberFormat.E164);
+            $("input[id='dependent_home_phone_number'").val(full_number);
             $.ajax({
                 type: 'POST',
                 url: "{{ url('store/spouse/home/country/details') }}",
@@ -657,6 +693,8 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+            var full_number = dependentcurrentresidancemobile.getNumber(intlTelInputUtils.numberFormat.E164);
+            $("input[id='dependent_current_residance_mobile'").val(full_number);
             $.ajax({
                 type: 'POST',
                 url: "{{ url('store/spouse/current/details') }}",
@@ -843,7 +881,10 @@
                             $.ajax({
                                 type: 'POST',
                                 url: "{{ url('submit/applicant/review') }}",
-                                data: {product_id: '{{$productId}}'},
+                                data: {
+                                        product_id: '{{$productId}}',
+                                        user: 'family',
+                                    },
                                 processData: false,
                                 contentType: false,
                                 success: function (response) {
@@ -927,6 +968,7 @@
             }
         });
     });
+
     function showPassportFormat()
     {
         $("#passportFormatModal").modal('show');

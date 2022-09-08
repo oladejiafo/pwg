@@ -59,10 +59,6 @@
                                 <a href="{{url('applicant/review',  $productId)}}" ><div class="round-active round5 m-2">4</div></a>
                                 <div class="col-2 round-title">Applicant <br> Reviews</div>
                             </div>
-                            
-
-
-
                         </div>
                     </div>
                 </div>
@@ -309,7 +305,7 @@
                                                     <span class="passport_copy_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="tel" name="home_phone_number" class="form-control" placeholder="Phone Number" value="{{$applicant['phone_number']}}" autocomplete="off" />
+                                                    <input type="tel" name="home_phone_number" id="home_phone_number" class="form-control" placeholder="Phone Number" value="{{$applicant['phone_number']}}" autocomplete="off" />
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
@@ -342,8 +338,7 @@
                                                     <span class="address1_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="text" name="address_2" class="form-control" placeholder="Address (Street And Number) Line 2*" value="{{$applicant['address_2']}}" autocomplete="off">
-                                                    <span class="address2_errorClass"></span>
+                                                    <input type="text" name="address_2" class="form-control" placeholder="Address (Street And Number) Line 2" value="{{$applicant['address_2']}}" autocomplete="off">
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
@@ -400,7 +395,7 @@
                                                     <span class="current_country_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="tel" class="form-control" name='current_residance_mobile' value="{{$applicant['current_residence_mobile']}}" placeholder="Current Residence Mobile Number" autocomplete="off">
+                                                    <input type="tel" class="form-control" id="current_residance_mobile" name='current_residance_mobile' value="{{$applicant['current_residence_mobile']}}" placeholder="Current Residence Mobile Number" autocomplete="off">
                                                     <span class="current_residance_mobile_errorClass"></span>
                                                 </div>
                                             </div>
@@ -830,7 +825,7 @@
                                                     <span class="dependent_email_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="tel" name="dependent_phone_number" class="form-control dependent_phone_number" id="phone" placeholder="Phone Number*" value="{{$dependent['personal_phone_number']}}" autocomplete="off"  />
+                                                    <input type="tel" name="dependent_phone_number" class="form-control dependent_phone_number" id="dependent_phone" placeholder="Phone Number*" value="{{$dependent['personal_phone_number']}}" autocomplete="off"  />
                                                     <span class="dependent_phone_number_errorClass"></span>
                                                 </div>
                                             </div>
@@ -978,7 +973,7 @@
                                                     <span class="dependent_passport_copy_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="tel" name="dependent_home_phone_number" class="form-control dependent_home_phone_number" placeholder="Phone Number" value="{{$dependent['phone_number']}}" autocomplete="off" />
+                                                    <input type="tel" name="dependent_home_phone_number" id="dependent_home_phone_number" class="form-control dependent_home_phone_number" placeholder="Phone Number" value="{{$dependent['phone_number']}}" autocomplete="off" />
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
@@ -1070,7 +1065,7 @@
                                                     <span class="dependent_current_country_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="tel" class="form-control" name='dependent_current_residance_mobile' value="{{$dependent['current_residance_mobile']}}" placeholder="Current Residence Mobile Number" autocomplete="off">
+                                                    <input type="tel" class="form-control" id="dependent_current_residance_mobile" name='dependent_current_residance_mobile' value="{{$dependent['current_residance_mobile']}}" placeholder="Current Residence Mobile Number" autocomplete="off">
                                                     <span class="dependent_current_residance_mobile_errorClass"></span>
                                                 </div>
                                             </div>
@@ -1710,11 +1705,69 @@
 
         const phoneInputField = document.querySelector("#phone");
         const phoneInput = window.intlTelInput(phoneInputField, {
-            initialCountry: "ae",
+            separateDialCode: false,
+            preferredCountries:["ae"],
+            nationalMode: false,
+            hiddenInput: "full",
+            autoHideDialCode: false,
             utilsScript:
                 "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
         });
 
+        const phoneHomeInputField = document.querySelector("#home_phone_number");
+        const phoneHomeInput = window.intlTelInput(phoneHomeInputField, {
+            separateDialCode: false,
+            preferredCountries:["ae"],
+            nationalMode: false,
+            hiddenInput: "full",
+            autoHideDialCode: false,
+            utilsScript:
+                "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        });
+
+        const phoneCurrentInputField = document.querySelector("#current_residance_mobile");
+        const phoneCurrentInput = window.intlTelInput(phoneCurrentInputField, {
+            separateDialCode: false,
+            preferredCountries:["ae"],
+            nationalMode: false,
+            hiddenInput: "full",
+            autoHideDialCode: false,
+            utilsScript:
+                "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        });
+
+        const dependentPhone = document.querySelector("#dependent_phone");
+        const dependenthomephonenumber = document.querySelector("#dependent_home_phone_number");
+        const dependentcurrentresidancemobile = document.querySelector("#dependent_current_residance_mobile");
+        const dependentPhoneInput = window.intlTelInput(dependentPhone, {
+            separateDialCode: false,
+            preferredCountries:["ae"],
+            nationalMode: false,
+            hiddenInput: "full",
+            autoHideDialCode: false,
+            utilsScript:
+                "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        });
+
+        const dependenthomephonenumberInput = window.intlTelInput(dependenthomephonenumber, {
+            separateDialCode: false,
+            preferredCountries:["ae"],
+            nationalMode: false,
+            hiddenInput: "full",
+            autoHideDialCode: false,
+            utilsScript:
+                "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        });
+
+        const dependentcurrentresidancemobileInput = window.intlTelInput(dependentcurrentresidancemobile, {
+            separateDialCode: false,
+            preferredCountries:["ae"],
+            nationalMode: false,
+            hiddenInput: "full",
+            autoHideDialCode: false,
+            utilsScript:
+                "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        });
 
         $(".applicantDetails").click(function(e){
             e.preventDefault(); 
@@ -1722,6 +1775,9 @@
             $("#applicant_details :input").each(function(index, elm){
                 $("."+elm.name+"_errorClass").empty();
             });
+            var full_number = phoneInput.getNumber(intlTelInputUtils.numberFormat.E164);
+            $("input[id='phone'").val(full_number);
+
             var formdata = $('#applicant_details').serialize(); 
             $.ajax({
                 type: 'POST',
@@ -1751,6 +1807,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+            
             $.ajax({
                 type: 'POST',
                 url: "{{ url('store/home/country/details') }}",
@@ -1934,7 +1991,7 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: "{{ url('submit/applicant/Details') }}",
+                    url: "{{ url('submit/applicant/review/') }}",
                     data: {applicantId : '{{$applicant['id']}}'},
                     success: function (response) {
                         location.href = "{{url('myapplication')}}"

@@ -194,7 +194,7 @@ class ApplicationController extends Controller
         $applicant = Applicant::where('user_id', Auth::id())
                         ->where('product_id', $productId)
                         ->first();
-        $this->_updateApplicationStatus($productId, $applicant->id, 'applicant');
+        // $test = $this->_updateApplicationStatus($productId, $applicant->id, 'applicant');
         $dependent = FamilyDetail::where('product_id', $productId)
                         ->where('applicant_id', $applicant->id)
                         ->first();
@@ -393,7 +393,7 @@ class ApplicationController extends Controller
             'applicant_status'=> 5
         ]);
 
-        $this->_updateApplicationStatus($request->product_id,$applicant['id'], 'family');
+        $this->_updateApplicationStatus($request->product_id,$applicant['id'], $request['user']);
 
         // Send Notifications on This Payment ##############
         $email = Auth::user()->email;
@@ -419,13 +419,6 @@ class ApplicationController extends Controller
             
         return Response::json(array('success' => true), 200);
     }   
-
-    public function submitApplicantDetails(Request $request)
-    {
-        Applicant::where('id', $request['applicantId'])
-                ->update(['applicant_status' => 4]);
-        return true;
-    }
 
     public function storeDependentDetails(Request $request)
     {
@@ -495,7 +488,6 @@ class ApplicationController extends Controller
             'dependent_city' => 'required',
             'dependent_postal_code' => 'required',
             'dependent_address_1' => 'required',
-            'dependent_address_2' => 'required',
             'dependent_passport_copy' => 'required'
         ]);
 
@@ -731,22 +723,31 @@ class ApplicationController extends Controller
                                 ->where('status', 1)
                                 ->first();
         if($applicant){
-            $family = FamilyDetail::where('product_id', $request->product_id)
+            $response['status'] = true;
+            if($applicant['visa_type'] == 'FAMILY PACKAGE'){
+                if($applicant['is_spouse']){
+                    $family = FamilyDetail::where('product_id', $request->product_id)
                                 ->where('applicant_id', $request->id)
                                 ->where('status', 1)
                                 ->first();
-            if($family) {
-                $children = ChildrenDetail::where('product_id', $request->product_id)
-                            ->where('applicant_id', $request->id)
-                            ->where('status', 1)
-                            ->first();
-                if($children) {
-                    $response['status'] = true;
-                } else {
-                    $response['message'] = 'Children details should be completed before proceeding';
+                    if($family) {
+                    } else {
+                        $response['status'] = false;
+                        $response['message'] = 'Family details should be completed before proceeding';
+                    }
                 }
-            } else {
-                $response['message'] = 'Family details should be completed before proceeding';
+                
+                if($applicant['children_count']){
+                    $children = ChildrenDetail::where('product_id', $request->product_id)
+                                ->where('applicant_id', $request->id)
+                                ->where('status', 1)
+                                ->first();
+                    if($children) {
+                    } else {
+                        $response['status'] = false;
+                        $response['message'] = 'Children details should be completed before proceeding';
+                    }
+                }
             }
         } else {
             $response['message'] = 'Applicant details should be completed before proceeding';

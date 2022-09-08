@@ -59,7 +59,7 @@
                                 <span class="dependent_email_errorClass"></span>
                             </div>
                             <div class="col-sm-6 mt-3">
-                                <input type="tel" name="dependent_phone_number" class="form-control dependent_phone_number" id="phone" placeholder="Phone Number*" value="" autocomplete="off"  />
+                                <input type="tel" name="dependent_phone_number" class="form-control dependent_phone_number" id="dependent_phone" placeholder="Phone Number*" value="" autocomplete="off"  />
                                 <span class="dependent_phone_number_errorClass"></span>
                             </div>
                         </div>
@@ -209,7 +209,7 @@
                                 <span class="dependent_passport_copy_errorClass"></span>
                             </div>
                             <div class="col-sm-6 mt-3">
-                                <input type="tel" name="dependent_home_phone_number" class="form-control dependent_home_phone_number" placeholder="Phone Number" value="{{old('dependent_home_phone_number')}}" autocomplete="off" />
+                                <input type="tel" name="dependent_home_phone_number" id="dependent_home_phone_number" class="form-control dependent_home_phone_number" placeholder="Phone Number" value="{{old('dependent_home_phone_number')}}" autocomplete="off" />
                             </div>
                         </div>
                         <div class="form-group row mt-4">
@@ -242,8 +242,7 @@
                                 <span class="dependent_address_1_errorClass"></span>
                             </div>
                             <div class="col-sm-6 mt-3">
-                                <input type="text" name="dependent_address_2" class="form-control dependent_address_2" placeholder="Address (Street And Number) Line 2*" autocomplete="off">
-                                <span class="dependent_address_2_errorClass"></span>
+                                <input type="text" name="dependent_address_2" class="form-control dependent_address_2" placeholder="Address (Street And Number) Line 2" autocomplete="off">
                             </div>
                         </div>
                         <div class="form-group row mt-4">
@@ -306,7 +305,7 @@
                                 <span class="dependent_current_country_errorClass"></span>
                             </div>
                             <div class="col-sm-6 mt-3">
-                                <input type="tel" class="form-control" name='dependent_current_residance_mobile' value="{{old('dependent_current_residance_mobile')}}" placeholder="Current Residence Mobile Number" autocomplete="off">
+                                <input type="tel" class="form-control" id="dependent_current_residance_mobile" name='dependent_current_residance_mobile' value="{{old('dependent_current_residance_mobile')}}" placeholder="Current Residence Mobile Number" autocomplete="off">
                                 <span class="dependent_current_residance_mobile_errorClass"></span>
                             </div>
                         </div>

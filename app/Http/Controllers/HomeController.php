@@ -890,7 +890,8 @@ public function mark_read(Request $request) {
                 $paymentDetails = Payment::where('id', $paymentId)->first();
                 $paymentDetails->update([
                     'currency_code' => $paymentResponse->amount->currencyCode,
-                    'card_type' => $paymentResponse->paymentMethod->name
+                    'card_type' => $paymentResponse->paymentMethod->name,
+                    'transaction_id' => $paymentResponse->_id,
                 ]);
                 $monthYear = explode('-', $paymentResponse->paymentMethod->expiry);
                 $res = cardDetail::updateOrCreate([
