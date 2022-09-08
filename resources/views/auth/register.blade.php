@@ -1,5 +1,6 @@
 @extends('layouts.auth')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/> -->
+
 
 <style>
   .checkcolor {
@@ -56,7 +57,7 @@ input [type="phone"]
             <div class="label"><label for="phone number" class="form-label">Phone number</label></div>
             <div class="inputs">
               {{-- <input name="form-control" type="text" id="txtCountryCode" class="c-input-telephone__country error" pattern="^[+]\d{1,3}$" maxlength="4" required="" value="+971" aria-invalid="true"> --}}
-              <input type="text" style="padding: 10px;" class="form-control phone_number" id="phone_number" name="phone_number" aria-describedby="emailHelp" autocomplete="off" required value="{{ old('phone_number') }}" required="">
+              <input type="tel" style="paddingx: 10px;" class="form-control phone_number" id="phone_number" name="phone_number" aria-describedby="emailHelp" autocomplete="off" required value="{{ old('phone_number') }}" required="">
               @error('phone_number') <span class="error">{{ $message }}</span> @enderror
             </div>
           </div>
@@ -94,7 +95,10 @@ input [type="phone"]
   </div>
 @endsection
 @push('custom-scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script> -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/css/intlTelInput.min.css" rel="stylesheet"/>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/intlTelInput.min.js"></script>
 
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
@@ -134,34 +138,51 @@ input [type="phone"]
             }
         })
       });
-      $(function () {
-            var code = "+91"; // Assigning value from model.
-            const phoneInputField = document.querySelector("#phone_number").val(code);
-            const phoneInput = window.intlTelInput(phoneInputField, {
-                initialCountry: "ae",
-                utilsScript:
-                    "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-                z
-            });
-            $('#phone_number').val(code);
-            $('#phone_number').intlTelInput({
-                autoHideDialCode: true,
-                autoPlaceholder: "ON",
-                dropdownContainer: document.body,
-                formatOnDisplay: true,
-                hiddenInput: "full_number",
-                initialCountry: "auto",
-                nationalMode: true,
-                placeholderNumberType: "MOBILE",
-                preferredCountries: ['US'],
-                separateDialCode: true
-            });
-            $('#submitBtn').on('click', function () {
-                var code = $("#phone_number").intlTelInput("getSelectedCountryData").dialCode;
-                var phoneNumber = $('#phone_number').val();
-                var name = $("#phone_number").intlTelInput("getSelectedCountryData").name;
-                alert('Country Code : ' + code + '\nPhone Number : ' + phoneNumber + '\nCountry Name : ' + name);
-            });
-        });
+      // $(function () {
+      //       var code = "+91"; // Assigning value from model.
+      //       const phoneInputField = document.querySelector("#phone_number").val(code);
+      //       const phoneInput = window.intlTelInput(phoneInputField, {
+      //           initialCountry: "ae",
+      //           utilsScript:
+      //               "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+      //           z
+      //       });
+
+      // $('#phone_number').val(code);
+      // $('#phone_number').intlTelInput({
+      //     autoHideDialCode: true,
+      //     autoPlaceholder: "ON",
+      //     dropdownContainer: document.body,
+      //     formatOnDisplay: true,
+      //     hiddenInput: "full_number",
+      //     initialCountry: "auto",
+      //     nationalMode: true,
+      //     placeholderNumberType: "MOBILE",
+      //     preferredCountries: ['US'],
+      //     separateDialCode: true,
+      //     utilsScript: "//cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.js"
+      // });
+            
+      var phone_number = window.intlTelInput(document.querySelector("#phone_number"), {
+        separateDialCode: false,
+        preferredCountries:["ae"],
+        nationalMode: false,
+        hiddenInput: "full",
+        autoHideDialCode: false,
+        utilsScript: "//cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.js"
+      });
+
+    $("form").submit(function() {
+      var full_number = phone_number.getNumber(intlTelInputUtils.numberFormat.E164);
+      $("input[id='phone_number'").val(full_number);
+    });
+
+      // $('#submitBtn').on('click', function () {
+      //     var code = $("#phone_number").intlTelInput("getSelectedCountryData").dialCode;
+      //     var phoneNumber = $('#phone_number').val();
+      //     var name = $("#phone_number").intlTelInput("getSelectedCountryData").name;
+      //     alert('Country Code : ' + code + '\nPhone Number : ' + phoneNumber + '\nCountry Name : ' + name);
+      // });
+        // });
   </script>
 @endpush

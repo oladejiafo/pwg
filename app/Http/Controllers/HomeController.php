@@ -582,8 +582,9 @@ class HomeController extends Controller
                 return Redirect::back()->withErrors($validator);
             } else {
                 set_time_limit(0);
-                $outletRef 	 	 = config('app.payment_reference');   
-                $apikey 		 = config('app.payment_api_key'); 
+
+                $outletRef 	 	 = '15d885ec-682a-4398-89d9-247254d71c18';// config('app.payment_reference'); 
+                $apikey 		 = "MmM2ODJiOGMtOGFmNS00NzUyLTg2MjUtM2Y5MTg3OWU5YjRlOjViMzhjM2I5LTUyMDItNDBmZi1hNzAyLTFlYTIwZDkwYjhiMQ=="; //config('app.payment_api_key'); 
 
                 // Test URLS 
                 $idServiceURL  = "https://identity.sandbox.ngenius-payments.com/auth/realms/ni/protocol/openid-connect/token";           // set the identity service URL (example only)
@@ -597,11 +598,10 @@ class HomeController extends Controller
                 $tokenResponse = $this->invokeCurlRequest("POST", $idServiceURL, $tokenHeaders, http_build_query(array('grant_type' => 'client_credentials')));
                 $tokenResponse = json_decode($tokenResponse);
 
-
+// dd($tokenResponse);
                 $access_token  = $tokenResponse->access_token;
 
-
-                $order = array();	
+                $order = array();
                 $successUrl = url('/').'/payment/success/'.$id;
                 $failUrl =  url('/')."/payment/fail/".$id;
                 $order['action'] 				 	  = "PURCHASE";                                        // Transaction mode ("AUTH" = authorize only, no automatic settle/capture, "SALE" = authorize + automatic settle/capture)
