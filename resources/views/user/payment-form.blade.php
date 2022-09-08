@@ -136,7 +136,7 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
             @endif
 
             <!-- Main Module Begins here -->
-            <div class="payment-form">
+            <div class="payment-form" @if($levels == '5') style="margin-top: 150px" @endif>
                 <div class="heading">
                     <div class="first-heading">
                         <h3>

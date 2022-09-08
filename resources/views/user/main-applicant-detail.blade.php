@@ -229,8 +229,7 @@
                                 <span class="address_1_errorClass"></span>
                             </div>
                             <div class="col-sm-6 mt-3">
-                                <input type="text" name="address_2" class="form-control address_2" placeholder="Address (Street And Number) Line 2*" autocomplete="off">
-                                <span class="address_2_errorClass"></span>
+                                <input type="text" name="address_2" class="form-control address_2" placeholder="Address (Street And Number) Line 2" autocomplete="off">
                             </div>
                         </div>
                         <div class="form-group row mt-4">

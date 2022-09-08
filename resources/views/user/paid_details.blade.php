@@ -138,7 +138,6 @@
                                 $tri = DB::table('payments')
                                 ->where('application_id', '=', $app_id)
                                 ->first();
-                                var_dump($tri);die;
                                 @endphp
 
 

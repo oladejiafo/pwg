@@ -386,6 +386,7 @@ class HomeController extends Controller
                     ->where('product_payments.visa_type', '=', $packageType)
                     ->where('family_sub_id', '=', $family_id)
                     ->where('applicants.user_id', '=', $id)
+                    ->orderBy('product_payments.id')
                     ->groupBy('product_payments.payment')
                     ->get();
             } else {
@@ -394,6 +395,7 @@ class HomeController extends Controller
                     ->select('product_payments.id', 'product_payments.payment', 'product_payments.amount', 'product_payments.product_id')
                     ->where('product_payments.visa_type', '=', $packageType)
                     ->where('applicants.user_id', '=', $id)
+                    ->orderBy('product_payments.id')
                     ->groupBy('product_payments.payment')
                     ->get();
             }
@@ -869,7 +871,8 @@ public function mark_read(Request $request) {
                 $paymentDetails = Payment::where('id', $paymentId)->first();
                 $paymentDetails->update([
                     'currency_code' => $paymentResponse->amount->currencyCode,
-                    'card_type' => $paymentResponse->paymentMethod->name
+                    'card_type' => $paymentResponse->paymentMethod->name,
+                    'transaction_id' => $paymentResponse->_id,
                 ]);
                 $monthYear = explode('-', $paymentResponse->paymentMethod->expiry);
                 $res = cardDetail::updateOrCreate([

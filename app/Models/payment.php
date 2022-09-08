@@ -16,6 +16,7 @@ class payment extends Model
         'currency_code',
         'payment_status',
         'payment_type',
-        'card_type'
+        'card_type',
+        'transaction_id'
     ];
 }
