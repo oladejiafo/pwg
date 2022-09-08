@@ -90,6 +90,7 @@ Route::post('store/schengen/details', [ApplicationController::class,'storeScheng
 Route::post('/get/selected/experience', [ApplicationController::class,'getApplicantExperience'])->name('get.selected.experience');
 Route::post('/remove/selected/experience', [ApplicationController::class,'removeExperience'])->name('remove.selected.experience');
 Route::post('/submit/applicant/review/', [ApplicationController::class, 'applicantReviewSubmit'])->name('submit.applicant.review');
+Route::post('/submit/applicant/Details/', [ApplicationController::class, 'submitApplicantDetails'])->name('submit.applicant.details');
 Route::post('update/applicant/status', [ApplicationController::class, 'updateApplicantStatus'])->name('update.applicant.status');
 Route::post('check/applicant/status', [ApplicationController::class, 'checkApplicationStatus'])->name('check.applicant.status');
 

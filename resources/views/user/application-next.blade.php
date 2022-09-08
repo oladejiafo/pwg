@@ -317,10 +317,11 @@
                         if($('.schengenCompleted').val() == 1) {
                             $.ajax({
                                 type: 'POST',
-                                url: "{{ url('submit/applicant/review') }}",
+                                url: "{{ url('/submit/applicant/Details/') }}",
                                 data: {
                                     product_id: '{{$productId}}',
-                                    user: 'applicant'
+                                    applicantId: '{{$applicant['id']}}',
+                                    user: 'applicant',
                                 },
                                 success: function (response) {
                                     if(response.success) {
@@ -880,8 +881,9 @@
                         if($('.schengenSpouseCompleted').val() == 1) {
                             $.ajax({
                                 type: 'POST',
-                                url: "{{ url('submit/applicant/review') }}",
+                                url: "{{ url('/submit/applicant/Details/') }}",
                                 data: {
+                                        applicantId: '{{$applicant['id']}}',
                                         product_id: '{{$productId}}',
                                         user: 'family',
                                     },

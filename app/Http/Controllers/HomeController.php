@@ -650,7 +650,7 @@ class HomeController extends Controller
 
                 $order['action'] 				 	  = "PURCHASE";                                        // Transaction mode ("AUTH" = authorize only, no automatic settle/capture, "SALE" = authorize + automatic settle/capture)
                 $order['amount']['currencyCode'] 	  = "AED";                           // Payment currency ('AED' only for now)
-                $order['amount']['value'] 		 	  = ($amount)*100;                                   // Minor units (1000 = 10.00 AED)
+                $order['amount']['value'] 		 	  = ($amount);                                   // Minor units (1000 = 10.00 AED)
                 $order['language'] 					  = "en";      						// Payment page language ('en' or 'ar' only)
                 $order['emailAddress'] 			 	  = "pwggroup@pwggroup.pl";      
                 $order['billingAddress']['firstName'] = "PWG";      
@@ -669,7 +669,6 @@ class HomeController extends Controller
                 $orderCreateResponse = $this->invokeCurlRequest("POST", $txnServiceURL, $orderCreateHeaders, $order);
 
                 $orderCreateResponse = json_decode($orderCreateResponse);
-                // dd($orderCreateResponse);
 
                 $paymentLink 		   = $orderCreateResponse->_links->payment->href; 
                 return Redirect::to($paymentLink);
