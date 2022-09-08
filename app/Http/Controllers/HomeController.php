@@ -319,21 +319,27 @@ class HomeController extends Controller
 
             \DB::statement("SET SQL_MODE=''");
 
-            $completed = DB::table('applicants')
+            $complete = DB::table('applicants')
 
             ->where('user_id', '=', Auth::user()->id)
             ->orderBy('id','desc')
-            ->get();
+            ->first();
 
-            foreach($completed as $complete)
             // {
-            // if($completed->first())
+            if($complete)
             {
               $app_id= $complete->id;
               $p_id= $complete->product_id;
               $hasSpouse = $complete->is_spouse;
               $children = $complete->children_count;
              }
+             else {
+                $app_id= 0;
+                $p_id= 0;
+                // $hasSpouse = $complete->is_spouse;
+                // $children = $complete->children_count;
+             }
+
             if(isset($hasSpouse) && $hasSpouse == 1)
             {
                 $yesSpouse = 2;
@@ -363,7 +369,7 @@ class HomeController extends Controller
             if (Session::has('packageType')) {
                 $packageType = Session::get('packageType');
             } else {
-                $packageType = $complete->visa_type;
+                $packageType = ($complete->visa_type) ?? null;
             }
 
             if (Session::has('fam_id')) {
@@ -533,23 +539,36 @@ class HomeController extends Controller
         }
     }
 
-    public static function invokeCurlRequest($type, $url, $headers, $post)
+
+    public static function invokeCurlRequest($type, $url, $headers, $post) 
     {
-		$ch = curl_init();
+        try {
+            $ch = curl_init();
 
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);		
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);		
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
-		if ($type == "POST") {
-			curl_setopt($ch, CURLOPT_POST, 1);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
-		}
+            if ($type == "POST") {
+               
+                curl_setopt($ch, CURLOPT_POST, 1);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+                
+            }
+    
+            $server_output = curl_exec ($ch);
+            if($server_output === false) {
+                throw new Exception(curl_error($ch), curl_errno($ch));
 
-		$server_output = curl_exec ($ch);
-		curl_close ($ch);
+            }
+            curl_close ($ch);
+            
+            return $server_output;
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
 		
-		return $server_output;
 		
 	}
 
@@ -613,13 +632,13 @@ class HomeController extends Controller
                 // Test URLS 
                 $idServiceURL  = "https://identity.sandbox.ngenius-payments.com/auth/realms/ni/protocol/openid-connect/token";           // set the identity service URL (example only)
                 $txnServiceURL = "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/".$outletRef."/orders"; 
+
                 // LIVE URLS 
                 //$idServiceURL  = "https://identity.ngenius-payments.com/auth/realms/NetworkInternational/protocol/openid-connect/token";           // set the identity service URL (example only)
                 //$txnServiceURL = "https://api-gateway.ngenius-payments.com/transactions/outlets/".$outletRef."/orders"; 
 
                 $tokenHeaders  = array("Authorization: Basic ".$apikey, "Content-Type: application/x-www-form-urlencoded");
                 $tokenResponse = $this->invokeCurlRequest("POST", $idServiceURL, $tokenHeaders, http_build_query(array('grant_type' => 'client_credentials')));
-
                 $tokenResponse = json_decode($tokenResponse);
 
                 $access_token  = $tokenResponse->access_token;
@@ -890,7 +909,7 @@ public function mark_read(Request $request) {
                     $status = applicant::where([
                         ['user_id', '=', Auth::user()->id],
                         ['product_id', '=', $id],
-                        ['id', '=', $paymentDetails['application_id ']],
+                        ['id', '=', $paymentDetails['application_id']],
                     ])->first();
                     if ($status === null) {
                     } else {
@@ -898,23 +917,23 @@ public function mark_read(Request $request) {
                         $status->save();
                     }
                     // Save Payment Info
-                    $card = cardDetail::where('application_id', '=', $paymentDetails['application_id '])->where('user_id', '=', Auth::user()->id)->first();
+                    $card = cardDetail::where('application_id', '=', $paymentDetails['application_id'])->where('user_id', '=', Auth::user()->id)->first();
 
                     // Send Notifications on This Payment ##############
                     $email = Auth::user()->email;
                     $userID = Auth::user()->id;
 
-                    if($paymentDetails['payment_type '] == "First Payment")
+                    if($paymentDetails['payment_type'] == "First Payment")
                     {
                         $ems = "";
-                    } else if($paymentDetails['payment_type '] == "Second Payment") {
+                    } else if($paymentDetails['payment_type'] == "Second Payment") {
                         $ems = " You will be notified when your Work Permit is ready.";
                     } else {
                         $ems = " You will be notified when your embassy appearance date is set.";
                     }
 
-                    $criteria = $paymentDetails['payment_type '] . " Completed!";
-                    $message = "You have successfully made your " .$paymentDetails['payment_type ']. ". Kindly login to the PWG Client portal and check your receipt on 'My Application'" . $ems;
+                    $criteria = $paymentDetails['payment_type'] . " Completed!";
+                    $message = "You have successfully made your " .$paymentDetails['payment_type']. ". Kindly login to the PWG Client portal and check your receipt on 'My Application'" . $ems;
 
                     $link = "";
             

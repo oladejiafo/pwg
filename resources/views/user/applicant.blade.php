@@ -2,12 +2,20 @@
  <link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
  <link href="{{asset('css/alert.css')}}" rel="stylesheet">
+
+ <!-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /> -->
+ <link href="{{asset('user/css/select2.min.css') }}" rel="stylesheet" />
 <style>
     body {
     background: #f0f3f4 !important;
     font-family: TT Norms Pro;
 }
 
+.embassy select{
+    height: 60px !important;
+    border-radius: 20px !important;
+
+}
 </style>
 @section('content')
 @php 
@@ -171,7 +179,8 @@
                             </div>
                             <div class="form-group row mt-4">
                                 <div class="col-lg-6 col-md-8 offset-lg-3 offset-md-2 col-sm-12">
-                                    <select class="form-select form-control" name="embassy_country" placeholder="Applied Country *" value="{{old('embassy_country')}}"  required>
+                                    <select class="form-select form-control embassy" name="embassy_country" style="height: 50px !important;" placeholder="Applied Country *" value="{{old('embassy_country')}}"  required>
+                                        <option selected disabled>--Select A Country--</option>
                                         @foreach (Constant::countries as $key => $item)
                                             <option value="{{$key}}">{{$item}}</option>
                                         @endforeach
@@ -207,7 +216,12 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js" integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
+    $(document).ready(function() {
+        $('.embassy').select2();
+    });
+
     $(document).on('change','.up', function(){
         var names = [];
         var length = $(this).get(0).files.length;
