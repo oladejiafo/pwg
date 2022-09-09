@@ -75,6 +75,7 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
 @else
 <?php $nextt = 0; ?>
 @endif
+
 <div class="container">
     <div class="col-12">
 
@@ -152,6 +153,8 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                         <h3>
                             Discount Details
                         </h3>
+
+                      
                     </div>
                     <div class="bottom-title">
                         <p style="color: #C4C4C4; text-align: center;">If you have a dicount code, enter it here.</p>
@@ -491,19 +494,23 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                                                     <?php 
 
                                                         $totalCost = Session::get('totalCost');  
-                                                        if (is_numeric($totalCost))
+                                                       if(isset($tot_pay)) {
+                                                        if (is_numeric($tot_pay))
                                                         {
-                                                            $ttot = number_format($totalCost,2);
+                                                            $ttot = number_format($tot_pay,2);
                                                         } else {
-                                                            $ttot = $totalCost;
+                                                            $ttot = $tot_pay; //$totalCost;
                                                         }
+                                                      } else {
+                                                        $ttot =Session::get('totalCost');
+                                                      }
                                                     ?> 
-                                                    <!-- $ttot = Session::get('totalCost');  -->
+                                                   
 
                                                     @if(isset($ttot) && $ttot > 0)
                                                     {{ $ttot }}
                                                     @else
-                                                    {{ number_format($tot_pay,2)}}
+                                                    {{ isset($tot_pay) ? number_format($tot_pay,2) : '' }}
                                                     {{-- {{number_format($data->unit_price,2)}} --}}
                                                     @endif
                                                 </div>
@@ -561,7 +568,7 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                                         {{number_format($data->unit_price,2)}}
                                         @endif --}}
                                         <h2 style="font-size: 20px;">Now you will pay {{strtolower($which)}} installment only <span id="amountLink"><b>{{number_format($payNoww)}}</b></span> AED</h2>
-                                        <input type="hidden" id="amountLink2" name="totalpay" value="{{$payNoww}}">
+                                        <input type="hidden" id="amountLink2" name="totalpay" value="{{  number_format($payNoww, 0, '.', '') }}">
                                         <input type="hidden" name="totaldue" value="{{$payNoww}}">
                                     </div>
                                 </div>

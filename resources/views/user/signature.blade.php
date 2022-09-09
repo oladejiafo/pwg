@@ -46,11 +46,11 @@
                     <h1>Append Your Signature</h1>
                     <p>To proceed to payment, please upload your signature</p>
                     <div class="col-12 col-md-8 col-lg-8 offset-md-2 offset-lg-2">
-                        <form action="{{ url('upload_signature') }}" method="POST" enctype="multipart/form-data">
+                        <form  enctype="multipart/form-data" id="signatureSubmit">
                             @csrf
                             <input type="hidden" name="pid" value="{{$data->id}}">
                             <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
-
+                            <!-- <textarea name="signed" id="signature64" required></textarea> -->
 
                             <div id="signature-pad" class="signature-pad">
                                 <div class="signature-pad--body">
@@ -60,12 +60,12 @@
                                 <div class="description">Sign above</div>
 
                                 <div class="signature-pad--actions">
-                                    <textarea name="signed" id="signature64" style="display:none" required></textarea>
+                                   
                                       <div class="col-6">
                                         <button type="button" class="btn btn-primary clear" id="clear" data-action="clear">CLEAR</button>
                                       </div>
                                       <div class="col-6">
-                                        <button type="buttonx" class="btn btn-primary">SUBMIT</button>
+                                        <button type="submit" id="sigBtn" class="btn btn-primary">SUBMIT</button>
                                       </div>
                                 </div>
                             </div>
@@ -80,20 +80,59 @@
 
   <script src="../user/extra/js/signature_pad.umd.js"></script>
   <script src="../user/extra/js/app.js"></script>
-
+  <script type='text/javascript' src="https://github.com/niklasvh/html2canvas/releases/download/0.4.1/html2canvas.js"></script>
+  <script src="{{asset('js/alert.js')}}"></script>
   <script type="text/javascript">
+    $(document).ready(function(){
+      $("#signatureSubmit").submit(function(e){
+        e.preventDefault(); 
 
-    $("#sig").mouseout(function(event) {
-        var canvass = document.getElementById('sig');
-        var src  = canvass.toDataURL("image/png");
-        // $("#signature64").val('');
-        $("#signature64").val(src);
-    });
+    html2canvas([document.getElementById('sig')], {
+        onrendered: function (canvas) {
+            var canvas_img_data = canvas.toDataURL('image/png');
+            var img_data = canvas_img_data.replace(/^data:image\/(png|jpg);base64,/, "");
+            console.log(canvas_img_data);
+            // document.getElementById("canvasImage").src="data:image/gif;base64,"+img_data;
 
-    $('#clear').click(function(e) {
+            $.ajax({
+                type: 'POST',
+                url: "{{ url('upload_signature') }}",
+                data: {
+                  "_token": "{{ csrf_token() }}",
+                  signed : canvas_img_data ,
+                   response : 1
+                  }, 
+                success: function (data) {
+                  if(data){
+                    location.href = "{{url('payment_form')}}/"+'{{$data->id}}';
+
+                  }else{
+                    alert('Something went wrong');
+                  }
+
+                },
+                errror: function (error) {
+                }
+            });
             
-        $("#signature64").val('');
+        }
     });
+});
+    });
+
+
+
+    // $("#sig").mouseout(function(event) {
+    //     var canvass = document.getElementById('sig');
+    //     var src  = canvass.toDataURL("image/png");
+    //     // $("#signature64").val('');
+    //     $("#signature64").val(src);
+    // });
+
+    // $('#clear').click(function(e) {
+            
+    //     $("#signature64").val('');
+    // });
 
 // $(document).ready(function() {
 

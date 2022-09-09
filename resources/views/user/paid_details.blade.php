@@ -19,21 +19,12 @@
                         <div id="collapseOne" class="panel-collapse" role="tabpanel" aria-labelledby="headingOne">
                             <!-- collapse in -->
                             <div class="panel-body">
-                                @foreach($paid as $index => $pd)
-
-                                <?php
-                                $count = $pd->count;
-                                $px = $pd->product_payment_id;
-                                if ($count > 1) {
-                                    $countt = $pd->count - 1;
-                                } else {
-                                    $countt = 1;
-                                }
-
-                                $ind = $index + 1;
-                                ?>
-
-                                @endforeach
+                            <?php $ptid=[]; ?>
+            @foreach($paid as $index => $pd)
+              <?php
+                array_push($ptid, $pd->product_payment_id);
+              ?>
+            @endforeach 
 
                                 @foreach($pays as $pay)
 
@@ -44,7 +35,7 @@
                                 
                                
                                 $ppid = $pay->id;
-                                $ptid = $pd->product_payment_id;
+                                // $ptid = $pd->product_payment_id;
                                 
                                 ?>
                                 <div class="row">
@@ -55,7 +46,7 @@
                                     </div>
                                     <div class="col-md-3" align="left">
                                         <p>
-                                        @if( $ptid == $ppid)
+                                        @if(in_array($ppid, $ptid))
                                             Status PAID
                                             @else
                                             Status PENDING
@@ -67,7 +58,7 @@
                                         <p>
 
                                            
-                                            @if( $ptid == $ppid)
+                                        @if(in_array($ppid, $ptid))
 
                                             <a class="btn btn-secondary" style="font-family: 'TT Norms Pro';font-weight:700" href="#">Get Reciept</a>
                                             @else
@@ -78,10 +69,6 @@
                                         <!-- <a class="btn btn-secondary" style="font-family: 'TT Norms Pro';font-weight:700" href="{{ url('payment') }}">Pay Now</a> -->
                                         @endif
 
-                                        <?php
-                                        while ($countt < $count) {
-                                            $countt = $countt + 1;
-                                        } ?>
                                         </p>
                                     </div>
                                 </div>
@@ -134,13 +121,14 @@
 
                                 $tri = DB::table('payments')
                                 ->where('application_id', '=', $app_id)
+                                ->orderBy('id', 'DESC')
                                 ->first();
                              
                                 @endphp
 
 
 
-<?php  $nextt = $tri->product_payment_id +1; ?>
+<?php $nextt = $tri->product_payment_id +1; ?>
 
                         @if($nextt == $pd->id)
                         
@@ -165,11 +153,11 @@
                                 @endforeach
                                 @endforeach
 
-                                {{ number_format($payNow) }}
+                                {{ isset($payNow) ? number_format($payNow) : '' }}
 
 
                                 AED
-                            </b>, to be charged for {{ $whichPayment }}.</div>
+                            </b>, to be charged for {{ isset($whichPayment) ? $whichPayment : '' }}.</div>
 
 
 

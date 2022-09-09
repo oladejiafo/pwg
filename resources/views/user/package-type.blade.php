@@ -6,28 +6,78 @@
   .selected path {
     fill: #000;
   }
+
+@media (max-width:800px)
+{
+    .package {
+        padding: 20px 5% !important;
+    }
+    h3 {
+        font-size: 25px !important;
+        text-align: center !important;
+    }
+    p {
+        text-align: center;
+        font-size: 20px;
+    }
+    .package-type{
+        margin: 20px;
+        /* width: 100%; */
+        padding: 0px !important;
+        /* height: 350px; */
+    }
+    .package-type img {
+    width:100px; 
+    height:120px;
+ }
+}
 </style>
 
 
 @section('content')
 
+@if($canadaOthers->first())
 
+@php 
+$cSamount=0;
+$cXamount=0;
+@endphp
+@foreach($canadaOthers as $canada)
+
+@if($canada->visa_type == "Study Permit")
+@php  
+  $cSname = $canada->visa_type;
+  $cSamount =$cSamount + $canada->amount;
+@endphp
+@endif
+
+@if($canada->visa_type == "Express Entry")
+@php  
+  $cXname = $canada->visa_type;
+  $cXamount = $cXamount + $canada->amount;
+@endphp
+@endif
+
+@endforeach
+
+@endif
 
     <div class="container" style="margin-top: 150px;">
         <div class="col-12">
             <div class="package">
                 <div class="header">
-                    <h3>Package Type</h3>
+                    <h3>{{$data->product_name}} Package Types</h3>
                     <div class="bottoom-title">
                         <p>We’ve got you covered</p>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-4">
+                <div class="row" style="margin-left:auto; margin-right:auto; text-align:center;justify-content: center; display: flex;">
+                
+                    <div class="col-xs-6 col-md-4" style="display:inline-block;">
                         <div class="package-type blue-collar">
                             <div class="content">
                             <div class="dataCompletedx" id="blueSelect">
-                                <img class="selected" src="{{asset('images/Affiliate_Program_Section_Completed.svg')}}" alt="approved">
+                                <img class="selected" style="width:30px" src="{{asset('images/Affiliate_Program_Section_Completed.svg')}}" alt="approved">
                             </div>
                                 <img src="{{asset('images/yellowWhiteCollar.svg')}}">
                                 <h6>Blue Collar Package</h6>
@@ -35,7 +85,38 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-4">
+                    
+                    @if($data->product_name == "Canada")
+                    <div class="col-xs-12 col-md-4" style="display:inline-block;">
+                        <div class="package-type  study-permit">                            
+                            <div class="content">
+                             <div class="dataCompletedx" id="studySelect">
+                                <img class="selected" style="width:30px" src="{{asset('images/Affiliate_Program_Section_Completed.svg')}}" alt="approved">
+                             </div>
+                                <img src="{{asset('images/yellowBlueCollar.svg')}}">
+
+                                <h6>{{$cSname}} Package</h6>
+                                <p class="amountSection"><span class="amount">{{($cSamount > 0) ? number_format($cSamount,0) : 0}}</span><b>AED</b></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-4" style="display:inline-block;">
+                        <div class="package-type  express-entry">                            
+                            <div class="content">
+                             <div class="dataCompletedx" id="expressSelect">
+                                <img class="selected" style="width:30px" src="{{asset('images/Affiliate_Program_Section_Completed.svg')}}" alt="approved">
+                             </div>
+                                <img src="{{asset('images/yellowFamily.svg')}}">
+
+                                <h6>{{$cXname}} </h6>
+                                <p class="amountSection"><span class="amount">{{($cXamount > 0) ? number_format($cXamount,0) : 0}}</span><b>AED</b></p>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+
+
+
                         @if($whiteJobs->first())
                         @foreach($whiteJobs as $whiteJob)
                         @if ($loop->first)
@@ -52,27 +133,12 @@
                             @endphp
                         @endif
 
-                       @if(isset($whiteJob_cost) && $whiteJob_cost == 0)
-                        <style>
-                            .package-types {
-                                align-items: center;
-                                background: #FFFFFF;
-                                box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.04);
-                                border-radius: 26px;
-                                height: 400px;
-                            }
-                        </style>
-                        <div class="package-types">
-                        @else     
-                        <div class="package-type  white-collar">
-                        @endif
-
-
-                        <!-- <div class="package-type  white-collar"> -->
-                            
+                       @if(isset($whiteJob_cost) && $whiteJob_cost > 0)
+                       <div class="col-xs-12 col-md-4" style="display:inline-block;">
+                        <div class="package-type  white-collar">                            
                             <div class="content">
                              <div class="dataCompletedx" id="whiteSelect">
-                                <img class="selected" src="{{asset('images/Affiliate_Program_Section_Completed.svg')}}" alt="approved">
+                                <img class="selected" style="width:30px" src="{{asset('images/Affiliate_Program_Section_Completed.svg')}}" alt="approved">
                              </div>
                                 <img src="{{asset('images/yellowBlueCollar.svg')}}">
 
@@ -86,13 +152,13 @@
                                    @endif
                                 
                             </div>
-                            
                         </div>
-                    </div>
-                    <div class="col-4">
+                        </div>
+                        @endif
 
-                    @if(!$famdet)
-                        <style>
+
+                    @if($famdet)
+                        <!-- <style>
                             .package-typed {
                                 align-items: center;
                                 background: #FFFFFF;
@@ -100,16 +166,13 @@
                                 border-radius: 26px;
                                 height: 400px;
                             }
-                        </style>
-                        <div class="package-typed">
-                    @else     
-                        <div class="package-type family-package">
-                    @endif
+                        </style> -->
+                      <div class="col-xs-12 col-md-4" style="display:inline-block;">
 
-                        <!-- <div class="package-type family-package"> -->
+                        <div class="package-type family-package">
                             <div class="content">
                             <div class="dataCompletedx" id="familySelect">
-                                <img class="selected" src="{{asset('images/Affiliate_Program_Section_Completed.svg')}}" alt="approved">
+                                <img class="selected" style="width:30px" src="{{asset('images/Affiliate_Program_Section_Completed.svg')}}"  alt="approved">
                             </div>
                                 <img src="{{asset('images/yellowFamily.svg')}}">
                                 <h6>Family Package</h6>
@@ -122,7 +185,10 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                    @endif
+                    <p style="font-size:11px; color:#ccc">Click on a package to select</p>
+                    </div>
+
                 <div class="row">
                     <div class="package-desc">
                         <div class="blue-desc">
@@ -142,14 +208,45 @@
                             </div>
                         </div>
                      
+                       @if($data->product_name == "Canada")
+                        <div class="study-desc">
                         
+                            <div class="form-group row" style="margin-top: 70px"> 
+                                <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
+                                <form method="POST" action="{{ url('product') }}">
+                                    @csrf
+                                    <input type="hidden" name="cost" value="{{$cSamount}}">
+                                    <input type="hidden" value="{{$cSname}}" name="myPack">
+                                    <!-- <a class="btn btn-primary" href="{{ url('product') }}" style="width: 100%;font-size: 24px;">Continue</a> -->
+                                    <button type="submit" class="btn btn-primary" style="width: 100%;font-size: 24px;">Continue</button>
+                                </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="express-desc">
+                        
+                         <div class="form-group row" style="margin-top: 70px"> 
+                            <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
+                            <form method="POST" action="{{ url('product') }}">
+                                @csrf
+                                <input type="hidden" name="cost" value="{{$cXamount}}">
+                                <input type="hidden" value="{{$cXname}}" name="myPack">
+                                <!-- <a class="btn btn-primary" href="{{ url('product') }}" style="width: 100%;font-size: 24px;">Continue</a> -->
+                                <button type="submit" class="btn btn-primary" style="width: 100%;font-size: 24px;">Continue</button>
+                            </form>
+                            </div>
+                        </div>
+                       </div>
+                       @endif
+
                        @if(isset($whiteJob_cost) && $whiteJob_cost == 0)
                         
                         <script>
-        $(document).ready(function(){
-            $('.white-desc').hide();
-            </script>
-                       @else     
+                            $(document).ready(function(){
+                            $('.white-desc').hide();
+                        </script>
+                        @else     
                        
                        @endif
                        <div class="white-desc">
@@ -264,10 +361,14 @@
             $('.blue-desc').hide();
             $('.white-desc').hide();
             $('.family-desc').hide();
+            $('.study-desc').hide();
+            $('.express-desc').hide();
             
             $('#blueSelect').hide()
             $('#whiteSelect').hide()
             $('#familySelect').hide()
+            $('#studySelect').hide()
+            $('#expressSelect').hide()
 
             $('.blue-collar').click(function(){
                 let bluej = "Blue Collar Jobs"
@@ -276,7 +377,11 @@
                 $('.blue-desc').show();
                 $('.white-desc').hide();
                 $('.family-desc').hide();
+                $('.study-desc').hide();
+                $('.express-desc').hide();
 
+                $('#studySelect').hide()
+                $('#expressSelect').hide()
                 $('#blueSelect').show()
                 $('#whiteSelect').hide()
                 $('#familySelect').hide()
@@ -304,6 +409,39 @@
                 $('#blueSelect').hide()
                 $('#whiteSelect').hide()
                 $('#familySelect').show()
+            });
+
+            $('.study-permit').click(function(){
+                let studyj = "Study Permit"
+                document.cookie = 'packageType='+studyj ;
+               
+                $('.study-desc').show();
+                $('.express-desc').hide();
+                $('.blue-desc').hide();
+                $('.white-desc').hide();
+                $('.family-desc').hide();
+
+                $('#studySelect').show()
+                $('#expressSelect').hide()
+                $('#blueSelect').hide()
+                $('#whiteSelect').hide()
+                $('#familySelect').hide()
+            });
+            $('.express-entry').click(function(){
+                let expressj = "Express Entry"
+                document.cookie = 'packageType='+expressj ;
+               
+                $('.study-desc').hide();
+                $('.express-desc').show();
+                $('.blue-desc').hide();
+                $('.white-desc').hide();
+                $('.family-desc').hide();
+
+                $('#studySelect').hide()
+                $('#expressSelect').show()
+                $('#blueSelect').hide()
+                $('#whiteSelect').hide()
+                $('#familySelect').hide()
             });
         });
 

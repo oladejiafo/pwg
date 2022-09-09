@@ -46,6 +46,11 @@
 
 </style>
 </head>
+<?php
+ $status = DB::table('applicants')
+                ->where('user_id', '=', Auth::user()->id)
+                ->first();
+?>
 
 @section('content')
     <div class="container" style="margin-top: 130px;">
@@ -75,7 +80,13 @@
                             </label>
                             <p> Get the invoice Later </p>
                         </div>
-                        <form action="{{ route('applicant',$id) }}" method="GET">
+                        <?php
+                        if($status->applicant_status = 5)
+                        { ?>
+                          <form action="{{ url('myapplication') }}" method="GET">
+                        <?php } else { ?>
+                            <form action="{{ route('applicant',$id) }}" method="GET">
+                        <?php } ?>
                             <input type="hidden" name="pid" value="{{$id}}">
                             <button  style="font-size:18px" class="btn btn-primary ose">APPLICATION DETAILS</button>
                         </form>

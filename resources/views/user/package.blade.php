@@ -68,7 +68,8 @@
           <p>{{$data->description}}</p>
           <h2>
             <?php
-             $totalCost = Session::get('totalCost');  
+             $totalCost = Session::get('totalCost');
+               
               if (is_numeric($totalCost))
               {
                 $totalCost = number_format($totalCost,2);
@@ -92,7 +93,7 @@
      
           @if($ppay->first())
           <p>
-          <h3>Payment Installments</h3>
+          <h3>{{Session::get('packageType')}} Payment Installments</h3>
           <table border=0 style="border-radius:10px">
             <tr>
             <?php $cntt = 1; ?>
