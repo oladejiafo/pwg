@@ -189,9 +189,17 @@ class HomeController extends Controller
         } else {
             $children = 0;
         }
+
+        if(Session::has('myproduct_id'))
+        {
+            $pid  = Session::get('myproduct_id');
+        } else {
+            $pid = 1;
+        }
+
         $datas = applicant::where([
             ['user_id', '=', Auth::user()->id],
-            ['product_id', '=', $request->pid],
+            ['product_id', '=', $pid],
         ])->first();
         if ($datas === null) {
             $data = new applicant();
@@ -202,7 +210,7 @@ class HomeController extends Controller
             $data->is_spouse = $is_spouse;
             $data->children_count = $children;
             $data->applicant_status = 1;
-            $data->product_id = $request->pid;
+            $data->product_id = $pid;
 
 
             $res = $data->save();
@@ -213,7 +221,7 @@ class HomeController extends Controller
             $datas->is_spouse = $is_spouse;
             $datas->children_count = $children;
             $datas->applicant_status = 1;
-            $datas->product_id = $request->pid;
+            $datas->product_id = $pid;
 
             $res = $datas->save();
         }
