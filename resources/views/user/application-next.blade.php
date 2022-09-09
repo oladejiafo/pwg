@@ -1,6 +1,7 @@
 @extends('layouts.master')
 <link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
+<link href="{{asset('user/css/select2.min.css') }}" rel="stylesheet" />
 <link href="{{asset('css/alert.css')}}" rel="stylesheet">
 <meta name="csrf-token" content="{{ csrf_token() }}" />
 @section('content')
@@ -15,7 +16,7 @@
    $levels = $completed->applicant_status;
 @endphp
 
-    <div class="container" id="app" data-applicantId="{{$applicant['id']}}" data-dependentId="{{$dependent}}">
+    <div class="container" data-applicantId="{{$applicant['id']}}" data-dependentid="{{$dependent}}">
         <div class="col-12">
             <div class="row">
                 <div class="wizard bg-white">
@@ -160,9 +161,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
     $(document).ready(function(){
+        // $('.country_birth, .citizenship, .home_country, .current_country').select2();
         // Main Applicant
+        $('.applicantReviewSpin, .dependentReviewSpin, .childReviewSpin').hide();
         $('.schengen_visa, .applicantData, .homeCountryData, .currentCountryData, .schengenData, .dependent_schengen_visa').hide();
         $('.datepicker, .dependent_datepicker, .child-dob').datepicker({
             maxDate : 0,
@@ -310,6 +314,7 @@
         });
 
         $('.applicantReview').click(function(e){
+            $('.applicantReviewSpin').show();
             e.preventDefault(); 
             if($('.applicantCompleted').val() == 1){
                 if($('.homeCountryCompleted').val() == 1) {
@@ -319,19 +324,20 @@
                                 type: 'POST',
                                 url: "{{ url('/submit/applicant/Details/') }}",
                                 data: {
-                                    product_id: '{{$productId}}',
                                     applicantId: '{{$applicant['id']}}',
                                     user: 'applicant',
                                 },
                                 success: function (response) {
                                     if(response.status) {
                                         checkdata = checkStatus('{{$applicant['id']}}', '{{$productId}}');
+                                        $('.applicantReviewSpin').hide();
                                         if(checkdata.status){
                                             location.href = "{{url('applicant/review')}}/"+'{{$productId}}';
                                         } else {
                                             alert(checkdata.message);
                                         }
                                     } else {
+                                        $('.applicantReviewSpin').hide();
                                         var validationError = response.errors;
                                         $.each(validationError, function(index, value) {
                                             $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
@@ -657,7 +663,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            var full_number = dependenthomephonenumber.getNumber(intlTelInputUtils.numberFormat.E164);
+            var full_number = dependenthomephonenumberInput.getNumber(intlTelInputUtils.numberFormat.E164);
             $("input[id='dependent_home_phone_number'").val(full_number);
             $.ajax({
                 type: 'POST',
@@ -694,7 +700,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            var full_number = dependentcurrentresidancemobile.getNumber(intlTelInputUtils.numberFormat.E164);
+            var full_number = dependentcurrentresidancemobileInput.getNumber(intlTelInputUtils.numberFormat.E164);
             $("input[id='dependent_current_residance_mobile'").val(full_number);
             $.ajax({
                 type: 'POST',
@@ -839,6 +845,7 @@
 
         $('#child_details').submit(function(e){
             e.preventDefault(); 
+            $('.childReviewSpin').show();
             $("#child_details :input").each(function(index, elm){
                 $("."+elm.name+"_errorClass").empty();
             });
@@ -856,12 +863,14 @@
                 success: function (data) {
                     if(data.success) {
                         checkdata = checkStatus('{{$applicant['id']}}', '{{$productId}}');
+                        $('.childReviewSpin').hide();
                         if(checkdata.status){
                             location.href = "{{url('applicant/review')}}/"+'{{$productId}}';
                         } else {
                             alert(checkdata.message);
                         }
                     } else {
+                        $('.childReviewSpin').hide();
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
                             $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
@@ -875,6 +884,7 @@
 
         $('.dependentReview').click(function(e){
             e.preventDefault(); 
+            $('.dependentReviewSpin').show();
             if($('.dependentApplicantCompleted').val() == 1){
                 if($('.spouseHomeCountryCompleted').val() == 1) {
                     if($('.spouseCurrentCountryCompleted').val() == 1) {
@@ -883,21 +893,20 @@
                                 type: 'POST',
                                 url: "{{ url('/submit/applicant/Details/') }}",
                                 data: {
-                                        applicantId: '{{$applicant['id']}}',
-                                        product_id: '{{$productId}}',
-                                        user: 'family',
-                                    },
-                                processData: false,
-                                contentType: false,
+                                    applicantId: '{{$applicant['id']}}',
+                                    user: 'family',
+                                },
                                 success: function (response) {
-                                    if(response.success) {
+                                    if(response.status) {
                                         checkdata = checkStatus('{{$applicant['id']}}', '{{$productId}}');
+                                        $('.dependentReviewSpin').hide();
                                         if(checkdata.status){
                                             location.href = "{{url('applicant/review')}}/"+'{{$productId}}';
                                         } else {
                                             alert(checkdata.message);
                                         }
                                     } else {
+                                        $('.dependentReviewSpin').hide();
                                         var validationError = response.errors;
                                         $.each(validationError, function(index, value) {
                                             $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');

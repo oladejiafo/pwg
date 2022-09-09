@@ -675,11 +675,18 @@ class HomeController extends Controller
                 $orderCreateHeaders  = array("Authorization: Bearer ".$access_token, "Content-Type: application/vnd.ni-payment.v2+json", "Accept: application/vnd.ni-payment.v2+json");
                 //$orderCreateResponse = invokeCurlRequest("POST", $txnServiceURL, $orderCreateHeaders, $payment);
                 $orderCreateResponse = $this->invokeCurlRequest("POST", $txnServiceURL, $orderCreateHeaders, $order);
-
                 $orderCreateResponse = json_decode($orderCreateResponse);
-// dd($orderCreateResponse);
-                $paymentLink 		   = $orderCreateResponse->_links->payment->href; 
-                return Redirect::to($paymentLink);
+
+                // $paymentLink 		   = $orderCreateResponse->_links->payment->href; 
+                // return Redirect::to($paymentLink);
+
+                // dd($orderCreateResponse);
+                if(isset($orderCreateResponse->_links->payment->href)){
+                    $paymentLink 		   = $orderCreateResponse->_links->payment->href; 
+                    return Redirect::to($paymentLink);
+                } else {
+                    return redirect()->back()->with('failed', $orderCreateResponse->errors[0]->message);
+                }
             }
         } else {
             return redirect()->back()->with('failed', 'You are not authorized');

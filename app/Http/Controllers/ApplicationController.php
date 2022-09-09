@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Response;
 use App\Mail\NotifyMail;
 use Doctrine\Common\Annotations\Annotation\Required;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use DB;
 
 class ApplicationController extends Controller
@@ -79,7 +81,7 @@ class ApplicationController extends Controller
                                     ->where('applicant_id', $applicant->id)
                                     ->pluck('id')
                                     ->first();
-            return view('user.application-next', compact('user', 'productId', 'applicant', 'dependent'))->with('success', 'Data saved successfully!');
+            return view('user.application-next', compact('user', 'productId', 'applicant', 'dependent'))->with('info', 'Data saved successfully!');
         } else {
             return back();
         }
@@ -544,8 +546,7 @@ class ApplicationController extends Controller
                 'state' => $request['dependent_state'],
                 'city' => $request['dependent_city'],
                 'postal_code' => $request['dependent_postal_code'],
-                'address_1' => $request['dependent_address_1'],
-                'address_2' => $request['dependent_address_2']
+                'address_1' => $request['dependent_address_1']
             ]);
         return Response::json(array(
             'dependentId' => $this->getFamilyId($request->applicant_id,  $request->product_id),
@@ -653,6 +654,7 @@ class ApplicationController extends Controller
 
     public function getDependentExperience(Request $request)
     {
+        // dd($request);
         $exp = ApplicantExperience::where('applicant_id', $request->applicantId)
                             ->where(function ($query) use ($request) {
                                 return $query->Where('dependant_id', $request->dependentId)

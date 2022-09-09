@@ -2,8 +2,6 @@
  <link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
  <link href="{{asset('css/alert.css')}}" rel="stylesheet">
-
- <!-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /> -->
  <link href="{{asset('user/css/select2.min.css') }}" rel="stylesheet" />
 <style>
     body {
@@ -118,17 +116,9 @@
                             <div class="form-group row mt-4">
                                 <div class="col-sm-6 mt-3">
                                     <select class="form-select form-control" id="inputFirstname" name="applied_country" placeholder="Applied Country *" value="{{old('applied_country')}}" required>
-                                        <!-- <option selected disabled>Applied Country *</option> -->
                                         <option selected>@foreach($applied as $appliedc) {{$appliedc->product_name}} @endforeach</option>
                                         @foreach($products as $product)
-                                         <!-- <option value="{{$product->product_name}}">{{$product->product_name}}</option> -->
                                         @endforeach 
-                                        <!-- <option value="Canada">Canada</option>
-
-                                        <option value="Czech">Czech</option>
-                                        <option value="Poland">Poland</option>
-                                        <option value="Germany">Germany</option>
-                                        <option value="Malta">Malta</option> -->
                                     </select>
                                     @error('applied_country') <span class="error">{{ $message }}</span> @enderror
                                 </div>
@@ -204,7 +194,6 @@
                                     <button type="submit" class="btn btn-primary submitBtn">Continue</button>
                                 </div>
                             </div>
-
                         </form>
                     </div>            
                 </div>

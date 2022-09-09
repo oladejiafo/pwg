@@ -757,7 +757,7 @@
                                             @if($applicant['is_spouse'] != null || $applicant['children_count'] != null) 
                                                 <button type="submit" class="btn btn-primary submitBtn applicantNext">  Next </button>
                                             @else
-                                                <button type="submit" class="btn btn-primary submitBtn applicantReview">  Submit </button>
+                                                <button type="submit" class="btn btn-primary submitBtn applicantReview">  Submit <i class="fa fa-spinner fa-spin applicantReviewSpin"></i></button>
                                             @endif
                                         </div>
                                     </div>
@@ -1005,8 +1005,7 @@
                                                     <span class="dependent_address_1_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="text" name="dependent_address_2" class="form-control dependent_address_2" value="{{$dependent['address_2']}}" placeholder="Address (Street And Number) Line 2*" autocomplete="off">
-                                                    <span class="dependent_address_2_errorClass"></span>
+                                                    <input type="text" name="dependent_address_2" class="form-control dependent_address_2" value="{{$dependent['address_2']}}" placeholder="Address (Street And Number) Line 2" autocomplete="off">
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
@@ -1429,7 +1428,7 @@
                                     <div class="form-group row mt-4">
                                         <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
                                             @if($applicant['is_spouse'] != null && $applicant['children_count'] == null)
-                                                <button type="submit" class="btn btn-primary submitBtn dependentReview">Submit</button>
+                                                <button type="submit" class="btn btn-primary submitBtn dependentReview">Submit <i class="fa fa-spinner fa-spin dependentReviewSpin"></i></button>
                                             @else 
                                                 <button type="submit" class="btn btn-primary submitBtn dependentNext">Next</button>
                                             @endif
@@ -1519,7 +1518,7 @@
                                         <div class="form-group row mt-4">
                                             <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
                                                 @if($key+1 ==  $applicant['children_count'])
-                                                    <button type="submit" class="btn btn-primary submitBtn submitChild">Submit</button>  
+                                                    <button type="submit" class="btn btn-primary submitBtn submitChild">Submit <i class="fa fa-spinner fa-spin childReviewSpin"></i></button>  
                                                 @else 
                                                     <button type="button" class="btn btn-primary submitBtn collapsechild{{$key+2}}" data-bs-toggle="collapse" data-bs-target="#collapsechild{{$key+2}}" aria-expanded="false" aria-controls="collapsechild{{$key+2}}">Ammend</button>  
                                                 @endif
@@ -1665,6 +1664,7 @@
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 <script>
     $(document).ready(function(){
+        $('.dependentReviewSpin, .childReviewSpin, .applicantReviewSpin').hide();
                // Main Applicant
         $('.schengen_visa, .applicantData, .homeCountryData, .currentCountryData, .schengenData, .dependent_schengen_visa').hide();
         $('.datepicker, .dependent_datepicker, .child-dob').datepicker({
@@ -1736,7 +1736,7 @@
                 "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
         });
 
-        if(('{{$applicant['visa_type']}}' == 'FAMILY PACKAGE') && ($applicant['is_spouse'] > 0)){
+        if(('{{$applicant['visa_type']}}' == 'FAMILY PACKAGE') && ('{{$applicant['is_spouse']}}' > 0)){
             const dependentPhone = document.querySelector("#dependent_phone");
             const dependentPhoneInput = window.intlTelInput(dependentPhone,{
                 separateDialCode: false,
@@ -1809,7 +1809,8 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-
+            var full_number = phoneHomeInput.getNumber(intlTelInputUtils.numberFormat.E164);
+            $("input[id='home_phone_number'").val(full_number);
             $.ajax({
                 type: 'POST',
                 url: "{{ url('store/home/country/details') }}",
@@ -1841,6 +1842,8 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+            var full_number = phoneCurrentInput.getNumber(intlTelInputUtils.numberFormat.E164);
+            $("input[id='current_residance_mobile'").val(full_number);
             $.ajax({
                 type: 'POST',
                 url: "{{ url('store/current/details') }}",
@@ -1984,6 +1987,8 @@
         });
 
         $('.applicantReview, .submitChild, .dependentReview').click(function(e){
+            $('.dependentReviewSpin , .childReviewSpin, .applicantReviewSpin').show();
+
             if (confirm("After submit these details can't be changed")) {
                 $.ajaxSetup({
                     headers: {
@@ -1998,10 +2003,11 @@
                         product_id : '{{$productId}}'
                     },
                     success: function (response) {
+                        $('.dependentReviewSpin, .childReviewSpin, .applicantReviewSpin').hide();
                         location.href = "{{url('myapplication')}}"
                     },
                     errror: function (error) {
-                        
+                        $('.dependentReviewSpin, .childReviewSpin, .applicantReviewSpin').hide();
                     }
                 });
             }
@@ -2055,6 +2061,8 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+            var full_number = dependentPhoneInput.getNumber(intlTelInputUtils.numberFormat.E164);
+            $("input[id='dependent_phone'").val(full_number);
             $.ajax({
                 type: 'POST',
                 url: "{{ route('store.dependent.details') }}",
@@ -2089,6 +2097,8 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+            var full_number = dependenthomephonenumber.getNumber(intlTelInputUtils.numberFormat.E164);
+            $("input[id='dependent_home_phone_number'").val(full_number);
             $.ajax({
                 type: 'POST',
                 url: "{{ url('store/spouse/home/country/details') }}",
@@ -2157,7 +2167,8 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-
+            var full_number = dependentcurrentresidancemobileInput.getNumber(intlTelInputUtils.numberFormat.E164);
+            $("input[id='dependent_current_residance_mobile'").val(full_number);
             $.ajax({
                 type: 'POST',
                 url: "{{ url('store/spouse/schengen/details') }}",
