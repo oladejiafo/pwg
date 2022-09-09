@@ -2072,7 +2072,7 @@ __webpack_require__.r(__webpack_exports__);
 
 window.Vue = (__webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js")["default"]);
 var app = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]({
-  el: '#app',
+  el: '#collapseExperience',
   data: function data() {
     return {
       jobCategories: [],
@@ -2168,6 +2168,114 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]({
         });
       } else {
         app.filterData = [];
+        this.getCategories();
+      }
+    }
+  },
+  mounted: function mounted() {
+    this.getCategories();
+    this.getSelectedExperience();
+    this.getDependentExperience();
+    this.applicantId = this.$el.getAttribute('data-applicantId');
+  }
+});
+var dependent = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]({
+  el: '#collapseSpouseExperience',
+  data: function data() {
+    return {
+      jobCategoriesDependent: [],
+      selectedJob: [],
+      search: null,
+      filterData: [],
+      applicantId: null,
+      selectedJobTitle: [],
+      dependentId: null,
+      dependentJob: [],
+      dependentJobTitle: []
+    };
+  },
+  methods: {
+    getCategories: function getCategories() {
+      axios__WEBPACK_IMPORTED_MODULE_1___default().post('https://bo.pwggroup.ae/api/get-job-category-list').then(function (response) {
+        dependent.jobCategoriesDependent = response.data;
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    addExperience: function addExperience(cat1, cat2, cat3, cat4, jobTitle, userType) {
+      this.dependentId = this.$el.getAttribute('data-dependentId');
+      axios__WEBPACK_IMPORTED_MODULE_1___default().post('/add/experience', {
+        applicant_id: this.applicantId,
+        job_category_one_id: cat1,
+        job_category_two_id: cat2,
+        job_category_three_id: cat3,
+        job_category_four_id: cat4,
+        job_title: jobTitle,
+        userType: userType,
+        dependentId: dependent.dependentId
+      }).then(function (response) {
+        if (response) {
+          dependent.getSelectedExperience();
+          dependent.getDependentExperience();
+        } else {
+          alert('You have to complete Payment first');
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    removeJob: function removeJob(expId) {
+      axios__WEBPACK_IMPORTED_MODULE_1___default().post('/remove/selected/experience', {
+        expId: expId,
+        applicantId: this.applicantId
+      }).then(function (response) {
+        dependent.getSelectedExperience();
+        dependent.getDependentExperience();
+      });
+    },
+    getSelectedExperience: function getSelectedExperience() {
+      this.applicantId = this.$el.getAttribute('data-applicantId');
+      axios__WEBPACK_IMPORTED_MODULE_1___default().post('/get/selected/experience', {
+        applicantId: this.applicantId
+      }).then(function (response) {
+        if (response.data.length > 0) {
+          dependent.selectedJob = response.data;
+        }
+
+        for (var i = 0; i < dependent.selectedJob.length; i++) {
+          var jobTitle = dependent.selectedJob[i].job_title;
+          dependent.selectedJobTitle.push(jobTitle);
+        }
+      });
+    },
+    getDependentExperience: function getDependentExperience() {
+      this.applicantId = this.$el.getAttribute('data-applicantId');
+      this.dependentId = this.$el.getAttribute('data-dependentId');
+      axios__WEBPACK_IMPORTED_MODULE_1___default().post('/get/dependent/selected/experience', {
+        applicantId: this.applicantId,
+        dependentId: this.dependentId
+      }).then(function (response) {
+        if (response.data.length > 0) {
+          dependent.dependentJob = response.data;
+        }
+
+        for (var i = 0; i < dependent.dependentJob.length; i++) {
+          var dependentTitle = dependent.dependentJob[i].job_title;
+          dependent.dependentJobTitle.push(dependentTitle);
+        }
+      });
+    },
+    filterJob: function filterJob() {
+      if (this.search) {
+        axios__WEBPACK_IMPORTED_MODULE_1___default().post('https://bo.pwggroup.ae/api/get-job-category-four-list', {
+          filter: this.search
+        }).then(function (response) {
+          dependent.filterData = response.data;
+        })["catch"](function (error) {
+          console.log(error);
+        });
+      } else {
+        dependent.filterData = [];
         this.getCategories();
       }
     }
