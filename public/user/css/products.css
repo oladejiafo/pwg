@@ -43,6 +43,7 @@ background-repeat:no-repeat;
 -o-background-size:cover;
 background-size:cover;
 background-position:center;
+background-size: 200% !important;
 }
 .home_img {
 width: 100%;

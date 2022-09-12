@@ -27,9 +27,9 @@
                             <embed src="{{ asset('pdf/PROMO_July_Poland_BC_Contract.pdf') }}#toolbar=0" type="application/pdf"frameBorder="0" alt="pdf" borders="false" style="border: none" />
                         </div>
                         <div class="col-12 col-md-8 col-lg-8 offset-md-2 offset-lg-2">
-                            <div class="agree">
+                            {{-- <div class="agree">
                                 <p>&nbsp; <input type="checkbox" class="checkcolor" id="agree" style="font-size:25px;transform: scale(1.8); " checked required="" > &nbsp; By checking this box you accept our <a href="#" style="color:blue;margin:0">Terms & Conditions</a></p>
-                            </div>
+                            </div> --}}
                             <button type="button" class="btn btn-secondary zoomOut" id="zoom" value="0" name="payall" style="width:100%; font-size:1.6em">ZOOM TO REVIEW</button>
                             <button type="button" class="btn btn-secondary zoomIn" id="zoom" value="0" name="payall" style="width:100%; font-size:1.6em">ZOOM TO REVIEW</button>
 

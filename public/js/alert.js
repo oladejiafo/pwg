@@ -1,4 +1,4 @@
-var ALERT_TITLE = "ALART!";
+var ALERT_TITLE = "WRONG!";
 var ALERT_BUTTON_TEXT = "Ok";
 
 if(document.getElementById) {

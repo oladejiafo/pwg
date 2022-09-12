@@ -178,7 +178,7 @@
                                     @error('embassy_country') <span class="error">{{ $message }}</span> @enderror
                                 </div>
                             </div>
-                            <div class="form-group row mt-4">
+                            {{-- <div class="form-group row mt-4">
                                 <div class="form-check col-lg-6 col-md-10 offset-lg-3 offset-md-1 col-sm-12 agree-terms">
                                     <input class=" checkcolor" type="checkbox" id="TnC" value="TnC" name="agree" value="{{old('agree')}}" required checked>
                                     <label class="form-check-label" for="TnC">
@@ -188,7 +188,7 @@
                                     <label class="form-check-label text-danger" id="TnCAlert"></label>
                                     @error('agree') <span class="error">{{ $message }}</span> @enderror
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="form-group row mt-4" style="margin-bottom: 70px">
                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
                                     <button type="submit" class="btn btn-primary submitBtn">Continue</button>

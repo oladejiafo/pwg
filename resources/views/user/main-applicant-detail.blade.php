@@ -326,12 +326,12 @@
                                 </div><!-- btn -->
                             </div>
                         </div>
-                        <div class="form-group row mt-4">
+                        {{-- <div class="form-group row mt-4">
                             <div class="col-sm-12 mt-3">
                                 <input type="text" name="current_job" class="form-control" placeholder="Profession As Per Current Job (or on Visa)*" autocomplete="off">
                                 <span class="current_job_errorClass"></span>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="form-group row mt-4">
                             <div class="col-sm-4 mt-3">
                                 <input type="text" name="work_state" class="form-control" placeholder="Work State/Province*" autocomplete="off"/>

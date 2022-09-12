@@ -215,7 +215,7 @@ class HomeController extends Controller
 
         if ($res) {
             return \Redirect::route('payment', $request->pid)
-            ->with('info', 'Signature Uploaded Successfully!')
+            ->with('info', 'Signature is Successfull!')
             ->with('info_sub', 'Proceed to application');
         } else {
             return redirect()->back()->with('failed', 'Oppss! Something went wrong.');
