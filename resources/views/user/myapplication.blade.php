@@ -32,7 +32,7 @@
       @else 
        @include('user.noapplication')
       @endif
-     
+
      @endif
 
     </div>

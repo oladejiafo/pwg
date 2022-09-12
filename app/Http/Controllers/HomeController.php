@@ -61,7 +61,8 @@ class HomeController extends Controller
 
     public function packageType($productId, Request $request)
     {
-
+        Session::forget('packageType');
+        Session::forget('myproduct_id');
         Session::forget('mySpouse');
         Session::forget('myKids');
 
@@ -101,7 +102,8 @@ class HomeController extends Controller
       
         $proddet = product_details::where('product_id', '=', $productId)->where('visa_type', 'BLUE AND PINK COLLAR JOBS')->get();
         $whiteJobs = product_details::where('product_id', '=', $productId)->where('visa_type', 'WHITE COLLAR JOBS')->get();
-        return view('user.package-type', compact('proddet', 'famdet', 'productId', 'whiteJobs', 'data'));
+        $canadaOthers = product_payments::where('product_id', '=', $productId)->whereIn('visa_type', array('Express Entry', 'Study Permit'))->get();
+        return view('user.package-type', compact('proddet', 'famdet', 'productId', 'whiteJobs', 'data','canadaOthers'));
     }
 
     public function product(Request $request)
@@ -150,9 +152,9 @@ class HomeController extends Controller
 
     public function upload(Request $request)
     {
+
     if (Auth::id()) {
         $folderPath = public_path('storage/signature/');
-
         list($part_a, $image_parts) = explode(";base64,", $request->signed);
 
         $image_type_aux = explode("image/", $part_a);
@@ -167,8 +169,11 @@ class HomeController extends Controller
 
         file_put_contents($file, $image_base64);
 
-        $signature = user::find($request->user_id);
+        $signature = user::find(Auth::user()->id);
+        // dd( $signature);
+
         $signature->signature = $signate;
+
         $signature->save();
 
 
@@ -184,9 +189,17 @@ class HomeController extends Controller
         } else {
             $children = 0;
         }
+
+        if(Session::has('myproduct_id'))
+        {
+            $pid  = Session::get('myproduct_id');
+        } else {
+            $pid = 1;
+        }
+
         $datas = applicant::where([
             ['user_id', '=', Auth::user()->id],
-            ['product_id', '=', $request->pid],
+            ['product_id', '=', $pid],
         ])->first();
         if ($datas === null) {
             $data = new applicant();
@@ -197,7 +210,7 @@ class HomeController extends Controller
             $data->is_spouse = $is_spouse;
             $data->children_count = $children;
             $data->applicant_status = 1;
-            $data->product_id = $request->pid;
+            $data->product_id = $pid;
 
 
             $res = $data->save();
@@ -208,20 +221,22 @@ class HomeController extends Controller
             $datas->is_spouse = $is_spouse;
             $datas->children_count = $children;
             $datas->applicant_status = 1;
-            $datas->product_id = $request->pid;
+            $datas->product_id = $pid;
 
             $res = $datas->save();
         }
-
+// dd($res);
         if ($res) {
             return \Redirect::route('payment', $request->pid)
             ->with('info', 'Signature is Successfull!')
             ->with('info_sub', 'Proceed to application');
         } else {
-            return redirect()->back()->with('failed', 'Oppss! Something went wrong.');
+            return false;
+            // return redirect()->back()->with('failed', 'Oppss! Something went wrong.');
         }
     } else {
-        return redirect()->back()->with('message', 'You are not authorized');
+        return false;
+        // return redirect()->back()->with('message', 'You are not authorized');
     }
 }
 
@@ -361,7 +376,7 @@ class HomeController extends Controller
                 $famCode = $famili->id;
             }
 
-            if (session()->get('myproduct_id')) {
+            if (session()->get('myproduct_id') && session()->get('myproduct_id') == $p_id) {
             } else {
                 Session::put('myproduct_id', $p_id);
             }
@@ -399,7 +414,7 @@ class HomeController extends Controller
                 $pays = DB::table('product_payments')
                     ->join('applicants', 'applicants.product_id', '=', 'product_payments.product_id')
                     ->select('product_payments.id', 'product_payments.payment', 'product_payments.amount', 'product_payments.product_id')
-                    ->where('product_payments.visa_type', '=', $packageType)
+                    // ->where('product_payments.visa_type', '=', $packageType)
                     ->where('applicants.user_id', '=', $id)
                     ->orderBy('product_payments.id')
                     ->groupBy('product_payments.payment')
@@ -423,7 +438,7 @@ class HomeController extends Controller
                 ->where('applicants.user_id', '=', $id)
                 ->groupBy('products.id')
                 ->get();
-
+// dd($pays, $paid);
             return view('user.myapplication', compact('paid', 'pays', 'prod'));
         } else {
             return redirect()->back()->with('message', 'You are not authorized');
@@ -668,6 +683,10 @@ class HomeController extends Controller
                 //$orderCreateResponse = invokeCurlRequest("POST", $txnServiceURL, $orderCreateHeaders, $payment);
                 $orderCreateResponse = $this->invokeCurlRequest("POST", $txnServiceURL, $orderCreateHeaders, $order);
                 $orderCreateResponse = json_decode($orderCreateResponse);
+
+                // $paymentLink 		   = $orderCreateResponse->_links->payment->href; 
+                // return Redirect::to($paymentLink);
+
                 // dd($orderCreateResponse);
                 if(isset($orderCreateResponse->_links->payment->href)){
                     $paymentLink 		   = $orderCreateResponse->_links->payment->href; 
@@ -915,8 +934,11 @@ public function mark_read(Request $request) {
                     ])->first();
                     if ($status === null) {
                     } else {
-                        $status->applicant_status = '2';
-                        $status->save();
+                        if($status->applicant_status == 1)
+                        {
+                         $status->applicant_status = '2';
+                         $status->save();
+                        }
                     }
                     // Save Payment Info
                     $card = cardDetail::where('application_id', '=', $paymentDetails['application_id'])->where('user_id', '=', Auth::user()->id)->first();

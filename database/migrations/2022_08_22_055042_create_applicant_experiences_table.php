@@ -18,6 +18,7 @@ class CreateApplicantExperiencesTable extends Migration
             $table->unsignedBigInteger('applicant_id')->nullable();
             $table->integer('dependant_id')->nullable();
             $table->longText('job_title')->nullable();
+            $table->integer('dependant_id')->nullable();
             $table->integer('job_category_one_id')->nullable();
             $table->integer('job_category_two_id')->nullable();
             $table->integer('job_category_three_id')->nullable();

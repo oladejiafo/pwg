@@ -10,10 +10,20 @@
         text-align: left;
 
     }
-
+    #current_location,
+    #embassy_appearance {
+        text-align-last:center !important;
+        font-size: 14px;
+    }
     .dicount_code::placeholder {
         text-align: center !important;
     }
+    @media (min-width:375px) and (max-width:768px) {
+    .dicountBtn {
+        font-size: 0.7em;
+
+    }
+}
 </style>
 
 <script>
@@ -65,6 +75,7 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
 @else
 <?php $nextt = 0; ?>
 @endif
+
 <div class="container">
     <div class="col-12">
 
@@ -142,6 +153,8 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                         <h3>
                             Discount Details
                         </h3>
+
+                      
                     </div>
                     <div class="bottom-title">
                         <p style="color: #C4C4C4; text-align: center;">If you have a dicount code, enter it here.</p>
@@ -164,8 +177,8 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                             </div>
                             <div class="mb-3">    
                                 <div class="inputs">
-                                    <select title="Current Location" class="form-control  current_location form-select" id="embassy_appearance" name="embassy_appearance" required="">
-                                        <option selected disabled>--Country of Embassy Appearnce--</option>
+                                    <select title="Current Location" class="form-control  embassy_appearance form-select" id="embassy_appearance" name="embassy_appearance" required="">
+                                        <option selected disabled>--Country of Embassy Appearance--</option>
                                         <option value="United Arab Emirates">United Arab Emirates</option>
                                         @foreach (Constant::countries as $key => $item)
                                             <option value="{{$key}}">{{$item}}</option>
@@ -180,7 +193,7 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                             </div>
                             <button type="submit" class="btn btn-primary dicountBtn ">APPLY CODE</button>
                         </div>
-                    </form>
+                    </form><hr>
 
                     <form method="POST" action="{{ url('add_payment') }}">
                     <!-- <form method="POST"> -->
@@ -285,15 +298,15 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                                         $discount = '0.00';
                                     }
                                 } else {
-                                    if ($pp == 0 || $pp == null) {
+                                    if ($index == 0 || $index == null) {
                                         $payNow = $data->unit_price;
                                         $payNoww = $det->unit_price;
                                         $pendMsg = "Full Payment";
-                                    } else if ($pp == 1) {
+                                    } else if ($index == 1) {
                                         $payNow = $data->unit_price - $pd->total;
                                         $payNoww = $payNow;
                                         $pendMsg = "Full Outstanding Payment";
-                                    } else if ($pp == 2) {
+                                    } else if ($index == 2) {
                                         $payNow = $det->amount;
                                         $payNoww = $payNow;
                                         $pendMsg = "";
@@ -481,19 +494,23 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                                                     <?php 
 
                                                         $totalCost = Session::get('totalCost');  
-                                                        if (is_numeric($totalCost))
+                                                       if(isset($tot_pay)) {
+                                                        if (is_numeric($tot_pay))
                                                         {
-                                                            $ttot = number_format($totalCost,2);
+                                                            $ttot = number_format($tot_pay,2);
                                                         } else {
-                                                            $ttot = $totalCost;
+                                                            $ttot = $tot_pay; //$totalCost;
                                                         }
+                                                      } else {
+                                                        $ttot =Session::get('totalCost');
+                                                      }
                                                     ?> 
-                                                    <!-- $ttot = Session::get('totalCost');  -->
+                                                   
 
                                                     @if(isset($ttot) && $ttot > 0)
                                                     {{ $ttot }}
                                                     @else
-                                                    {{ number_format($tot_pay,2)}}
+                                                    {{ isset($tot_pay) ? number_format($tot_pay,2) : '' }}
                                                     {{-- {{number_format($data->unit_price,2)}} --}}
                                                     @endif
                                                 </div>
@@ -551,7 +568,7 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                                         {{number_format($data->unit_price,2)}}
                                         @endif --}}
                                         <h2 style="font-size: 20px;">Now you will pay {{strtolower($which)}} installment only <span id="amountLink"><b>{{number_format($payNoww)}}</b></span> AED</h2>
-                                        <input type="hidden" id="amountLink2" name="totalpay" value="{{$payNoww}}">
+                                        <input type="hidden" id="amountLink2" name="totalpay" value="{{  number_format($payNoww, 0, '.', '') }}">
                                         <input type="hidden" name="totaldue" value="{{$payNoww}}">
                                     </div>
                                 </div>
@@ -647,6 +664,7 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                         <div class="form-group row mt-4" style="margin-bottom: 70px">
                             <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
                                 <button type="submit" class="btn btn-primary submitBtn">Continue</button>
+                                <p style="font-size:11px; text-align:center;color:green">You will be redirected to a secured payment page!</p>
                             </div>
                         </div>
                     </form>

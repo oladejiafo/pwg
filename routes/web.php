@@ -19,6 +19,8 @@ use Laravel\Jetstream\Rules\Role;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::post('/upload_signature', [HomeController::class,'upload'])->name('upload');
+
 Route::get('payment/success/{id}',[HomeController::class,'paymentSuccess'])->name('payment-success');
 Route::get('payment/fail/{id}',[HomeController::class,'paymentFail'])->name('payment-fail');
 Route::post('store/applicant/details', [ApplicationController::class,'storeApplicantDetails'])->name('store.applicant.details');
@@ -59,7 +61,6 @@ Route::get('append_signature/{id}',[HomeController::class,'signature'])->name('s
 Route::get('signature_success/{id}',[HomeController::class,'signature_success'])->name('signature_success');
 Route::get('/referal_details/{id}',[HomeController::class,'referal'])->name('referal');
 
-Route::post('/upload_signature', [HomeController::class,'upload']);
 Route::post('/add_referal', [HomeController::class,'addreferal']);
 
 Route::get('/myapplication',[HomeController::class,'myapplication']);

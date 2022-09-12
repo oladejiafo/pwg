@@ -10,25 +10,15 @@
         <div class="container-fluid text-center">
           <div class="row paid-thumbnail">
             <ul>
-              @foreach($paid as $index => $pd)
-
+              <?php $ptid=[]; ?>
+            @foreach($paid as $index => $pd)
               <?php
-              $count = $pd->count;
-              $px = $pd->product_payment_id;
-              if ($count > 1) {
-                $countt = $pd->count - 1;
-              } else {
-                $countt = 1;
-              }
-
-              $ind = $index + 1;
-              $ptid = $pd->product_payment_id;
+                array_push($ptid, $pd->product_payment_id);
               ?>
+            @endforeach 
 
-              @endforeach
-              @foreach($pays as $pay)
-
-              <?php
+            @foreach($pays as $pay)
+              <?php 
               $pay_id = $pay->id;
               $payment = $pay->payment;
               $amount = $pay->amount;
@@ -45,24 +35,20 @@
                         <h3 class="paid-title" style="font-size: 22px; color:aliceblue">{{$payment}}</h3>
                       </span>
                       <strong class="paid-price">{{number_format($amount)}} | </strong>&nbsp;<amp style="margin-left:18px">@foreach($prod as $pp) @if ($pp == reset($prod )) last Item: @endif {{$pp->product_name}} @endforeach<br>Package</amp>
-
+ 
                       <p>
+                          @if(in_array($ppid, $ptid))
+                          <a class="btn btn-secondary" href="#">Get Reciept</a>
 
-                        @if( $ptid == $ppid)
+                          @else
 
-                        <a class="btn btn-secondary" href="#">Get Reciept</a>
+                            <form action="{{ route('payment',$pp->id) }}" method="GET">
 
-                        @else
+                              <button class="btn btn-secondary">Pay Now</button>
+                            </form>
+                            <!-- <a class="btn btn-secondary" href="{{ route('payment',$pp->id) }}">Pay Now</a> -->
 
-                      <form action="{{ route('payment',$pp->id) }}" method="GET">
-
-                        <button class="btn btn-secondary">Pay Now</button>
-                      </form>
-                      <!-- <a class="btn btn-secondary" href="{{ route('payment',$pp->id) }}">Pay Now</a> -->
-
-                      @endif
-
-
+                          @endif
                       </p>
 
                     </span>

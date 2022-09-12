@@ -1,14 +1,39 @@
 <!DOCTYPE html>
 <html>
     @include('user/header')
-<body>
+<style>
+    #info{
+        font-size: 1.2em;
+    }
+    #info-sub{
+        font-size: 0.8em;
+    }
+
+    svg .ft{
+        height:80px; 
+        width:80px;
+    }
+    @media (max-width:800px){
+        #info{
+        font-size: 1.0rem;
+    }
+    #info-sub{
+        font-size: 0.8rem;
+    }
+    svg .ft{
+        height:40px; 
+        width:40px;
+    }
+    }
+</style>
+    <body>
         @if(session()->has('success'))
         <div class="alert alert-success alert-block" style="color:#fff; padding:2px; margin-left:auto;margin-right:auto; width:45%;height:120px; text-align:center;margin-bottom:-80px;background-colorx:green;border-radius:10px">
         <button type="button" class="close" data-dismiss="alert" style="float:right;border-style:none;background-color: transparent"><i class="fa fa-times-circle" aria-hidden="true" style="color:#000; font-size:25px";></i>
                     
                     </button>
                 <h3 style="padding-top: 20px;font-size: 1.8em">
-                <svg height="80px" width="80px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 300 300">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 300 300">
                     <defs>
                         <style>
                         .cls-1{fill:url(#linear-gradient);}
@@ -44,7 +69,7 @@
                     
                 </button>
                 <p style="padding-top: 20px;font-size: 1.8em;line-height:0px">
-                <svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 300 300">
+                <svg class="ft" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 300 300" >
                     <defs>
                         <style>
                         .cls-1{fill:url(#linear-gradient);}
@@ -62,9 +87,9 @@
                     </g>
                 </svg> &nbsp;
                 <!-- <img src="../user/images/Approved.svg" height="80px" width="80px"> &nbsp; -->
-                <span style="font-size: 1.2em; margin-bottom:0px;line-height:0px">{{ session()->get('info') }}</span>
+                <span id="info" style="margin-bottom:0px;line-height:0px">{{ session()->get('info') }}</span>
                 @if(session()->has('info_sub'))
-                <br><span style="font-size: 0.8em;line-height:0px; ;">{{ session()->get('info_sub') }}</span>
+                <br><span id="info-sub" style="line-height:0px; ;">{{ session()->get('info_sub') }}</span>
                 @endif
                </p>
             </div>
