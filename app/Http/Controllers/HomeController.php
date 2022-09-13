@@ -46,7 +46,8 @@ class HomeController extends Controller
             //   return \Redirect::route('product', $idd);
 
         } else {
-            $package = product::all()->sortBy("id");
+            $package = DB::table('products')->orderBy(DB::raw('FIELD(product_name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
+            // $package = product::all()->sortBy(DB::raw('FIELD(product_name, "Czech", "Poland", "Malta", "Canada", "Germany")'));
             $promo = promo::where('validity', '>=', date('Y-m-d'))->get();
             return view('user.home', compact('package', 'promo'));
         }
@@ -54,7 +55,7 @@ class HomeController extends Controller
 
     public function index()
     {
-        $package = product::all()->sortBy("id");
+        $package = DB::table('products')->orderBy(DB::raw('FIELD(product_name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
         $promo = promo::where('validity', '>=', date('Y-m-d'))->get();
         return view('user.home', compact('package', 'promo'));
     }
@@ -225,13 +226,17 @@ class HomeController extends Controller
 
             $res = $datas->save();
         }
+
 // dd($res);
         if ($res) {
+            Session::put('info', 'Signature is Successful!');
+            Session::put('info_sub', 'Proceed to application');
             return true;
             // return \Redirect::route('payment', $request->pid)
             // ->with('info', 'Signature Uploaded Successfully!')
             // ->with('info_sub', 'Proceed to application');
         } else {
+            Session::put('failed', 'Oppss! Something went wrong.');
             return false;
             // return redirect()->back()->with('failed', 'Oppss! Something went wrong.');
         }
@@ -451,6 +456,9 @@ class HomeController extends Controller
         $famCode = 0;
         if (Auth::id()) {
 
+            Session::forget('haveCoupon');
+            Session::forget('myDiscount');
+
             $completed = DB::table('applicants')
                 ->where('user_id', '=', Auth::user()->id)
                 ->orderBy('id', 'desc')
@@ -544,7 +552,7 @@ class HomeController extends Controller
             } else {
                 $pdet = DB::table('product_payments')
                     ->where('product_id', '=', Session::get('myproduct_id'))
-                    ->where('visa_type', '=', $packageType)
+                    // ->where('visa_type', '=', $packageType)
                     // ->groupBy('product_payments.id')
                     ->get();
             }
@@ -602,14 +610,24 @@ class HomeController extends Controller
                 $applicant_id = $apply->id;
             }
 
-            $validator = \Validator::make($request->all(), [
+            $request->validate([
                 'totaldue' => 'required',
-                'totalpay' => 'numeric|gte:1000'
+                'totalpay' => 'numeric|gte:1000',
+                'current_location' => 'required',
+                'embassy_appearance' => 'required'
             ]);
 
-            if ($validator->fails()) {
-                return Redirect::back()->withErrors($validator);
-            } else {
+            // $validator = \Validator::make($request->all(), [
+            //     'totaldue' => 'required',
+            //     'totalpay' => 'numeric|gte:1000',
+            //     'current_location' => 'required',
+            //     'embassy_appearance' => 'required'
+            // ]);
+
+            // if ($validator->fails()) {
+         
+            //     return Redirect::back()->withErrors($validator);
+            // } else {
                 if ($request->totalpay == null || $request->totalpay == "" || $request->totalpay < 1000) {
                     $totalpay = 0;
                 } else {
@@ -633,6 +651,25 @@ class HomeController extends Controller
                     'total_paid' => $totalpay,
                     'payment_status' => $whatsPaid,
                 ]);
+
+
+                $datas = applicant::where([
+                    ['user_id', '=', Auth::user()->id],
+                    ['product_id', '=', $request->pid],
+                ])->first();
+                if ($datas === null) {
+                    $data = new applicant;
+                    $data->current_residance_country = $request->current_location;
+                    $data->embassy_country = $request->embassy_appearance;
+
+                    $res = $data->save();
+                } else {
+                    $datas->current_residance_country = $request->current_location;
+                    $datas->embassy_country = $request->embassy_appearance;
+
+                    $res = $datas->save();
+                }
+
 
                 $datas = payment::where([
                     ['product_payment_id', '=', $request->ppid],
@@ -695,7 +732,7 @@ class HomeController extends Controller
                 } else {
                     return redirect()->back()->with('failed', $orderCreateResponse->errors[0]->message);
                 }
-            }
+            // }
         } else {
             return redirect()->back()->with('failed', 'You are not authorized');
         }
@@ -750,6 +787,7 @@ class HomeController extends Controller
 
     public function getPromo(Request $request)
     {
+        $response['status'] = false;
             $id = Session::get('myproduct_id');
             $coupon = DB::table('promos')
                 ->select('discount_percent')
@@ -763,18 +801,69 @@ class HomeController extends Controller
 
 
         if ($coupon->first()) {
-            Session::put('myDiscount', $my_discount);
-            Session::put('haveCoupon', 1);
 
-            return response()->json(['status' => 'Success']);
+            $discountPercent = 'PROMO: ' . $my_discount . '%';
+            $discountamt = ($my_discount *  $request->totaldue) / 100;
+
+            $topaynow = $request->totaldue  + ($request->totaldue * 5/100) - (($my_discount *  $request->totaldue) / 100);
+          
+
+            Session::put('haveCoupon', 1);
+            Session::put('myDiscount', $my_discount);
+
+            $response['myDiscount'] = $my_discount;
+            $response['haveCoupon'] = 1;
+            $response['discountamt'] = $discountamt;
+            $response['topaynow'] = $topaynow;
+            $response['discountPercent'] =$discountPercent;
+
+            $response['status'] = true;
+
+
             // return \Redirect::route('payment', $id);
         } else {
+            $topaynoww = $request->totaldue  + ($request->totaldue * 5/100); //If no promo
             Session::put('haveCoupon', 0);
-            return response()->json(['status' => 'Invalid Discount/Promo Code']);
+            $response['haveCoupon'] = 0;
+            $response['topaynow'] = $topaynoww;
             // return \Redirect::route('payment', $id)->with('failed', 'Invalid Discount/Promo Code');
 
         }
+        return $response;
     }
+
+    public function checkPromo(Request $request)
+    {
+            $response['status'] = false;
+
+            $id = Session::get('myproduct_id');
+            
+            $coupon = DB::table('promos')
+                ->select('discount_percent')
+                ->where('promo_location', '=', $request->embassy_appearance)
+                ->where('product_id', '=', $id)
+                ->where('validity', '>=', date('Y-m-d'))
+                ->get();
+            foreach ($coupon as $apply) {
+                $my_discount = $apply->discount_percent;
+            }
+
+
+        if ($coupon->first()) {
+            // $response['haveCoupon'] = 1;
+
+            $response['status'] = true;
+
+            // return \Redirect::route('payment', $id);
+        } else {
+            // Session::put('haveCoupon', 0);
+            // $response['haveCoupon'] = 0;
+            $response['status'] = false;
+            // return \Redirect::route('payment', $id)->with('failed', 'Invalid Discount/Promo Code');
+        }
+        return $response;
+    }
+
 
     public function familyDetails(Request $request)
     {

@@ -7,6 +7,7 @@
     fill: #000;
   }
 
+
 @media (max-width:800px)
 {
     .package {
@@ -194,7 +195,7 @@ $cXamount=0;
                         <div class="blue-desc">
                             
                            {{-- @include('user.package-jobs') --}}
-                            <div class="form-group row" style="margin-top: 70px"> 
+                            <div class="form-group row" style="margin-top: -120px;"> 
                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
                                 <form method="POST" action="{{ url('product') }}">
                                     @csrf
@@ -211,7 +212,7 @@ $cXamount=0;
                        @if($data->product_name == "Canada")
                         <div class="study-desc">
                         
-                            <div class="form-group row" style="margin-top: 70px"> 
+                            <div class="form-group row" style="margin-top: -120px"> 
                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
                                 <form method="POST" action="{{ url('product') }}">
                                     @csrf
@@ -226,7 +227,7 @@ $cXamount=0;
 
                         <div class="express-desc">
                         
-                         <div class="form-group row" style="margin-top: 70px"> 
+                         <div class="form-group row" style="margin-top: -120px"> 
                             <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
                             <form method="POST" action="{{ url('product') }}">
                                 @csrf
@@ -252,7 +253,7 @@ $cXamount=0;
                        <div class="white-desc">
                              {{-- @include('user.white-collar-packge') --}}
                         
-                            <div class="form-group row" style="margin-top: 70px"> 
+                            <div class="form-group row" style="margin-top: -120px"> 
                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
                                 <form method="POST" action="{{ url('product') }}">
                                     @csrf

@@ -10,6 +10,9 @@
         text-align: left;
 
     }
+    .dicountBtn {
+        font-size: 28px !important;
+    }
     #current_location,
     #embassy_appearance {
         text-align-last:center !important;
@@ -20,7 +23,7 @@
     }
     @media (min-width:375px) and (max-width:768px) {
     .dicountBtn {
-        font-size: 0.7em;
+        font-size: 1.2em !important;
 
     }
 }
@@ -148,25 +151,26 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
 
             <!-- Main Module Begins here -->
             <div class="payment-form" @if($levels == '5') style="margin-top: 150px" @endif>
-                <div class="heading">
+                <div class="heading" style="">
                     <div class="first-heading">
                         <h3>
-                            Discount Details
-                        </h3>
+                            Payment Details
+                        </h3><br>
 
                       
                     </div>
-                    <div class="bottom-title">
+                    <!-- <div class="bottom-title">
                         <p style="color: #C4C4C4; text-align: center;">If you have a dicount code, enter it here.</p>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="form-sec discountForm">
-                    <form id="discountForm" method="POST" >
+                <form method="POST" action="{{ url('add_payment') }}">
                         @csrf
-                        <div class="col-lg-6 col-md-6 col-12 offset-md-3 offset-lg-3 ">
-                            <div class="mb-3">
+                        <!-- col-lg-6 col-md-6 col-12 offset-md-3 offset-lg-3 -->
+                        <div class="row ">
+                            <div class="col-6 mb-3">
                                 <div class="inputs">
-                                    <select title="Current Location" class="form-control  current_location form-select" id="current_location" name="current_location" required="">
+                                    <select title="Current Location" class="form-control  current_location form-select" id="current_location" name="current_location" required>
                                         <option selected disabled>--Current Location--</option>
                                         <option value="United Arab Emirates">United Arab Emirates</option>
                                         @foreach (Constant::countries as $key => $item)
@@ -174,10 +178,13 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                                         @endforeach
                                     </select>
                                 </div>
+                                @error('current_location')
+                                    <div class="error">{{ $message }}</div>
+                                @enderror
                             </div>
-                            <div class="mb-3">    
+                            <div class="col-6 mb-3">    
                                 <div class="inputs">
-                                    <select title="Current Location" class="form-control  embassy_appearance form-select" id="embassy_appearance" name="embassy_appearance" required="">
+                                    <select title="Embassy Appearance Country" class="form-control  embassy_appearance form-select" id="embassy_appearance" name="embassy_appearance" required="">
                                         <option selected disabled>--Country of Embassy Appearance--</option>
                                         <option value="United Arab Emirates">United Arab Emirates</option>
                                         @foreach (Constant::countries as $key => $item)
@@ -185,20 +192,20 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                                         @endforeach
                                     </select>
                                 </div>
+                                @error('embassy_appearance') <span class="error">{{ $message }}</span> @enderror
                             </div>
+                        </div>
+                        <div class="row" id="discount" style="text-align: center;">
                             <div class="mb-3">    
                                 <div class="inputs">
-                                    <input type="text" class="form-control dicount_code" name="discount_code" id="discount_code" aria-describedby="emailHelp" autocomplete="off" placeholder="########">
+                                    <input type="text" class="form-control dicount_code" name="discount_code" id="discount_code" aria-describedby="emailHelp" autocomplete="off" placeholder="Enter Discount Code, if any">
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary dicountBtn ">APPLY CODE</button>
+                            <div class="col-lg-6 col-md-6 col-12 mb-3" style="display:block; margin: 0 auto;">
+                                <button type="button" class="btn btn-primary dicountBtn" id="dicountBtn" >APPLY CODE</button>
+                            </div>
                         </div>
-                    </form><hr>
-
-                    <form method="POST" action="{{ url('add_payment') }}">
-                    <!-- <form method="POST"> -->
-                            
-                        @csrf
+                    <hr>
 
                         @foreach(($pays ? $pays : array()) as $pd)
 
@@ -433,15 +440,17 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                                                     First Payment
 
                                                     @endif
+                                                    <span style="font-size:11px">(+ 5% VAT)</span>
                                                 </div>
                                                 <div class="right-section col-6" align="right">
                                                     @if($first_pay == $yy && $ppay == "First Payment")
-
+                                                    @php $vat = $first_pay*5/100; @endphp
                                                     <b>{{number_format($first_pay,2)}}</b>
 
                                                     @else
                                                     {{number_format($first_pay,2)}}
                                                     @endif
+                                                    <span style="font-size:11px">AED</span>
                                                 </div>
                                             </div>
                                             <div class="total-sec row mt-3">
@@ -453,44 +462,51 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                                                     @else
                                                     Second Payment
                                                     @endif
+                                                    <span style="font-size:11px">(+ 5% VAT)</span>
                                                 </div>
                                                 <div class="right-section col-6" align="right">
 
                                                     @if($second_pay == $yy && $ppay == "Second Payment")
-
+                                                    @php $vat = $second_pay*5/100; @endphp
                                                     <b>{{number_format($second_pay,2)}}</b>
 
                                                     @else
                                                     {{number_format($second_pay,2)}}
                                                     @endif
+                                                    <span style="font-size:11px">AED</span>
 
                                                 </div>
                                             </div>
                                             <div class="total-sec row mt-3">
                                                 <div class="left-section col-6">
                                                     @if($third_pay == $yy && $ppay == "Final Payment")
+                                                    
                                                     <b>Third Payment</b> @if(strlen($pendMsg)>1) <br>
+
                                                     <font style='font-size:11px;color:red'><i fa fa-arrow-up></i>{{-- {{ $pendMsg }}--}} </font> @endif
                                                     @else
                                                     Third Payment
                                                     @endif
+                                                    <span style="font-size:11px">(+ 5% VAT)</span>
                                                 </div>
                                                 <div class="right-section col-6" align="right">
                                                     @if($third_pay == $yy && $ppay == "Final Payment")
-
+                                                    @php $vat = $third_pay*5/100; @endphp
                                                     <b>{{number_format($third_pay,2)}}</b>
 
                                                     @else
                                                     {{number_format($third_pay,2)}}
                                                     @endif
+                                                    <span style="font-size:11px">AED</span>
                                                 </div>
                                             </div>
                                             <hr>
+    
                                             <div class="total-sec row mt-3">
                                                 <div class="left-section col-6">
                                                     Total Payment
                                                 </div>
-                                                <div class="right-section col-6" align="right">
+                                                <div class="right-section col-6 " align="right">
                                                     <?php 
 
                                                         $totalCost = Session::get('totalCost');  
@@ -513,18 +529,23 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                                                     {{ isset($tot_pay) ? number_format($tot_pay,2) : '' }}
                                                     {{-- {{number_format($data->unit_price,2)}} --}}
                                                     @endif
+                                                    <span style="font-size:11px">AED</span>
                                                 </div>
                                             </div>
-                                            <div class="total-sec row mt-3">
+                                            <div class="total-sec row mt-3 showDiscount">
                                                 <div class="left-section col-6">
-                                                    @if($discount>0)
-                                                    Discount ({{$discountPercent}})
-                                                    @endif
+                                               
+                                                    @if(Session::has('haveCoupon'))
+                                                      Discount (<span id="discountPercent">{{$discountPercent}} </span>)
+                                                    @endif 
+
                                                 </div>
                                                 <div class="right-section col-6" align="right">
-                                                    @if($discount>0)
-                                                    {{number_format($discount,2)}}
-                                                    @endif
+                                                @if(Session::has('haveCoupon'))
+                                                    <span id="discountValue">{{number_format($discount,2)}} </span>
+                                                    <span style="font-size:11px" id="discountVal">AED</span>
+                                                @endif   
+                                                   
                                                 </div>
                                             </div>
                                         </div>
@@ -567,100 +588,22 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                                         @else
                                         {{number_format($data->unit_price,2)}}
                                         @endif --}}
-                                        <h2 style="font-size: 20px;">Now you will pay {{strtolower($which)}} installment only <span id="amountLink"><b>{{number_format($payNoww)}}</b></span> AED</h2>
-                                        <input type="hidden" id="amountLink2" name="totalpay" value="{{  number_format($payNoww, 0, '.', '') }}">
-                                        <input type="hidden" name="totaldue" value="{{$payNoww}}">
+                                        <h2 style="font-size: 20px;">Now you will pay {{strtolower($which)}} installment only <span id="amountLink"><b>{{number_format($payNoww + $vat)}}</b></span> AED <span style="font-size:11px;opacity:0.6">(VAT inclusive)</span></h2>
+                                        <input type="hidden" id="amountLink2" name="totalpay" value="{{  number_format($payNoww + $vat, 0, '.', '') }}">
+                                        <input type="hidden" id="totaldue" name="totaldue" value="{{$payNoww + $vat}}">
                                     </div>
                                 </div>
                             </div>
-                            {{-- <div class="form-group row mt-4" style="margin-bottom: 70px">
-                                <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                    <button type="submit" class="btn btn-primary submitBtn">Continue</button>
-                                </div>
-                            </div> --}}
-                        {{-- </form> --}}
-                {{-- <div class="heading">
-                    <div class="first-heading">
-                        <h3>
-                            Card Details
-                        </h3>
-                    </div>
-                </div> --}}
-                {{-- <div class="form-sec"> --}}
+                           
+                
 
                     <input type="hidden" name="pid" value="{{$data->id}}">
                     <input type="hidden" name="ppid" value="{{(isset($det_id))?$det_id:''}}">
                     <input type="hidden" name="uid" value="{{Auth::user()->id}}">
                     <input type="hidden" name="whichpayment" value="{{ ($whichPayment) ? $whichPayment : 'First Payment' }}">
-                    <!-- <div class="form-group row mt-4">
-                        <div class="col-sm-6 mt-3">
-                            <div class="left-input">
-                                <label for="rdo1" class="radio-label"><span class="radio-border"></span> <img src="{{asset('images/payment_icons_Mastercard.svg')}}" alt="Option 1" class="radioImage" height="40px" width="40px"></label>
-                                <label for="rdo2" class="radio-label"><span class="radio-border"></span> <img src="{{asset('images/payment_icons _Visa_Logo.svg')}}" alt="Option 2" class="radioImage" height="40px" width="40px"> </label>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 mt-3">
-                            <div class="rightside">
-                                <p>{{ $whichPayment}} Amount:</p>
-                                <div class="amount">
-                                    <p>AED <span>{{ number_format($payNow) }}</span></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
-                    {{-- <div class="form-group row mt-4">
-                        <div class="col-sm-6 mt-3">
-                            <input type="text" class="form-control" placeholder="Card Number" name="card_number" pattern="\d*" maxlength="16" value="{{ old('card_number') }}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required>
-                            @if($errors->has('card_number'))
-                            <div class="error">{{ $errors->first('card_number') }}</div>
-                            @endif
-                        </div>
-                        <div class="col-sm-6 mt-3">
-                            <input class="b form-control" type="text" placeholder="Cardholder full name" name="card_holder_name" value="{{ old('card_holder_name') }}" required>
-                        </div>
-                    </div> --}}
-                    {{-- <div class="form-group row mt-4">
-                        <div class="col-sm-4 mt-3">
-                            <select name="month" class="form-control form-select" name="month" value="{{ old('month') }}" required>
-                                <option selected disabled>Month</option>
-                                <option>01</option>
-                                <option>02</option>
-                                <option>03</option>
-                                <option>04</option>
-                                <option>05</option>
-                                <option>06</option>
-                                <option>07</option>
-                                <option>08</option>
-                                <option>09</option>
-                                <option>10</option>
-                                <option>11</option>
-                                <option>12</option>
-                            </select>
-                        </div>
-                        <div class="col-sm-4 mt-3">
-                            <input type="text" pattern="\d*" maxlength="4" class="form-control" placeholder="Year" name="year" value="{{ old('year') }}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required>
-                            @if($errors->has('year'))
-                            <div class="error">{{ $errors->first('year') }}</div>
-                            @endif
-                        </div>
-                        <div class="col-sm-4 mt-3">
-                            <input type="text" pattern="\d*" maxlength="3" class="form-control" placeholder="CVC" name=cvv value="{{ old('cvv') }}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required>
-                            @if($errors->has('cvv'))
-                            <div class="error">{{ $errors->first('cvv') }}</div>
-                            @endif
-                        </div>
-                    </div> --}}
+                    
 
-                        {{-- <div class="form-group row mt-4">
-                            <div class="form-check">
-                                <input type="checkbox" id="save_card" name="save_card" value="1" class="checkcolor" checked>
-                                <label class="form-check-label" for="TnC">
-                                    Save my details for future payment & Automatic deductions
-                                </label>
-                                <label class="form-check-label text-danger" id="TnCAlert"></label>
-                                @error('save_card') <span class="error">{{ $message }}</span> @enderror
-                            </div>
-                        </div> --}}
+                        
                         <div class="form-group row mt-4" style="margin-bottom: 70px">
                             <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
                                 <button type="submit" class="btn btn-primary submitBtn">Continue</button>
@@ -668,28 +611,91 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                             </div>
                         </div>
                     </form>
-                {{-- </div> --}}
 @endsection
 @push('custom-scripts')
 <script>
-    $('#discountForm').on('submit', function(e){
-        e.preventDefault(); 
+    $(document).ready(function(){
 
-        var $this = $(this); 
-        $.ajax({ 
-            url: '{{ route("getPromo") }} ',
-            method: 'POST',
-            data: {
-                "_token": "{{ csrf_token() }}",
-            }
-        }).done( function (response) {
-        
-            if (response) {
-                alert(response.status)
-                // $('#target-div').html(response.status); 
-            }
+        // $('#showDiscount').hide();
+        $('#discount').hide();
+        $('.dicountBtn').click(function(){
+
+            var $this = $(this); 
+            $.ajax({ 
+                url: '{{ route("getPromo") }} ',
+                method: 'POST',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    "discount_code" : $('#discount_code').val(),
+                    "totaldue" : $('#totaldue').val()
+                }
+            }).done( function (response) {
+            
+                if (response) {
+                    // alert(response.myDiscount);
+                    console.log(response);
+                    $('#discountValue').html(response.discountamt);
+                    $('#discountPercent').html(response.discountPercent);
+                     
+                    $('#amountLink').html(parseInt(response.topaynow));
+
+                    document.getElementById("amountLink2").value = response.topaynow;
+                    // document.getElementById("totaldue").value = response.topaynow;
+                    // $('#amountLink2').html(response.topaynow);
+                    // $('#totaldue').html(response.topaynow);
+
+                } else {
+                    alert('Invalid Discount Code');
+                }
+            });
         });
+
+
+        $('.embassy_appearance').change(function(){
+
+            var $this = $(this); 
+            $.ajax({ 
+                url: '{{ route("checkPromo") }} ',
+                method: 'POST',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    "embassy_appearance" : $('#embassy_appearance').val()
+                }
+            }).done( function (response) {
+
+                if (response.status) {
+                    // alert(response.status);
+                    console.log(response);
+                        $('#discount').show();
+                    // $('#target-div').html(response.status); 
+                }
+            });
+            });
+
+
     });
+
+
+   
+
+    // $('#discountForm').on('submit', function(e){
+    //     e.preventDefault(); 
+
+    //     var $this = $(this); 
+    //     $.ajax({ 
+    //         url: '{{ route("getPromo") }} ',
+    //         method: 'POST',
+    //         data: {
+    //             "_token": "{{ csrf_token() }}",
+    //         }
+    //     }).done( function (response) {
+        
+    //         if (response) {
+    //             alert(response.status)
+    //             // $('#target-div').html(response.status); 
+    //         }
+    //     });
+    // });
 </script>
 @endpush
 <script src="{{asset('js/alert.js')}}"></script>

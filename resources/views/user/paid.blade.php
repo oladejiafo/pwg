@@ -1,4 +1,26 @@
 <!--====== Style CSS ======-->
+<style>
+.watermarked {
+  position: relative;
+}
+
+.watermarked:after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 35%;
+  background-image: url("../user/images/paid_stamp.png");
+  background-size: 80px 80px;
+  background-position: 30px 30px;
+  background-repeat: no-repeat;
+  opacity: 0.4;
+}
+
+</style>
+
 <link rel="stylesheet" href="../user/assets/css/style.css">
 
 <div class="card d-flex aligns-items-center justify-content-center text-center" style="margin-top:120px">
@@ -29,12 +51,22 @@
               <li>
                 <div align="center" class="col-md-4 col-sm-12 img-fluid cellContainer">
                   <span class="paid-item " href="#">
-                    <span class="positionAnchor  paid-thumbnail">
+                    <span class="positionAnchor  @if(in_array($ppid, $ptid)) watermarked @endif paid-thumbnail">
                       <img src="../user/images/{{$payment}}.svg" height="500px" class="img-fluid">
                       <span class="title" style="align: center;">
                         <h3 class="paid-title" style="font-size: 22px; color:aliceblue">{{$payment}}</h3>
+                      
                       </span>
-                      <strong class="paid-price">{{number_format($amount)}} | </strong>&nbsp;<amp style="margin-left:18px">@foreach($prod as $pp) @if ($pp == reset($prod )) last Item: @endif {{$pp->product_name}} @endforeach<br>Package</amp>
+                      <strong style="line-height:25px;margin-top:20px" class="paid-price">
+                        {{number_format($amount)}} | 
+                        <br><span style="font-size: 12px;float:left;display:inline">AED</span>
+                        <span style="font-size: 12px;display:inline; float:right;margin-right:20px;"> + 5% VAT</span>
+                      </strong>&nbsp;
+                      <amp style="margin-left:18px">
+                         @foreach($prod as $pp) @if ($pp == reset($prod )) last Item: @endif 
+                         {{$pp->product_name}} @endforeach
+                         <br>Package
+                      </amp>
  
                       <p>
                           @if(in_array($ppid, $ptid))
@@ -55,11 +87,21 @@
                   </span>
                 </div>
 
-                @if($payment != "First Payment")
+
                 <div class="cardc downlaod-item  d-flexx aligns-items-center justify-content-center text-center" style="font-weight: bold;font-family:'TT Norms Pro'; display:inline-block">
                   <div class="cardc-body">
 
-                    @if($payment == "Second Payment")
+                    @if($payment == "First Payment")
+
+                    <div style="display:inline" id="ddx" class="block2 download-thumbnail img-fluid" data-bs-toggle="modal" data-bs-target="#statusModal">
+                      <span style="font-size:11px">Click for more info</span>
+                    </div>
+                    <div class="dg aligns-items-center justify-content-center text-center" style="display:inline; justify-content: center;  align-items: center;">
+                      <p style="padding-top: 27px;padding-bottom:0px; font-size:14px;font-weight:800">Application Status</p>
+                      <span style="font-size:11px; color:grey;padding-left:1px; padding-right:1px"></span>
+                    </div>
+
+                    @elseif($payment == "Second Payment")
                     <div style="display:inline" id="dd" class="block download-thumbnail img-fluid">
                       <svg style="margin:auto;margin-top:20px" width="39" height="30" class="dd" viewBox="0 0 39 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8.78768 24.0116C10.8127 27.5821 14.6843 30 19.1291 30C23.5739 30 27.4456 27.5821 29.4706 24.0116C34.3102 23.9865 38.2328 20.1154 38.2328 15.3547C38.2328 10.5815 34.2847 6.68531 29.4196 6.68531H29.3687L26.2612 9.74216H29.4196C32.5654 9.74216 35.1253 12.2603 35.1253 15.3547C35.1253 18.0107 33.2276 20.2407 30.7059 20.8169C30.2984 20.9046 29.8654 20.9673 29.4196 20.9673C28.7574 20.9673 28.1333 20.8545 27.5475 20.6541C27.2673 21.6563 26.7961 22.5959 26.1847 23.4103C24.5928 25.5525 22.0201 26.9432 19.1164 26.9432C16.2126 26.9432 13.64 25.5525 12.048 23.4103C11.4367 22.5834 10.9655 21.6563 10.6853 20.6541C10.0995 20.8545 9.47541 20.9673 8.81315 20.9673C8.3674 20.9673 7.94712 20.9172 7.52684 20.8169C4.99242 20.2407 3.10753 18.0107 3.10753 15.3547C3.10753 12.2603 5.66742 9.74216 8.81315 9.74216H11.9716L8.8641 6.68531H8.81315C3.96082 6.68531 4.25317e-07 10.569 0 15.3547C0.0254711 20.1154 3.94809 23.9865 8.78768 24.0116Z" fill="#1C7E14" />
@@ -97,9 +139,37 @@
 
                   </div>
                 </div>
-                @endif
+                {{-- @endif --}}
 
               </li>
+
+              <!-- Modal -->
+<div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="statusModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="statusModalLabel">Application Status</h5>
+        <button type="button" style="float:right; font-size:11px; width:20px;height:20px" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        @if($payment == "First Payment")
+        Your Application is in progress! <br>
+         Your second payment pending 
+        @elseif($payment == "Second Payment")
+        Your Application is in progress! <br> 
+         Your third payment is pending. 
+         Your work permit will be uploaded soon.
+        @elseif($payment == "Final Payment") 
+         Congratutaion! You have completed your payments. Your embassy appearnce date will be indicated soon.
+        @endif
+
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- Modal Ends -->
               <?php
               // while ($countt < $count) {
               //  $countt = $countt + 1;
@@ -126,6 +196,7 @@
   </div>
 
 
+
 </div>
 
 @if(isset($pp->id))
@@ -147,6 +218,9 @@
 @else
 @include('user.noapplication')
 @endif
+
+
+
 
 
 <!-- <script src="../user/assets/js/vendor/jquery-1.12.4.min.js"></script> -->

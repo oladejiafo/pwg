@@ -25,6 +25,7 @@ Route::get('payment/success/{id}',[HomeController::class,'paymentSuccess'])->nam
 Route::get('payment/fail/{id}',[HomeController::class,'paymentFail'])->name('payment-fail');
 Route::post('store/applicant/details', [ApplicationController::class,'storeApplicantDetails'])->name('store.applicant.details');
 Route::post('get-promo',[HomeController::class, 'getPromo'])->name('getPromo');
+Route::post('check-promo',[HomeController::class, 'checkPromo'])->name('checkPromo');
 Route::get('applicant/review/{id}', [ApplicationController::class, 'applicantReview'])->name('applicant.review');
 
 Route::middleware([
