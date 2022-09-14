@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class promo extends Model
 {
     use HasFactory;
-    // protected $table = 'coupons';active_until
+    protected $table = 'coupons';
 
 }
