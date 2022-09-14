@@ -41,6 +41,7 @@
 
             @foreach($pays as $pay)
               <?php 
+           
               $pay_id = $pay->id;
               $payment = $pay->payment;
               $amount = $pay->amount;

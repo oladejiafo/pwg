@@ -211,6 +211,7 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
 
                         @if(isset($pd->product_payment_id))
                         @php
+                       
                         $pp = $pd->product_payment_id;
                         @endphp
                         @else
@@ -223,6 +224,7 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
 
                         @if(session()->has('myDiscount') && session()->has('haveCoupon') && session()->get('haveCoupon')==1)
                         @php
+                        
                         $promo = session()->get('myDiscount')
                         @endphp
                         @else
@@ -230,7 +232,7 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                         $promo =0
                         @endphp
                         @endif
-
+                      
                         @if(isset($index) && ($index == 0 || $index ==null))
                         @php
                         $first_pay = $det->amount
@@ -394,7 +396,7 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                                             $pendMsg = "Full Outstanding Payment";
                                         } else if ($pp == 2) {
 
-                                            $payNow = 600; //$det->amount;
+                                            $payNow = $det->amount;
                                             $payNoww = $payNow;
                                             $pendMsg = "";
                                         } else {
@@ -509,11 +511,11 @@ $second_pay= $third_pay = $discount = $which = $payNoww = $whichPayment = $payNo
                                                 <div class="right-section col-6 " align="right">
                                                     <?php 
 
-                                                        $totalCost = Session::get('totalCost');  
+                                                    //    $totalCost = Session::get('totalCost');  
                                                        if(isset($tot_pay)) {
                                                         if (is_numeric($tot_pay))
                                                         {
-                                                            $ttot = number_format($tot_pay,2);
+                                                           $ttot = number_format($tot_pay,2);
                                                         } else {
                                                             $ttot = $tot_pay; //$totalCost;
                                                         }

@@ -420,13 +420,13 @@ class HomeController extends Controller
                 $pays = DB::table('product_payments')
                     ->join('applicants', 'applicants.product_id', '=', 'product_payments.product_id')
                     ->select('product_payments.id', 'product_payments.payment', 'product_payments.amount', 'product_payments.product_id')
-                    // ->where('product_payments.visa_type', '=', $packageType)
+                    ->where('product_payments.visa_type', '=', $packageType)
                     ->where('applicants.user_id', '=', $id)
                     ->orderBy('product_payments.id')
                     ->groupBy('product_payments.payment')
                     ->get();
             }
-
+// dd($pays);
             $paid = DB::table('payments')
                 ->join('applicants', 'payments.application_id', '=', 'applicants.id')
                 ->selectRaw('payments.*, applicants.*, COUNT(payments.id) as count')
@@ -552,10 +552,11 @@ class HomeController extends Controller
             } else {
                 $pdet = DB::table('product_payments')
                     ->where('product_id', '=', Session::get('myproduct_id'))
-                    // ->where('visa_type', '=', $packageType)
+                    ->where('visa_type', '=', $packageType)
                     // ->groupBy('product_payments.id')
                     ->get();
             }
+            // dd($pdet);
 
             return view('user.payment-form', compact('data', 'pdet', 'pays', 'payall'));
         } else {
