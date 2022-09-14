@@ -16,7 +16,7 @@
    $levels = $completed->applicant_status;
 @endphp
 
-    <div class="container" data-applicantId="{{$applicant['id']}}" data-dependentid="{{$dependent}}">
+    <div class="container" id="app" data-applicantId="{{$applicant['id']}}" data-dependentid="{{$dependent}}">
         <div class="col-12">
             <div class="row">
                 <div class="wizard bg-white">
@@ -168,7 +168,14 @@
         // Main Applicant
         $('.applicantReviewSpin, .dependentReviewSpin, .childReviewSpin').hide();
         $('.schengen_visa, .applicantData, .homeCountryData, .currentCountryData, .schengenData, .dependent_schengen_visa').hide();
-        $('.datepicker, .dependent_datepicker, .child-dob').datepicker({
+        $('.datepicker').datepicker({
+            dateFormat : "dd-mm-yy",
+            changeMonth: true,
+            changeYear: true,
+            yearRange: '-99:-18',
+            constrainInput: false ,  
+        });
+        $('.dependent_datepicker, .child-dob').datepicker({
             maxDate : 0,
             dateFormat : "dd-mm-yy",
             changeMonth: true,
@@ -308,8 +315,10 @@
         $('#is_schengen_visa_issued_last_five_year').on('change', function(){
             if($('#is_schengen_visa_issued_last_five_year').val() == "Yes"){
                 $('.schengen_visa').show();
+                $('#is_finger_print_collected_for_Schengen_visa').show();
             } else {
                 $('.schengen_visa').hide();
+                $('#is_finger_print_collected_for_Schengen_visa').hide();
             }
         });
 

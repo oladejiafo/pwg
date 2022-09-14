@@ -45,10 +45,7 @@ class ApplicationController extends Controller
         if (Auth::id()) {
             $request->validate([
                 'applied_country' => 'required',
-                // 'job_type' => 'required',
                 'cv' => 'required|mimes:pdf',
-                'embassy_country' => 'required',
-                'agree' => 'required'
             ]);
             $file = $request->file('cv');
             $fileName = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
@@ -63,7 +60,7 @@ class ApplicationController extends Controller
                     // 'job_type' => $request->job_type,
                     'resume' => $fileName,
                     'agent_code' => $request->agent_code,
-                    'embassy_country' => $request->embassy_country,
+                    // 'embassy_country' => $request->embassy_country,
                     'applicant_status' => 3
                 ]);
             return Redirect::route('applicant.details', $request->product_id);
@@ -117,12 +114,12 @@ class ApplicationController extends Controller
         Applicant::where('user_id', Auth::id())
             ->where('product_id', $request->product_id)
             ->update([
-                'first_name' => $request['first_name'],
+                'name' => $request['first_name'],
                 'middle_name' => $request['middle_name'],
-                'surname' => $request['surname'],
-                'dob' => date('Y-m-d', strtotime($request['dob'])),
-                'place_birth' => $request['place_birth'],
-                'country_birth' => $request['country_birth'],
+                'sur_name' => $request['surname'],
+                'date_of_birth' => date('Y-m-d', strtotime($request['dob'])),
+                'place_of_birth' => $request['place_birth'],
+                'country_of_birth' => $request['country_birth'],
                 'citizenship' => $request['citizenship'],
                 'sex' => $request['sex'],
                 'civil_status' => $request['civil_status']
@@ -170,17 +167,17 @@ class ApplicationController extends Controller
             ->where('product_id', $request->product_id)
             ->update([
                 'passport_number'  => $request['passport_number'],
-                'passport_date_issue' =>  date('Y-m-d', strtotime($request['passport_issue'])),
-                'passport_date_expiry' => date('Y-m-d', strtotime($request['passport_expiry'])),
-                'issued_by' => $request['issued_by'],
+                'passport_issue_date' =>  date('Y-m-d', strtotime($request['passport_issue'])),
+                'passport_expiry' => date('Y-m-d', strtotime($request['passport_expiry'])),
+                'passport_issued_by' => $request['issued_by'],
                 'passport' => $fileName,
-                'phone_number' => $request['home_phone_number'],
-                'home_country' => $request['home_country'],
+                'residence_mobile_number' => $request['home_phone_number'],
+                'country_of_residence' => $request['home_country'],
                 'state' => $request['state'],
                 'city' => $request['city'],
                 'postal_code' => $request['postal_code'],
-                'address_1' => $request['address_1'],
-                'address_2' => $request['address_2']
+                'address_line_1' => $request['address_1'],
+                'address_line_2' => $request['address_2']
             ]);
         return Response::json(array(
                     'success' => true,
@@ -250,17 +247,16 @@ class ApplicationController extends Controller
         Applicant::where('user_id', Auth::id())
             ->where('product_id', $request->product_id)
             ->update([
-                'current_residance_country' => $request->current_country,
-                'current_residance_mobile' => $request->current_residance_mobile,
+                'country' => $request->current_country,
+                'phone_number' => $request->current_residance_mobile,
                 'residence_id' => $request->residence_id,
-                'id_validity' => date('Y-m-d', strtotime($request->visa_validity)),
+                'visa_validity' => date('Y-m-d', strtotime($request->visa_validity)),
                 'residence_copy' => $residenceCopy,
                 'visa_copy' => $visaCopy,
-                'current_job' => $request->current_job,
                 'work_state' => $request->work_state,
                 'work_city' => $request->work_city,
                 'work_postal_code' => $request->work_postal_code,
-                'work_street_number' => $request->work_street,
+                'work_address' => $request->work_street,
                 'company_name' => $request->company_name,
                 'employer_phone_number' => $request->employer_phone,
                 'employer_email' => $request->employer_email
@@ -278,7 +274,6 @@ class ApplicationController extends Controller
     {
         $validator = \Validator::make($request->all(), [
             'is_schengen_visa_issued_last_five_year' => 'required',
-            'is_finger_print_collected_for_Schengen_visa' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -298,9 +293,9 @@ class ApplicationController extends Controller
         Applicant::where('user_id', Auth::id())
             ->where('product_id', $request->product_id)
             ->update([
-                'is_schengen_visa_issued'  => $request->is_schengen_visa_issued_last_five_year,
+                'is_schengen_visa_issued_last_five_year'  => $request->is_schengen_visa_issued_last_five_year,
                 'schengen_visa' => $schengenCopy,
-                'is_fingerprint_collected' => $request->is_finger_print_collected_for_Schengen_visa
+                'is_finger_print_collected_for_Schengen_visa' => $request->is_finger_print_collected_for_Schengen_visa
             ]);
         return Response::json(array('success' => true), 200);
     }

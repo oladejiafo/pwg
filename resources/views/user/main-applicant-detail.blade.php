@@ -38,10 +38,9 @@
                     
                     <form method="POST" enctype="multipart/form-data" id="applicant_details">
                         @csrf
-                        <input type="hidden" name="product_id" value="{{$productId}}">
+                        <input type="hidden" name="destination_id" value="{{$productId}}">
                         <div class="form-group row mt-4">
                             <div class="col-sm-4 mt-3">
-                                <input type="hidden" name="applicantCompleted" value="0" class="applicantCompleted">
                                 <input type="text" name="first_name" class="form-control first_name" placeholder="First Name*" value="{{$name[0]}}" autocomplete="off"/>
                                 <span class="first_name_errorClass"></span>
                             </div>
@@ -326,12 +325,12 @@
                                 </div><!-- btn -->
                             </div>
                         </div>
-                        <div class="form-group row mt-4">
+                        {{-- <div class="form-group row mt-4">
                             <div class="col-sm-12 mt-3">
                                 <input type="text" name="current_job" class="form-control" placeholder="Profession As Per Current Job (or on Visa)*" autocomplete="off">
                                 <span class="current_job_errorClass"></span>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="form-group row mt-4">
                             <div class="col-sm-4 mt-3">
                                 <input type="text" name="work_state" class="form-control" placeholder="Work State/Province*" autocomplete="off"/>
@@ -482,6 +481,8 @@
                 </div>
             </div>
         </div>
+        <div id="importExperience" data-applicantId="{{$applicant['id']}}" data-dependentId="{{$dependent}}">
             @include('user.experience')
+        </div>
     </div>
 </div>

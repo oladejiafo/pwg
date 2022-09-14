@@ -27,6 +27,7 @@
     }
 </style>
     <body>
+        
         @if(session()->has('success'))
         <div class="alert alert-success alert-block" style="color:#fff; padding:2px; margin-left:auto;margin-right:auto; width:45%;height:120px; text-align:center;margin-bottom:-80px;background-colorx:green;border-radius:10px">
         <button type="button" class="close" data-dismiss="alert" style="float:right;border-style:none;background-color: transparent"><i class="fa fa-times-circle" aria-hidden="true" style="color:#000; font-size:25px";></i>
@@ -96,6 +97,8 @@
         @endif
 
     <div class="login">
+        {{-- {{Session::get('myproduct_id')}}
+        @php echo'here'; die; @endphp --}}
         @yield('content')
     </div>
      <!--  load jQuery  -->
