@@ -5,25 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Applicant extends Model
+class Applicant extends Model implements HasMedia
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, InteractsWithMedia;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var string[]
-     */
-    protected $fillable = [
-        'user_id',
-        'product_id'
-        
-    ];
+    protected $table = 'applications';
+    
+    public static $media_collection_main_signture = 'client_collection_signature';
 
-    public function familyDetails()
-    {
-        return $this->hasMany(FamilyDetail::class, 'applicant_id', 'id');
-    }
 
 }

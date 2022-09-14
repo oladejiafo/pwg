@@ -8,12 +8,12 @@
 
 @php 
  //Session::get('myproduct_id');
-    $completed = DB::table('applicants')
-                ->where('product_id', '=', $productId)
-                ->where('user_id', '=', Auth::user()->id)
+    $completed = DB::table('applications')
+                ->where('destination_id', '=', $productId)
+                ->where('client_id', '=', Auth::user()->id)
                 ->first();
 
-   $levels = $completed->applicant_status;
+   $levels = $completed->application_stage_status;
 @endphp
 
     <div class="container" id="app" data-applicantId="{{$applicant['id']}}" data-dependentid="{{$dependent}}">

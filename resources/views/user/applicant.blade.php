@@ -16,14 +16,6 @@
 }
 </style>
 @section('content')
-@php 
-    $completed = DB::table('applicants')
-                ->where('product_id', '=', $productId)
-                ->where('user_id', '=', Auth::user()->id)
-                ->first();
-
-    $levels = $completed->applicant_status;
-@endphp
     <div class="container">
         <div class="col-12">
             <div class="row">
@@ -102,11 +94,11 @@
                     </div>
                     
                     @php
-                        $applied = DB::table('products')
+                        $applied = DB::table('destinations')
                             ->where('id', '=', $productId)
                             ->get();
 
-                        $products =  DB::table('products')->get();
+                        $products =  DB::table('destinations')->get();
                     @endphp    
 
                     <div class="form-sec">
