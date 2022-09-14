@@ -45,17 +45,17 @@ $cXamount=0;
 @endphp
 @foreach($canadaOthers as $canada)
 
-@if($canada->visa_type == "Study Permit")
+@if($canada->pricing_plan_type == "Study Permit")
 @php  
-  $cSname = $canada->visa_type;
-  $cSamount =$cSamount + $canada->amount;
+  $cSname = $canada->pricing_plan_type;
+  $cSamount =$cSamount + $canada->total_price;
 @endphp
 @endif
 
-@if($canada->visa_type == "Express Entry")
+@if($canada->pricing_plan_type == "Express Entry")
 @php  
-  $cXname = $canada->visa_type;
-  $cXamount = $cXamount + $canada->amount;
+  $cXname = $canada->pricing_plan_type;
+  $cXamount = $cXamount + $canada->total_price;
 @endphp
 @endif
 
@@ -67,13 +67,29 @@ $cXamount=0;
         <div class="col-12">
             <div class="package">
                 <div class="header">
-                    <h3>{{$data->product_name}} Package Types</h3>
+                    <h3>{{$data->name}} Package Types</h3>
                     <div class="bottoom-title">
                         <p>We’ve got you covered</p>
                     </div>
                 </div>
                 <div class="row" style="margin-left:auto; margin-right:auto; text-align:center;justify-content: center; display: flex;">
                 
+                      @if($proddet->first())
+                        @foreach($proddet as $prdet)
+                        @if ($loop->first)
+                    
+                            @php                                   
+                            $blue_cost = $prdet->total_price
+                            @endphp 
+
+                            @endif
+                        @endforeach
+                        @else 
+                        @php                                   
+                            $blue_cost = 0
+                            @endphp
+                        @endif
+
                     <div class="col-xs-6 col-md-4" style="display:inline-block;">
                         <div class="package-type blue-collar">
                             <div class="content">
@@ -82,12 +98,12 @@ $cXamount=0;
                             </div>
                                 <img src="{{asset('images/yellowWhiteCollar.svg')}}">
                                 <h6>Blue Collar Package</h6>
-                                <p class="amountSection"><span class="amount">{{number_format($data->unit_price,0)}}</span><b>AED</b></p>
+                                <p class="amountSection"><span class="amount">{{number_format($blue_cost,0)}}</span><b>AED</b></p>
                             </div>
                         </div>
                     </div>
                     
-                    @if($data->product_name == "Canada")
+                    @if($data->name == "Canada")
                     <div class="col-xs-12 col-md-4" style="display:inline-block;">
                         <div class="package-type  study-permit">                            
                             <div class="content">
@@ -123,7 +139,7 @@ $cXamount=0;
                         @if ($loop->first)
                         
                             @php                                   
-                            $whiteJob_cost = $whiteJob->cost + $data->unit_price
+                            $whiteJob_cost = $whiteJob->total_price
                             @endphp 
 
                             @endif
@@ -177,7 +193,7 @@ $cXamount=0;
                             </div>
                                 <img src="{{asset('images/yellowFamily.svg')}}">
                                 <h6>Family Package</h6>
-                                <p class="amountSection"><span class="Famamount">{{($famdet) ?  number_format($famdet['cost'],0) : 0 }}</span><b>AED</b></p>
+                                <p class="amountSection"><span class="Famamount">{{($famdet) ?  number_format($famdet['total_price'],0) : 0 }}</span><b>AED</b></p>
                                    @if(!$famdet)
                                    <p style="font-size: 14px">
                                      Package Not Available 
@@ -199,7 +215,7 @@ $cXamount=0;
                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
                                 <form method="POST" action="{{ url('product') }}">
                                     @csrf
-                                    <input type="hidden" name="cost" value="{{$data->unit_price}}">
+                                    <input type="hidden" name="cost" value="{{$blue_cost}}">
                                    
                                      <input type="hidden" value="Blue Collar Jobs" name="myPack">
                                     <!-- <a class="btn btn-primary" href="{{ url('product') }}" style="width: 100%;font-size: 24px;">Continue</a> -->
@@ -209,7 +225,7 @@ $cXamount=0;
                             </div>
                         </div>
                      
-                       @if($data->product_name == "Canada")
+                       @if($data->name == "Canada")
                         <div class="study-desc">
                         
                             <div class="form-group row" style="margin-top: -120px"> 
@@ -281,7 +297,7 @@ $cXamount=0;
                                 @csrf
                               
                                 <input type="hidden" name="productId" value="{{$productId}}">
-                                <input type="hidden" class="hiddenFamAmount" name="cost" value="{{($famdet) ?  number_format($famdet['cost']) : 0 }}">
+                                <input type="hidden" class="hiddenFamAmount" name="cost" value="{{($famdet) ?  number_format($famdet['total_price']) : 0 }}">
                                 <input type="hidden" value="FAMILY PACKAGE" name="myPack">
                                 <input type="hidden" value="{{($famdet) ? $famdet->id : 0 }}" name="fam_id">
 
@@ -459,8 +475,6 @@ function handleClick(spouse) {
  
     parents = spouse.value;
     kidd = $('input[name="children"]:checked').val();
-    
-
 
     getCost(kidd,parents);
     // document.cookie = 'parents='+parents ;        
@@ -468,9 +482,10 @@ function handleClick(spouse) {
 
 function handleKids(children) {
 let kidd = children.value;
-parent = $("input[name=spouse]:checked").val();
+parents = $("input[name=spouse]:checked").val();
 
-getCost(kidd,parent);
+getCost(kidd,parents);
+
 
 //  document.cookie = 'pers='+kidd ; 
 //  window.location.href = "{{ route('packageType',$productId) }}";
@@ -478,6 +493,7 @@ getCost(kidd,parent);
 
 function getCost(kidd, parents)
 {
+ 
     $.ajax({
         type: 'GET',
         url: "{{ route('packageType',$productId)  }}",
@@ -485,8 +501,8 @@ function getCost(kidd, parents)
         success: function (data) {
             console.log(data)
 
-            $('.Famamount').text(parseFloat(data.cost).toLocaleString());
-            $('.hiddenFamAmount').val(data.cost);
+            $('.Famamount').text(parseFloat(data.total_price).toLocaleString());
+            $('.hiddenFamAmount').val(data.total_price);
         },
         errror: function (error) {
         }

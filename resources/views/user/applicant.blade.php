@@ -116,7 +116,7 @@
                             <div class="form-group row mt-4">
                                 <div class="col-sm-6 mt-3">
                                     <select class="form-select form-control" id="inputFirstname" name="applied_country" placeholder="Applied Country *" value="{{old('applied_country')}}" required>
-                                        <option selected>@foreach($applied as $appliedc) {{$appliedc->product_name}} @endforeach</option>
+                                        <option selected>@foreach($applied as $appliedc) {{$appliedc->name}} @endforeach</option>
                                         @foreach($products as $product)
                                         @endforeach 
                                     </select>

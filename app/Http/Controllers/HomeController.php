@@ -37,18 +37,20 @@ class HomeController extends Controller
 
 
             $data = product::find($id);
-            $promo = promo::where('product_id', '=', $id)->where('active_until', '>=', date('Y-m-d'))->get();
-            $ppay = product_payments::where('product_id', '=', $id)->get();
-            $proddet = product_details::where('product_id', '=', $id)->get();
+           
+            $promo = promo::where('employee_id', '=', $id)->where('active_until', '>=', date('Y-m-d'))->get();
+            $ppay = product_payments::where('destination_id', '=', $id)->first();
+            // $proddet = product_details::where('product_id', '=', $id)->get();
 
             session()->forget('prod_id');
-            return view('user.package', compact('data', 'ppay', 'proddet', 'promo'));
+            return view('user.package', compact('data', 'ppay', 'promo'));
             //   return \Redirect::route('product', $idd);
 
         } else {
-            $package = DB::table('products')->orderBy(DB::raw('FIELD(product_name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
+            // $ppay = product_payments::where('destination_id', '=', $id)->first();
+            $package = DB::table('destinations')->orderBy(DB::raw('FIELD(name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
             // $package = product::all()->sortBy(DB::raw('FIELD(product_name, "Czech", "Poland", "Malta", "Canada", "Germany")'));
-            $promo = promo::where('validity', '>=', date('Y-m-d'))->get();
+            $promo = promo::where('active_until', '>=', date('Y-m-d'))->get();
 
             return view('user.home', compact('package', 'promo'));
         }
@@ -56,9 +58,10 @@ class HomeController extends Controller
 
     public function index()
     {
+      
 
-        $package = DB::table('products')->orderBy(DB::raw('FIELD(product_name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
-        $promo = promo::where('validity', '>=', date('Y-m-d'))->get();
+        $package = DB::table('destinations')->orderBy(DB::raw('FIELD(name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
+        $promo = promo::where('active_until', '>=', date('Y-m-d'))->get();
 
         return view('user.home', compact('package', 'promo'));
     }
@@ -92,21 +95,24 @@ class HomeController extends Controller
                 $kids = Session::get('myKids');
             }
 
-            $famdet = family_breakdown::where('product_id', '=', $productId)
-                ->where('visa_type', 'FAMILY PACKAGE')
-                ->where('parent', $parentt)
-                ->where('children', $kids)
+            $famdet = family_breakdown::where('destination_id', '=', $productId)
+                ->where('pricing_plan_type', 'FAMILY PACKAGE')
+                ->where('no_of_parent', $parentt)
+                ->where('no_of_children', $kids)
                 ->first();
             if ($request->response == 1) {
                 return $famdet;
             }
+            dd($famdet);
         } else {
-            $famdet = family_breakdown::where('product_id', '=', $productId)->where('visa_type', 'FAMILY PACKAGE')->first();
+            $famdet = family_breakdown::where('destination_id', '=', $productId)->where('pricing_plan_type', 'FAMILY PACKAGE')->first();
+       
         }
+   
       
-        $proddet = product_details::where('product_id', '=', $productId)->where('visa_type', 'BLUE AND PINK COLLAR JOBS')->get();
-        $whiteJobs = product_details::where('product_id', '=', $productId)->where('visa_type', 'WHITE COLLAR JOBS')->get();
-        $canadaOthers = product_payments::where('product_id', '=', $productId)->whereIn('visa_type', array('Express Entry', 'Study Permit'))->get();
+        $proddet = family_breakdown::where('destination_id', '=', $productId)->where('pricing_plan_type', 'BLUE COLLAR JOBS')->get();
+        $whiteJobs = family_breakdown::where('destination_id', '=', $productId)->where('pricing_plan_type', 'WHITE COLLAR JOBS')->get();
+        $canadaOthers = family_breakdown::where('destination_id', '=', $productId)->whereIn('pricing_plan_type', array('Express Entry', 'Study Permit'))->get();
         return view('user.package-type', compact('proddet', 'famdet', 'productId', 'whiteJobs', 'data','canadaOthers'));
     }
 
@@ -122,23 +128,38 @@ class HomeController extends Controller
 
 
         $data = product::find($id);
-        $promo = promo::where('product_id', '=', $id)->where('validity', '>=', date('Y-m-d'))->get();
+        $promo = promo::where('employee_id', '=', $id)->where('active_until', '>=', date('Y-m-d'))->get();
 
-        if (Session::get('packageType') == "FAMILY PACKAGE") {
-            $ppay = product_payments::where('product_id', '=', $id)
-                ->where('product_payments.visa_type', '=', Session::get('packageType'))
-                ->where('family_sub_id', '=', Session::get('fam_id'))
-                ->get();
+        if (Session::has('mySpouse') && Session::get('packageType') == "FAMILY PACKAGE") {
+            if (Session::get('mySpouse') == "yes") {
+                $parentt = 2;
+            } else {
+                $parentt = 1;
+            }
+
+            if (Session::get('myKids') == 0 || Session::get('myKids') == "none" || Session::get('myKids') == 5 || Session::get('myKids') == null) {
+
+                $kids = 1;
+            } else {
+                $kids = Session::get('myKids');
+            }
+    
+            $ppay = family_breakdown::where('destination_id', '=', $id)
+                ->where('pricing_plan_type', '=', Session::get('packageType'))
+                ->where('no_of_parent', '=', $parentt)
+                ->where('no_of_children', '=', $kids)
+                ->first();
         } else {
-            $ppay = product_payments::where('product_id', '=', $id)
-                ->where('product_payments.visa_type', '=', Session::get('packageType'))
+            $ppay = family_breakdown::where('destination_id', '=', $id)
+                ->where('pricing_plan_type', '=', Session::get('packageType'))
                 // ->where('family_sub_id', '=', Session::get('fam_id'))      
-                ->get();
+                ->first();
         }
-        $proddet = product_details::where('product_id', '=', $id)->get();
+        // dd($ppay);
+        // $proddet = product_details::where('product_id', '=', $id)->get();
 
         session()->forget('prod_id');
-        return view('user.package', compact('data', 'ppay', 'proddet', 'promo'));
+        return view('user.package', compact('data', 'ppay', 'promo'));
     }
 
 
@@ -431,7 +452,7 @@ class HomeController extends Controller
 
             $prod = DB::table('products')
                 ->join('applicants', 'products.id', '=', 'applicants.product_id')
-                ->select('products.product_name', 'products.id')
+                ->select('products.name', 'products.id')
                 ->where('applicants.user_id', '=', $id)
                 ->groupBy('products.id')
                 ->get();
@@ -937,7 +958,7 @@ class HomeController extends Controller
 
 public function mark_read(Request $request) {
 
-           $notis = notifications::where('user_id', '=', Auth::user()->id)->get();
+           $notis = notifications::where('client_id', '=', Auth::user()->id)->get();
 
            if ($notis) {
                 foreach($notis as $noti)
@@ -1049,20 +1070,20 @@ public function mark_read(Request $request) {
                         'link' => $link
                     ];
                 
-                    $check_noti = notifications::where('criteria', '=', $criteria)->where('user_id', '=', Auth::user()->id)->first();
+                    $check_noti = notifications::where('criteria', '=', $criteria)->where('client_id', '=', Auth::user()->id)->first();
 
                     if ($check_noti === null) 
                     {
 
                         DB::table('notifications')->insert(
-                                ['user_id' => $userID, 'message' => $message, 'criteria' => $criteria, 'link' => $link]
+                                ['client_id' => $userID, 'message' => $message, 'criteria' => $criteria, 'link' => $link]
                         );
                 
                         Mail::to($email)->send(new NotifyMail($dataArray));
                     } 
                     // Notification Ends ############ 
                     $dest = product::find($id);
-                    $dest_name = $dest->product_name;
+                    $dest_name = $dest->name;
 
                     $msg = "Awesome! Payment Successful!";
                     return view('user.payment-success', compact('id'));

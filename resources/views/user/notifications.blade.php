@@ -5,7 +5,7 @@
 // Post::where('Expiration_date','<',Carbon::now())->delete();
 
 $notifications = DB::table('notifications')
-->where('user_id', '=', Auth::user()->id)
+->where('client_id', '=', Auth::user()->id)
 ->orderBy('id', 'desc')
 ->orderBy('status', 'desc')
 ->limit(5)

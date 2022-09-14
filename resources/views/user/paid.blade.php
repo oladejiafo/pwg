@@ -65,7 +65,7 @@
                       </strong>&nbsp;
                       <amp style="margin-left:18px">
                          @foreach($prod as $pp) @if ($pp == reset($prod )) last Item: @endif 
-                         {{$pp->product_name}} @endforeach
+                         {{$pp->name}} @endforeach
                          <br>Package
                       </amp>
  

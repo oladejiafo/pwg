@@ -57,13 +57,13 @@
     <div class="container-fluid">
       <div class="row" style="margin-block: 50px; background-color:#fff; border-radius:10px">
 
-        <!-- <p style="font-style: italics; text-decoration:none"><a href="/"><b><i>Packages </a> > {{$data->product_name}} </i></b></p> -->
+        <!-- <p style="font-style: italics; text-decoration:none"><a href="/"><b><i>Packages </a> > {{$data->name}} </i></b></p> -->
 
         <div class="col-12 col-md-12 col-lg-6 img-fluid packageImage" style="margin-bottom: 0px;">
           <img src="../user/images/{{$data->image}}" style="border-radius:10px" width="100%" height="100%" border="0" alt="" />
         </div>
         <div class="col-12 col-md-12 col-lg-6 text">
-          <h1>{{$data->product_name}}</h1>
+          <h1>{{$data->name}}</h1>
           <p class="subheading"><span>{{$data->slogan}}</span></p>
           <p>{{$data->description}}</p>
           <h2>
@@ -81,7 +81,7 @@
              
                {{ $totalCost }} 
             @else
-               {{number_format($data->unit_price,2)}} 
+               {{number_format($ppay->total_price,2)}} 
             @endif 
             {{$data->currency}}
           </h2>
@@ -90,56 +90,66 @@
             <i class="<?php echo $icon; ?>"></i><i> {{$offer_discount_msg}} </i>
           </p><br>
 
+          @if(Session::has('packageType'))
+            @php
+             $a = explode(' ', Session::get('packageType'));
+             $ptype = $a[0] . ' ' . $a[1];
+            @endphp
+          @else 
+             $ptype ='';  
+          @endif
      
-          @if($ppay->first())
+          
+
           <p>
-          <h3>{{Session::get('packageType')}} Payment Installments</h3>
+          <h3>{{$ptype}} Payment Installments</h3>
           <table border=0 style="border-radius:10px">
             <tr>
-            <?php $cntt = 1; ?>
-
-              @foreach($ppay as $ppays)
-              
               <td align="left" class="pie" style="border-color:#fff;">
-
-                <img src="../user/images/progress_payment_{{ $cntt}}.svg" alt="">
-
-                @if(!$loop->last)
+                <img src="../user/images/progress_payment_1.svg" alt="">
               </td>
               <td align="center" class="line" style="border-color:#fff;">
                 <img src="../user/images/progress_bar.svg" alt="">
-                @endif
               </td>
-              <?php $cntt = $cntt + 1; ?>
-              @endforeach
+              <td align="left" class="pie" style="border-color:#fff;">
+                <img src="../user/images/progress_payment_2.svg" alt="">
+              </td>
+              @if($ppay->third_payment_price > 0)
+              <td align="center" class="line" style="border-color:#fff;">
+                <img src="../user/images/progress_bar.svg" alt="">
+              </td>
+              <td align="left" class="pie" style="border-color:#fff;">
+                <img src="../user/images/progress_payment_3.svg" alt="">
+              </td>
+              @endif              
             </tr>
 
             <tr>
-
-              @foreach($ppay as $ppays)
-
               <td align="center" style="border-color:#fff;">
-
-                <span class="prices" style="font-size:30px;font-weight:bold;">{{number_format($ppays->amount)}} </span><br>
-                <span class="pays" style="margin-left:0px;font-size:10px;font-weight:bold;">{{$ppays->payment}}</span>
-
-                @if(!$loop->last)
+                <span class="prices" style="font-size:30px;font-weight:bold;">{{number_format($ppay->first_payment_price)}} </span><br>
+                <span class="pays" style="margin-left:0px;font-size:10px;font-weight:bold;">First Payment</span>
               </td>
-              <td align="left" style="border-color:#fff;width:60px">
-
-                @endif
+              <td align="left" style="border-color:#fff;width:60px"> </td>
+              <td align="center" style="border-color:#fff;">
+                <span class="prices" style="font-size:30px;font-weight:bold;">{{number_format($ppay->second_payment_price)}} </span><br>
+                <span class="pays" style="margin-left:0px;font-size:10px;font-weight:bold;">Second Payment</span>
               </td>
-
-              @endforeach
+              @if($ppay->third_payment_price > 0)
+              <td align="left" style="border-color:#fff;width:60px"> </td>
+              <td align="center" style="border-color:#fff;">
+                <span class="prices" style="font-size:30px;font-weight:bold;">{{number_format($ppay->third_payment_price)}} </span><br>
+                <span class="pays" style="margin-left:0px;font-size:10px;font-weight:bold;">Third Payment</span>
+              </td>
+              @endif
             </tr>
 
           </table>
 
           </p>
-          @endif
+   
 
           <br>
-          <h4>Working in {{$data->product_name}} provides several benefits not limited to:</h4>
+          <h4>Working in {{$data->name}} provides several benefits not limited to:</h4>
 
           <p>
           <ul>
