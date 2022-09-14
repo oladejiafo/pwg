@@ -28,7 +28,12 @@ class ApplicationController extends Controller
     public function applicant($productId)
     {
         if (Auth::id()) {
-            return view('user.applicant', compact('productId'));
+            $completed = DB::table('applications')
+                ->where('destination_id', '=', $productId)
+                ->where('client_id', '=', Auth::user()->id)
+                ->first();
+            $levels = $completed->application_stage_status;
+            return view('user.applicant', compact('productId', 'levels'));
         } else {
             return back();
         }
@@ -47,22 +52,16 @@ class ApplicationController extends Controller
                 'applied_country' => 'required',
                 'cv' => 'required|mimes:pdf',
             ]);
-            $file = $request->file('cv');
-            $fileName = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
 
-            $destinationPath = 'public/resumes';
-            $file->storeAs($destinationPath, $fileName);
+            $client = User::find(Auth::id());
+            $client->addMedia($request->file('cv'))->toMediaCollection(User::$media_collection_main_resume);
 
-            Applicant::where('user_id', Auth::id())
-                ->where('product_id', $request->product_id)
-                ->update([
-                    'country' => $request->applied_country,
-                    // 'job_type' => $request->job_type,
-                    'resume' => $fileName,
-                    'agent_code' => $request->agent_code,
-                    // 'embassy_country' => $request->embassy_country,
-                    'applicant_status' => 3
-                ]);
+            $applicant = Applicant::where('client_id', Auth::id())
+                            ->where('destination_id', $request->product_id)
+                            ->first();
+            $applicant->application_stage_status = 3;
+            $applicant->assigned_agent_id = $request->agent_code;
+            $applicant->save();
             return Redirect::route('applicant.details', $request->product_id);
         }
     }
@@ -71,13 +70,14 @@ class ApplicationController extends Controller
     {
         if (Auth::id()) {
             $user = User::find(Auth::id());
-            $applicant = Applicant::where('user_id', Auth::id())
-                                    ->where('product_id', $productId)
+            $applicant = Applicant::where('client_id', Auth::id())
+                                    ->where('destination_id', $productId)
                                     ->first();
-            $dependent = FamilyDetail::where('product_id', $productId)
-                                    ->where('applicant_id', $applicant->id)
-                                    ->pluck('id')
-                                    ->first();
+            // $dependent = FamilyDetail::where('product_id', $productId)
+            //                         ->where('applicant_id', $applicant->id)
+            //                         ->pluck('id')
+            //                         ->first();
+            $dependent = null;
             return view('user.application-next', compact('user', 'productId', 'applicant', 'dependent'))->with('info', 'Data saved successfully!');
         } else {
             return back();

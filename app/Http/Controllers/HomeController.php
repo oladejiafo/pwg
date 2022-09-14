@@ -88,7 +88,7 @@ class HomeController extends Controller
                 $kids = Session::get('myKids');
             }
 
-            $famdet = family_breakdown::where('product_id', '=', $productId)
+            $famdet = family_breakdown::where('destination_id', '=', $productId)
                 ->where('visa_type', 'FAMILY PACKAGE')
                 ->where('parent', $parentt)
                 ->where('children', $kids)
@@ -97,7 +97,9 @@ class HomeController extends Controller
                 return $famdet;
             }
         } else {
-            $famdet = family_breakdown::where('product_id', '=', $productId)->where('visa_type', 'FAMILY PACKAGE')->first();
+            $famdet = family_breakdown::where('destination_id', '=', $productId)
+                ->where('visa_type', 'FAMILY PACKAGE')
+                ->first();
         }
       
         $proddet = product_details::where('product_id', '=', $productId)->where('visa_type', 'BLUE AND PINK COLLAR JOBS')->get();
@@ -153,18 +155,14 @@ class HomeController extends Controller
     public function upload(Request $request)
     {
     if (Auth::id()) {
-        $folderPath = public_path('storage/signature/');
         list($part_a, $image_parts) = explode(";base64,", $request->signed);
         $image_type_aux = explode("image/", $part_a);
         $image_type = $image_type_aux[1];
-        $image_base64 = base64_decode($image_parts);
         $signate = time() . '.'.$image_type;
-        $file = $folderPath . $signate;
-        file_put_contents($file, $image_base64);
         $signature = user::find(Auth::user()->id);
-        $signature->signature = $signate;
-        $signature->save();
+        $signature->addMediaFromBase64($request->signed)->usingFileName($signate)->toMediaCollection(User::$media_collection_main_signture);
 
+        $signature->save();
 
         if (Session::get('mySpouse')=="yes") {
             $is_spouse = 1;
@@ -186,35 +184,29 @@ class HomeController extends Controller
             $pid = 1;
         }
 
-        $datas = applicant::where([
-            ['user_id', '=', Auth::user()->id],
-            ['product_id', '=', $pid],
-        ])->first();
+        $datas = Applicant::where('client_id', Auth::id())
+            ->where('destination_id', $pid)
+            ->first();
         if ($datas === null) {
             $data = new applicant();
-
-            $data->user_id = Auth::user()->id;
-            $data->first_name = Auth::user()->name;
-            $data->visa_type = Session::get('packageType');
-            $data->is_spouse = $is_spouse;
-            $data->children_count = $children;
-            $data->applicant_status = 1;
-            $data->product_id = $pid;
-
-
+            $data->client_id = Auth::id();
+            $data->destination_id = $pid;
+            $data->work_permit_category = (Session::get('packageType')) ?? 'BLUE COLLAR';
+            $data->application_stage_status = 1;
+            $data->destination_id = $pid;
             $res = $data->save();
         } else {
-            $datas->user_id = Auth::user()->id;
-            $datas->first_name = Auth::user()->name;
-            $datas->visa_type = Session::get('packageType');
-            $datas->is_spouse = $is_spouse;
-            $datas->children_count = $children;
-            $datas->applicant_status = 1;
-            $datas->product_id = $pid;
-
+            $datas->work_permit_category =  (Session::get('packageType')) ?? 'BLUE COLLAR';
+            $datas->application_stage_status = 1;
+            $datas->destination_id = $pid;
             $res = $datas->save();
         }
-// dd($res);
+
+        User::where('id', Auth::id())
+            ->update([
+                'is_spouse' => $is_spouse,
+                'children_count' => $children
+            ]);
         if ($res) {
             return \Redirect::route('payment', $pid)->with('info', 'Signature is Successfull!')->with('info_sub', 'Proceed to application');
         } else {
@@ -290,7 +282,7 @@ class HomeController extends Controller
             }
 
             if ($res) {
-                $applys = DB::table('applicants')
+                $applys = DB::table('applications')
                     ->where('product_id', '=', $request->pid)
                     ->where('user_id', '=', Auth::user()->id)
                     ->get();
@@ -321,7 +313,7 @@ class HomeController extends Controller
 
             \DB::statement("SET SQL_MODE=''");
 
-            $complete = DB::table('applicants')
+            $complete = DB::table('applications')
 
             ->where('user_id', '=', Auth::user()->id)
             ->orderBy('id','desc')
@@ -437,24 +429,24 @@ class HomeController extends Controller
         $famCode = 0;
         if (Auth::id()) {
 
-            $completed = DB::table('applicants')
-                ->where('user_id', '=', Auth::user()->id)
+            $completed = DB::table('applications')
+                ->where('client_id', '=', Auth::user()->id)
                 ->orderBy('id', 'desc')
                 ->get();
 
             foreach ($completed as $complete) {
                 $app_id = $complete->id;
-                $p_id = $complete->product_id;
-                $hasSpouse = $complete->is_spouse;
-                $children = $complete->children_count;
+                $p_id = $complete->destination_id;
             }
+            $hasSpouse = Auth::user()->is_spouse;
+            $children = Auth::user()->children_count;
             if ($hasSpouse == 1) {
                 $yesSpouse = 2;
             } else {
                 $yesSpouse = 1;
             }
 
-            $families = DB::table('family_breakdowns')
+            $families = DB::table('pricing_plans')
                 ->where('children', '=', $children)
                 ->where('parent', '=', $yesSpouse)
                 ->where('visa_type', '=', 'FAMILY PACKAGE')
@@ -504,7 +496,7 @@ class HomeController extends Controller
             // }
             $data = product::find(Session::get('myproduct_id'));
 
-            $pays = DB::table('applicants')
+            $pays = DB::table('applications')
                 ->leftJoin('payments', 'payments.application_id', '=', 'applicants.id')
                 ->leftJoin('product_payments', 'product_payments.id', '=', 'payments.product_payment_id')
                 ->select('product_payments.*', 'payments.product_payment_id', 'payments.total', 'payments.total_paid', 'payments.payment_status')

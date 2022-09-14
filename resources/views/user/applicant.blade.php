@@ -16,14 +16,6 @@
 }
 </style>
 @section('content')
-@php 
-    $completed = DB::table('applicants')
-                ->where('product_id', '=', $productId)
-                ->where('user_id', '=', Auth::user()->id)
-                ->first();
-
-    $levels = $completed->applicant_status;
-@endphp
     <div class="container">
         <div class="col-12">
             <div class="row">
@@ -102,11 +94,11 @@
                     </div>
                     
                     @php
-                        $applied = DB::table('products')
+                        $applied = DB::table('destinations')
                             ->where('id', '=', $productId)
                             ->get();
 
-                        $products =  DB::table('products')->get();
+                        $products =  DB::table('destinations')->get();
                     @endphp    
 
                     <div class="form-sec">
@@ -116,7 +108,7 @@
                             <div class="form-group row mt-4">
                                 <div class="col-sm-6 mt-3">
                                     <select class="form-select form-control" id="inputFirstname" name="applied_country" placeholder="Applied Country *" value="{{old('applied_country')}}" required>
-                                        <option selected>@foreach($applied as $appliedc) {{$appliedc->product_name}} @endforeach</option>
+                                        <option selected>@foreach($applied as $appliedc) {{$appliedc->name}} @endforeach</option>
                                         @foreach($products as $product)
                                         @endforeach 
                                     </select>

@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class family_breakdown extends Model
 {
     use HasFactory;
+
+    protected $table = 'pricing_plans';
 }

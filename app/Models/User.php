@@ -10,14 +10,18 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use App\Notifications\CustomResetPasswordNotification;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, HasMedia
 {
     use HasApiTokens;
     use HasFactory;
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
+    use InteractsWithMedia;
+
 
     protected $table = 'clients';
     /**
@@ -71,5 +75,15 @@ class User extends Authenticatable implements MustVerifyEmail
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new CustomResetPasswordNotification($token));
+    }
+
+    public static $media_collection_main_signture = 'client_collection_signature';
+    public static $media_collection_main_resume = 'client_collection_resume';
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('client_collection_signature')->singleFile();
+        $this->addMediaCollection('client_collection_resume')->singleFile();
+
     }
 }
