@@ -18,7 +18,7 @@ class User extends Authenticatable implements MustVerifyEmail
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
-
+protected $table = 'clients';
     /**
      * The attributes that are mass assignable.
      *
