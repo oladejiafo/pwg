@@ -315,8 +315,10 @@
         $('#is_schengen_visa_issued_last_five_year').on('change', function(){
             if($('#is_schengen_visa_issued_last_five_year').val() == "Yes"){
                 $('.schengen_visa').show();
+                $('#is_finger_print_collected_for_Schengen_visa').show();
             } else {
                 $('.schengen_visa').hide();
+                $('#is_finger_print_collected_for_Schengen_visa').hide();
             }
         });
 

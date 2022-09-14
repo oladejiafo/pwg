@@ -15,7 +15,7 @@
 
     $levels = $completed->applicant_status;
 @endphp
-<div class="container" id="app" data-applicantId="{{$applicant['id']}}" data-dependentid="{{$dependent['id']}}">
+<div class="container" data-applicantId="{{$applicant['id']}}" @if($dependent)  data-dependentid="{{$dependent['id']}}" @endif>
     <div class="col-12">
             <div class="row">
                 <div class="wizard-details bg-white">
@@ -156,14 +156,14 @@
                                             <input type="hidden" name="product_id" value="{{$productId}}">
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-4 mt-3">
-                                                    <input type="tel" name="first_name" class="form-control" placeholder="First Name*" value="{{$applicant['first_name']}}" autocomplete="off" required/>
+                                                    <input type="tel" name="first_name" class="form-control" placeholder="First Name*" value="{{$applicant['name']}}" autocomplete="off" required/>
                                                     <span class="first_name_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-4 mt-3">
                                                     <input type="text" name="middle_name" class="form-control" placeholder="Middle Name" value="{{$applicant['middle_name']}}"  autocomplete="off"/>
                                                 </div>
                                                 <div class="col-sm-4 mt-3">
-                                                    <input type="text" name="surname" class="form-control" placeholder="Surname*" value="{{$applicant['surname']}}" autocomplete="off" required />
+                                                    <input type="text" name="surname" class="form-control" placeholder="Surname*" value="{{$applicant['sur_name']}}" autocomplete="off" required />
                                                     <span class="surname_errorClass"></span>
                                                 </div>
                                             </div>
@@ -179,18 +179,18 @@
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-4 mt-3 dob">
-                                                    <input type="text" name="dob" class="form-control datepicker" placeholder="Date of Birth*" value="{{ date('d-m-Y', strtotime($applicant['dob']))}}" id="datepicker" autocomplete="off"  readonly="readonly" required/>
+                                                    <input type="text" name="dob" class="form-control datepicker" placeholder="Date of Birth*" value="{{ date('d-m-Y', strtotime($applicant['date_of_birth']))}}" id="datepicker" autocomplete="off"  readonly="readonly" required/>
                                                     <span class="dob_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-4 mt-3">
-                                                    <input type="text" name="place_birth" class="form-control" placeholder="Place of Birth*" value="{{$applicant['place_birth']}}" autocomplete="off" required/>
+                                                    <input type="text" name="place_birth" class="form-control" placeholder="Place of Birth*" value="{{$applicant['place_of_birth']}}" autocomplete="off" required/>
                                                     <span class="place_birth_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-4 mt-3">
                                                     <select class="form-select form-control" name="country_birth" placeholder="Country of Birth*"  required>
-                                                        <option selected>{{$applicant['country_birth']}}</option>
+                                                        <option selected>{{$applicant['country_of_birth']}}</option>
                                                         @foreach (Constant::countries as $key => $item)
-                                                            <option {{($key == $applicant['country_birth']) ? 'seleceted' : ''}} value="{{$key}}">{{$item}}</option>
+                                                            <option {{($key == $applicant['country_of_birth']) ? 'seleceted' : ''}} value="{{$key}}">{{$item}}</option>
                                                         @endforeach
                                                     </select>
                                                     <span class="country_birth_errorClass"></span>
@@ -278,17 +278,17 @@
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="text" name="passport_issue" class="form-control passport_issue" placeholder="Passport Date of Issue*" value="{{ date('d-m-Y', strtotime($applicant['passport_date_issue']))}}" autocomplete="off"/>
+                                                    <input type="text" name="passport_issue" class="form-control passport_issue" placeholder="Passport Date of Issue*" value="{{ date('d-m-Y', strtotime($applicant['passport_issue_date']))}}" autocomplete="off"/>
                                                     <span class="passport_issue_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="text" name="passport_expiry" class="form-control passport_expiry" placeholder="passport Date of Expiry*" value="{{ date('d-m-Y', strtotime($applicant['passport_date_expiry']))}}" autocomplete="off" />
+                                                    <input type="text" name="passport_expiry" class="form-control passport_expiry" placeholder="passport Date of Expiry*" value="{{ date('d-m-Y', strtotime($applicant['passport_expiry']))}}" autocomplete="off" />
                                                     <span class="passport_expiry_errorClass"></span>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-12 mt-3">
-                                                    <input type="text" name="issued_by" class="form-control" placeholder="Issued By(Authority that issued the passport)*" value="{{$applicant['issued_by']}}" autocomplete="off"/>
+                                                    <input type="text" name="issued_by" class="form-control" placeholder="Issued By(Authority that issued the passport)*" value="{{$applicant['passport_issued_by']}}" autocomplete="off"/>
                                                     <span class="issued_by_errorClass"></span>
                                                 </div>
                                             </div>
@@ -305,15 +305,15 @@
                                                     <span class="passport_copy_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="tel" name="home_phone_number" id="home_phone_number" class="form-control" placeholder="Phone Number" value="{{$applicant['phone_number']}}" autocomplete="off" />
+                                                    <input type="tel" name="home_phone_number" id="home_phone_number" class="form-control" placeholder="Phone Number" value="{{$applicant['residence_mobile_number']}}" autocomplete="off" />
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-3 mt-3">
                                                     <select class="form-select form-control" name="home_country" placeholder="home_country*" autocomplete="off">
-                                                        <option selected>{{$applicant['home_country']}}</option>
+                                                        <option selected>{{$applicant['country_of_residence']}}</option>
                                                             @foreach (Constant::countries as $key => $item)
-                                                                <option {{($key == $applicant['home_country']) ? 'seleceted' : ''}} value="{{$key}}">{{$item}}</option>
+                                                                <option {{($key == $applicant['country_of_residence']) ? 'seleceted' : ''}} value="{{$key}}">{{$item}}</option>
                                                             @endforeach
                                                     </select>
                                                     <span class="home_country_errorClass"></span>
@@ -334,11 +334,11 @@
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="text" name="address_1" class="form-control" placeholder="Address (Street And Number) Line 1*" value="{{$applicant['address_1']}}" autocomplete="off">
+                                                    <input type="text" name="address_1" class="form-control" placeholder="Address (Street And Number) Line 1*" value="{{$applicant['address_line_1']}}" autocomplete="off">
                                                     <span class="address1_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="text" name="address_2" class="form-control" placeholder="Address (Street And Number) Line 2" value="{{$applicant['address_2']}}" autocomplete="off">
+                                                    <input type="text" name="address_2" class="form-control" placeholder="Address (Street And Number) Line 2" value="{{$applicant['address_line_2']}}" autocomplete="off">
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
@@ -387,15 +387,15 @@
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-6 mt-3">
                                                     <select class="form-select form-control" name="current_country" placeholder="current_country*">
-                                                        <option selected> {{$applicant['current_residance_country']}} </option>
+                                                        <option selected> {{$applicant['country']}} </option>
                                                         @foreach (Constant::countries as $key => $item)
-                                                            <option {{($key == $applicant['current_residance_country']) ? 'seleceted' : ''}} value="{{$key}}">{{$item}}</option>
+                                                            <option {{($key == $applicant['country']) ? 'seleceted' : ''}} value="{{$key}}">{{$item}}</option>
                                                         @endforeach
                                                     </select>
                                                     <span class="current_country_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="tel" class="form-control" id="current_residance_mobile" name='current_residance_mobile' value="{{$applicant['current_residence_mobile']}}" placeholder="Current Residence Mobile Number" autocomplete="off">
+                                                    <input type="tel" class="form-control" id="current_residance_mobile" name='current_residance_mobile' value="{{$applicant['phone_number']}}" placeholder="Current Residence Mobile Number" autocomplete="off">
                                                     <span class="current_residance_mobile_errorClass"></span>
                                                 </div>
                                             </div>
@@ -405,7 +405,7 @@
                                                     <span class="residence_id_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="text" class="form-control visa_validity" name="visa_validity" value="{{ date('d-m-Y', strtotime($applicant['id_validity']))}}" placeholder="Your ID/Visa Date of Validity*" >
+                                                    <input type="text" class="form-control visa_validity" name="visa_validity" value="{{ date('d-m-Y', strtotime($applicant['visa_validity']))}}" placeholder="Your ID/Visa Date of Validity*" >
                                                     <span class="visa_validity_errorClass"></span>
                                                 </div>
                                             </div>
@@ -456,7 +456,7 @@
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-4 mt-3">
-                                                    <input type="text" name="work_street" class="form-control" placeholder="Work Place Street & Number*" value="{{$applicant['work_street_number']}}" autocomplete="off"/>
+                                                    <input type="text" name="work_street" class="form-control" placeholder="Work Place Street & Number*" value="{{$applicant['work_address']}}" autocomplete="off"/>
                                                     <span class="work_street_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-4 mt-3">
@@ -518,8 +518,8 @@
                                                 <div class="col-sm-12 mt-3">
                                                     <select name="is_schengen_visa_issued_last_five_year" id="is_schengen_visa_issued_last_five_year" aria-required="true" class="form-control form-select" autocomplete="off">
                                                         <option selected disabled>Schengen Or National Visa Issued During Last 5 Years*</option>
-                                                        <option {{($applicant['is_schengen_visa_issued'] == "No") ? 'selected' : ''}} value="No">No</option>
-                                                        <option {{($applicant['is_schengen_visa_issued'] == "Yes") ? 'selected' : ''}} value="Yes">Yes</option> 
+                                                        <option {{($applicant['is_schengen_visa_issued_last_five_year'] == "No") ? 'selected' : ''}} value="No">No</option>
+                                                        <option {{($applicant['is_schengen_visa_issued_last_five_year'] == "Yes") ? 'selected' : ''}} value="Yes">Yes</option> 
                                                     </select>
                                                     <span class="is_schengen_visa_issued_last_five_year_errorClass"></span>
                                                 </div>
@@ -542,8 +542,8 @@
                                                 <div class="col-sm-12 mt-3">
                                                     <select name="is_finger_print_collected_for_Schengen_visa" id="is_finger_print_collected_for_Schengen_visa" aria-required="true" class="form-control form-select" autocomplete="off">
                                                         <option value="">Fingerprints Collected Previously For The Purpose Of Applying For Schengen Visa*</option>
-                                                        <option {{($applicant['is_fingerprint_collected'] == "No") ? 'selected' : ''}} value="No">No</option>
-                                                        <option {{($applicant['is_fingerprint_collected'] == "Yes") ? 'selected' : ''}} value="Yes">Yes</option>
+                                                        <option {{($applicant['is_finger_print_collected_for_Schengen_visa'] == "No") ? 'selected' : ''}} value="No">No</option>
+                                                        <option {{($applicant['is_finger_print_collected_for_Schengen_visa'] == "Yes") ? 'selected' : ''}} value="Yes">Yes</option>
                                                     </select>
                                                     <span class="is_finger_print_collected_for_Schengen_visa_errorClass"></span>
                                                 </div>
@@ -585,7 +585,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row" id="importExperience" data-applicantId="{{$applicant['id']}}" data-dependentId="{{$dependent}}">
                                 <div class="collapse show" id="collapseExperience" data-applicantId="{{$applicant['id']}}" data-dependentId="{{($dependent != null) ? $dependent['id']  : ''}}">
                                     <div class="form-sec">
                                         <div class="jobSelected">
@@ -1255,7 +1255,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row" id="importExperience" data-applicantId="{{$applicant['id']}}" data-dependentId="{{$dependent}}">
                                 <div class="collapse show" id="collapseSpouseExperience" data-applicantId="{{$applicant['id']}}" data-dependentId="{{($dependent != null) ? $dependent['id']  : ''}}">
                                     <div class="form-sec">
                                         <div class="jobSelected">
@@ -1702,74 +1702,6 @@
             $('.dependent_schengen_visa').show();
         } else {
             $('.dependent_schengen_visa').hide();
-        }
-
-        const phoneInputField = document.querySelector("#phone");
-        const phoneInput = window.intlTelInput(phoneInputField, {
-            separateDialCode: false,
-            preferredCountries:["ae"],
-            nationalMode: false,
-            hiddenInput: "full",
-            autoHideDialCode: false,
-            utilsScript:
-                "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-        });
-
-        const phoneHomeInputField = document.querySelector("#home_phone_number");
-        const phoneHomeInput = window.intlTelInput(phoneHomeInputField, {
-            separateDialCode: false,
-            preferredCountries:["ae"],
-            nationalMode: false,
-            hiddenInput: "full",
-            autoHideDialCode: false,
-            utilsScript:
-                "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-        });
-
-        const phoneCurrentInputField = document.querySelector("#current_residance_mobile");
-        const phoneCurrentInput = window.intlTelInput(phoneCurrentInputField, {
-            separateDialCode: false,
-            preferredCountries:["ae"],
-            nationalMode: false,
-            hiddenInput: "full",
-            autoHideDialCode: false,
-            utilsScript:
-                "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-        });
-
-        if(('{{$applicant['visa_type']}}' == 'FAMILY PACKAGE') && ('{{$applicant['is_spouse']}}' > 0)){
-            const dependentPhone = document.querySelector("#dependent_phone");
-            const dependentPhoneInput = window.intlTelInput(dependentPhone,{
-                separateDialCode: false,
-                preferredCountries:["ae"],
-                nationalMode: false,
-                hiddenInput: "full",
-                autoHideDialCode: false,
-                utilsScript:
-                    "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-            });
-
-            const dependenthomephonenumber = document.querySelector("#dependent_home_phone_number");
-            const dependenthomephonenumberInput = window.intlTelInput(dependenthomephonenumber,{
-                separateDialCode: false,
-                preferredCountries:["ae"],
-                nationalMode: false,
-                hiddenInput: "full",
-                autoHideDialCode: false,
-                utilsScript:
-                    "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-            });
-
-            const dependentcurrentresidancemobile = document.querySelector("#dependent_current_residance_mobile");
-            const dependentcurrentresidancemobileInput = window.intlTelInput(dependentcurrentresidancemobile,{
-                separateDialCode: false,
-                preferredCountries:["ae"],
-                nationalMode: false,
-                hiddenInput: "full",
-                autoHideDialCode: false,
-                utilsScript:
-                    "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-            });
         }
 
         $(".applicantDetails").click(function(e){
@@ -2329,6 +2261,75 @@
             $('.mainApplicant, .dependant').removeClass('active');
             
         });
+
+        const phoneInputField = document.querySelector("#phone");
+        const phoneInput = window.intlTelInput(phoneInputField, {
+            separateDialCode: false,
+            preferredCountries:["ae"],
+            nationalMode: false,
+            hiddenInput: "full",
+            autoHideDialCode: false,
+            utilsScript:
+                "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        });
+
+        const phoneHomeInputField = document.querySelector("#home_phone_number");
+        const phoneHomeInput = window.intlTelInput(phoneHomeInputField, {
+            separateDialCode: false,
+            preferredCountries:["ae"],
+            nationalMode: false,
+            hiddenInput: "full",
+            autoHideDialCode: false,
+            utilsScript:
+                "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        });
+
+        const phoneCurrentInputField = document.querySelector("#current_residance_mobile");
+        const phoneCurrentInput = window.intlTelInput(phoneCurrentInputField, {
+            separateDialCode: false,
+            preferredCountries:["ae"],
+            nationalMode: false,
+            hiddenInput: "full",
+            autoHideDialCode: false,
+            utilsScript:
+                "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        });
+
+        if(('{{$applicant['visa_type']}}' == 'FAMILY PACKAGE') && ('{{$applicant['is_spouse']}}' > 0)){
+            const dependentPhone = document.querySelector("#dependent_phone");
+            const dependentPhoneInput = window.intlTelInput(dependentPhone,{
+                separateDialCode: false,
+                preferredCountries:["ae"],
+                nationalMode: false,
+                hiddenInput: "full",
+                autoHideDialCode: false,
+                utilsScript:
+                    "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+            });
+
+            const dependenthomephonenumber = document.querySelector("#dependent_home_phone_number");
+            const dependenthomephonenumberInput = window.intlTelInput(dependenthomephonenumber,{
+                separateDialCode: false,
+                preferredCountries:["ae"],
+                nationalMode: false,
+                hiddenInput: "full",
+                autoHideDialCode: false,
+                utilsScript:
+                    "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+            });
+
+            const dependentcurrentresidancemobile = document.querySelector("#dependent_current_residance_mobile");
+            const dependentcurrentresidancemobileInput = window.intlTelInput(dependentcurrentresidancemobile,{
+                separateDialCode: false,
+                preferredCountries:["ae"],
+                nationalMode: false,
+                hiddenInput: "full",
+                autoHideDialCode: false,
+                utilsScript:
+                    "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+            });
+        }
+
 
     });
     function showPassport()

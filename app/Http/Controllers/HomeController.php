@@ -152,28 +152,17 @@ class HomeController extends Controller
 
     public function upload(Request $request)
     {
-
     if (Auth::id()) {
         $folderPath = public_path('storage/signature/');
         list($part_a, $image_parts) = explode(";base64,", $request->signed);
-
         $image_type_aux = explode("image/", $part_a);
-
         $image_type = $image_type_aux[1];
-
         $image_base64 = base64_decode($image_parts);
-
         $signate = time() . '.'.$image_type;
-
         $file = $folderPath . $signate;
-
         file_put_contents($file, $image_base64);
-
         $signature = user::find(Auth::user()->id);
-        // dd( $signature);
-
         $signature->signature = $signate;
-
         $signature->save();
 
 
@@ -227,9 +216,7 @@ class HomeController extends Controller
         }
 // dd($res);
         if ($res) {
-            return \Redirect::route('payment', $request->pid)
-            ->with('info', 'Signature is Successfull!')
-            ->with('info_sub', 'Proceed to application');
+            return \Redirect::route('payment', $pid)->with('info', 'Signature is Successfull!')->with('info_sub', 'Proceed to application');
         } else {
             return false;
             // return redirect()->back()->with('failed', 'Oppss! Something went wrong.');
@@ -665,7 +652,7 @@ class HomeController extends Controller
 
                 $order['action'] 				 	  = "PURCHASE";                                        // Transaction mode ("AUTH" = authorize only, no automatic settle/capture, "SALE" = authorize + automatic settle/capture)
                 $order['amount']['currencyCode'] 	  = "AED";                           // Payment currency ('AED' only for now)
-                $order['amount']['value'] 		 	  = ($amount);                                   // Minor units (1000 = 10.00 AED)
+                $order['amount']['value'] 		 	  = ($amount)*100;                                   // Minor units (1000 = 10.00 AED)
                 $order['language'] 					  = "en";      						// Payment page language ('en' or 'ar' only)
                 $order['emailAddress'] 			 	  = "pwggroup@pwggroup.pl";      
                 $order['billingAddress']['firstName'] = "PWG";      

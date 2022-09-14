@@ -2155,12 +2155,7 @@ iframe img {
 }
 
 .dataCompleted {
-  width: 25px;
-  height: auto;
-  margin-top: 33px;
-}
-.dataCompletedd {
-  width: 25px;
+  width: 35px;
   height: auto;
   margin-top: 33px;
 }
@@ -2481,10 +2476,6 @@ iframe img {
 
   .package-type {
     height: 362px;
-  }
-
-  .dataCompleted {
-    margin-left: 86%;
   }
 
   .dataCompletedd {

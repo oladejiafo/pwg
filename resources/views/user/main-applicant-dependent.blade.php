@@ -501,6 +501,11 @@
                 </div>
             </div>
         </div>
-        @include('user.dependent-experience')
+        <div id="importExperienceDependent" data-applicantId="{{$applicant['id']}}" data-dependentId="{{$dependent}}">
+            @include('user.dependent-experience')
+        </div>
     </div>
 </div>
+@push('custom-scripts')
+    <script src="{{ asset('js/dependent-details.js') }}" type="text/javascript"></script>
+@endpush

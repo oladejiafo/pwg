@@ -110,7 +110,7 @@
                     @endphp    
 
                     <div class="form-sec">
-                        <form method="POST" action="{{route('store.applicant',$productId)}}" enctype="multipart/form-data">
+                        <form method="POST" action="{{route('store.applicant')}}" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" name="product_id" value="{{$productId}}">
                             <div class="form-group row mt-4">
@@ -160,7 +160,7 @@
                                     @error('agent_name') <span class="error">{{ $message }}</span> @enderror
                                 </div>
                             </div> --}}
-                            <div class="heading">
+                            {{-- <div class="heading">
                                 <div class="first-heading">
                                     <h3>
                                         Country of embassy appearance
@@ -177,7 +177,7 @@
                                     </select>
                                     @error('embassy_country') <span class="error">{{ $message }}</span> @enderror
                                 </div>
-                            </div>
+                            </div> --}}
                             {{-- <div class="form-group row mt-4">
                                 <div class="form-check col-lg-6 col-md-10 offset-lg-3 offset-md-1 col-sm-12 agree-terms">
                                     <input class=" checkcolor" type="checkbox" id="TnC" value="TnC" name="agree" value="{{old('agree')}}" required checked>

@@ -33,7 +33,7 @@
                             <button type="button" class="btn btn-secondary zoomOut" id="zoom" value="0" name="payall" style="width:100%; font-size:1.6em">ZOOM TO REVIEW</button>
                             <button type="button" class="btn btn-secondary zoomIn" id="zoom" value="0" name="payall" style="width:100%; font-size:1.6em">ZOOM TO REVIEW</button>
 
-                            <button type="submit" class="btn btn-secondary" id="sign" value="0" name="payall" style="width:100%; font-size:1.6em;margin-top: 18px;">SIGN</button>
+                            <button type="submit" class="btn btn-secondary" id="sign" value="0" name="payall" style="width:100%; font-size:1.6em;margin-top: 18px;">SIGNATURE</button>
                         </div>
                     </div>
                 </form>
