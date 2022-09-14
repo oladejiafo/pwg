@@ -37,7 +37,7 @@ class HomeController extends Controller
 
 
             $data = product::find($id);
-            $promo = promo::where('product_id', '=', $id)->where('validity', '>=', date('Y-m-d'))->get();
+            $promo = promo::where('product_id', '=', $id)->where('active_until', '>=', date('Y-m-d'))->get();
             $ppay = product_payments::where('product_id', '=', $id)->get();
             $proddet = product_details::where('product_id', '=', $id)->get();
 
@@ -47,7 +47,7 @@ class HomeController extends Controller
 
         } else {
             $package = product::all()->sortBy("id");
-            $promo = promo::where('validity', '>=', date('Y-m-d'))->get();
+            $promo = promo::where('active_until', '>=', date('Y-m-d'))->get();
             return view('user.home', compact('package', 'promo'));
         }
     }
@@ -55,7 +55,7 @@ class HomeController extends Controller
     public function index()
     {
         $package = product::all()->sortBy("id");
-        $promo = promo::where('validity', '>=', date('Y-m-d'))->get();
+        $promo = promo::where('active_until', '>=', date('Y-m-d'))->get();
         return view('user.home', compact('package', 'promo'));
     }
 

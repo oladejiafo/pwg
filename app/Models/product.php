@@ -10,6 +10,6 @@ class product extends Model
 {
     use HasFactory, SoftDeletes;
 
-    // protected $table = 'destinations';
+    protected $table = 'destinations';
 
 }
