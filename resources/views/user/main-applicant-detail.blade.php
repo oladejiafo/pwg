@@ -39,6 +39,7 @@
                     <form method="POST" enctype="multipart/form-data" id="applicant_details">
                         @csrf
                         <input type="hidden" name="destination_id" value="{{$productId}}">
+                        <input type="hidden" name="applicantCompleted" value="0" class="applicantCompleted">
                         <div class="form-group row mt-4">
                             <div class="col-sm-4 mt-3">
                                 <input type="text" name="first_name" class="form-control first_name" placeholder="First Name*" value="{{$name[0]}}" autocomplete="off"/>
@@ -102,12 +103,12 @@
                             <div class="col-sm-4 mt-3">
                                 <select name="civil_status" id="civil_status"  aria-required="true" class="form-control form-select">
                                     <option selected disabled>Civil Status *</option>
-                                    <option value="Single">Single</option>
-                                    <option value="Married">Married</option>
-                                    <option value="Separated">Separated</option>
-                                    <option value="Divorced">Divorced</option>
-                                    <option value="Widow">Widow</option>
-                                    <option value="Other">Other</option>
+                                    <option value="SINGLE">Single</option>
+                                    <option value="MARRIED">Married</option>
+                                    <option value="SEPARATED">Separated</option>
+                                    <option value="DIVORCED">Divorced</option>
+                                    <option value="WIDOW">Widow</option>
+                                    <option value="OTHER">Other</option>
                                 </select>
                                 <span class="civil_status_errorClass"></span>
                             </div>
@@ -414,8 +415,8 @@
                             <div class="col-sm-12 mt-3">
                                 <select name="is_schengen_visa_issued_last_five_year" id="is_schengen_visa_issued_last_five_year" aria-required="true" class="form-control form-select" autocomplete="off">
                                     <option selected disabled>Schengen Or National Visa Issued During Last 5 Years*</option>
-                                    <option value="No">No</option>
-                                    <option value="Yes">Yes</option>
+                                    <option value="NO">No</option>
+                                    <option value="YES">Yes</option>
                                 </select>
                                 <span class="is_schengen_visa_issued_last_five_year_errorClass"></span>
                             </div>
@@ -435,8 +436,8 @@
                             <div class="col-sm-12 mt-3">
                                 <select name="is_finger_print_collected_for_Schengen_visa" id="is_finger_print_collected_for_Schengen_visa" aria-required="true" class="form-control form-select" autocomplete="off">
                                     <option value="">Fingerprints Collected Previously For The Purpose Of Applying For Schengen Visa*</option>
-                                    <option value="No">No</option>
-                                    <option value="Yes">Yes</option>
+                                    <option value="NO">No</option>
+                                    <option value="YES">Yes</option>
                                 </select>
                                 <span class="is_finger_print_collected_for_Schengen_visa_errorClass"></span>
                             </div>

@@ -8,12 +8,12 @@
 
 
 @php 
-     $completed = DB::table('applicants')
-                ->where('product_id', '=', $productId)
-                ->where('user_id', '=', Auth::user()->id)
+     $completed = DB::table('applications')
+                ->where('destination_id', '=', $productId)
+                ->where('client_id', '=', Auth::user()->id)
                 ->first();
 
-    $levels = $completed->applicant_status;
+    $levels = $completed->application_stage_status;
 @endphp
 <div class="container" data-applicantId="{{$applicant['id']}}" @if($dependent)  data-dependentid="{{$dependent['id']}}" @endif>
     <div class="col-12">
@@ -209,20 +209,21 @@
                                                 <div class="col-sm-4 mt-3">
                                                     <select name="sex"  aria-required="true" class="form-control form-select" required>
                                                         <option selected disabled>Sex *</option>
-                                                        <option {{($applicant['sex'] == 'MALE') ? 'selected' : '' }} value="Male">Male</option>
-                                                        <option {{($applicant['sex'] == 'FEMALE') ? 'selected' : ''}} value="Female">Female</option>
+                                                        <option {{($applicant['sex'] == 'MALE') ? 'selected' : '' }} value="Male">
+                                                        </option>
+                                                        <option {{($applicant['sex'] == 'FEMALE') ? 'selected' : ''}} value="FEMALE">Female</option>
                                                     </select>
                                                     <span class="sex_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-4 mt-3">
                                                     <select name="civil_status" id="civil_status" required="" aria-required="true" class="form-control form-select">
                                                         <option selected disabled>Civil Status *</option>
-                                                        <option  {{($applicant['civil_status'] == 'Single') ? 'selected' : '' }} value="Single">Single</option>
-                                                        <option  {{($applicant['civil_status'] == 'Married') ? 'selected' : '' }} value="Married">Married</option>
-                                                        <option  {{($applicant['civil_status'] == 'Separated') ? 'selected' : '' }} value="Separated">Separated</option>
-                                                        <option  {{($applicant['civil_status'] == 'Divorced') ? 'selected' : '' }} value="Divorced">Divorced</option>
-                                                        <option  {{($applicant['civil_status'] == 'Widow') ? 'selected' : '' }} value="Widow">Widow</option>
-                                                        <option  {{($applicant['civil_status'] == 'Other') ? 'selected' : '' }} value="Other">Other</option>
+                                                        <option  {{($applicant['civil_status'] == 'SINGLE') ? 'selected' : '' }} value="SINGLE">Single</option>
+                                                        <option  {{($applicant['civil_status'] == 'MARRIED') ? 'selected' : '' }} value="Married">Married</option>
+                                                        <option  {{($applicant['civil_status'] == 'SEPARATED') ? 'selected' : '' }} value="SEPARATED">Separated</option>
+                                                        <option  {{($applicant['civil_status'] == 'DIVORCED') ? 'selected' : '' }} value="DIVORCED">Divorced</option>
+                                                        <option  {{($applicant['civil_status'] == 'WIDOW') ? 'selected' : '' }} value="WIDOW">Widow</option>
+                                                        <option  {{($applicant['civil_status'] == 'OTHER') ? 'selected' : '' }} value="OTHER">Other</option>
                                                     </select>
                                                     <span class="civil_status_errorClass"></span>
                                                 </div>
@@ -518,8 +519,8 @@
                                                 <div class="col-sm-12 mt-3">
                                                     <select name="is_schengen_visa_issued_last_five_year" id="is_schengen_visa_issued_last_five_year" aria-required="true" class="form-control form-select" autocomplete="off">
                                                         <option selected disabled>Schengen Or National Visa Issued During Last 5 Years*</option>
-                                                        <option {{($applicant['is_schengen_visa_issued_last_five_year'] == "No") ? 'selected' : ''}} value="No">No</option>
-                                                        <option {{($applicant['is_schengen_visa_issued_last_five_year'] == "Yes") ? 'selected' : ''}} value="Yes">Yes</option> 
+                                                        <option {{($applicant['is_schengen_visa_issued_last_five_year'] == "NO") ? 'selected' : ''}} value="NO">No</option>
+                                                        <option {{($applicant['is_schengen_visa_issued_last_five_year'] == "YES") ? 'selected' : ''}} value="YES">Yes</option> 
                                                     </select>
                                                     <span class="is_schengen_visa_issued_last_five_year_errorClass"></span>
                                                 </div>
@@ -542,8 +543,8 @@
                                                 <div class="col-sm-12 mt-3">
                                                     <select name="is_finger_print_collected_for_Schengen_visa" id="is_finger_print_collected_for_Schengen_visa" aria-required="true" class="form-control form-select" autocomplete="off">
                                                         <option value="">Fingerprints Collected Previously For The Purpose Of Applying For Schengen Visa*</option>
-                                                        <option {{($applicant['is_finger_print_collected_for_Schengen_visa'] == "No") ? 'selected' : ''}} value="No">No</option>
-                                                        <option {{($applicant['is_finger_print_collected_for_Schengen_visa'] == "Yes") ? 'selected' : ''}} value="Yes">Yes</option>
+                                                        <option {{($applicant['is_finger_print_collected_for_Schengen_visa'] == "NO") ? 'selected' : ''}} value="NO">No</option>
+                                                        <option {{($applicant['is_finger_print_collected_for_Schengen_visa'] == "YES") ? 'selected' : ''}} value="YES">Yes</option>
                                                     </select>
                                                     <span class="is_finger_print_collected_for_Schengen_visa_errorClass"></span>
                                                 </div>
@@ -875,20 +876,20 @@
                                                 <div class="col-sm-4 mt-3">
                                                     <select name="dependent_sex"  aria-required="true" class="form-control form-select dependent_sex">
                                                         <option selected disabled>Sex *</option>
-                                                        <option {{($dependent['sex'] == 'Male') ? 'selected' : '' }} value="Male">Male</option>
-                                                        <option {{($dependent['sex'] == 'Female') ? 'selected' : ''}} value="Female">Female</option>
+                                                        <option {{($dependent['sex'] == 'MALE') ? 'selected' : '' }} value="MALE">Male</option>
+                                                        <option {{($dependent['sex'] == 'FEMALE') ? 'selected' : ''}} value="FEMALE">Female</option>
                                                     </select>
                                                     <span class="dependent_sex_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-4 mt-3">
                                                     <select name="dependent_civil_status" id="civil_status" required="" aria-required="true" class="form-control form-select">
                                                         <option selected disabled>Civil Status *</option>
-                                                        <option  {{($dependent['civil_status'] == 'Single') ? 'selected' : '' }} value="Single">Single</option>
-                                                        <option  {{($dependent['civil_status'] == 'Married') ? 'selected' : '' }} value="Married">Married</option>
-                                                        <option  {{($dependent['civil_status'] == 'Separated') ? 'selected' : '' }} value="Separated">Separated</option>
-                                                        <option  {{($dependent['civil_status'] == 'Divorced') ? 'selected' : '' }} value="Divorced">Divorced</option>
-                                                        <option  {{($dependent['civil_status'] == 'Widow') ? 'selected' : '' }} value="Widow">Widow</option>
-                                                        <option  {{($dependent['civil_status'] == 'Other') ? 'selected' : '' }} value="Other">Other</option>
+                                                        <option  {{($dependent['civil_status'] == 'SINGLE') ? 'selected' : '' }} value="SINGLE">Single</option>
+                                                        <option  {{($dependent['civil_status'] == 'MARRIED') ? 'selected' : '' }} value="MARRIED">Married</option>
+                                                        <option  {{($dependent['civil_status'] == 'SEPARATED') ? 'selected' : '' }} value="SEPARATED">Separated</option>
+                                                        <option  {{($dependent['civil_status'] == 'DIVORCED') ? 'selected' : '' }} value="DIVORCED">Divorced</option>
+                                                        <option  {{($dependent['civil_status'] == 'WIDOW') ? 'selected' : '' }} value="WIDOW">Widow</option>
+                                                        <option  {{($dependent['civil_status'] == 'OTHER') ? 'selected' : '' }} value="OTHER">Other</option>
                                                     </select>
                                                     <span class="civil_status_errorClass"></span>
                                                 </div>
@@ -1102,12 +1103,12 @@
                                                     <a href="javascript:void(0)" data-toggle="modal" data-target="#dependentVisa" onclick="dependentVisa()">click to view uploaded visa copy</a>
                                                 </div>
                                             </div>
-                                            <div class="form-group row mt-4">
+                                            {{-- <div class="form-group row mt-4">
                                                 <div class="col-sm-12 mt-3">
                                                     <input type="text" name="dependent_current_job" class="form-control" value="{{$dependent['current_job']}}"  placeholder="Profession As Per Current Job (or on Visa)*" autocomplete="off">
                                                     <span class="dependent_current_job_errorClass"></span>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-4 mt-3">
                                                     <input type="text" name="dependent_work_state" class="form-control" value="{{$dependent['work_state']}}" placeholder="Work State/Province*" autocomplete="off"/>
@@ -1188,8 +1189,8 @@
                                                 <div class="col-sm-12 mt-3">
                                                     <select name="is_dependent_schengen_visa_issued_last_five_year" id="is_dependent_schengen_visa_issued_last_five_year" aria-required="true" class="form-control form-select" autocomplete="off">
                                                         <option selected disabled>Schengen Or National Visa Issued During Last 5 Years*</option>
-                                                        <option {{($dependent['is_schengen_visa_issued'] == "No") ? 'selected' : ''}} value="No">No</option>
-                                                        <option {{($dependent['is_schengen_visa_issued'] == "Yes") ? 'selected' : ''}} value="Yes">Yes</option> 
+                                                        <option {{($dependent['is_schengen_visa_issued'] == "NO") ? 'selected' : ''}} value="NO">No</option>
+                                                        <option {{($dependent['is_schengen_visa_issued'] == "YES") ? 'selected' : ''}} value="YES">Yes</option> 
                                                     </select>
                                                     <span class="is_dependent_schengen_visa_issued_last_five_year_errorClass"></span>
                                                 </div>
@@ -1212,8 +1213,8 @@
                                                 <div class="col-sm-12 mt-3">
                                                     <select name="is_dependent_finger_print_collected_for_Schengen_visa" id="is_dependent_finger_print_collected_for_Schengen_visa" aria-required="true" class="form-control form-select" autocomplete="off">
                                                         <option value="">Fingerprints Collected Previously For The Purpose Of Applying For Schengen Visa*</option>
-                                                        <option {{($dependent['is_fingerprint_collected'] == "No") ? 'selected' : ''}} value="No">No</option>
-                                                        <option {{($dependent['is_fingerprint_collected'] == "Yes") ? 'selected' : ''}} value="Yes">Yes</option> 
+                                                        <option {{($dependent['is_fingerprint_collected'] == "NO") ? 'selected' : ''}} value="NO">No</option>
+                                                        <option {{($dependent['is_fingerprint_collected'] == "YES") ? 'selected' : ''}} value="YES">Yes</option> 
                                                     </select>
                                                     <span class="is_dependent_finger_print_collected_for_Schengen_visa_errorClass"></span>
                                                 </div>
@@ -1441,96 +1442,98 @@
                     </div>
                 @endif
 
-                <div class="tab-pane active" id="children" style="margin: 0; padding: 0;">
-                    <form method="POST" id="child_details">
-                        @csrf
-                        @foreach($children as $key => $child)
-                            <div class="applicant-detail-sec" @if($key+1 ==  $applicant['children_count']) style="margin-bottom:70px" @endif>
-                                <div class="heading">
+                @if($children)
+                    <div class="tab-pane active" id="children" style="margin: 0; padding: 0;">
+                        <form method="POST" id="child_details">
+                            @csrf
+                            @foreach($children as $key => $child)
+                                <div class="applicant-detail-sec" @if($key+1 ==  $applicant['children_count']) style="margin-bottom:70px" @endif>
+                                    <div class="heading">
+                                        <div class="row">
+                                            <div class="col-2 my-auto">
+                                                <div class="image">
+                                                    <img src="{{asset('images/child.svg')}}" width="70%" height="auto">
+                                                </div>
+                                            </div>
+                                            <div class="col-1">
+                                                <div class="vl"></div>
+                                            </div>
+                                            <div class="col-6 my-auto">
+                                                <div class="first-heading d-flex justify-content-center">
+                                                    <h3>
+                                                        Child {{$key+1}}
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                            <div class="col-1">
+                                                {{-- <div class="dataCompleted childData{{$key+1}}">
+                                                    <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved">
+                                                </div> --}}
+                                            </div>
+                                            <div class="col-2 mx-auto my-auto">
+                                                <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapsechild{{$key+1}}" aria-expanded="true" aria-controls="collapsechild{{$key+1}}">
+                                                    <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="row">
-                                        <div class="col-2 my-auto">
-                                            <div class="image">
-                                                <img src="{{asset('images/child.svg')}}" width="70%" height="auto">
+                                        <div class="collapse show" id="collapsechild{{$key+1}}">
+                                            <div class="form-sec">
+                                                <div class="form-group row mt-4">
+                                                    <div class="col-sm-4 mt-3">
+                                                        <input type="hidden" name="applicant_id" value="{{$applicant['id']}}">
+                                                        <input type="hidden" name="childrenCount" value="{{$applicant['children_count']}}">
+                                                        <input type="hidden" name="product_id" value="{{$productId}}">
+                                                        <input type="hidden" name="child" value="{{$key+1}}">
+                                                        <input type="text" name="child_{{$key+1}}_first_name" class="form-control child_{{$key+1}}_first_name" placeholder="First Name*" value="{{$child['first_name']}}" autocomplete="off" />
+                                                        <span class="child_{{$key+1}}_first_name_errorClass"></span>
+                                                        @error('child_{{$key+1}}_first_name') <span class="error">{{ $message }}</span> @enderror
+                                                    </div>
+                                                    <div class="col-sm-4 mt-3">
+                                                        <input type="text" name="child_{{$key+1}}_middle_name" class="form-control " placeholder="Middle Name" value="{{$child['middle_name']}}"  autocomplete="off"/>
+                                                    </div>
+                                                    <div class="col-sm-4 mt-3">
+                                                        <input type="text" name="child_{{$key+1}}_surname" class="form-control child_{{$key+1}}_surname" placeholder="Surname*" value="{{$child['surname']}}" autocomplete="off"  />
+                                                        <span class="child_{{$key+1}}_surname_errorClass"></span>
+                                                        @error('child_{{$key+1}}_surname') <span class="error">{{ $message }}</span> @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row mt-4">
+                                                    <div class="col-sm-6 mt-3">
+                                                        <input type="text"  name="child_{{$key+1}}_dob" class="child-dob form-control" placeholder="Date Of Birth*" value="{{$child['dob']}}">
+                                                        <span class="child_{{$key+1}}_dob_errorClass"></span>
+                                                        @error('child_{{$key+1}}_dob') <span class="error">{{ $message }}</span> @enderror
+
+                                                    </div>
+                                                    <div class="col-sm-6 mt-3">
+                                                        <select name="child_{{$key+1}}_gender" aria-required="true" class="form-control form-select child_{{$key+1}}_gender" >
+                                                            <option selected disabled>Gender *</option>
+                                                            <option {{($child['gender'] == 'MALE') ? 'selected' : '' }} value="MALE">Male</option>
+                                                            <option {{($child['gender'] == 'FEMALE') ? 'selected' : ''}} value="FEMALE">Female</option>
+                                                        </select>
+                                                        <span class="child_{{$key+1}}_gender_errorClass"></span>
+                                                        @error('child_{{$key+1}}_gender') <span class="error">{{ $message }}</span> @enderror
+
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-1">
-                                            <div class="vl"></div>
-                                        </div>
-                                        <div class="col-6 my-auto">
-                                            <div class="first-heading d-flex justify-content-center">
-                                                <h3>
-                                                    Child {{$key+1}}
-                                                </h3>
-                                            </div>
-                                        </div>
-                                        <div class="col-1">
-                                            {{-- <div class="dataCompleted childData{{$key+1}}">
-                                                <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved">
-                                            </div> --}}
-                                        </div>
-                                        <div class="col-2 mx-auto my-auto">
-                                            <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapsechild{{$key+1}}" aria-expanded="true" aria-controls="collapsechild{{$key+1}}">
-                                                <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
+                                            <div class="form-group row mt-4">
+                                                <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
+                                                    @if($key+1 ==  $applicant['children_count'])
+                                                        <button type="submit" class="btn btn-primary submitBtn submitChild">Submit <i class="fa fa-spinner fa-spin childReviewSpin"></i></button>  
+                                                    @else 
+                                                        <button type="button" class="btn btn-primary submitBtn collapsechild{{$key+2}}" data-bs-toggle="collapse" data-bs-target="#collapsechild{{$key+2}}" aria-expanded="false" aria-controls="collapsechild{{$key+2}}">Ammend</button>  
+                                                    @endif
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="collapse show" id="collapsechild{{$key+1}}">
-                                        <div class="form-sec">
-                                            <div class="form-group row mt-4">
-                                                <div class="col-sm-4 mt-3">
-                                                    <input type="hidden" name="applicant_id" value="{{$applicant['id']}}">
-                                                    <input type="hidden" name="childrenCount" value="{{$applicant['children_count']}}">
-                                                    <input type="hidden" name="product_id" value="{{$productId}}">
-                                                    <input type="hidden" name="child" value="{{$key+1}}">
-                                                    <input type="text" name="child_{{$key+1}}_first_name" class="form-control child_{{$key+1}}_first_name" placeholder="First Name*" value="{{$child['first_name']}}" autocomplete="off" />
-                                                    <span class="child_{{$key+1}}_first_name_errorClass"></span>
-                                                    @error('child_{{$key+1}}_first_name') <span class="error">{{ $message }}</span> @enderror
-                                                </div>
-                                                <div class="col-sm-4 mt-3">
-                                                    <input type="text" name="child_{{$key+1}}_middle_name" class="form-control " placeholder="Middle Name" value="{{$child['middle_name']}}"  autocomplete="off"/>
-                                                </div>
-                                                <div class="col-sm-4 mt-3">
-                                                    <input type="text" name="child_{{$key+1}}_surname" class="form-control child_{{$key+1}}_surname" placeholder="Surname*" value="{{$child['surname']}}" autocomplete="off"  />
-                                                    <span class="child_{{$key+1}}_surname_errorClass"></span>
-                                                    @error('child_{{$key+1}}_surname') <span class="error">{{ $message }}</span> @enderror
-                                                </div>
-                                            </div>
-                                            <div class="form-group row mt-4">
-                                                <div class="col-sm-6 mt-3">
-                                                    <input type="text"  name="child_{{$key+1}}_dob" class="child-dob form-control" placeholder="Date Of Birth*" value="{{$child['dob']}}">
-                                                    <span class="child_{{$key+1}}_dob_errorClass"></span>
-                                                    @error('child_{{$key+1}}_dob') <span class="error">{{ $message }}</span> @enderror
-
-                                                </div>
-                                                <div class="col-sm-6 mt-3">
-                                                    <select name="child_{{$key+1}}_gender" aria-required="true" class="form-control form-select child_{{$key+1}}_gender" >
-                                                        <option selected disabled>Gender *</option>
-                                                        <option {{($child['gender'] == 'Male') ? 'selected' : '' }} value="Male">Male</option>
-                                                        <option {{($child['gender'] == 'Female') ? 'selected' : ''}} value="Female">Female</option>
-                                                    </select>
-                                                    <span class="child_{{$key+1}}_gender_errorClass"></span>
-                                                    @error('child_{{$key+1}}_gender') <span class="error">{{ $message }}</span> @enderror
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row mt-4">
-                                            <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                                @if($key+1 ==  $applicant['children_count'])
-                                                    <button type="submit" class="btn btn-primary submitBtn submitChild">Submit <i class="fa fa-spinner fa-spin childReviewSpin"></i></button>  
-                                                @else 
-                                                    <button type="button" class="btn btn-primary submitBtn collapsechild{{$key+2}}" data-bs-toggle="collapse" data-bs-target="#collapsechild{{$key+2}}" aria-expanded="false" aria-controls="collapsechild{{$key+2}}">Ammend</button>  
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                    </form>
-                </div>
+                            @endforeach
+                        </form>
+                    </div>
+                @endif
             </div>
         </div>
         <div id="passportFormatModal" class="modal fade" tabindex="-1">
@@ -1667,7 +1670,7 @@
     $(document).ready(function(){
         $('.dependentReviewSpin, .childReviewSpin, .applicantReviewSpin').hide();
                // Main Applicant
-        $('.schengen_visa, .applicantData, .homeCountryData, .currentCountryData, .schengenData, .dependent_schengen_visa').hide();
+        $('.schengen_visa, .applicantData, .homeCountryData, .currentCountryData, .schengenData, .dependent_schengen_visa, #is_finger_print_collected_for_Schengen_visa').hide();
         $('.datepicker, .dependent_datepicker, .child-dob').datepicker({
             maxDate : 0,
             dateFormat : "dd-mm-yy",
@@ -1692,14 +1695,17 @@
             constrainInput: false   
         });
 
-        if($('#is_schengen_visa_issued_last_five_year').val() == 'Yes') {
+        if($('#is_schengen_visa_issued_last_five_year').val() == 'YES') {
             $('.schengen_visa').show();
+            $('#is_finger_print_collected_for_Schengen_visa').show();
         } else {
             $('.schengen_visa').hide();
+            $('#is_finger_print_collected_for_Schengen_visa').hide();
         }
 
-        if($('#is_dependent_schengen_visa_issued_last_five_year').val() == 'Yes') {
+        if($('#is_dependent_schengen_visa_issued_last_five_year').val() == 'YES') {
             $('.dependent_schengen_visa').show();
+            
         } else {
             $('.dependent_schengen_visa').hide();
         }
@@ -1844,10 +1850,12 @@
         });
 
         $('#is_schengen_visa_issued_last_five_year').on('change', function(){
-            if($('#is_schengen_visa_issued_last_five_year').val() == "Yes"){
+            if($('#is_schengen_visa_issued_last_five_year').val() == "YES"){
                 $('.schengen_visa').show();
+                $('#is_finger_print_collected_for_Schengen_visa').show();
             } else {
                 $('.schengen_visa').hide();
+                $('#is_finger_print_collected_for_Schengen_visa').hide();
             }
         });
 
@@ -2127,7 +2135,7 @@
         });
 
         $('#is_dependent_schengen_visa_issued_last_five_year').on('change', function(){
-            if($('#is_dependent_schengen_visa_issued_last_five_year').val() == "Yes"){
+            if($('#is_dependent_schengen_visa_issued_last_five_year').val() == "YES"){
                 $('.dependent_schengen_visa').show();
             } else {
                 $('.dependent_schengen_visa').hide();

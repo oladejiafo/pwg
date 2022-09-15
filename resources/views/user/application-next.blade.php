@@ -167,7 +167,7 @@
         // $('.country_birth, .citizenship, .home_country, .current_country').select2();
         // Main Applicant
         $('.applicantReviewSpin, .dependentReviewSpin, .childReviewSpin').hide();
-        $('.schengen_visa, .applicantData, .homeCountryData, .currentCountryData, .schengenData, .dependent_schengen_visa').hide();
+        $('.schengen_visa, .applicantData, .homeCountryData, .currentCountryData, .schengenData, .dependent_schengen_visa, #is_finger_print_collected_for_Schengen_visa').hide();
         $('.datepicker').datepicker({
             dateFormat : "dd-mm-yy",
             changeMonth: true,
@@ -313,7 +313,7 @@
         });
 
         $('#is_schengen_visa_issued_last_five_year').on('change', function(){
-            if($('#is_schengen_visa_issued_last_five_year').val() == "Yes"){
+            if($('#is_schengen_visa_issued_last_five_year').val() == "YES"){
                 $('.schengen_visa').show();
                 $('#is_finger_print_collected_for_Schengen_visa').show();
             } else {
@@ -355,21 +355,25 @@
                                 }
                             });
                         } else {
+                            $('.applicantReviewSpin').hide();
                             alert('Please provide all details');
                             $('#collapseSchengen').addClass('show');
                             $('#collapseExperience').removeClass('show');
                         }
                     } else {
+                        $('.applicantReviewSpin').hide();
                         alert('Please provide all details');
                         $('#collapseCurrent').addClass('show');
                         $('#collapseExperience').removeClass('show');
                     }
                 } else {
+                    $('.applicantReviewSpin').hide();
                     $('#collapseHome').addClass('show');
                     $('#collapseExperience').removeClass('show');
                     alert('Please provide all details');
                 }
             } else {
+                $('.applicantReviewSpin').hide();
                 $('#collapseapplicant').addClass('show');
                 $('#collapseExperience').removeClass('show');
                 alert('Please provide all details');

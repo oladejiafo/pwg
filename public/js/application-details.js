@@ -2088,7 +2088,7 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]({
   },
   methods: {
     getCategories: function getCategories() {
-      axios__WEBPACK_IMPORTED_MODULE_1___default().post('http://127.0.0.1:8000/api/get-job-category-list').then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_1___default().post('https://bo.pwggroup.ae/api/get-job-category-list').then(function (response) {
         app.jobCategories = response.data;
       })["catch"](function (error) {
         console.log(error);

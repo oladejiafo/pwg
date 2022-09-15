@@ -17,6 +17,10 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Response;
 use App\Mail\NotifyMail;
+use App\Models\JobCategoryOne;
+use App\Models\JobCategoryTwo;
+use App\Models\JobCategoryThree;
+use App\Models\JobCategoryFour;
 use Doctrine\Common\Annotations\Annotation\Required;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
@@ -68,6 +72,48 @@ class ApplicationController extends Controller
 
     public function applicantDetails($productId)
     {
+        // $url = "https://bo.pwggroup.ae/api/get-job-category-list";
+        // $client = new Client();
+        // $response = $client->request('Post', $url);
+        // $jobs = json_decode($response->getBody());
+        // foreach($jobs as $job)
+        // {
+        //     // JobCategoryOne::create(
+        //     //     [
+        //     //         'name' => $job->name,
+        //     //     ]
+        //     // );
+
+        //     foreach($job->job_category_two as $catOne)
+        //     {
+        //         JobCategoryTwo::create([
+        //             'job_category_one_id' => $job->id,
+        //             'name' => $catOne->name
+        //         ]);
+        //         die;
+        //     //     foreach($catOne->job_category_three as $cattwo)
+        //     //     {
+        //     //         JobCategoryThree::create([
+        //     //             'job_category_two_id' => $cattwo->id,
+        //     //             'name' => $catOne->name
+        //     //         ]);
+
+        //     //         foreach($cattwo as $cat)
+        //     //         {
+        //     //             JobCategoryFour::create([
+        //     //                 'job_category_three_id' => $cat->id,
+        //     //                 'name' => $cat->name,
+        //     //                 'description'  => $cat->description,
+        //     //                 'example_titles'  => $cat->example_titles,
+        //     //                 'main_duties'  => $cat->main_duties,
+        //     //                 'employement_requirements'  => $cat->employement_requirements
+        //     //             ]);
+        //     //         }
+        //     //     }
+        //     }
+        // }
+        // die;
+
         if (Auth::id()) {
             $user = User::find(Auth::id());
             $applicant = Applicant::where('client_id', Auth::id())
@@ -111,8 +157,7 @@ class ApplicationController extends Controller
             ), 200); // 400 being the HTTP code for an invalid request.
         }
 
-        Applicant::where('user_id', Auth::id())
-            ->where('product_id', $request->product_id)
+        User::where('id', Auth::id())
             ->update([
                 'name' => $request['first_name'],
                 'middle_name' => $request['middle_name'],
@@ -156,29 +201,24 @@ class ApplicationController extends Controller
             ), 200); // 400 being the HTTP code for an invalid request.
         }
         $file = $request->file('passport_copy');
+        $client = User::find(Auth::id());
         if($request->hasFile('passport_copy')){
             $fileName = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
-            $destinationPath = 'public/passportCopy';
-            $file->storeAs($destinationPath, $fileName);
-        } else {
-            $fileName = $request['passport_copy'];
-        }
-        Applicant::where('user_id', Auth::id())
-            ->where('product_id', $request->product_id)
-            ->update([
-                'passport_number'  => $request['passport_number'],
-                'passport_issue_date' =>  date('Y-m-d', strtotime($request['passport_issue'])),
-                'passport_expiry' => date('Y-m-d', strtotime($request['passport_expiry'])),
-                'passport_issued_by' => $request['issued_by'],
-                'passport' => $fileName,
-                'residence_mobile_number' => $request['home_phone_number'],
-                'country_of_residence' => $request['home_country'],
-                'state' => $request['state'],
-                'city' => $request['city'],
-                'postal_code' => $request['postal_code'],
-                'address_line_1' => $request['address_1'],
-                'address_line_2' => $request['address_2']
-            ]);
+            $client->addMedia($request->file('passport_copy'))->usingFileName($fileName)->toMediaCollection(User::$media_collection_main);
+        } 
+        $client->passport_number  = $request['passport_number'];
+        $client->passport_issue_date =  date('Y-m-d', strtotime($request['passport_issue']));
+        $client->passport_expiry = date('Y-m-d', strtotime($request['passport_expiry']));
+        $client->passport_issued_by = $request['issued_by'];
+        $client->residence_mobile_number = $request['home_phone_number'];
+        $client->country_of_residence = $request['home_country'];
+        $client->state = $request['state'];
+        $client->city = $request['city'];
+        $client->postal_code = $request['postal_code'];
+        $client->address_line_1 = $request['address_1'];
+        $client->address_line_2 = $request['address_2'];
+        $client->save();
+
         return Response::json(array(
                     'success' => true,
                     'passport' => storage_path('passportCopy/'.$fileName)
@@ -189,16 +229,15 @@ class ApplicationController extends Controller
     public function applicantReview($productId)
     {
         $user = User::find(Auth::id());
-        $applicant = Applicant::where('user_id', Auth::id())
-                        ->where('product_id', $productId)
-                        ->first();
+        $applicant = User::find(Auth::id());
+        $dependent =  $children = null;
         // $test = $this->_updateApplicationStatus($productId, $applicant->id, 'applicant');
-        $dependent = FamilyDetail::where('product_id', $productId)
-                        ->where('applicant_id', $applicant->id)
-                        ->first();
+        // $dependent = FamilyDetail::where('destination_id', $productId)
+        //                 ->where('applicant_id', $applicant->id)
+        //                 ->first();
 
-        $children = ChildrenDetail::where('applicant_id', $applicant->id)
-                                ->get();
+        // $children = ChildrenDetail::where('applicant_id', $applicant->id)
+        //                         ->get();
         return view('user.application-review', compact('user', 'applicant', 'productId', 'dependent', 'children'))->with('success', 'Data saved successfully!');
     }
 
@@ -215,7 +254,6 @@ class ApplicationController extends Controller
             'residence_id' => 'required',
             'visa_validity'  => 'required',
             'residence_copy' => 'required',
-            'current_job' => 'required',
             'work_state' => 'required',
             'work_city' => 'required',
             'work_postal_code' => 'required',
@@ -229,11 +267,11 @@ class ApplicationController extends Controller
 
             ), 200); // 400 being the HTTP code for an invalid request.
         }
+        $client = User::find(Auth::id());
         if ($request->hasFile('residence_copy')) {
             $file = $request->file('residence_copy');
             $residenceCopy = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
-            $destinationPath = 'public/residenceCopy';
-            $file->storeAs($destinationPath, $residenceCopy);
+            $client->addMedia($request->file('residence_copy'))->usingFileName($residenceCopy)->toMediaCollection(User::$media_collection_main_residence_id);
         } else {
             $residenceCopy = $request->file('residence_copy');
         }
@@ -241,26 +279,20 @@ class ApplicationController extends Controller
         if ($request->hasFile('visa_copy')) {
             $file = $request->file('visa_copy');
             $visaCopy = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
-            $destinationPath = 'public/visaCopy';
-            $file->storeAs($destinationPath, $visaCopy);
+            $client->addMedia($request->file('visa_copy'))->usingFileName($visaCopy)->toMediaCollection(User::$media_collection_main_residence_visa);
         }
-        Applicant::where('user_id', Auth::id())
-            ->where('product_id', $request->product_id)
-            ->update([
-                'country' => $request->current_country,
-                'phone_number' => $request->current_residance_mobile,
-                'residence_id' => $request->residence_id,
-                'visa_validity' => date('Y-m-d', strtotime($request->visa_validity)),
-                'residence_copy' => $residenceCopy,
-                'visa_copy' => $visaCopy,
-                'work_state' => $request->work_state,
-                'work_city' => $request->work_city,
-                'work_postal_code' => $request->work_postal_code,
-                'work_address' => $request->work_street,
-                'company_name' => $request->company_name,
-                'employer_phone_number' => $request->employer_phone,
-                'employer_email' => $request->employer_email
-            ]);
+        $client->country = $request->current_country;
+        $client->phone_number = $request->current_residance_mobile;
+        $client->residence_id = $request->residence_id;
+        $client->visa_validity = date('Y-m-d', strtotime($request->visa_validity));
+        $client->work_state = $request->work_state;
+        $client->work_city = $request->work_city;
+        $client->work_postal_code = $request->work_postal_code;
+        $client->work_address = $request->work_street;
+        $client->company_name = $request->company_name;
+        $client->employer_phone_number = $request->employer_phone;
+        $client->employer_email = $request->employer_email;
+        $client->save();
         return Response::json(array('success' => true), 200);
     }
 
@@ -272,9 +304,17 @@ class ApplicationController extends Controller
      */
     public function storeSchengenDetails(Request $request)
     {
-        $validator = \Validator::make($request->all(), [
-            'is_schengen_visa_issued_last_five_year' => 'required',
-        ]);
+        if($request['is_schengen_visa_issued_last_five_year']  == 'YES'){
+            $validator = \Validator::make($request->all(), [
+                'is_schengen_visa_issued_last_five_year' => 'required',
+                'is_finger_print_collected_for_Schengen_visa' => 'required'
+            ]);
+        } else {
+            $validator = \Validator::make($request->all(), [
+                'is_schengen_visa_issued_last_five_year' => 'required',
+            ]);
+        }
+        
 
         if ($validator->fails()) {
             return Response::json(array(
@@ -284,19 +324,17 @@ class ApplicationController extends Controller
             ), 200); // 400 being the HTTP code for an invalid request.
         }
         $schengenCopy = null;
+        $client = User::find(AUth::id());
         if ($request->hasFile('schengen_copy')) {
             $file = $request->file('schengen_copy');
             $schengenCopy = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
-            $destinationPath = 'public/schengenCopy';
-            $file->storeAs($destinationPath, $schengenCopy);
+            $client->addMediaFromRequest('schengen_copy')->withCustomProperties(['mime-type' => 'image/jpeg'])->preservingOriginal()->usingFileName($schengenCopy)->toMediaCollection(User::$media_collection_main_schengen_visa);
         }
-        Applicant::where('user_id', Auth::id())
-            ->where('product_id', $request->product_id)
-            ->update([
-                'is_schengen_visa_issued_last_five_year'  => $request->is_schengen_visa_issued_last_five_year,
-                'schengen_visa' => $schengenCopy,
-                'is_finger_print_collected_for_Schengen_visa' => $request->is_finger_print_collected_for_Schengen_visa
-            ]);
+        
+        $client->is_schengen_visa_issued_last_five_year  = $request->is_schengen_visa_issued_last_five_year;
+        $client->is_finger_print_collected_for_Schengen_visa = $request->is_finger_print_collected_for_Schengen_visa;
+        $client->save();
+        
         return Response::json(array('success' => true), 200);
     }
 
@@ -308,16 +346,15 @@ class ApplicationController extends Controller
      */
     public function addExperience(Request $request)
     {
+        // dd($request);
         if($request['userType'] == 'dependent'){
-            $exist = ApplicantExperience::where('applicant_id', $request['applicant_id'])
-                    ->where('dependant_id', $request['dependentId'])
+            $exist = ApplicantExperience::where('client_id', Auth::id())
                     ->where('job_category_three_id', $request['job_category_three_id'])
                     ->where('job_category_four_id', $request['job_category_four_id'])
                     ->first();
             if(!$exist) {
                 $exp = new ApplicantExperience();
-                $exp->applicant_id = $request['applicant_id'];
-                $exp->dependant_id =  $request['dependentId'];
+                $exp->client_id = Auth::id();
                 $exp->job_title = $request['job_title'];
                 $exp->job_category_one_id = $request['job_category_one_id'];
                 $exp->job_category_two_id = $request['job_category_two_id'];
@@ -330,18 +367,18 @@ class ApplicationController extends Controller
                 return false;
             }
         } else {
-            $exist = ApplicantExperience::where('applicant_id', $request['applicant_id'])
+            $exist = ApplicantExperience::where('client_id', Auth::id())
                     ->where('job_category_three_id', $request['job_category_three_id'])
                     ->where('job_category_four_id', $request['job_category_four_id'])
                     ->first();
             if(!$exist) {
                 $exp = new ApplicantExperience();
-                $exp->applicant_id = $request['applicant_id'];
+                $exp->client_id = Auth::id();
                 $exp->job_title = $request['job_title'];
-                $exp->job_category_one_id = $request['job_category_one_id'];
-                $exp->job_category_two_id = $request['job_category_two_id'];
-                $exp->job_category_three_id  = $request['job_category_three_id'];
-                $exp->job_category_four_id   = $request['job_category_four_id'];
+                $exp->job_category_one_id = (int)$request['job_category_one_id'];
+                $exp->job_category_two_id = (int)$request['job_category_two_id'];
+                $exp->job_category_three_id = (int)$request['job_category_three_id'];
+                $exp->job_category_four_id = (int)$request['job_category_four_id'];
                 $exp->created_by = Auth::id();
                 $exp->save();
                 return true;
@@ -359,8 +396,8 @@ class ApplicationController extends Controller
      */
     public function getApplicantExperience(Request $request)
     {
-        $exp = ApplicantExperience::where('applicant_id', $request->applicantId)
-                                    ->Where('dependant_id', null)
+        $exp = ApplicantExperience::where('client_id', $request->applicantId)
+                                    // ->Where('dependant_id', null)
                                     ->get();
         return $exp;
     }
@@ -368,7 +405,7 @@ class ApplicationController extends Controller
     public function removeExperience(Request $request)
     {
         ApplicantExperience::where('id', $request['expId'])
-                        ->where('applicant_id', $request['applicantId'])
+                        ->where('client_id', $request['applicantId'])
                         ->delete();
         return true;
     }
@@ -430,7 +467,7 @@ class ApplicationController extends Controller
         $response['status'] = false;
         try{
             Applicant::where('id', $request['applicantId'])
-                ->update(['applicant_status' => 4]);
+                ->update(['application_stage_status' => 4]);
 
             $this->_updateApplicationStatus($request->product_id, $request['applicantId'], $request['user']);
             $response['status'] = true;
@@ -650,11 +687,11 @@ class ApplicationController extends Controller
     public function getDependentExperience(Request $request)
     {
         // dd($request);
-        $exp = ApplicantExperience::where('applicant_id', $request->applicantId)
-                            ->where(function ($query) use ($request) {
-                                return $query->Where('dependant_id', $request->dependentId)
-                                    ->where('dependant_id', '>', 0 );
-                            })
+        $exp = ApplicantExperience::where('client_id', $request->applicantId)
+                            // ->where(function ($query) use ($request) {
+                            //     return $query->Where('dependant_id', $request->dependentId)
+                            //         ->where('dependant_id', '>', 0 );
+                            // })
                             ->get();
         return $exp;
     }
