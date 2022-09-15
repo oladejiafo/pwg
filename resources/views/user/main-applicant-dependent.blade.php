@@ -33,7 +33,7 @@
             <div id="collapsespouseapplicant" class="collapse">
                 <div class="form-sec">
                     @php
-                        $name = explode(' ', $user['name']);
+                        $name = explode(' ', $client['name']);
                     @endphp
                     <form method="POST" enctype="multipart/form-data" id="dependent_applicant_details">
                         @csrf
@@ -197,7 +197,7 @@
                             </div>
                         </div>
                         <div class="form-group row mt-4">
-                            <div class="col-sm-6 mt-3">
+                            <div class="col-sm-12 mt-3">
                                 <input type="text" name="dependent_passport_copy" class="form-control dependent_passport_copy" placeholder="Upload Passport Copy*" value="{{old('dependent_passport_copy')}}" data-toggle="modal" class="passportFormatModal" data-target="#passportFormatModal" onclick="showPassportFormat()" autocomplete="off" readonly/>
 
                                 <div class="input-group-btn">
@@ -208,9 +208,9 @@
                                 </div><!-- btn -->
                                 <span class="dependent_passport_copy_errorClass"></span>
                             </div>
-                            <div class="col-sm-6 mt-3">
+                            {{-- <div class="col-sm-6 mt-3">
                                 <input type="tel" name="dependent_home_phone_number" id="dependent_home_phone_number" class="form-control dependent_home_phone_number" placeholder="Phone Number" value="{{old('dependent_home_phone_number')}}" autocomplete="off" />
-                            </div>
+                            </div> --}}
                         </div>
                         <div class="form-group row mt-4">
                             <div class="col-sm-3 mt-3">

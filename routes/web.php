@@ -111,3 +111,7 @@ Route::post('store/children/details', [ApplicationController::class, 'storeChild
 
 Route::post('card_details', [HomeController::class, 'card_details'])->name('card_details');
 Route::post('mark_read', [HomeController::class, 'mark_read'])->name('mark_read');
+
+//experience
+Route::post('/get/job/category/list', [ApplicationController::class, 'getJobCategories']);
+Route::post('/get/job/category/four/list', [ApplicationController::class, 'getJobCategoryFourList']);

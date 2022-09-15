@@ -5,9 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Applicant;
 use App\Models\ApplicantExperience;
-use App\Models\FamilyDetail;
-use App\Constant;
-use App\Models\ChildrenDetail;
+use App\Models\JobCategoryOne;
+use App\Models\JobCategoryFour;
 use Exception;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
@@ -17,13 +16,6 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Response;
 use App\Mail\NotifyMail;
-use App\Models\JobCategoryOne;
-use App\Models\JobCategoryTwo;
-use App\Models\JobCategoryThree;
-use App\Models\JobCategoryFour;
-use Doctrine\Common\Annotations\Annotation\Required;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
 use DB;
 
 class ApplicationController extends Controller
@@ -72,59 +64,63 @@ class ApplicationController extends Controller
 
     public function applicantDetails($productId)
     {
+        session()->forget('info');
+
         // $url = "https://bo.pwggroup.ae/api/get-job-category-list";
-        // $client = new Client();
+        // $client = new \GuzzleHttp\Client();
         // $response = $client->request('Post', $url);
         // $jobs = json_decode($response->getBody());
+        // dd($jobs);
         // foreach($jobs as $job)
         // {
-        //     // JobCategoryOne::create(
-        //     //     [
-        //     //         'name' => $job->name,
-        //     //     ]
-        //     // );
+        // //     // JobCategoryOne::create(
+        // //     //     [
+        // //     //         'name' => $job->name,
+        // //     //     ]
+        // //     // );
 
         //     foreach($job->job_category_two as $catOne)
         //     {
-        //         JobCategoryTwo::create([
-        //             'job_category_one_id' => $job->id,
-        //             'name' => $catOne->name
-        //         ]);
-        //         die;
-        //     //     foreach($catOne->job_category_three as $cattwo)
-        //     //     {
-        //     //         JobCategoryThree::create([
-        //     //             'job_category_two_id' => $cattwo->id,
-        //     //             'name' => $catOne->name
-        //     //         ]);
+        //         // JobCategoryTwo::create([
+        //         //     'job_category_one_id' => $job->id,
+        //         //     'name' => $catOne->name
+        //         // ]);
+        // //         die;
+        //         foreach($catOne->job_category_three as $cattwo)
+        //         {
+        //             JobCategoryThree::create([
+        //                 'name' => $catOne->name,
+        //                 'job_category_two_id' => $catOne->id,
+        //             ]);
 
-        //     //         foreach($cattwo as $cat)
-        //     //         {
-        //     //             JobCategoryFour::create([
-        //     //                 'job_category_three_id' => $cat->id,
-        //     //                 'name' => $cat->name,
-        //     //                 'description'  => $cat->description,
-        //     //                 'example_titles'  => $cat->example_titles,
-        //     //                 'main_duties'  => $cat->main_duties,
-        //     //                 'employement_requirements'  => $cat->employement_requirements
-        //     //             ]);
-        //     //         }
-        //     //     }
+        //             // foreach($cattwo as $cat)
+        //             // {
+        //             //     JobCategoryFour::create([
+        //             //         'job_category_three_id' => $cattwo->id,
+        //             //         'name' => $cat->name,
+        //             //         'description'  => $cat->description,
+        //             //         'example_titles'  => $cat->example_titles,
+        //             //         'main_duties'  => $cat->main_duties,
+        //             //         'employement_requirements'  => $cat->employement_requirements
+        //             //     ]);
+        //             // }
+        //         }
         //     }
         // }
         // die;
 
         if (Auth::id()) {
-            $user = User::find(Auth::id());
+            $client = User::find(Auth::id());
+
             $applicant = Applicant::where('client_id', Auth::id())
                                     ->where('destination_id', $productId)
                                     ->first();
-            // $dependent = FamilyDetail::where('product_id', $productId)
-            //                         ->where('applicant_id', $applicant->id)
-            //                         ->pluck('id')
-            //                         ->first();
-            $dependent = null;
-            return view('user.application-next', compact('user', 'productId', 'applicant', 'dependent'))->with('info', 'Data saved successfully!');
+
+            $dependent = User::where('family_member_id', Auth::id())
+                            ->where('is_dependent', 1)
+                            ->first();
+
+            return view('user.application-next', compact('client', 'productId', 'applicant', 'dependent'))->with('info', 'Data saved successfully!');
         } else {
             return back();
         }
@@ -210,8 +206,8 @@ class ApplicationController extends Controller
         $client->passport_issue_date =  date('Y-m-d', strtotime($request['passport_issue']));
         $client->passport_expiry = date('Y-m-d', strtotime($request['passport_expiry']));
         $client->passport_issued_by = $request['issued_by'];
-        $client->residence_mobile_number = $request['home_phone_number'];
-        $client->country_of_residence = $request['home_country'];
+        // $client->residence_mobile_number = $request['home_phone_number'];
+        $client->country = $request['home_country'];
         $client->state = $request['state'];
         $client->city = $request['city'];
         $client->postal_code = $request['postal_code'];
@@ -228,17 +224,14 @@ class ApplicationController extends Controller
 
     public function applicantReview($productId)
     {
-        $user = User::find(Auth::id());
-        $applicant = User::find(Auth::id());
-        $dependent =  $children = null;
-        // $test = $this->_updateApplicationStatus($productId, $applicant->id, 'applicant');
-        // $dependent = FamilyDetail::where('destination_id', $productId)
-        //                 ->where('applicant_id', $applicant->id)
-        //                 ->first();
-
-        // $children = ChildrenDetail::where('applicant_id', $applicant->id)
-        //                         ->get();
-        return view('user.application-review', compact('user', 'applicant', 'productId', 'dependent', 'children'))->with('success', 'Data saved successfully!');
+        $client = User::find(Auth::id());
+        $applicant = Applicant::where('client_id',Auth::id())
+                                ->where('destination_id', $productId)
+                                ->first();
+        $dependent = User::where('family_member_id', Auth::id())->where('is_dependent', 1)->first();
+        $children = User::where('family_member_id', Auth::id())->where('is_dependent', 2)->get();
+        // dd($user, $applicant, $dependent, $children);
+        return view('user.application-review', compact('client', 'applicant', 'productId', 'dependent', 'children'))->with('success', 'Data saved successfully!');
     }
 
     /**
@@ -281,8 +274,8 @@ class ApplicationController extends Controller
             $visaCopy = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
             $client->addMedia($request->file('visa_copy'))->usingFileName($visaCopy)->toMediaCollection(User::$media_collection_main_residence_visa);
         }
-        $client->country = $request->current_country;
-        $client->phone_number = $request->current_residance_mobile;
+        $client->country_of_residence = $request->current_country;
+        $client->residence_mobile_number = $request->current_residance_mobile;
         $client->residence_id = $request->residence_id;
         $client->visa_validity = date('Y-m-d', strtotime($request->visa_validity));
         $client->work_state = $request->work_state;
@@ -418,14 +411,14 @@ class ApplicationController extends Controller
      */
     public function applicantReviewSubmit(Request $request)
     {
-        $applicant =  Applicant::where('user_id', Auth::id())
-                    ->where('product_id', $request->product_id)
+        $applicant =  Applicant::where('client_id', Auth::id())
+                    ->where('destination_id', $request->product_id)
                     ->first();
 
-        Applicant::where('user_id', Auth::id())
-                ->where('product_id', $request->product_id)
+        Applicant::where('client_id', Auth::id())
+                ->where('destination_id', $request->product_id)
                 ->update([
-                    'applicant_status'=> 5
+                    'application_stage_status'=> 5
                 ]);
 
         // $this->_updateApplicationStatus($request->product_id,$applicant['id'], $request['user']);
@@ -479,7 +472,6 @@ class ApplicationController extends Controller
 
     public function storeDependentDetails(Request $request)
     {
-        // dd($request);
         $validator = \Validator::make($request->all(), [
             'dependent_first_name' => 'required',
             'dependent_surname' => 'required',
@@ -500,35 +492,47 @@ class ApplicationController extends Controller
 
             ), 200); // 400 being the HTTP code for an invalid request.
         }
-        $resumes = null;
+
+        $data = User::where('family_member_id', Auth::id())
+                        ->where('is_dependent', 1)
+                        ->first();
+
+        if($data){
+            $data->name = $request['dependent_first_name'];
+            $data->middle_name = $request['dependent_middle_name'];
+            $data->sur_name = $request['dependent_surname'];
+            $data->email  = $request['dependent_email'];
+            $data->phone_number  = $request['dependent_phone_number'];
+            $data->date_of_birth = date('Y-m-d', strtotime($request['dependent_dob']));
+            $data->place_of_birth = $request['dependent_place_birth'];
+            $data->country_of_birth = $request['dependent_country_birth'];
+            $data->citizenship = $request['dependent_citizenship'];
+            $data->sex = $request['dependent_sex'];
+            $data->civil_status = $request['dependent_civil_status'];
+        } else {
+            $data = new User();
+            $data->family_member_id = Auth::id();
+            $data->is_dependent = 1;
+            $data->name = $request['dependent_first_name'];
+            $data->middle_name = $request['dependent_middle_name'];
+            $data->sur_name = $request['dependent_surname'];
+            $data->email  = $request['dependent_email'];
+            $data->phone_number  = $request['dependent_phone_number'];
+            $data->date_of_birth = date('Y-m-d', strtotime($request['dependent_dob']));
+            $data->place_of_birth = $request['dependent_place_birth'];
+            $data->country_of_birth = $request['dependent_country_birth'];
+            $data->citizenship = $request['dependent_citizenship'];
+            $data->sex = $request['dependent_sex'];
+            $data->civil_status = $request['dependent_civil_status'];
+        }
+       
         if ($request->hasFile('dependent_resume')) {
-            $file = $request->file('dependent_resume');
-            $resumes = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
-            $destinationPath = 'public/resumes';
-            $file->storeAs($destinationPath, $resumes);
+            $data->addMedia( $request->file('dependent_resume'))->toMediaCollection(User::$media_collection_main_resume);
         }
 
-        FamilyDetail::updateOrCreate([
-                'applicant_id' => $request->applicant_id,
-                'product_id' => $request->product_id,
-            ],[     
-                'first_name' => $request['dependent_first_name'],
-                'middle_name' => $request['dependent_middle_name'],
-                'surname' => $request['dependent_surname'],
-                'email'  => $request['dependent_email'],
-                'personal_phone_number' => $request['dependent_phone_number'],
-                'dob' => date('Y-m-d', strtotime($request['dependent_dob'])),
-                'place_birth' => $request['dependent_place_birth'],
-                'country_birth' => $request['dependent_country_birth'],
-                'citizenship' => $request['dependent_citizenship'],
-                'sex' => $request['dependent_sex'],
-                'civil_status' => $request['dependent_civil_status'],
-                'resume' => $resumes
-            ]);
-
-       
+        $data->save();
         return Response::json(array(
-            'dependentId' => $this->getFamilyId($request->applicant_id,  $request->product_id),
+            'dependentId' => $this->getFamilyId(),
             'success' => true
         ), 200);
     }
@@ -556,32 +560,45 @@ class ApplicationController extends Controller
             ), 200); // 400 being the HTTP code for an invalid request.
         }
 
+        $dependent = User::where('family_member_id', Auth::id())
+                        ->where('is_dependent', 1)
+                        ->first();
+        if($dependent){
+            $dependent->passport_number = $request['dependent_passport_number'];
+            $dependent->passport_issue_date =  date('Y-m-d', strtotime($request['dependent_passport_issue']));
+            $dependent->passport_expiry = date('Y-m-d', strtotime($request['dependent_passport_expiry']));
+            $dependent->passport_issued_by = $request['dependent_issued_by'];
+            $dependent->country = $request['dependent_home_country'];
+            $dependent->state = $request['dependent_state'];
+            $dependent->city = $request['dependent_city'];
+            $dependent->postal_code = $request['dependent_postal_code'];
+            $dependent->address_line_1 = $request['dependent_address_1'];
+            $dependent->address_line_2 = $request['dependent_address_2'];
+        } else {
+            $dependent = new User();
+            $dependent->family_member_id = Auth::id();
+            $dependent->is_dependent = 1;
+            $dependent->passport_number = $request['dependent_passport_number'];
+            $dependent->passport_issue_date =  date('Y-m-d', strtotime($request['dependent_passport_issue']));
+            $dependent->passport_expiry = date('Y-m-d', strtotime($request['dependent_passport_expiry']));
+            $dependent->passport_issued_by = $request['dependent_issued_by'];
+            $dependent->country = $request['dependent_home_country'];
+            $dependent->state = $request['dependent_state'];
+            $dependent->city = $request['dependent_city'];
+            $dependent->postal_code = $request['dependent_postal_code'];
+            $dependent->address_line_1 = $request['dependent_address_1'];
+            $dependent->address_line_2 = $request['dependent_address_2'];
+        }
+       
         $file = $request->file('dependent_passport_copy');
         if($request->hasFile('dependent_passport_copy')){
             $fileName = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
-            $destinationPath = 'public/passportCopy';
-            $file->storeAs($destinationPath, $fileName);
-        } else {
-            $fileName = $request['dependent_passport_copy'];
-        }
+            $dependent->addMedia($request->file('dependent_passport_copy'))->usingFileName($fileName)->toMediaCollection(User::$media_collection_main);
+        } 
 
-        FamilyDetail::where('applicant_id', $request->applicant_id)
-            ->where('product_id', $request->product_id)
-            ->update([
-                'passport_number'  => $request['dependent_passport_number'],
-                'passport_date_issue' =>  date('Y-m-d', strtotime($request['dependent_passport_issue'])),
-                'passport_date_expiry' => date('Y-m-d', strtotime($request['dependent_passport_expiry'])),
-                'issued_by' => $request['dependent_issued_by'],
-                'passport' => $fileName,
-                'phone_number' => $request['dependent_home_phone_number'],
-                'home_country' => $request['dependent_home_country'],
-                'state' => $request['dependent_state'],
-                'city' => $request['dependent_city'],
-                'postal_code' => $request['dependent_postal_code'],
-                'address_1' => $request['dependent_address_1']
-            ]);
+        $dependent->save();
         return Response::json(array(
-            'dependentId' => $this->getFamilyId($request->applicant_id,  $request->product_id),
+            'dependentId' => $this->getFamilyId(),
             'success' => true,
             'passport' => storage_path('passportCopy/'.$fileName)
         ),
@@ -595,7 +612,6 @@ class ApplicationController extends Controller
             'dependent_residence_id' => 'required',
             'dependent_visa_validity'  => 'required',
             'dependent_residence_copy' => 'required',
-            'dependent_current_job' => 'required',
             'dependent_work_state' => 'required',
             'dependent_work_city' => 'required',
             'dependent_work_postal_code' => 'required',
@@ -609,52 +625,68 @@ class ApplicationController extends Controller
 
             ), 200); // 400 being the HTTP code for an invalid request.
         }
+
+        $dependent = User::where('family_member_id', Auth::id())
+                        ->where('is_dependent', 1)
+                        ->first();
+        if($dependent){ 
+            $dependent->country_of_residence = $request->dependent_current_country;
+            $dependent->residence_mobile_number = $request->dependent_current_residance_mobile;
+            $dependent->residence_id = $request->dependent_residence_id;
+            $dependent->visa_validity = date('Y-m-d', strtotime($request->dependent_visa_validity));
+            $dependent->work_state = $request->dependent_work_state;
+            $dependent->work_city = $request->dependent_work_city;
+            $dependent->work_postal_code = $request->dependent_work_postal_code;
+            $dependent->work_address = $request->dependent_work_street;
+            $dependent->company_name = $request->dependent_company_name;
+            $dependent->employer_phone_number = $request->dependent_employer_phone;
+            $dependent->employer_email = $request->dependent_employer_email;
+        } else {
+            $dependent = new User();
+            $dependent->family_member_id = AUth::id();
+            $dependent->is_dependent = 1;
+            $dependent->country_of_residence = $request->dependent_current_country;
+            $dependent->residence_mobile_number = $request->dependent_current_residance_mobile;
+            $dependent->residence_id = $request->dependent_residence_id;
+            $dependent->visa_validity = date('Y-m-d', strtotime($request->dependent_visa_validity));
+            $dependent->work_state = $request->dependent_work_state;
+            $dependent->work_city = $request->dependent_work_city;
+            $dependent->work_postal_code = $request->dependent_work_postal_code;
+            $dependent->work_address = $request->dependent_work_street;
+            $dependent->company_name = $request->dependent_company_name;
+            $dependent->employer_phone_number = $request->dependent_employer_phone;
+            $dependent->employer_email = $request->dependent_employer_email;
+        }
         if ($request->hasFile('dependent_residence_copy')) {
             $file = $request->file('dependent_residence_copy');
             $residenceCopy = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
-            $destinationPath = 'public/residenceCopy';
-            $file->storeAs($destinationPath, $residenceCopy);
-        } else {
-            $residenceCopy = $request->file('dependent_residence_copy');
-        }
+            $dependent->addMedia($request->file('dependent_residence_copy'))->usingFileName($residenceCopy)->toMediaCollection(User::$media_collection_main_residence_id);
+        } 
         $visaCopy = $request['dependent_visa_copy'];
         if ($request->hasFile('dependent_visa_copy')) {
             $file = $request->file('dependent_visa_copy');
             $visaCopy = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
-            $destinationPath = 'public/visaCopy';
-            $file->storeAs($destinationPath, $visaCopy);
+            $dependent->addMedia($request->file('dependent_visa_copy'))->usingFileName($visaCopy)->toMediaCollection(User::$media_collection_main_residence_visa);
         }
-
-        FamilyDetail::where('applicant_id', $request['applicant_id'])
-            ->where('product_id', $request->product_id)
-            ->update([
-                'current_residance_country' => $request->dependent_current_country,
-                'current_residance_mobile' => $request->dependent_current_residance_mobile,
-                'residence_id' => $request->dependent_residence_id,
-                'id_validity' => date('Y-m-d', strtotime($request->dependent_visa_validity)),
-                'residence_copy' => $residenceCopy,
-                'visa_copy' => $visaCopy,
-                'current_job' => $request->dependent_current_job,
-                'work_state' => $request->dependent_work_state,
-                'work_city' => $request->dependent_work_city,
-                'work_postal_code' => $request->dependent_work_postal_code,
-                'work_street_number' => $request->dependent_work_street,
-                'company_name' => $request->dependent_company_name,
-                'employer_phone_number' => $request->dependent_employer_phone,
-                'employer_email' => $request->dependent_employer_email
-            ]);
+        $dependent->save();
         return Response::json(array(
-            'dependentId' => $this->getFamilyId($request->applicant_id,  $request->product_id),
+            'dependentId' => $this->getFamilyId(),
             'success' => true
         ), 200);
     }
 
     public function storeSpouseSchenegenDetails(Request $request)
     {
-        $validator = \Validator::make($request->all(), [
-            'is_dependent_schengen_visa_issued_last_five_year' => 'required',
-            'is_dependent_finger_print_collected_for_Schengen_visa' => 'required',
-        ]);
+        if($request['is_schengen_visa_issued_last_five_year']  == 'YES'){
+            $validator = \Validator::make($request->all(), [
+                'is_dependent_schengen_visa_issued_last_five_year' => 'required',
+                'is_dependent_finger_print_collected_for_Schengen_visa' => 'required',
+            ]);
+        } else {
+            $validator = \Validator::make($request->all(), [
+                'is_dependent_schengen_visa_issued_last_five_year' => 'required',
+            ]);
+        }
 
         if ($validator->fails()) {
             return Response::json(array(
@@ -663,23 +695,28 @@ class ApplicationController extends Controller
 
             ), 200); // 400 being the HTTP code for an invalid request.
         }
-        $schengenCopy = null;
+        $dependent = User::where('family_member_id', Auth::id())
+            ->where('is_dependent', 1)
+            ->first();
+        if($dependent){
+            $dependent->is_schengen_visa_issued_last_five_year = $request->is_dependent_schengen_visa_issued_last_five_year;
+            $dependent->is_finger_print_collected_for_Schengen_visa  = $request->is_dependent_finger_print_collected_for_Schengen_visa;
+        } else {
+            $dependent = new User();
+            $dependent->family_member_id = AUth::id();
+            $dependent->is_dependent = 1;
+            $dependent->is_schengen_visa_issued_last_five_year = $request->is_dependent_schengen_visa_issued_last_five_year;
+            $dependent->is_finger_print_collected_for_Schengen_visa  = $request->is_dependent_finger_print_collected_for_Schengen_visa;
+        }
+        
         if ($request->hasFile('dependent_schengen_copy')) {
             $file = $request->file('dependent_schengen_copy');
             $schengenCopy = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
-            $destinationPath = 'public/schengenCopy';
-            $file->storeAs($destinationPath, $schengenCopy);
+            $dependent->addMediaFromRequest('schengen_copy')->withCustomProperties(['mime-type' => 'image/jpeg'])->preservingOriginal()->usingFileName($schengenCopy)->toMediaCollection(User::$media_collection_main_schengen_visa);
         }
-        FamilyDetail::where('applicant_id', $request->applicant_id)
-            ->where('product_id', $request->product_id)
-            ->update([
-                'is_schengen_visa_issued'  => $request->is_dependent_schengen_visa_issued_last_five_year,
-                'schengen_visa' => $schengenCopy,
-                'is_fingerprint_collected' => $request->is_dependent_finger_print_collected_for_Schengen_visa
-            ]);
-
+        $dependent->save();
         return Response::json(array(
-            'dependentId' => $this->getFamilyId($request->applicant_id,  $request->product_id),
+            'dependentId' => $this->getFamilyId(),
             'success' => true
         ), 200);
     }
@@ -715,32 +752,31 @@ class ApplicationController extends Controller
             }
         }
         
-        ChildrenDetail::where('applicant_id', $request['applicant_id'])->delete();
+        User::where('family_member_id', Auth::id())->where('is_dependent', 2)->delete();
         for($i = 1; $i <= $request['childrenCount']; $i++ ){
-            ChildrenDetail::create([
-                'product_id' => $request['product_id'],
-                'applicant_id' => $request['applicant_id'],
-                'first_name' => $request['child_'.$i.'_first_name'],
-                'middle_name' => $request['child_'.$i.'_middle_name'],
-                'surname' => $request['child_'.$i.'_surname'],
-                'dob' => date('Y-m-d', strtotime($request['child_'.$i.'_dob'])),
-                'gender' => $request['child_'.$i.'_gender'],
-                'status' => 1
-            ]);
-        }
-
+            $child = new User();
+            $child->family_member_id = AUth::id();
+            $child->is_dependent = 2;
+            $child->name = $request['child_'.$i.'_first_name'];
+            $child->middle_name = $request['child_'.$i.'_middle_name'];
+            $child->sur_name = $request['child_'.$i.'_surname'];
+            $child->date_of_birth = date('Y-m-d', strtotime($request['child_'.$i.'_dob']));
+            $child->sex = $request['child_'.$i.'_gender'];
+            $child->client_submission_status = 1;
+            $child->save();
+        }  
         Applicant::where('id', $request['applicant_id'])
-                ->update(['applicant_status' =>  4]);
+                ->update(['application_stage_status' =>  4]);
 
         return Response::json(array(
             'success' => true
         ), 200);
     }
 
-    private static function getFamilyId($applicant_id, $product_id)
+    private static function getFamilyId()
     {
-        return FamilyDetail::where('applicant_id', $applicant_id)
-                            ->where('product_id', $product_id)
+        return User::where('family_member_id', Auth::id())
+                            ->where('is_dependent', 1)
                             ->pluck('id')
                             ->first();
     }
@@ -755,20 +791,20 @@ class ApplicationController extends Controller
     private static function _updateApplicationStatus($productId, $applicantId, $user)
     {
         if($user == 'applicant'){
-            Applicant::where('id', $applicantId)
+            User::where('id', Auth::id())
             ->update([
-                'status' => 1,
+                'client_submission_status' => 1,
             ]);
             return true;
         } else if($user == 'family') {
-            FamilyDetail::where('product_id', $productId)
-                        ->where('applicant_id', $applicantId)
-                        ->update(['status' => 1]);
+            User::where('family_member_id', Auth::id())
+                        ->where('is_dependent', 1)
+                        ->update(['client_submission_status' => 1]);
             return true;
         } else if($user == 'children') {
-            ChildrenDetail::where('product_id', $productId)
-                ->where('applicant_id', $applicantId)
-                ->update(['status' => 1]);
+            User::where('family_member_id', Auth::id())
+                    ->where('is_dependent', 2)
+                    ->update(['client_submission_status' => 1]);
             return true;
         }
     }
@@ -776,16 +812,17 @@ class ApplicationController extends Controller
     public function checkApplicationStatus(Request $request)
     {
         $response['status'] = false;
-        $applicant = Applicant::where('id', $request->id)
-                                ->where('status', 1)
-                                ->first();
+        $applicant = Applicant::where('client_id', Auth::id())
+                        ->where('destination_id', $request->product_id)
+                        ->first();
+        
         if($applicant){
             $response['status'] = true;
-            if($applicant['visa_type'] == 'FAMILY PACKAGE'){
-                if($applicant['is_spouse']){
-                    $family = FamilyDetail::where('product_id', $request->product_id)
-                                ->where('applicant_id', $request->id)
-                                ->where('status', 1)
+            if($applicant['work_permit_category'] == 'FAMILY PACKAGE'){
+                if(Auth::user()->is_spouse  == 1){
+                    $family = User::where('family_member_id', Auth::id())
+                                ->where('is_dependent', 1)
+                                ->where('client_submission_status', 1)
                                 ->first();
                     if($family) {
                     } else {
@@ -794,12 +831,13 @@ class ApplicationController extends Controller
                     }
                 }
                 
-                if($applicant['children_count']){
-                    $children = ChildrenDetail::where('product_id', $request->product_id)
-                                ->where('applicant_id', $request->id)
-                                ->where('status', 1)
-                                ->first();
-                    if($children) {
+                if(Auth::user()->children_count > 0){
+                    $children = User::where('family_member_id', Auth::id())
+                                ->where('is_dependent', 2)
+                                ->where('client_submission_status', 1)
+                                ->get(); 
+                        
+                    if(count($children) == Auth::user()->children_count) {
                     } else {
                         $response['status'] = false;
                         $response['message'] = 'Children details should be completed before proceeding';
@@ -811,5 +849,53 @@ class ApplicationController extends Controller
         }
 
         return $response;
+    }
+
+    public function getJobCategories(Request $request, $status=null) 
+    {
+        $filters = $request->input('filters');
+        $query = JobCategoryOne::with('jobCategoryTwo.jobCategoryThree.jobCategoryFour');
+        if ($filters && isset($filters['search_keyword'])) {
+            $query->select('job_category_one.*');
+            $query->distinct();
+            $query->join('job_category_two', 'job_category_one.id', 'job_category_two.job_category_one_id');
+            $query->join('job_category_three', 'job_category_two.id', 'job_category_three.job_category_two_id');
+            $query->join('job_category_four', 'job_category_three.id', 'job_category_four.job_category_three_id');
+
+            $query->where(function($query) use($filters){
+
+                $query = $query->where('job_category_one.name', 'like', '%'.$filters['search_keyword'] .'%');
+                $query = $query->orWhere('job_category_two.name', 'like', '%'.$filters['search_keyword'] .'%');
+                $query = $query->orWhere('job_category_three.name', 'like', '%'.$filters['search_keyword'] .'%');
+                $query = $query->orWhere('job_category_four.name', 'like', '%'.$filters['search_keyword'] .'%');
+            });
+        }
+        $jobCategoryList = $query->get();
+        return $jobCategoryList;
+    }
+
+
+    public function getJobCategoryFourList(Request $request, $status=null)
+    {
+        $filters = $request->input('filters');
+        $query = JobCategoryFour::orderBy('job_category_four.name', 'desc');
+        if ($filters && isset($filters['search_keyword'])) {
+            $query->select('job_category_four.*', 'job_category_two.id as job_category_two_id', 'job_category_one.id as job_category_one_id');
+            $query->distinct();
+            $query->join('job_category_three', 'job_category_three.id', 'job_category_four.job_category_three_id');
+            $query->join('job_category_two', 'job_category_two.id', 'job_category_three.job_category_two_id');
+            $query->join('job_category_one', 'job_category_one.id', 'job_category_two.job_category_one_id');
+            $query->where(function($query) use($filters){
+
+                $query = $query->where('job_category_one.name', 'like', '%'.$filters['search_keyword'] .'%');
+                $query = $query->orWhere('job_category_two.name', 'like', '%'.$filters['search_keyword'] .'%');
+                $query = $query->orWhere('job_category_three.name', 'like', '%'.$filters['search_keyword'] .'%');
+                $query = $query->orWhere('job_category_four.name', 'like', '%'.$filters['search_keyword'] .'%');
+                $query = $query->orWhere('job_category_four.description', 'like', '%'.$filters['search_keyword'] .'%');
+                $query = $query->orWhere('job_category_four.example_titles', 'like', '%'.$filters['search_keyword'] .'%');
+            });
+        }
+        $jobCategoryList = $query->get();
+        return $jobCategoryList;
     }
 }
