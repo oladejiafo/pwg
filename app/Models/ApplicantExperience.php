@@ -8,15 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class ApplicantExperience extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'applicant_id',
-        'job_category_one_id',
-        'job_category_two_id',
-        'job_category_three_id',
-        'job_category_four_id',
-        'created_by',
-    ];
-
+    
+    protected $table = 'client_experiences';  
 
     public function client()
     {

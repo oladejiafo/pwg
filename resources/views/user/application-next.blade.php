@@ -81,7 +81,7 @@
                 </div>
                     <div class="applicant-tab-sec">
                         <div class="row">
-                            @if(($applicant['is_spouse'] != null || $applicant['is_spouse'] != 0) && ($applicant['children_count'] != null || $applicant['children_count'] != 0))
+                            @if(($applicant['work_permit_category']) && ($client['is_spouse'] != null || $client['is_spouse'] != 0) && ($client['children_count'] != null || $client['children_count'] != 0))
                                 <div class="col-4">
                                     <div class="mainApplicant active" data-toggle="tab" role="tab" style="border-radius: 20px 0 0 20px;">
                                         <a  href="#mainApplicant">
@@ -103,7 +103,7 @@
                                         </a>
                                     </div>
                                 </div>
-                            @elseif(($applicant['is_spouse'] != null || $applicant['is_spouse'] != 0) &&  ($applicant['children_count'] == null || $applicant['children_count'] == 0))
+                            @elseif(($applicant['work_permit_category']) && ($client['is_spouse'] != null || $client['is_spouse'] != 0) &&  ($client['children_count'] == null || $client['children_count'] == 0))
                                 <div class="col-6">
                                     <div class="mainApplicant active" data-toggle="tab" role="tab" style="border-radius: 20px 0 0 20px;">
                                         <a  href="#mainApplicant">
@@ -118,7 +118,7 @@
                                         </a>
                                     </div>
                                 </div>
-                            @elseif(($applicant['is_spouse'] == null || $applicant['is_spouse'] == 0) && ($applicant['children_count'] != null || $applicant['children_count'] != 0))
+                            @elseif(($applicant['work_permit_category']) && ($client['is_spouse'] == null || $client['is_spouse'] == 0) && ($client['children_count'] != null || $client['children_count'] != 0))
                                 <div class="col-6">
                                     <div class="mainApplicant active" data-toggle="tab" role="tab" style="border-radius: 20px 0 0 20px;">
                                         <a  href="#mainApplicant">
@@ -167,7 +167,7 @@
         // $('.country_birth, .citizenship, .home_country, .current_country').select2();
         // Main Applicant
         $('.applicantReviewSpin, .dependentReviewSpin, .childReviewSpin').hide();
-        $('.schengen_visa, .applicantData, .homeCountryData, .currentCountryData, .schengenData, .dependent_schengen_visa').hide();
+        $('.schengen_visa, .applicantData, .homeCountryData, .currentCountryData, .schengenData, .dependent_schengen_visa, #is_finger_print_collected_for_Schengen_visa,#is_dependent_finger_print_collected_for_Schengen_visa').hide();
         $('.datepicker').datepicker({
             dateFormat : "dd-mm-yy",
             changeMonth: true,
@@ -209,17 +209,6 @@
                 "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
         });
 
-        const phoneHomeInputField = document.querySelector("#home_phone_number");
-        const phoneHomeInput = window.intlTelInput(phoneHomeInputField, {
-            separateDialCode: false,
-            preferredCountries:["ae"],
-            nationalMode: false,
-            hiddenInput: "full",
-            autoHideDialCode: false,
-            utilsScript:
-                "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-        });
-
         const phoneCurrentInputField = document.querySelector("#current_residance_mobile");
         const phoneCurrentInput = window.intlTelInput(phoneCurrentInputField, {
             separateDialCode: false,
@@ -232,19 +221,8 @@
         });
 
         const dependentPhone = document.querySelector("#dependent_phone");
-        const dependenthomephonenumber = document.querySelector("#dependent_home_phone_number");
         const dependentcurrentresidancemobile = document.querySelector("#dependent_current_residance_mobile");
         const dependentPhoneInput = window.intlTelInput(dependentPhone, {
-            separateDialCode: false,
-            preferredCountries:["ae"],
-            nationalMode: false,
-            hiddenInput: "full",
-            autoHideDialCode: false,
-            utilsScript:
-                "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-        });
-
-        const dependenthomephonenumberInput = window.intlTelInput(dependenthomephonenumber, {
             separateDialCode: false,
             preferredCountries:["ae"],
             nationalMode: false,
@@ -313,7 +291,7 @@
         });
 
         $('#is_schengen_visa_issued_last_five_year').on('change', function(){
-            if($('#is_schengen_visa_issued_last_five_year').val() == "Yes"){
+            if($('#is_schengen_visa_issued_last_five_year').val() == "YES"){
                 $('.schengen_visa').show();
                 $('#is_finger_print_collected_for_Schengen_visa').show();
             } else {
@@ -338,7 +316,7 @@
                                 },
                                 success: function (response) {
                                     if(response.status) {
-                                        checkdata = checkStatus('{{$applicant['id']}}', '{{$productId}}');
+                                        checkdata = checkStatus('{{$productId}}');
                                         $('.applicantReviewSpin').hide();
                                         if(checkdata.status){
                                             location.href = "{{url('applicant/review')}}/"+'{{$productId}}';
@@ -355,21 +333,25 @@
                                 }
                             });
                         } else {
+                            $('.applicantReviewSpin').hide();
                             alert('Please provide all details');
                             $('#collapseSchengen').addClass('show');
                             $('#collapseExperience').removeClass('show');
                         }
                     } else {
+                        $('.applicantReviewSpin').hide();
                         alert('Please provide all details');
                         $('#collapseCurrent').addClass('show');
                         $('#collapseExperience').removeClass('show');
                     }
                 } else {
+                    $('.applicantReviewSpin').hide();
                     $('#collapseHome').addClass('show');
                     $('#collapseExperience').removeClass('show');
                     alert('Please provide all details');
                 }
             } else {
+                $('.applicantReviewSpin').hide();
                 $('#collapseapplicant').addClass('show');
                 $('#collapseExperience').removeClass('show');
                 alert('Please provide all details');
@@ -385,14 +367,14 @@
                 if($('.homeCountryCompleted').val() == 1) {
                     if($('.currentCountryCompleted').val() == 1) {
                         if($('.schengenCompleted').val() == 1) {
-                            if('{{$applicant['is_spouse']}}' == null || '{{$applicant['is_spouse']}}' == 0){
-                                updateStatus('applicant', '{{$applicant['id']}}', '{{$productId}}'); 
+                            if(('{{($applicant['work_permit_category'])}}' == 'FAMILY PACKAGE') && ('{{$client['is_spouse']}}' == null || '{{$client['is_spouse']}}' == 0)){
+                                updateStatus('applicant'); 
                                 $('#children').show();
                                 $('#mainApplicant, #dependant').hide();
                                 $('.children').addClass('active');
                                 $('.mainApplicant, .dependant').removeClass('active');
                             } else {
-                                updateStatus('applicant', '{{$applicant['id']}}', '{{$productId}}'); 
+                                updateStatus('applicant'); 
                                 $('#dependant').show();
                                 $('#mainApplicant, #children').hide();
                                 $('.dependant').addClass('active');
@@ -470,8 +452,8 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            var full_number = phoneHomeInput.getNumber(intlTelInputUtils.numberFormat.E164);
-            $("input[id='home_phone_number'").val(full_number);
+            // var full_number = phoneHomeInput.getNumber(intlTelInputUtils.numberFormat.E164);
+            // $("input[id='home_phone_number'").val(full_number);
             $.ajax({
                 type: 'POST',
                 url: "{{ url('store/home/country/details') }}",
@@ -672,8 +654,8 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            var full_number = dependenthomephonenumberInput.getNumber(intlTelInputUtils.numberFormat.E164);
-            $("input[id='dependent_home_phone_number'").val(full_number);
+            // var full_number = dependenthomephonenumberInput.getNumber(intlTelInputUtils.numberFormat.E164);
+            // $("input[id='dependent_home_phone_number'").val(full_number);
             $.ajax({
                 type: 'POST',
                 url: "{{ url('store/spouse/home/country/details') }}",
@@ -773,10 +755,12 @@
         });
 
         $('#is_dependent_schengen_visa_issued_last_five_year').on('change', function(){
-            if($('#is_dependent_schengen_visa_issued_last_five_year').val() == "Yes"){
+            if($('#is_dependent_schengen_visa_issued_last_five_year').val() == "YES"){
                 $('.dependent_schengen_visa').show();
+                $('#is_dependent_finger_print_collected_for_Schengen_visa').show();
             } else {
                 $('.dependent_schengen_visa').hide();
+                $('#is_dependent_finger_print_collected_for_Schengen_visa').hide();
             }
         });
 
@@ -847,7 +831,7 @@
 
         // children
 
-        for(var i= 1 ; i<='{{$applicant['children_count']}}'; i++)
+        for(var i= 1 ; i<='{{$client['children_count']}}'; i++)
         {
             $('.childData'+i).hide();
         }
@@ -871,7 +855,7 @@
                 contentType: false,
                 success: function (data) {
                     if(data.success) {
-                        checkdata = checkStatus('{{$applicant['id']}}', '{{$productId}}');
+                        checkdata = checkStatus('{{$productId}}');
                         $('.childReviewSpin').hide();
                         if(checkdata.status){
                             location.href = "{{url('applicant/review')}}/"+'{{$productId}}';
@@ -907,7 +891,7 @@
                                 },
                                 success: function (response) {
                                     if(response.status) {
-                                        checkdata = checkStatus('{{$applicant['id']}}', '{{$productId}}');
+                                        checkdata = checkStatus('{{$productId}}');
                                         $('.dependentReviewSpin').hide();
                                         if(checkdata.status){
                                             location.href = "{{url('applicant/review')}}/"+'{{$productId}}';
@@ -954,8 +938,8 @@
                 if($('.spouseHomeCountryCompleted').val() == 1) {
                     if($('.spouseCurrentCountryCompleted').val() == 1) {
                         if($('.schengenSpouseCompleted').val() == 1) {
-                            if('{{$applicant['children_count']}}' != null || '{{$applicant['children_count']}}' != 0){
-                                updateStatus('family', '{{$applicant['id']}}', '{{$productId}}'); 
+                            if(('{{($applicant['work_permit_category'])}}' == 'FAMILY PACKAGE') && ('{{$client['children_count']}}' != null || '{{$client['children_count']}}' != 0)){
+                                updateStatus('family'); 
                                 $('#children').show();
                                 $('#mainApplicant, #dependant').hide();
                                 $('.children').addClass('active');
@@ -994,7 +978,7 @@
         $("#passportFormatModal").modal('show');
     }
 
-    function updateStatus(userType, applicantId, productId)
+    function updateStatus(userType)
     {        
         $.ajaxSetup({
             headers: {
@@ -1006,9 +990,7 @@
             url: "{{ url('update/applicant/status') }}",
             data: {
                 _token: "{{ csrf_token() }}",
-                id: applicantId,
                 userType: userType,
-                product_id: productId
             },
             success: function (response) {
                 if(response.status){
@@ -1018,7 +1000,7 @@
         });
     }
 
-    function checkStatus(applicantId, productId)
+    function checkStatus(productId)
     {
         var returnValue;
         $.ajaxSetup({
@@ -1032,7 +1014,6 @@
             url: "{{ url('check/applicant/status') }}",
             data: {
                 "_token": "{{ csrf_token() }}",
-                id: applicantId,
                 product_id: productId
             },
             success: function (response) {

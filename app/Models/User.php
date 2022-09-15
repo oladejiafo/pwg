@@ -31,10 +31,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
      * @var string[]
      */
     protected $fillable = [
-        'name',
-        'email',
-        'phone_number',
-        'password',
+        'family_member_id'
     ];
 
     /**
@@ -78,13 +75,26 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
         $this->notify(new CustomResetPasswordNotification($token));
     }
 
+    public function applicantExperiences()
+    {
+        return $this->hasMany(applicantExperience::class, 'client_id', 'id');
+    }
+
     public static $media_collection_main_signture = 'client_collection_signature';
     public static $media_collection_main_resume = 'client_collection_resume';
+    public static $media_collection_main = 'client_passport_collection_img';
+    public static $media_collection_main_residence_visa = 'client_residence_visa_copy';
+    public static $media_collection_main_schengen_visa = 'client_collection_schengen_visa';
+    public static $media_collection_main_residence_id = 'client_collection_residence_id';
+
 
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('client_collection_signature')->singleFile();
         $this->addMediaCollection('client_collection_resume')->singleFile();
-
+        $this->addMediaCollection('client_passport_collection_img')->singleFile();
+        $this->addMediaCollection('client_collection_schengen_visa');
+        $this->addMediaCollection('client_collection_residence_id');
+        $this->addMediaCollection('client_residence_visa_copy');
     }
 }

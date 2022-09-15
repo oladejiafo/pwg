@@ -33,12 +33,13 @@
             <div id="collapseapplicant" class="collapse">
                 <div class="form-sec">
                     @php
-                        $name = explode(' ', $user['name']);
+                        $name = explode(' ', $client['name']);
                     @endphp
                     
                     <form method="POST" enctype="multipart/form-data" id="applicant_details">
                         @csrf
                         <input type="hidden" name="destination_id" value="{{$productId}}">
+                        <input type="hidden" name="applicantCompleted" value="0" class="applicantCompleted">
                         <div class="form-group row mt-4">
                             <div class="col-sm-4 mt-3">
                                 <input type="text" name="first_name" class="form-control first_name" placeholder="First Name*" value="{{$name[0]}}" autocomplete="off"/>
@@ -54,11 +55,11 @@
                         </div>
                         <div class="form-group row mt-4">
                             <div class="col-sm-6 mt-3">
-                                <input type="text" name="email" class="form-control email" placeholder="Email*" value="{{$user['email']}}" autocomplete="off" />
+                                <input type="text" name="email" class="form-control email" placeholder="Email*" value="{{$client['email']}}" autocomplete="off" />
                                 <span class="email_errorClass"></span>
                             </div>
                             <div class="col-sm-6 mt-3">
-                                <input type="tel" name="phone_number" class="form-control phone_number" id="phone" placeholder="Phone Number*" value="{{$user['phone_number']}}" autocomplete="off"  />
+                                <input type="tel" name="phone_number" class="form-control phone_number" id="phone" placeholder="Phone Number*" value="{{$client['phone_number']}}" autocomplete="off"  />
                                 <span class="phone_number_errorClass"></span>
                             </div>
                         </div>
@@ -102,12 +103,12 @@
                             <div class="col-sm-4 mt-3">
                                 <select name="civil_status" id="civil_status"  aria-required="true" class="form-control form-select">
                                     <option selected disabled>Civil Status *</option>
-                                    <option value="Single">Single</option>
-                                    <option value="Married">Married</option>
-                                    <option value="Separated">Separated</option>
-                                    <option value="Divorced">Divorced</option>
-                                    <option value="Widow">Widow</option>
-                                    <option value="Other">Other</option>
+                                    <option value="SINGLE">Single</option>
+                                    <option value="MARRIED">Married</option>
+                                    <option value="SEPARATED">Separated</option>
+                                    <option value="DIVORCED">Divorced</option>
+                                    <option value="WIDOW">Widow</option>
+                                    <option value="OTHER">Other</option>
                                 </select>
                                 <span class="civil_status_errorClass"></span>
                             </div>
@@ -183,7 +184,7 @@
                             </div>
                         </div>
                         <div class="form-group row mt-4">
-                            <div class="col-sm-6 mt-3">
+                            <div class="col-sm-12 mt-3">
                                 <input type="text" name="passport_copy" class="form-control passport_copy" placeholder="Upload Passport Copy*" value="{{old('passport_copy')}}" data-toggle="modal" class="passportFormatModal" data-target="#passportFormatModal" onclick="showPassportFormat()" autocomplete="off" readonly/>
 
                                 <div class="input-group-btn">
@@ -194,9 +195,9 @@
                                 </div><!-- btn -->
                                 <span class="passport_copy_errorClass"></span>
                             </div>
-                            <div class="col-sm-6 mt-3">
+                            {{-- <div class="col-sm-6 mt-3">
                                 <input type="tel" name="home_phone_number" id="home_phone_number" class="form-control home_phone_number" placeholder="Phone Number" value="{{old('home_phone_number')}}" autocomplete="off" />
-                            </div>
+                            </div> --}}
                         </div>
                         <div class="form-group row mt-4">
                             <div class="col-sm-3 mt-3">
@@ -280,7 +281,7 @@
                         <input type="hidden" name="product_id" value="{{$productId}}">
                         <input type="hidden" name="currentCountryCompleted" value="0" class="currentCountryCompleted">
                         <div class="form-group row mt-4">
-                            <div class="col-sm-6 mt-3">
+                            {{-- <div class="col-sm-6 mt-3">
                                 <select class="form-select form-control current_country" name="current_country" placeholder="current_country*" value="{{old('current_country')}}"  >
                                     <option selected disabled>Current Country Are You Living Right Now? *</option>
                                     @foreach (Constant::countries as $key => $item)
@@ -288,18 +289,19 @@
                                     @endforeach
                                 </select>
                                 <span class="current_country_errorClass"></span>
-                            </div>
-                            <div class="col-sm-6 mt-3">
+                            </div> --}}
+                            
+                        </div>
+                        <div class="form-group row mt-4">
+                            <div class="col-sm-4 mt-3">
                                 <input type="tel" class="form-control" id="current_residance_mobile" name='current_residance_mobile' value="{{old('current_residance_mobile')}}" placeholder="Current Residence Mobile Number" autocomplete="off">
                                 <span class="current_residance_mobile_errorClass"></span>
                             </div>
-                        </div>
-                        <div class="form-group row mt-4">
-                            <div class="col-sm-6 mt-3">
+                            <div class="col-sm-4 mt-3">
                                 <input type="text" name="residence_id" class="form-control" placeholder="Residence Id*" autocomplete="off"/>
                                 <span class="residence_id_errorClass"></span>
                             </div>
-                            <div class="col-sm-6 mt-3">
+                            <div class="col-sm-4 mt-3">
                                 <input type="text" class="form-control visa_validity" name="visa_validity" placeholder="Your ID/Visa Date of Validity*" >
                                 <span class="visa_validity_errorClass"></span>
                             </div>
@@ -414,8 +416,8 @@
                             <div class="col-sm-12 mt-3">
                                 <select name="is_schengen_visa_issued_last_five_year" id="is_schengen_visa_issued_last_five_year" aria-required="true" class="form-control form-select" autocomplete="off">
                                     <option selected disabled>Schengen Or National Visa Issued During Last 5 Years*</option>
-                                    <option value="No">No</option>
-                                    <option value="Yes">Yes</option>
+                                    <option value="NO">No</option>
+                                    <option value="YES">Yes</option>
                                 </select>
                                 <span class="is_schengen_visa_issued_last_five_year_errorClass"></span>
                             </div>
@@ -435,8 +437,8 @@
                             <div class="col-sm-12 mt-3">
                                 <select name="is_finger_print_collected_for_Schengen_visa" id="is_finger_print_collected_for_Schengen_visa" aria-required="true" class="form-control form-select" autocomplete="off">
                                     <option value="">Fingerprints Collected Previously For The Purpose Of Applying For Schengen Visa*</option>
-                                    <option value="No">No</option>
-                                    <option value="Yes">Yes</option>
+                                    <option value="NO">No</option>
+                                    <option value="YES">Yes</option>
                                 </select>
                                 <span class="is_finger_print_collected_for_Schengen_visa_errorClass"></span>
                             </div>

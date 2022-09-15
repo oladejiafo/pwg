@@ -33,7 +33,7 @@
             <div id="collapsespouseapplicant" class="collapse">
                 <div class="form-sec">
                     @php
-                        $name = explode(' ', $user['name']);
+                        $name = explode(' ', $client['name']);
                     @endphp
                     <form method="POST" enctype="multipart/form-data" id="dependent_applicant_details">
                         @csrf
@@ -115,12 +115,12 @@
                             <div class="col-sm-4 mt-3">
                                 <select name="dependent_civil_status" id="dependent_civil_status"  aria-required="true" class="form-control form-select">
                                     <option selected disabled>Civil Status *</option>
-                                    <option value="Single">Single</option>
-                                    <option value="Married">Married</option>
-                                    <option value="Separated">Separated</option>
-                                    <option value="Divorced">Divorced</option>
-                                    <option value="Widow">Widow</option>
-                                    <option value="Other">Other</option>
+                                    <option value="SINGLE">Single</option>
+                                    <option value="MARRIED">Married</option>
+                                    <option value="SEPARATED">Separated</option>
+                                    <option value="DIVORCED">Divorced</option>
+                                    <option value="WIDOW">Widow</option>
+                                    <option value="OTHER">Other</option>
                                 </select>
                                 <span class="dependent_civil_status_errorClass"></span>
                             </div>
@@ -197,7 +197,7 @@
                             </div>
                         </div>
                         <div class="form-group row mt-4">
-                            <div class="col-sm-6 mt-3">
+                            <div class="col-sm-12 mt-3">
                                 <input type="text" name="dependent_passport_copy" class="form-control dependent_passport_copy" placeholder="Upload Passport Copy*" value="{{old('dependent_passport_copy')}}" data-toggle="modal" class="passportFormatModal" data-target="#passportFormatModal" onclick="showPassportFormat()" autocomplete="off" readonly/>
 
                                 <div class="input-group-btn">
@@ -208,9 +208,9 @@
                                 </div><!-- btn -->
                                 <span class="dependent_passport_copy_errorClass"></span>
                             </div>
-                            <div class="col-sm-6 mt-3">
+                            {{-- <div class="col-sm-6 mt-3">
                                 <input type="tel" name="dependent_home_phone_number" id="dependent_home_phone_number" class="form-control dependent_home_phone_number" placeholder="Phone Number" value="{{old('dependent_home_phone_number')}}" autocomplete="off" />
-                            </div>
+                            </div> --}}
                         </div>
                         <div class="form-group row mt-4">
                             <div class="col-sm-3 mt-3">
@@ -430,8 +430,8 @@
                             <div class="col-sm-12 mt-3">
                                 <select name="is_dependent_schengen_visa_issued_last_five_year" id="is_dependent_schengen_visa_issued_last_five_year" aria-required="true" class="form-control form-select" autocomplete="off">
                                     <option selected disabled>Schengen Or National Visa Issued During Last 5 Years*</option>
-                                    <option value="No">No</option>
-                                    <option value="Yes">Yes</option>
+                                    <option value="NO">No</option>
+                                    <option value="YES">Yes</option>
                                 </select>
                                 <span class="is_dependent_schengen_visa_issued_last_five_year_errorClass"></span>
                             </div>
@@ -451,8 +451,8 @@
                             <div class="col-sm-12 mt-3">
                                 <select name="is_dependent_finger_print_collected_for_Schengen_visa" id="is_dependent_finger_print_collected_for_Schengen_visa" aria-required="true" class="form-control form-select" autocomplete="off">
                                     <option value="">Fingerprints Collected Previously For The Purpose Of Applying For Schengen Visa*</option>
-                                    <option value="No">No</option>
-                                    <option value="Yes">Yes</option>
+                                    <option value="NO">No</option>
+                                    <option value="YES">Yes</option>
                                 </select>
                                 <span class="is_dependent_finger_print_collected_for_Schengen_visa_errorClass"></span>
                             </div>

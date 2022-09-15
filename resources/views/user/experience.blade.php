@@ -174,7 +174,7 @@
         </div>
         <div class="form-group row mt-4">
             <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                @if($applicant['is_spouse'] != null || $applicant['children_count'] != null) 
+                @if(($applicant['work_permit_category'])&&($client['is_spouse'] != null || $client['children_count'] != null)) 
                     <button type="submit" class="btn btn-primary submitBtn applicantNext">  Next </button>
                 @else
                     <button type="submit" class="btn btn-primary submitBtn applicantReview">  Submit <i class="fa fa-spinner fa-spin applicantReviewSpin"></i></button>

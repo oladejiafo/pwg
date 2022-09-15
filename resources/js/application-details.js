@@ -22,7 +22,7 @@ const app = new Vue({
     methods: {
         getCategories() { 
             axios
-            .post('http://127.0.0.1:8000/api/get-job-category-list')
+            .post('/get/job/category/list')
             .then(function (response) {
                 app.jobCategories = response.data;
             })
@@ -114,7 +114,7 @@ const app = new Vue({
         filterJob() {
             if(this.search){
                 axios
-                .post('http://127.0.0.1:8000/api/get-job-category-four-list',{
+                .post('/get/job/category/four/list',{
                     filter: this.search
                 })
                 .then(function (response) {

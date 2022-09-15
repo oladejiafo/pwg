@@ -8,12 +8,12 @@
 
 
 @php 
-     $completed = DB::table('applicants')
-                ->where('product_id', '=', $productId)
-                ->where('user_id', '=', Auth::user()->id)
+     $completed = DB::table('applications')
+                ->where('destination_id', '=', $productId)
+                ->where('client_id', '=', Auth::user()->id)
                 ->first();
 
-    $levels = $completed->applicant_status;
+    $levels = $completed->application_stage_status;
 @endphp
 <div class="container" data-applicantId="{{$applicant['id']}}" @if($dependent)  data-dependentid="{{$dependent['id']}}" @endif>
     <div class="col-12">
@@ -64,7 +64,7 @@
                 </div>
                 <div class="applicant-tab-sec">
                     <div class="row">
-                        @if(($applicant['visa_type'] == 'FAMILY PACKAGE') && ($applicant['is_spouse'] != null || $applicant['is_spouse'] != 0) && ($applicant['children_count'] != null || $applicant['children_count'] != 0))
+                        @if(($applicant['work_permit_category']) && ($client['is_spouse'] != null || $client['is_spouse'] != 0) && ($client['children_count'] != null || $client['children_count'] != 0))
                             <div class="col-4">
                                 <div class="mainApplicant active" data-toggle="tab" role="tab" style="border-radius: 20px 0 0 20px;">
                                     <a  href="#mainApplicant">
@@ -86,7 +86,7 @@
                                     </a>
                                 </div>
                             </div>
-                        @elseif(($applicant['visa_type'] == 'FAMILY PACKAGE') && ($applicant['is_spouse'] != null || $applicant['is_spouse'] != 0) &&  ($applicant['children_count'] == null || $applicant['children_count'] == 0))
+                        @elseif(($applicant['work_permit_category']) && ($client['is_spouse'] != null || $client['is_spouse'] != 0) &&  ($client['children_count'] == null || $client['children_count'] == 0))
                             <div class="col-6">
                                 <div class="mainApplicant active" data-toggle="tab" role="tab" style="border-radius: 20px 0 0 20px;">
                                     <a  href="#mainApplicant">
@@ -101,7 +101,7 @@
                                     </a>
                                 </div>
                             </div>
-                            @elseif(($applicant['is_spouse'] == null || $applicant['is_spouse'] == 0) && ($applicant['children_count'] != null || $applicant['children_count'] != 0))
+                        @elseif(($applicant['work_permit_category']) && ($client['is_spouse'] == null || $client['is_spouse'] == 0) && ($client['children_count'] != null || $client['children_count'] != 0))
                             <div class="col-6">
                                 <div class="mainApplicant active" data-toggle="tab" role="tab" style="border-radius: 20px 0 0 20px;">
                                     <a  href="#mainApplicant">
@@ -156,41 +156,41 @@
                                             <input type="hidden" name="product_id" value="{{$productId}}">
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-4 mt-3">
-                                                    <input type="tel" name="first_name" class="form-control" placeholder="First Name*" value="{{$applicant['name']}}" autocomplete="off" required/>
+                                                    <input type="tel" name="first_name" class="form-control" placeholder="First Name*" value="{{$client['name']}}" autocomplete="off" required/>
                                                     <span class="first_name_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-4 mt-3">
-                                                    <input type="text" name="middle_name" class="form-control" placeholder="Middle Name" value="{{$applicant['middle_name']}}"  autocomplete="off"/>
+                                                    <input type="text" name="middle_name" class="form-control" placeholder="Middle Name" value="{{$client['middle_name']}}"  autocomplete="off"/>
                                                 </div>
                                                 <div class="col-sm-4 mt-3">
-                                                    <input type="text" name="surname" class="form-control" placeholder="Surname*" value="{{$applicant['sur_name']}}" autocomplete="off" required />
+                                                    <input type="text" name="surname" class="form-control" placeholder="Surname*" value="{{$client['sur_name']}}" autocomplete="off" required />
                                                     <span class="surname_errorClass"></span>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="text" name="email" class="form-control" placeholder="Email*" value="{{$user['email']}}" autocomplete="off" required/>
+                                                    <input type="text" name="email" class="form-control" placeholder="Email*" value="{{$client['email']}}" autocomplete="off" required/>
                                                     <span class="email_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="tel" name="phone_number" class="form-control" id="phone" placeholder="Phone Number*" value="{{$user['phone_number']}}" autocomplete="off"  required/>
+                                                    <input type="tel" name="phone_number" class="form-control" id="phone" placeholder="Phone Number*" value="{{$client['phone_number']}}" autocomplete="off"  required/>
                                                     <span class="phone_number_errorClass"></span>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-4 mt-3 dob">
-                                                    <input type="text" name="dob" class="form-control datepicker" placeholder="Date of Birth*" value="{{ date('d-m-Y', strtotime($applicant['date_of_birth']))}}" id="datepicker" autocomplete="off"  readonly="readonly" required/>
+                                                    <input type="text" name="dob" class="form-control datepicker" placeholder="Date of Birth*" value="{{ date('d-m-Y', strtotime($client['date_of_birth']))}}" id="datepicker" autocomplete="off"  readonly="readonly" required/>
                                                     <span class="dob_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-4 mt-3">
-                                                    <input type="text" name="place_birth" class="form-control" placeholder="Place of Birth*" value="{{$applicant['place_of_birth']}}" autocomplete="off" required/>
+                                                    <input type="text" name="place_birth" class="form-control" placeholder="Place of Birth*" value="{{$client['place_of_birth']}}" autocomplete="off" required/>
                                                     <span class="place_birth_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-4 mt-3">
                                                     <select class="form-select form-control" name="country_birth" placeholder="Country of Birth*"  required>
-                                                        <option selected>{{$applicant['country_of_birth']}}</option>
+                                                        <option selected>{{$client['country_of_birth']}}</option>
                                                         @foreach (Constant::countries as $key => $item)
-                                                            <option {{($key == $applicant['country_of_birth']) ? 'seleceted' : ''}} value="{{$key}}">{{$item}}</option>
+                                                            <option {{($key == $client['country_of_birth']) ? 'seleceted' : ''}} value="{{$key}}">{{$item}}</option>
                                                         @endforeach
                                                     </select>
                                                     <span class="country_birth_errorClass"></span>
@@ -199,9 +199,9 @@
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-4 mt-3">
                                                     <select class="form-select form-control" name="citizenship" placeholder="Citizenship*"  required>
-                                                        <option selected>{{$applicant['citizenship']}}</option>
+                                                        <option selected>{{$client['citizenship']}}</option>
                                                         @foreach (Constant::countries as $key => $item)
-                                                                <option {{($key == $applicant['citizenship']) ? 'seleceted' : ''}} value="{{$key}}">{{$item}}</option>
+                                                                <option {{($key == $client['citizenship']) ? 'seleceted' : ''}} value="{{$key}}">{{$item}}</option>
                                                             @endforeach
                                                     </select>
                                                     <span class="citizenship_errorClass"></span>
@@ -209,20 +209,21 @@
                                                 <div class="col-sm-4 mt-3">
                                                     <select name="sex"  aria-required="true" class="form-control form-select" required>
                                                         <option selected disabled>Sex *</option>
-                                                        <option {{($applicant['sex'] == 'MALE') ? 'selected' : '' }} value="Male">Male</option>
-                                                        <option {{($applicant['sex'] == 'FEMALE') ? 'selected' : ''}} value="Female">Female</option>
+                                                        <option {{($client['sex'] == 'MALE') ? 'selected' : '' }} value="Male">
+                                                        </option>
+                                                        <option {{($client['sex'] == 'FEMALE') ? 'selected' : ''}} value="FEMALE">Female</option>
                                                     </select>
                                                     <span class="sex_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-4 mt-3">
                                                     <select name="civil_status" id="civil_status" required="" aria-required="true" class="form-control form-select">
                                                         <option selected disabled>Civil Status *</option>
-                                                        <option  {{($applicant['civil_status'] == 'Single') ? 'selected' : '' }} value="Single">Single</option>
-                                                        <option  {{($applicant['civil_status'] == 'Married') ? 'selected' : '' }} value="Married">Married</option>
-                                                        <option  {{($applicant['civil_status'] == 'Separated') ? 'selected' : '' }} value="Separated">Separated</option>
-                                                        <option  {{($applicant['civil_status'] == 'Divorced') ? 'selected' : '' }} value="Divorced">Divorced</option>
-                                                        <option  {{($applicant['civil_status'] == 'Widow') ? 'selected' : '' }} value="Widow">Widow</option>
-                                                        <option  {{($applicant['civil_status'] == 'Other') ? 'selected' : '' }} value="Other">Other</option>
+                                                        <option  {{($client['civil_status'] == 'SINGLE') ? 'selected' : '' }} value="SINGLE">Single</option>
+                                                        <option  {{($client['civil_status'] == 'MARRIED') ? 'selected' : '' }} value="Married">Married</option>
+                                                        <option  {{($client['civil_status'] == 'SEPARATED') ? 'selected' : '' }} value="SEPARATED">Separated</option>
+                                                        <option  {{($client['civil_status'] == 'DIVORCED') ? 'selected' : '' }} value="DIVORCED">Divorced</option>
+                                                        <option  {{($client['civil_status'] == 'WIDOW') ? 'selected' : '' }} value="WIDOW">Widow</option>
+                                                        <option  {{($client['civil_status'] == 'OTHER') ? 'selected' : '' }} value="OTHER">Other</option>
                                                     </select>
                                                     <span class="civil_status_errorClass"></span>
                                                 </div>
@@ -272,73 +273,73 @@
                                             <input type="hidden" name="product_id" value="1">
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-12 mt-3">
-                                                    <input type="text" name="passport_number" class="form-control" placeholder="Passport Number*" value="{{$applicant['passport_number']}}" autocomplete="off"/>
+                                                    <input type="text" name="passport_number" class="form-control" placeholder="Passport Number*" value="{{$client['passport_number']}}" autocomplete="off"/>
                                                     <span class="passport_number_errorClass"></span>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="text" name="passport_issue" class="form-control passport_issue" placeholder="Passport Date of Issue*" value="{{ date('d-m-Y', strtotime($applicant['passport_issue_date']))}}" autocomplete="off"/>
+                                                    <input type="text" name="passport_issue" class="form-control passport_issue" placeholder="Passport Date of Issue*" value="{{ date('d-m-Y', strtotime($client['passport_issue_date']))}}" autocomplete="off"/>
                                                     <span class="passport_issue_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="text" name="passport_expiry" class="form-control passport_expiry" placeholder="passport Date of Expiry*" value="{{ date('d-m-Y', strtotime($applicant['passport_expiry']))}}" autocomplete="off" />
+                                                    <input type="text" name="passport_expiry" class="form-control passport_expiry" placeholder="passport Date of Expiry*" value="{{ date('d-m-Y', strtotime($client['passport_expiry']))}}" autocomplete="off" />
                                                     <span class="passport_expiry_errorClass"></span>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-12 mt-3">
-                                                    <input type="text" name="issued_by" class="form-control" placeholder="Issued By(Authority that issued the passport)*" value="{{$applicant['passport_issued_by']}}" autocomplete="off"/>
+                                                    <input type="text" name="issued_by" class="form-control" placeholder="Issued By(Authority that issued the passport)*" value="{{$client['passport_issued_by']}}" autocomplete="off"/>
                                                     <span class="issued_by_errorClass"></span>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-6 mt-3">
-                                                    <input type="text" name="passport_copy" class="form-control passport_copy" placeholder="Upload Passport Copy*" value="{{$applicant['passport']}}"  class="passportFormatModal" data-target="#passportFormatModal" onclick="showPassportFormat()" autocomplete="off" readonly/>
+                                                <div class="col-sm-12 mt-3">
+                                                    <input type="text" name="passport_copy" class="form-control passport_copy" placeholder="Upload Passport Copy*" value="{{$client['passport']}}"  class="passportFormatModal" data-target="#passportFormatModal" onclick="showPassportFormat()" autocomplete="off" readonly/>
                                                     <div class="input-group-btn">
                                                         <span class="fileUpload btn">
                                                             <span class="upl" id="upload">Choose File</span>
-                                                            <input type="file" class="upload up passport_copy" id="up" value="{{$applicant['passport']}}"  name="passport_copy" />
+                                                            <input type="file" class="upload up passport_copy" id="up" value="{{$client['passport']}}"  name="passport_copy" />
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
                                                     <a href="javascript:void(0)" data-toggle="modal" data-target="#passportModal" onclick="showPassport()">click to view uploaded passport copy</a>
                                                     <span class="passport_copy_errorClass"></span>
                                                 </div>
-                                                <div class="col-sm-6 mt-3">
-                                                    <input type="tel" name="home_phone_number" id="home_phone_number" class="form-control" placeholder="Phone Number" value="{{$applicant['residence_mobile_number']}}" autocomplete="off" />
-                                                </div>
+                                                {{-- <div class="col-sm-6 mt-3">
+                                                    <input type="tel" name="home_phone_number" id="home_phone_number" class="form-control" placeholder="Phone Number" value="{{$client['residence_mobile_number']}}" autocomplete="off" />
+                                                </div> --}}
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-3 mt-3">
                                                     <select class="form-select form-control" name="home_country" placeholder="home_country*" autocomplete="off">
-                                                        <option selected>{{$applicant['country_of_residence']}}</option>
+                                                        <option selected>{{$client['country']}}</option>
                                                             @foreach (Constant::countries as $key => $item)
-                                                                <option {{($key == $applicant['country_of_residence']) ? 'seleceted' : ''}} value="{{$key}}">{{$item}}</option>
+                                                                <option {{($key == $client['country']) ? 'seleceted' : ''}} value="{{$key}}">{{$item}}</option>
                                                             @endforeach
                                                     </select>
                                                     <span class="home_country_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-3 mt-3">
-                                                    <input type="text" name="state" class="form-control" placeholder="State/Province*" value="{{$applicant['state']}}" autocomplete="off">
+                                                    <input type="text" name="state" class="form-control" placeholder="State/Province*" value="{{$client['state']}}" autocomplete="off">
                                                     @error('state') <span class="error">{{ $message }}</span> @enderror
                                                     <span class="state_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-3 mt-3">
-                                                    <input type="text" name="city" class="form-control" placeholder="City*" autocomplete="off" value="{{$applicant['city']}}">
+                                                    <input type="text" name="city" class="form-control" placeholder="City*" autocomplete="off" value="{{$client['city']}}">
                                                     <span class="city_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-3 mt-3">
-                                                    <input type="integer" name="postal_code" value="{{$applicant['postal_code']}}" class="form-control" placeholder="Postal Code*" autocomplete="off">
+                                                    <input type="integer" name="postal_code" value="{{$client['postal_code']}}" class="form-control" placeholder="Postal Code*" autocomplete="off">
                                                     <span class="postal_code_errorClass"></span>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="text" name="address_1" class="form-control" placeholder="Address (Street And Number) Line 1*" value="{{$applicant['address_line_1']}}" autocomplete="off">
+                                                    <input type="text" name="address_1" class="form-control" placeholder="Address (Street And Number) Line 1*" value="{{$client['address_line_1']}}" autocomplete="off">
                                                     <span class="address1_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="text" name="address_2" class="form-control" placeholder="Address (Street And Number) Line 2" value="{{$applicant['address_line_2']}}" autocomplete="off">
+                                                    <input type="text" name="address_2" class="form-control" placeholder="Address (Street And Number) Line 2" value="{{$client['address_line_2']}}" autocomplete="off">
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
@@ -387,31 +388,31 @@
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-6 mt-3">
                                                     <select class="form-select form-control" name="current_country" placeholder="current_country*">
-                                                        <option selected> {{$applicant['country']}} </option>
+                                                        <option selected> {{$client['country']}} </option>
                                                         @foreach (Constant::countries as $key => $item)
-                                                            <option {{($key == $applicant['country']) ? 'seleceted' : ''}} value="{{$key}}">{{$item}}</option>
+                                                            <option {{($key == $client['country']) ? 'seleceted' : ''}} value="{{$key}}">{{$item}}</option>
                                                         @endforeach
                                                     </select>
                                                     <span class="current_country_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="tel" class="form-control" id="current_residance_mobile" name='current_residance_mobile' value="{{$applicant['phone_number']}}" placeholder="Current Residence Mobile Number" autocomplete="off">
+                                                    <input type="tel" class="form-control" id="current_residance_mobile" name='current_residance_mobile' value="{{$client['phone_number']}}" placeholder="Current Residence Mobile Number" autocomplete="off">
                                                     <span class="current_residance_mobile_errorClass"></span>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="text" name="residence_id" class="form-control" placeholder="Residence Id*" value="{{$applicant['residence_id']}}" autocomplete="off"/>
+                                                    <input type="text" name="residence_id" class="form-control" placeholder="Residence Id*" value="{{$client['residence_id']}}" autocomplete="off"/>
                                                     <span class="residence_id_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="text" class="form-control visa_validity" name="visa_validity" value="{{ date('d-m-Y', strtotime($applicant['visa_validity']))}}" placeholder="Your ID/Visa Date of Validity*" >
+                                                    <input type="text" class="form-control visa_validity" name="visa_validity" value="{{ date('d-m-Y', strtotime($client['visa_validity']))}}" placeholder="Your ID/Visa Date of Validity*" >
                                                     <span class="visa_validity_errorClass"></span>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="text" class="form-control residence_id" name="residence_copy" placeholder="Residence/Emirates ID*" value="{{$applicant['residence_copy']}}" readonly >
+                                                    <input type="text" class="form-control residence_id" name="residence_copy" placeholder="Residence/Emirates ID*" value="{{$client['residence_copy']}}" readonly >
                                                     <div class="input-group-btn">
                                                         <span class="fileUpload btn">
                                                             <span class="upl" id="upload">Choose File</span>
@@ -422,53 +423,53 @@
                                                     <span class="residence_copy_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="text" class="form-control visa_copy" name="visa_copy" placeholder="Visa Copy" value="{{$applicant['visa_copy']}}" readonly >
+                                                    <input type="text" class="form-control visa_copy" name="visa_copy" placeholder="Visa Copy" value="{{$client['visa_copy']}}" readonly >
                                                     <div class="input-group-btn">
                                                         <span class="fileUpload btn">
                                                             <span class="upl" id="upload">Choose File</span>
                                                             <input type="file" class="upload visa_copy" id="up"  name="visa_copy" />
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
-                                                    @if($applicant['visa_copy'])
+                                                    @if($client['visa_copy'])
                                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#visaCopyModal" onclick="visaCopyModal()">click to view uploaded visa copy</a>
                                                     @endif
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-12 mt-3">
-                                                    <input type="text" name="current_job" class="form-control" placeholder="Profession As Per Current Job (or on Visa)*" value="{{$applicant['current_job']}}" autocomplete="off">
+                                                    <input type="text" name="current_job" class="form-control" placeholder="Profession As Per Current Job (or on Visa)*" value="{{$client['current_job']}}" autocomplete="off">
                                                     <span class="current_job_errorClass"></span>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-4 mt-3">
-                                                    <input type="text" name="work_state" class="form-control" placeholder="Work State/Province*" value="{{$applicant['work_state']}}" autocomplete="off"/>
+                                                    <input type="text" name="work_state" class="form-control" placeholder="Work State/Province*" value="{{$client['work_state']}}" autocomplete="off"/>
                                                     <span class="work_state_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-4 mt-3">
-                                                    <input type="text" class="form-control" name="work_city" placeholder="Work City*" value="{{$applicant['work_city']}}" autocomplete="off">
+                                                    <input type="text" class="form-control" name="work_city" placeholder="Work City*" value="{{$client['work_city']}}" autocomplete="off">
                                                     <span class="work_city_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-4 mt-3">
-                                                    <input type="text" class="form-control" name="work_postal_code" placeholder="Work Place Postal Code*" value="{{$applicant['work_postal_code']}}" autocomplete="off">
+                                                    <input type="text" class="form-control" name="work_postal_code" placeholder="Work Place Postal Code*" value="{{$client['work_postal_code']}}" autocomplete="off">
                                                     <span class="work_postal_code_errorClass"></span>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-4 mt-3">
-                                                    <input type="text" name="work_street" class="form-control" placeholder="Work Place Street & Number*" value="{{$applicant['work_address']}}" autocomplete="off"/>
+                                                    <input type="text" name="work_street" class="form-control" placeholder="Work Place Street & Number*" value="{{$client['work_address']}}" autocomplete="off"/>
                                                     <span class="work_street_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-4 mt-3">
-                                                    <input type="text" class="form-control" name="company_name" placeholder="Name of Company" value="{{$applicant['company_name']}}" autocomplete="off">
+                                                    <input type="text" class="form-control" name="company_name" placeholder="Name of Company" value="{{$client['company_name']}}" autocomplete="off">
                                                 </div>
                                                 <div class="col-sm-4 mt-3">
-                                                    <input type="text" class="form-control" name="employer_phone" placeholder="Employer Phone Number" value="{{$applicant['employer_phone_number']}}" autocomplete="off">
+                                                    <input type="text" class="form-control" name="employer_phone" placeholder="Employer Phone Number" value="{{$client['employer_phone_number']}}" autocomplete="off">
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-12 mt-3">
-                                                    <input type="email" name="employer_email" class="form-control" placeholder="Email of the employer" value="{{$applicant['employer_email']}}" autocomplete="off">
+                                                    <input type="email" name="employer_email" class="form-control" placeholder="Email of the employer" value="{{$client['employer_email']}}" autocomplete="off">
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
@@ -518,22 +519,22 @@
                                                 <div class="col-sm-12 mt-3">
                                                     <select name="is_schengen_visa_issued_last_five_year" id="is_schengen_visa_issued_last_five_year" aria-required="true" class="form-control form-select" autocomplete="off">
                                                         <option selected disabled>Schengen Or National Visa Issued During Last 5 Years*</option>
-                                                        <option {{($applicant['is_schengen_visa_issued_last_five_year'] == "No") ? 'selected' : ''}} value="No">No</option>
-                                                        <option {{($applicant['is_schengen_visa_issued_last_five_year'] == "Yes") ? 'selected' : ''}} value="Yes">Yes</option> 
+                                                        <option {{($client['is_schengen_visa_issued_last_five_year'] == "NO") ? 'selected' : ''}} value="NO">No</option>
+                                                        <option {{($client['is_schengen_visa_issued_last_five_year'] == "YES") ? 'selected' : ''}} value="YES">Yes</option> 
                                                     </select>
                                                     <span class="is_schengen_visa_issued_last_five_year_errorClass"></span>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4 schengen_visa">
                                                 <div class="col-sm-12 mt-3">
-                                                    <input type="text" class="form-control schengen_copy" name="schengen_copy" value="{{$applicant['schengen_visa']}}" placeholder="Image of Schengen Or National Visa Issued During Last 5 Years" readonly >
+                                                    <input type="text" class="form-control schengen_copy" name="schengen_copy" value="{{$client['schengen_visa']}}" placeholder="Image of Schengen Or National Visa Issued During Last 5 Years" readonly >
                                                     <div class="input-group-btn">
                                                         <span class="fileUpload btn">
                                                             <span class="upl" id="upload">Choose File</span>
                                                             <input type="file" class="upload schengen_copy" accept="image/png, image/gif, image/jpeg" name="schengen_copy" />
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
-                                                    @if($applicant['schengen_visa'])
+                                                    @if($client['schengen_visa'])
                                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#schengenVisatModal" onclick="schengenVisatModal()">click to view uploaded schengen visa copy</a>
                                                     @endif
                                                 </div>
@@ -542,8 +543,8 @@
                                                 <div class="col-sm-12 mt-3">
                                                     <select name="is_finger_print_collected_for_Schengen_visa" id="is_finger_print_collected_for_Schengen_visa" aria-required="true" class="form-control form-select" autocomplete="off">
                                                         <option value="">Fingerprints Collected Previously For The Purpose Of Applying For Schengen Visa*</option>
-                                                        <option {{($applicant['is_finger_print_collected_for_Schengen_visa'] == "No") ? 'selected' : ''}} value="No">No</option>
-                                                        <option {{($applicant['is_finger_print_collected_for_Schengen_visa'] == "Yes") ? 'selected' : ''}} value="Yes">Yes</option>
+                                                        <option {{($client['is_finger_print_collected_for_Schengen_visa'] == "NO") ? 'selected' : ''}} value="NO">No</option>
+                                                        <option {{($client['is_finger_print_collected_for_Schengen_visa'] == "YES") ? 'selected' : ''}} value="YES">Yes</option>
                                                     </select>
                                                     <span class="is_finger_print_collected_for_Schengen_visa_errorClass"></span>
                                                 </div>
@@ -585,7 +586,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row" id="importExperience" data-applicantId="{{$applicant['id']}}" data-dependentId="{{$dependent}}">
+                            <div class="row" id="importExperience" data-applicantId="{{$applicant['id']}}" data-dependentId="{{$dependent['id']}}">
                                 <div class="collapse show" id="collapseExperience" data-applicantId="{{$applicant['id']}}" data-dependentId="{{($dependent != null) ? $dependent['id']  : ''}}">
                                     <div class="form-sec">
                                         <div class="jobSelected">
@@ -800,7 +801,7 @@
                                 <div id="collapsespouseapplicant" class="collapse show">
                                     <div class="form-sec">
                                         @php
-                                            $name = explode(' ', $user['name']);
+                                            $name = explode(' ', $client['name']);
                                         @endphp
                                         <form method="POST" enctype="multipart/form-data" id="dependent_applicant_details">
                                             @csrf
@@ -809,14 +810,14 @@
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-4 mt-3">
                                                     <input type="hidden" name="dependentApplicantCompleted" value="0" class="dependentApplicantCompleted">
-                                                    <input type="text" name="dependent_first_name" class="form-control dependent_first_name" placeholder="First Name*" value="{{$dependent['first_name']}}" autocomplete="off"/>
+                                                    <input type="text" name="dependent_first_name" class="form-control dependent_first_name" placeholder="First Name*" value="{{$dependent['name']}}" autocomplete="off"/>
                                                     <span class="dependent_first_name_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-4 mt-3">
                                                     <input type="text" name="dependent_middle_name" class="form-control" placeholder="Middle Name" value="{{$dependent['middle_name']}}"  autocomplete="off"/>
                                                 </div>
                                                 <div class="col-sm-4 mt-3">
-                                                    <input type="text" name="dependent_surname" class="form-control dependent_surname" placeholder="Surname*" value="{{$dependent['surname']}}" autocomplete="off"  />
+                                                    <input type="text" name="dependent_surname" class="form-control dependent_surname" placeholder="Surname*" value="{{$dependent['sur_name']}}" autocomplete="off"  />
                                                     <span class="dependent_surname_errorClass"></span>
                                                 </div>
                                             </div>
@@ -826,7 +827,7 @@
                                                     <span class="dependent_email_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="tel" name="dependent_phone_number" class="form-control dependent_phone_number" id="dependent_phone" placeholder="Phone Number*" value="{{$dependent['personal_phone_number']}}" autocomplete="off"  />
+                                                    <input type="tel" name="dependent_phone_number" class="form-control dependent_phone_number" id="dependent_phone" placeholder="Phone Number*" value="{{$dependent['phone_number']}}" autocomplete="off"  />
                                                     <span class="dependent_phone_number_errorClass"></span>
                                                 </div>
                                             </div>
@@ -845,16 +846,16 @@
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-4 mt-3 dob">
-                                                    <input type="text" name="dependent_dob" class="form-control dependent_datepicker" placeholder="Date of Birth*" value="{{ date('d-m-Y', strtotime($dependent['dob']))}}" id="dependent_datepicker" autocomplete="off"  readonly="readonly" />
+                                                    <input type="text" name="dependent_dob" class="form-control dependent_datepicker" placeholder="Date of Birth*" value="{{ date('d-m-Y', strtotime($dependent['date_of_birth']))}}" id="dependent_datepicker" autocomplete="off"  readonly="readonly" />
                                                     <span class="dependent_dob_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-4 mt-3">
-                                                    <input type="text" name="dependent_place_birth" class="form-control dependent_place_birth" placeholder="Place of Birth*" value="{{$dependent['place_birth']}}" autocomplete="off" />
+                                                    <input type="text" name="dependent_place_birth" class="form-control dependent_place_birth" placeholder="Place of Birth*" value="{{$dependent['place_of_birth']}}" autocomplete="off" />
                                                     <span class="dependent_place_birth_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-4 mt-3">
                                                     <select class="form-select form-control dependent_country_birth" name="dependent_country_birth" placeholder="Country of Birth*" >
-                                                        <option selected>{{$dependent['country_birth']}}</option>
+                                                        <option selected>{{$dependent['country_of_birth']}}</option>
                                                         @foreach (Constant::countries as $key => $item)
                                                             <option {{($dependent['country_birth'] == $key) ? 'seleceted' : ''}} value="{{$key}}">{{$item}}</option>
                                                         @endforeach
@@ -875,20 +876,20 @@
                                                 <div class="col-sm-4 mt-3">
                                                     <select name="dependent_sex"  aria-required="true" class="form-control form-select dependent_sex">
                                                         <option selected disabled>Sex *</option>
-                                                        <option {{($dependent['sex'] == 'Male') ? 'selected' : '' }} value="Male">Male</option>
-                                                        <option {{($dependent['sex'] == 'Female') ? 'selected' : ''}} value="Female">Female</option>
+                                                        <option {{($dependent['sex'] == 'MALE') ? 'selected' : '' }} value="MALE">Male</option>
+                                                        <option {{($dependent['sex'] == 'FEMALE') ? 'selected' : ''}} value="FEMALE">Female</option>
                                                     </select>
                                                     <span class="dependent_sex_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-4 mt-3">
                                                     <select name="dependent_civil_status" id="civil_status" required="" aria-required="true" class="form-control form-select">
                                                         <option selected disabled>Civil Status *</option>
-                                                        <option  {{($dependent['civil_status'] == 'Single') ? 'selected' : '' }} value="Single">Single</option>
-                                                        <option  {{($dependent['civil_status'] == 'Married') ? 'selected' : '' }} value="Married">Married</option>
-                                                        <option  {{($dependent['civil_status'] == 'Separated') ? 'selected' : '' }} value="Separated">Separated</option>
-                                                        <option  {{($dependent['civil_status'] == 'Divorced') ? 'selected' : '' }} value="Divorced">Divorced</option>
-                                                        <option  {{($dependent['civil_status'] == 'Widow') ? 'selected' : '' }} value="Widow">Widow</option>
-                                                        <option  {{($dependent['civil_status'] == 'Other') ? 'selected' : '' }} value="Other">Other</option>
+                                                        <option  {{($dependent['civil_status'] == 'SINGLE') ? 'selected' : '' }} value="SINGLE">Single</option>
+                                                        <option  {{($dependent['civil_status'] == 'MARRIED') ? 'selected' : '' }} value="MARRIED">Married</option>
+                                                        <option  {{($dependent['civil_status'] == 'SEPARATED') ? 'selected' : '' }} value="SEPARATED">Separated</option>
+                                                        <option  {{($dependent['civil_status'] == 'DIVORCED') ? 'selected' : '' }} value="DIVORCED">Divorced</option>
+                                                        <option  {{($dependent['civil_status'] == 'WIDOW') ? 'selected' : '' }} value="WIDOW">Widow</option>
+                                                        <option  {{($dependent['civil_status'] == 'OTHER') ? 'selected' : '' }} value="OTHER">Other</option>
                                                     </select>
                                                     <span class="civil_status_errorClass"></span>
                                                 </div>
@@ -946,22 +947,22 @@
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="text" name="dependent_passport_issue" class="form-control dependent_passport_issue" placeholder="Passport Date of Issue*" value="{{ date('d-m-Y', strtotime($dependent['passport_date_issue']))}}" autocomplete="off"/>
+                                                    <input type="text" name="dependent_passport_issue" class="form-control dependent_passport_issue" placeholder="Passport Date of Issue*" value="{{ date('d-m-Y', strtotime($dependent['passport_issue_date']))}}" autocomplete="off"/>
                                                     <span class="dependent_passport_issue_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="text" name="dependent_passport_expiry" class="form-control dependent_passport_expiry" placeholder="passport Date of Expiry*" value="{{ date('d-m-Y', strtotime($dependent['passport_date_expiry']))}}" autocomplete="off" />
+                                                    <input type="text" name="dependent_passport_expiry" class="form-control dependent_passport_expiry" placeholder="passport Date of Expiry*" value="{{ date('d-m-Y', strtotime($dependent['passport_expiry']))}}" autocomplete="off" />
                                                     <span class="dependent_passport_expiry_errorClass"></span>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-12 mt-3">
-                                                    <input type="text" name="dependent_issued_by" class="form-control dependent_issued_by" placeholder="Issued By(Authority that issued the passport)*" value="{{$dependent['issued_by']}}" autocomplete="off"/>
+                                                    <input type="text" name="dependent_issued_by" class="form-control dependent_issued_by" placeholder="Issued By(Authority that issued the passport)*" value="{{$dependent['passport_issued_by']}}" autocomplete="off"/>
                                                     <span class="dependent_issued_by_errorClass"></span>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-6 mt-3">
+                                                <div class="col-sm-12 mt-3">
                                                     <input type="text" name="dependent_passport_copy" class="form-control dependent_passport_copy" placeholder="Upload Passport Copy*" value="{{$dependent['passport']}}" data-toggle="modal" class="passportFormatModal" data-target="#passportFormatModal" onclick="showPassportFormat()" autocomplete="off" readonly/>
 
                                                     <div class="input-group-btn">
@@ -973,16 +974,16 @@
                                                     <a href="javascript:void(0)" data-toggle="modal" data-target="#dependentPassword" onclick="dependentPassword()">click to view uploaded passport copy</a>
                                                     <span class="dependent_passport_copy_errorClass"></span>
                                                 </div>
-                                                <div class="col-sm-6 mt-3">
+                                                {{-- <div class="col-sm-6 mt-3">
                                                     <input type="tel" name="dependent_home_phone_number" id="dependent_home_phone_number" class="form-control dependent_home_phone_number" placeholder="Phone Number" value="{{$dependent['phone_number']}}" autocomplete="off" />
-                                                </div>
+                                                </div> --}}
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-3 mt-3">
-                                                    <select class="form-select form-control dependent_home_country" name="dependent_home_country" placeholder="home_country*" value="{{$dependent['home_country']}}" autocomplete="off">
-                                                        <option selected>{{$dependent['home_country']}}</option>
+                                                    <select class="form-select form-control dependent_home_country" name="dependent_home_country" placeholder="home_country*" value="{{$dependent['country']}}" autocomplete="off">
+                                                        <option selected>{{$dependent['country']}}</option>
                                                         @foreach (Constant::countries as $key => $item)
-                                                            <option {{($key == $dependent['home_country']) ? 'seleceted' : ''}} value="{{$key}}">{{$item}}</option>
+                                                            <option {{($key == $dependent['country']) ? 'seleceted' : ''}} value="{{$key}}">{{$item}}</option>
                                                         @endforeach
                                                     </select>
                                                     <span class="dependent_home_country_errorClass"></span>
@@ -1002,11 +1003,11 @@
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="text" name="dependent_address_1" class="form-control dependent_address_1" value="{{$dependent['address_1']}}" placeholder="Address (Street And Number) Line 1*" autocomplete="off">
+                                                    <input type="text" name="dependent_address_1" class="form-control dependent_address_1" value="{{$dependent['address_line_1']}}" placeholder="Address (Street And Number) Line 1*" autocomplete="off">
                                                     <span class="dependent_address_1_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="text" name="dependent_address_2" class="form-control dependent_address_2" value="{{$dependent['address_2']}}" placeholder="Address (Street And Number) Line 2" autocomplete="off">
+                                                    <input type="text" name="dependent_address_2" class="form-control dependent_address_2" value="{{$dependent['address_line_2']}}" placeholder="Address (Street And Number) Line 2" autocomplete="off">
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
@@ -1057,15 +1058,15 @@
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-6 mt-3">
                                                     <select class="form-select form-control" name="dependent_current_country" placeholder="current_country*"  >
-                                                        <option selected>{{$dependent['current_residance_country']}}</option>
+                                                        <option selected>{{$dependent['country_of_residence']}}</option>
                                                         @foreach (Constant::countries as $key => $item)
-                                                            <option {{($key == $dependent['current_residance_country']) ? 'seleceted' : ''}} value="{{$key}}">{{$item}}</option>
+                                                            <option {{($key == $dependent['country_of_residence']) ? 'seleceted' : ''}} value="{{$key}}">{{$item}}</option>
                                                         @endforeach
                                                     </select>
                                                     <span class="dependent_current_country_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="tel" class="form-control" id="dependent_current_residance_mobile" name='dependent_current_residance_mobile' value="{{$dependent['current_residance_mobile']}}" placeholder="Current Residence Mobile Number" autocomplete="off">
+                                                    <input type="tel" class="form-control" id="dependent_current_residance_mobile" name='dependent_current_residance_mobile' value="{{$dependent['dependent_current_residance_mobile']}}" placeholder="Current Residence Mobile Number" autocomplete="off">
                                                     <span class="dependent_current_residance_mobile_errorClass"></span>
                                                 </div>
                                             </div>
@@ -1075,7 +1076,7 @@
                                                     <span class="dependent_residence_id_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="text" class="form-control dependent_visa_validity" name="dependent_visa_validity" value="{{$dependent['id_validity']}}" placeholder="Your ID/Visa Date of Validity*" >
+                                                    <input type="text" class="form-control dependent_visa_validity" name="dependent_visa_validity" value="{{$dependent['visa_validity']}}" placeholder="Your ID/Visa Date of Validity*" >
                                                     <span class="dependent_visa_validity_errorClass"></span>
                                                 </div>
                                             </div>
@@ -1102,12 +1103,12 @@
                                                     <a href="javascript:void(0)" data-toggle="modal" data-target="#dependentVisa" onclick="dependentVisa()">click to view uploaded visa copy</a>
                                                 </div>
                                             </div>
-                                            <div class="form-group row mt-4">
+                                            {{-- <div class="form-group row mt-4">
                                                 <div class="col-sm-12 mt-3">
                                                     <input type="text" name="dependent_current_job" class="form-control" value="{{$dependent['current_job']}}"  placeholder="Profession As Per Current Job (or on Visa)*" autocomplete="off">
                                                     <span class="dependent_current_job_errorClass"></span>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-4 mt-3">
                                                     <input type="text" name="dependent_work_state" class="form-control" value="{{$dependent['work_state']}}" placeholder="Work State/Province*" autocomplete="off"/>
@@ -1124,7 +1125,7 @@
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-4 mt-3">
-                                                    <input type="text" name="dependent_work_street" class="form-control" value="{{$dependent['work_street_number']}}" placeholder="Work Place Street & Number*" autocomplete="off"/>
+                                                    <input type="text" name="dependent_work_street" class="form-control" value="{{$dependent['work_address']}}" placeholder="Work Place Street & Number*" autocomplete="off"/>
                                                     <span class="dependent_work_street_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-4 mt-3">
@@ -1188,8 +1189,8 @@
                                                 <div class="col-sm-12 mt-3">
                                                     <select name="is_dependent_schengen_visa_issued_last_five_year" id="is_dependent_schengen_visa_issued_last_five_year" aria-required="true" class="form-control form-select" autocomplete="off">
                                                         <option selected disabled>Schengen Or National Visa Issued During Last 5 Years*</option>
-                                                        <option {{($dependent['is_schengen_visa_issued'] == "No") ? 'selected' : ''}} value="No">No</option>
-                                                        <option {{($dependent['is_schengen_visa_issued'] == "Yes") ? 'selected' : ''}} value="Yes">Yes</option> 
+                                                        <option {{($dependent['is_schengen_visa_issued_last_five_year'] == "NO") ? 'selected' : ''}} value="NO">No</option>
+                                                        <option {{($dependent['is_schengen_visa_issued_last_five_year'] == "YES") ? 'selected' : ''}} value="YES">Yes</option> 
                                                     </select>
                                                     <span class="is_dependent_schengen_visa_issued_last_five_year_errorClass"></span>
                                                 </div>
@@ -1212,8 +1213,8 @@
                                                 <div class="col-sm-12 mt-3">
                                                     <select name="is_dependent_finger_print_collected_for_Schengen_visa" id="is_dependent_finger_print_collected_for_Schengen_visa" aria-required="true" class="form-control form-select" autocomplete="off">
                                                         <option value="">Fingerprints Collected Previously For The Purpose Of Applying For Schengen Visa*</option>
-                                                        <option {{($dependent['is_fingerprint_collected'] == "No") ? 'selected' : ''}} value="No">No</option>
-                                                        <option {{($dependent['is_fingerprint_collected'] == "Yes") ? 'selected' : ''}} value="Yes">Yes</option> 
+                                                        <option {{($dependent['is_finger_print_collected_for_Schengen_visa'] == "NO") ? 'selected' : ''}} value="NO">No</option>
+                                                        <option {{($dependent['is_finger_print_collected_for_Schengen_visa'] == "YES") ? 'selected' : ''}} value="YES">Yes</option> 
                                                     </select>
                                                     <span class="is_dependent_finger_print_collected_for_Schengen_visa_errorClass"></span>
                                                 </div>
@@ -1441,96 +1442,98 @@
                     </div>
                 @endif
 
-                <div class="tab-pane active" id="children" style="margin: 0; padding: 0;">
-                    <form method="POST" id="child_details">
-                        @csrf
-                        @foreach($children as $key => $child)
-                            <div class="applicant-detail-sec" @if($key+1 ==  $applicant['children_count']) style="margin-bottom:70px" @endif>
-                                <div class="heading">
+                @if($children)
+                    <div class="tab-pane active" id="children" style="margin: 0; padding: 0;">
+                        <form method="POST" id="child_details">
+                            @csrf
+                            @foreach($children as $key => $child)
+                                <div class="applicant-detail-sec" @if($key+1 ==  $applicant['children_count']) style="margin-bottom:70px" @endif>
+                                    <div class="heading">
+                                        <div class="row">
+                                            <div class="col-2 my-auto">
+                                                <div class="image">
+                                                    <img src="{{asset('images/child.svg')}}" width="70%" height="auto">
+                                                </div>
+                                            </div>
+                                            <div class="col-1">
+                                                <div class="vl"></div>
+                                            </div>
+                                            <div class="col-6 my-auto">
+                                                <div class="first-heading d-flex justify-content-center">
+                                                    <h3>
+                                                        Child {{$key+1}}
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                            <div class="col-1">
+                                                {{-- <div class="dataCompleted childData{{$key+1}}">
+                                                    <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved">
+                                                </div> --}}
+                                            </div>
+                                            <div class="col-2 mx-auto my-auto">
+                                                <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapsechild{{$key+1}}" aria-expanded="true" aria-controls="collapsechild{{$key+1}}">
+                                                    <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="row">
-                                        <div class="col-2 my-auto">
-                                            <div class="image">
-                                                <img src="{{asset('images/child.svg')}}" width="70%" height="auto">
+                                        <div class="collapse show" id="collapsechild{{$key+1}}">
+                                            <div class="form-sec">
+                                                <div class="form-group row mt-4">
+                                                    <div class="col-sm-4 mt-3">
+                                                        <input type="hidden" name="applicant_id" value="{{$applicant['id']}}">
+                                                        <input type="hidden" name="childrenCount" value="{{$client['children_count']}}">
+                                                        <input type="hidden" name="product_id" value="{{$productId}}">
+                                                        <input type="hidden" name="child" value="{{$key+1}}">
+                                                        <input type="text" name="child_{{$key+1}}_first_name" class="form-control child_{{$key+1}}_first_name" placeholder="First Name*" value="{{$child['name']}}" autocomplete="off" />
+                                                        <span class="child_{{$key+1}}_first_name_errorClass"></span>
+                                                        @error('child_{{$key+1}}_first_name') <span class="error">{{ $message }}</span> @enderror
+                                                    </div>
+                                                    <div class="col-sm-4 mt-3">
+                                                        <input type="text" name="child_{{$key+1}}_middle_name" class="form-control " placeholder="Middle Name" value="{{$child['middle_name']}}"  autocomplete="off"/>
+                                                    </div>
+                                                    <div class="col-sm-4 mt-3">
+                                                        <input type="text" name="child_{{$key+1}}_surname" class="form-control child_{{$key+1}}_surname" placeholder="Surname*" value="{{$child['sur_name']}}" autocomplete="off"  />
+                                                        <span class="child_{{$key+1}}_surname_errorClass"></span>
+                                                        @error('child_{{$key+1}}_surname') <span class="error">{{ $message }}</span> @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row mt-4">
+                                                    <div class="col-sm-6 mt-3">
+                                                        <input type="text"  name="child_{{$key+1}}_dob" class="child-dob form-control" placeholder="Date Of Birth*" value="{{$child['date_of_birth']}}">
+                                                        <span class="child_{{$key+1}}_dob_errorClass"></span>
+                                                        @error('child_{{$key+1}}_dob') <span class="error">{{ $message }}</span> @enderror
+
+                                                    </div>
+                                                    <div class="col-sm-6 mt-3">
+                                                        <select name="child_{{$key+1}}_gender" aria-required="true" class="form-control form-select child_{{$key+1}}_gender" >
+                                                            <option selected disabled>Sex *</option>
+                                                            <option {{($child['sex'] == 'MALE') ? 'selected' : '' }} value="Male"></option>
+                                                            <option {{($child['sex'] == 'FEMALE') ? 'selected' : ''}} value="FEMALE">Female</option>
+                                                            </select>
+                                                        <span class="child_{{$key+1}}_gender_errorClass"></span>
+                                                        @error('child_{{$key+1}}_gender') <span class="error">{{ $message }}</span> @enderror
+
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-1">
-                                            <div class="vl"></div>
-                                        </div>
-                                        <div class="col-6 my-auto">
-                                            <div class="first-heading d-flex justify-content-center">
-                                                <h3>
-                                                    Child {{$key+1}}
-                                                </h3>
-                                            </div>
-                                        </div>
-                                        <div class="col-1">
-                                            {{-- <div class="dataCompleted childData{{$key+1}}">
-                                                <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved">
-                                            </div> --}}
-                                        </div>
-                                        <div class="col-2 mx-auto my-auto">
-                                            <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapsechild{{$key+1}}" aria-expanded="true" aria-controls="collapsechild{{$key+1}}">
-                                                <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
+                                            <div class="form-group row mt-4">
+                                                <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
+                                                    @if($key+1 ==  $client['children_count'])
+                                                        <button type="submit" class="btn btn-primary submitBtn submitChild">Submit <i class="fa fa-spinner fa-spin childReviewSpin"></i></button>  
+                                                    @else 
+                                                        <button type="button" class="btn btn-primary submitBtn collapsechild{{$key+2}}" data-bs-toggle="collapse" data-bs-target="#collapsechild{{$key+2}}" aria-expanded="false" aria-controls="collapsechild{{$key+2}}">Ammend</button>  
+                                                    @endif
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="collapse show" id="collapsechild{{$key+1}}">
-                                        <div class="form-sec">
-                                            <div class="form-group row mt-4">
-                                                <div class="col-sm-4 mt-3">
-                                                    <input type="hidden" name="applicant_id" value="{{$applicant['id']}}">
-                                                    <input type="hidden" name="childrenCount" value="{{$applicant['children_count']}}">
-                                                    <input type="hidden" name="product_id" value="{{$productId}}">
-                                                    <input type="hidden" name="child" value="{{$key+1}}">
-                                                    <input type="text" name="child_{{$key+1}}_first_name" class="form-control child_{{$key+1}}_first_name" placeholder="First Name*" value="{{$child['first_name']}}" autocomplete="off" />
-                                                    <span class="child_{{$key+1}}_first_name_errorClass"></span>
-                                                    @error('child_{{$key+1}}_first_name') <span class="error">{{ $message }}</span> @enderror
-                                                </div>
-                                                <div class="col-sm-4 mt-3">
-                                                    <input type="text" name="child_{{$key+1}}_middle_name" class="form-control " placeholder="Middle Name" value="{{$child['middle_name']}}"  autocomplete="off"/>
-                                                </div>
-                                                <div class="col-sm-4 mt-3">
-                                                    <input type="text" name="child_{{$key+1}}_surname" class="form-control child_{{$key+1}}_surname" placeholder="Surname*" value="{{$child['surname']}}" autocomplete="off"  />
-                                                    <span class="child_{{$key+1}}_surname_errorClass"></span>
-                                                    @error('child_{{$key+1}}_surname') <span class="error">{{ $message }}</span> @enderror
-                                                </div>
-                                            </div>
-                                            <div class="form-group row mt-4">
-                                                <div class="col-sm-6 mt-3">
-                                                    <input type="text"  name="child_{{$key+1}}_dob" class="child-dob form-control" placeholder="Date Of Birth*" value="{{$child['dob']}}">
-                                                    <span class="child_{{$key+1}}_dob_errorClass"></span>
-                                                    @error('child_{{$key+1}}_dob') <span class="error">{{ $message }}</span> @enderror
-
-                                                </div>
-                                                <div class="col-sm-6 mt-3">
-                                                    <select name="child_{{$key+1}}_gender" aria-required="true" class="form-control form-select child_{{$key+1}}_gender" >
-                                                        <option selected disabled>Gender *</option>
-                                                        <option {{($child['gender'] == 'Male') ? 'selected' : '' }} value="Male">Male</option>
-                                                        <option {{($child['gender'] == 'Female') ? 'selected' : ''}} value="Female">Female</option>
-                                                    </select>
-                                                    <span class="child_{{$key+1}}_gender_errorClass"></span>
-                                                    @error('child_{{$key+1}}_gender') <span class="error">{{ $message }}</span> @enderror
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row mt-4">
-                                            <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                                @if($key+1 ==  $applicant['children_count'])
-                                                    <button type="submit" class="btn btn-primary submitBtn submitChild">Submit <i class="fa fa-spinner fa-spin childReviewSpin"></i></button>  
-                                                @else 
-                                                    <button type="button" class="btn btn-primary submitBtn collapsechild{{$key+2}}" data-bs-toggle="collapse" data-bs-target="#collapsechild{{$key+2}}" aria-expanded="false" aria-controls="collapsechild{{$key+2}}">Ammend</button>  
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                    </form>
-                </div>
+                            @endforeach
+                        </form>
+                    </div>
+                @endif
             </div>
         </div>
         <div id="passportFormatModal" class="modal fade" tabindex="-1">
@@ -1667,7 +1670,7 @@
     $(document).ready(function(){
         $('.dependentReviewSpin, .childReviewSpin, .applicantReviewSpin').hide();
                // Main Applicant
-        $('.schengen_visa, .applicantData, .homeCountryData, .currentCountryData, .schengenData, .dependent_schengen_visa').hide();
+        $('.schengen_visa, .applicantData, .homeCountryData, .currentCountryData, .schengenData, .dependent_schengen_visa, #is_finger_print_collected_for_Schengen_visa', '#is_dependent_finger_print_collected_for_Schengen_visa').hide();
         $('.datepicker, .dependent_datepicker, .child-dob').datepicker({
             maxDate : 0,
             dateFormat : "dd-mm-yy",
@@ -1692,16 +1695,20 @@
             constrainInput: false   
         });
 
-        if($('#is_schengen_visa_issued_last_five_year').val() == 'Yes') {
+        if($('#is_schengen_visa_issued_last_five_year').val() == 'YES') {
             $('.schengen_visa').show();
+            $('#is_finger_print_collected_for_Schengen_visa').show();
         } else {
             $('.schengen_visa').hide();
+            $('#is_finger_print_collected_for_Schengen_visa').hide();
         }
 
-        if($('#is_dependent_schengen_visa_issued_last_five_year').val() == 'Yes') {
+        if($('#is_dependent_schengen_visa_issued_last_five_year').val() == 'YES') {
             $('.dependent_schengen_visa').show();
+            $('#is_dependent_finger_print_collected_for_Schengen_visa').show();
         } else {
             $('.dependent_schengen_visa').hide();
+            $('#is_dependent_finger_print_collected_for_Schengen_visa').hide();
         }
 
         $(".applicantDetails").click(function(e){
@@ -1742,8 +1749,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            var full_number = phoneHomeInput.getNumber(intlTelInputUtils.numberFormat.E164);
-            $("input[id='home_phone_number'").val(full_number);
+
             $.ajax({
                 type: 'POST',
                 url: "{{ url('store/home/country/details') }}",
@@ -1844,10 +1850,12 @@
         });
 
         $('#is_schengen_visa_issued_last_five_year').on('change', function(){
-            if($('#is_schengen_visa_issued_last_five_year').val() == "Yes"){
+            if($('#is_schengen_visa_issued_last_five_year').val() == "YES"){
                 $('.schengen_visa').show();
+                $('#is_finger_print_collected_for_Schengen_visa').show();
             } else {
                 $('.schengen_visa').hide();
+                $('#is_finger_print_collected_for_Schengen_visa').hide();
             }
         });
 
@@ -2030,8 +2038,6 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            var full_number = dependenthomephonenumber.getNumber(intlTelInputUtils.numberFormat.E164);
-            $("input[id='dependent_home_phone_number'").val(full_number);
             $.ajax({
                 type: 'POST',
                 url: "{{ url('store/spouse/home/country/details') }}",
@@ -2127,7 +2133,7 @@
         });
 
         $('#is_dependent_schengen_visa_issued_last_five_year').on('change', function(){
-            if($('#is_dependent_schengen_visa_issued_last_five_year').val() == "Yes"){
+            if($('#is_dependent_schengen_visa_issued_last_five_year').val() == "YES"){
                 $('.dependent_schengen_visa').show();
             } else {
                 $('.dependent_schengen_visa').hide();
@@ -2273,17 +2279,6 @@
                 "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
         });
 
-        const phoneHomeInputField = document.querySelector("#home_phone_number");
-        const phoneHomeInput = window.intlTelInput(phoneHomeInputField, {
-            separateDialCode: false,
-            preferredCountries:["ae"],
-            nationalMode: false,
-            hiddenInput: "full",
-            autoHideDialCode: false,
-            utilsScript:
-                "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-        });
-
         const phoneCurrentInputField = document.querySelector("#current_residance_mobile");
         const phoneCurrentInput = window.intlTelInput(phoneCurrentInputField, {
             separateDialCode: false,
@@ -2295,20 +2290,9 @@
                 "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
         });
 
-        if(('{{$applicant['visa_type']}}' == 'FAMILY PACKAGE') && ('{{$applicant['is_spouse']}}' > 0)){
+        if(('{{$applicant['work_permit_category']}}' == 'FAMILY PACKAGE') && ('{{$client['is_spouse']}}' > 0)){
             const dependentPhone = document.querySelector("#dependent_phone");
             const dependentPhoneInput = window.intlTelInput(dependentPhone,{
-                separateDialCode: false,
-                preferredCountries:["ae"],
-                nationalMode: false,
-                hiddenInput: "full",
-                autoHideDialCode: false,
-                utilsScript:
-                    "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-            });
-
-            const dependenthomephonenumber = document.querySelector("#dependent_home_phone_number");
-            const dependenthomephonenumberInput = window.intlTelInput(dependenthomephonenumber,{
                 separateDialCode: false,
                 preferredCountries:["ae"],
                 nationalMode: false,

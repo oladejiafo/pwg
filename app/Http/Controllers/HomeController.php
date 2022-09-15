@@ -595,6 +595,7 @@ class HomeController extends Controller
     public function addpayment(Request $request)
     {
         if (Auth::id()) {
+            session()->forget('info');
             $amount = $request->totalpay;
             $id = Session::get('myproduct_id');
 
