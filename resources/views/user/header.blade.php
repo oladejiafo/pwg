@@ -31,6 +31,10 @@
         padding: 0;
         margin: 0%;
     }
+    .navbar-profile-name {
+      text-decoration: none !important;
+      color:black !important;
+    }
 
     .navbar .container {
         padding-left: 0px;
@@ -222,7 +226,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a target="_blank" class="nav-link" href="https://wa.link/uvaw3f" title="Click Here To Chat on WhatsAPP">
+                <a target="_blank" class="nav-link" href="https://wa.link/iz7ait" title="Click Here To Chat on WhatsAPP">
                   <!-- <i class="mdi mdi-email" style="width: 30px; height: 30px;"></i> -->
                   <img src="{{asset('user/images/Chat.svg')}}" width="30px" height="30px" alt="icon3">
                   <span class="count bg-success"></span>
@@ -234,7 +238,7 @@
                   <img src="{{asset('user/images/NotificationNo.svg')}}" width="30px" height="30px" alt="icon3">
                   <span class="count bg-danger"></span>
                 </a>
-                <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
+                <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown" >
                   
                    @include('user.notifications')
        

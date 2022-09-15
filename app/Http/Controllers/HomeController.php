@@ -37,25 +37,32 @@ class HomeController extends Controller
 
 
             $data = product::find($id);
-            $promo = promo::where('product_id', '=', $id)->where('active_until', '>=', date('Y-m-d'))->get();
-            $ppay = product_payments::where('product_id', '=', $id)->get();
-            $proddet = product_details::where('product_id', '=', $id)->get();
+           
+            $promo = promo::where('employee_id', '=', $id)->where('active_until', '>=', date('Y-m-d'))->get();
+            $ppay = product_payments::where('destination_id', '=', $id)->first();
+            // $proddet = product_details::where('product_id', '=', $id)->get();
 
             session()->forget('prod_id');
-            return view('user.package', compact('data', 'ppay', 'proddet', 'promo'));
+            return view('user.package', compact('data', 'ppay', 'promo'));
             //   return \Redirect::route('product', $idd);
 
         } else {
-            $package = product::all()->sortBy("id");
+            // $ppay = product_payments::where('destination_id', '=', $id)->first();
+            $package = DB::table('destinations')->orderBy(DB::raw('FIELD(name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
+            // $package = product::all()->sortBy(DB::raw('FIELD(product_name, "Czech", "Poland", "Malta", "Canada", "Germany")'));
             $promo = promo::where('active_until', '>=', date('Y-m-d'))->get();
+
             return view('user.home', compact('package', 'promo'));
         }
     }
 
     public function index()
     {
-        $package = product::all()->sortBy("id");
+      
+
+        $package = DB::table('destinations')->orderBy(DB::raw('FIELD(name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
         $promo = promo::where('active_until', '>=', date('Y-m-d'))->get();
+
         return view('user.home', compact('package', 'promo'));
     }
 
@@ -89,22 +96,24 @@ class HomeController extends Controller
             }
 
             $famdet = family_breakdown::where('destination_id', '=', $productId)
-                ->where('visa_type', 'FAMILY PACKAGE')
-                ->where('parent', $parentt)
-                ->where('children', $kids)
+                ->where('pricing_plan_type', 'FAMILY PACKAGE')
+                ->where('no_of_parent', $parentt)
+                ->where('no_of_children', $kids)
+
                 ->first();
             if ($request->response == 1) {
                 return $famdet;
             }
+            // dd($famdet);
         } else {
-            $famdet = family_breakdown::where('destination_id', '=', $productId)
-                ->where('visa_type', 'FAMILY PACKAGE')
-                ->first();
+            $famdet = family_breakdown::where('destination_id', '=', $productId)->where('pricing_plan_type', 'FAMILY PACKAGE')->first();
+       
         }
+   
       
-        $proddet = product_details::where('product_id', '=', $productId)->where('visa_type', 'BLUE AND PINK COLLAR JOBS')->get();
-        $whiteJobs = product_details::where('product_id', '=', $productId)->where('visa_type', 'WHITE COLLAR JOBS')->get();
-        $canadaOthers = product_payments::where('product_id', '=', $productId)->whereIn('visa_type', array('Express Entry', 'Study Permit'))->get();
+        $proddet = family_breakdown::where('destination_id', '=', $productId)->where('pricing_plan_type', 'BLUE COLLAR JOBS')->get();
+        $whiteJobs = family_breakdown::where('destination_id', '=', $productId)->where('pricing_plan_type', 'WHITE COLLAR JOBS')->get();
+        $canadaOthers = family_breakdown::where('destination_id', '=', $productId)->whereIn('pricing_plan_type', array('Express Entry', 'Study Permit'))->get();
         return view('user.package-type', compact('proddet', 'famdet', 'productId', 'whiteJobs', 'data','canadaOthers'));
     }
 
@@ -120,23 +129,38 @@ class HomeController extends Controller
 
 
         $data = product::find($id);
-        $promo = promo::where('product_id', '=', $id)->where('validity', '>=', date('Y-m-d'))->get();
+        $promo = promo::where('employee_id', '=', $id)->where('active_until', '>=', date('Y-m-d'))->get();
 
-        if (Session::get('packageType') == "FAMILY PACKAGE") {
-            $ppay = product_payments::where('product_id', '=', $id)
-                ->where('product_payments.visa_type', '=', Session::get('packageType'))
-                ->where('family_sub_id', '=', Session::get('fam_id'))
-                ->get();
+        if (Session::has('mySpouse') && Session::get('packageType') == "FAMILY PACKAGE") {
+            if (Session::get('mySpouse') == "yes") {
+                $parentt = 2;
+            } else {
+                $parentt = 1;
+            }
+
+            if (Session::get('myKids') == 0 || Session::get('myKids') == "none" || Session::get('myKids') == 5 || Session::get('myKids') == null) {
+
+                $kids = 1;
+            } else {
+                $kids = Session::get('myKids');
+            }
+    
+            $ppay = family_breakdown::where('destination_id', '=', $id)
+                ->where('pricing_plan_type', '=', Session::get('packageType'))
+                ->where('no_of_parent', '=', $parentt)
+                ->where('no_of_children', '=', $kids)
+                ->first();
         } else {
-            $ppay = product_payments::where('product_id', '=', $id)
-                ->where('product_payments.visa_type', '=', Session::get('packageType'))
+            $ppay = family_breakdown::where('destination_id', '=', $id)
+                ->where('pricing_plan_type', '=', Session::get('packageType'))
                 // ->where('family_sub_id', '=', Session::get('fam_id'))      
-                ->get();
+                ->first();
         }
-        $proddet = product_details::where('product_id', '=', $id)->get();
+        // dd($ppay);
+        // $proddet = product_details::where('product_id', '=', $id)->get();
 
         session()->forget('prod_id');
-        return view('user.package', compact('data', 'ppay', 'proddet', 'promo'));
+        return view('user.package', compact('data', 'ppay', 'promo'));
     }
 
 
@@ -207,9 +231,15 @@ class HomeController extends Controller
                 'is_spouse' => $is_spouse,
                 'children_count' => $children
             ]);
+
         if ($res) {
-            return \Redirect::route('payment', $pid)->with('info', 'Signature is Successfull!')->with('info_sub', 'Proceed to application');
+
+            Session::put('info', 'Signature is Successful!');
+            Session::put('info_sub', 'Proceed to application');
+            return true;
+
         } else {
+            Session::put('failed', 'Oppss! Something went wrong.');
             return false;
             // return redirect()->back()->with('failed', 'Oppss! Something went wrong.');
         }
@@ -315,7 +345,7 @@ class HomeController extends Controller
 
             $complete = DB::table('applications')
 
-            ->where('user_id', '=', Auth::user()->id)
+            ->where('client_id', '=', Auth::user()->id)
             ->orderBy('id','desc')
             ->first();
 
@@ -323,9 +353,9 @@ class HomeController extends Controller
             if($complete)
             {
               $app_id= $complete->id;
-              $p_id= $complete->product_id;
-              $hasSpouse = $complete->is_spouse;
-              $children = $complete->children_count;
+              $p_id= $complete->destination_id;
+            //   $hasSpouse = $complete->is_spouse;
+            //   $children = $complete->children_count;
              }
              else {
                 $app_id= 0;
@@ -345,10 +375,10 @@ class HomeController extends Controller
                 $children =0;
             }
 
-            $families = DB::table('family_breakdowns')
-                ->where('children', '=', $children)
-                ->where('parent', '=', $yesSpouse)
-                ->where('visa_type', '=', 'FAMILY PACKAGE')
+            $families = DB::table('pricing_plans')
+                ->where('no_of_children', '=', $children)
+                ->where('no_of_parent', '=', $yesSpouse)
+                ->where('pricing_plan_type', '=', 'FAMILY PACKAGE')
                 ->get();
 
             foreach ($families as $famili) {
@@ -379,45 +409,44 @@ class HomeController extends Controller
             }
 
 
-            if ($packageType == "FAMILY PACKAGE") {
-                $pays = DB::table('product_payments')
-                    ->join('applicants', 'applicants.product_id', '=', 'product_payments.product_id')
-                    ->select('product_payments.id', 'product_payments.payment', 'product_payments.amount', 'product_payments.product_id')
-                    ->where('product_payments.visa_type', '=', $packageType)
-                    ->where('family_sub_id', '=', $family_id)
-                    ->where('applicants.user_id', '=', $id)
-                    ->orderBy('product_payments.id')
-                    ->groupBy('product_payments.payment')
-                    ->get();
-            } else {
-                $pays = DB::table('product_payments')
-                    ->join('applicants', 'applicants.product_id', '=', 'product_payments.product_id')
-                    ->select('product_payments.id', 'product_payments.payment', 'product_payments.amount', 'product_payments.product_id')
-                    // ->where('product_payments.visa_type', '=', $packageType)
-                    ->where('applicants.user_id', '=', $id)
-                    ->orderBy('product_payments.id')
-                    ->groupBy('product_payments.payment')
-                    ->get();
-            }
-
+            // if ($packageType == "FAMILY PACKAGE") {
+            //     $pays = DB::table('pricing_plans')
+            //         ->join('applications', 'applications.destination_id', '=', 'pricing_plans.destination_id')
+            //         ->select('pricing_plans.id', 'pricing_plans.pricing_plan_type', 'pricing_plans.total_price', 'pricing_plans.destination_id','pricing_plans.first_payment_price','pricing_plans.second_payment_price','pricing_plans.third_payment_price')
+            //         ->where('pricing_plans.pricing_plan_type', '=', $packageType)
+            //         // ->where('family_sub_id', '=', $family_id)
+            //         ->where('applications.client_id', '=', $id)
+            //         ->orderBy('pricing_plans.id')
+            //         // ->groupBy('pricing_plans.payment')
+            //         ->first();
+            // } else {
+                $pays = DB::table('pricing_plans')
+                ->join('applications', 'applications.destination_id', '=', 'pricing_plans.destination_id')
+                ->select('pricing_plans.id', 'pricing_plans.pricing_plan_type', 'pricing_plans.total_price', 'pricing_plans.destination_id','pricing_plans.first_payment_price','pricing_plans.second_payment_price','pricing_plans.third_payment_price')
+                ->where('pricing_plans.pricing_plan_type', '=', $packageType)
+                ->where('applications.client_id', '=', $id)
+                ->orderBy('pricing_plans.id')
+                    ->first();
+            // }
+// dd($pays);
             $paid = DB::table('payments')
-                ->join('applicants', 'payments.application_id', '=', 'applicants.id')
-                ->selectRaw('payments.*, applicants.*, COUNT(payments.id) as count')
+                ->join('applications', 'payments.application_id', '=', 'applications.id')
+                ->selectRaw('payments.*, applications.*, COUNT(payments.id) as count')
 
-                ->where('applicants.user_id', '=', $id)
+                ->where('applications.client_id', '=', $id)
                 ->groupBy('payments.id')
                 // ->groupBy('applicants.id')
-                ->orderBy('applicants.id', 'desc')
+                ->orderBy('applications.id', 'desc')
                 // ->limit(1)
-                ->get();
+                ->first();
 
-            $prod = DB::table('products')
-                ->join('applicants', 'products.id', '=', 'applicants.product_id')
-                ->select('products.product_name', 'products.id')
-                ->where('applicants.user_id', '=', $id)
-                ->groupBy('products.id')
-                ->get();
-// dd($pays, $paid);
+            $prod = DB::table('destinations')
+                ->join('applications', 'destinations.id', '=', 'applications.destination_id')
+                ->select('destinations.name', 'destinations.id')
+                ->where('applications.client_id', '=', $id)
+                ->groupBy('destinations.id')
+                ->first();
+// dd($prod);
             return view('user.myapplication', compact('paid', 'pays', 'prod'));
         } else {
             return redirect()->back()->with('message', 'You are not authorized');
@@ -428,6 +457,10 @@ class HomeController extends Controller
     {
         $famCode = 0;
         if (Auth::id()) {
+
+
+            Session::forget('haveCoupon');
+            Session::forget('myDiscount');
 
             $completed = DB::table('applications')
                 ->where('client_id', '=', Auth::user()->id)
@@ -446,15 +479,15 @@ class HomeController extends Controller
                 $yesSpouse = 1;
             }
 
-            $families = DB::table('pricing_plans')
-                ->where('children', '=', $children)
-                ->where('parent', '=', $yesSpouse)
-                ->where('visa_type', '=', 'FAMILY PACKAGE')
-                ->get();
+            // $families = DB::table('pricing_plans')
+            //     ->where('no_of_children', '=', $children)
+            //     ->where('no_of_parent', '=', $yesSpouse)
+            //     ->where('pricing_plan_type', '=', 'FAMILY PACKAGE')
+            //     ->get();
 
-            foreach ($families as $famili) {
-                $famCode = $famili->id;
-            }
+            // foreach ($families as $famili) {
+            //     $famCode = $famili->id;
+            // }
 
             if (session()->get('myproduct_id')) {
             } else if (isset($request->id)) {
@@ -480,52 +513,40 @@ class HomeController extends Controller
             }
 
 
-            //         $coupons = DB::table('promos')
-            //         ->select('discount_percent')
-            //         ->where('product_id', '=', $id)
-            //         ->where('validity', '>=', date('Y-m-d'))
-            //         ->get();
 
-            //         foreach($coupons as $coupon) 
-            //         {
-            //                 $my_discount = $coupon->discount_percent;
-            //         } 
-
-            // if ($coupon->first()) {
-            //     Session::put('myDiscount', $my_discount);
-            // }
             $data = product::find(Session::get('myproduct_id'));
 
             $pays = DB::table('applications')
-                ->leftJoin('payments', 'payments.application_id', '=', 'applicants.id')
-                ->leftJoin('product_payments', 'product_payments.id', '=', 'payments.product_payment_id')
-                ->select('product_payments.*', 'payments.product_payment_id', 'payments.total', 'payments.total_paid', 'payments.payment_status')
-                ->where('applicants.user_id', '=', Auth::user()->id)
-                ->where('applicants.product_id', '=', $id)
-                ->orderBy('payments.product_payment_id', 'desc')
+                // ->leftJoin('payments', 'payments.application_id', '=', 'applications.id')
+                // ->leftJoin('product_payments', 'product_payments.id', '=', 'payments.product_payment_id')
+                ->select('applications.pricing_plan_id', 'applications.total_price', 'applications.total_paid', 'applications.first_payment_status','applications.second_payment_status','applications.third_payment_status')
+                ->where('applications.client_id', '=', Auth::user()->id)
+                ->where('applications.destination_id', '=', $id)
+                // ->orderBy('payments.product_payment_id', 'desc')
                 ->limit(1)
-                ->get();
+                ->first();
 
 
-            if ($packageType == "FAMILY PACKAGE") {
-                if (Session::has('fam_id')) {
-                    $family_id = Session::get('fam_id');
-                } else {
-                    $family_id = $famCode;
-                }
-                $pdet = DB::table('product_payments')
-                    ->where('product_id', '=', Session::get('myproduct_id'))
-                    ->where('visa_type', '=', $packageType)
-                    ->where('family_sub_id', '=',  $family_id)
+            // if ($packageType == "FAMILY PACKAGE") {
+            //     if (Session::has('fam_id')) {
+            //         $family_id = Session::get('fam_id');
+            //     } else {
+            //         $family_id = $famCode;
+            //     }
+            //     $pdet = DB::table('product_payments')
+            //         ->where('product_id', '=', Session::get('myproduct_id'))
+            //         ->where('visa_type', '=', $packageType)
+            //         ->where('family_sub_id', '=',  $family_id)
+            //         // ->groupBy('product_payments.id')
+            //         ->get();
+            // } else {
+                $pdet = DB::table('pricing_plans')
+                    ->where('destination_id', '=', Session::get('myproduct_id'))
+                    ->where('pricing_plan_type', '=', $packageType)
                     // ->groupBy('product_payments.id')
-                    ->get();
-            } else {
-                $pdet = DB::table('product_payments')
-                    ->where('product_id', '=', Session::get('myproduct_id'))
-                    ->where('visa_type', '=', $packageType)
-                    // ->groupBy('product_payments.id')
-                    ->get();
-            }
+                    ->first();
+            // }
+            // dd($pdet);
 
             return view('user.payment-form', compact('data', 'pdet', 'pays', 'payall'));
         } else {
@@ -580,14 +601,24 @@ class HomeController extends Controller
                 $applicant_id = $apply->id;
             }
 
-            $validator = \Validator::make($request->all(), [
+            $request->validate([
                 'totaldue' => 'required',
-                'totalpay' => 'numeric|gte:1000'
+                'totalpay' => 'numeric|gte:1000',
+                'current_location' => 'required',
+                'embassy_appearance' => 'required'
             ]);
 
-            if ($validator->fails()) {
-                return Redirect::back()->withErrors($validator);
-            } else {
+            // $validator = \Validator::make($request->all(), [
+            //     'totaldue' => 'required',
+            //     'totalpay' => 'numeric|gte:1000',
+            //     'current_location' => 'required',
+            //     'embassy_appearance' => 'required'
+            // ]);
+
+            // if ($validator->fails()) {
+         
+            //     return Redirect::back()->withErrors($validator);
+            // } else {
                 if ($request->totalpay == null || $request->totalpay == "" || $request->totalpay < 1000) {
                     $totalpay = 0;
                 } else {
@@ -611,6 +642,25 @@ class HomeController extends Controller
                     'total_paid' => $totalpay,
                     'payment_status' => $whatsPaid,
                 ]);
+
+
+                $datas = applicant::where([
+                    ['user_id', '=', Auth::user()->id],
+                    ['product_id', '=', $request->pid],
+                ])->first();
+                if ($datas === null) {
+                    $data = new applicant;
+                    $data->current_residance_country = $request->current_location;
+                    $data->embassy_country = $request->embassy_appearance;
+
+                    $res = $data->save();
+                } else {
+                    $datas->current_residance_country = $request->current_location;
+                    $datas->embassy_country = $request->embassy_appearance;
+
+                    $res = $datas->save();
+                }
+
 
                 $datas = payment::where([
                     ['product_payment_id', '=', $request->ppid],
@@ -673,7 +723,7 @@ class HomeController extends Controller
                 } else {
                     return redirect()->back()->with('failed', $orderCreateResponse->errors[0]->message);
                 }
-            }
+            // }
         } else {
             return redirect()->back()->with('failed', 'You are not authorized');
         }
@@ -728,6 +778,7 @@ class HomeController extends Controller
 
     public function getPromo(Request $request)
     {
+        $response['status'] = false;
             $id = Session::get('myproduct_id');
             $coupon = DB::table('promos')
                 ->select('discount_percent')
@@ -741,18 +792,69 @@ class HomeController extends Controller
 
 
         if ($coupon->first()) {
-            Session::put('myDiscount', $my_discount);
-            Session::put('haveCoupon', 1);
 
-            return response()->json(['status' => 'Success']);
+            $discountPercent = 'PROMO: ' . $my_discount . '%';
+            $discountamt = ($my_discount *  $request->totaldue) / 100;
+
+            $topaynow = $request->totaldue  + ($request->totaldue * 5/100) - (($my_discount *  $request->totaldue) / 100);
+          
+
+            Session::put('haveCoupon', 1);
+            Session::put('myDiscount', $my_discount);
+
+            $response['myDiscount'] = $my_discount;
+            $response['haveCoupon'] = 1;
+            $response['discountamt'] = $discountamt;
+            $response['topaynow'] = $topaynow;
+            $response['discountPercent'] =$discountPercent;
+
+            $response['status'] = true;
+
+
             // return \Redirect::route('payment', $id);
         } else {
+            $topaynoww = $request->totaldue  + ($request->totaldue * 5/100); //If no promo
             Session::put('haveCoupon', 0);
-            return response()->json(['status' => 'Invalid Discount/Promo Code']);
+            $response['haveCoupon'] = 0;
+            $response['topaynow'] = $topaynoww;
             // return \Redirect::route('payment', $id)->with('failed', 'Invalid Discount/Promo Code');
 
         }
+        return $response;
     }
+
+    public function checkPromo(Request $request)
+    {
+            $response['status'] = false;
+
+            $id = Session::get('myproduct_id');
+            
+            $coupon = DB::table('promos')
+                ->select('discount_percent')
+                ->where('promo_location', '=', $request->embassy_appearance)
+                ->where('product_id', '=', $id)
+                ->where('validity', '>=', date('Y-m-d'))
+                ->get();
+            foreach ($coupon as $apply) {
+                $my_discount = $apply->discount_percent;
+            }
+
+
+        if ($coupon->first()) {
+            // $response['haveCoupon'] = 1;
+
+            $response['status'] = true;
+
+            // return \Redirect::route('payment', $id);
+        } else {
+            // Session::put('haveCoupon', 0);
+            // $response['haveCoupon'] = 0;
+            $response['status'] = false;
+            // return \Redirect::route('payment', $id)->with('failed', 'Invalid Discount/Promo Code');
+        }
+        return $response;
+    }
+
 
     public function familyDetails(Request $request)
     {
@@ -834,7 +936,7 @@ class HomeController extends Controller
 
 public function mark_read(Request $request) {
 
-           $notis = notifications::where('user_id', '=', Auth::user()->id)->get();
+           $notis = notifications::where('client_id', '=', Auth::user()->id)->get();
 
            if ($notis) {
                 foreach($notis as $noti)
@@ -946,20 +1048,20 @@ public function mark_read(Request $request) {
                         'link' => $link
                     ];
                 
-                    $check_noti = notifications::where('criteria', '=', $criteria)->where('user_id', '=', Auth::user()->id)->first();
+                    $check_noti = notifications::where('criteria', '=', $criteria)->where('client_id', '=', Auth::user()->id)->first();
 
                     if ($check_noti === null) 
                     {
 
                         DB::table('notifications')->insert(
-                                ['user_id' => $userID, 'message' => $message, 'criteria' => $criteria, 'link' => $link]
+                                ['client_id' => $userID, 'message' => $message, 'criteria' => $criteria, 'link' => $link]
                         );
                 
                         Mail::to($email)->send(new NotifyMail($dataArray));
                     } 
                     // Notification Ends ############ 
                     $dest = product::find($id);
-                    $dest_name = $dest->product_name;
+                    $dest_name = $dest->name;
 
                     $msg = "Awesome! Payment Successful!";
                     return view('user.payment-success', compact('id'));

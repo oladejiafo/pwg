@@ -5,7 +5,7 @@
 // Post::where('Expiration_date','<',Carbon::now())->delete();
 
 $notifications = DB::table('notifications')
-->where('user_id', '=', Auth::user()->id)
+->where('client_id', '=', Auth::user()->id)
 ->orderBy('id', 'desc')
 ->orderBy('status', 'desc')
 ->limit(5)
@@ -16,40 +16,28 @@ $notifications = DB::table('notifications')
 @if($notifications->first())
 
 <div class="row">
-<div class="col px-3 mb-0"><b>NOTIFICATIONS</b></div>
-<div align="right" class="col mb-0" style="margin-right:25px;margin-top:2px">
-
-   <a href="javascript:void(0)" id="noty" style="text-decoration:blue; font-size:11px;color:blue"><i>Mark all as read</i></a>
-</div>
-</div>
-<div class="dropdown-divider"></div>
-@foreach($notifications as $notify)
-@if($notify->status =="Unread")
-<style>
-/* .button__badge {
-  background-color: #fa3e3e;
-  border-radius: 60%;
-  color: white;
-
-  padding: 1px 3px;
-  font-size: 10px;
-  
-  position: absolute; 
-  top: 0;
-  right: 0;
-} */
-#notificationDropdown img {
-    content: url("{{asset('user/images/Notification.svg')}}");
-}
-</style>
-<a class="dropdown-item preview-item" style="background-color:#FAFDFE !important;color:#000 !important; font-weight:bold !important">
-@else  
-<a class="dropdown-item preview-item" style="background-color:transparent !important;">
-@endif
+        <div class="col px-3 mb-0"><b>NOTIFICATIONS</b></div>
+            <div align="right" class="col mb-0" style="margin-right:25px;margin-top:2px">
+            <a href="javascript:void(0)" id="noty" style="text-decoration:blue; font-size:11px;color:blue"><i>Mark all as read</i></a>
+            </div>
+        </div>
+        <div class="dropdown-divider"></div>
+        <div style="overflow-y: scroll; height:500px">
+        @foreach($notifications as $notify)
+        @if($notify->status =="Unread")
+        <style>
+            #notificationDropdown img {
+            content: url("{{asset('user/images/Notification.svg')}}");
+            }
+        </style>
+        <a class="dropdown-item preview-item" style="background-color:#FAFDFE !important;color:#000 !important; font-weight:bold !important">
+        @else  
+        <a class="dropdown-item preview-item" style="background-color:transparent !important;">
+        @endif
 
         <div class="preview-thumbnail">
             <div class="preview-icon bg-dark rounded-circle">
-            <i class="mdi mdi-calendar text-success"></i>
+               <i class="mdi mdi-calendar text-success"></i>
             </div>
         </div>
         
@@ -66,12 +54,12 @@ $notifications = DB::table('notifications')
         </div>
     </a>
 
-    @if(!$loop->last)
-        <div class="dropdown-divider"></div>
+        @if(!$loop->last)
+            <div class="dropdown-divider"></div>
+        @endif
+    @endforeach
     @endif
-@endforeach
-@endif
-
+        </div>
 </div>
 <!-- <p class="p-3 mb-0 text-center">See all notifications</p> -->
 <script src="{{asset('user/extra/assets/js/jquery-min.js')}}"></script>

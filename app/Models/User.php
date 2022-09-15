@@ -23,6 +23,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
     use InteractsWithMedia;
 
 
+
     protected $table = 'clients';
     /**
      * The attributes that are mass assignable.

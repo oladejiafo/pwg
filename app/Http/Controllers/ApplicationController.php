@@ -447,13 +447,13 @@ class ApplicationController extends Controller
     
         $check_noti = DB::table('notifications')
                         ->where('criteria', '=', $criteria)
-                        ->where('user_id', '=', Auth::user()->id)
+                        ->where('client_id', '=', Auth::user()->id)
                         ->first();
 
         if ($check_noti === null) 
         {
             DB::table('notifications')->insert(
-                    ['user_id' => $userID, 'message' => $message, 'criteria' => $criteria, 'link' => $link]
+                    ['client_id' => $userID, 'message' => $message, 'criteria' => $criteria, 'link' => $link]
             );
 
             Mail::to($email)->send(new NotifyMail($dataArray));
