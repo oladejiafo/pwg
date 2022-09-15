@@ -15,7 +15,7 @@
 
     $levels = $completed->application_stage_status;
 @endphp
-<div class="container" data-applicantId="{{$applicant['id']}}" @if($dependent)  data-dependentid="{{$dependent['id']}}" @endif>
+<div class="container" id="app" data-applicantId="{{$applicant['id']}}" @if($dependent)  data-dependentId="{{$dependent['id']}}" @endif>
     <div class="col-12">
             <div class="row">
                 <div class="wizard-details bg-white">
