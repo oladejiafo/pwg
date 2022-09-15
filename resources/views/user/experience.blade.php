@@ -13,7 +13,7 @@
                     <tbody>
                         <tr v-for="(job, jobIndex) in selectedJob">
                             <td style="text-align: left;" data-bs-toggle="collapse" :data-bs-target="'#collapseExperienceFour'+job.job_category_one_id+job.job_category_two_id+job.job_category_three_id+job.job_category_four_id" aria-expanded="false" :aria-controls="'collapseExperienceFour'+job.job_category_one_id+job.job_category_two_id+job.job_category_three_id+job.job_category_four_id">@{{job.job_title}}</td>
-                            <td style="text-align: right;"><a class="btn btn-danger remove" v-on:click="removeJob(job.id)"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
+                            <td style="text-align: right;"><a class="btn btn-danger remove" v-on:click="removeJob(job.id, 'applicant')"><i class="fa fa-trash" aria-hidden="true"></i></a></td>
                         </tr>
                     </tbody>
                 </table>

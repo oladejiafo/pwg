@@ -2072,7 +2072,7 @@ __webpack_require__.r(__webpack_exports__);
 
 window.Vue = (__webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js")["default"]);
 var app = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]({
-  el: '#importExperience',
+  el: '#app',
   data: function data() {
     return {
       jobCategories: [],
@@ -2116,10 +2116,11 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]({
         console.log(error);
       });
     },
-    removeJob: function removeJob(expId) {
+    removeJob: function removeJob(expId, userType) {
       axios__WEBPACK_IMPORTED_MODULE_1___default().post('/remove/selected/experience', {
         expId: expId,
-        applicantId: this.applicantId
+        userType: userType,
+        dependentId: app.dependentId
       }).then(function (response) {
         app.getSelectedExperience();
         app.getDependentExperience();
@@ -2127,9 +2128,7 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]({
     },
     getSelectedExperience: function getSelectedExperience() {
       this.applicantId = this.$el.getAttribute('data-applicantId');
-      axios__WEBPACK_IMPORTED_MODULE_1___default().post('/get/selected/experience', {
-        applicantId: this.applicantId
-      }).then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_1___default().post('/get/selected/experience').then(function (response) {
         if (response.data.length > 0) {
           app.selectedJob = response.data;
 
@@ -2147,7 +2146,6 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]({
       this.applicantId = this.$el.getAttribute('data-applicantId');
       this.dependentId = this.$el.getAttribute('data-dependentId');
       axios__WEBPACK_IMPORTED_MODULE_1___default().post('/get/dependent/selected/experience', {
-        applicantId: this.applicantId,
         dependentId: this.dependentId
       }).then(function (response) {
         if (response.data.length > 0) {
