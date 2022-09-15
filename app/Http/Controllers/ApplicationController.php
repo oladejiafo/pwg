@@ -243,7 +243,7 @@ class ApplicationController extends Controller
     public function storeCurrentDetails(Request $request)
     {
         $validator = \Validator::make($request->all(), [
-            'current_country' => 'required',
+          
             'residence_id' => 'required',
             'visa_validity'  => 'required',
             'residence_copy' => 'required',
