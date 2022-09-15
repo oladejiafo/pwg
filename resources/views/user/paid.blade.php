@@ -34,14 +34,6 @@
             <ul>
 
 
-              <?php 
-           
-              $pay_id = $pays->id;
-              // $payment = $pays->pricing_plan_type;
-              // $amount = $pays->total_price;
-              $ppid = $pays->id;
-
-              ?>
 
               <!-- 1st Payment Column  -->
               <li>
@@ -161,7 +153,7 @@
                     </div>
                     <div class="dg aligns-items-center justify-content-center text-center" style="display:inline; justify-content: center;  align-items: center;">
                       <p style="padding-top: 27px;padding-bottom:0px; font-size:14px;font-weight:800">Work Permit</p>
-                      <span style="font-size:11px; color:grey;padding-left:1px; padding-right:1px">Work Permit has been released.</span>
+                      <span style="font-size:11px; color:grey;padding-left:1px; padding-right:1px">Work Permit not available yet.</span>
                     </div>
 
                   </div>
@@ -245,14 +237,14 @@
         <h5 class="modal-title" id="statusModalLabel">Application Status</h5>
         <button type="button" style="float:right; font-size:11px; width:20px;height:20px" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" style="height:auto">
 
         @if($paid->third_payment_status =='Paid')
-        Congratutaion! You have completed your payments. Your embassy appearnce date will be indicated soon.
+        Congratutaion! You have completed your payments. <br>Your embassy appearnce date will be indicated soon.
 
         @elseif($paid->second_payment_status =='Paid')
         Your Application is in progress! <br> 
-         Your third payment is pending. 
+         Your third payment is pending. <br>
          Your work permit will be uploaded soon.
         @elseif($paid->first_payment_status =='Paid') 
         Your Application is in progress! <br>

@@ -131,7 +131,7 @@ $pid = $app_id;
                     </div>
                 </div>
               </div>
-            @endif
+        @endif
 
             <!-- Main Module Begins here -->
             <div class="payment-form" @if($levels == '5') style="margin-top: 150px" @endif>
@@ -232,25 +232,27 @@ $pid = $app_id;
                             @php
                                 $pends=$pays->total_paid - $pays->total_price;
                             @endphp
+                        @else
+                            @php
+                                $pends=0;
+                            @endphp
                         @endif
 
 
                             <?php
-                            // if ($pdet) {
-                                // $det_id = $pdet->id;
 
                                 if ($payall == 0) {
 
-                                 if($pays->first_payment_status =="Pending"){
+                                 if($pays->first_payment_status =="PENDING" || $pays->first_payment_status ==null){
 
-                                    $whichPayment =  "First Payment";
+                                   $whichPayment =  "First Payment";
                                 
                                     $payNow = $pdet->first_payment_price;
                                     $payNoww = $pdet->first_payment_price;
                                     $pendMsg = "";
 
                                  }
-                                 elseif($pays->first_payment_status =="Paid" && $pays->second_payment_status =="Pending"){
+                                 elseif($pays->first_payment_status =="Paid" && $pays->second_payment_status =="PENDING"){
                                     
                                     $whichPayment =  "Second Payment";
                                     if ($diff > 0 && $pays->is_first_payment_partially_paid == 1) {
@@ -268,7 +270,7 @@ $pid = $app_id;
                                     }
 
                                  }
-                                 elseif($pays->second_payment_status =="Paid" && $pays->third_payment_status =="Pending"){
+                                 elseif($pays->second_payment_status =="Paid" && $pays->third_payment_status =="PENDING"){
                                     
                                     $whichPayment =  "Third Payment";
                                     if ($diff > 0 && $pays->is_second_payment_partially_paid == 1) {
@@ -285,41 +287,55 @@ $pid = $app_id;
                                         $pendMsg = "";
                                     }
 
+                                 }else {
+                                    $whichPayment =  "First Payment";
+                                    $payNow = $pdet->first_payment_price;
+                                    $payNoww = $pdet->first_payment_price;
+                                    $pendMsg = "";
                                  }
                                  $discount=0;
 
                                 } else {
-                                    if($pays->first_payment_status =="Pending"){
+                                    if($pays->first_payment_status =="PENDING"){
                                         $payNow = $pdet->total_price;
                                         $payNoww = $pdet->total_price;
                                         $pendMsg = "Full Payment";
-                                    } elseif($pays->first_payment_status =="Paid" && $pays->second_payment_status =="Pending"){
+                                        $discountPercent = $data->full_payment_discount . '%';
+                                        $discount = ($pdet->total_price * $data->full_payment_discount / 100);
+                                    } elseif($pays->first_payment_status =="Paid" && $pays->second_payment_status =="PENDING"){
                                         $payNow = $pdet->total_price - $pdet->first_payment_price;
                                         $payNoww = $payNow;
                                         $pendMsg = "Full Outstanding Payment";
-                                    } else if ($pays->second_payment_status =="Paid" && $pays->third_payment_status =="Pending") {
+
+                                        $discountPercent = $data->full_payment_discount . '%';
+                                        $discount = ($pdet->total_price * $data->full_payment_discount / 100);
+                                    } elseif ($pays->second_payment_status =="Paid" && $pays->third_payment_status =="PENDING") {
                                         $payNow = $pdet->third_payment_price;
                                         $payNoww = $payNow;
                                         $pendMsg = "";
+                                        $discountPercent = '';
+                                        $discount = 0;
                                     }else{
                                         $payNow = 0;
                                         $payNoww = $payNow;
                                         $pendMsg = "";
+                                        $discountPercent = '';
+                                        $discount = 0;
                                     }
 
                                     $whichPayment =  "Full Payment";
-                                    $discountPercent = $data->full_payment_discount . '%';
-                                    $discount = ($pdet->total_price * $data->full_payment_discount / 100);
+                                    // $discountPercent = $data->full_payment_discount . '%';
+                                    // $discount = ($pdet->total_price * $data->full_payment_discount / 100);
                                 }
-                                $payNow = 0;
+                                // $payNow = 0;
                                 $vatPercent = '5%';
                                 $vat = ($payNow * 5) / 100;
                                 $totalPay = ($payNow + $vat) - $discount;
 
                                 list($which, $zzz) = explode(' ', $whichPayment);
-                            // }
+                             
                             ?>
-
+                    
 
                                 <div class="row payament-sec">
                                     <div class="col-6" style="padding-right:20px">
@@ -327,10 +343,13 @@ $pid = $app_id;
                                             <div class="total-sec row mt-3">
                                                 <div class="left-section col-6">
 
-                                                    @if( $whichPayment  == "First Payment")
+                                                    @if($whichPayment  == "First Payment")
 
-                                                    <b>First Payment</b> @if(strlen($pendMsg)>1) <br>
+                                                    <b>First Payment</b> 
+                                                    @if(strlen($pendMsg)>1) 
+                                                    <br>
                                                     <font style='font-size:11px;color:red'><i fa fa-arrow-up></i> {{-- {{ $pendMsg }} --}} </font> 
+                                                    @endif
                                                     @else
                                                     First Payment
 
@@ -338,7 +357,7 @@ $pid = $app_id;
                                                     <span style="font-size:11px">(+ 5% VAT)</span>
                                                 </div>
                                                 <div class="right-section col-6" align="right">
-                                                    @if( $whichPayment == "First Payment")
+                                                    @if($whichPayment == "First Payment")
                                                     @php $vat = $first_pay*5/100; @endphp
                                                     <b>{{number_format($first_pay,2)}}</b>
 
@@ -427,21 +446,24 @@ $pid = $app_id;
                                                     <span style="font-size:11px">AED</span>
                                                 </div>
                                             </div>
-                                            <div class="total-sec row mt-3 showDiscount">
+                                            <div class="total-sec row mt-3 showDiscount" id ="showDiscount">
                                                 <div class="left-section col-6">
                                                
-                                                    @if(Session::has('haveCoupon'))
-                                                      Discount (<span id="discountPercent">{{$discountPercent}} </span>)
-                                                    @endif 
+                                                   
+                                                      Discount (<span id="discountPercent">{({$discountPercent) ? $discountPercent : ''}} </span>)
+                                                    
 
                                                 </div>
                                                 <div class="right-section col-6" align="right">
-                                                @if(Session::has('haveCoupon'))
+                                              
                                                     <span id="discountValue">{{number_format($discount,2)}} </span>
                                                     <span style="font-size:11px" id="discountVal">AED</span>
-                                                @endif   
-                                                   
+                                                    <input type="hidden" name="discount" id="myDiscount" value="{{$discount}}">
+                                                    <input type="hidden" name="discountCode" id="myDiscountCode" value="">
+                                                    <input type="hidden" name="vats" id="vats" value="$vat">
+                                                
                                                 </div>
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -489,7 +511,7 @@ $pid = $app_id;
                 
 
                     <input type="hidden" name="pid" value="{{$data->id}}">
-                    <input type="hidden" name="ppid" value="{{(isset($det_id))?$det_id:''}}">
+                    <input type="hidden" name="ppid" value="{{(isset($pdet->id))?$pdet->id:''}}">
                     <input type="hidden" name="uid" value="{{Auth::user()->id}}">
                     <input type="hidden" name="whichpayment" value="{{ ($whichPayment) ? $whichPayment : 'First Payment' }}">
                     
@@ -502,12 +524,13 @@ $pid = $app_id;
                             </div>
                         </div>
                     </form>
+            </div>
 @endsection
 @push('custom-scripts')
 <script>
     $(document).ready(function(){
 
-        // $('#showDiscount').hide();
+        $('#showDiscount').hide();
         $('#discount').hide();
         $('.dicountBtn').click(function(){
 
@@ -522,20 +545,38 @@ $pid = $app_id;
                 }
             }).done( function (response) {
             
-                if (response) {
+                if (response.status == true) {
                     // alert(response.myDiscount);
+                    // alert(response.status);
                     console.log(response);
-                    $('#discountValue').html(response.discountamt);
+         
+                    var nf = Intl.NumberFormat(); 
+                    let amtNow = response.topaynow;
+                    let amtNoww = nf.format(amtNow);
+
+                    let discountAmt = response.discountamt;
+                    let discountAmtt = nf.format(discountAmt);
+              
+
+                    $('#discountValue').html(discountAmtt);
                     $('#discountPercent').html(response.discountPercent);
-                     
-                    $('#amountLink').html(parseInt(response.topaynow));
+
+                    $('#amountLink').html(amtNoww);
 
                     document.getElementById("amountLink2").value = response.topaynow;
+
+                    document.getElementById("myDiscount").value = response.discountamt;
+                    document.getElementById("myDiscountCode").value = $('#discount_code').val();
                     // document.getElementById("totaldue").value = response.topaynow;
                     // $('#amountLink2').html(response.topaynow);
                     // $('#totaldue').html(response.topaynow);
+                    $('#showDiscount').show();
 
                 } else {
+                    let preAmt = $('#totaldue').val();
+                    $('#amountLink').html(preAmt);
+                    
+                    $('#showDiscount').hide();
                     alert('Invalid Discount Code');
                 }
             });
@@ -559,6 +600,8 @@ $pid = $app_id;
                     console.log(response);
                         $('#discount').show();
                     // $('#target-div').html(response.status); 
+                } else {
+                    $('#discount').hide();
                 }
             });
             });
@@ -567,26 +610,6 @@ $pid = $app_id;
     });
 
 
-   
-
-    // $('#discountForm').on('submit', function(e){
-    //     e.preventDefault(); 
-
-    //     var $this = $(this); 
-    //     $.ajax({ 
-    //         url: '{{ route("getPromo") }} ',
-    //         method: 'POST',
-    //         data: {
-    //             "_token": "{{ csrf_token() }}",
-    //         }
-    //     }).done( function (response) {
-        
-    //         if (response) {
-    //             alert(response.status)
-    //             // $('#target-div').html(response.status); 
-    //         }
-    //     });
-    // });
 </script>
 @endpush
 <script src="{{asset('js/alert.js')}}"></script>

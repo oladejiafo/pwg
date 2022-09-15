@@ -47,8 +47,8 @@
 </style>
 </head>
 <?php
- $status = DB::table('applicants')
-                ->where('user_id', '=', Auth::user()->id)
+ $status = DB::table('applications')
+                ->where('client_id', '=', Auth::user()->id)
                 ->first();
 ?>
 
