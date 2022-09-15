@@ -348,7 +348,7 @@ class HomeController extends Controller
             ->where('client_id', '=', Auth::user()->id)
             ->orderBy('id','desc')
             ->first();
-
+// dd($complete);
             // {
             if($complete)
             {
@@ -390,7 +390,7 @@ class HomeController extends Controller
                 Session::put('myproduct_id', $p_id);
             }
 
-            if($complete->visa_type){
+            if(isset($complete->visa_type)){
                 $packageType = $complete->visa_type;
             }
             elseif (Session::has('packageType')) {
@@ -647,7 +647,7 @@ class HomeController extends Controller
                 } else {
                     $totalpay = $request->totalpay;
                 }
-                
+                // dd($request->vats);
                 $outstand= $request->totalpay + $thisVat;
 
                 if ($request->totaldue == $outstand) {
@@ -983,7 +983,7 @@ class HomeController extends Controller
             $discountPercent = 'PROMO: ' . $my_discount . '%';
             $discountamt = ($my_discount *  $request->totaldue) / 100;
 
-            $topaynow = $request->totaldue  + ($request->totaldue * 5/100) - (($my_discount *  $request->totaldue) / 100);
+            $topaynow = $request->totaldue  - (($my_discount *  $request->totaldue) / 100);
           
 
             Session::put('haveCoupon', 1);
@@ -1000,7 +1000,7 @@ class HomeController extends Controller
 
             // return \Redirect::route('payment', $id);
         } else {
-            $topaynoww = $request->totaldue  + ($request->totaldue * 5/100); //If no promo
+            $topaynoww = $request->totaldue; //If no promo
             Session::put('haveCoupon', 0);
             $response['haveCoupon'] = 0;
             $response['topaynow'] = $topaynoww;
@@ -1071,11 +1071,11 @@ class HomeController extends Controller
     public function card_details(Request $request) 
     {  
         $validator = \Validator::make($request->all(), [
-            'card_number' => 'required|numeric|digits:16',
+            'card_number' => 'required|digits:16',
             'name' => 'required',
             'month' => 'required|numeric',
-            'year' => 'required|numeric|digits:4|max:'.(date('Y')+100),
-            'cvc' => 'required|numeric|digits:3'
+            'year' => 'required|numeric|digits:4|max:'.(date('Y')+100)
+           
         ]);
 
         if($validator->fails()) {
@@ -1087,17 +1087,17 @@ class HomeController extends Controller
         } else {
 
             // Save Payment Information
-            $apply = DB::table('applicants')
-            ->where('user_id', '=', Auth::user()->id)
+            $apply = DB::table('applications')
+            ->where('client_id', '=', Auth::user()->id)
             ->first();
             // $applicant_id = $apply->id;
 
-            $datas = cardDetail::where('application_id', '=', $apply->id)->where('user_id', '=', Auth::user()->id)->first();
+            $datas = cardDetail::where('client_id', '=', Auth::user()->id)->first();
             if ($datas === null) {
                 $data = new cardDetail();
                 // $data->product_payment_id = $request->ppid;
-                $data->application_id = $apply->id;
-                $data->user_id = Auth::user()->id;
+                // $data->application_id = $apply->id;
+                $data->client_id = Auth::user()->id;
                 $data->card_holder_name = $request->name;
             
                 $data->card_number = $request->card_number;
@@ -1108,8 +1108,8 @@ class HomeController extends Controller
                 $data->save();
             } else {
                 // $datas->product_payment_id = $request->ppid;
-                $datas->application_id = $apply->id;
-                $datas->user_id = Auth::user()->id;
+                // $datas->application_id = $apply->id;
+                $datas->client_id = Auth::user()->id;
                 $datas->card_holder_name = $request->name;
             
                 $datas->card_number = $request->card_number;
@@ -1191,6 +1191,7 @@ public function mark_read(Request $request) {
                 $res = cardDetail::updateOrCreate([
                     'client_id' => Auth::id()
                 ],[
+                    'client_id' => Auth::id(),
                     'card_number' => $paymentResponse->paymentMethod->pan,
                     'card_holder_name' => $paymentResponse->paymentMethod->cardholderName,
                     'month' => $monthYear[0],

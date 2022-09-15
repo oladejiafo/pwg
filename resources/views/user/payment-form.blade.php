@@ -460,7 +460,7 @@ $pid = $app_id;
                                                     <span style="font-size:11px" id="discountVal">AED</span>
                                                     <input type="hidden" name="discount" id="myDiscount" value="{{$discount}}">
                                                     <input type="hidden" name="discountCode" id="myDiscountCode" value="">
-                                                    <input type="hidden" name="vats" id="vats" value="$vat">
+                                                    <input type="hidden" name="vats" id="vats" value="{{$vat}}">
                                                 
                                                 </div>
                                                 

@@ -64,51 +64,6 @@ class ApplicationController extends Controller
 
     public function applicantDetails($productId)
     {
-        session()->forget('info');
-
-        // $url = "https://bo.pwggroup.ae/api/get-job-category-list";
-        // $client = new \GuzzleHttp\Client();
-        // $response = $client->request('Post', $url);
-        // $jobs = json_decode($response->getBody());
-        // dd($jobs);
-        // foreach($jobs as $job)
-        // {
-        // //     // JobCategoryOne::create(
-        // //     //     [
-        // //     //         'name' => $job->name,
-        // //     //     ]
-        // //     // );
-
-        //     foreach($job->job_category_two as $catOne)
-        //     {
-        //         // JobCategoryTwo::create([
-        //         //     'job_category_one_id' => $job->id,
-        //         //     'name' => $catOne->name
-        //         // ]);
-        // //         die;
-        //         foreach($catOne->job_category_three as $cattwo)
-        //         {
-        //             JobCategoryThree::create([
-        //                 'name' => $catOne->name,
-        //                 'job_category_two_id' => $catOne->id,
-        //             ]);
-
-        //             // foreach($cattwo as $cat)
-        //             // {
-        //             //     JobCategoryFour::create([
-        //             //         'job_category_three_id' => $cattwo->id,
-        //             //         'name' => $cat->name,
-        //             //         'description'  => $cat->description,
-        //             //         'example_titles'  => $cat->example_titles,
-        //             //         'main_duties'  => $cat->main_duties,
-        //             //         'employement_requirements'  => $cat->employement_requirements
-        //             //     ]);
-        //             // }
-        //         }
-        //     }
-        // }
-        // die;
-
         if (Auth::id()) {
             $client = User::find(Auth::id());
 

@@ -37,15 +37,14 @@
 </style>
 
 <?php
- $apply = DB::table('applicants')
- ->where('user_id', '=', Auth::user()->id)
+ $apply = DB::table('applications')
+ ->where('client_id', '=', Auth::user()->id)
  ->first();
 
 $applicant_id = $apply->id; 
 
 $card = DB::table('card_details')
-->where('application_id', '=', $applicant_id)
-->where('user_id', '=', Auth::user()->id)
+->where('client_id', '=', Auth::user()->id)
 ->orderBy('id', 'desc')
 ->first();
 
@@ -62,7 +61,7 @@ $card = DB::table('card_details')
   <div class="row mb-3" style="width:70%; margin: 0 auto; margin-bottom:20px">
    <div class="col">
     <label for="card_number" class="form-label">Card Number</label>
-    <input type="text" class="form-control" name="card_number" id="card_number" pattern="\d*" maxlength="16" value="{{(isset($card->card_number)) ? $card->card_number : '' }}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required>
+    <input type="text" class="form-control" name="card_number" id="card_number"  maxlength="16" value="{{(isset($card->card_number)) ? $card->card_number : '' }}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required>
     @if($errors->has('card_number'))
     <div class="error">{{ $errors->first('card_number') }}</div>
     @endif
