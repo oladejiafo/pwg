@@ -31,6 +31,10 @@
         padding: 0;
         margin: 0%;
     }
+    .navbar-profile-name {
+      text-decoration: none !important;
+      color:black !important;
+    }
 
     .navbar .container {
         padding-left: 0px;

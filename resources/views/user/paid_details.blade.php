@@ -1,6 +1,6 @@
 <!-- Theme style  -->
 <link rel="stylesheet" href="{{asset('user/extra/css/styled.css')}}">
-@php  //$payNow = $whichPayment = 0; @endphp
+
 <div class="row card">
 
     <div class="col-md-12">
@@ -11,7 +11,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading" role="tab" id="headingOne">
                             <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne"> &nbsp; @foreach($prod as $pp) {{$pp->name}} @endforeach PACKAGE
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne"> &nbsp;  {{$prod->name}} PACKAGE
                                 </a>
                             </h4>
                         </div>
@@ -19,38 +19,35 @@
                         <div id="collapseOne" class="panel-collapse" role="tabpanel" aria-labelledby="headingOne">
                             <!-- collapse in -->
                             <div class="panel-body">
-                            <?php $ptid=[]; ?>
-            @foreach($paid as $index => $pd)
-              <?php
-                array_push($ptid, $pd->product_payment_id);
-              ?>
-            @endforeach 
 
-                                @foreach($pays as $pay)
+
+                              
 
                                 <?php
-                                $pay_id = $pay->id;
-                                $payment = $pay->payment;
-                                $amount = $pay->amount;
+                                $pay_id = $pays->id;
+                                // $payment = $pay->payment;
+                                // $amount = $pay->amount;
                                 
                                
-                                $ppid = $pay->id;
+                                $ppid = $pays->id;
                                 // $ptid = $pd->product_payment_id;
                                 
                                 ?>
+
+                                <!-- First Begins -->
                                 <div class="row">
                                     <div class="col-md-3" align="left">
                                         <p>
-                                            {{$pay->payment}}
+                                            First Payment
                                         </p>
                                     </div>
                                     <div class="col-md-3" align="left">
                                         <p>
-                                        @if(in_array($ppid, $ptid))
+                                         @if($paid->first_payment_status =='Paid')
                                             Status PAID
-                                            @else
+                                         @else
                                             Status PENDING
-                                            @endif
+                                         @endif
 
                                         </p>
                                     </div>
@@ -58,112 +55,128 @@
                                         <p>
 
                                            
-                                        @if(in_array($ppid, $ptid))
+                                        @if($paid->first_payment_status =='Paid')
 
                                             <a class="btn btn-secondary" style="font-family: 'TT Norms Pro';font-weight:700" href="#">Get Reciept</a>
-                                            @else
-                                        <form action="{{ route('payment',$pp->id) }}" method="GET">
+                                       @else
+                                         <form action="{{ route('payment',$prod->id) }}" method="GET">
 
                                             <button class="btn btn-secondary" style="font-weight:700">Pay Now</button>
-                                        </form>
-                                        <!-- <a class="btn btn-secondary" style="font-family: 'TT Norms Pro';font-weight:700" href="{{ url('payment') }}">Pay Now</a> -->
+                                         </form>
+
                                         @endif
 
                                         </p>
                                     </div>
                                 </div>
                                 <hr>
-                                @endforeach
+                                 <!-- first Ends -->
+
+                                
+                                <!-- Second Begins -->
+                                <div class="row">
+                                    <div class="col-md-3" align="left">
+                                        <p>
+                                           Second Payment
+                                        </p>
+                                    </div>
+                                    <div class="col-md-3" align="left">
+                                        <p>
+                                         @if($paid->second_payment_status =='Paid')
+                                            Status PAID
+                                         @else
+                                            Status PENDING
+                                         @endif
+
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6" align="right">
+                                        <p>
+
+                                           
+                                        @if($paid->second_payment_status =='Paid')
+
+                                            <a class="btn btn-secondary" style="font-family: 'TT Norms Pro';font-weight:700" href="#">Get Reciept</a>
+                                       @else
+                                         <form action="{{ route('payment',$prod->id) }}" method="GET">
+
+                                            <button class="btn btn-secondary" style="font-weight:700">Pay Now</button>
+                                         </form>
+
+                                        @endif
+
+                                        </p>
+                                    </div>
+                                </div>
+                                <hr>
+                                 <!-- Second Ends -->
+                                
+                                <!-- Third Begins -->
+                                @if($pays->third_payment_price > 0)
+                                <div class="row">
+                                    <div class="col-md-3" align="left">
+                                        <p>
+                                           Third Payment
+                                        </p>
+                                    </div>
+                                    <div class="col-md-3" align="left">
+                                        <p>
+                                         @if($paid->third_payment_status =='Paid')
+                                            Status PAID
+                                         @else
+                                            Status PENDING
+                                         @endif
+
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6" align="right">
+                                        <p>
+
+                                           
+                                        @if($paid->third_payment_status =='Paid')
+
+                                            <a class="btn btn-secondary" style="font-family: 'TT Norms Pro';font-weight:700" href="#">Get Reciept</a>
+                                       @else
+                                         <form action="{{ route('payment',$prod->id) }}" method="GET">
+
+                                            <button class="btn btn-secondary" style="font-weight:700">Pay Now</button>
+                                         </form>
+
+                                        @endif
+
+                                        </p>
+                                    </div>
+                                </div>
+                                @endif
+                                 <!-- Third Ends -->
+
                             </div>
                         </div>
-                    </div>
+                    </div>  
 
 
+                    @if($paid->third_payment_status != 'Paid')
                     <div class="row" style="font-size:18px">
                         <div style="align-items: left; align:left; float: left; padding-left:40px;padding-right:40px" class="col-12">Your next payment is <b>
 
-                                @foreach($prod as $pdd) <?php  $pdd = $pdd->id; ?> @endforeach
+                          @if($paid->second_payment_status =='Paid')                      
+                            {{ $pays->third_payment_price }} AED
+                            </b>, to be charged for Third Payment.
+                          @elseif($paid->first_payment_status =='Paid')
+                            {{ $pays->second_payment_price }} AED
+                            </b>, to be charged for Second Payment.
+                          @elseif($paid->first_payment_status !='Paid' && $paid->second_payment_status !='Paid')
+                           {{ $pays->first_payment_price }} AED
+                            </b>, to be charged for First Payment.
+                          @endif
 
-                                <?php
-                                $items = DB::table('applicants')
-                                    ->leftJoin('payments', 'payments.application_id', '=', 'applicants.id')
-                                    ->leftJoin('product_payments', 'product_payments.id', '=', 'payments.product_payment_id')
-                                    ->select('product_payments.*', 'payments.product_payment_id', 'payments.total')
-                                    ->where('applicants.user_id', '=', Auth::user()->id)
-                                    ->where('applicants.product_id', '=', $pdd)
-                                    ->orderBy('payments.id', 'desc')
-                                    ->limit(1)
-                                    ->get();
-                                ?>
-                                @foreach($items as $item)
-                                <?php
-                                $pp = $item->product_payment_id;
-                                ?>
-                                @endforeach
-
-
-                                @foreach($pays as $index => $pd)
-                                @foreach($paid as $det)
-                                @php
-
-                                $complete = DB::table('applicants')
-                                ->where('user_id', '=', Auth::user()->id)
-                                ->first();
-
-                                $app_id= $complete->id;
-
-                                if(Session::has('myproduct_id'))
-                                {
-                                $pid = Session::get('myproduct_id');
-                                } else {
-                                $pid =$app_id;  
-                                }
-
-                                $tri = DB::table('payments')
-                                ->where('application_id', '=', $app_id)
-                                ->orderBy('id', 'DESC')
-                                ->first();
-                             
-                                @endphp
-
-
-
-<?php $nextt = $tri->product_payment_id +1; ?>
-
-                        @if($nextt == $pd->id)
-                        
-                                <?php
-
-                                $payNow = $pd->amount;
-
-                                $whichPayment =  $pd->payment;
-
-                                ?>
-                                @else 
-
-                                 @if($index==0 && $loop->first)
-     
-                                 <?php
-                                 $payNow = $pd->amount;
-                                 $whichPayment =  $pd->payment;
-                                 ?>
-                                 @endif
-                                @endif
-                              
-                                @endforeach
-                                @endforeach
-
-                                {{ isset($payNow) ? number_format($payNow) : '' }}
-
-
-                                AED
-                            </b>, to be charged for {{ isset($whichPayment) ? $whichPayment : '' }}.</div>
-
-
-
+                        </div>
                     </div>
+                    @endif
 
                 </div>
+
+
             </div>
         </div>
     </div>

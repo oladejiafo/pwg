@@ -345,7 +345,7 @@ class HomeController extends Controller
 
             $complete = DB::table('applications')
 
-            ->where('user_id', '=', Auth::user()->id)
+            ->where('client_id', '=', Auth::user()->id)
             ->orderBy('id','desc')
             ->first();
 
@@ -353,9 +353,9 @@ class HomeController extends Controller
             if($complete)
             {
               $app_id= $complete->id;
-              $p_id= $complete->product_id;
-              $hasSpouse = $complete->is_spouse;
-              $children = $complete->children_count;
+              $p_id= $complete->destination_id;
+            //   $hasSpouse = $complete->is_spouse;
+            //   $children = $complete->children_count;
              }
              else {
                 $app_id= 0;
@@ -375,10 +375,10 @@ class HomeController extends Controller
                 $children =0;
             }
 
-            $families = DB::table('family_breakdowns')
-                ->where('children', '=', $children)
-                ->where('parent', '=', $yesSpouse)
-                ->where('visa_type', '=', 'FAMILY PACKAGE')
+            $families = DB::table('pricing_plans')
+                ->where('no_of_children', '=', $children)
+                ->where('no_of_parent', '=', $yesSpouse)
+                ->where('pricing_plan_type', '=', 'FAMILY PACKAGE')
                 ->get();
 
             foreach ($families as $famili) {
@@ -409,45 +409,44 @@ class HomeController extends Controller
             }
 
 
-            if ($packageType == "FAMILY PACKAGE") {
-                $pays = DB::table('product_payments')
-                    ->join('applicants', 'applicants.product_id', '=', 'product_payments.product_id')
-                    ->select('product_payments.id', 'product_payments.payment', 'product_payments.amount', 'product_payments.product_id')
-                    ->where('product_payments.visa_type', '=', $packageType)
-                    ->where('family_sub_id', '=', $family_id)
-                    ->where('applicants.user_id', '=', $id)
-                    ->orderBy('product_payments.id')
-                    ->groupBy('product_payments.payment')
-                    ->get();
-            } else {
-                $pays = DB::table('product_payments')
-                    ->join('applicants', 'applicants.product_id', '=', 'product_payments.product_id')
-                    ->select('product_payments.id', 'product_payments.payment', 'product_payments.amount', 'product_payments.product_id')
-                    ->where('product_payments.visa_type', '=', $packageType)
-                    ->where('applicants.user_id', '=', $id)
-                    ->orderBy('product_payments.id')
-                    ->groupBy('product_payments.payment')
-                    ->get();
-            }
+            // if ($packageType == "FAMILY PACKAGE") {
+            //     $pays = DB::table('pricing_plans')
+            //         ->join('applications', 'applications.destination_id', '=', 'pricing_plans.destination_id')
+            //         ->select('pricing_plans.id', 'pricing_plans.pricing_plan_type', 'pricing_plans.total_price', 'pricing_plans.destination_id','pricing_plans.first_payment_price','pricing_plans.second_payment_price','pricing_plans.third_payment_price')
+            //         ->where('pricing_plans.pricing_plan_type', '=', $packageType)
+            //         // ->where('family_sub_id', '=', $family_id)
+            //         ->where('applications.client_id', '=', $id)
+            //         ->orderBy('pricing_plans.id')
+            //         // ->groupBy('pricing_plans.payment')
+            //         ->first();
+            // } else {
+                $pays = DB::table('pricing_plans')
+                ->join('applications', 'applications.destination_id', '=', 'pricing_plans.destination_id')
+                ->select('pricing_plans.id', 'pricing_plans.pricing_plan_type', 'pricing_plans.total_price', 'pricing_plans.destination_id','pricing_plans.first_payment_price','pricing_plans.second_payment_price','pricing_plans.third_payment_price')
+                ->where('pricing_plans.pricing_plan_type', '=', $packageType)
+                ->where('applications.client_id', '=', $id)
+                ->orderBy('pricing_plans.id')
+                    ->first();
+            // }
 // dd($pays);
             $paid = DB::table('payments')
-                ->join('applicants', 'payments.application_id', '=', 'applicants.id')
-                ->selectRaw('payments.*, applicants.*, COUNT(payments.id) as count')
+                ->join('applications', 'payments.application_id', '=', 'applications.id')
+                ->selectRaw('payments.*, applications.*, COUNT(payments.id) as count')
 
-                ->where('applicants.user_id', '=', $id)
+                ->where('applications.client_id', '=', $id)
                 ->groupBy('payments.id')
                 // ->groupBy('applicants.id')
-                ->orderBy('applicants.id', 'desc')
+                ->orderBy('applications.id', 'desc')
                 // ->limit(1)
-                ->get();
+                ->first();
 
-            $prod = DB::table('products')
-                ->join('applicants', 'products.id', '=', 'applicants.product_id')
-                ->select('products.name', 'products.id')
-                ->where('applicants.user_id', '=', $id)
-                ->groupBy('products.id')
-                ->get();
-// dd($pays, $paid);
+            $prod = DB::table('destinations')
+                ->join('applications', 'destinations.id', '=', 'applications.destination_id')
+                ->select('destinations.name', 'destinations.id')
+                ->where('applications.client_id', '=', $id)
+                ->groupBy('destinations.id')
+                ->first();
+// dd($prod);
             return view('user.myapplication', compact('paid', 'pays', 'prod'));
         } else {
             return redirect()->back()->with('message', 'You are not authorized');
@@ -480,15 +479,15 @@ class HomeController extends Controller
                 $yesSpouse = 1;
             }
 
-            $families = DB::table('pricing_plans')
-                ->where('children', '=', $children)
-                ->where('parent', '=', $yesSpouse)
-                ->where('visa_type', '=', 'FAMILY PACKAGE')
-                ->get();
+            // $families = DB::table('pricing_plans')
+            //     ->where('no_of_children', '=', $children)
+            //     ->where('no_of_parent', '=', $yesSpouse)
+            //     ->where('pricing_plan_type', '=', 'FAMILY PACKAGE')
+            //     ->get();
 
-            foreach ($families as $famili) {
-                $famCode = $famili->id;
-            }
+            // foreach ($families as $famili) {
+            //     $famCode = $famili->id;
+            // }
 
             if (session()->get('myproduct_id')) {
             } else if (isset($request->id)) {
@@ -514,52 +513,39 @@ class HomeController extends Controller
             }
 
 
-            //         $coupons = DB::table('promos')
-            //         ->select('discount_percent')
-            //         ->where('product_id', '=', $id)
-            //         ->where('validity', '>=', date('Y-m-d'))
-            //         ->get();
 
-            //         foreach($coupons as $coupon) 
-            //         {
-            //                 $my_discount = $coupon->discount_percent;
-            //         } 
-
-            // if ($coupon->first()) {
-            //     Session::put('myDiscount', $my_discount);
-            // }
             $data = product::find(Session::get('myproduct_id'));
 
             $pays = DB::table('applications')
-                ->leftJoin('payments', 'payments.application_id', '=', 'applicants.id')
-                ->leftJoin('product_payments', 'product_payments.id', '=', 'payments.product_payment_id')
-                ->select('product_payments.*', 'payments.product_payment_id', 'payments.total', 'payments.total_paid', 'payments.payment_status')
-                ->where('applicants.user_id', '=', Auth::user()->id)
-                ->where('applicants.product_id', '=', $id)
-                ->orderBy('payments.product_payment_id', 'desc')
+                // ->leftJoin('payments', 'payments.application_id', '=', 'applications.id')
+                // ->leftJoin('product_payments', 'product_payments.id', '=', 'payments.product_payment_id')
+                ->select('applications.pricing_plan_id', 'applications.total_price', 'applications.total_paid', 'applications.first_payment_status','applications.second_payment_status','applications.third_payment_status')
+                ->where('applications.client_id', '=', Auth::user()->id)
+                ->where('applications.destination_id', '=', $id)
+                // ->orderBy('payments.product_payment_id', 'desc')
                 ->limit(1)
-                ->get();
+                ->first();
 
 
-            if ($packageType == "FAMILY PACKAGE") {
-                if (Session::has('fam_id')) {
-                    $family_id = Session::get('fam_id');
-                } else {
-                    $family_id = $famCode;
-                }
-                $pdet = DB::table('product_payments')
-                    ->where('product_id', '=', Session::get('myproduct_id'))
-                    ->where('visa_type', '=', $packageType)
-                    ->where('family_sub_id', '=',  $family_id)
+            // if ($packageType == "FAMILY PACKAGE") {
+            //     if (Session::has('fam_id')) {
+            //         $family_id = Session::get('fam_id');
+            //     } else {
+            //         $family_id = $famCode;
+            //     }
+            //     $pdet = DB::table('product_payments')
+            //         ->where('product_id', '=', Session::get('myproduct_id'))
+            //         ->where('visa_type', '=', $packageType)
+            //         ->where('family_sub_id', '=',  $family_id)
+            //         // ->groupBy('product_payments.id')
+            //         ->get();
+            // } else {
+                $pdet = DB::table('pricing_plans')
+                    ->where('destination_id', '=', Session::get('myproduct_id'))
+                    ->where('pricing_plan_type', '=', $packageType)
                     // ->groupBy('product_payments.id')
-                    ->get();
-            } else {
-                $pdet = DB::table('product_payments')
-                    ->where('product_id', '=', Session::get('myproduct_id'))
-                    ->where('visa_type', '=', $packageType)
-                    // ->groupBy('product_payments.id')
-                    ->get();
-            }
+                    ->first();
+            // }
             // dd($pdet);
 
             return view('user.payment-form', compact('data', 'pdet', 'pays', 'payall'));
