@@ -983,7 +983,7 @@ class HomeController extends Controller
             $discountPercent = 'PROMO: ' . $my_discount . '%';
             $discountamt = ($my_discount *  $request->totaldue) / 100;
 
-            $topaynow = $request->totaldue  + ($request->totaldue * 5/100) - (($my_discount *  $request->totaldue) / 100);
+            $topaynow = $request->totaldue  - (($my_discount *  $request->totaldue) / 100);
           
 
             Session::put('haveCoupon', 1);
@@ -1000,7 +1000,7 @@ class HomeController extends Controller
 
             // return \Redirect::route('payment', $id);
         } else {
-            $topaynoww = $request->totaldue  + ($request->totaldue * 5/100); //If no promo
+            $topaynoww = $request->totaldue; //If no promo
             Session::put('haveCoupon', 0);
             $response['haveCoupon'] = 0;
             $response['topaynow'] = $topaynoww;
