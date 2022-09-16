@@ -204,22 +204,24 @@ class ApplicationController extends Controller
         
         $client->schengenVisaUrl = (isset($client->getMedia(User::$media_collection_main_schengen_visa)[0])) ? $client->getMedia(User::$media_collection_main_schengen_visa)[0]->getUrl() : null;
         $client->schengenVisaName = (isset($client->getMedia(User::$media_collection_main_schengen_visa)[0])) ? $client->getMedia(User::$media_collection_main_schengen_visa)[0]['name'] : ' ';
+        if($dependent){
+            $dependent->passportUrl = (isset($dependent->getMedia(User::$media_collection_main)[0])) ? $dependent->getMedia(User::$media_collection_main)[0]->getUrl() : null;
+            $dependent->passportName = (isset($dependent->getMedia(User::$media_collection_main)[0])) ? $dependent->getMedia(User::$media_collection_main)[0]['name'] : null;
+            
+            $dependent->residenceUrl = (isset($dependent->getMedia(User::$media_collection_main_residence_id)[0])) ? $dependent->getMedia(User::$media_collection_main_residence_id)[0]->getUrl() : null;
+            $dependent->residenceName = (isset($dependent->getMedia(User::$media_collection_main_residence_id)[0])) ? $dependent->getMedia(User::$media_collection_main_residence_id)[0]['name'] : ' ';
+
+            $dependent->resumeName = (isset($dependent->getMedia(User::$media_collection_main_resume)[0])) ? $dependent->getMedia(User::$media_collection_main_resume)[0]['name'] : null;
+            $dependent->resumeUrl = (isset($dependent->getMedia(User::$media_collection_main_resume)[0])) ? $dependent->getMedia(User::$media_collection_main_resume)[0]->getUrl() : null;
+
+
+            $dependent->schengenVisaName = (isset($dependent->getMedia(User::$media_collection_main_schengen_visa)[0])) ? $dependent->getMedia(User::$media_collection_main_schengen_visa)[0]['name'] : ' ';
+            $dependent->schengenVisaUrl = (isset($dependent->getMedia(User::$media_collection_main_schengen_visa)[0])) ? $dependent->getMedia(User::$media_collection_main_schengen_visa)[0]->getUrl() : null;
+
+            $dependent->visaName = (isset($dependent->getMedia(User::$media_collection_main_residence_visa)[0])) ? $dependent->getMedia(User::$media_collection_main_residence_visa)[0]['name'] : ' ';
+            $dependent->visaCopyUrl = (isset($dependent->getMedia(User::$media_collection_main_residence_visa)[0])) ? $dependent->getMedia(User::$media_collection_main_residence_visa)[0]->getUrl() : null;
+        }
         
-        $dependent->passportUrl = (isset($dependent->getMedia(User::$media_collection_main)[0])) ? $dependent->getMedia(User::$media_collection_main)[0]->getUrl() : null;
-        $dependent->passportName = (isset($dependent->getMedia(User::$media_collection_main)[0])) ? $dependent->getMedia(User::$media_collection_main)[0]['name'] : null;
-        
-        $dependent->residenceUrl = (isset($dependent->getMedia(User::$media_collection_main_residence_id)[0])) ? $dependent->getMedia(User::$media_collection_main_residence_id)[0]->getUrl() : null;
-        $dependent->residenceName = (isset($dependent->getMedia(User::$media_collection_main_residence_id)[0])) ? $dependent->getMedia(User::$media_collection_main_residence_id)[0]['name'] : ' ';
-
-        $dependent->resumeName = (isset($dependent->getMedia(User::$media_collection_main_resume)[0])) ? $dependent->getMedia(User::$media_collection_main_resume)[0]['name'] : null;
-        $dependent->resumeUrl = (isset($dependent->getMedia(User::$media_collection_main_resume)[0])) ? $dependent->getMedia(User::$media_collection_main_resume)[0]->getUrl() : null;
-
-
-        $dependent->schengenVisaName = (isset($dependent->getMedia(User::$media_collection_main_schengen_visa)[0])) ? $dependent->getMedia(User::$media_collection_main_schengen_visa)[0]['name'] : ' ';
-        $dependent->schengenVisaUrl = (isset($dependent->getMedia(User::$media_collection_main_schengen_visa)[0])) ? $dependent->getMedia(User::$media_collection_main_schengen_visa)[0]->getUrl() : null;
-
-        $dependent->visaName = (isset($dependent->getMedia(User::$media_collection_main_residence_visa)[0])) ? $dependent->getMedia(User::$media_collection_main_residence_visa)[0]['name'] : ' ';
-        $dependent->visaCopyUrl = (isset($dependent->getMedia(User::$media_collection_main_residence_visa)[0])) ? $dependent->getMedia(User::$media_collection_main_residence_visa)[0]->getUrl() : null;
         
         return view('user.application-review', compact('client', 'applicant', 'productId', 'dependent', 'children'))->with('success', 'Data saved successfully!');
     }
