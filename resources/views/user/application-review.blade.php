@@ -209,7 +209,7 @@
                                                 <div class="col-sm-4 mt-3">
                                                     <select name="sex"  aria-required="true" class="form-control form-select" required>
                                                         <option selected disabled>Sex *</option>
-                                                        <option {{($client['sex'] == 'MALE') ? 'selected' : '' }} value="Male">
+                                                        <option {{($client['sex'] == 'MALE') ? 'selected' : '' }} value="MALE"> Male
                                                         </option>
                                                         <option {{($client['sex'] == 'FEMALE') ? 'selected' : ''}} value="FEMALE">Female</option>
                                                     </select>
@@ -412,7 +412,7 @@
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="text" class="form-control residence_id" name="residence_copy" placeholder="Residence/Emirates ID*" value="{{$client['residenceName']}}" readonly >
+                                                    <input type="text" class="form-control residence_id" name="residence_copy" onclick="showSchengenVisaFormat()" placeholder="Residence/Emirates ID*" value="{{$client['residenceName']}}" readonly >
                                                     <div class="input-group-btn">
                                                         <span class="fileUpload btn">
                                                             <span class="upl" id="upload">Choose File</span>
@@ -423,7 +423,7 @@
                                                     <span class="residence_copy_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="text" class="form-control visa_copy" name="visa_copy" placeholder="Visa Copy" value="{{$client['visaName']}}" readonly >
+                                                    <input type="text" class="form-control visa_copy" name="visa_copy" onclick="showVisaFormat()" @if($client['visaCopyUrl']) value="{{$client['visaName']}}" @else placeholder="Visa Copy" @endif readonly >
                                                     <div class="input-group-btn">
                                                         <span class="fileUpload btn">
                                                             <span class="upl" id="upload">Choose File</span>
@@ -527,7 +527,7 @@
                                             </div>
                                             <div class="form-group row mt-4 schengen_visa">
                                                 <div class="col-sm-12 mt-3">
-                                                    <input type="text" class="form-control schengen_copy" name="schengen_copy" value="{{$client['schengenVisaName']}}" placeholder="Image of Schengen Or National Visa Issued During Last 5 Years" readonly >
+                                                    <input type="text" class="form-control schengen_copy" name="schengen_copy" @if($client['schengenVisaUrl']) onclick="showSchengenVisaFormat()" value="{{$client['schengenVisaName']}}" @else placeholder="Image of Schengen Or National Visa Issued During Last 5 Years" @endif readonly >
                                                     <div class="input-group-btn">
                                                         <span class="fileUpload btn">
                                                             <span class="upl" id="upload">Choose File</span>
@@ -833,11 +833,11 @@
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-12 mt-3">
-                                                    <input type="text" class="form-control dependent_resume" placeholder="Upload your cv (PDF only)*" name="dependent_resume" value="{{$dependent['resume']}}" readonly required>
+                                                    <input type="text" class="form-control dependent_resume" placeholder="Upload your cv (PDF only)*" name="dependent_resume" value="{{$dependent['resumeName']}}" readonly required>
                                                     <div class="input-group-btn">
                                                         <span class="fileUpload btn">
                                                             <span class="upl" id="upload">Choose File</span>
-                                                            <input type="file" class="upload up dependent_resume" id="up"  name="dependent_resume" accept="application/pdf" value="{{$dependent['resume']}}"/>
+                                                            <input type="file" class="upload up dependent_resume" id="up"  name="dependent_resume" accept="application/pdf" value="{{$dependent['resumeName']}}"/>
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
                                                     <a href="javascript:void(0)" data-toggle="modal" data-target="#resumeModal" onclick="showResume()">click to view uploaded resume</a>
@@ -1082,7 +1082,7 @@
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="text" class="form-control dependent_residence_copy" name="dependent_residence_copy" value="{{$dependent['residence_copy']}}" placeholder="Residence/Emirates ID*" readonly >
+                                                    <input type="text" class="form-control dependent_residence_copy" name="dependent_residence_copy" onclick="showResidenceIdFormat()" value="{{$dependent['residenceName']}}" placeholder="Residence/Emirates ID*" readonly >
                                                     <div class="input-group-btn">
                                                         <span class="fileUpload btn">
                                                             <span class="upl" id="upload">Choose File</span>
@@ -1093,14 +1093,16 @@
                                                     <span class="dependent_residence_copy_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="text" class="form-control dependent_visa_copy" name="dependent_visa_copy" value="{{$dependent['visa_copy']}}" placeholder="Visa Copy" readonly >
+                                                    <input type="text" class="form-control dependent_visa_copy" name="dependent_visa_copy" onclick="showVisaFormat()" @if($dependent['visaCopyUrl'] != null)  value="{{$dependent['visaName']}}" @else  placeholder="Visa Copy" @endif readonly >
                                                     <div class="input-group-btn">
                                                         <span class="fileUpload btn">
                                                             <span class="upl" id="upload">Choose File</span>
                                                             <input type="file" class="upload dependent_visa_copy" id="up"  name="dependent_visa_copy" />
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
-                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#dependentVisa" onclick="dependentVisa()">click to view uploaded visa copy</a>
+                                                    @if($dependent['visaCopyUrl'] != null)
+                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#dependentVisa" onclick="dependentVisa()">click to view uploaded visa copy</a>
+                                                    @endif
                                                 </div>
                                             </div>
                                             {{-- <div class="form-group row mt-4">
@@ -1197,14 +1199,14 @@
                                             </div>
                                             <div class="form-group row mt-4 dependent_schengen_visa">
                                                 <div class="col-sm-12 mt-3">
-                                                    <input type="text" class="form-control dependent_schengen_copy" name="dependent_schengen_copy" value="{{$dependent['schengen_visa']}}" placeholder="Image of Schengen Or National Visa Issued During Last 5 Years" readonly >
+                                                    <input type="text" class="form-control dependent_schengen_copy" name="dependent_schengen_copy" onclick="showSchengenVisaFormat()" @if($dependent['schengenVisaUrl'] != null) value="{{$dependent['schengenVisaName']}}" @else placeholder="Image of Schengen Or National Visa Issued During Last 5 Years" @endif readonly >
                                                     <div class="input-group-btn">
                                                         <span class="fileUpload btn">
                                                             <span class="upl" id="upload">Choose File</span>
                                                             <input type="file" class="upload dependent_schengen_copy" accept="image/png, image/gif, image/jpeg" name="dependent_schengen_copy" />
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
-                                                    @if($dependent['schengen_visa'])
+                                                    @if($dependent['schengenVisaUrl'] != null)
                                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#dependentSchengenVisatModal" onclick="dependentSchengenVisatModal()">click to view uploaded schengen visa copy</a>
                                                     @endif
                                                 </div>
@@ -1602,7 +1604,7 @@
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-body">
-                            <embed src="{{asset('storage/resumes/'.$dependent['resume'])}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />
+                            <embed src="{{$dependent['resumeUrl']}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
@@ -1614,7 +1616,7 @@
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-body">
-                            <embed src="{{asset('storage/passportCopy/'.$dependent['passport'])}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />
+                            <embed src="{{$dependent['passportUrl']}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
@@ -1626,7 +1628,7 @@
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-body">
-                            <embed src="{{asset('storage/residenceCopy/'.$dependent['residence_copy'])}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />
+                            <embed src="{{$dependent['residenceUrl']}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
@@ -1638,7 +1640,7 @@
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-body">
-                            <embed src="{{asset('storage/visaCopy/'.$dependent['visa_copy'])}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />
+                            <embed src="{{$dependent['visaCopyUrl']}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
@@ -1650,7 +1652,7 @@
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-body">
-                            <embed src="{{asset('storage/schengenCopy/'.$dependent['schengen_visa'])}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />
+                            <embed src="{{$dependent['schengenVisaUrl']}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
@@ -1659,6 +1661,42 @@
                 </div>
             </div>
         @endif
+        <div id="residenceIdFormatModal" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <img src="{{asset('images/ResidenceID.jpg')}}" width ="100%" height ="100%;">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn closeBtn" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="visaFormatModal" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <img src="{{asset('images/Visa.jpg')}}" width ="100%" height ="100%;">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn closeBtn" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="schengenVisaFormatModal" class="modal fade" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <img src="{{asset('images/ShengenVisa.jpg')}}" width ="100%" height ="100%;">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn closeBtn" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 @endSection  
 @push('custom-scripts')
@@ -1936,7 +1974,9 @@
             $('#dependentVisa').modal('hide');
             $('#dependentResidence').modal('hide');
             $('#dependentSchengenVisatModal').modal('hide');
-
+            $("#residenceIdFormatModal").modal('hide');
+            $('#visaFormatModal').modal('hide');
+            $('#schengenVisaFormatModal').modal('hide');
         });
 
         $('.applicantReview, .submitChild, .dependentReview').click(function(e){
@@ -2391,6 +2431,20 @@
     function dependentSchengenVisatModal()
     {
         $('#dependentSchengenVisatModal').modal('show');
+    }
+    function showResidenceIdFormat() 
+    {
+        $("#residenceIdFormatModal").modal('show');
+    } 
+
+    function showVisaFormat()
+    {
+        $("#visaFormatModal").modal('show');
+    }
+
+    function showSchengenVisaFormat()
+    {
+        $("#schengenVisaFormatModal").modal('show');
     }
 </script>
 <script src="https://unpkg.com/vue@next"></script>

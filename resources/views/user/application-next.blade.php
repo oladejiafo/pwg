@@ -148,6 +148,42 @@
             </div>
         </div>
     </div>
+    <div id="residenceIdFormatModal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <img src="{{asset('images/ResidenceID.jpg')}}" width ="100%" height ="100%;">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn closeBtn" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="visaFormatModal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <img src="{{asset('images/Visa.jpg')}}" width ="100%" height ="100%;">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn closeBtn" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="schengenVisaFormatModal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <img src="{{asset('images/ShengenVisa.jpg')}}" width ="100%" height ="100%;">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn closeBtn" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endSection
 @push('custom-scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
@@ -569,6 +605,9 @@
 
         $('.closeBtn').click(function(){
             $("#passportFormatModal").modal('hide');
+            $("#residenceIdFormatModal").modal('hide');
+            $('#visaFormatModal').modal('hide');
+            $('#schengenVisaFormatModal').modal('hide');
         });
 
         $('.mainApplicant').click(function(){
@@ -991,6 +1030,22 @@
     {
         $("#passportFormatModal").modal('show');
     }
+
+    function showResidenceIdFormat() 
+    {
+        $("#residenceIdFormatModal").modal('show');
+    } 
+
+    function showVisaFormat()
+    {
+        $("#visaFormatModal").modal('show');
+    }
+
+    function showSchengenVisaFormat()
+    {
+        $("#schengenVisaFormatModal").modal('show');
+    }
+
 
     function updateStatus(userType)
     {        
