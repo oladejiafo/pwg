@@ -467,6 +467,7 @@ class HomeController extends Controller
 
             $complete = DB::table('applications')
                 ->where('client_id', '=', Auth::user()->id)
+                ->whereNotIn('status',  ['APPLICATION_COMPLETED','VISA_REFUSED', 'APPLICATION_CANCELLED','REFUNDED'] )
                 ->orderBy('id', 'desc')
                 ->first();
 
