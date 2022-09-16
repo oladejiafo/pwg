@@ -308,7 +308,7 @@
                         </div>
                         <div class="form-group row mt-4">
                             <div class="col-sm-6 mt-3">
-                                <input type="text" class="form-control residence_id" name="residence_copy" placeholder="Residence/Emirates ID*" readonly >
+                                <input type="text" class="form-control residence_id" name="residence_copy" onclick="showResidenceIdFormat()" placeholder="Residence/Emirates ID*" readonly >
                                 <div class="input-group-btn">
                                     <span class="fileUpload btn">
                                         <span class="upl" id="upload">Choose File</span>
@@ -318,7 +318,7 @@
                                 <span class="residence_copy_errorClass"></span>
                             </div>
                             <div class="col-sm-6 mt-3">
-                                <input type="text" class="form-control visa_copy" name="visa_copy" placeholder="Visa Copy" readonly autocomplete="off">
+                                <input type="text" class="form-control visa_copy"  onclick="showVisaFormat()" name="visa_copy" placeholder="Visa Copy" readonly autocomplete="off">
                                 <div class="input-group-btn">
                                     <span class="fileUpload btn">
                                         <span class="upl" id="upload">Choose File</span>
@@ -424,7 +424,7 @@
                         </div>
                         <div class="form-group row mt-4 schengen_visa">
                             <div class="col-sm-12 mt-3">
-                                <input type="text" class="form-control schengen_copy" name="schengen_copy" placeholder="Image of Schengen Or National Visa Issued During Last 5 Years" readonly >
+                                <input type="text" class="form-control schengen_copy" onclick="showSchengenVisaFormat()" name="schengen_copy" placeholder="Image of Schengen Or National Visa Issued During Last 5 Years" readonly >
                                 <div class="input-group-btn">
                                     <span class="fileUpload btn">
                                         <span class="upl" id="upload">Choose File</span>
