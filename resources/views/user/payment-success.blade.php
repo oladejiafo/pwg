@@ -49,6 +49,8 @@
 <?php
  $status = DB::table('applications')
                 ->where('client_id', '=', Auth::user()->id)
+                ->where('destination_id', $id)
+                ->pluck('application_stage_status')
                 ->first();
 ?>
 
@@ -80,13 +82,11 @@
                             </label>
                             <p> Get the invoice Later </p>
                         </div>
-                        <?php
-                        if($status->applicant_status = 5)
-                        { ?>
+                        @if($status == 5)
                           <form action="{{ url('myapplication') }}" method="GET">
-                        <?php } else { ?>
+                        @else
                             <form action="{{ route('applicant',$id) }}" method="GET">
-                        <?php } ?>
+                        @endif
                             <input type="hidden" name="pid" value="{{$id}}">
                             <button  style="font-size:18px" class="btn btn-primary ose">APPLICATION DETAILS</button>
                         </form>

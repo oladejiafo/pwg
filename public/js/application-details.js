@@ -2107,6 +2107,7 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]({
         dependentId: app.dependentId
       }).then(function (response) {
         if (response) {
+          toastr.success('Experience Added Successfully !');
           app.getSelectedExperience();
           app.getDependentExperience();
         } else {
@@ -2122,6 +2123,7 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]({
         userType: userType,
         dependentId: app.dependentId
       }).then(function (response) {
+        toastr.success('Experience Removed Successfully !');
         app.getSelectedExperience();
         app.getDependentExperience();
       });

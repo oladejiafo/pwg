@@ -295,7 +295,7 @@
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-12 mt-3">
-                                                    <input type="text" name="passport_copy" class="form-control passport_copy" placeholder="Upload Passport Copy*" value="{{$client['passport']}}"  class="passportFormatModal" data-target="#passportFormatModal" onclick="showPassportFormat()" autocomplete="off" readonly/>
+                                                    <input type="text" name="passport_copy" class="form-control passport_copy" placeholder="Upload Passport Copy*" value="{{$client['passportName']}}"  class="passportFormatModal" data-target="#passportFormatModal" onclick="showPassportFormat()" autocomplete="off" readonly/>
                                                     <div class="input-group-btn">
                                                         <span class="fileUpload btn">
                                                             <span class="upl" id="upload">Choose File</span>
@@ -412,7 +412,7 @@
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="text" class="form-control residence_id" name="residence_copy" placeholder="Residence/Emirates ID*" value="{{$client['residence_copy']}}" readonly >
+                                                    <input type="text" class="form-control residence_id" name="residence_copy" placeholder="Residence/Emirates ID*" value="{{$client['residenceName']}}" readonly >
                                                     <div class="input-group-btn">
                                                         <span class="fileUpload btn">
                                                             <span class="upl" id="upload">Choose File</span>
@@ -423,24 +423,24 @@
                                                     <span class="residence_copy_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="text" class="form-control visa_copy" name="visa_copy" placeholder="Visa Copy" value="{{$client['visa_copy']}}" readonly >
+                                                    <input type="text" class="form-control visa_copy" name="visa_copy" placeholder="Visa Copy" value="{{$client['visaName']}}" readonly >
                                                     <div class="input-group-btn">
                                                         <span class="fileUpload btn">
                                                             <span class="upl" id="upload">Choose File</span>
                                                             <input type="file" class="upload visa_copy" id="up"  name="visa_copy" />
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
-                                                    @if($client['visa_copy'])
+                                                    @if($client['visaCopyUrl'])
                                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#visaCopyModal" onclick="visaCopyModal()">click to view uploaded visa copy</a>
                                                     @endif
                                                 </div>
                                             </div>
-                                            <div class="form-group row mt-4">
+                                            {{-- <div class="form-group row mt-4">
                                                 <div class="col-sm-12 mt-3">
                                                     <input type="text" name="current_job" class="form-control" placeholder="Profession As Per Current Job (or on Visa)*" value="{{$client['current_job']}}" autocomplete="off">
                                                     <span class="current_job_errorClass"></span>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-4 mt-3">
                                                     <input type="text" name="work_state" class="form-control" placeholder="Work State/Province*" value="{{$client['work_state']}}" autocomplete="off"/>
@@ -527,14 +527,14 @@
                                             </div>
                                             <div class="form-group row mt-4 schengen_visa">
                                                 <div class="col-sm-12 mt-3">
-                                                    <input type="text" class="form-control schengen_copy" name="schengen_copy" value="{{$client['schengen_visa']}}" placeholder="Image of Schengen Or National Visa Issued During Last 5 Years" readonly >
+                                                    <input type="text" class="form-control schengen_copy" name="schengen_copy" value="{{$client['schengenVisaName']}}" placeholder="Image of Schengen Or National Visa Issued During Last 5 Years" readonly >
                                                     <div class="input-group-btn">
                                                         <span class="fileUpload btn">
                                                             <span class="upl" id="upload">Choose File</span>
                                                             <input type="file" class="upload schengen_copy" accept="image/png, image/gif, image/jpeg" name="schengen_copy" />
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
-                                                    @if($client['schengen_visa'])
+                                                    @if($client['schengenVisaUrl'])
                                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#schengenVisatModal" onclick="schengenVisatModal()">click to view uploaded schengen visa copy</a>
                                                     @endif
                                                 </div>
@@ -963,7 +963,7 @@
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-12 mt-3">
-                                                    <input type="text" name="dependent_passport_copy" class="form-control dependent_passport_copy" placeholder="Upload Passport Copy*" value="{{$dependent['passport']}}" data-toggle="modal" class="passportFormatModal" data-target="#passportFormatModal" onclick="showPassportFormat()" autocomplete="off" readonly/>
+                                                    <input type="text" name="dependent_passport_copy" class="form-control dependent_passport_copy" placeholder="Upload Passport Copy*" value="{{$dependent['passportName']}}" data-toggle="modal" class="passportFormatModal" data-target="#passportFormatModal" onclick="showPassportFormat()" autocomplete="off" readonly/>
 
                                                     <div class="input-group-btn">
                                                         <span class="fileUpload btn">
@@ -1552,8 +1552,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-body">
-                        {{-- <embed src ="{{asset('storage/passportCopy/'.$applicant['passport'])}}"  style="margin: auto" /> --}}
-                        <embed src="{{asset('storage/passportCopy/'.$applicant['passport'])}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />
+                        <embed src="{{$client['passporUrl']}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
@@ -1565,7 +1564,7 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <embed src="{{asset('storage/residenceCopy/'.$applicant['residence_copy'])}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />    
+                        <embed src="{{$client['residenceUrl']}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />    
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
@@ -1578,7 +1577,7 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <embed src="{{asset('storage/visaCopy/'.$applicant['visa_copy'])}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />
+                        <embed src="{{$client['visaCopyUrl']}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
@@ -1590,7 +1589,7 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <embed src="{{asset('storage/schengenCopy/'.$applicant['schengen_visa'])}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />
+                        <embed src="{{$client['schengenVisaUrl']}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
@@ -1727,14 +1726,17 @@
                 data: formdata, 
                 success: function (data) {
                     if(data.success) {
+                        toastr.success('Applicant Details Updated Successfully !');
                     } else {
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
                             $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                            toastr.error(value);
                         });
                     }
                 },
                 errror: function (error) {
+                    toastr.error(error);
                 }
             });
         });
@@ -1758,15 +1760,18 @@
                 contentType: false,
                 success: function (data) {
                     if(data.success) {
+                        toastr.success('Home Country Details Updated Successfully !');
                         $('.passportFrame').src = data.passport;
                     } else {
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
                             $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                            toastr.error(value);
                         });
                     }
                 },
                 errror: function (error) {
+                    toastr.error(error);
                 }
             });
         });
@@ -1791,14 +1796,17 @@
                 contentType: false,
                 success: function (data) {
                     if(data.success) {
+                        toastr.success('Current Residence Details Updated Successfully');
                     } else {
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
                             $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                            toastr.error(value);
                         });
                     }
                 },
                 errror: function (error) {
+                    toastr.error(error);
                 }
             });
         });
@@ -1878,14 +1886,18 @@
                 contentType: false,
                 success: function (data) {
                     if(data.success) {
+                        toastr.error('Schengen Details updated Successfully');
                     } else {
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
                             $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+
+                            toastr.error(value);
                         });
                     }
                 },
                 errror: function (error) {
+                    toastr.error(error);
                 }
             });
         });
@@ -2012,6 +2024,7 @@
                 contentType: false,
                 success: function (data) {
                     if(data.success) {
+                        toastr.success('Dependent Deails Updated Successfully !');
                         $('.spouseApplicantData').show();
                         $('#collapsespouseHome').addClass('show');
                         $('.dependentApplicantCompleted').val(1);
@@ -2020,10 +2033,12 @@
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
                             $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                            toastr.error(value);
                         });
                     }
                 },
                 errror: function (error) {
+                    toastr.error(error);
                 }
             });
         });
@@ -2046,6 +2061,7 @@
                 contentType: false,
                 success: function (data) {
                     if(data.success) {
+                        toastr.success('Dependent Home Country Details Updated Successfully !');
                         $('.spouseHomeCountryData').show();
                         $('#collapseSpouseCurrent').addClass('show');
                         $('.spouseHomeCountryCompleted').val(1);
@@ -2054,10 +2070,12 @@
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
                             $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                            toastr.error(value);
                         });
                     }
                 },
                 errror: function (error) {
+                    toastr.error(error);
                 }
             });
         });
@@ -2080,6 +2098,7 @@
                 contentType: false,
                 success: function (data) {
                     if(data.success) {
+                        toastr.success('Dependent Current Residence Details Updated Successflly !')
                         $('.spouseCurrentCountryData').show();
                         $('#collapseSpouseSchengen').addClass('show');
                         $('.spouseCurrentCountryCompleted').val(1);
@@ -2088,10 +2107,12 @@
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
                             $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                            toastr.error(value);
                         });
                     }
                 },
                 errror: function (error) {
+                    toastr.error(error);
                 }
             });
         });
@@ -2116,6 +2137,7 @@
                 contentType: false,
                 success: function (data) {
                     if(data.success) {
+                        toastr.success('Dependent Schengen Details Updated Successfully !');
                         $('.spouseSchengenData').show();
                         $('#collapseSpouseExperience').addClass('show');
                         $('.schengenSpouseCompleted').val(1);
@@ -2124,10 +2146,12 @@
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
                             $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                            toastr.error(value);
                         });
                     }
                 },
                 errror: function (error) {
+                    toastr.error(error);
                 }
             });
         });
@@ -2230,15 +2254,18 @@
                 contentType: false,
                 success: function (data) {
                     if(data.success) {
+                        toastr.error('Data Updated Successully');
                         location.href = "{{url('myapplication')}}"
                     } else {
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
                             $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                            toastr.error(value);
                         });
                     }
                 },
                 errror: function (error) {
+                    toastr.error(error);
                 }
             });
         });

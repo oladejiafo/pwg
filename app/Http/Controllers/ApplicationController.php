@@ -24,6 +24,7 @@ class ApplicationController extends Controller
     public function applicant($productId)
     {
         if (Auth::id()) {
+            session()->forget('info');
             $completed = DB::table('applications')
                 ->where('destination_id', '=', $productId)
                 ->where('client_id', '=', Auth::user()->id)
@@ -121,7 +122,9 @@ class ApplicationController extends Controller
                 'sex' => $request['sex'],
                 'civil_status' => $request['civil_status']
             ]);
-        return Response::json(array('success' => true), 200);
+        return Response::json(array(
+                    'success' => true
+                    ), 200);
     }
 
     /**
@@ -186,6 +189,25 @@ class ApplicationController extends Controller
         $dependent = User::where('family_member_id', Auth::id())->where('is_dependent', 1)->first();
         $children = User::where('family_member_id', Auth::id())->where('is_dependent', 2)->get();
         // dd($user, $applicant, $dependent, $children);
+        $client->passportName = $client->getMedia(User::$media_collection_main)[0]['name'];
+        $client->passporUrl = ($client->getMedia(User::$media_collection_main)) ? $client->getMedia(User::$media_collection_main)[0]->getUrl() : null;
+        $client->residenceName = $client->getMedia(User::$media_collection_main_residence_id)[0]['name'];
+        $client->residenceUrl = ($client->getMedia(User::$media_collection_main_residence_id))?$client->getMedia(User::$media_collection_main_residence_id)[0]->getUrl() : null;
+        $client->visaName = ($client->getMedia(User::$media_collection_main_residence_visa)) ? $client->getMedia(User::$media_collection_main_residence_visa)[0]['name'] : ' ';
+        $client->visaCopyUrl = ($client->getMedia(User::$media_collection_main_residence_visa))?$client->getMedia(User::$media_collection_main_residence_visa)[0]->getUrl() : null;
+        $client->schengenVisaUrl = ($client->getMedia(User::$media_collection_main_schengen_visa)) ? $client->getMedia(User::$media_collection_main_schengen_visa)[0]->getUrl() : null;
+        $client->schengenVisaName = ($client->getMedia(User::$media_collection_main_schengen_visa)) ? $client->getMedia(User::$media_collection_main_schengen_visa)[0]['name'] : ' ';
+        $dependent->passportUrl = ($dependent->getMedia(User::$media_collection_main)) ? $dependent->getMedia(User::$media_collection_main)[0]->getUrl() : null;
+        $dependent->passportName = $dependent->getMedia(User::$media_collection_main)[0]['name'];
+        $dependent->residenceUrl = ($dependent->getMedia(User::$media_collection_main_residence_id)) ? $dependent->getMedia(User::$media_collection_main_residence_id)[0]->getUrl() : null;
+        $dependent->residenceName = $dependent->getMedia(User::$media_collection_main_residence_id)[0]['name'];
+
+        // dd(($dependent->getMedia(User::$media_collection_main_residence_visa))  ?? null);
+        // $dependent->visaCopy = ($dependent->getMedia(User::$media_collection_main_residence_visa) != null) ? $dependent->getMedia(User::$media_collection_main_residence_visa)[0]->getPath() : null;
+        // dd($dependent);
+
+        // $dependent->schengenVisa = ($dependent->getMedia(User::$media_collection_main_schengen_visa)) ? $dependent->getMedia(User::$media_collection_main_schengen_visa)[0]->getPath() : null;
+
         return view('user.application-review', compact('client', 'applicant', 'productId', 'dependent', 'children'))->with('success', 'Data saved successfully!');
     }
 
@@ -387,7 +409,9 @@ class ApplicationController extends Controller
         Applicant::where('client_id', Auth::id())
                 ->where('destination_id', $request->product_id)
                 ->update([
-                    'application_stage_status'=> 5
+                    'application_stage_status'=> 5,
+                    'status' => 'APPLICATION_SUBMITTED',
+                    'processing_status' => 'NOT_STARTED'
                 ]);
 
         // $this->_updateApplicationStatus($request->product_id,$applicant['id'], $request['user']);
@@ -429,7 +453,12 @@ class ApplicationController extends Controller
         $response['status'] = false;
         try{
             Applicant::where('id', $request['applicantId'])
-                ->update(['application_stage_status' => 4]);
+                ->update(
+                    [
+                        'application_stage_status' => 4,
+                        'status' => 'DOCUMENTS_SUBMITTED'
+                    ]
+                );
 
             $this->_updateApplicationStatus($request->product_id, $request['applicantId'], $request['user']);
             $response['status'] = true;

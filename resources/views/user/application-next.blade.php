@@ -25,25 +25,16 @@
                         <div class="tabs-detail d-flex justify-content-center">
                             
                         <div class="wrapper">
-                              @php 
-                                if ($levels == '2' || $levels == '5' || $levels == '4' || $levels == '3') 
-                                {
-                              @endphp    
+                              @if ($levels == '2' || $levels == '5' || $levels == '4' || $levels == '3') 
                                 <a href="#" onclick="return alert('Payment Concluded Already!');"><div class="round-completed round2 m-2">1</div></a>
-                              @php
-                                } else {
-                              @endphp    
+                              @else 
                                 <a href="{{ url('payment_form', $productId) }}" >
                                     <div class="round-completed round2  m-2">1</div>
                                 </a>
-                              @php   
-                                }
-                              @endphp
+                              @endif
                               <div class="col-2 round-title">Payment <br> Details</div>
                             </div>
                             <div class="linear"></div>
-                            
-
                             <div class="wrapper">
                                 <a href="{{route('applicant', $productId)}}" ><div class="round-completed round3  m-2">2</div></a>
                                 <div class="col-2 round-title">Application <br> Details</div>
@@ -173,7 +164,8 @@
             dateFormat : "dd-mm-yy",
             changeMonth: true,
             changeYear: true,
-            yearRange: '-99:-18',
+            maxDate: '-18Y',
+            yearRange: "-100:+0",
             constrainInput: false ,  
         });
         $('.dependent_datepicker, .child-dob').datepicker({
@@ -322,26 +314,27 @@
                                         if(checkdata.status){
                                             location.href = "{{url('applicant/review')}}/"+'{{$productId}}';
                                         } else {
-                                            alert(checkdata.message);
+                                            toastr.error(checkdata.message);
                                         }
                                     } else {
                                         $('.applicantReviewSpin').hide();
                                         var validationError = response.errors;
                                         $.each(validationError, function(index, value) {
                                             $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                                            toastr.error(value);
                                         });
                                     }
                                 }
                             });
                         } else {
                             $('.applicantReviewSpin').hide();
-                            alert('Please provide all details');
+                            toastr.error('Please provide all details');
                             $('#collapseSchengen').addClass('show');
                             $('#collapseExperience').removeClass('show');
                         }
                     } else {
                         $('.applicantReviewSpin').hide();
-                        alert('Please provide all details');
+                        toastr.error('Please provide all details');
                         $('#collapseCurrent').addClass('show');
                         $('#collapseExperience').removeClass('show');
                     }
@@ -349,13 +342,13 @@
                     $('.applicantReviewSpin').hide();
                     $('#collapseHome').addClass('show');
                     $('#collapseExperience').removeClass('show');
-                    alert('Please provide all details');
+                    toastr.error('Please provide all details');
                 }
             } else {
                 $('.applicantReviewSpin').hide();
                 $('#collapseapplicant').addClass('show');
                 $('#collapseExperience').removeClass('show');
-                alert('Please provide all details');
+                toastr.error('Please provide all details');
                 $('html, body').animate({
                     scrollTop: $("#collapseapplicant").offset().top
                 }, 2000);
@@ -383,24 +376,24 @@
                                 $('#collapsespouseapplicant').addClass('show');
                             }
                         } else {
-                            alert('Please provide all details');
+                            toastr.error('Please provide all details');
                             $('#collapseSchengen').addClass('show');
                             $('#collapseExperience').removeClass('show');
                         }
                     } else {
-                        alert('Please provide all details');
+                        toastr.error('Please provide all details');
                         $('#collapseCurrent').addClass('show');
                         $('#collapseExperience').removeClass('show');
                     }
                 } else {
                     $('#collapseHome').addClass('show');
                     $('#collapseExperience').removeClass('show');
-                    alert('Please provide all details');
+                    toastr.error('Please provide all details');
                 }
             } else {
                 $('#collapseapplicant').addClass('show');
                 $('#collapseExperience').removeClass('show');
-                alert('Please provide all details');
+                toastr.error('Please provide all details');
                 $('html, body').animate({
                     scrollTop: $("#collapseapplicant").offset().top
                 }, 2000);
@@ -435,10 +428,12 @@
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
                             $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                            toastr.error(value);
                         });
                     }
                 },
                 errror: function (error) {
+                    toastr.error(error);
                 }
             });
         });
@@ -471,10 +466,12 @@
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
                             $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                            toastr.error(value);
                         });
                     }
                 },
                 errror: function (error) {
+                    toastr.error(error);
                 }
             });
         });
@@ -507,10 +504,12 @@
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
                             $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                            toastr.error(value);
                         });
                     }
                 },
                 errror: function (error) {
+                    toastr.error(error);
                 }
             });
         });
@@ -542,10 +541,12 @@
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
                             $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                            toastr.error(value);
                         });
                     }
                 },
                 errror: function (error) {
+                    toastr.error('error');
                 }
             });
         });
@@ -633,14 +634,17 @@
                         $('#collapsespouseHome').addClass('show');
                         $('.dependentApplicantCompleted').val(1);
                         $('.addExperience, .container').attr('data-dependentId', data.dependentId);
+
                     } else {
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
                             $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                            toastr.error(value);
                         });
                     }
                 },
                 errror: function (error) {
+                    toastr.error(error);
                 }
             });
         });
@@ -674,10 +678,12 @@
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
                             $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                            toastr.error(value);
                         });
                     }
                 },
                 errror: function (error) {
+                    toastr.error(error);
                 }
             });
         });
@@ -711,10 +717,12 @@
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
                             $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                            toastr.error(value);
                         });
                     }
                 },
                 errror: function (error) {
+                    toastr.error(error);
                 }
             });
         });
@@ -747,10 +755,12 @@
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
                             $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                            toastr.error(value);
                         });
                     }
                 },
                 errror: function (error) {
+                    toastr.error(error);
                 }
             });
         });
@@ -861,17 +871,19 @@
                         if(checkdata.status){
                             location.href = "{{url('applicant/review')}}/"+'{{$productId}}';
                         } else {
-                            alert(checkdata.message);
+                            toastr.error(checkdata.message);
                         }
                     } else {
                         $('.childReviewSpin').hide();
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
                             $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                            toastr.error(value);
                         });
                     }
                 },
                 errror: function (error) {
+                    toastr.error(error);
                 }
             });
         });
@@ -897,36 +909,37 @@
                                         if(checkdata.status){
                                             location.href = "{{url('applicant/review')}}/"+'{{$productId}}';
                                         } else {
-                                            alert(checkdata.message);
+                                            toastr.error(checkdata.message);
                                         }
                                     } else {
                                         $('.dependentReviewSpin').hide();
                                         var validationError = response.errors;
                                         $.each(validationError, function(index, value) {
                                             $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                                            toastr.error(value);
                                         });
                                     }
                                 }
                             });
                         } else {
-                            alert('Please provide all details');
+                            toastr.error('Please provide all details');
                             $('#collapseSpouseSchengen').addClass('show');
                             $('#collapseSpouseExperience').removeClass('show');
                         }
                     } else {
-                        alert('Please provide all details');
+                        toastr.error('Please provide all details');
                         $('#collapseSpouseCurrent').addClass('show');
                         $('#collapseSpouseExperience').removeClass('show');
                     }
                 } else {
                     $('#collapsespouseHome').addClass('show');
                     $('#collapseSpouseExperience').removeClass('show');
-                    alert('Please provide all details');
+                    toastr.error('Please provide all details');
                 }
             } else {
                 $('#collapsespouseapplicant').addClass('show');
                 $('#collapseSpouseExperience').removeClass('show');
-                alert('Please provide all details');
+                toastr.error('Please provide all details');
                 $('html, body').animate({
                     scrollTop: $("#collapsespouseapplicant").offset().top
                 }, 2000);
@@ -949,24 +962,24 @@
                                 location.href = "{{url('applicant/review')}}/"+'{{$productId}}'
                             }
                         } else {
-                            alert('Please provide all details');
+                            toastr.error('Please provide all details');
                             $('#collapseSpouseSchengen').addClass('show');
                             $('#collapseSpouseExperience').removeClass('show');
                         }
                     } else {
-                        alert('Please provide all details');
+                        toastr.error('Please provide all details');
                         $('#collapseSpouseCurrent').addClass('show');
                         $('#collapseSpouseExperience').removeClass('show');
                     }
                 } else {
                     $('#collapsespouseHome').addClass('show');
                     $('#collapseSpouseExperience').removeClass('show');
-                    alert('Please provide all details');
+                    toastr.error('Please provide all details');
                 }
             } else {
                 $('#collapsespouseapplicant').addClass('show');
                 $('#collapseSpouseExperience').removeClass('show');
-                alert('Please provide all details');
+                toastr.error('Please provide all details');
                 $('html, body').animate({
                     scrollTop: $("#collapsespouseapplicant").offset().top
                 }, 2000);
@@ -1027,7 +1040,6 @@
 </script>
 <script src="https://unpkg.com/vue@next"></script>
 <script src="{{ asset('js/application-details.js') }}" type="text/javascript"></script>
-<script src="{{asset('js/alert.js')}}"></script>
 @endpush
 <script src="../user/extra/assets/js/jquery-min.js"></script>
-
+<script src="{{asset('js/alert.js')}}"></script>
