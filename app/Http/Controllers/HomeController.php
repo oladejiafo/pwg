@@ -469,7 +469,6 @@ class HomeController extends Controller
                 ->where('client_id', '=', Auth::user()->id)
                 ->orderBy('id', 'desc')
                 ->get();
-
             foreach ($completed as $complete) {
                 $app_id = $complete->id;
                 $p_id = $complete->destination_id;
@@ -509,12 +508,12 @@ class HomeController extends Controller
                 $payall = 0;
             }
 
-            if(isset($complete->visa_type) && $complete->third_payment_status =='PENDING') {
-                $packageType = $complete->visa_type;
+            if(isset($complete->work_permit_category) && $complete->third_payment_status =='PENDING') {
+                $packageType = $complete->work_permit_category;
             }elseif (Session::has('packageType')) {
                 $packageType = Session::get('packageType');
             } else {
-                $packageType = $complete->visa_type;
+                $packageType = $complete->work_permit_category;
             }
 
 
@@ -551,7 +550,7 @@ class HomeController extends Controller
                     // ->groupBy('product_payments.id')
                     ->first();
             // }
-            // dd($packageType);
+            dd($packageType);
 
             return view('user.payment-form', compact('data', 'pdet', 'pays', 'payall'));
         } else {

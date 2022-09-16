@@ -24,6 +24,7 @@ class ApplicationController extends Controller
     public function applicant($productId)
     {
         if (Auth::id()) {
+            session()->forget('info');
             $completed = DB::table('applications')
                 ->where('destination_id', '=', $productId)
                 ->where('client_id', '=', Auth::user()->id)
@@ -186,6 +187,25 @@ class ApplicationController extends Controller
         $dependent = User::where('family_member_id', Auth::id())->where('is_dependent', 1)->first();
         $children = User::where('family_member_id', Auth::id())->where('is_dependent', 2)->get();
         // dd($user, $applicant, $dependent, $children);
+        $client->passportName = $client->getMedia(User::$media_collection_main)[0]['name'];
+        $client->passporUrl = ($client->getMedia(User::$media_collection_main)) ? $client->getMedia(User::$media_collection_main)[0]->getUrl() : null;
+        $client->residenceName = $client->getMedia(User::$media_collection_main_residence_id)[0]['name'];
+        $client->residenceUrl = ($client->getMedia(User::$media_collection_main_residence_id))?$client->getMedia(User::$media_collection_main_residence_id)[0]->getPath() : null;
+        $client->visaName = ($client->getMedia(User::$media_collection_main_residence_visa)) ? $client->getMedia(User::$media_collection_main_residence_visa)[0]['name'] : ' ';
+        $client->visaCopyUrl = ($client->getMedia(User::$media_collection_main_residence_visa))?$client->getMedia(User::$media_collection_main_residence_visa)[0]->getPath() : null;
+        $client->schengenVisaUrl = ($client->getMedia(User::$media_collection_main_schengen_visa)) ? $client->getMedia(User::$media_collection_main_schengen_visa)[0]->getPath() : null;
+        $client->schengenVisaName = ($client->getMedia(User::$media_collection_main_schengen_visa)) ? $client->getMedia(User::$media_collection_main_schengen_visa)[0]['name'] : ' ';
+        $dependent->passportUrl = ($dependent->getMedia(User::$media_collection_main)) ? $dependent->getMedia(User::$media_collection_main)[0]->getPath() : null;
+        $dependent->passportName = $dependent->getMedia(User::$media_collection_main)[0]['name'];
+        $dependent->residenceUrl = ($dependent->getMedia(User::$media_collection_main_residence_id)) ? $dependent->getMedia(User::$media_collection_main_residence_id)[0]->getPath() : null;
+        $dependent->residenceName = $dependent->getMedia(User::$media_collection_main_residence_id)[0]['name'];
+
+        // dd(($dependent->getMedia(User::$media_collection_main_residence_visa))  ?? null);
+        // $dependent->visaCopy = ($dependent->getMedia(User::$media_collection_main_residence_visa) != null) ? $dependent->getMedia(User::$media_collection_main_residence_visa)[0]->getPath() : null;
+        // dd($dependent);
+
+        // $dependent->schengenVisa = ($dependent->getMedia(User::$media_collection_main_schengen_visa)) ? $dependent->getMedia(User::$media_collection_main_schengen_visa)[0]->getPath() : null;
+
         return view('user.application-review', compact('client', 'applicant', 'productId', 'dependent', 'children'))->with('success', 'Data saved successfully!');
     }
 

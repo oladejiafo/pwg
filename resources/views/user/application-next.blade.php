@@ -172,7 +172,8 @@
             dateFormat : "dd-mm-yy",
             changeMonth: true,
             changeYear: true,
-            yearRange: '-99:-18',
+            maxDate: '-18Y',
+            yearRange: "-100:+0",
             constrainInput: false ,  
         });
         $('.dependent_datepicker, .child-dob').datepicker({

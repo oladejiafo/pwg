@@ -295,7 +295,7 @@
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-12 mt-3">
-                                                    <input type="text" name="passport_copy" class="form-control passport_copy" placeholder="Upload Passport Copy*" value="{{$client['passport']}}"  class="passportFormatModal" data-target="#passportFormatModal" onclick="showPassportFormat()" autocomplete="off" readonly/>
+                                                    <input type="text" name="passport_copy" class="form-control passport_copy" placeholder="Upload Passport Copy*" value="{{$client['passportName']}}"  class="passportFormatModal" data-target="#passportFormatModal" onclick="showPassportFormat()" autocomplete="off" readonly/>
                                                     <div class="input-group-btn">
                                                         <span class="fileUpload btn">
                                                             <span class="upl" id="upload">Choose File</span>
@@ -435,12 +435,12 @@
                                                     @endif
                                                 </div>
                                             </div>
-                                            <div class="form-group row mt-4">
+                                            {{-- <div class="form-group row mt-4">
                                                 <div class="col-sm-12 mt-3">
                                                     <input type="text" name="current_job" class="form-control" placeholder="Profession As Per Current Job (or on Visa)*" value="{{$client['current_job']}}" autocomplete="off">
                                                     <span class="current_job_errorClass"></span>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-4 mt-3">
                                                     <input type="text" name="work_state" class="form-control" placeholder="Work State/Province*" value="{{$client['work_state']}}" autocomplete="off"/>
@@ -1552,8 +1552,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-body">
-                        {{-- <embed src ="{{asset('storage/passportCopy/'.$applicant['passport'])}}"  style="margin: auto" /> --}}
-                        <embed src="{{asset('storage/passportCopy/'.$applicant['passport'])}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />
+                        <embed src="{{$client['passporUrl']}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>

@@ -240,7 +240,6 @@ $pid = $app_id;
 
 
                             <?php
-
                                 if ($payall == 0) {
 
                                  if($pays->first_payment_status =="PENDING" || $pays->first_payment_status ==null){
