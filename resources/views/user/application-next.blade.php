@@ -11,6 +11,7 @@
     $completed = DB::table('applications')
                 ->where('destination_id', '=', $productId)
                 ->where('client_id', '=', Auth::user()->id)
+                ->orderBy('id', 'desc')
                 ->first();
 
    $levels = $completed->application_stage_status;

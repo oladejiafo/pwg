@@ -344,8 +344,8 @@ class HomeController extends Controller
             \DB::statement("SET SQL_MODE=''");
 
             $complete = DB::table('applications')
-
             ->where('client_id', '=', Auth::user()->id)
+            // ->whereNotIn('status',  ['APPLICATION_COMPLETED','VISA_REFUSED', 'APPLICATION_CANCELLED','REFUNDED'] )
             ->orderBy('id','desc')
             ->first();
 // dd($complete);
@@ -467,7 +467,7 @@ class HomeController extends Controller
 
             $complete = DB::table('applications')
                 ->where('client_id', '=', Auth::user()->id)
-                ->whereNotIn('status',  ['APPLICATION_COMPLETED','VISA_REFUSED', 'APPLICATION_CANCELLED','REFUNDED'] )
+                // ->whereNotIn('status',  ['APPLICATION_COMPLETED','VISA_REFUSED', 'APPLICATION_CANCELLED','REFUNDED'] )
                 ->orderBy('id', 'desc')
                 ->first();
 
@@ -516,6 +516,7 @@ class HomeController extends Controller
                 ->select('applications.pricing_plan_id', 'applications.total_price', 'applications.total_paid', 'applications.first_payment_status','applications.second_payment_status','applications.third_payment_status')
                 ->where('applications.client_id', '=', Auth::user()->id)
                 ->where('applications.destination_id', '=', $id)
+                // ->whereNotIn('status',  ['APPLICATION_COMPLETED','VISA_REFUSED', 'APPLICATION_CANCELLED','REFUNDED'] )
                 ->limit(1)
                 ->first();
  
@@ -571,14 +572,13 @@ class HomeController extends Controller
             $amount = $request->totalpay;
             $id = Session::get('myproduct_id');
 
-            $applys = DB::table('applications')
+            $apply = DB::table('applications')
                 ->where('destination_id', '=', $id)
+                // ->whereNotIn('status',  ['APPLICATION_COMPLETED','VISA_REFUSED', 'APPLICATION_CANCELLED','REFUNDED'] )
                 ->where('client_id', '=', Auth::user()->id)
-                ->get();
+                ->first();
 
-            foreach ($applys as $apply) {
                 $applicant_id = $apply->id;
-            }
 
             $request->validate([
                 'totaldue' => 'required',
@@ -689,6 +689,7 @@ class HomeController extends Controller
                         $data->first_payment_vat = $thisVat;
                         $data->first_payment_discount = $thisDiscount;
                         $data->first_payment_status = $whatsPaid;
+                        $data->status = 'WAITING_FOR_2ND_PAYMENT';
                         if($whatsPaid=='Partial')
                         {
                             $data->is_first_payment_partially_paid = 1;
@@ -699,6 +700,7 @@ class HomeController extends Controller
                         $data->second_payment_vat = $thisVat;
                         $data->second_payment_discount = $thisDiscount;
                         $data->second_payment_status = $whatsPaid;
+                        $data->status = 'WAITING_FOR_3RD_PAYMENT';
                         if($whatsPaid=='Partial')
                         {
                             $data->is_second_payment_partially_paid = 1;
@@ -709,6 +711,7 @@ class HomeController extends Controller
                         $data->third_payment_vat = $thisVat;
                         $data->third_payment_discount = $thisDiscount;
                         $data->third_payment_status = $whatsPaid;
+                        $data->status = 'WAITING_FOR_EMBASSY_APPEARANCE';
                         if($whatsPaid=='Partial')
                         {
                             $data->is_third_payment_partially_paid = 1;
@@ -722,7 +725,6 @@ class HomeController extends Controller
 
                     $data->coupon_code = $thisCode;
                     $data->application_stage_status = 2;
-
 
                     $res = $data->save();
                 } else {
