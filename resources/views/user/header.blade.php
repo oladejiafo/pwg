@@ -25,7 +25,8 @@
 <link rel='stylesheet' type='text/css' media='screen' href='{{asset('css/login.css')}}'>
 <link rel='stylesheet' type='text/css' media='screen' href='{{asset('fonts/stylesheet.css')}}'>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+	
 <style>
     html, body {
         padding: 0;
@@ -301,7 +302,7 @@
       <!-- Navbar End -->
 </body>
       <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-
+  
     <script src="{{asset('user/extra/assets/js/jquery-min.js')}}"></script>
     
     <script src="{{asset('user/extra/assets/js/popper.min.js')}}"></script>
@@ -309,6 +310,7 @@
     <script src="{{asset('user/extra/assets/js/owl.carousel.min.js')}}"></script>
     <script src="{{asset('user/extra/assets/js/wow.js')}}"></script>
     <script src="{{asset('user/extra/assets/js/main.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
    {{-- <script src="{{asset('user/extra/assets/js/jquery.nav.js')}}"></script>
     <script src="{{asset('user/extra/assets/js/scrolling-nav.js')}}"></script>

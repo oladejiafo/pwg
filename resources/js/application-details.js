@@ -44,6 +44,7 @@ const app = new Vue({
                 dependentId: app.dependentId
             }).then(function (response) {
                 if(response){
+                    toastr.success('Experience Added Successfully !');
                     app.getSelectedExperience();
                     app.getDependentExperience();
                 } else {
@@ -63,6 +64,7 @@ const app = new Vue({
                 dependentId: app.dependentId
             })
             .then(function(response){
+                toastr.success('Experience Removed Successfully !');
                 app.getSelectedExperience();
                 app.getDependentExperience();
             })
