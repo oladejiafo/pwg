@@ -64,51 +64,6 @@ class ApplicationController extends Controller
 
     public function applicantDetails($productId)
     {
-        session()->forget('info');
-
-        // $url = "https://bo.pwggroup.ae/api/get-job-category-list";
-        // $client = new \GuzzleHttp\Client();
-        // $response = $client->request('Post', $url);
-        // $jobs = json_decode($response->getBody());
-        // dd($jobs);
-        // foreach($jobs as $job)
-        // {
-        // //     // JobCategoryOne::create(
-        // //     //     [
-        // //     //         'name' => $job->name,
-        // //     //     ]
-        // //     // );
-
-        //     foreach($job->job_category_two as $catOne)
-        //     {
-        //         // JobCategoryTwo::create([
-        //         //     'job_category_one_id' => $job->id,
-        //         //     'name' => $catOne->name
-        //         // ]);
-        // //         die;
-        //         foreach($catOne->job_category_three as $cattwo)
-        //         {
-        //             JobCategoryThree::create([
-        //                 'name' => $catOne->name,
-        //                 'job_category_two_id' => $catOne->id,
-        //             ]);
-
-        //             // foreach($cattwo as $cat)
-        //             // {
-        //             //     JobCategoryFour::create([
-        //             //         'job_category_three_id' => $cattwo->id,
-        //             //         'name' => $cat->name,
-        //             //         'description'  => $cat->description,
-        //             //         'example_titles'  => $cat->example_titles,
-        //             //         'main_duties'  => $cat->main_duties,
-        //             //         'employement_requirements'  => $cat->employement_requirements
-        //             //     ]);
-        //             // }
-        //         }
-        //     }
-        // }
-        // die;
-
         if (Auth::id()) {
             $client = User::find(Auth::id());
 
@@ -118,6 +73,7 @@ class ApplicationController extends Controller
 
             $dependent = User::where('family_member_id', Auth::id())
                             ->where('is_dependent', 1)
+                            ->pluck('id')
                             ->first();
 
             return view('user.application-next', compact('client', 'productId', 'applicant', 'dependent'))->with('info', 'Data saved successfully!');
@@ -206,7 +162,6 @@ class ApplicationController extends Controller
         $client->passport_issue_date =  date('Y-m-d', strtotime($request['passport_issue']));
         $client->passport_expiry = date('Y-m-d', strtotime($request['passport_expiry']));
         $client->passport_issued_by = $request['issued_by'];
-        // $client->residence_mobile_number = $request['home_phone_number'];
         $client->country = $request['home_country'];
         $client->state = $request['state'];
         $client->city = $request['city'];
@@ -243,7 +198,6 @@ class ApplicationController extends Controller
     public function storeCurrentDetails(Request $request)
     {
         $validator = \Validator::make($request->all(), [
-          
             'residence_id' => 'required',
             'visa_validity'  => 'required',
             'residence_copy' => 'required',
@@ -341,19 +295,19 @@ class ApplicationController extends Controller
     {
         // dd($request);
         if($request['userType'] == 'dependent'){
-            $exist = ApplicantExperience::where('client_id', Auth::id())
+            $exist = ApplicantExperience::where('client_id', $request->dependentId)
                     ->where('job_category_three_id', $request['job_category_three_id'])
                     ->where('job_category_four_id', $request['job_category_four_id'])
                     ->first();
             if(!$exist) {
                 $exp = new ApplicantExperience();
-                $exp->client_id = Auth::id();
+                $exp->client_id = $request->dependentId;
                 $exp->job_title = $request['job_title'];
                 $exp->job_category_one_id = $request['job_category_one_id'];
                 $exp->job_category_two_id = $request['job_category_two_id'];
                 $exp->job_category_three_id  = $request['job_category_three_id'];
                 $exp->job_category_four_id   = $request['job_category_four_id'];
-                $exp->created_by = Auth::id();
+                $exp->created_by = $request->dependentId;
                 $exp->save();
                 return true;
             } else {
@@ -389,18 +343,33 @@ class ApplicationController extends Controller
      */
     public function getApplicantExperience(Request $request)
     {
-        $exp = ApplicantExperience::where('client_id', $request->applicantId)
-                                    // ->Where('dependant_id', null)
+        $exp = ApplicantExperience::where('client_id', Auth::id())
                                     ->get();
         return $exp;
     }
 
     public function removeExperience(Request $request)
     {
-        ApplicantExperience::where('id', $request['expId'])
-                        ->where('client_id', $request['applicantId'])
-                        ->delete();
-        return true;
+        if($request['userType'] == 'applicant'){
+            $data = DB::table('client_experiences')
+                        ->where('id', $request['expId'])
+                        ->where('client_id', Auth::id());
+            if($data->delete()){
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            $data = DB::table('client_experiences')
+                        ->where('id', $request['expId'])
+                        ->where('client_id', $request['dependentId']);
+            if($data->delete()){
+                return true;
+            } else {
+                return false;
+            }
+        }
+        
     }
 
      /**
@@ -608,7 +577,6 @@ class ApplicationController extends Controller
     public function storeSpouseCurrentDetails(Request $request)
     {
         $validator = \Validator::make($request->all(), [
-            'dependent_current_country' => 'required',
             'dependent_residence_id' => 'required',
             'dependent_visa_validity'  => 'required',
             'dependent_residence_copy' => 'required',
@@ -723,12 +691,7 @@ class ApplicationController extends Controller
 
     public function getDependentExperience(Request $request)
     {
-        // dd($request);
-        $exp = ApplicantExperience::where('client_id', $request->applicantId)
-                            // ->where(function ($query) use ($request) {
-                            //     return $query->Where('dependant_id', $request->dependentId)
-                            //         ->where('dependant_id', '>', 0 );
-                            // })
+        $exp = ApplicantExperience::where('client_id', $request->dependentId)
                             ->get();
         return $exp;
     }

@@ -5,7 +5,7 @@ import axios from 'axios'
 window.Vue = require('vue').default;
 
 const app = new Vue({
-    el: '#importExperience',
+    el: '#app',
     data() {
         return {
             jobCategories: [],
@@ -55,11 +55,12 @@ const app = new Vue({
             });
         },
 
-        removeJob(expId) {
+        removeJob(expId, userType) {
             axios
             .post('/remove/selected/experience',{
                 expId : expId,
-                applicantId : this.applicantId
+                userType : userType, 
+                dependentId: app.dependentId
             })
             .then(function(response){
                 app.getSelectedExperience();
@@ -70,9 +71,7 @@ const app = new Vue({
         getSelectedExperience() {
             this.applicantId = this.$el.getAttribute('data-applicantId');
             axios
-            .post('/get/selected/experience',{
-                applicantId : this.applicantId
-            })
+            .post('/get/selected/experience')
             .then(function(response){
                 if(response.data.length > 0) {
                     app.selectedJob = response.data;
@@ -94,7 +93,6 @@ const app = new Vue({
             this.dependentId =  this.$el.getAttribute('data-dependentId');
             axios
             .post('/get/dependent/selected/experience',{
-                applicantId : this.applicantId,
                 dependentId : this.dependentId 
             })
             .then(function(response){
