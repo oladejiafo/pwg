@@ -141,7 +141,6 @@ $pid = $app_id;
                             Payment Details
                         </h3><br>
 
-                      
                     </div>
                     <!-- <div class="bottom-title">
                         <p style="color: #C4C4C4; text-align: center;">If you have a dicount code, enter it here.</p>
@@ -152,7 +151,7 @@ $pid = $app_id;
                         @csrf
                         <!-- col-lg-6 col-md-6 col-12 offset-md-3 offset-lg-3 -->
                         <div class="row ">
-                            <div class="col-6 mb-3">
+                            <div class="col-lg-6 col-sm-12 mb-3">
                                 <div class="inputs">
                                     <select title="Current Location" class="form-control  current_location form-select" id="current_location" name="current_location" required>
                                         <option selected disabled>--Current Location--</option>
@@ -166,7 +165,7 @@ $pid = $app_id;
                                     <div class="error">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="col-6 mb-3">    
+                            <div class="col-lg-6 col-sm-12 mb-3">    
                                 <div class="inputs">
                                     <select title="Embassy Appearance Country" class="form-control  embassy_appearance form-select" id="embassy_appearance" name="embassy_appearance" required="">
                                         <option selected disabled>--Country of Embassy Appearance--</option>
@@ -221,16 +220,16 @@ $pid = $app_id;
                         @endif
 
                         @php
-                            $diff = $pays->total_price - $pays->total_paid
+                            $diff = ($pays) ? $pays->total_price - $pays->total_paid : 0;
                         @endphp
 
                         @if($diff > 0)
                             @php
-                                $pends = $pays->total_price - $pays>total_paid;
+                                $pends = ($pays) ? $pays->total_price - $pays->total_paid : 0 ;
                             @endphp
                         @elseif($diff < 0) 
                             @php
-                                $pends=$pays->total_paid - $pays->total_price;
+                                $pends= ($pays) ? $pays->total_paid - $pays->total_price : 0;
                             @endphp
                         @else
                             @php

@@ -58,8 +58,6 @@ class HomeController extends Controller
 
     public function index()
     {
-      
-
         $package = DB::table('destinations')->orderBy(DB::raw('FIELD(name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
         $promo = promo::where('active_until', '>=', date('Y-m-d'))->get();
 
@@ -172,7 +170,8 @@ class HomeController extends Controller
             $data = product::find($id);
             return view('user.signature', compact('data'));
         } else {
-            return redirect()->back()->with('message', 'You are not authorized');
+            // return redirect()->back()->with('message', 'You are not authorized');
+            return redirect('home');
         }
     }
 
@@ -255,86 +254,12 @@ class HomeController extends Controller
             $data = product::find($id);
             return view('user.signature-upload-success', compact('data'));
         } else {
-            return redirect()->back()->with('message', 'You are not authorized');
+            // return redirect()->back()->with('message', 'You are not authorized');
+            return redirect('home');
         }
     }
 
 
-    public function referal($id)
-    {
-        if (Auth::id()) {
-            $data = product::find($id);
-            return view('user.referal-details', compact('data'));
-        } else {
-            return redirect()->back()->with('message', 'You are not authorized');
-        }
-    }
-
-    public function addreferal(Request $request)
-    {
-        if (Auth::id()) {
-            $request->validate([
-                'current_location' => 'required',
-                'pid' => 'required'
-            ]);
-
-            $datas = applicant::where([
-                ['user_id', '=', Auth::user()->id],
-                ['product_id', '=', $request->pid],
-            ])->first();
-            if ($datas === null) {
-                $data = new applicant;
-                $data->referral_first_name = $request->referrer_first_name;
-                $data->referral_last_name = $request->referrer_last_name;
-                $data->coupon_code = $request->coupon_code;
-                $data->current_residance_country = $request->current_location;
-                $data->home_country = $request->nationality;
-                $data->applicant_status = '1';
-                $data->product_id = $request->pid;
-                if (Auth::id()) {
-                    $data->user_id = Auth::user()->id;
-                    $data->first_name = Auth::user()->name;
-                }
-                $res = $data->save();
-            } else {
-                $datas->referral_first_name = $request->referrer_first_name;
-                $datas->referral_last_name = $request->referrer_last_name;
-                $datas->coupon_code = $request->coupon_code;
-                $datas->current_residance_country = $request->current_location;
-                $datas->home_country = $request->nationality;
-                $datas->applicant_status = '1';
-                $datas->product_id = $request->pid;
-                if (Auth::id()) {
-                    $datas->user_id = Auth::user()->id;
-                    $datas->first_name = Auth::user()->name;
-                }
-                $res = $datas->save();
-            }
-
-            if ($res) {
-                $applys = DB::table('applications')
-                    ->where('product_id', '=', $request->pid)
-                    ->where('user_id', '=', Auth::user()->id)
-                    ->get();
-
-                $applied = '0';
-                foreach ($applys as $apply) {
-                    $applied = $apply->applicant_status;
-                }
-
-                if ($applied == '1' || $applied == '0' || $applied == 'Pending') {
-                    $msg = "Referral Saved Successfully!";
-                    return \Redirect::route('payment', $request->pid)->with('info', $msg)->with('info_sub', 'Proceed to make payment.');
-                } else {
-                    return \Redirect::route('applicant', $request->pid)->with('failed', 'Payment Already Completed');
-                }
-            } else {
-                return redirect()->back()->with('failed', 'Oppss! Something Went Wrong!');
-            }
-        } else {
-            return redirect()->back()->with('failed', 'You are not authorized');
-        }
-    }
 
     public function myapplication()
     {
@@ -345,7 +270,7 @@ class HomeController extends Controller
 
             $complete = DB::table('applications')
             ->where('client_id', '=', Auth::user()->id)
-            // ->whereNotIn('status',  ['APPLICATION_COMPLETED','VISA_REFUSED', 'APPLICATION_CANCELLED','REFUNDED'] )
+            // ->whereNotIn('status',  array('APPLICATION_COMPLETED','VISA_REFUSED', 'APPLICATION_CANCELLED','REFUNDED') )
             ->orderBy('id','desc')
             ->first();
 
@@ -413,17 +338,17 @@ class HomeController extends Controller
 
             $pays = DB::table('pricing_plans')
             ->join('applications', 'applications.destination_id', '=', 'pricing_plans.destination_id')
-            ->select('pricing_plans.id', 'pricing_plans.pricing_plan_type', 'pricing_plans.total_price', 'pricing_plans.destination_id','pricing_plans.first_payment_price','pricing_plans.second_payment_price','pricing_plans.third_payment_price')
+            ->select('applications.destination_id','pricing_plans.id', 'pricing_plans.pricing_plan_type', 'pricing_plans.total_price', 'pricing_plans.destination_id','pricing_plans.first_payment_price','pricing_plans.second_payment_price','pricing_plans.third_payment_price')
             ->where('pricing_plans.pricing_plan_type', '=', $packageType)
+            ->where('applications.destination_id', '=', $p_id)
             ->where('applications.client_id', '=', $id)
             ->orderBy('pricing_plans.id')
                 ->first();
 
-// dd($pays);
             $paid = DB::table('payments')
                 ->join('applications', 'payments.application_id', '=', 'applications.id')
                 ->selectRaw('payments.*, applications.*, COUNT(payments.id) as count')
-
+                ->where('applications.destination_id', '=', $p_id)
                 ->where('applications.client_id', '=', $id)
                 ->groupBy('payments.id')
                 // ->groupBy('applicants.id')
@@ -435,12 +360,13 @@ class HomeController extends Controller
                 ->join('applications', 'destinations.id', '=', 'applications.destination_id')
                 ->select('destinations.name', 'destinations.id')
                 ->where('applications.client_id', '=', $id)
+                ->where('applications.destination_id', '=', $p_id)
                 ->groupBy('destinations.id')
                 ->first();
-// dd($prod);
+
             return view('user.myapplication', compact('paid', 'pays', 'prod'));
         } else {
-            return redirect()->back()->with('message', 'You are not authorized');
+            return redirect('home');
         }
     }
 
@@ -511,7 +437,8 @@ class HomeController extends Controller
 
             return view('user.payment-form', compact('data', 'pdet', 'pays', 'payall'));
         } else {
-            return redirect()->back()->with('message', 'You are not authorized');
+            // return redirect()->back()->with('message', 'You are not authorized');
+            return redirect('home');
         }
     }
 
@@ -823,7 +750,8 @@ class HomeController extends Controller
                 }
             // }
         } else {
-            return redirect()->back()->with('failed', 'You are not authorized');
+            // return redirect()->back()->with('failed', 'You are not authorized');
+            return redirect('home');
         }
     }
 
@@ -913,7 +841,8 @@ class HomeController extends Controller
         if (Auth::id()) {
             return \Redirect::route('product', $request->productId);
         } else {
-            return redirect()->back()->with('failed', 'You are not authorized');
+            // return redirect()->back()->with('failed', 'You are not authorized');
+            return redirect('home');
         }
     }
 
@@ -922,7 +851,8 @@ class HomeController extends Controller
         if (Auth::id()) {
             return view('user.contract', compact('productId'));
         } else {
-            return redirect()->back()->with('failed', 'You are not authorized');
+            return redirect('home');
+            // return redirect()->back()->with('failed', 'You are not authorized');
         }
     }
 
