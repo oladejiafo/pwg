@@ -7,6 +7,7 @@
         select {
         /* width: 350px !important; */
         height:60px !important; 
+ 
         text-align:center !important; 
         color:#000 !important; 
         font-family:'TT Norms Pro' !important; 
@@ -20,6 +21,11 @@
         width: 90% !important;
         height:50px !important; 
       }   
+      input [type='Text'] {
+        width: 100% !important;
+        padding: 0px;
+        margin: 0px;
+      }
     }
 </style>
 

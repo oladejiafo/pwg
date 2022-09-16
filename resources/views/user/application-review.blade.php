@@ -586,7 +586,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row" id="importExperience" data-applicantId="{{$applicant['id']}}" data-dependentId="{{$dependent['id']}}">
+                            <div class="row" id="importExperience" data-applicantId="{{$applicant['id']}}">
                                 <div class="collapse show" id="collapseExperience" data-applicantId="{{$applicant['id']}}" data-dependentId="{{($dependent != null) ? $dependent['id']  : ''}}">
                                     <div class="form-sec">
                                         <div class="jobSelected">
@@ -607,10 +607,10 @@
                                         </div>
                                         <h4 style="margin-top:60px">Job Sector List</h4>
                                         <div class="form-group row mt-4 searchForm">
-                                            <div class="col-sm-10 mt-3" >
+                                            <div class="col-lg-10 col-md-8 mt-3" >
                                                 <input type="text" class="form-control" v-model="search" name="search" placeholder="Enter Job Title" >
                                             </div>
-                                            <div class="col-sm-2 mt-3" style="padding-left: 0px">
+                                            <div class="col-lg-2 col-md-4 mt-3" style="padding-left: 0px">
                                                 <button class="btn btn-danger" v-on:click="filterJob()">Search</button>
                                             </div>
                                         </div>

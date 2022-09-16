@@ -337,7 +337,7 @@ $pid = $app_id;
                     
 
                                 <div class="row payament-sec">
-                                    <div class="col-6" style="padding-right:20px">
+                                    <div class="col-lg-6 col-md-12" style="padding-right:20px">
                                         <div class="total">
                                             <div class="total-sec row mt-3">
                                                 <div class="left-section col-6">
@@ -466,7 +466,7 @@ $pid = $app_id;
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-lg-6 col-md-12">
                                         @if($whichPayment =="First Payment")
                                         <div class="partial" style="height: 100%;">
 
@@ -500,7 +500,7 @@ $pid = $app_id;
                                     </div>
                                     <div class="partial-total-sec">
                                   
-                                        <h2 style="font-size: 20px;">Now you will pay {{strtolower($which)}} installment only <span id="amountLink"><b>{{number_format($payNoww + $vat)}}</b></span> AED <span style="font-size:11px;opacity:0.6">(VAT inclusive)</span></h2>
+                                        <h2 style="font-size: 1em;">Now you will pay {{strtolower($which)}} installment only <span id="amountLink"><b>{{number_format($payNoww + $vat)}}</b></span> AED <span style="font-size:11px;opacity:0.6">(VAT inclusive)</span></h2>
                                         <input type="hidden" id="amountLink2" name="totalpay" value="{{  number_format($payNoww + $vat, 0, '.', '') }}">
                                         <input type="hidden" id="totaldue" name="totaldue" value="{{$payNoww + $vat}}">
                                     </div>

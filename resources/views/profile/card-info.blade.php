@@ -33,6 +33,9 @@
         width:70%; 
         margin-left: 0 auto;
     }
+    button {
+        width:200px !important;
+    }
     }
 </style>
 
@@ -75,7 +78,7 @@ $card = DB::table('card_details')
     <div class="error">{{ $errors->first('cvv') }}</div>
     {{-- @endif --}}
    </div> -->
-   <div class="col-6">
+   <div class="col-lg-6 col-sm-12">
     <label for="month" class="form-label">Expiry Month</label>
     <select name="month" class="form-control" id="month" value="{{ old('month') }}" required>
         <option selected>{{ (isset($card->month)) ? $card->month : '' }}</option>
@@ -94,7 +97,7 @@ $card = DB::table('card_details')
     </select>
    
    </div>
-   <div class="col-6">
+   <div class="col-lg-6 col-sm-12">
     <label for="year" class="form-label">Expiry Year</label>
     <input type="text" class="form-control" name="year" id="year" pattern="\d*" maxlength="4" value="{{(isset($card->year)) ? $card->year : '' }}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required>
     @if($errors->has('year'))
