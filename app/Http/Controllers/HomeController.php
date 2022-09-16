@@ -348,7 +348,7 @@ class HomeController extends Controller
             // ->whereNotIn('status',  ['APPLICATION_COMPLETED','VISA_REFUSED', 'APPLICATION_CANCELLED','REFUNDED'] )
             ->orderBy('id','desc')
             ->first();
-// dd($complete);
+
             // {
             if($complete)
             {
@@ -411,26 +411,14 @@ class HomeController extends Controller
 
             }
 
+            $pays = DB::table('pricing_plans')
+            ->join('applications', 'applications.destination_id', '=', 'pricing_plans.destination_id')
+            ->select('pricing_plans.id', 'pricing_plans.pricing_plan_type', 'pricing_plans.total_price', 'pricing_plans.destination_id','pricing_plans.first_payment_price','pricing_plans.second_payment_price','pricing_plans.third_payment_price')
+            ->where('pricing_plans.pricing_plan_type', '=', $packageType)
+            ->where('applications.client_id', '=', $id)
+            ->orderBy('pricing_plans.id')
+                ->first();
 
-            // if ($packageType == "FAMILY PACKAGE") {
-            //     $pays = DB::table('pricing_plans')
-            //         ->join('applications', 'applications.destination_id', '=', 'pricing_plans.destination_id')
-            //         ->select('pricing_plans.id', 'pricing_plans.pricing_plan_type', 'pricing_plans.total_price', 'pricing_plans.destination_id','pricing_plans.first_payment_price','pricing_plans.second_payment_price','pricing_plans.third_payment_price')
-            //         ->where('pricing_plans.pricing_plan_type', '=', $packageType)
-            //         // ->where('family_sub_id', '=', $family_id)
-            //         ->where('applications.client_id', '=', $id)
-            //         ->orderBy('pricing_plans.id')
-            //         // ->groupBy('pricing_plans.payment')
-            //         ->first();
-            // } else {
-                $pays = DB::table('pricing_plans')
-                ->join('applications', 'applications.destination_id', '=', 'pricing_plans.destination_id')
-                ->select('pricing_plans.id', 'pricing_plans.pricing_plan_type', 'pricing_plans.total_price', 'pricing_plans.destination_id','pricing_plans.first_payment_price','pricing_plans.second_payment_price','pricing_plans.third_payment_price')
-                ->where('pricing_plans.pricing_plan_type', '=', $packageType)
-                ->where('applications.client_id', '=', $id)
-                ->orderBy('pricing_plans.id')
-                    ->first();
-            // }
 // dd($pays);
             $paid = DB::table('payments')
                 ->join('applications', 'payments.application_id', '=', 'applications.id')
@@ -460,8 +448,6 @@ class HomeController extends Controller
     {
         $famCode = 0;
         if (Auth::id()) {
-
-
             Session::forget('haveCoupon');
             Session::forget('myDiscount');
 
@@ -508,8 +494,6 @@ class HomeController extends Controller
                 $packageType = $complete->work_permit_category;
             }
 
-
-
             $data = product::find(Session::get('myproduct_id'));
 
             $pays = DB::table('applications')
@@ -519,12 +503,11 @@ class HomeController extends Controller
                 // ->whereNotIn('status',  ['APPLICATION_COMPLETED','VISA_REFUSED', 'APPLICATION_CANCELLED','REFUNDED'] )
                 ->limit(1)
                 ->first();
- 
 
-                $pdet = DB::table('pricing_plans')
-                    ->where('destination_id', '=', Session::get('myproduct_id'))
-                    ->where('pricing_plan_type', '=', $packageType)
-                    ->first();
+            $pdet = DB::table('pricing_plans')
+                ->where('destination_id', '=', Session::get('myproduct_id'))
+                ->where('pricing_plan_type', '=', $packageType)
+                ->first();
 
             return view('user.payment-form', compact('data', 'pdet', 'pays', 'payall'));
         } else {
@@ -631,19 +614,19 @@ class HomeController extends Controller
                     $rres = new user;
                     
                     $rres->country_of_residence =  $request->current_location;
-                    if( Session::has('mySpouse'))
-                    {
-                        $rres->is_spouse = $haveSpouse;
-                        $rres->children_count = $kids;
-                    }
+                    // if( Session::has('mySpouse'))
+                    // {
+                    //     $rres->is_spouse = $haveSpouse;
+                    //     $rres->children_count = $kids;
+                    // }
                     $rres->save();
                 } else {
                     $rre->country_of_residence =  $request->current_location;
-                    if( Session::has('mySpouse'))
-                    {
-                        $rre->is_spouse = $haveSpouse;
-                        $rre->children_count = $kids;
-                    }
+                    // if( Session::has('mySpouse'))
+                    // {
+                    //     $rre->is_spouse = $haveSpouse;
+                    //     $rre->children_count = $kids;
+                    // }
                     $rre->save();
                 }
 

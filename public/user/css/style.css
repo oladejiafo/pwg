@@ -1430,6 +1430,13 @@ textarea {
   color: #000000;
 }
 
+@media (max-width:800px)
+{
+  .searchForm button {
+    margin: 0 auto !important;
+    width: 167px !important;
+  }
+}
 
 
 .detail-sec {
@@ -1530,6 +1537,21 @@ input[type="file"]::-webkit-file-upload-button {
 
 input::file-selector-button {
   margin-top: 5px;
+
+}
+
+@media (max-width:800px) {
+  .applicant-sec {
+   
+    margin-bottom: 40px;
+    padding: 10px 50px 70px 50px;
+  }
+
+    
+  .applicant-detail-sec {
+    padding: 40px 50px 40px 50px;
+    }
+
 
 }
 

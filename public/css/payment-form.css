@@ -57,6 +57,7 @@ body {
 
 }
 
+
 .dicount_code {
     background: #F0F3F4;
     height: 55px !important;
@@ -90,12 +91,29 @@ body {
     background: #F0F3F4;
     margin-top: 18px;
     padding: 16px;
-    font-size: 12px;
-
+    font-size: 20px;
 }
 
 .payment-heading {
     text-align: center;
+}
+
+
+@media (max-width:800px)
+{
+    .payment-form {
+        margin-bottom: 40px;
+        padding: 40px 50px 40px 50px;
+    }
+
+    .partial-total-sec h2 {
+        align-items: center;
+        align-content: center;
+        font-size: 18px !important;
+        font-weight: 700;
+        line-height: 42px;
+    }
+
 }
 
 .left-input {

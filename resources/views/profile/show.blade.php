@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="{{asset('user/extra/css/bootstrap.css')}}">
 <link rel="stylesheet" href="{{asset('user/extra/css/styled.css')}}">
 <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-
+<!--  -->
 <link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     
@@ -51,7 +51,17 @@
         color: #ccc;
     }
 
+    svg {
+        width: 70px;
+        margin-right:50px;
+    }
+
     @media (min-width: 375px) and (max-width: 768px) {
+
+        svg {
+            width:40px;
+            margin-right:20px;
+        }
         .card {
             width: 100%;
             margin: 0 auto;
@@ -59,9 +69,51 @@
     margin-left:15%; */
             margin-top: 60px;
         }
+        .card .ppanel-heading {
+            height: 70px;
+       width: 100%;
+            margin: 5px !important;
+            padding: 10px !important;
+        }
+        .cardx {
+            padding: 0;
+            width: 100%;
+            margin: auto;
+        }
 
         .panel-title {
-            margin-left: 0px;
+            margin-left: 0px !important;
+            padding-left: 0px;
+        }
+
+        .navbar {
+            width: 100% !important;
+        }
+        .navbar-toggler {
+            width: 40px !important;
+            height: 40px !important;
+            padding: 4px !important;
+            float: right !important;
+        }
+        .navbar-toggler .ini-menu {
+            margin: auto !important;
+            padding: 0px;
+        }
+
+        .ppanel-heading a::after {
+            right: 20px;
+            font-size: 40px;
+            top: 35%;
+
+        }
+        .ppanel-heading a.collapsed:after {
+            font-size: 40px;
+            margin-top: -30px;
+        }
+
+        .panel-body {
+            padding: 0px !important;
+            margin: 0 !important;
         }
     }
 </style>
@@ -94,7 +146,7 @@
                                     <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne" style="vertical-align: middle;">
                                         <span style="display:inline-block">
 
-                                            <svg width="70px" height="auto" style="margin-right:50px" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 109.62 109.62">
+                                            <svg height="auto"  id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 109.62 109.62">
                                                 <defs>
                                                     <style>
                                                         .cls-1 {
@@ -154,7 +206,7 @@
                                     <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" style="vertical-align: middle;">
                                         <span style="display:inline-block">
 
-                                            <svg width="70px" height="auto" style="margin-right:50px" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 109.02 109.04">
+                                            <svg  height="auto" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 109.02 109.04">
                                                 <defs>
                                                     <style>
                                                         .cls-1 {
@@ -211,7 +263,7 @@
                                     <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style="vertical-align: middle;">
                                         <span style="display:inline-block">
 
-                                            <svg width="70px" height="auto" style="margin-right:50px" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 114.77 114.78">
+                                            <svg height="auto"  id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 114.77 114.78">
                                                 <defs>
                                                     <style>
                                                         .cls-1 {
@@ -318,7 +370,7 @@
                                     <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive" style="vertical-align: middle;">
                                         <span style="display:inline-block">
 
-                                            <svg width="70px" height="auto" style="margin-right:50px" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 109.02 109.02">
+                                            <svg  height="auto" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 109.02 109.02">
                                                     <defs>
                                                         <style>
                                                             .cls-1 {
