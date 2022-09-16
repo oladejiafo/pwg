@@ -390,13 +390,13 @@ class HomeController extends Controller
                 Session::put('myproduct_id', $p_id);
             }
 
-            if(isset($complete->visa_type)){
-                $packageType = $complete->visa_type;
+            if(isset($complete->work_permit_category)){
+                $packageType = $complete->work_permit_category;
             }
             elseif (Session::has('packageType')) {
                 $packageType = Session::get('packageType');
             } else {
-                $packageType = ($complete->visa_type) ?? null;
+                $packageType = ($complete->work_permit_category) ?? null;
             }
 
             if (Session::has('fam_id')) {
@@ -465,15 +465,14 @@ class HomeController extends Controller
             Session::forget('haveCoupon');
             Session::forget('myDiscount');
 
-            $completed = DB::table('applications')
+            $complete = DB::table('applications')
                 ->where('client_id', '=', Auth::user()->id)
                 ->orderBy('id', 'desc')
-                ->get();
+                ->first();
 
-            foreach ($completed as $complete) {
                 $app_id = $complete->id;
                 $p_id = $complete->destination_id;
-            }
+            
             $hasSpouse = Auth::user()->is_spouse;
             $children = Auth::user()->children_count;
             if ($hasSpouse == 1) {
@@ -482,15 +481,6 @@ class HomeController extends Controller
                 $yesSpouse = 1;
             }
 
-            // $families = DB::table('pricing_plans')
-            //     ->where('no_of_children', '=', $children)
-            //     ->where('no_of_parent', '=', $yesSpouse)
-            //     ->where('pricing_plan_type', '=', 'FAMILY PACKAGE')
-            //     ->get();
-
-            // foreach ($families as $famili) {
-            //     $famCode = $famili->id;
-            // }
 
             if (session()->get('myproduct_id')) {
             } else if (isset($request->id)) {
@@ -509,12 +499,12 @@ class HomeController extends Controller
                 $payall = 0;
             }
 
-            if(isset($complete->visa_type) && $complete->third_payment_status =='PENDING') {
-                $packageType = $complete->visa_type;
+            if(isset($complete->work_permit_category) && $complete->third_payment_status =='PENDING') {
+                $packageType = $complete->work_permit_category;
             }elseif (Session::has('packageType')) {
                 $packageType = Session::get('packageType');
             } else {
-                $packageType = $complete->visa_type;
+                $packageType = $complete->work_permit_category;
             }
 
 
@@ -522,36 +512,17 @@ class HomeController extends Controller
             $data = product::find(Session::get('myproduct_id'));
 
             $pays = DB::table('applications')
-                // ->leftJoin('payments', 'payments.application_id', '=', 'applications.id')
-                // ->leftJoin('product_payments', 'product_payments.id', '=', 'payments.product_payment_id')
                 ->select('applications.pricing_plan_id', 'applications.total_price', 'applications.total_paid', 'applications.first_payment_status','applications.second_payment_status','applications.third_payment_status')
                 ->where('applications.client_id', '=', Auth::user()->id)
                 ->where('applications.destination_id', '=', $id)
-                // ->orderBy('payments.product_payment_id', 'desc')
                 ->limit(1)
                 ->first();
  
 
-            // if ($packageType == "FAMILY PACKAGE") {
-            //     if (Session::has('fam_id')) {
-            //         $family_id = Session::get('fam_id');
-            //     } else {
-            //         $family_id = $famCode;
-            //     }
-            //     $pdet = DB::table('product_payments')
-            //         ->where('product_id', '=', Session::get('myproduct_id'))
-            //         ->where('visa_type', '=', $packageType)
-            //         ->where('family_sub_id', '=',  $family_id)
-            //         // ->groupBy('product_payments.id')
-            //         ->get();
-            // } else {
                 $pdet = DB::table('pricing_plans')
                     ->where('destination_id', '=', Session::get('myproduct_id'))
                     ->where('pricing_plan_type', '=', $packageType)
-                    // ->groupBy('product_payments.id')
                     ->first();
-            // }
-            // dd($packageType);
 
             return view('user.payment-form', compact('data', 'pdet', 'pays', 'payall'));
         } else {
@@ -615,18 +586,6 @@ class HomeController extends Controller
                 'embassy_appearance' => 'required'
             ]);
 
-            // $validator = \Validator::make($request->all(), [
-            //     'totaldue' => 'required',
-            //     'totalpay' => 'numeric|gte:1000',
-            //     'current_location' => 'required',
-            //     'embassy_appearance' => 'required'
-            // ]);
-
-            // if ($validator->fails()) {
-         
-            //     return Redirect::back()->withErrors($validator);
-            // } else {
-
 
                 $thisPayment = $request->whichpayment;
                 $thisVat = $request->vats;
@@ -660,61 +619,32 @@ class HomeController extends Controller
                 }
                 
 
+                $haveSpouse =  Session::get('mySpouse');
+                $kids =  Session::get('myKids');
 
-// dd($applicant_id);
+                $rre = user::where([
+                    ['id', '=', Auth::user()->id]
+                ])->first();
 
-                    $haveSpouse =  Session::get('mySpouse');
-                    $kids =  Session::get('myKids');
-
-                    $rre = user::where([
-                        ['id', '=', Auth::user()->id]
-                    ])->first();
-
-                    if ($rre === null) {
-                        $rres = new user;
-                        
-                        $rres->country_of_residence =  $request->current_location;
-                        if( Session::has('mySpouse'))
-                        {
-                            $rres->is_spouse = $haveSpouse;
-                            $rres->children_count = $kids;
-                        }
-                        $rres->save();
-                    } else {
-                        $rre->country_of_residence =  $request->current_location;
-                        if( Session::has('mySpouse'))
-                        {
-                            $rre->is_spouse = $haveSpouse;
-                            $rre->children_count = $kids;
-                        }
-                        $rre->save();
+                if ($rre === null) {
+                    $rres = new user;
+                    
+                    $rres->country_of_residence =  $request->current_location;
+                    if( Session::has('mySpouse'))
+                    {
+                        $rres->is_spouse = $haveSpouse;
+                        $rres->children_count = $kids;
                     }
-
-                    // user::updateOrCreate(
-                    //     [ 
-                    //         'id' => Auth::user()->id
-                    //     ],
-                    //     [
-                    //         'country_of_residence' =>  $request->current_location,
-                    //         'is_spouse' => $haveSpouse,
-                    //         'children_count' => $kids
-                    //     ]
-                    // );
-
-                
-
-                // $re=  payment::updateOrCreate(
-                //     [
-                //     'application_id' => $applicant_id,
-                //     'payment_type' => $request->whichpayment
-                // ], [
-                //     'payment_type' => $request->whichpayment,
-                //     'application_id' => $applicant_id,
-                //     'payment_date' => $thisDay,
-                //     'payable_amount' => $request->totaldue,
-                //     'paid_amount' => $request->totalpay,
-                //     'invoice_amount' => $request->totalpay
-                // ]);
+                    $rres->save();
+                } else {
+                    $rre->country_of_residence =  $request->current_location;
+                    if( Session::has('mySpouse'))
+                    {
+                        $rre->is_spouse = $haveSpouse;
+                        $rre->children_count = $kids;
+                    }
+                    $rre->save();
+                }
 
                 $ppd = payment::where([
                     ['application_id', '=', $applicant_id],
@@ -748,7 +678,6 @@ class HomeController extends Controller
                 ])->first();
                 if ($datas === null) {
                     $data = new applicant;
-                    // $data->current_residance_country = $request->current_location;
                     $data->embassy_country = $request->embassy_appearance;
                     $data->pricing_plan_id = $request->ppid;
 
@@ -796,7 +725,6 @@ class HomeController extends Controller
 
                     $res = $data->save();
                 } else {
-                    // $datas->current_residance_country = $request->current_location;
                     $datas->embassy_country = $request->embassy_appearance;
                     $datas->pricing_plan_id = $request->ppid;
 
@@ -913,53 +841,6 @@ class HomeController extends Controller
         }
     }
 
-    /**
-     * 
-     * add payment some code
-     */
-    // public function addPaymentDetails($request)
-    // {
-    //     $id = Session::get('myproduct_id');
-
-    //     // Send Notifications on This Payment ##############
-    //     $email = Auth::user()->email;
-    //     $userID = Auth::user()->id;
-
-    //     if($request->whichpayment == "First Payment")
-    //     {
-    //         $ems = "";
-    //     } else if($request->whichpayment == "Second Payment") {
-    //         $ems = " You will be notified when your Work Permit is ready.";
-    //     } else {
-    //         $ems = " You will be notified when your embassy appearance date is set.";
-    //     }
-
-    //     $criteria = $request->whichpayment . " Completed!";
-    //     $message = "You have successfully made your " .$request->whichpayment. ". Kindly login to the PWG Client portal and check your receipt on 'My Application'" . $ems;
-
-    //     $link = "";
-    //     // $msgBody="hellooooooo";
-
-    //     $dataArray = [
-    //         'title' => $criteria .' Mail from PWG Group',
-    //         'body' => $message,
-    //         'link' => $link
-    //     ];
-
-    //     DB::table('notifications')->insert(
-    //             ['user_id' => $userID, 'message' => $message, 'criteria' => $criteria, 'link' => $link]
-    //     );
-
-    //     Mail::to($email)->send(new NotifyMail($dataArray));
-    //     // Notification Ends ############ 
-        
-    //     //kjljkllk
-    //     $productId = $id;
-    //     $dest = product::find($request->pid);
-    //     $dest_name = $dest->product_name;
-
-    // }
-
     public function getPromo(Request $request)
     {
         $response['status'] = false;
@@ -1024,11 +905,6 @@ class HomeController extends Controller
             ->where('active_until', '>=', date('Y-m-d'))
             ->where('active','=',1)
             ->get();
-
-            // foreach ($coupon as $apply) {
-            //     $my_discount = $apply->amount;
-            // }
-
 
         if ($coupon->first()) {
             // $response['haveCoupon'] = 1;
@@ -1095,8 +971,7 @@ class HomeController extends Controller
             $datas = cardDetail::where('client_id', '=', Auth::user()->id)->first();
             if ($datas === null) {
                 $data = new cardDetail();
-                // $data->product_payment_id = $request->ppid;
-                // $data->application_id = $apply->id;
+
                 $data->client_id = Auth::user()->id;
                 $data->card_holder_name = $request->name;
             
@@ -1107,8 +982,7 @@ class HomeController extends Controller
             
                 $data->save();
             } else {
-                // $datas->product_payment_id = $request->ppid;
-                // $datas->application_id = $apply->id;
+
                 $datas->client_id = Auth::user()->id;
                 $datas->card_holder_name = $request->name;
             
@@ -1137,21 +1011,6 @@ public function mark_read(Request $request) {
            }
             return response()->json(['status' => 'Cleared']);
 }
-
-    // public function notifications()
-    // {
-    //     if (Auth::id()) 
-    //     {
-    //         $notifications = DB::table('notifications')
-    //                             ->where('user_id', '=', Auth::user()->id)
-    //                             ->sortBy("id")
-    //                             ->get();
-
-    //         return view('user.notifications', compact('notifications'));
-    //     } else {
-    //         return redirect()->back()->with('failed', 'You are not authorized');
-    //     }
-    // }
 
     public function paymentSuccess($paymentId)
     {
