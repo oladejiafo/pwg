@@ -345,17 +345,25 @@ class HomeController extends Controller
             ->orderBy('pricing_plans.id')
                 ->first();
 
-            $paid = DB::table('payments')
-                ->join('applications', 'payments.application_id', '=', 'applications.id')
-                ->selectRaw('payments.*, applications.*, COUNT(payments.id) as count')
-                ->where('applications.destination_id', '=', $p_id)
-                ->where('applications.client_id', '=', $id)
-                ->groupBy('payments.id')
-                // ->groupBy('applicants.id')
-                ->orderBy('applications.id', 'desc')
-                // ->limit(1)
-                ->first();
+            // $paid = DB::table('payments')
+            //     ->join('applications', 'payments.application_id', '=', 'applications.id')
+            //     ->selectRaw('payments.*, applications.*, COUNT(payments.id) as count')
+            //     ->where('applications.destination_id', '=', $p_id)
+            //     ->where('applications.client_id', '=', $id)
+            //     ->groupBy('payments.id')
+            //     // ->groupBy('applicants.id')
+            //     ->orderBy('applications.id', 'desc')
+            //     // ->limit(1)
+            //     ->first();
 
+            $paid = DB::table('applications')
+            ->where('applications.destination_id', '=', $p_id)
+            ->where('applications.client_id', '=', $id)
+            // ->groupBy('payments.id')
+            ->orderBy('applications.id', 'desc')
+            ->first();
+
+// dd($paid);
             $prod = DB::table('destinations')
                 ->join('applications', 'destinations.id', '=', 'applications.destination_id')
                 ->select('destinations.name', 'destinations.id')
@@ -423,18 +431,18 @@ class HomeController extends Controller
             $data = product::find(Session::get('myproduct_id'));
 
             $pays = DB::table('applications')
-                ->select('applications.pricing_plan_id', 'applications.total_price', 'applications.total_paid', 'applications.first_payment_status','applications.second_payment_status','applications.third_payment_status')
+                ->select('applications.pricing_plan_id', 'applications.total_price', 'applications.total_paid', 'applications.first_payment_status','applications.second_payment_status','applications.third_payment_status','first_payment_price','first_payment_paid','first_payment_remaining','is_first_payment_partially_paid','second_payment_price','second_payment_paid','second_payment_remaining','third_payment_price','third_payment_paid','third_payment_remaining')
                 ->where('applications.client_id', '=', Auth::user()->id)
                 ->where('applications.destination_id', '=', $id)
                 // ->whereNotIn('status',  ['APPLICATION_COMPLETED','VISA_REFUSED', 'APPLICATION_CANCELLED','REFUNDED'] )
                 ->limit(1)
                 ->first();
-
+                // dd($pays);
             $pdet = DB::table('pricing_plans')
                 ->where('destination_id', '=', Session::get('myproduct_id'))
                 ->where('pricing_plan_type', '=', $packageType)
                 ->first();
-
+             
             return view('user.payment-form', compact('data', 'pdet', 'pays', 'payall'));
         } else {
             // return redirect()->back()->with('message', 'You are not authorized');
@@ -520,10 +528,15 @@ class HomeController extends Controller
                 // dd($request->vats);
                 $outstand= $request->totalpay + $thisVat;
 
-                if ($request->totaldue == $outstand) {
+                if ($request->totaldue == $request->totalpay) {
                     $whatsPaid = "Paid";
-                } elseif ($request->totaldue > $outstand && $request->totalpay > 1000) {
-                    $whatsPaid = "Partial";
+                } elseif ($request->totaldue > $request->totalpay && $request->totalpay > 1000) {
+                    if ($request->totalremaining == $request->totalpay) 
+                    {
+                        $whatsPaid = "Paid";
+                    } else {
+                        $whatsPaid = "Partial";
+                    }
                 } else {
                     $whatsPaid = "Paid";
                     $overPay = $request->totalpay - $request->totaldue;
@@ -573,7 +586,12 @@ class HomeController extends Controller
                     $dat->invoice_amount = $request->totalpay;
                     $dat->save();
                 } else {
-                    $ppd->payment_type = $request->whichpayment;
+                    if(isset($request->totalremaining) && $request->totalremaining>0)
+                    {
+                        $ppd->payment_type = "Balance on " . $request->whichpayment;
+                    } else {
+                        $ppd->payment_type = $request->whichpayment;                        
+                    }
                     $ppd->application_id = $applicant_id;
                     $ppd->payment_date = $thisDay;
                     $ppd->payable_amount = $request->totaldue;
@@ -594,16 +612,33 @@ class HomeController extends Controller
 
                     if($request->whichpayment =='First Payment')
                     {
-                        $data->first_payment_price = $thisPayment;
-                        $data->first_payment_paid = $thisPaymentMade;
+                        // $data->first_payment_price = $thisPayment;
+                        // $data->first_payment_paid = $thisPaymentMade;
                         $data->first_payment_vat = $thisVat;
                         $data->first_payment_discount = $thisDiscount;
                         $data->first_payment_status = $whatsPaid;
-                        $data->status = 'WAITING_FOR_2ND_PAYMENT';
+
                         if($whatsPaid=='Partial')
                         {
+                            $data->first_payment_remaining =  $thisPayment - $thisPaymentMade;
+
                             $data->is_first_payment_partially_paid = 1;
+                            $data->status = 'WAITING_FOR_BALANCE_ON_FIRST_PAYMENT';
+                        } else {
+                            $data->first_payment_remaining = 0;
+
+                            $data->is_first_payment_partially_paid = 0;
+                            $data->status = 'WAITING_FOR_2ND_PAYMENT';
                         }
+                        if(isset($request->totalremaining) && $request->totalremaining>0)
+                        {
+                            // $data->first_payment_price = $thisPayment;
+                            $data->first_payment_paid = $thisPaymentMade + $request->totalremaining;
+                        } else {
+                            $data->first_payment_price = $thisPayment;
+                            $data->first_payment_paid = $thisPaymentMade;
+                        }
+
                     } elseif($request->whichpayment =='Second Payment') {
                         $data->second_payment_price = $thisPayment;
                         $data->second_payment_paid = $thisPaymentMade;
@@ -643,15 +678,33 @@ class HomeController extends Controller
 
                     if($request->whichpayment =='First Payment')
                     {
-                        $datas->first_payment_price = $thisPayment;
-                        $datas->first_payment_paid = $thisPaymentMade;
+                        // $datas->first_payment_price = $thisPayment;
+                        // $datas->first_payment_paid = $thisPaymentMade;
+
                         $datas->first_payment_vat = $thisVat;
                         $datas->first_payment_discount = $thisDiscount;
                         $datas->first_payment_status = $whatsPaid;
+
                         if($whatsPaid=='Partial')
                         {
+                            $datas->first_payment_remaining =  $thisPayment - $thisPaymentMade;
+
                             $datas->is_first_payment_partially_paid = 1;
+                            $datas->status = 'WAITING_FOR_BALANCE_ON_FIRST_PAYMENT';
+                        } else {
+                            $datas->first_payment_remaining = 0;
+
+                            $datas->is_first_payment_partially_paid = 0;
+                            $datas->status = 'WAITING_FOR_2ND_PAYMENT';
                         }
+                        if(isset($request->totalremaining) && $request->totalremaining>0)
+                        {
+                            $datas->first_payment_paid = $datas->first_payment_paid + $request->totalremaining;
+                        } else {
+                            $datas->first_payment_price = $thisPayment;
+                            $datas->first_payment_paid = $thisPaymentMade;
+                        }
+
                     } elseif($request->whichpayment =='Second Payment') {
                         $datas->second_payment_price = $thisPayment;
                         $datas->second_payment_paid = $thisPaymentMade;
@@ -709,7 +762,7 @@ class HomeController extends Controller
                 $tokenHeaders  = array("Authorization: Basic ".$apikey, "Content-Type: application/x-www-form-urlencoded");
                 $tokenResponse = $this->invokeCurlRequest("POST", $idServiceURL, $tokenHeaders, http_build_query(array('grant_type' => 'client_credentials')));
                 $tokenResponse = json_decode($tokenResponse);
-
+// dd($tokenResponse);
                 $access_token  = $tokenResponse->access_token;
 
 

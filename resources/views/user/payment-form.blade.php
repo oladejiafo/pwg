@@ -220,16 +220,16 @@ $pid = $app_id;
                         @endif
 
                         @php
-                            $diff = ($pays) ? $pays->total_price - $pays->total_paid : 0;
+                            $diff = ($pays) ? $pays->first_payment_remaining : 0;
                         @endphp
 
                         @if($diff > 0)
                             @php
-                                $pends = ($pays) ? $pays->total_price - $pays->total_paid : 0 ;
+                                $pends = ($pays) ? $pays->first_payment_remaining : 0 ;
                             @endphp
                         @elseif($diff < 0) 
                             @php
-                                $pends= ($pays) ? $pays->total_paid - $pays->total_price : 0;
+                                $pends= ($pays) ? $pays->first_payment_paid - $pays->first_payment_price : 0;
                             @endphp
                         @else
                             @php
@@ -239,18 +239,24 @@ $pid = $app_id;
 
 
                             <?php
-                                if ($payall == 0) {
+                                if ($payall == 0 || empty($payall)) {
 
-                                 if($pays->first_payment_status =="PENDING" || $pays->first_payment_status ==null){
+                                 if($pays->first_payment_status !="Paid" || $pays->first_payment_status ==null){
 
                                    $whichPayment =  "First Payment";
                                 
                                     $payNow = $pdet->first_payment_price;
-                                    $payNoww = $pdet->first_payment_price;
-                                    $pendMsg = "";
+                                    if($diff > 0) {
+                                        $pendMsg = "You have " . $pends . " balance on first payment.";
+                                        $payNoww = $pends;
+
+                                    } else {
+                                        $pendMsg = "";
+                                        $payNoww = $pdet->first_payment_price;
+                                    }
 
                                  }
-                                 elseif($pays->first_payment_status =="Paid" && $pays->second_payment_status =="PENDING"){
+                                 elseif($pays->first_payment_status =="Paid" && $pays->second_payment_status !="Paid"){
                                     
                                     $whichPayment =  "Second Payment";
                                     if ($diff > 0 && $pays->is_first_payment_partially_paid == 1) {
@@ -268,7 +274,7 @@ $pid = $app_id;
                                     }
 
                                  }
-                                 elseif($pays->second_payment_status =="Paid" && $pays->third_payment_status =="PENDING"){
+                                 elseif($pays->second_payment_status =="Paid" && $pays->third_payment_status !="Paid"){
                                     
                                     $whichPayment =  "Third Payment";
                                     if ($diff > 0 && $pays->is_second_payment_partially_paid == 1) {
@@ -294,12 +300,20 @@ $pid = $app_id;
                                  $discount=0;
 
                                 } else {
-                                    if($pays->first_payment_status =="PENDING"){
-                                        $payNow = $pdet->total_price;
-                                        $payNoww = $pdet->total_price;
-                                        $pendMsg = "Full Payment";
-                                        $discountPercent = $data->full_payment_discount . '%';
-                                        $discount = ($pdet->total_price * $data->full_payment_discount / 100);
+                                    if($pays->first_payment_status !="Paid"){
+                                        if($diff > 0) {
+                                            $payNow = $pdet->total_price-$pays->first_payment_paid;
+                                            $payNoww = $pdet->total_price-$pays->first_payment_paid;
+                                            $pendMsg = "Part Paid already";
+                                            $discountPercent = $data->full_payment_discount . '%';
+                                            $discount = ($pdet->total_price * $data->full_payment_discount / 100);
+                                        } else {
+                                            $payNow = $pdet->total_price;
+                                            $payNoww = $pdet->total_price;
+                                            $pendMsg = "Full Payment";
+                                            $discountPercent = $data->full_payment_discount . '%';
+                                            $discount = ($pdet->total_price * $data->full_payment_discount / 100);
+                                        }
                                     } elseif($pays->first_payment_status =="Paid" && $pays->second_payment_status =="PENDING"){
                                         $payNow = $pdet->total_price - $pdet->first_payment_price;
                                         $payNoww = $payNow;
@@ -344,15 +358,15 @@ $pid = $app_id;
                                                     @if($whichPayment  == "First Payment")
 
                                                     <b>First Payment</b> 
-                                                    @if(strlen($pendMsg)>1) 
-                                                    <br>
-                                                    <font style='font-size:11px;color:red'><i fa fa-arrow-up></i> {{-- {{ $pendMsg }} --}} </font> 
-                                                    @endif
                                                     @else
                                                     First Payment
 
                                                     @endif
                                                     <span style="font-size:11px">(+ 5% VAT)</span>
+                                                    @if(strlen($pendMsg)>1) 
+                                                    <br>
+                                                    <font style='font-size:10px;color:red'><i fa fa-arrow-up></i>  {{ $pendMsg }} </font> 
+                                                    @endif
                                                 </div>
                                                 <div class="right-section col-6" align="right">
                                                     @if($whichPayment == "First Payment")
@@ -447,10 +461,8 @@ $pid = $app_id;
                                             <div class="total-sec row mt-3 showDiscount" id ="showDiscount">
                                                 <div class="left-section col-6">
                                                
-                                                   
                                                       Discount (<span id="discountPercent">{({$discountPercent) ? $discountPercent : ''}} </span>)
                                                     
-
                                                 </div>
                                                 <div class="right-section col-6" align="right">
                                               
@@ -458,15 +470,15 @@ $pid = $app_id;
                                                     <span style="font-size:11px" id="discountVal">AED</span>
                                                     <input type="hidden" name="discount" id="myDiscount" value="{{$discount}}">
                                                     <input type="hidden" name="discountCode" id="myDiscountCode" value="">
-                                                    <input type="hidden" name="vats" id="vats" value="{{$vat}}">
-                                                
+                                                    
                                                 </div>
                                                 
                                             </div>
+                                            <input type="hidden" name="vats" id="vats" value="{{$vat}}">
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-12">
-                                        @if($whichPayment =="First Payment")
+                                        @if($whichPayment =="First Payment" && ($diff == 0 || empty($diff)))
                                         <div class="partial" style="height: 100%;">
 
                                             <p>Pay {{strtolower($which)}} installment in partial</p>
@@ -477,21 +489,8 @@ $pid = $app_id;
 
                                             <p>Minimum amount of <b> 1,000 AED</b></p>
 
-                                            <script>
-                                                $(document).ready(function() {
-                                                    $('#amount').keyup(function() {
-                                                        // if (parseInt($('input[name="amount"]').val()) >= 1000) 
-                                                        // {
-                                                        let ax = $('#amountLink').text($(this).val());
-                                                        document.getElementById("amountLink2").value = $(this).val();
-                                                        // } else {
-                                                        //     alert('Too samll');
-                                                        // }
-                                                    });
-                                                });
-                                            </script>
                                             <?php
-                                            $axx = "<script>document.write(ax)</script>";
+                                           // $axx = "<script>document.write(ax)</script>";
                                             ?>
 
                                         </div>
@@ -499,19 +498,25 @@ $pid = $app_id;
                                     </div>
                                     <div class="partial-total-sec">
                                   
+                                    @if($diff > 0 && $payall ==0) 
+                                        <h2 style="font-size: 1em;">Now you will pay the balance on first installment only <b>{{ number_format($pends) }}</b> AED <span style="font-size:11px;opacity:0.6">(VAT inclusive)</span></h2>
+                                        <input type="hidden" id="amountLink2" name="totalpay" value="{{  number_format($payNoww, 0, '.', '') }}">
+                                        <input type="hidden" id="totaldue" name="totaldue" value="{{$payNow + $vat}}">
+                                        <input type="hidden" name="totalremaining" value="{{$pends}}">
+                                    @else
                                         <h2 style="font-size: 1em;">Now you will pay {{strtolower($which)}} installment only <span id="amountLink"><b>{{number_format($payNoww + $vat)}}</b></span> AED <span style="font-size:11px;opacity:0.6">(VAT inclusive)</span></h2>
                                         <input type="hidden" id="amountLink2" name="totalpay" value="{{  number_format($payNoww + $vat, 0, '.', '') }}">
                                         <input type="hidden" id="totaldue" name="totaldue" value="{{$payNoww + $vat}}">
+                                    @endif
+
                                     </div>
                                 </div>
                             </div>
-                           
-                
 
-                    <input type="hidden" name="pid" value="{{$data->id}}">
-                    <input type="hidden" name="ppid" value="{{(isset($pdet->id))?$pdet->id:''}}">
-                    <input type="hidden" name="uid" value="{{Auth::user()->id}}">
-                    <input type="hidden" name="whichpayment" value="{{ ($whichPayment) ? $whichPayment : 'First Payment' }}">
+                        <input type="hidden" name="pid" value="{{$data->id}}">
+                        <input type="hidden" name="ppid" value="{{(isset($pdet->id))?$pdet->id:''}}">
+                        <input type="hidden" name="uid" value="{{Auth::user()->id}}">
+                        <input type="hidden" name="whichpayment" value="{{ ($whichPayment) ? $whichPayment : 'First Payment' }}">
                     
 
                         
@@ -530,6 +535,14 @@ $pid = $app_id;
 
         $('#showDiscount').hide();
         $('#discount').hide();
+
+        $('#amount').keyup(function() {
+
+            let ax = $('#amountLink').text($(this).val());
+            document.getElementById("amountLink2").value = $(this).val();
+
+        });
+
         $('.dicountBtn').click(function(){
 
             var $this = $(this); 
@@ -602,8 +615,7 @@ $pid = $app_id;
                     $('#discount').hide();
                 }
             });
-            });
-
+        });
 
     });
 

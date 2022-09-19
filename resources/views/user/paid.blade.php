@@ -32,12 +32,8 @@
         <div class="container-fluid text-center">
           <div class="row paid-thumbnail">
             <ul>
-
-
-
               <!-- 1st Payment Column  -->
               <li>
-
                 <div align="center" class="col-md-4 col-sm-12 img-fluid cellContainer">
                   <span class="paid-item " href="#">
                     <span class="positionAnchor  @if($paid->first_payment_status =='Paid')) watermarked @endif paid-thumbnail">
@@ -56,17 +52,20 @@
                          {{$prod->name}}
                          <br>Package
                       </amp>
- 
+
+                      @if($paid->first_payment_remaining >0 && $paid->first_payment_status !='Paid')
+                         <br><amp style="display:fixed; align-content: center; text-align:center; font-size:10px !important; color:#ff0000;padding:1px;margin-left: 20px; line-height:100% !important; margin-top: 70px; margin-left:-100px">(Outstanding on 1st Payment: {{$paid->first_payment_remaining}}.)</amp>
+                      @endif
+  
                       <p>
                           @if($paid->first_payment_status =='Paid')
                             <a class="btn btn-secondary" href="#">Get Reciept</a>
                           @else
+                          
                             <form action="{{ route('payment',$prod->id) }}" method="GET">
-
                               <button class="btn btn-secondary">Pay Now</button>
                             </form>
-                    
-
+                          
                           @endif
                       </p>
                     </span>
@@ -93,19 +92,36 @@
                   <div class="cardc-body">
                     
                     <div style="display:inline" id="ddx" class="block2 download-thumbnail img-fluid" data-bs-toggle="modal" data-bs-target="#statusModal">
-                      <span style="font-size:11px">Click for more info</span>
+                      <p style="font-size:11px; margin-top:20%;">Click for more info</p>
                     </div>
                     <div class="dg aligns-items-center justify-content-center text-center" style="display:inline; justify-content: center;  align-items: center;">
                       <p style="padding-top: 27px;padding-bottom:0px; font-size:14px;font-weight:800">Application Status</p>
-                      <span style="font-size:11px; color:grey;padding-left:1px; padding-right:1px">( {{$ptype}} )</span>
+                      <span style="font-size:11px !important; color:grey;padding-left:1px; padding-right:1px; line-height:100% !important">( {{$ptype}} )</span>
+                      @if($paid->application_stage_status != 5)
+                       @if($paid->application_stage_status==2)
+                        @php 
+                          $linkk = "applicant";
+                        @endphp
+                       @elseif($paid->application_stage_status==3)
+                        @php 
+                          $linkk = "applicant.details";
+                        @endphp 
+                       @elseif($paid->application_stage_status==4)
+                        @php 
+                          $linkk = "applicant.review";
+                        @endphp   
+                       @endif
+                      <a href="{{route($linkk, $paid->destination_id)}}">
+                       <p style="display:fixed; align-content: center; text-align:center; font-size:9px !important; color:#ff0000;padding:1px;margin-left: 20px; line-height:100% !important">
+                         Application process not completed. Click here
+                       </p>
+                      </a>
+                      @endif
                     </div>
-
                   </div>
                 </div>
-
               </li>
 
-              
               <!-- 2nd Payment Column  -->
               <li>
                 <div align="center" class="col-md-4 col-sm-12 img-fluid cellContainer">
@@ -126,16 +142,19 @@
                          {{$prod->name}}
                          <br>Package
                       </amp>
- 
+
                       <p>
                           @if($paid->second_payment_status =='Paid')
                           <a class="btn btn-secondary" href="#">Get Reciept</a>
+                          @else
+                          @if($paid->application_stage_status != 5)
+                            <button class="btn btn-secondary toastrDefaultError" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           
                           @else
                             <form action="{{ route('payment',$prod->id) }}" method="GET">
 
                               <button class="btn btn-secondary">Pay Now</button>
                             </form>
-
+                          @endif
                           @endif
                       </p>
                     </span>
@@ -188,11 +207,14 @@
                           @if($paid->third_payment_status =='Paid')
                           <a class="btn btn-secondary" href="#">Get Reciept</a>
                           @else
+                          @if($paid->application_stage_status != 5)
+                            <button class="btn btn-secondary toastrDefaultError" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           
+                          @else
                             <form action="{{ route('payment',$prod->id) }}" method="GET">
 
                               <button class="btn btn-secondary">Pay Now</button>
                             </form>
-
+                            @endif
                           @endif
                       </p>
                     </span>
@@ -240,17 +262,43 @@
       <div class="modal-body" style="height:auto">
 
         @if($paid->third_payment_status =='Paid')
-        Congratutaion! You have completed your payments. <br>Your embassy appearnce date will be indicated soon.
+         Congratutaion! You have completed your payments. <br>Your embassy appearnce date will be indicated soon.
 
         @elseif($paid->second_payment_status =='Paid')
-        Your Application is in progress! <br> 
+         Your Application is in progress! <br> 
          Your third payment is pending. <br>
          Your work permit will be uploaded soon.
         @elseif($paid->first_payment_status =='Paid') 
-        Your Application is in progress! <br>
+         Your Application is in progress! <br>
          Your second payment pending 
+        @else 
+          @if($paid->first_payment_remaining >0 && $paid->first_payment_status !='Paid')
+            You have outstanding payment of {{$paid->first_payment_remaining}} <br>on first payment
+          @endif
         @endif
 
+        
+
+        @if($paid->application_stage_status != 5)
+          @if($paid->application_stage_status==2)
+            @php 
+              $linkk = "applicant";
+            @endphp
+          @elseif($paid->application_stage_status==3)
+            @php 
+              $linkk = "applicant.details";
+            @endphp 
+          @elseif($paid->application_stage_status==4)
+            @php 
+              $linkk = "applicant.review";
+            @endphp   
+          @endif
+         <a href="{{route($linkk, $paid->destination_id)}}">
+          <p style="display:fixed; align-content: center; text-align:center; font-size:11px !important; color:#ff0000;padding:1px;margin-left: 20px; line-height:100% !important">
+            Application process not completed. Click here
+          </p>
+         </a>
+        @endif
       </div>
 
     </div>
@@ -303,9 +351,6 @@
   </p>
 </div>
 @endif
-
-
-
 
 
 <!-- <script src="../user/assets/js/vendor/jquery-1.12.4.min.js"></script> -->

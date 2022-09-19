@@ -45,6 +45,8 @@
                                         <p>
                                          @if($paid->first_payment_status =='Paid')
                                             Status PAID
+                                         @elseif($paid->first_payment_status =='Partial')
+                                            Status PAID PARTIAL   
                                          @else
                                             Status PENDING
                                          @endif
@@ -159,15 +161,21 @@
                     <div class="row" style="font-size:18px">
                         <div style="align-items: left; align:left; float: left; padding-left:40px;padding-right:40px" class="col-12">Your next payment is <b>
 
-                          @if($paid->second_payment_status =='Paid')                      
+                          @if($paid->second_payment_status =='Paid')                    
                             {{ $pays->third_payment_price }} AED
                             </b>, to be charged for Third Payment.
                           @elseif($paid->first_payment_status =='Paid')
                             {{ $pays->second_payment_price }} AED
                             </b>, to be charged for Second Payment.
                           @elseif($paid->first_payment_status !='Paid' && $paid->second_payment_status !='Paid')
-                           {{ $pays->first_payment_price }} AED
-                            </b>, to be charged for First Payment.
+
+                           @if($paid->first_payment_remaining >0 && $paid->first_payment_status !='Paid')
+                               {{ $paid->first_payment_remaining }} AED
+                                </b>, outstanding on First Payment.
+                           @else
+                                {{ $pays->first_payment_price }} AED
+                                </b>, to be charged for First Payment.
+                           @endif
                           @endif
 
                         </div>
