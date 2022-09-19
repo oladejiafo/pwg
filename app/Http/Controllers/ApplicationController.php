@@ -159,6 +159,7 @@ class ApplicationController extends Controller
 
             ), 200); // 400 being the HTTP code for an invalid request.
         }
+
         $file = $request->file('passport_copy');
         $client = User::find(Auth::id());
         if($request->hasFile('passport_copy')){

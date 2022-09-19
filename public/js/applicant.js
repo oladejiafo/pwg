@@ -1,8 +1,17 @@
 $(document).ready(function(){
+    // $('.country_birth, .citizenship, .home_country, .current_country').select2();
     // Main Applicant
     $('.applicantReviewSpin, .dependentReviewSpin, .childReviewSpin').hide();
-    $('.schengen_visa, .applicantData, .homeCountryData, .currentCountryData, .schengenData, .dependent_schengen_visa').hide();
-    $('.datepicker, .dependent_datepicker, .child-dob').datepicker({
+    $('.schengen_visa, .applicantData, .homeCountryData, .currentCountryData, .schengenData, .dependent_schengen_visa, #is_finger_print_collected_for_Schengen_visa,#is_dependent_finger_print_collected_for_Schengen_visa').hide();
+    $('.datepicker').datepicker({
+        dateFormat : "dd-mm-yy",
+        changeMonth: true,
+        changeYear: true,
+        maxDate: '-18Y',
+        yearRange: "-100:+0",
+        constrainInput: false ,  
+    });
+    $('.dependent_datepicker, .child-dob').datepicker({
         maxDate : 0,
         dateFormat : "dd-mm-yy",
         changeMonth: true,
@@ -36,17 +45,6 @@ $(document).ready(function(){
             "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
     });
 
-    const phoneHomeInputField = document.querySelector("#home_phone_number");
-    const phoneHomeInput = window.intlTelInput(phoneHomeInputField, {
-        separateDialCode: false,
-        preferredCountries:["ae"],
-        nationalMode: false,
-        hiddenInput: "full",
-        autoHideDialCode: false,
-        utilsScript:
-            "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-    });
-
     const phoneCurrentInputField = document.querySelector("#current_residance_mobile");
     const phoneCurrentInput = window.intlTelInput(phoneCurrentInputField, {
         separateDialCode: false,
@@ -59,19 +57,8 @@ $(document).ready(function(){
     });
 
     const dependentPhone = document.querySelector("#dependent_phone");
-    const dependenthomephonenumber = document.querySelector("#dependent_home_phone_number");
     const dependentcurrentresidancemobile = document.querySelector("#dependent_current_residance_mobile");
     const dependentPhoneInput = window.intlTelInput(dependentPhone, {
-        separateDialCode: false,
-        preferredCountries:["ae"],
-        nationalMode: false,
-        hiddenInput: "full",
-        autoHideDialCode: false,
-        utilsScript:
-            "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-    });
-
-    const dependenthomephonenumberInput = window.intlTelInput(dependenthomephonenumber, {
         separateDialCode: false,
         preferredCountries:["ae"],
         nationalMode: false,
@@ -93,7 +80,22 @@ $(document).ready(function(){
 
 
     $(document).on('change','.up', function(){
+        var names = [];
+        var length = $(this).get(0).files.length;
+        for (var i = 0; i < $(this).get(0).files.length; ++i) {
+            names.push($(this).get(0).files[i].name);
+        }
+        $('.passport_copy, .up').attr("value",names);
+    });
+    $('.passport_upload, .residence_upload, .visa_upload, .schengen_upload').click(function(){
         $("#passportFormatModal").modal('hide');
+        $("#visaFormatModal").modal('hide');
+        $("#residenceIdFormatModal").modal('hide');
+        $('#schengenVisaFormatModal').modal('hide');
+        $('body').removeClass('modal-open');
+        $('.modal-backdrop').remove();
+    })
+    $(document).on('change', '.passport_upload', function ()  {
         var names = [];
         var length = $(this).get(0).files.length;
         for (var i = 0; i < $(this).get(0).files.length; ++i) {
@@ -101,13 +103,13 @@ $(document).ready(function(){
         }
         // $("input[name=file]").val(names);
         if(length>2){
-            var fileName = names.join(', ');
-            $(this).closest('.form-group').find('.form-control').attr("value",length+" files selected");
+        var fileName = names.join(', ');
+            $('.passport_copy, .passport_upload').attr("value",length+" files selected");
         }
         else{
-            $('.passport_copy, .up').attr("value",names);
+            $('.passport_upload, .passport_copy').attr("value",names);
         }
-    });
+    })
     $(document).on('change','.residence_id', function(){
         var names = [];
         var length = $(this).get(0).files.length;
@@ -123,7 +125,22 @@ $(document).ready(function(){
             $('.residence_id').attr("value",names);
         }
     });
-    $(document).on('change','.visa_copy', function(){
+    $(document).on('change','.residence_upload', function(){
+        var names = [];
+        var length = $(this).get(0).files.length;
+        for (var i = 0; i < $(this).get(0).files.length; ++i) {
+            names.push($(this).get(0).files[i].name);
+        }
+        // $("input[name=file]").val(names);
+        if(length>2){
+        var fileName = names.join(', ');
+            $('.residence_copy').attr("value",length+" files selected");
+        }
+        else{
+            $('.residence_copy').attr("value",names);
+        }
+    });
+    $(document).on('change','.visa_upload', function(){
         var names = [];
         var length = $(this).get(0).files.length;
         for (var i = 0; i < $(this).get(0).files.length; ++i) {
@@ -138,15 +155,29 @@ $(document).ready(function(){
             $('.visa_copy').attr("value",names);
         }
     });
-
-    $('#is_schengen_visa_issued_last_five_year').on('change', function(){
-        if($('#is_schengen_visa_issued_last_five_year').val() == "Yes"){
-            $('.schengen_visa').show();
-        } else {
-            $('.schengen_visa').hide();
+    $(document).on('change','.schengen_upload', function(){
+        var names = [];
+        var length = $(this).get(0).files.length;
+        for (var i = 0; i < $(this).get(0).files.length; ++i) {
+            names.push($(this).get(0).files[i].name);
+        }
+        if(length>2){
+            var fileName = names.join(', ');
+            $('.schengen_copy').attr("value",length+" files selected");
+        }
+        else{
+            $('.schengen_copy').attr("value",names);
         }
     });
-
+    $('#is_schengen_visa_issued_last_five_year').on('change', function(){
+        if($('#is_schengen_visa_issued_last_five_year').val() == "YES"){
+            $('.schengen_visa').show();
+            $('#is_finger_print_collected_for_Schengen_visa').show();
+        } else {
+            $('.schengen_visa').hide();
+            $('#is_finger_print_collected_for_Schengen_visa').hide();
+        }
+    });
     $('.applicantReview').click(function(e){
         $('.applicantReviewSpin').show();
         e.preventDefault(); 
@@ -163,41 +194,46 @@ $(document).ready(function(){
                             },
                             success: function (response) {
                                 if(response.status) {
-                                    checkdata = checkStatus('{{$applicant['id']}}', '{{$productId}}');
+                                    checkdata = checkStatus('{{$productId}}');
                                     $('.applicantReviewSpin').hide();
                                     if(checkdata.status){
                                         location.href = "{{url('applicant/review')}}/"+'{{$productId}}';
                                     } else {
-                                        alert(checkdata.message);
+                                        toastr.error(checkdata.message);
                                     }
                                 } else {
                                     $('.applicantReviewSpin').hide();
                                     var validationError = response.errors;
                                     $.each(validationError, function(index, value) {
                                         $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                                        toastr.error(value);
                                     });
                                 }
                             }
                         });
                     } else {
-                        alert('Please provide all details');
+                        $('.applicantReviewSpin').hide();
+                        toastr.error('Please provide all details');
                         $('#collapseSchengen').addClass('show');
                         $('#collapseExperience').removeClass('show');
                     }
                 } else {
-                    alert('Please provide all details');
+                    $('.applicantReviewSpin').hide();
+                    toastr.error('Please provide all details');
                     $('#collapseCurrent').addClass('show');
                     $('#collapseExperience').removeClass('show');
                 }
             } else {
+                $('.applicantReviewSpin').hide();
                 $('#collapseHome').addClass('show');
                 $('#collapseExperience').removeClass('show');
-                alert('Please provide all details');
+                toastr.error('Please provide all details');
             }
         } else {
+            $('.applicantReviewSpin').hide();
             $('#collapseapplicant').addClass('show');
             $('#collapseExperience').removeClass('show');
-            alert('Please provide all details');
+            toastr.error('Please provide all details');
             $('html, body').animate({
                 scrollTop: $("#collapseapplicant").offset().top
             }, 2000);
@@ -210,14 +246,14 @@ $(document).ready(function(){
             if($('.homeCountryCompleted').val() == 1) {
                 if($('.currentCountryCompleted').val() == 1) {
                     if($('.schengenCompleted').val() == 1) {
-                        if('{{$applicant['is_spouse']}}' == null || '{{$applicant['is_spouse']}}' == 0){
-                            updateStatus('applicant', '{{$applicant['id']}}', '{{$productId}}'); 
+                        if(('{{($applicant['work_permit_category'])}}' == 'FAMILY PACKAGE') && ('{{$client['is_spouse']}}' == null || '{{$client['is_spouse']}}' == 0)){
+                            updateStatus('applicant'); 
                             $('#children').show();
                             $('#mainApplicant, #dependant').hide();
                             $('.children').addClass('active');
                             $('.mainApplicant, .dependant').removeClass('active');
                         } else {
-                            updateStatus('applicant', '{{$applicant['id']}}', '{{$productId}}'); 
+                            updateStatus('applicant'); 
                             $('#dependant').show();
                             $('#mainApplicant, #children').hide();
                             $('.dependant').addClass('active');
@@ -225,24 +261,24 @@ $(document).ready(function(){
                             $('#collapsespouseapplicant').addClass('show');
                         }
                     } else {
-                        alert('Please provide all details');
+                        toastr.error('Please provide all details');
                         $('#collapseSchengen').addClass('show');
                         $('#collapseExperience').removeClass('show');
                     }
                 } else {
-                    alert('Please provide all details');
+                    toastr.error('Please provide all details');
                     $('#collapseCurrent').addClass('show');
                     $('#collapseExperience').removeClass('show');
                 }
             } else {
                 $('#collapseHome').addClass('show');
                 $('#collapseExperience').removeClass('show');
-                alert('Please provide all details');
+                toastr.error('Please provide all details');
             }
         } else {
             $('#collapseapplicant').addClass('show');
             $('#collapseExperience').removeClass('show');
-            alert('Please provide all details');
+            toastr.error('Please provide all details');
             $('html, body').animate({
                 scrollTop: $("#collapseapplicant").offset().top
             }, 2000);
@@ -260,7 +296,7 @@ $(document).ready(function(){
             }
         });
         var full_number = phoneInput.getNumber(intlTelInputUtils.numberFormat.E164);
-        $("input[id='phone'").val(full_number);
+
         $.ajax({
             type: 'POST',
             url: "{{ route('store.applicant.details') }}",
@@ -277,10 +313,12 @@ $(document).ready(function(){
                     var validationError = data.errors;
                     $.each(validationError, function(index, value) {
                         $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                        toastr.error(value);
                     });
                 }
             },
             errror: function (error) {
+                toastr.error(error);
             }
         });
     });
@@ -295,12 +333,13 @@ $(document).ready(function(){
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-        var full_number = phoneHomeInput.getNumber(intlTelInputUtils.numberFormat.E164);
-        $("input[id='home_phone_number'").val(full_number);
+        
+        var formData = new FormData(this);
+        formData.append('passport_copy', $('.passport_upload')[0].files[0]);
         $.ajax({
             type: 'POST',
             url: "{{ url('store/home/country/details') }}",
-            data: new FormData(this),
+            data: formData,
             processData: false,
             contentType: false,
             success: function (data) {
@@ -313,10 +352,12 @@ $(document).ready(function(){
                     var validationError = data.errors;
                     $.each(validationError, function(index, value) {
                         $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                        toastr.error(value);
                     });
                 }
             },
             errror: function (error) {
+                toastr.error(error);
             }
         });
     });
@@ -333,10 +374,14 @@ $(document).ready(function(){
         });
         var full_number = phoneCurrentInput.getNumber(intlTelInputUtils.numberFormat.E164);
         $("input[id='current_residance_mobile'").val(full_number);
+        var formData = new FormData(this);
+        formData.append('visa_copy', $('.visa_upload')[0].files[0]);
+        formData.append('residence_copy', $('.residence_upload')[0].files[0]);
+        console.log(formData);
         $.ajax({
             type: 'POST',
             url: "{{ url('store/current/details') }}",
-            data: new FormData(this),
+            data: formData,
             processData: false,
             contentType: false,
             success: function (data) {
@@ -349,10 +394,12 @@ $(document).ready(function(){
                     var validationError = data.errors;
                     $.each(validationError, function(index, value) {
                         $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                        toastr.error(value);
                     });
                 }
             },
             errror: function (error) {
+                toastr.error(error);
             }
         });
     });
@@ -367,11 +414,12 @@ $(document).ready(function(){
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-
+        var formData = new FormData(this);
+        formData.append('schengen_copy', $('.schengen_upload')[0].files[0]);
         $.ajax({
             type: 'POST',
             url: "{{ url('store/schengen/details') }}",
-            data: new FormData(this),
+            data: formData,
             processData: false,
             contentType: false,
             success: function (data) {
@@ -384,10 +432,12 @@ $(document).ready(function(){
                     var validationError = data.errors;
                     $.each(validationError, function(index, value) {
                         $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                        toastr.error(value);
                     });
                 }
             },
             errror: function (error) {
+                toastr.error('error');
             }
         });
     });
@@ -410,6 +460,9 @@ $(document).ready(function(){
 
     $('.closeBtn').click(function(){
         $("#passportFormatModal").modal('hide');
+        $("#residenceIdFormatModal").modal('hide');
+        $('#visaFormatModal').modal('hide');
+        $('#schengenVisaFormatModal').modal('hide');
     });
 
     $('.mainApplicant').click(function(){
@@ -475,14 +528,17 @@ $(document).ready(function(){
                     $('#collapsespouseHome').addClass('show');
                     $('.dependentApplicantCompleted').val(1);
                     $('.addExperience, .container').attr('data-dependentId', data.dependentId);
+
                 } else {
                     var validationError = data.errors;
                     $.each(validationError, function(index, value) {
                         $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                        toastr.error(value);
                     });
                 }
             },
             errror: function (error) {
+                toastr.error(error);
             }
         });
     });
@@ -497,8 +553,8 @@ $(document).ready(function(){
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-        var full_number = dependenthomephonenumberInput.getNumber(intlTelInputUtils.numberFormat.E164);
-        $("input[id='dependent_home_phone_number'").val(full_number);
+        // var full_number = dependenthomephonenumberInput.getNumber(intlTelInputUtils.numberFormat.E164);
+        // $("input[id='dependent_home_phone_number'").val(full_number);
         $.ajax({
             type: 'POST',
             url: "{{ url('store/spouse/home/country/details') }}",
@@ -516,10 +572,12 @@ $(document).ready(function(){
                     var validationError = data.errors;
                     $.each(validationError, function(index, value) {
                         $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                        toastr.error(value);
                     });
                 }
             },
             errror: function (error) {
+                toastr.error(error);
             }
         });
     });
@@ -553,10 +611,12 @@ $(document).ready(function(){
                     var validationError = data.errors;
                     $.each(validationError, function(index, value) {
                         $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                        toastr.error(value);
                     });
                 }
             },
             errror: function (error) {
+                toastr.error(error);
             }
         });
     });
@@ -589,19 +649,23 @@ $(document).ready(function(){
                     var validationError = data.errors;
                     $.each(validationError, function(index, value) {
                         $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                        toastr.error(value);
                     });
                 }
             },
             errror: function (error) {
+                toastr.error(error);
             }
         });
     });
 
     $('#is_dependent_schengen_visa_issued_last_five_year').on('change', function(){
-        if($('#is_dependent_schengen_visa_issued_last_five_year').val() == "Yes"){
+        if($('#is_dependent_schengen_visa_issued_last_five_year').val() == "YES"){
             $('.dependent_schengen_visa').show();
+            $('#is_dependent_finger_print_collected_for_Schengen_visa').show();
         } else {
             $('.dependent_schengen_visa').hide();
+            $('#is_dependent_finger_print_collected_for_Schengen_visa').hide();
         }
     });
 
@@ -672,7 +736,7 @@ $(document).ready(function(){
 
     // children
 
-    for(var i= 1 ; i<='{{$applicant['children_count']}}'; i++)
+    for(var i= 1 ; i<='{{$client['children_count']}}'; i++)
     {
         $('.childData'+i).hide();
     }
@@ -696,22 +760,24 @@ $(document).ready(function(){
             contentType: false,
             success: function (data) {
                 if(data.success) {
-                    checkdata = checkStatus('{{$applicant['id']}}', '{{$productId}}');
+                    checkdata = checkStatus('{{$productId}}');
                     $('.childReviewSpin').hide();
                     if(checkdata.status){
                         location.href = "{{url('applicant/review')}}/"+'{{$productId}}';
                     } else {
-                        alert(checkdata.message);
+                        toastr.error(checkdata.message);
                     }
                 } else {
                     $('.childReviewSpin').hide();
                     var validationError = data.errors;
                     $.each(validationError, function(index, value) {
                         $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                        toastr.error(value);
                     });
                 }
             },
             errror: function (error) {
+                toastr.error(error);
             }
         });
     });
@@ -732,41 +798,42 @@ $(document).ready(function(){
                             },
                             success: function (response) {
                                 if(response.status) {
-                                    checkdata = checkStatus('{{$applicant['id']}}', '{{$productId}}');
+                                    checkdata = checkStatus('{{$productId}}');
                                     $('.dependentReviewSpin').hide();
                                     if(checkdata.status){
                                         location.href = "{{url('applicant/review')}}/"+'{{$productId}}';
                                     } else {
-                                        alert(checkdata.message);
+                                        toastr.error(checkdata.message);
                                     }
                                 } else {
                                     $('.dependentReviewSpin').hide();
                                     var validationError = response.errors;
                                     $.each(validationError, function(index, value) {
                                         $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                                        toastr.error(value);
                                     });
                                 }
                             }
                         });
                     } else {
-                        alert('Please provide all details');
+                        toastr.error('Please provide all details');
                         $('#collapseSpouseSchengen').addClass('show');
                         $('#collapseSpouseExperience').removeClass('show');
                     }
                 } else {
-                    alert('Please provide all details');
+                    toastr.error('Please provide all details');
                     $('#collapseSpouseCurrent').addClass('show');
                     $('#collapseSpouseExperience').removeClass('show');
                 }
             } else {
                 $('#collapsespouseHome').addClass('show');
                 $('#collapseSpouseExperience').removeClass('show');
-                alert('Please provide all details');
+                toastr.error('Please provide all details');
             }
         } else {
             $('#collapsespouseapplicant').addClass('show');
             $('#collapseSpouseExperience').removeClass('show');
-            alert('Please provide all details');
+            toastr.error('Please provide all details');
             $('html, body').animate({
                 scrollTop: $("#collapsespouseapplicant").offset().top
             }, 2000);
@@ -779,8 +846,8 @@ $(document).ready(function(){
             if($('.spouseHomeCountryCompleted').val() == 1) {
                 if($('.spouseCurrentCountryCompleted').val() == 1) {
                     if($('.schengenSpouseCompleted').val() == 1) {
-                        if('{{$applicant['children_count']}}' != null || '{{$applicant['children_count']}}' != 0){
-                            updateStatus('family', '{{$applicant['id']}}', '{{$productId}}'); 
+                        if(('{{($applicant['work_permit_category'])}}' == 'FAMILY PACKAGE') && ('{{$client['children_count']}}' != null || '{{$client['children_count']}}' != 0)){
+                            updateStatus('family'); 
                             $('#children').show();
                             $('#mainApplicant, #dependant').hide();
                             $('.children').addClass('active');
@@ -789,24 +856,24 @@ $(document).ready(function(){
                             location.href = "{{url('applicant/review')}}/"+'{{$productId}}'
                         }
                     } else {
-                        alert('Please provide all details');
+                        toastr.error('Please provide all details');
                         $('#collapseSpouseSchengen').addClass('show');
                         $('#collapseSpouseExperience').removeClass('show');
                     }
                 } else {
-                    alert('Please provide all details');
+                    toastr.error('Please provide all details');
                     $('#collapseSpouseCurrent').addClass('show');
                     $('#collapseSpouseExperience').removeClass('show');
                 }
             } else {
                 $('#collapsespouseHome').addClass('show');
                 $('#collapseSpouseExperience').removeClass('show');
-                alert('Please provide all details');
+                toastr.error('Please provide all details');
             }
         } else {
             $('#collapsespouseapplicant').addClass('show');
             $('#collapseSpouseExperience').removeClass('show');
-            alert('Please provide all details');
+            toastr.error('Please provide all details');
             $('html, body').animate({
                 scrollTop: $("#collapsespouseapplicant").offset().top
             }, 2000);
@@ -814,55 +881,68 @@ $(document).ready(function(){
     });
 });
 
-        function showPassportFormat()
-        {
-            $("#passportFormatModal").modal('show');
-        }
+function showPassportFormat()
+{
+    $("#passportFormatModal").modal('show');
+}
 
-        function updateStatus(userType, applicantId, productId)
-        {        
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            $.ajax({
-                type: 'POST',
-                url: "{{ url('update/applicant/status') }}",
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    id: applicantId,
-                    userType: userType,
-                    product_id: productId
-                },
-                success: function (response) {
-                    if(response.status){
-                        return true;
-                    }
-                }
-            });
-        }
+function showResidenceIdFormat() 
+{
+    $("#residenceIdFormatModal").modal('show');
+} 
 
-        function checkStatus(applicantId, productId)
-        {
-            var returnValue;
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            $.ajax({
-                type: 'POST',
-                async: false,
-                url: "{{ url('check/applicant/status') }}",
-                data: {
-                    "_token": "{{ csrf_token() }}",
-                    id: applicantId,
-                    product_id: productId
-                },
-                success: function (response) {
-                    returnValue = response;
-                }
-            });
-            return returnValue;
+function showVisaFormat()
+{
+    $("#visaFormatModal").modal('show');
+}
+
+function showSchengenVisaFormat()
+{
+    $("#schengenVisaFormatModal").modal('show');
+}
+
+
+function updateStatus(userType)
+{        
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
+    });
+    $.ajax({
+        type: 'POST',
+        url: "{{ url('update/applicant/status') }}",
+        data: {
+            _token: "{{ csrf_token() }}",
+            userType: userType,
+        },
+        success: function (response) {
+            if(response.status){
+                return true;
+            }
+        }
+    });
+}
+
+function checkStatus(productId)
+{
+    var returnValue;
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        type: 'POST',
+        async: false,
+        url: "{{ url('check/applicant/status') }}",
+        data: {
+            "_token": "{{ csrf_token() }}",
+            product_id: productId
+        },
+        success: function (response) {
+            returnValue = response;
+        }
+    });
+    return returnValue;
+}

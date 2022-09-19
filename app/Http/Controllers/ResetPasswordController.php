@@ -18,9 +18,8 @@ class ResetPasswordController extends Controller
 
     public function forgotPassword(Request $request)
     {
-        // dd($request);
         $request->validate([
-            'email' => 'required|email|exists:users',
+            'email' => 'required|email|exists:clients',
         ]);
     
         $email = $request->email;
@@ -30,14 +29,14 @@ class ResetPasswordController extends Controller
         } else {
             $token = rand(100000,999999);
 
-            DB::table('password_resets')->insert(
-                ['email' => $request->email, 'token' => $token, 'created_at' => Carbon::now()]
+            DB::table('clients')
+            ->where('email', $email)
+            ->update(
+                [
+                    'otp' => $token, 
+                    'updated_at' => Carbon::now()
+                ]
             );
-
-
-            // User::where('email', $email)->update([
-            //     'otp' => $otp
-            // ]);
 
             Mail::to($email)->send(new ResetPassword($token));
       
@@ -49,24 +48,23 @@ class ResetPasswordController extends Controller
 
     public function updatePassword(Request $request)
     {
-        $reset = DB::table('password_resets')
+        $reset = DB::table('clients')
                     ->where('email', $request->email)
-                    ->where('token', $request->otp)
+                    ->where('otp', $request->otp)
                     ->first();
-        $expiry  = Carbon::now()->subMinutes( 60 );
+        $expiry  = Carbon::now()->subMinutes( 15 );
         if($reset){
-            if ($reset->created_at <= $expiry) {
+            if ($reset->updated_at <= $expiry) {
                 return redirect()->route('login');
             }
             $request->validate([
-                'email' => 'required|email|exists:users',
+                'email' => 'required|email|exists:clients',
                 'password' => 'required|string|min:6|confirmed',
                 'password_confirmation' => 'required',
           
             ]);
             User::where('email', $request->email)->update(['password' => Hash::make($request->password)]);
 
-            DB::table('password_resets')->where(['email'=> $request->email])->delete();
 
             return view('auth.reset-password-success');
         } else {

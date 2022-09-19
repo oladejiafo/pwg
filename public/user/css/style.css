@@ -1705,11 +1705,12 @@ input:-moz-placeholder {
   overflow: hidden;
   font-weight: 300 !important;
   padding: 6px 15px !important;
-  background: #e6e6e6 !important;
+  background: #c6c3c3 !important;
   --bs-btn-border-radius: 0px !important;
+  color: #000;
 }
 
-.fileUpload input.upload {
+.fileUpload input.upload, input.passport_upload{
   position: absolute;
   top: 0;
   right: 0;
