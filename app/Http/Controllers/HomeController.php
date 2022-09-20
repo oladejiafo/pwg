@@ -648,7 +648,7 @@ class HomeController extends Controller
                 }
 
                 $data->coupon_code = $thisCode;
-                $data->application_stage_status = 2;
+                // $data->application_stage_status = 2;
 
                 $res = $data->save();
             } else {
@@ -706,7 +706,7 @@ class HomeController extends Controller
                 }
 
                 $datas->coupon_code = $thisCode;
-                $datas->application_stage_status = 2;
+                // $datas->application_stage_status = 2; 
 
 
                 $res = $datas->save();

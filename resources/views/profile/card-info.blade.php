@@ -43,8 +43,11 @@
  $apply = DB::table('applications')
  ->where('client_id', '=', Auth::user()->id)
  ->first();
-
-$applicant_id = $apply->id; 
+if($apply){
+    $applicant_id = $apply->id; 
+} else {
+    $applicant_id=0;
+}
 
 $card = DB::table('card_details')
 ->where('client_id', '=', Auth::user()->id)
