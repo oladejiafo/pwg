@@ -30,7 +30,8 @@
                         @csrf
                         <div class="mb-3">
                             <div class="inputs"> 
-                                <input type="text" style="padding: 10px;text-align:left; font-size:16px" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" autocomplete="off" placeholder="Email" name="email" :value="old('email')" required autofocus>
+                                <input type="text" style="padding: 10px;text-align:left; font-size:16px" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" autocomplete="off" placeholder="Email" name="email" value="{{old('email')}}" required autofocus>
+                                @error('email') <span class="error" style="padding: 86px;text-align:left; font-size:16px">{{ $message }}</span> @enderror
                             </div>            
                         </div>
                         <button type="submit" class="btn btn-primary">Continue</button>
