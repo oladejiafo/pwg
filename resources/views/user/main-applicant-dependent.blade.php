@@ -198,7 +198,7 @@
                         </div>
                         <div class="form-group row mt-4">
                             <div class="col-sm-12 mt-3">
-                                <input type="text" name="dependent_passport_copy" class="form-control dependent_passport_copy" placeholder="Upload Passport Copy*" value="{{old('dependent_passport_copy')}}" data-toggle="modal" class="passportFormatModal" data-target="#passportFormatModal" onclick="showPassportFormat()" autocomplete="off" readonly/>
+                                <input type="text" name="dependent_passport_copy" class="form-control dependent_passport_copy" placeholder="Upload Passport Copy*" value="{{old('dependent_passport_copy')}}"  onclick="showDependentPassportFormat('dependent')" autocomplete="off" readonly/>
 
                                 <div class="input-group-btn">
                                     <span class="fileUpload btn">
@@ -321,7 +321,7 @@
                         </div>
                         <div class="form-group row mt-4">
                             <div class="col-sm-6 mt-3">
-                                <input type="text" class="form-control dependent_residence_copy" name="dependent_residence_copy" onclick="showResidenceIdFormat()" placeholder="Residence/Emirates ID*" readonly >
+                                <input type="text" class="form-control dependent_residence_copy" name="dependent_residence_copy" onclick="showResidenceIdFormat('dependent')" placeholder="Residence/Emirates ID*" readonly >
                                 <div class="input-group-btn">
                                     <span class="fileUpload btn">
                                         <span class="upl" id="upload">Choose File</span>
@@ -331,7 +331,7 @@
                                 <span class="dependent_residence_copy_errorClass"></span>
                             </div>
                             <div class="col-sm-6 mt-3">
-                                <input type="text" class="form-control dependent_visa_copy" name="dependent_visa_copy" placeholder="Visa Copy" onclick="showVisaFormat()" readonly >
+                                <input type="text" class="form-control dependent_visa_copy" name="dependent_visa_copy" placeholder="Visa Copy" onclick="showVisaFormat('dependent')" readonly >
                                 <div class="input-group-btn">
                                     <span class="fileUpload btn">
                                         <span class="upl" id="upload">Choose File</span>
@@ -438,7 +438,7 @@
                         </div>
                         <div class="form-group row mt-4 dependent_schengen_visa">
                             <div class="col-sm-12 mt-3">
-                                <input type="text" class="form-control dependent_schengen_copy" name="dependent_schengen_copy" onclick="showSchengenVisaFormat()" placeholder="Image of Schengen Or National Visa Issued During Last 5 Years" readonly >
+                                <input type="text" class="form-control dependent_schengen_copy" name="dependent_schengen_copy" onclick="showSchengenVisaFormat('dependent')" placeholder="Image of Schengen Or National Visa Issued During Last 5 Years" readonly >
                                 <div class="input-group-btn">
                                     <span class="fileUpload btn">
                                         <span class="upl" id="upload">Choose File</span>

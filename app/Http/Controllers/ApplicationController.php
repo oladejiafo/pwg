@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Response;
 use App\Mail\NotifyMail;
 use DB;
+use Session;
 
 class ApplicationController extends Controller
 {
@@ -65,6 +66,7 @@ class ApplicationController extends Controller
 
     public function applicantDetails($productId)
     {
+        Session::forget('info');
         if (Auth::id()) {
             $client = User::find(Auth::id());
 
@@ -76,7 +78,7 @@ class ApplicationController extends Controller
                             ->where('is_dependent', 1)
                             ->pluck('id')
                             ->first();
-
+            
             return view('user.application-next', compact('client', 'productId', 'applicant', 'dependent'))->with('info', 'Data saved successfully!');
         } else {
             return back();
@@ -162,10 +164,12 @@ class ApplicationController extends Controller
 
         $file = $request->file('passport_copy');
         $client = User::find(Auth::id());
+
         if($request->hasFile('passport_copy')){
             $fileName = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
             $client->addMedia($request->file('passport_copy'))->usingFileName($fileName)->toMediaCollection(User::$media_collection_main);
         } 
+
         $client->passport_number  = $request['passport_number'];
         $client->passport_issue_date =  date('Y-m-d', strtotime($request['passport_issue']));
         $client->passport_expiry = date('Y-m-d', strtotime($request['passport_expiry']));
@@ -202,7 +206,7 @@ class ApplicationController extends Controller
         
         $client->visaName = (isset($client->getMedia(User::$media_collection_main_residence_visa)[0])) ? $client->getMedia(User::$media_collection_main_residence_visa)[0]['name'] : ' ';
         $client->visaCopyUrl = (isset($client->getMedia(User::$media_collection_main_residence_visa)[0])) ?$client->getMedia(User::$media_collection_main_residence_visa)[0]->getUrl() : null;
-        
+
         $client->schengenVisaUrl = (isset($client->getMedia(User::$media_collection_main_schengen_visa)[0])) ? $client->getMedia(User::$media_collection_main_schengen_visa)[0]->getUrl() : null;
         $client->schengenVisaName = (isset($client->getMedia(User::$media_collection_main_schengen_visa)[0])) ? $client->getMedia(User::$media_collection_main_schengen_visa)[0]['name'] : ' ';
         if($dependent){
@@ -289,6 +293,7 @@ class ApplicationController extends Controller
      */
     public function storeSchengenDetails(Request $request)
     {
+
         if($request['is_schengen_visa_issued_last_five_year']  == 'YES'){
             $validator = \Validator::make($request->all(), [
                 'is_schengen_visa_issued_last_five_year' => 'required',
@@ -331,7 +336,6 @@ class ApplicationController extends Controller
      */
     public function addExperience(Request $request)
     {
-        // dd($request);
         if($request['userType'] == 'dependent'){
             $exist = ApplicantExperience::where('client_id', $request->dependentId)
                     ->where('job_category_three_id', $request['job_category_three_id'])
@@ -605,6 +609,7 @@ class ApplicationController extends Controller
         }
        
         $file = $request->file('dependent_passport_copy');
+        $fileName = null;
         if($request->hasFile('dependent_passport_copy')){
             $fileName = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
             $dependent->addMedia($request->file('dependent_passport_copy'))->usingFileName($fileName)->toMediaCollection(User::$media_collection_main);
@@ -614,7 +619,7 @@ class ApplicationController extends Controller
         return Response::json(array(
             'dependentId' => $this->getFamilyId(),
             'success' => true,
-            'passport' => storage_path('passportCopy/'.$fileName)
+            'passport' => ($request->hasFile('dependent_passport_copy')) ? storage_path('passportCopy/'.$fileName) : '' ,
         ),
         200);
     }
@@ -725,7 +730,7 @@ class ApplicationController extends Controller
         if ($request->hasFile('dependent_schengen_copy')) {
             $file = $request->file('dependent_schengen_copy');
             $schengenCopy = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
-            $dependent->addMediaFromRequest('schengen_copy')->withCustomProperties(['mime-type' => 'image/jpeg'])->preservingOriginal()->usingFileName($schengenCopy)->toMediaCollection(User::$media_collection_main_schengen_visa);
+            $dependent->addMediaFromRequest('dependent_schengen_copy')->withCustomProperties(['mime-type' => 'image/jpeg'])->preservingOriginal()->usingFileName($schengenCopy)->toMediaCollection(User::$media_collection_main_schengen_visa);
         }
         $dependent->save();
         return Response::json(array(
