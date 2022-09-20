@@ -37,7 +37,7 @@ class HomeController extends Controller
 
 
             $data = product::find($id);
-           
+
             $promo = promo::where('employee_id', '=', $id)->where('active_until', '>=', date('Y-m-d'))->get();
             $ppay = product_payments::where('destination_id', '=', $id)->first();
             // $proddet = product_details::where('product_id', '=', $id)->get();
@@ -105,14 +105,13 @@ class HomeController extends Controller
             // dd($famdet);
         } else {
             $famdet = family_breakdown::where('destination_id', '=', $productId)->where('pricing_plan_type', 'FAMILY PACKAGE')->first();
-       
         }
-   
-      
+
+
         $proddet = family_breakdown::where('destination_id', '=', $productId)->where('pricing_plan_type', 'BLUE COLLAR JOBS')->get();
         $whiteJobs = family_breakdown::where('destination_id', '=', $productId)->where('pricing_plan_type', 'WHITE COLLAR JOBS')->get();
         $canadaOthers = family_breakdown::where('destination_id', '=', $productId)->whereIn('pricing_plan_type', array('Express Entry', 'Study Permit'))->get();
-        return view('user.package-type', compact('proddet', 'famdet', 'productId', 'whiteJobs', 'data','canadaOthers'));
+        return view('user.package-type', compact('proddet', 'famdet', 'productId', 'whiteJobs', 'data', 'canadaOthers'));
     }
 
     public function product(Request $request)
@@ -142,7 +141,7 @@ class HomeController extends Controller
             } else {
                 $kids = Session::get('myKids');
             }
-    
+
             $ppay = family_breakdown::where('destination_id', '=', $id)
                 ->where('pricing_plan_type', '=', Session::get('packageType'))
                 ->where('no_of_parent', '=', $parentt)
@@ -177,76 +176,73 @@ class HomeController extends Controller
 
     public function upload(Request $request)
     {
-    if (Auth::id()) {
-        list($part_a, $image_parts) = explode(";base64,", $request->signed);
-        $image_type_aux = explode("image/", $part_a);
-        $image_type = $image_type_aux[1];
-        $signate = time() . '.'.$image_type;
-        $signature = user::find(Auth::user()->id);
-        $signature->addMediaFromBase64($request->signed)->usingFileName($signate)->toMediaCollection(User::$media_collection_main_signture);
+        if (Auth::id()) {
+            list($part_a, $image_parts) = explode(";base64,", $request->signed);
+            $image_type_aux = explode("image/", $part_a);
+            $image_type = $image_type_aux[1];
+            $signate = time() . '.' . $image_type;
+            $signature = user::find(Auth::user()->id);
+            $signature->addMediaFromBase64($request->signed)->usingFileName($signate)->toMediaCollection(User::$media_collection_main_signture);
 
-        $signature->save();
+            $signature->save();
 
-        if (Session::get('mySpouse')=="yes") {
-            $is_spouse = 1;
+            if (Session::get('mySpouse') == "yes") {
+                $is_spouse = 1;
+            } else {
+                $is_spouse = 0;
+            }
+
+            if (Session::has('myKids')) {
+                $children = Session::get('myKids');
+            } else {
+                $children = 0;
+            }
+
+            if (Session::has('myproduct_id')) {
+                $pid  = Session::get('myproduct_id');
+            } else {
+                $pid = 1;
+            }
+
+            $datas = Applicant::where('client_id', Auth::id())
+                ->where('destination_id', $pid)
+                ->first();
+            if ($datas === null) {
+                $data = new applicant();
+                $data->client_id = Auth::id();
+                $data->destination_id = $pid;
+                $data->work_permit_category = (Session::get('packageType')) ?? 'BLUE COLLAR';
+                $data->application_stage_status = 1;
+                $data->destination_id = $pid;
+                $res = $data->save();
+            } else {
+                $datas->work_permit_category =  (Session::get('packageType')) ?? 'BLUE COLLAR';
+                $datas->application_stage_status = 1;
+                $datas->destination_id = $pid;
+                $res = $datas->save();
+            }
+
+            User::where('id', Auth::id())
+                ->update([
+                    'is_spouse' => $is_spouse,
+                    'children_count' => $children
+                ]);
+
+            if ($res) {
+
+                Session::put('info', 'Signature is Successful!');
+                Session::put('info_sub', 'Proceed to application');
+                return true;
+            } else {
+                Session::put('failed', 'Oppss! Something went wrong.');
+                return false;
+                // return redirect()->back()->with('failed', 'Oppss! Something went wrong.');
+            }
         } else {
-            $is_spouse = 0;
-        }
-
-        if(Session::has('myKids'))
-        {
-            $children = Session::get('myKids');
-        } else {
-            $children = 0;
-        }
-
-        if(Session::has('myproduct_id'))
-        {
-            $pid  = Session::get('myproduct_id');
-        } else {
-            $pid = 1;
-        }
-
-        $datas = Applicant::where('client_id', Auth::id())
-            ->where('destination_id', $pid)
-            ->first();
-        if ($datas === null) {
-            $data = new applicant();
-            $data->client_id = Auth::id();
-            $data->destination_id = $pid;
-            $data->work_permit_category = (Session::get('packageType')) ?? 'BLUE COLLAR';
-            $data->application_stage_status = 1;
-            $data->destination_id = $pid;
-            $res = $data->save();
-        } else {
-            $datas->work_permit_category =  (Session::get('packageType')) ?? 'BLUE COLLAR';
-            $datas->application_stage_status = 1;
-            $datas->destination_id = $pid;
-            $res = $datas->save();
-        }
-
-        User::where('id', Auth::id())
-            ->update([
-                'is_spouse' => $is_spouse,
-                'children_count' => $children
-            ]);
-
-        if ($res) {
-
-            Session::put('info', 'Signature is Successful!');
-            Session::put('info_sub', 'Proceed to application');
-            return true;
-
-        } else {
-            Session::put('failed', 'Oppss! Something went wrong.');
             return false;
-            // return redirect()->back()->with('failed', 'Oppss! Something went wrong.');
+            // return redirect()->back()->with('message', 'You are not authorized');
         }
-    } else {
-        return false;
-        // return redirect()->back()->with('message', 'You are not authorized');
     }
-}
 
     public function signature_success($id)
     {
@@ -269,35 +265,32 @@ class HomeController extends Controller
             \DB::statement("SET SQL_MODE=''");
 
             $complete = DB::table('applications')
-            ->where('client_id', '=', Auth::user()->id)
-            // ->whereNotIn('status',  array('APPLICATION_COMPLETED','VISA_REFUSED', 'APPLICATION_CANCELLED','REFUNDED') )
-            ->orderBy('id','desc')
-            ->first();
+                ->where('client_id', '=', Auth::user()->id)
+                // ->whereNotIn('status',  array('APPLICATION_COMPLETED','VISA_REFUSED', 'APPLICATION_CANCELLED','REFUNDED') )
+                ->orderBy('id', 'desc')
+                ->first();
 
             // {
-            if($complete)
-            {
-              $app_id= $complete->id;
-              $p_id= $complete->destination_id;
-            //   $hasSpouse = $complete->is_spouse;
-            //   $children = $complete->children_count;
-             }
-             else {
-                $app_id= 0;
-                $p_id= 0;
+            if ($complete) {
+                $app_id = $complete->id;
+                $p_id = $complete->destination_id;
+                //   $hasSpouse = $complete->is_spouse;
+                //   $children = $complete->children_count;
+            } else {
+                $app_id = 0;
+                $p_id = 0;
                 // $hasSpouse = $complete->is_spouse;
                 // $children = $complete->children_count;
-             }
+            }
 
-            if(isset($hasSpouse) && $hasSpouse == 1)
-            {
+            if (isset($hasSpouse) && $hasSpouse == 1) {
                 $yesSpouse = 2;
             } else {
                 $yesSpouse = 1;
             }
 
-            if(!isset($children)){
-                $children =0;
+            if (!isset($children)) {
+                $children = 0;
             }
 
             $families = DB::table('pricing_plans')
@@ -315,10 +308,9 @@ class HomeController extends Controller
                 Session::put('myproduct_id', $p_id);
             }
 
-            if(isset($complete->work_permit_category)){
+            if (isset($complete->work_permit_category)) {
                 $packageType = $complete->work_permit_category;
-            }
-            elseif (Session::has('packageType')) {
+            } elseif (Session::has('packageType')) {
                 $packageType = Session::get('packageType');
             } else {
                 $packageType = ($complete->work_permit_category) ?? null;
@@ -333,16 +325,15 @@ class HomeController extends Controller
                 } else {
                     $family_id = 0;
                 }
-
             }
 
             $pays = DB::table('pricing_plans')
-            ->join('applications', 'applications.destination_id', '=', 'pricing_plans.destination_id')
-            ->select('applications.destination_id','pricing_plans.id', 'pricing_plans.pricing_plan_type', 'pricing_plans.total_price', 'pricing_plans.destination_id','pricing_plans.first_payment_price','pricing_plans.second_payment_price','pricing_plans.third_payment_price')
-            ->where('pricing_plans.pricing_plan_type', '=', $packageType)
-            ->where('applications.destination_id', '=', $p_id)
-            ->where('applications.client_id', '=', $id)
-            ->orderBy('pricing_plans.id')
+                ->join('applications', 'applications.destination_id', '=', 'pricing_plans.destination_id')
+                ->select('applications.destination_id', 'pricing_plans.id', 'pricing_plans.pricing_plan_type', 'pricing_plans.total_price', 'pricing_plans.destination_id', 'pricing_plans.first_payment_price', 'pricing_plans.second_payment_price', 'pricing_plans.third_payment_price')
+                ->where('pricing_plans.pricing_plan_type', '=', $packageType)
+                ->where('applications.destination_id', '=', $p_id)
+                ->where('applications.client_id', '=', $id)
+                ->orderBy('pricing_plans.id')
                 ->first();
 
             // $paid = DB::table('payments')
@@ -357,13 +348,13 @@ class HomeController extends Controller
             //     ->first();
 
             $paid = DB::table('applications')
-            ->where('applications.destination_id', '=', $p_id)
-            ->where('applications.client_id', '=', $id)
-            // ->groupBy('payments.id')
-            ->orderBy('applications.id', 'desc')
-            ->first();
+                ->where('applications.destination_id', '=', $p_id)
+                ->where('applications.client_id', '=', $id)
+                // ->groupBy('payments.id')
+                ->orderBy('applications.id', 'desc')
+                ->first();
 
-// dd($paid);
+            // dd($paid);
             $prod = DB::table('destinations')
                 ->join('applications', 'destinations.id', '=', 'applications.destination_id')
                 ->select('destinations.name', 'destinations.id')
@@ -391,9 +382,9 @@ class HomeController extends Controller
                 ->orderBy('id', 'desc')
                 ->first();
 
-                $app_id = $complete->id;
-                $p_id = $complete->destination_id;
-            
+            $app_id = $complete->id;
+            $p_id = $complete->destination_id;
+
             $hasSpouse = Auth::user()->is_spouse;
             $children = Auth::user()->children_count;
             if ($hasSpouse == 1) {
@@ -420,9 +411,9 @@ class HomeController extends Controller
                 $payall = 0;
             }
 
-            if(isset($complete->work_permit_category) && $complete->third_payment_status =='PENDING') {
+            if (isset($complete->work_permit_category) && $complete->third_payment_status == 'PENDING') {
                 $packageType = $complete->work_permit_category;
-            }elseif (Session::has('packageType')) {
+            } elseif (Session::has('packageType')) {
                 $packageType = Session::get('packageType');
             } else {
                 $packageType = $complete->work_permit_category;
@@ -431,18 +422,18 @@ class HomeController extends Controller
             $data = product::find(Session::get('myproduct_id'));
 
             $pays = DB::table('applications')
-                ->select('applications.pricing_plan_id', 'applications.total_price', 'applications.total_paid', 'applications.first_payment_status','applications.second_payment_status','applications.third_payment_status','first_payment_price','first_payment_paid','first_payment_remaining','is_first_payment_partially_paid','second_payment_price','second_payment_paid','second_payment_remaining','third_payment_price','third_payment_paid','third_payment_remaining')
+                ->select('applications.pricing_plan_id', 'applications.total_price', 'applications.total_paid', 'applications.first_payment_status', 'applications.second_payment_status', 'applications.third_payment_status', 'first_payment_price', 'first_payment_paid', 'first_payment_remaining', 'is_first_payment_partially_paid', 'second_payment_price', 'second_payment_paid', 'second_payment_remaining', 'third_payment_price', 'third_payment_paid', 'third_payment_remaining')
                 ->where('applications.client_id', '=', Auth::user()->id)
                 ->where('applications.destination_id', '=', $id)
                 // ->whereNotIn('status',  ['APPLICATION_COMPLETED','VISA_REFUSED', 'APPLICATION_CANCELLED','REFUNDED'] )
                 ->limit(1)
                 ->first();
-                // dd($pays);
+            // dd($pays);
             $pdet = DB::table('pricing_plans')
                 ->where('destination_id', '=', Session::get('myproduct_id'))
                 ->where('pricing_plan_type', '=', $packageType)
                 ->first();
-             
+
             return view('user.payment-form', compact('data', 'pdet', 'pays', 'payall'));
         } else {
             // return redirect()->back()->with('message', 'You are not authorized');
@@ -451,37 +442,33 @@ class HomeController extends Controller
     }
 
 
-    public static function invokeCurlRequest($type, $url, $headers, $post) 
+    public static function invokeCurlRequest($type, $url, $headers, $post)
     {
         try {
             $ch = curl_init();
 
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);		
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
             if ($type == "POST") {
-               
+
                 curl_setopt($ch, CURLOPT_POST, 1);
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
-                
             }
-    
-            $server_output = curl_exec ($ch);
-            if($server_output === false) {
-                throw new Exception(curl_error($ch), curl_errno($ch));
 
+            $server_output = curl_exec($ch);
+            if ($server_output === false) {
+                throw new Exception(curl_error($ch), curl_errno($ch));
             }
-            curl_close ($ch);
-            
+            curl_close($ch);
+
             return $server_output;
         } catch (Exception $e) {
             return $e->getMessage();
         }
-		
-		
-	}
+    }
 
     public function addpayment(Request $request)
     {
@@ -496,7 +483,7 @@ class HomeController extends Controller
                 ->where('client_id', '=', Auth::user()->id)
                 ->first();
 
-                $applicant_id = $apply->id;
+            $applicant_id = $apply->id;
 
             $request->validate([
                 'totaldue' => 'required',
@@ -506,301 +493,287 @@ class HomeController extends Controller
             ]);
 
 
-                $thisPayment = $request->whichpayment;
-                $thisVat = $request->vats;
-                $thisPayment = $request->totaldue;
-                $thisPaymentMade = $request->totalpay;
-                if($request->discount>0) {
-                    $thisDiscount = $request->discount;
-                    $thisCode = $request->discount_code;
-                } else {
-                    $thisDiscount =0;
-                    $thisCode ='';
-                }
-                $thisDay = date('Y-m-d');
+            $thisPayment = $request->whichpayment;
+            $thisVat = $request->vats;
+            $thisPayment = $request->totaldue;
+            $thisPaymentMade = $request->totalpay;
+            if ($request->discount > 0) {
+                $thisDiscount = $request->discount;
+                $thisCode = $request->discount_code;
+            } else {
+                $thisDiscount = 0;
+                $thisCode = '';
+            }
+            $thisDay = date('Y-m-d');
 
 
-                if ($request->totalpay == null || $request->totalpay == "" || $request->totalpay < 1000) {
-                    $totalpay = 0;
-                } else {
-                    $totalpay = $request->totalpay;
-                }
-                // dd($request->vats);
-                $outstand= $request->totalpay + $thisVat;
+            if ($request->totalpay == null || $request->totalpay == "" || $request->totalpay < 1000) {
+                $totalpay = 0;
+            } else {
+                $totalpay = $request->totalpay;
+            }
+            // dd($request->vats);
+            $outstand = $request->totalpay + $thisVat;
 
-                if ($request->totaldue == $request->totalpay) {
+            if ($request->totaldue == $request->totalpay) {
+                $whatsPaid = "Paid";
+            } elseif ($request->totaldue > $request->totalpay && $request->totalpay > 1000) {
+                if ($request->totalremaining == $request->totalpay) {
                     $whatsPaid = "Paid";
-                } elseif ($request->totaldue > $request->totalpay && $request->totalpay > 1000) {
-                    if ($request->totalremaining == $request->totalpay) 
-                    {
-                        $whatsPaid = "Paid";
+                } else {
+                    $whatsPaid = "Partial";
+                }
+            } else {
+                $whatsPaid = "Paid";
+                $overPay = $request->totalpay - $request->totaldue;
+            }
+
+
+            $haveSpouse =  Session::get('mySpouse');
+            $kids =  Session::get('myKids');
+
+            $rre = user::where([
+                ['id', '=', Auth::user()->id]
+            ])->first();
+
+            if ($rre === null) {
+                $rres = new user;
+
+                $rres->country_of_residence =  $request->current_location;
+                // if( Session::has('mySpouse'))
+                // {
+                //     $rres->is_spouse = $haveSpouse;
+                //     $rres->children_count = $kids;
+                // }
+                $rres->save();
+            } else {
+                $rre->country_of_residence =  $request->current_location;
+                // if( Session::has('mySpouse'))
+                // {
+                //     $rre->is_spouse = $haveSpouse;
+                //     $rre->children_count = $kids;
+                // }
+                $rre->save();
+            }
+
+            $ppd = payment::where([
+                ['application_id', '=', $applicant_id],
+                ['payment_type', '=', $request->whichpayment],
+            ])->first();
+
+            if ($ppd === null) {
+                $dat = new payment;
+
+                $dat->payment_type = $request->whichpayment;
+                $dat->application_id = $applicant_id;
+                $dat->payment_date = $thisDay;
+                $dat->payable_amount = $request->totaldue;
+                $dat->paid_amount = $request->totalpay;
+                $dat->invoice_amount = $request->totalpay;
+                $dat->save();
+            } else {
+                if (isset($request->totalremaining) && $request->totalremaining > 0) {
+                    $ppd->payment_type = "Balance on " . $request->whichpayment;
+                } else {
+                    $ppd->payment_type = $request->whichpayment;
+                }
+                $ppd->application_id = $applicant_id;
+                $ppd->payment_date = $thisDay;
+                $ppd->payable_amount = $request->totaldue;
+                $ppd->paid_amount = $request->totalpay;
+                $ppd->invoice_amount = $request->totalpay;
+                $ppd->save();
+            }
+
+            // dd($re);
+            $datas = applicant::where([
+                ['client_id', '=', Auth::user()->id],
+                ['destination_id', '=', $request->pid],
+            ])->first();
+            if ($datas === null) {
+                $data = new applicant;
+                $data->embassy_country = $request->embassy_appearance;
+                $data->pricing_plan_id = $request->ppid;
+
+                if ($request->whichpayment == 'First Payment') {
+                    // $data->first_payment_price = $thisPayment;
+                    // $data->first_payment_paid = $thisPaymentMade;
+                    $data->first_payment_vat = $thisVat;
+                    $data->first_payment_discount = $thisDiscount;
+                    $data->first_payment_status = $whatsPaid;
+
+                    if ($whatsPaid == 'Partial') {
+                        $data->first_payment_remaining =  $thisPayment - $thisPaymentMade;
+
+                        $data->is_first_payment_partially_paid = 1;
+                        $data->status = 'WAITING_FOR_BALANCE_ON_FIRST_PAYMENT';
                     } else {
-                        $whatsPaid = "Partial";
+                        $data->first_payment_remaining = 0;
+
+                        $data->is_first_payment_partially_paid = 0;
+                        $data->status = 'WAITING_FOR_2ND_PAYMENT';
                     }
-                } else {
-                    $whatsPaid = "Paid";
-                    $overPay = $request->totalpay - $request->totaldue;
-                }
-                
-
-                $haveSpouse =  Session::get('mySpouse');
-                $kids =  Session::get('myKids');
-
-                $rre = user::where([
-                    ['id', '=', Auth::user()->id]
-                ])->first();
-
-                if ($rre === null) {
-                    $rres = new user;
-                    
-                    $rres->country_of_residence =  $request->current_location;
-                    // if( Session::has('mySpouse'))
-                    // {
-                    //     $rres->is_spouse = $haveSpouse;
-                    //     $rres->children_count = $kids;
-                    // }
-                    $rres->save();
-                } else {
-                    $rre->country_of_residence =  $request->current_location;
-                    // if( Session::has('mySpouse'))
-                    // {
-                    //     $rre->is_spouse = $haveSpouse;
-                    //     $rre->children_count = $kids;
-                    // }
-                    $rre->save();
-                }
-
-                $ppd = payment::where([
-                    ['application_id', '=', $applicant_id],
-                    ['payment_type', '=', $request->whichpayment],
-                ])->first();
-
-                if ($ppd === null) {
-                    $dat = new payment;
-                    
-                    $dat->payment_type = $request->whichpayment;
-                    $dat->application_id = $applicant_id;
-                    $dat->payment_date = $thisDay;
-                    $dat->payable_amount = $request->totaldue;
-                    $dat->paid_amount = $request->totalpay;
-                    $dat->invoice_amount = $request->totalpay;
-                    $dat->save();
-                } else {
-                    if(isset($request->totalremaining) && $request->totalremaining>0)
-                    {
-                        $ppd->payment_type = "Balance on " . $request->whichpayment;
-                    } else {
-                        $ppd->payment_type = $request->whichpayment;                        
-                    }
-                    $ppd->application_id = $applicant_id;
-                    $ppd->payment_date = $thisDay;
-                    $ppd->payable_amount = $request->totaldue;
-                    $ppd->paid_amount = $request->totalpay;
-                    $ppd->invoice_amount = $request->totalpay;
-                    $ppd->save();
-                }
-                
-                // dd($re);
-                $datas = applicant::where([
-                    ['client_id', '=', Auth::user()->id],
-                    ['destination_id', '=', $request->pid],
-                ])->first();
-                if ($datas === null) {
-                    $data = new applicant;
-                    $data->embassy_country = $request->embassy_appearance;
-                    $data->pricing_plan_id = $request->ppid;
-
-                    if($request->whichpayment =='First Payment')
-                    {
+                    if (isset($request->totalremaining) && $request->totalremaining > 0) {
                         // $data->first_payment_price = $thisPayment;
-                        // $data->first_payment_paid = $thisPaymentMade;
-                        $data->first_payment_vat = $thisVat;
-                        $data->first_payment_discount = $thisDiscount;
-                        $data->first_payment_status = $whatsPaid;
-
-                        if($whatsPaid=='Partial')
-                        {
-                            $data->first_payment_remaining =  $thisPayment - $thisPaymentMade;
-
-                            $data->is_first_payment_partially_paid = 1;
-                            $data->status = 'WAITING_FOR_BALANCE_ON_FIRST_PAYMENT';
-                        } else {
-                            $data->first_payment_remaining = 0;
-
-                            $data->is_first_payment_partially_paid = 0;
-                            $data->status = 'WAITING_FOR_2ND_PAYMENT';
-                        }
-                        if(isset($request->totalremaining) && $request->totalremaining>0)
-                        {
-                            // $data->first_payment_price = $thisPayment;
-                            $data->first_payment_paid = $thisPaymentMade + $request->totalremaining;
-                        } else {
-                            $data->first_payment_price = $thisPayment;
-                            $data->first_payment_paid = $thisPaymentMade;
-                        }
-
-                    } elseif($request->whichpayment =='Second Payment') {
-                        $data->second_payment_price = $thisPayment;
-                        $data->second_payment_paid = $thisPaymentMade;
-                        $data->second_payment_vat = $thisVat;
-                        $data->second_payment_discount = $thisDiscount;
-                        $data->second_payment_status = $whatsPaid;
-                        $data->status = 'WAITING_FOR_3RD_PAYMENT';
-                        if($whatsPaid=='Partial')
-                        {
-                            $data->is_second_payment_partially_paid = 1;
-                        }
-                    } elseif($request->whichpayment =='Third Payment') {
-                        $data->third_payment_price = $thisPayment;
-                        $data->third_payment_paid = $thisPaymentMade;
-                        $data->third_payment_vat = $thisVat;
-                        $data->third_payment_discount = $thisDiscount;
-                        $data->third_payment_status = $whatsPaid;
-                        $data->status = 'WAITING_FOR_EMBASSY_APPEARANCE';
-                        if($whatsPaid=='Partial')
-                        {
-                            $data->is_third_payment_partially_paid = 1;
-                        }
+                        $data->first_payment_paid = $thisPaymentMade + $request->totalremaining;
                     } else {
-                        $data->total_price = $thisPayment;
-                        $data->total_paid = $thisPaymentMade;
-                        $data->total_vat = $thisVat;
-                        $data->total_discount = $thisDiscount;
+                        $data->first_payment_price = $thisPayment;
+                        $data->first_payment_paid = $thisPaymentMade;
                     }
-
-                    $data->coupon_code = $thisCode;
-                    $data->application_stage_status = 2;
-
-                    $res = $data->save();
+                } elseif ($request->whichpayment == 'Second Payment') {
+                    $data->second_payment_price = $thisPayment;
+                    $data->second_payment_paid = $thisPaymentMade;
+                    $data->second_payment_vat = $thisVat;
+                    $data->second_payment_discount = $thisDiscount;
+                    $data->second_payment_status = $whatsPaid;
+                    $data->status = 'WAITING_FOR_3RD_PAYMENT';
+                    if ($whatsPaid == 'Partial') {
+                        $data->is_second_payment_partially_paid = 1;
+                    }
+                } elseif ($request->whichpayment == 'Third Payment') {
+                    $data->third_payment_price = $thisPayment;
+                    $data->third_payment_paid = $thisPaymentMade;
+                    $data->third_payment_vat = $thisVat;
+                    $data->third_payment_discount = $thisDiscount;
+                    $data->third_payment_status = $whatsPaid;
+                    $data->status = 'WAITING_FOR_EMBASSY_APPEARANCE';
+                    if ($whatsPaid == 'Partial') {
+                        $data->is_third_payment_partially_paid = 1;
+                    }
                 } else {
-                    $datas->embassy_country = $request->embassy_appearance;
-                    $datas->pricing_plan_id = $request->ppid;
-
-                    if($request->whichpayment =='First Payment')
-                    {
-                        // $datas->first_payment_price = $thisPayment;
-                        // $datas->first_payment_paid = $thisPaymentMade;
-
-                        $datas->first_payment_vat = $thisVat;
-                        $datas->first_payment_discount = $thisDiscount;
-                        $datas->first_payment_status = $whatsPaid;
-
-                        if($whatsPaid=='Partial')
-                        {
-                            $datas->first_payment_remaining =  $thisPayment - $thisPaymentMade;
-
-                            $datas->is_first_payment_partially_paid = 1;
-                            $datas->status = 'WAITING_FOR_BALANCE_ON_FIRST_PAYMENT';
-                        } else {
-                            $datas->first_payment_remaining = 0;
-
-                            $datas->is_first_payment_partially_paid = 0;
-                            $datas->status = 'WAITING_FOR_2ND_PAYMENT';
-                        }
-                        if(isset($request->totalremaining) && $request->totalremaining>0)
-                        {
-                            $datas->first_payment_paid = $datas->first_payment_paid + $request->totalremaining;
-                        } else {
-                            $datas->first_payment_price = $thisPayment;
-                            $datas->first_payment_paid = $thisPaymentMade;
-                        }
-
-                    } elseif($request->whichpayment =='Second Payment') {
-                        $datas->second_payment_price = $thisPayment;
-                        $datas->second_payment_paid = $thisPaymentMade;
-                        $datas->second_payment_vat = $thisVat;
-                        $datas->second_payment_discount = $thisDiscount;
-                        $datas->second_payment_status = $whatsPaid;
-                        if($whatsPaid=='Partial')
-                        {
-                            $datas->is_second_payment_partially_paid = 1;
-                        }
-                    } elseif($request->whichpayment =='Third Payment') {
-                        $datas->third_payment_price = $thisPayment;
-                        $datas->third_payment_paid = $thisPaymentMade;
-                        $datas->third_payment_vat = $thisVat;
-                        $datas->third_payment_discount = $thisDiscount;
-                        $datas->third_payment_status = $whatsPaid;
-                        if($whatsPaid=='Partial')
-                        {
-                            $datas->is_third_payment_partially_paid = 1;
-                        }
-                    } else {
-                        $datas->total_price = $thisPayment;
-                        $datas->total_paid = $thisPaymentMade;
-                        $datas->total_vat = $thisVat;
-                        $datas->total_discount = $thisDiscount;
-                    }
-
-                    $datas->coupon_code = $thisCode;
-                    $datas->application_stage_status = 2;
-
-
-                    $res = $datas->save();
+                    $data->total_price = $thisPayment;
+                    $data->total_paid = $thisPaymentMade;
+                    $data->total_vat = $thisVat;
+                    $data->total_discount = $thisDiscount;
                 }
 
+                $data->coupon_code = $thisCode;
+                $data->application_stage_status = 2;
 
-                $datas = payment::where([
-               
-                    ['payment_type', '=', $request->whichpayment],
-                    ['application_id', '=', $applicant_id],
-                ])->first();
+                $res = $data->save();
+            } else {
+                $datas->embassy_country = $request->embassy_appearance;
+                $datas->pricing_plan_id = $request->ppid;
 
-                set_time_limit(0);
+                if ($request->whichpayment == 'First Payment') {
+                    // $datas->first_payment_price = $thisPayment;
+                    // $datas->first_payment_paid = $thisPaymentMade;
 
-                $outletRef 	 	 = '15d885ec-682a-4398-89d9-247254d71c18';// config('app.payment_reference'); 
-                $apikey 		 = "MmM2ODJiOGMtOGFmNS00NzUyLTg2MjUtM2Y5MTg3OWU5YjRlOjViMzhjM2I5LTUyMDItNDBmZi1hNzAyLTFlYTIwZDkwYjhiMQ=="; //config('app.payment_api_key'); 
+                    $datas->first_payment_vat = $thisVat;
+                    $datas->first_payment_discount = $thisDiscount;
+                    $datas->first_payment_status = $whatsPaid;
 
-                // Test URLS 
-                $idServiceURL  = "https://identity.sandbox.ngenius-payments.com/auth/realms/ni/protocol/openid-connect/token";           // set the identity service URL (example only)
-                $txnServiceURL = "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/".$outletRef."/orders"; 
+                    if ($whatsPaid == 'Partial') {
+                        $datas->first_payment_remaining =  $thisPayment - $thisPaymentMade;
 
-                // LIVE URLS 
-                //$idServiceURL  = "https://identity.ngenius-payments.com/auth/realms/NetworkInternational/protocol/openid-connect/token";           // set the identity service URL (example only)
-                //$txnServiceURL = "https://api-gateway.ngenius-payments.com/transactions/outlets/".$outletRef."/orders"; 
+                        $datas->is_first_payment_partially_paid = 1;
+                        $datas->status = 'WAITING_FOR_BALANCE_ON_FIRST_PAYMENT';
+                    } else {
+                        $datas->first_payment_remaining = 0;
 
-                $tokenHeaders  = array("Authorization: Basic ".$apikey, "Content-Type: application/x-www-form-urlencoded");
-                $tokenResponse = $this->invokeCurlRequest("POST", $idServiceURL, $tokenHeaders, http_build_query(array('grant_type' => 'client_credentials')));
-                $tokenResponse = json_decode($tokenResponse);
-// dd($tokenResponse);
-                $access_token  = $tokenResponse->access_token;
-
-
-                $order = array();	
-                $successUrl = url('/').'/payment/success/'.$datas['id'];
-                $failUrl =  url('/').'/payment/fail/'.$datas['id'];
-
-                $order['action'] 				 	  = "PURCHASE";                                        // Transaction mode ("AUTH" = authorize only, no automatic settle/capture, "SALE" = authorize + automatic settle/capture)
-                $order['amount']['currencyCode'] 	  = "AED";                           // Payment currency ('AED' only for now)
-                $order['amount']['value'] 		 	  = ($amount)*100;                                   // Minor units (1000 = 10.00 AED)
-                $order['language'] 					  = "en";      						// Payment page language ('en' or 'ar' only)
-                $order['emailAddress'] 			 	  = "pwggroup@pwggroup.pl";      
-                $order['billingAddress']['firstName'] = "PWG";      
-                $order['billingAddress']['lastName']  = "Group";      
-                $order['billingAddress']['address1']  = "The Oberoi Center";      
-                $order['billingAddress']['city']  	  = "Business Bay";      
-                $order['billingAddress']['countryCode'] = "UAE";      
-                $order['merchantOrderReference'] = time();
-                $order['merchantAttributes']['redirectUrl'] = $successUrl;
-                $order['merchantAttributes']['skipConfirmationPage'] = true;
-                $order['merchantAttributes']['cancelUrl']   = $failUrl;
-                $order['merchantAttributes']['cancelText']  = 'Cancel';
-                $order = json_encode($order);  
-                $orderCreateHeaders  = array("Authorization: Bearer ".$access_token, "Content-Type: application/vnd.ni-payment.v2+json", "Accept: application/vnd.ni-payment.v2+json");
-                //$orderCreateResponse = invokeCurlRequest("POST", $txnServiceURL, $orderCreateHeaders, $payment);
-                $orderCreateResponse = $this->invokeCurlRequest("POST", $txnServiceURL, $orderCreateHeaders, $order);
-                $orderCreateResponse = json_decode($orderCreateResponse);
-
-                // $paymentLink 		   = $orderCreateResponse->_links->payment->href; 
-                // return Redirect::to($paymentLink);
-
-                // dd($orderCreateResponse);
-                if(isset($orderCreateResponse->_links->payment->href)){
-                    $paymentLink 		   = $orderCreateResponse->_links->payment->href; 
-                    return Redirect::to($paymentLink);
+                        $datas->is_first_payment_partially_paid = 0;
+                        $datas->status = 'WAITING_FOR_2ND_PAYMENT';
+                    }
+                    if (isset($request->totalremaining) && $request->totalremaining > 0) {
+                        $datas->first_payment_paid = $datas->first_payment_paid + $request->totalremaining;
+                    } else {
+                        $datas->first_payment_price = $thisPayment;
+                        $datas->first_payment_paid = $thisPaymentMade;
+                    }
+                } elseif ($request->whichpayment == 'Second Payment') {
+                    $datas->second_payment_price = $thisPayment;
+                    $datas->second_payment_paid = $thisPaymentMade;
+                    $datas->second_payment_vat = $thisVat;
+                    $datas->second_payment_discount = $thisDiscount;
+                    $datas->second_payment_status = $whatsPaid;
+                    if ($whatsPaid == 'Partial') {
+                        $datas->is_second_payment_partially_paid = 1;
+                    }
+                } elseif ($request->whichpayment == 'Third Payment') {
+                    $datas->third_payment_price = $thisPayment;
+                    $datas->third_payment_paid = $thisPaymentMade;
+                    $datas->third_payment_vat = $thisVat;
+                    $datas->third_payment_discount = $thisDiscount;
+                    $datas->third_payment_status = $whatsPaid;
+                    if ($whatsPaid == 'Partial') {
+                        $datas->is_third_payment_partially_paid = 1;
+                    }
                 } else {
-                    return redirect()->back()->with('failed', $orderCreateResponse->errors[0]->message);
+                    $datas->total_price = $thisPayment;
+                    $datas->total_paid = $thisPaymentMade;
+                    $datas->total_vat = $thisVat;
+                    $datas->total_discount = $thisDiscount;
                 }
+
+                $datas->coupon_code = $thisCode;
+                $datas->application_stage_status = 2;
+
+
+                $res = $datas->save();
+            }
+
+
+            $datas = payment::where([
+
+                ['payment_type', '=', $request->whichpayment],
+                ['application_id', '=', $applicant_id],
+            ])->first();
+
+            set_time_limit(0);
+
+            $outletRef           = '15d885ec-682a-4398-89d9-247254d71c18'; // config('app.payment_reference'); 
+            $apikey          = "MmM2ODJiOGMtOGFmNS00NzUyLTg2MjUtM2Y5MTg3OWU5YjRlOjViMzhjM2I5LTUyMDItNDBmZi1hNzAyLTFlYTIwZDkwYjhiMQ=="; //config('app.payment_api_key'); 
+
+            // Test URLS 
+            $idServiceURL  = "https://identity.sandbox.ngenius-payments.com/auth/realms/ni/protocol/openid-connect/token";           // set the identity service URL (example only)
+            $txnServiceURL = "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders";
+
+            // LIVE URLS 
+            //$idServiceURL  = "https://identity.ngenius-payments.com/auth/realms/NetworkInternational/protocol/openid-connect/token";           // set the identity service URL (example only)
+            //$txnServiceURL = "https://api-gateway.ngenius-payments.com/transactions/outlets/".$outletRef."/orders"; 
+
+            $tokenHeaders  = array("Authorization: Basic " . $apikey, "Content-Type: application/x-www-form-urlencoded");
+            $tokenResponse = $this->invokeCurlRequest("POST", $idServiceURL, $tokenHeaders, http_build_query(array('grant_type' => 'client_credentials')));
+            $tokenResponse = json_decode($tokenResponse);
+            // dd($tokenResponse);
+            $access_token  = $tokenResponse->access_token;
+
+
+            $order = array();
+            $successUrl = url('/') . '/payment/success/' . $datas['id'];
+            $failUrl =  url('/') . '/payment/fail/' . $datas['id'];
+
+            $order['action']                        = "PURCHASE";                                        // Transaction mode ("AUTH" = authorize only, no automatic settle/capture, "SALE" = authorize + automatic settle/capture)
+            $order['amount']['currencyCode']       = "AED";                           // Payment currency ('AED' only for now)
+            $order['amount']['value']                = ($amount) * 100;                                   // Minor units (1000 = 10.00 AED)
+            $order['language']                       = "en";                              // Payment page language ('en' or 'ar' only)
+            $order['emailAddress']                    = "pwggroup@pwggroup.pl";
+            $order['billingAddress']['firstName'] = "PWG";
+            $order['billingAddress']['lastName']  = "Group";
+            $order['billingAddress']['address1']  = "The Oberoi Center";
+            $order['billingAddress']['city']        = "Business Bay";
+            $order['billingAddress']['countryCode'] = "UAE";
+            $order['merchantOrderReference'] = time();
+            $order['merchantAttributes']['redirectUrl'] = $successUrl;
+            $order['merchantAttributes']['skipConfirmationPage'] = true;
+            $order['merchantAttributes']['cancelUrl']   = $failUrl;
+            $order['merchantAttributes']['cancelText']  = 'Cancel';
+            $order = json_encode($order);
+            $orderCreateHeaders  = array("Authorization: Bearer " . $access_token, "Content-Type: application/vnd.ni-payment.v2+json", "Accept: application/vnd.ni-payment.v2+json");
+            //$orderCreateResponse = invokeCurlRequest("POST", $txnServiceURL, $orderCreateHeaders, $payment);
+            $orderCreateResponse = $this->invokeCurlRequest("POST", $txnServiceURL, $orderCreateHeaders, $order);
+            $orderCreateResponse = json_decode($orderCreateResponse);
+
+            // $paymentLink 		   = $orderCreateResponse->_links->payment->href; 
+            // return Redirect::to($paymentLink);
+
+            // dd($orderCreateResponse);
+            if (isset($orderCreateResponse->_links->payment->href)) {
+                $paymentLink            = $orderCreateResponse->_links->payment->href;
+                return Redirect::to($paymentLink);
+            } else {
+                return redirect()->back()->with('failed', $orderCreateResponse->errors[0]->message);
+            }
             // }
         } else {
             // return redirect()->back()->with('failed', 'You are not authorized');
@@ -811,19 +784,19 @@ class HomeController extends Controller
     public function getPromo(Request $request)
     {
         $response['status'] = false;
-            $id = Session::get('myproduct_id');
-            $coupon = DB::table('coupons')
-                ->select('amount')
-                ->where('code', '=', $request->discount_code)
-                ->where('employee_id', '=', $id)
-                ->where('active_from', '<=', date('Y-m-d'))
-                ->where('active_until', '>=', date('Y-m-d'))
-                ->where('active','=',1)
-                ->get();
+        $id = Session::get('myproduct_id');
+        $coupon = DB::table('coupons')
+            ->select('amount')
+            ->where('code', '=', $request->discount_code)
+            ->where('employee_id', '=', $id)
+            ->where('active_from', '<=', date('Y-m-d'))
+            ->where('active_until', '>=', date('Y-m-d'))
+            ->where('active', '=', 1)
+            ->get();
 
-            foreach ($coupon as $apply) {
-                $my_discount = $apply->amount;
-            }
+        foreach ($coupon as $apply) {
+            $my_discount = $apply->amount;
+        }
 
 
         if ($coupon->first()) {
@@ -832,7 +805,7 @@ class HomeController extends Controller
             $discountamt = ($my_discount *  $request->totaldue) / 100;
 
             $topaynow = $request->totaldue  - (($my_discount *  $request->totaldue) / 100);
-          
+
 
             Session::put('haveCoupon', 1);
             Session::put('myDiscount', $my_discount);
@@ -841,7 +814,7 @@ class HomeController extends Controller
             $response['haveCoupon'] = 1;
             $response['discountamt'] = $discountamt;
             $response['topaynow'] = $topaynow;
-            $response['discountPercent'] =$discountPercent;
+            $response['discountPercent'] = $discountPercent;
 
             $response['status'] = true;
 
@@ -860,17 +833,17 @@ class HomeController extends Controller
 
     public function checkPromo(Request $request)
     {
-            $response['status'] = false;
+        $response['status'] = false;
 
-            $id = Session::get('myproduct_id');
-            
-            $coupon = DB::table('coupons')
+        $id = Session::get('myproduct_id');
+
+        $coupon = DB::table('coupons')
             ->select('amount')
             ->where('location', '=', $request->embassy_appearance)
             ->where('employee_id', '=', $id)
             ->where('active_from', '<=', date('Y-m-d'))
             ->where('active_until', '>=', date('Y-m-d'))
-            ->where('active','=',1)
+            ->where('active', '=', 1)
             ->get();
 
         if ($coupon->first()) {
@@ -913,17 +886,17 @@ class HomeController extends Controller
      * profile card details
      * 
      */
-    public function card_details(Request $request) 
-    {  
+    public function card_details(Request $request)
+    {
         $validator = \Validator::make($request->all(), [
             'card_number' => 'required|digits:16',
             'name' => 'required',
             'month' => 'required|numeric',
-            'year' => 'required|numeric|digits:4|max:'.(date('Y')+100)
-           
+            'year' => 'required|numeric|digits:4|max:' . (date('Y') + 100)
+
         ]);
 
-        if($validator->fails()) {
+        if ($validator->fails()) {
             return Response::json(array(
                 'success' => false,
                 'errors' => $validator->getMessageBag()->toArray()
@@ -933,8 +906,8 @@ class HomeController extends Controller
 
             // Save Payment Information
             $apply = DB::table('applications')
-            ->where('client_id', '=', Auth::user()->id)
-            ->first();
+                ->where('client_id', '=', Auth::user()->id)
+                ->first();
             // $applicant_id = $apply->id;
 
             $datas = cardDetail::where('client_id', '=', Auth::user()->id)->first();
@@ -943,72 +916,72 @@ class HomeController extends Controller
 
                 $data->client_id = Auth::user()->id;
                 $data->card_holder_name = $request->name;
-            
+
                 $data->card_number = $request->card_number;
                 $data->month = $request->month;
                 $data->year = $request->year;
                 $data->cvv = $request->cvc;
-            
+
                 $data->save();
             } else {
 
                 $datas->client_id = Auth::user()->id;
                 $datas->card_holder_name = $request->name;
-            
+
                 $datas->card_number = $request->card_number;
                 $datas->month = $request->month;
                 $datas->year = $request->year;
                 $datas->cvv = $request->cvc;
-                
+
                 $datas->save();
             }
             // dd($datas);
         }
-      return response()->json(['status' => 'Saved']);
-}
+        return response()->json(['status' => 'Saved']);
+    }
 
-public function mark_read(Request $request) {
+    public function mark_read(Request $request)
+    {
 
-           $notis = notifications::where('client_id', '=', Auth::user()->id)->get();
+        $notis = notifications::where('client_id', '=', Auth::user()->id)->get();
 
-           if ($notis) {
-                foreach($notis as $noti)
-                {
-                    $noti->status = 'Read';
-                    $noti->save();
-                }    
-           }
-            return response()->json(['status' => 'Cleared']);
-}
+        if ($notis) {
+            foreach ($notis as $noti) {
+                $noti->status = 'Read';
+                $noti->save();
+            }
+        }
+        return response()->json(['status' => 'Cleared']);
+    }
 
     public function paymentSuccess($paymentId)
     {
         session_start();
         $id = Session::get('myproduct_id');
-        $outletRef 	 	 = config('app.payment_reference');   
-        $apikey 		 = config('app.payment_api_key'); 
-        $orderReference  = $_GET['ref']; 
+        $outletRef           = config('app.payment_reference');
+        $apikey          = config('app.payment_api_key');
+        $orderReference  = $_GET['ref'];
         //$orderReference  = 'd4008299-a923-4fde-9107-e0af33114549'; 
         //$idServiceURL    = "https://identity.ngenius-payments.com/auth/realms/Networkinternational/protocol/openid-connect/token";           // set the identity service URL (example only)
         //$residServiceURL = "https://api-gateway.ngenius-payments.com/transactions/outlets/".$outletRef."/orders/".$orderReference; 
 
         $idServiceURL    = "https://identity.sandbox.ngenius-payments.com/auth/realms/ni/protocol/openid-connect/token";           // set the identity service URL (example only)
-        $residServiceURL = "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/".$outletRef."/orders/".$orderReference; 
+        $residServiceURL = "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders/" . $orderReference;
 
 
-        $tokenHeaders    = array("Authorization: Basic ".$apikey, "Content-Type: application/x-www-form-urlencoded");
+        $tokenHeaders    = array("Authorization: Basic " . $apikey, "Content-Type: application/x-www-form-urlencoded");
         $tokenResponse   = $this->invokeCurlRequest("POST", $idServiceURL, $tokenHeaders, http_build_query(array('grant_type' => 'client_credentials')));
         $tokenResponse   = json_decode($tokenResponse);
-        $access_token 	 = $tokenResponse->access_token;
+        $access_token      = $tokenResponse->access_token;
 
-        $responseHeaders  = array("Authorization: Bearer ".$access_token, "Content-Type: application/vnd.ni-payment.v2+json", "Accept: application/vnd.ni-payment.v2+json");
-        $orderResponse 	  = $this->invokeCurlRequest("GET", $residServiceURL, $responseHeaders, '');
+        $responseHeaders  = array("Authorization: Bearer " . $access_token, "Content-Type: application/vnd.ni-payment.v2+json", "Accept: application/vnd.ni-payment.v2+json");
+        $orderResponse       = $this->invokeCurlRequest("GET", $residServiceURL, $responseHeaders, '');
         $paymentResponse = json_decode($orderResponse);
-        if(isset($paymentResponse->_embedded->payment[0]->authResponse)){
+        if (isset($paymentResponse->_embedded->payment[0]->authResponse)) {
             $paymentResponse = $paymentResponse->_embedded->payment[0];
 
-            if($paymentResponse->authResponse->success == true && $paymentResponse->authResponse->resultCode == "00"){
-            
+            if ($paymentResponse->authResponse->success == true && $paymentResponse->authResponse->resultCode == "00") {
+
                 $paymentDetails = Payment::where('id', $paymentId)->first();
 
                 $paymentDetails->update([
@@ -1018,7 +991,7 @@ public function mark_read(Request $request) {
                 $monthYear = explode('-', $paymentResponse->paymentMethod->expiry);
                 $res = cardDetail::updateOrCreate([
                     'client_id' => Auth::id()
-                ],[
+                ], [
                     'client_id' => Auth::id(),
                     'card_number' => $paymentResponse->paymentMethod->pan,
                     'card_holder_name' => $paymentResponse->paymentMethod->cardholderName,
@@ -1034,10 +1007,9 @@ public function mark_read(Request $request) {
                     ])->first();
                     if ($status === null) {
                     } else {
-                        if($status->application_stage_status == 1)
-                        {
-                         $status->applicant_stage_status = '2';
-                         $status->save();
+                        if ($status->application_stage_status == 1) {
+                            $status->applicant_stage_status = '2';
+                            $status->save();
                         }
                     }
                     // Save Payment Info
@@ -1047,37 +1019,35 @@ public function mark_read(Request $request) {
                     $email = Auth::user()->email;
                     $userID = Auth::user()->id;
 
-                    if($paymentDetails['payment_type'] == "First Payment")
-                    {
+                    if ($paymentDetails['payment_type'] == "First Payment") {
                         $ems = "";
-                    } else if($paymentDetails['payment_type'] == "Second Payment") {
+                    } else if ($paymentDetails['payment_type'] == "Second Payment") {
                         $ems = " You will be notified when your Work Permit is ready.";
                     } else {
                         $ems = " You will be notified when your embassy appearance date is set.";
                     }
 
                     $criteria = $paymentDetails['payment_type'] . " Completed!";
-                    $message = "You have successfully made your " .$paymentDetails['payment_type']. ". Kindly login to the PWG Client portal and check your receipt on 'My Application'" . $ems;
+                    $message = "You have successfully made your " . $paymentDetails['payment_type'] . ". Kindly login to the PWG Client portal and check your receipt on 'My Application'" . $ems;
 
                     $link = "";
-            
+
                     $dataArray = [
-                        'title' => $criteria .' Mail from PWG Group',
+                        'title' => $criteria . ' Mail from PWG Group',
                         'body' => $message,
                         'link' => $link
                     ];
-                
+
                     $check_noti = notifications::where('criteria', '=', $criteria)->where('client_id', '=', Auth::user()->id)->first();
 
-                    if ($check_noti === null) 
-                    {
+                    if ($check_noti === null) {
 
                         DB::table('notifications')->insert(
-                                ['client_id' => $userID, 'message' => $message, 'criteria' => $criteria, 'link' => $link]
+                            ['client_id' => $userID, 'message' => $message, 'criteria' => $criteria, 'link' => $link]
                         );
-                
+
                         Mail::to($email)->send(new NotifyMail($dataArray));
-                    } 
+                    }
                     // Notification Ends ############ 
                     $dest = product::find($id);
                     $dest_name = $dest->name;
@@ -1102,34 +1072,34 @@ public function mark_read(Request $request) {
         return view('user.payment-fail', compact('id'));
     }
 
-    public function getReceipt ($ptype) {
+    public function getReceipt($ptype)
+    {
 
         if (Auth::id()) {
             $apply = DB::table('applications')
-            ->where('client_id', '=', Auth::user()->id)
-            ->orderBy('id', 'DESC')
-            ->first();
+                ->where('client_id', '=', Auth::user()->id)
+                ->orderBy('id', 'DESC')
+                ->first();
 
             $applicant_id = $apply->id;
 
             $user = DB::table('payments')
-            ->where('application_id',$applicant_id)
-            ->where('payment_type', $ptype)
-            ->orderBy('id', 'DESC')
-            ->first();
+                ->where('application_id', $applicant_id)
+                ->where('payment_type', $ptype)
+                ->orderBy('id', 'DESC')
+                ->first();
 
             $pricing = DB::table('pricing_plans')
-            ->where('destination_id',$apply->destination_id)
-            ->where('id',$apply->pricing_plan_id)
-            ->first();
+                ->where('destination_id', $apply->destination_id)
+                ->where('id', $apply->pricing_plan_id)
+                ->first();
 
-            $pdf = PDF::loadView('user.receipt', compact('user','apply','pricing'));
-           
+            $pdf = PDF::loadView('user.receipt', compact('user', 'apply', 'pricing'));
+
             return $pdf->stream("", array("Attachment" => false));
             // return $pdf->download('receipt.pdf');
         } else {
             return redirect('home');
         }
     }
-
 }

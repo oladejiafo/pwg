@@ -143,7 +143,7 @@
                     <img src="{{asset('images/Passport_Requirement.jpg')}}" width ="760px" height ="760px;">
                 </div>
                 <div class="modal-footer">
-                    <input type="hidden" name="passport_copy" class="form-control passport_copy" placeholder="Upload Passport Copy*" class="passportFormatModal"  autocomplete="off" readonly/>
+                    <input type="hidden" name="passport_upload" class="form-control" placeholder="Upload Passport Copy*" class="passportFormatModal"  autocomplete="off" readonly/>
                     <div class="input-group-btn">
                         <span class="fileUpload btn">
                             <span class="upl" id="upload">Choose File</span>
@@ -162,7 +162,7 @@
                     <img src="{{asset('images/ResidenceID.jpg')}}" width ="100%" height ="100%;">
                 </div>
                 <div class="modal-footer">
-                    <input type="hidden" class="form-control residence_id" name="residence_copy" placeholder="Residence/Emirates ID*" readonly >
+                    <input type="hidden" class="form-control" name="residence_upload" placeholder="Residence/Emirates ID*" readonly >
                     <div class="input-group-btn">
                         <span class="fileUpload btn">
                             <span class="upl" id="upload">Choose File</span>
@@ -181,7 +181,7 @@
                     <img src="{{asset('images/Visa.jpg')}}" width ="100%" height ="100%;">
                 </div>
                 <div class="modal-footer">
-                    <input type="hidden" class="form-control visa_copy"  name="visa_copy" placeholder="Visa Copy" readonly autocomplete="off">
+                    <input type="hidden" class="form-control"  name="visa_upload" placeholder="Visa Copy" readonly autocomplete="off">
                     <div class="input-group-btn">
                         <span class="fileUpload btn">
                             <span class="upl" id="upload">Choose File</span>
@@ -200,11 +200,86 @@
                     <img src="{{asset('images/ShengenVisa.jpg')}}" width ="100%" height ="100%;">
                 </div>
                 <div class="modal-footer">
-                    <input type="hidden" class="form-control schengen_copy" name="schengen_copy" readonly >
+                    <input type="hidden" class="form-control" name="schengen_upload" readonly >
                     <div class="input-group-btn">
                         <span class="fileUpload btn">
                             <span class="upl" id="upload">Choose File</span>
                             <input type="file" class="upload schengen_upload" accept="image/png, image/gif, image/jpeg" name="schengen_copy" />
+                        </span><!-- btn-orange -->
+                    </div><!-- btn -->
+                    <button type="button" class="btn closeBtn" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="passportDependentFormatModal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <img src="{{asset('images/Passport_Requirement.jpg')}}" width ="760px" height ="760px;">
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="dependent_passport_upload" class="form-control " placeholder="Upload Passport Copy*"  autocomplete="off" readonly/>
+                    <div class="input-group-btn">
+                        <span class="fileUpload btn">
+                            <span class="upl" id="upload">Choose File</span>
+                            <input type="file" class="upload dependent_passport_upload" id="dependent_passport_upload"  name="dependent_passport_copy" />
+                        </span><!-- btn-orange -->
+                    </div><!-- btn -->
+                    <button type="button" class="btn closeBtn" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="residenceIdDependentFormatModal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <img src="{{asset('images/ResidenceID.jpg')}}" width ="100%" height ="100%;">
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" class="form-control" name="dependent_residence_upload" placeholder="Residence/Emirates ID*" readonly >
+                    <div class="input-group-btn">
+                        <span class="fileUpload btn">
+                            <span class="upl" id="upload">Choose File</span>
+                            <input type="file" class="upload dependent_residence_upload" id="up"  name="dependent_residence_copy" />
+                        </span><!-- btn-orange -->
+                    </div><!-- btn -->
+                    <button type="button" class="btn closeBtn" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="visaDependentFormatModal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <img src="{{asset('images/Visa.jpg')}}" width ="100%" height ="100%;">
+                </div>
+                <div class="modal-footer">
+                    <div class="input-group-btn">
+                        <span class="fileUpload btn">
+                            <span class="upl" id="upload">Choose File</span>
+                            <input type="file" class="upload dependent_visa_upload" id="up"  name="dependent_visa_copy" />
+                        </span><!-- btn-orange -->
+                    </div><!-- btn -->
+                    <button type="button" class="btn closeBtn" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="schengenVisaDependentFormatModal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <img src="{{asset('images/ShengenVisa.jpg')}}" width ="100%" height ="100%;">
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" class="form-control" name="dependent_schengen_upload"  >
+                    <div class="input-group-btn">
+                        <span class="fileUpload btn">
+                            <span class="upl" id="upload">Choose File</span>
+                            <input type="file" class="upload dependent_schengen_upload" accept="image/png, image/gif, image/jpeg" name="schengen_copy" />
                         </span><!-- btn-orange -->
                     </div><!-- btn -->
                     <button type="button" class="btn closeBtn" data-dismiss="modal">Close</button>
@@ -265,7 +340,6 @@
             utilsScript:
                 "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
         });
-
         const phoneCurrentInputField = document.querySelector("#current_residance_mobile");
         const phoneCurrentInput = window.intlTelInput(phoneCurrentInputField, {
             separateDialCode: false,
@@ -276,7 +350,6 @@
             utilsScript:
                 "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
         });
-
         const dependentPhone = document.querySelector("#dependent_phone");
         const dependentcurrentresidancemobile = document.querySelector("#dependent_current_residance_mobile");
         const dependentPhoneInput = window.intlTelInput(dependentPhone, {
@@ -288,7 +361,6 @@
             utilsScript:
                 "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
         });
-
         const dependentcurrentresidancemobileInput = window.intlTelInput(dependentcurrentresidancemobile, {
             separateDialCode: false,
             preferredCountries:["ae"],
@@ -298,9 +370,9 @@
             utilsScript:
                 "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
         });
-
-
         $(document).on('change','.up', function(){
+            $('.passport_copy, .up').attr("value", ' ');
+            $("input[name=passport_upload]").val('');
             var names = [];
             var length = $(this).get(0).files.length;
             for (var i = 0; i < $(this).get(0).files.length; ++i) {
@@ -308,11 +380,15 @@
             }
             $('.passport_copy, .up').attr("value",names);
         });
-        $('.passport_upload, .residence_upload, .visa_upload, .schengen_upload').click(function(){
+        $('.passport_upload, .residence_upload, .visa_upload, .schengen_upload, .dependent_passport_upload, .dependent_residence_upload, .dependent_visa_upload, .dependent_schengen_upload').click(function(){
             $("#passportFormatModal").modal('hide');
             $("#visaFormatModal").modal('hide');
             $("#residenceIdFormatModal").modal('hide');
             $('#schengenVisaFormatModal').modal('hide');
+            $('#passportDependentFormatModal').modal('hide');
+            $('#residenceIdDependentFormatModal').modal('hide');
+            $('#visaDependentFormatModal').modal('hide');
+            $('#schengenVisaDependentFormatModal').modal('hide');
             $('body').removeClass('modal-open');
             $('.modal-backdrop').remove();
         })
@@ -328,10 +404,13 @@
                 $('.passport_copy, .passport_upload').attr("value",length+" files selected");
             }
             else{
-                $('.passport_upload, .passport_copy').attr("value",names);
+                $('.passport_copy').attr("value",names);
+                $("input[name=passport_upload]").attr("value",names);
             }
         })
         $(document).on('change','.residence_id', function(){
+            $('.residence_copy').attr("value", ' ');
+            $("input[name=residence_upload]").val('');
             var names = [];
             var length = $(this).get(0).files.length;
             for (var i = 0; i < $(this).get(0).files.length; ++i) {
@@ -355,10 +434,28 @@
             // $("input[name=file]").val(names);
             if(length>2){
             var fileName = names.join(', ');
-                $('.residence_copy').attr("value",length+" files selected");
+                $('.residence_id').attr("value",length+" files selected");
             }
             else{
-                $('.residence_copy').attr("value",names);
+                $('.residence_id').attr("value",names);
+                $("input[name=residence_upload]").val(names);
+            }
+        });
+        $(document).on('change','.visa_copy', function(){
+            $('.visa_copy').attr("value", ' ');
+            $("input[name=visa_upload]").val('');
+            var names = [];
+            var length = $(this).get(0).files.length;
+            for (var i = 0; i < $(this).get(0).files.length; ++i) {
+                names.push($(this).get(0).files[i].name);
+            }
+            // $("input[name=file]").val(names);
+            if(length>2){
+                var fileName = names.join(', ');
+                $('.visa_copy').attr("value",length+" files selected");
+            }
+            else{
+                $('.visa_copy').attr("value",names);
             }
         });
         $(document).on('change','.visa_upload', function(){
@@ -374,6 +471,7 @@
             }
             else{
                 $('.visa_copy').attr("value",names);
+                $("input[name=visa_upload]").attr("value",names);
             }
         });
         $(document).on('change','.schengen_upload', function(){
@@ -388,6 +486,7 @@
             }
             else{
                 $('.schengen_copy').attr("value",names);
+                $("input[name=schengen_upload]").val(names);
             }
         });
         $('#is_schengen_visa_issued_last_five_year').on('change', function(){
@@ -460,7 +559,6 @@
                 }, 2000);
             }
         });
-
         $('.applicantNext').click(function(e){
             e.preventDefault(); 
             if($('.applicantCompleted').val() == 1){
@@ -505,7 +603,6 @@
                 }, 2000);
             }
         });
-
         $("#applicant_details").submit(function(e){
             e.preventDefault(); 
             $("#applicant_details :input").each(function(index, elm){
@@ -517,7 +614,6 @@
                 }
             });
             var full_number = phoneInput.getNumber(intlTelInputUtils.numberFormat.E164);
-
             $.ajax({
                 type: 'POST',
                 url: "{{ route('store.applicant.details') }}",
@@ -543,7 +639,6 @@
                 }
             });
         });
-
         $("#home_country_details").submit(function(e){
             e.preventDefault(); 
             $("#home_country_details :input").each(function(index, elm){
@@ -556,7 +651,9 @@
             });
             
             var formData = new FormData(this);
-            formData.append('passport_copy', $('.passport_upload')[0].files[0]);
+            if($("input[name=passport_upload]").val()){
+                formData.append('passport_copy', $('.passport_upload')[0].files[0]);
+            }
             $.ajax({
                 type: 'POST',
                 url: "{{ url('store/home/country/details') }}",
@@ -582,7 +679,6 @@
                 }
             });
         });
-
         $('#current_residency').submit(function(e){
             e.preventDefault(); 
             $("#current_residency :input").each(function(index, elm){
@@ -596,9 +692,12 @@
             var full_number = phoneCurrentInput.getNumber(intlTelInputUtils.numberFormat.E164);
             $("input[id='current_residance_mobile'").val(full_number);
             var formData = new FormData(this);
-            formData.append('visa_copy', $('.visa_upload')[0].files[0]);
-            formData.append('residence_copy', $('.residence_upload')[0].files[0]);
-            console.log(formData);
+            if($("input[name=visa_upload]").val()){
+                formData.append('visa_copy', $('.visa_upload')[0].files[0]);
+            }
+            if($("input[name=residence_upload]").val()){
+                formData.append('residence_copy', $('.residence_upload')[0].files[0]);
+            }
             $.ajax({
                 type: 'POST',
                 url: "{{ url('store/current/details') }}",
@@ -624,7 +723,6 @@
                 }
             });
         });
-
         $('#schengen_details').submit(function(e){
             e.preventDefault(); 
             $("#schengen_details :input").each(function(index, elm){
@@ -636,7 +734,9 @@
                 }
             });
             var formData = new FormData(this);
-            formData.append('schengen_copy', $('.schengen_upload')[0].files[0]);
+            if($("input[name=schengen_upload]").val()) {
+                formData.append('schengen_copy', $('.schengen_upload')[0].files[0]);
+            }
             $.ajax({
                 type: 'POST',
                 url: "{{ url('store/schengen/details') }}",
@@ -662,8 +762,9 @@
                 }
             });
         });
-
         $(document).on('change','.schengen_copy', function(){
+            $('.schengen_copy').attr("value", ' ');
+            $("input[name=schengen_upload]").val('');
             var names = [];
             var length = $(this).get(0).files.length;
             for (var i = 0; i < $(this).get(0).files.length; ++i) {
@@ -671,21 +772,23 @@
             }
             // $("input[name=file]").val(names);
             if(length>2){
-            var fileName = names.join(', ');
-            $('.schengen_copy').attr("value",length+" files selected");
+                var fileName = names.join(', ');
+                $('.schengen_copy').attr("value",length+" files selected");
             }
             else{
-            $('.schengen_copy').attr("value",names);
+                $('.schengen_copy').attr("value",names);
             }
+            $('.schengen_upload')[0].files[0] = ' ';
         });
-
         $('.closeBtn').click(function(){
             $("#passportFormatModal").modal('hide');
             $("#residenceIdFormatModal").modal('hide');
             $('#visaFormatModal').modal('hide');
             $('#schengenVisaFormatModal').modal('hide');
+            $('#passportDependentFormatModal').modal('hide');
+            $('#visaDependentFormatModal').modal('hide');
+            $('#schengenVisaDependentFormatModal').modal('hide');
         });
-
         $('.mainApplicant').click(function(){
             $('#mainApplicant').show();
             $('#dependant, #children').hide();
@@ -704,7 +807,6 @@
             $('.children').addClass('active');
             $('.mainApplicant, .dependant').removeClass('active');
         });
-
         // Spouse/Dependent
         $('.spouseApplicantData, .spouseHomeCountryData, .spouseCurrentCountryData, .spouseSchengenData').hide();
         $('#dependant, #children').hide();
@@ -723,7 +825,6 @@
                 $('.dependent_resume').attr("value",names);
             }
         });
-
         $('#dependent_applicant_details').submit(function(e){
             e.preventDefault(); 
             $("#dependent_applicant_details :input").each(function(index, elm){
@@ -749,7 +850,6 @@
                         $('#collapsespouseHome').addClass('show');
                         $('.dependentApplicantCompleted').val(1);
                         $('.addExperience, .container').attr('data-dependentId', data.dependentId);
-
                     } else {
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
@@ -774,12 +874,14 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            // var full_number = dependenthomephonenumberInput.getNumber(intlTelInputUtils.numberFormat.E164);
-            // $("input[id='dependent_home_phone_number'").val(full_number);
+            var formData = new FormData(this);
+            if($('.dependent_passport_upload')[0].files[0]){
+                formData.append('dependent_passport_copy', $('.dependent_passport_upload')[0].files[0]);
+            }
             $.ajax({
                 type: 'POST',
                 url: "{{ url('store/spouse/home/country/details') }}",
-                data: new FormData(this),
+                data: formData,
                 processData: false,
                 contentType: false,
                 success: function (data) {
@@ -802,7 +904,6 @@
                 }
             });
         });
-
         $('#dependent_current_residency').submit(function(e){
             e.preventDefault(); 
             $("#dependent_current_residency :input").each(function(index, elm){
@@ -813,12 +914,19 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+            var formData = new FormData(this);
+            if($('.dependent_residence_upload')[0].files[0]){
+                formData.append('dependent_residence_copy', $('.dependent_residence_upload')[0].files[0]);
+            } 
+            if($('.dependent_visa_upload')[0].files[0]) {
+                formData.append('dependent_visa_copy', $('.dependent_visa_upload')[0].files[0]);
+            }
             var full_number = dependentcurrentresidancemobileInput.getNumber(intlTelInputUtils.numberFormat.E164);
             $("input[id='dependent_current_residance_mobile'").val(full_number);
             $.ajax({
                 type: 'POST',
                 url: "{{ url('store/spouse/current/details') }}",
-                data: new FormData(this),
+                data: formData,
                 processData: false,
                 contentType: false,
                 success: function (data) {
@@ -841,7 +949,6 @@
                 }
             });
         });
-
         $('#dependent_schengen_details').submit(function(e){
             e.preventDefault(); 
             $("#dependent_schengen_details :input").each(function(index, elm){
@@ -852,11 +959,14 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-
+            var formData = new FormData(this);
+            if($('.dependent_schengen_upload')[0].files[0]){
+                formData.append('dependent_schengen_copy', $('.dependent_schengen_upload')[0].files[0]);
+            }
             $.ajax({
                 type: 'POST',
                 url: "{{ url('store/spouse/schengen/details') }}",
-                data: new FormData(this),
+                data: formData,
                 processData: false,
                 contentType: false,
                 success: function (data) {
@@ -879,7 +989,6 @@
                 }
             });
         });
-
         $('#is_dependent_schengen_visa_issued_last_five_year').on('change', function(){
             if($('#is_dependent_schengen_visa_issued_last_five_year').val() == "YES"){
                 $('.dependent_schengen_visa').show();
@@ -889,15 +998,15 @@
                 $('#is_dependent_finger_print_collected_for_Schengen_visa').hide();
             }
         });
-
         $(document).on('change','.dependent_passport_copy', function(){
             $("#passportFormatModal").modal('hide');
+            $("input[name=dependent_passport_upload]").val(' ');
+            $('.dependent_passport_copy, .up').attr("value",' ');
             var names = [];
             var length = $(this).get(0).files.length;
             for (var i = 0; i < $(this).get(0).files.length; ++i) {
                 names.push($(this).get(0).files[i].name);
             }
-            // $("input[name=file]").val(names);
             if(length>2){
                 var fileName = names.join(', ');
                 $('.dependent_passport_copy').attr("value",length+" files selected");
@@ -906,8 +1015,25 @@
                 $('.dependent_passport_copy, .up').attr("value",names);
             }
         });
-
+        $(document).on('change','.dependent_passport_upload', function(){
+            $("#passportFormatModal").modal('hide');
+            var names = [];
+            var length = $(this).get(0).files.length;
+            for (var i = 0; i < $(this).get(0).files.length; ++i) {
+                names.push($(this).get(0).files[i].name);
+            }
+            if(length>2){
+                var fileName = names.join(', ');
+                $('.dependent_passport_copy').attr("value",length+" files selected");
+            }
+            else{
+                $('.dependent_passport_copy, .up').attr("value",names);
+                $("input[name=dependent_passport_upload]").val(names);
+            }
+        });
         $(document).on('change','.dependent_residence_copy', function(){
+            $("input[name=dependent_residence_upload]").val(' ');
+            $('.dependent_residence_copy').attr("value", ' ');
             var names = [];
             var length = $(this).get(0).files.length;
             for (var i = 0; i < $(this).get(0).files.length; ++i) {
@@ -922,8 +1048,25 @@
                 $('.dependent_residence_copy').attr("value",names);
             }
         });
-
+        $(document).on('change','.dependent_residence_upload', function(){
+            var names = [];
+            var length = $(this).get(0).files.length;
+            for (var i = 0; i < $(this).get(0).files.length; ++i) {
+                names.push($(this).get(0).files[i].name);
+            }
+            // $("input[name=file]").val(names);
+            if(length>2){
+            var fileName = names.join(', ');
+                $('.dependent_residence_copy').attr("value",length+" files selected");
+            }
+            else{
+                $('.dependent_residence_copy').attr("value",names);
+                $("input[name=dependent_residence_upload]").val(names);
+            }
+        });
         $(document).on('change','.dependent_visa_copy', function(){
+            $("input[name=dependent_visa_upload]").val(' ');
+            $('.dependent_visa_copy').attr("value", ' ');
             var names = [];
             var length = $(this).get(0).files.length;
             for (var i = 0; i < $(this).get(0).files.length; ++i) {
@@ -938,8 +1081,26 @@
                 $('.dependent_visa_copy').attr("value",names);
             }
         });
+        $(document).on('change','.dependent_visa_upload', function(){
+            var names = [];
+            var length = $(this).get(0).files.length;
+            for (var i = 0; i < $(this).get(0).files.length; ++i) {
+                names.push($(this).get(0).files[i].name);
+            }
+            // $("input[name=file]").val(names);
+            if(length>2){
+                var fileName = names.join(', ');
+                $('.dependent_visa_copy').attr("value",length+" files selected");
+            }
+            else{
+                $('.dependent_visa_copy').attr("value",names);
+                $("input[name=dependent_visa_upload]").val(names);
+            }
+        });
         
         $(document).on('change','.dependent_schengen_copy', function(){
+            $('.dependent_schengen_copy').attr("value", ' ');
+            $("input[name=dependent_visa_upload]").val(' ');
             var names = [];
             var length = $(this).get(0).files.length;
             for (var i = 0; i < $(this).get(0).files.length; ++i) {
@@ -954,14 +1115,27 @@
                 $('.dependent_schengen_copy').attr("value",names);
             }
         });
-
+        $(document).on('change','.dependent_schengen_upload', function(){
+            var names = [];
+            var length = $(this).get(0).files.length;
+            for (var i = 0; i < $(this).get(0).files.length; ++i) {
+                names.push($(this).get(0).files[i].name);
+            }
+            // $("input[name=file]").val(names);
+            if(length>2){
+                var fileName = names.join(', ');
+                $('.dependent_schengen_copy').attr("value",length+" files selected");
+            }
+            else{
+                $('.dependent_schengen_copy').attr("value",names);
+                $("input[name=dependent_visa_upload]").val(' ');
+            }
+        });
         // children
-
         for(var i= 1 ; i<='{{$client['children_count']}}'; i++)
         {
             $('.childData'+i).hide();
         }
-
         $('#child_details').submit(function(e){
             e.preventDefault(); 
             $('.childReviewSpin').show();
@@ -1002,7 +1176,6 @@
                 }
             });
         });
-
         $('.dependentReview').click(function(e){
             e.preventDefault(); 
             $('.dependentReviewSpin').show();
@@ -1060,7 +1233,6 @@
                 }, 2000);
             }
         });
-
         $('.dependentNext').click(function(e){
             e.preventDefault(); 
             if($('.dependentApplicantCompleted').val() == 1){
@@ -1101,28 +1273,40 @@
             }
         });
     });
-
     function showPassportFormat()
     {
-        $("#passportFormatModal").modal('show');
+         $("#passportFormatModal").modal('show');
     }
 
-    function showResidenceIdFormat() 
+    function showDependentPassportFormat()
     {
-        $("#residenceIdFormatModal").modal('show');
+        $("#passportDependentFormatModal").modal('show');
+    }
+
+    function showResidenceIdFormat(type) 
+    {
+        if(type == 'applicant') {
+            $("#residenceIdFormatModal").modal('show');
+        } else if(type == 'dependent') {
+            $("#residenceIdDependentFormatModal").modal('show');
+        }
     } 
-
-    function showVisaFormat()
+    function showVisaFormat(type)
     {
-        $("#visaFormatModal").modal('show');
+        if(type == 'applicant') {
+            $("#visaFormatModal").modal('show');
+        } else if(type == 'dependent') {
+            $("#visaDependentFormatModal").modal('show');
+        }
     }
-
-    function showSchengenVisaFormat()
+    function showSchengenVisaFormat(type)
     {
-        $("#schengenVisaFormatModal").modal('show');
+        if(type == 'applicant') {
+            $("#schengenVisaFormatModal").modal('show');
+        } else if(type == 'dependent') {
+            $("#schengenVisaDependentFormatModal").modal('show');
+        }
     }
-
-
     function updateStatus(userType)
     {        
         $.ajaxSetup({
@@ -1144,7 +1328,6 @@
             }
         });
     }
-
     function checkStatus(productId)
     {
         var returnValue;
@@ -1167,7 +1350,6 @@
         });
         return returnValue;
     }
-
 </script>
 <script src="https://unpkg.com/vue@next"></script>
 <script src="{{ asset('js/application-details.js') }}" type="text/javascript"></script>

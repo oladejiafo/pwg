@@ -19,6 +19,8 @@ use Laravel\Jetstream\Rules\Role;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/get/receipt/{ptype}',[HomeController::class, 'getReceipt'])->name('getReceipt');
 Route::post('/upload_signature', [HomeController::class,'upload'])->name('upload');
 
 Route::get('payment/success/{id}',[HomeController::class,'paymentSuccess'])->name('payment-success');
@@ -116,4 +118,3 @@ Route::post('mark_read', [HomeController::class, 'mark_read'])->name('mark_read'
 Route::post('/get/job/category/list', [ApplicationController::class, 'getJobCategories']);
 Route::post('/get/job/category/four/list', [ApplicationController::class, 'getJobCategoryFourList']);
 
-Route::get('/get/receipt/{ptype}',[HomeController::class, 'getReceipt'])->name('getReceipt');
