@@ -61,12 +61,15 @@
 
                                             <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="{{ route('getReceipt','First Payment')}}">Get Reciept</a>
                                        @else
+                                        @if($paid->application_stage_status != 5)
+                                            <button class="btn btn-secondary toastrDefaultError" style="font-weight:700" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           
+                                        @else
                                          <form action="{{ route('payment',$prod->id) }}" method="GET">
 
                                             <button class="btn btn-secondary" style="font-weight:700">Pay Now</button>
                                          </form>
-
                                         @endif
+                                       @endif
 
                                         </p>
                                     </div>
@@ -100,12 +103,15 @@
 
                                             <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="{{ route('getReceipt','Second Payment')}}">Get Reciept</a>
                                        @else
+                                        @if($paid->application_stage_status != 5)
+                                            <button class="btn btn-secondary toastrDefaultError" style="font-weight:700" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           
+                                        @else
                                          <form action="{{ route('payment',$prod->id) }}" method="GET">
 
                                             <button class="btn btn-secondary" style="font-weight:700">Pay Now</button>
                                          </form>
-
                                         @endif
+                                       @endif
 
                                         </p>
                                     </div>
@@ -139,13 +145,16 @@
 
                                             <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="{{ route('getReceipt','Third Payment')}}">Get Reciept</a>
                                        @else
+                                        @if($paid->application_stage_status != 5)
+                                            <button class="btn btn-secondary toastrDefaultError" style="font-weight:700" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           
+                                        @else
                                          <form action="{{ route('payment',$prod->id) }}" method="GET">
 
                                             <button class="btn btn-secondary" style="font-weight:700">Pay Now</button>
                                          </form>
-
                                         @endif
 
+                                       @endif
                                         </p>
                                     </div>
                                 </div>

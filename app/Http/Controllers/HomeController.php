@@ -669,7 +669,7 @@ class HomeController extends Controller
                     }
 
                     $data->coupon_code = $thisCode;
-                    $data->application_stage_status = 2;
+                    // $data->application_stage_status = 2;
 
                     $res = $data->save();
                 } else {
@@ -733,7 +733,7 @@ class HomeController extends Controller
                     }
 
                     $datas->coupon_code = $thisCode;
-                    $datas->application_stage_status = 2;
+                    // $datas->application_stage_status = 2;
 
 
                     $res = $datas->save();
@@ -1097,7 +1097,59 @@ public function mark_read(Request $request) {
 
     public function paymentFail($paymentId)
     {
+        //Undo Application payment info
+        $pays = payment::where('id', $paymentId)->first();
+
+        $datas = applicant::where([
+               ['client_id', '=', Auth::user()->id],
+               ['id', '=', $pays->application_id],
+           ])->first();
+
+           if ($datas === null) {
+           } else {
+       
+               if($pays->payment_type =='First Payment')
+               {
+                   $datas->first_payment_price = 0;
+                   $datas->first_payment_paid = 0;
+                   $datas->first_payment_vat = 0;
+                   $datas->first_payment_discount = 0;
+                   $datas->first_payment_status = 'PENDING';
+                   $datas->first_payment_remaining =  0;
+                   $datas->is_first_payment_partially_paid = 0;
+                   $datas->status = 'PENDING';
+               } elseif($pays->payment_type =='Balance on First Payment') {
+                //    $datas->first_payment_price = 0;
+                    $datas->first_payment_paid = $datas->first_payment_paid - $pays->paid_amount;
+                //    $datas->first_payment_vat = 0;
+                //    $datas->first_payment_discount = 0;
+                   $datas->first_payment_status = 'Partial';
+                   $datas->first_payment_remaining =  $datas->first_payment_remaining - $pays->paid_amount;
+                //    $datas->is_first_payment_partially_paid = 0;
+                //    $datas->status = 'PENDING';
+               } elseif($pays->payment_type =='Second Payment') {
+                   $datas->second_payment_price = 0;
+                   $datas->second_payment_paid = 0;
+                   $datas->second_payment_vat = 0;
+                   $datas->second_payment_discount = 0;
+                   $datas->second_payment_status = 'PENDING';
+                   $datas->status = 'PENDING';
+                   $datas->is_second_payment_partially_paid = 0;
+               } elseif($pays->payment_type =='Third Payment') {
+                   $datas->third_payment_price = 0;
+                   $datas->third_payment_paid = 0;
+                   $datas->third_payment_vat = 0;
+                   $datas->third_payment_discount = 0;
+                   $datas->third_payment_status = 'PENDING';
+                   $datas->status = 'PENDING';
+                   $datas->is_third_payment_partially_paid = 0;
+               }
+               $datas->save();
+           } 
+
+        //Undo Payment update
         Payment::where('id', $paymentId)->delete();
+
         $id = Session::get('myproduct_id');
         return view('user.payment-fail', compact('id'));
     }

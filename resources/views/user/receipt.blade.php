@@ -2,22 +2,23 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <title>PWG Client Receipt</title>
 <style>
     body {
         font-size: 13px;;
     }
 </style>
   </head>
-  @php
+    @php
         if($user->payment_type =="First Payment")
         {
-        $discounted = $apply->first_payment_discount;
+            $discounted = $apply->first_payment_discount;
         } elseif($user->payment_type =="Second Payment") {
-        $discounted = $apply->second_payment_discount;
+            $discounted = $apply->second_payment_discount;
         } elseif($user->payment_type =="Third Payment") {
-        $discounted = $apply->third_payment_discount;  
+            $discounted = $apply->third_payment_discount;  
         } else {
-        $discounted =0;
+            $discounted =0;
         }
     @endphp
   <body>
