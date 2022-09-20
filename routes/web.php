@@ -115,3 +115,5 @@ Route::post('mark_read', [HomeController::class, 'mark_read'])->name('mark_read'
 //experience
 Route::post('/get/job/category/list', [ApplicationController::class, 'getJobCategories']);
 Route::post('/get/job/category/four/list', [ApplicationController::class, 'getJobCategoryFourList']);
+
+Route::get('/get/receipt/{ptype}',[HomeController::class, 'getReceipt'])->name('getReceipt');

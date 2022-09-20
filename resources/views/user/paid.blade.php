@@ -59,7 +59,8 @@
   
                       <p>
                           @if($paid->first_payment_status =='Paid')
-                            <a class="btn btn-secondary" href="#">Get Reciept</a>
+                          
+                            <a class="btn btn-secondary" target="_blank" href="{{ route('getReceipt','First Payment')}}">Get Reciept</a>
                           @else
                           
                             <form action="{{ route('payment',$prod->id) }}" method="GET">
@@ -145,7 +146,7 @@
 
                       <p>
                           @if($paid->second_payment_status =='Paid')
-                          <a class="btn btn-secondary" href="#">Get Reciept</a>
+                          <a class="btn btn-secondary" target="_blank" href="{{ route('getReceipt','Second Payment')}}">Get Reciept</a>
                           @else
                           @if($paid->application_stage_status != 5)
                             <button class="btn btn-secondary toastrDefaultError" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           
@@ -205,7 +206,7 @@
  
                       <p>
                           @if($paid->third_payment_status =='Paid')
-                          <a class="btn btn-secondary" href="#">Get Reciept</a>
+                          <a class="btn btn-secondary" target="_blank" href="{{ route('getReceipt','Third Payment')}}">Get Reciept</a>
                           @else
                           @if($paid->application_stage_status != 5)
                             <button class="btn btn-secondary toastrDefaultError" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           

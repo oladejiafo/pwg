@@ -335,13 +335,20 @@ $pid = $app_id;
                                         $discount = 0;
                                     }
 
-                                    $whichPayment =  "Full Payment";
+                                    $whichPayment =  "Full-Outstanding Payment";
                                     // $discountPercent = $data->full_payment_discount . '%';
                                     // $discount = ($pdet->total_price * $data->full_payment_discount / 100);
                                 }
                                 // $payNow = 0;
                                 $vatPercent = '5%';
-                                $vat = ($payNow * 5) / 100;
+                                
+                                if(Auth::user()->country_of_residence == "United Arab Emirates")
+                                {
+                                  $vat = ($payNow * 5) / 100;
+                                } else {
+                                    $vat = 0;
+                                }
+                                
                                 $totalPay = ($payNow + $vat) - $discount;
 
                                 list($which, $zzz) = explode(' ', $whichPayment);
@@ -363,7 +370,7 @@ $pid = $app_id;
 
                                                     @endif
                                                     <span style="font-size:11px">(+ 5% VAT)</span>
-                                                    @if(strlen($pendMsg)>1) 
+                                                    @if($pends>1) 
                                                     <br>
                                                     <font style='font-size:10px;color:red'><i fa fa-arrow-up></i>  {{ $pendMsg }} </font> 
                                                     @endif
@@ -499,12 +506,12 @@ $pid = $app_id;
                                     <div class="partial-total-sec">
                                   
                                     @if($diff > 0 && $payall ==0) 
-                                        <h2 style="font-size: 1em;">Now you will pay the balance on first installment only <b>{{ number_format($pends) }}</b> AED <span style="font-size:11px;opacity:0.6">(VAT inclusive)</span></h2>
+                                        <h2 style="font-size: 1em;">Now you will pay the balance on first installment only <b>{{ number_format($pends) }}</b> AED <span style="font-size:11px;opacity:0.6">@if($vat>0) (VAT inclusive) @endif</span></h2>
                                         <input type="hidden" id="amountLink2" name="totalpay" value="{{  number_format($payNoww, 0, '.', '') }}">
                                         <input type="hidden" id="totaldue" name="totaldue" value="{{$payNow + $vat}}">
                                         <input type="hidden" name="totalremaining" value="{{$pends}}">
                                     @else
-                                        <h2 style="font-size: 1em;">Now you will pay {{strtolower($which)}} installment only <span id="amountLink"><b>{{number_format($payNoww + $vat)}}</b></span> AED <span style="font-size:11px;opacity:0.6">(VAT inclusive)</span></h2>
+                                        <h2 style="font-size: 1em;">Now you will pay {{strtolower($which)}} installment only <span id="amountLink"><b>{{number_format($payNoww + $vat)}}</b></span> AED <span style="font-size:11px;opacity:0.6">@if($vat>0) (VAT inclusive) @endif</span></h2>
                                         <input type="hidden" id="amountLink2" name="totalpay" value="{{  number_format($payNoww + $vat, 0, '.', '') }}">
                                         <input type="hidden" id="totaldue" name="totaldue" value="{{$payNoww + $vat}}">
                                     @endif

@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\NotifyMail;
 use Illuminate\Support\Facades\Response;
 use Config;
-
+use PDF;
 use DB;
 use Session;
 use Exception;
@@ -902,10 +902,10 @@ class HomeController extends Controller
     public function contract($productId)
     {
         if (Auth::id()) {
+
             return view('user.contract', compact('productId'));
         } else {
             return redirect('home');
-            // return redirect()->back()->with('failed', 'You are not authorized');
         }
     }
 
@@ -1100,6 +1100,36 @@ public function mark_read(Request $request) {
         Payment::where('id', $paymentId)->delete();
         $id = Session::get('myproduct_id');
         return view('user.payment-fail', compact('id'));
+    }
+
+    public function getReceipt ($ptype) {
+
+        if (Auth::id()) {
+            $apply = DB::table('applications')
+            ->where('client_id', '=', Auth::user()->id)
+            ->orderBy('id', 'DESC')
+            ->first();
+
+            $applicant_id = $apply->id;
+
+            $user = DB::table('payments')
+            ->where('application_id',$applicant_id)
+            ->where('payment_type', $ptype)
+            ->orderBy('id', 'DESC')
+            ->first();
+
+            $pricing = DB::table('pricing_plans')
+            ->where('destination_id',$apply->destination_id)
+            ->where('id',$apply->pricing_plan_id)
+            ->first();
+
+            $pdf = PDF::loadView('user.receipt', compact('user','apply','pricing'));
+           
+            return $pdf->stream("", array("Attachment" => false));
+            // return $pdf->download('receipt.pdf');
+        } else {
+            return redirect('home');
+        }
     }
 
 }
