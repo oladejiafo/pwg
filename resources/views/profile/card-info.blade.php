@@ -40,14 +40,11 @@
 </style>
 
 <?php
- $apply = DB::table('applications')
- ->where('client_id', '=', Auth::user()->id)
- ->first();
-if($apply){
-    $applicant_id = $apply->id; 
-} else {
-    $applicant_id=0;
-}
+//  $apply = DB::table('applications')
+//  ->where('client_id', '=', Auth::user()->id)
+//  ->first();
+
+// $applicant_id = $apply->id; 
 
 $card = DB::table('card_details')
 ->where('client_id', '=', Auth::user()->id)

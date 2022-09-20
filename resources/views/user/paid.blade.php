@@ -211,7 +211,7 @@
                             @if($paid->application_stage_status != 5)
                               <button class="btn btn-secondary toastrDefaultError" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           
                             @else
-                              <form action="{{ route('payment',$prod->id) }}" method="GET">
+                            <form action="{{ route('payment',$prod->id) }}" method="GET">
 
                                 <button class="btn btn-secondary">Pay Now</button>
                               </form>
@@ -220,6 +220,7 @@
                       </p>
                     </span>
                   </span>
+
                   @endif
                 </div>
                 @if($pays->third_payment_price >0 )
@@ -289,18 +290,19 @@
       <div class="modal-body" style="height:auto">
 
         @if($paid->third_payment_status =='Paid')
-         Congratutaion! You have completed your payments. <br>Your embassy appearnce date will be indicated soon.
+         <p>Congratutaion! You have completed your payments. </p>
+         <p style="font-size:15px">Your embassy appearnce date will be indicated soon.</p>
 
         @elseif($paid->second_payment_status =='Paid')
-         Your Application is in progress! <br> 
-         Your third payment is pending. <br>
-         Your work permit will be uploaded soon.
+         <p>Your Application is in progress! </p> 
+         <p style="font-size:17px">Your third payment is pending. </p>
+         <p style="font-size:15px">Your work permit will be uploaded soon.</p>
         @elseif($paid->first_payment_status =='Paid') 
-         Your Application is in progress! <br>
-         Your second payment pending 
+         <p>Your Application is in progress! </p>
+         <p style="font-size:15px">Your second payment pending.</p> 
         @else 
           @if($paid->first_payment_remaining >0 && $paid->first_payment_status !='Paid')
-            You have outstanding payment of {{$paid->first_payment_remaining}} <br>on first payment
+          <p style="font-size:15px">You have outstanding payment of {{$paid->first_payment_remaining}} on first payment</p>
           @endif
         @endif
 
@@ -360,25 +362,28 @@
 
 
 </div>
+@if($paid->third_payment_status !='Paid')
+  @if(isset($prod->id))
+    @php  
+      $ppd = $prod->id; 
+    @endphp
 
-@if(isset($prod->id))
-  @php  
-     $ppd = $prod->id; 
-  @endphp
-
-<div class="card d-flex aligns-items-center justify-content-center text-center wiggy" style="background-color:#000; color: #fff; padding-block:35px; font-weight: bold;font-family:'TT Norms Pro'">
-  <h3 style="font-size:36px">Earn 5% discount when you pay full amount! </h3>
-  <p style="margin-top: 5px;">
-
-  <form action="{{ route('payment',$ppd) }}" method="GET">
-    <input type="hidden" name="pid" value="{{$ppd}}">
-    <input type="hidden" name="payall" value="1">
-    <button class="btn btn-secondary" style="border-width:thin; width:250px; height:60px; font-size:32px; font-weight:bold">Pay All Now</button>
-  </form>
-  </p>
-</div>
+    <div class="card d-flex aligns-items-center justify-content-center text-center wiggy" style="background-color:#000; color: #fff; padding-block:35px; font-weight: bold;font-family:'TT Norms Pro'">
+      <h3 style="font-size:36px">Earn 5% discount when you pay full amount! </h3>
+      <p style="margin-top: 5px;">
+      @if($paid->application_stage_status != 5)
+        <button class="btn btn-secondary toastrDefaultError" style="border-width:thin; width:250px; height:60px; font-size:32px; font-weight:bold" onclick="toastr.error('Your application process not completed!')">Pay All Now</button>                           
+      @else
+        <form action="{{ route('payment',$ppd) }}" method="GET">
+          <input type="hidden" name="pid" value="{{$ppd}}">
+          <input type="hidden" name="payall" value="1">
+          <button class="btn btn-secondary" style="border-width:thin; width:250px; height:60px; font-size:32px; font-weight:bold">Pay All Now</button>
+        </form>
+      @endif  
+      </p>
+    </div>
+  @endif
 @endif
-
 
 <!-- <script src="../user/assets/js/vendor/jquery-1.12.4.min.js"></script> -->
 <script>
