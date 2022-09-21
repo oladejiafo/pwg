@@ -9,6 +9,16 @@ use Carbon\Carbon;
 
 class Kernel extends ConsoleKernel
 {
+
+     /**
+    * The Artisan commands provided by your application.
+    *
+    * @var array
+    */
+    protected $commands = [
+        Commands\ClearNotify::class
+    ];
+
     /**
      * Define the application's command schedule.
      *
@@ -17,10 +27,14 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+
         // $schedule->command('inspire')->hourly();
-        $schedule->call(function () {
-            notifications::where('updated_at', '<', Carbon::now()->subDays(1))->delete();
-        })->everyMinute();
+        // $schedule->call(function () {
+        //     notifications::where('updated_at', '<', Carbon::now()->subDays(1))->delete();
+        // })->everyMinute();
+
+        $schedule->command('week:delete')
+                ->weekly();
     }
 
     /**

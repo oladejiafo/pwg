@@ -21,6 +21,8 @@ use Laravel\Jetstream\Rules\Role;
 */
 
 Route::get('/get/receipt/{ptype}',[HomeController::class, 'getReceipt'])->name('getReceipt');
+Route::get('/get/invoice/{ptype}',[HomeController::class, 'getInvoice'])->name('getInvoice');
+
 Route::post('/upload_signature', [HomeController::class,'upload'])->name('upload');
 
 Route::get('payment/success/{id}',[HomeController::class,'paymentSuccess'])->name('payment-success');

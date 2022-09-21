@@ -1158,4 +1158,34 @@ class HomeController extends Controller
             return redirect('home');
         }
     }
+
+    public function getInvoice($ptype)
+    {
+        if (Auth::id()) {
+            $apply = DB::table('applications')
+                ->where('client_id', '=', Auth::user()->id)
+                ->orderBy('id', 'DESC')
+                ->first();
+
+            $applicant_id = $apply->id;
+
+            $user = DB::table('payments')
+                ->where('application_id', $applicant_id)
+                ->where('payment_type', $ptype)
+                ->orderBy('id', 'DESC')
+                ->first();
+
+            $pricing = DB::table('pricing_plans')
+                ->where('destination_id', $apply->destination_id)
+                ->where('id', $apply->pricing_plan_id)
+                ->first();
+
+            $pdf = PDF::loadView('user.invoice', compact('user', 'apply', 'pricing'));
+
+            return $pdf->stream("", array("Attachment" => false));
+            // return $pdf->download('receipt.pdf');
+        } else {
+            return redirect('home');
+        }
+    }
 }

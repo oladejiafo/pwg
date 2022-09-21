@@ -55,12 +55,13 @@
 
                       @if($paid->first_payment_remaining >0 && $paid->first_payment_status !='Paid')
                          <br><amp style="display:fixed; align-content: center; text-align:center; font-size:10px !important; color:#ff0000;padding:1px;margin-left: 20px; line-height:100% !important; margin-top: 70px; margin-left:-100px">(Outstanding on 1st Payment: {{$paid->first_payment_remaining}}.)</amp>
+                         <a class="btn" target="_blank" href="{{ route('getInvoice','First Payment')}}" style="display:fixed; align-content: center; text-align:center; font-size:10px !important; top:340px; height:25px; width:150px;margin-left: 25px;">Get Invoice Here</a>
                       @endif
   
                       <p>
                           @if($paid->first_payment_status =='Paid')
                           
-                            <a class="btn btn-secondary" target="_blank" href="{{ url('/get/receipt/First Payment')}}">Get Reciept</a>
+                            <a class="btn btn-warning" target="_blank" href="{{ route('getReceipt','First Payment')}}">Get Reciept</a>
                           @else
                           
                             <form action="{{ route('payment',$prod->id) }}" method="GET">
@@ -146,7 +147,7 @@
 
                       <p>
                           @if($paid->second_payment_status =='Paid')
-                          <a class="btn btn-secondary" target="_blank" href="{{ url('/get/receipt/Second Payment')}}">Get Reciept</a>
+                          <a class="btn btn-secondary" target="_blank" href="{{ route('getReceipt','Second Payment')}}">Get Reciept</a>
                           @else
                           @if($paid->application_stage_status != 5)
                             <button class="btn btn-secondary toastrDefaultError" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           
@@ -206,7 +207,7 @@
  
                       <p>
                           @if($paid->third_payment_status =='Paid')
-                          <a class="btn btn-secondary" target="_blank" href="{{ url('/get/receipt/Third Payment')}}">Get Reciept</a>
+                          <a class="btn btn-secondary" target="_blank" href="{{ route('getReceipt','Third Payment')}}">Get Reciept</a>
                           @else
                             @if($paid->application_stage_status != 5)
                               <button class="btn btn-secondary toastrDefaultError" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           
@@ -220,7 +221,13 @@
                       </p>
                     </span>
                   </span>
+                  @else
+                  <span class="paid-item " href="#">
+                    <span class="positionAnchor  @if($paid->third_payment_status =='Paid')) watermarked @endif paid-thumbnail">
+                      <img src="../user/images/Final Payment.svg" height="500px" class="img-fluid">
 
+                    </span>
+                  </span>
                   @endif
                 </div>
 
