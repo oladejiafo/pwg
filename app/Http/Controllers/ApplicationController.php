@@ -55,8 +55,8 @@ class ApplicationController extends Controller
             $client->addMedia($request->file('cv'))->toMediaCollection(User::$media_collection_main_resume);
 
             $applicant = Applicant::where('client_id', Auth::id())
-                            ->where('destination_id', $request->product_id)
-                            ->first();
+                ->where('destination_id', $request->product_id)
+                ->first();
             $applicant->application_stage_status = 3;
             $applicant->assigned_agent_id = $request->agent_code;
             $applicant->save();
@@ -71,14 +71,14 @@ class ApplicationController extends Controller
             $client = User::find(Auth::id());
 
             $applicant = Applicant::where('client_id', Auth::id())
-                                    ->where('destination_id', $productId)
-                                    ->first();
+                ->where('destination_id', $productId)
+                ->first();
 
             $dependent = User::where('family_member_id', Auth::id())
-                            ->where('is_dependent', 1)
-                            ->pluck('id')
-                            ->first();
-            
+                ->where('is_dependent', 1)
+                ->pluck('id')
+                ->first();
+
             return view('user.application-next', compact('client', 'productId', 'applicant', 'dependent'))->with('info', 'Data saved successfully!');
         } else {
             return back();
@@ -129,8 +129,8 @@ class ApplicationController extends Controller
                 'civil_status' => $request['civil_status']
             ]);
         return Response::json(array(
-                    'success' => true
-                    ), 200);
+            'success' => true
+        ), 200);
     }
 
     /**
@@ -165,10 +165,10 @@ class ApplicationController extends Controller
         $file = $request->file('passport_copy');
         $client = User::find(Auth::id());
 
-        if($request->hasFile('passport_copy')){
+        if ($request->hasFile('passport_copy')) {
             $fileName = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
             $client->addMedia($request->file('passport_copy'))->usingFileName($fileName)->toMediaCollection(User::$media_collection_main);
-        } 
+        }
 
         $client->passport_number  = $request['passport_number'];
         $client->passport_issue_date =  date('Y-m-d', strtotime($request['passport_issue']));
@@ -182,19 +182,21 @@ class ApplicationController extends Controller
         $client->address_line_2 = $request['address_2'];
         $client->save();
 
-        return Response::json(array(
-                    'success' => true,
-                    'passport' => storage_path('passportCopy/'.$fileName)
-                ),
-             200);
+        return Response::json(
+            array(
+                'success' => true,
+                'passport' => storage_path('passportCopy/' . $fileName)
+            ),
+            200
+        );
     }
 
     public function applicantReview($productId)
     {
         $client = User::find(Auth::id());
-        $applicant = Applicant::where('client_id',Auth::id())
-                                ->where('destination_id', $productId)
-                                ->first();
+        $applicant = Applicant::where('client_id', Auth::id())
+            ->where('destination_id', $productId)
+            ->first();
         $dependent = User::where('family_member_id', Auth::id())->where('is_dependent', 1)->first();
         $children = User::where('family_member_id', Auth::id())->where('is_dependent', 2)->get();
 
@@ -203,16 +205,16 @@ class ApplicationController extends Controller
 
         $client->residenceName = (isset($client->getMedia(User::$media_collection_main_residence_id)[0])) ? $client->getMedia(User::$media_collection_main_residence_id)[0]['name'] : ' ';
         $client->residenceUrl = (isset($client->getMedia(User::$media_collection_main_residence_id)[0])) ? $client->getMedia(User::$media_collection_main_residence_id)[0]->getUrl() : null;
-        
+
         $client->visaName = (isset($client->getMedia(User::$media_collection_main_residence_visa)[0])) ? $client->getMedia(User::$media_collection_main_residence_visa)[0]['name'] : ' ';
-        $client->visaCopyUrl = (isset($client->getMedia(User::$media_collection_main_residence_visa)[0])) ?$client->getMedia(User::$media_collection_main_residence_visa)[0]->getUrl() : null;
+        $client->visaCopyUrl = (isset($client->getMedia(User::$media_collection_main_residence_visa)[0])) ? $client->getMedia(User::$media_collection_main_residence_visa)[0]->getUrl() : null;
 
         $client->schengenVisaUrl = (isset($client->getMedia(User::$media_collection_main_schengen_visa)[0])) ? $client->getMedia(User::$media_collection_main_schengen_visa)[0]->getUrl() : null;
         $client->schengenVisaName = (isset($client->getMedia(User::$media_collection_main_schengen_visa)[0])) ? $client->getMedia(User::$media_collection_main_schengen_visa)[0]['name'] : ' ';
-        if($dependent){
+        if ($dependent) {
             $dependent->passportUrl = (isset($dependent->getMedia(User::$media_collection_main)[0])) ? $dependent->getMedia(User::$media_collection_main)[0]->getUrl() : null;
             $dependent->passportName = (isset($dependent->getMedia(User::$media_collection_main)[0])) ? $dependent->getMedia(User::$media_collection_main)[0]['name'] : null;
-            
+
             $dependent->residenceUrl = (isset($dependent->getMedia(User::$media_collection_main_residence_id)[0])) ? $dependent->getMedia(User::$media_collection_main_residence_id)[0]->getUrl() : null;
             $dependent->residenceName = (isset($dependent->getMedia(User::$media_collection_main_residence_id)[0])) ? $dependent->getMedia(User::$media_collection_main_residence_id)[0]['name'] : ' ';
 
@@ -226,8 +228,8 @@ class ApplicationController extends Controller
             $dependent->visaName = (isset($dependent->getMedia(User::$media_collection_main_residence_visa)[0])) ? $dependent->getMedia(User::$media_collection_main_residence_visa)[0]['name'] : ' ';
             $dependent->visaCopyUrl = (isset($dependent->getMedia(User::$media_collection_main_residence_visa)[0])) ? $dependent->getMedia(User::$media_collection_main_residence_visa)[0]->getUrl() : null;
         }
-        
-        
+
+
         return view('user.application-review', compact('client', 'applicant', 'productId', 'dependent', 'children'))->with('success', 'Data saved successfully!');
     }
 
@@ -294,7 +296,7 @@ class ApplicationController extends Controller
     public function storeSchengenDetails(Request $request)
     {
 
-        if($request['is_schengen_visa_issued_last_five_year']  == 'YES'){
+        if ($request['is_schengen_visa_issued_last_five_year']  == 'YES') {
             $validator = \Validator::make($request->all(), [
                 'is_schengen_visa_issued_last_five_year' => 'required',
                 'is_finger_print_collected_for_Schengen_visa' => 'required'
@@ -304,7 +306,7 @@ class ApplicationController extends Controller
                 'is_schengen_visa_issued_last_five_year' => 'required',
             ]);
         }
-        
+
 
         if ($validator->fails()) {
             return Response::json(array(
@@ -320,15 +322,15 @@ class ApplicationController extends Controller
             $schengenCopy = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
             $client->addMediaFromRequest('schengen_copy')->withCustomProperties(['mime-type' => 'image/jpeg'])->preservingOriginal()->usingFileName($schengenCopy)->toMediaCollection(User::$media_collection_main_schengen_visa);
         }
-        
+
         $client->is_schengen_visa_issued_last_five_year  = $request->is_schengen_visa_issued_last_five_year;
         $client->is_finger_print_collected_for_Schengen_visa = $request->is_finger_print_collected_for_Schengen_visa;
         $client->save();
-        
+
         return Response::json(array('success' => true), 200);
     }
 
-     /**
+    /**
      * Store applicant experience as step 4
      * @param Request
      *
@@ -336,12 +338,12 @@ class ApplicationController extends Controller
      */
     public function addExperience(Request $request)
     {
-        if($request['userType'] == 'dependent'){
+        if ($request['userType'] == 'dependent') {
             $exist = ApplicantExperience::where('client_id', $request->dependentId)
-                    ->where('job_category_three_id', $request['job_category_three_id'])
-                    ->where('job_category_four_id', $request['job_category_four_id'])
-                    ->first();
-            if(!$exist) {
+                ->where('job_category_three_id', $request['job_category_three_id'])
+                ->where('job_category_four_id', $request['job_category_four_id'])
+                ->first();
+            if (!$exist) {
                 $exp = new ApplicantExperience();
                 $exp->client_id = $request->dependentId;
                 $exp->job_title = $request['job_title'];
@@ -357,10 +359,10 @@ class ApplicationController extends Controller
             }
         } else {
             $exist = ApplicantExperience::where('client_id', Auth::id())
-                    ->where('job_category_three_id', $request['job_category_three_id'])
-                    ->where('job_category_four_id', $request['job_category_four_id'])
-                    ->first();
-            if(!$exist) {
+                ->where('job_category_three_id', $request['job_category_three_id'])
+                ->where('job_category_four_id', $request['job_category_four_id'])
+                ->first();
+            if (!$exist) {
                 $exp = new ApplicantExperience();
                 $exp->client_id = Auth::id();
                 $exp->job_title = $request['job_title'];
@@ -377,7 +379,7 @@ class ApplicationController extends Controller
         }
     }
 
-     /**
+    /**
      * get applicant added experience
      * @param Request
      *
@@ -386,35 +388,34 @@ class ApplicationController extends Controller
     public function getApplicantExperience(Request $request)
     {
         $exp = ApplicantExperience::where('client_id', Auth::id())
-                                    ->get();
+            ->get();
         return $exp;
     }
 
     public function removeExperience(Request $request)
     {
-        if($request['userType'] == 'applicant'){
+        if ($request['userType'] == 'applicant') {
             $data = DB::table('client_experiences')
-                        ->where('id', $request['expId'])
-                        ->where('client_id', Auth::id());
-            if($data->delete()){
+                ->where('id', $request['expId'])
+                ->where('client_id', Auth::id());
+            if ($data->delete()) {
                 return true;
             } else {
                 return false;
             }
         } else {
             $data = DB::table('client_experiences')
-                        ->where('id', $request['expId'])
-                        ->where('client_id', $request['dependentId']);
-            if($data->delete()){
+                ->where('id', $request['expId'])
+                ->where('client_id', $request['dependentId']);
+            if ($data->delete()) {
                 return true;
             } else {
                 return false;
             }
         }
-        
     }
 
-     /**
+    /**
      * Store applicant details as step 4
      * @param Request
      *
@@ -423,55 +424,54 @@ class ApplicationController extends Controller
     public function applicantReviewSubmit(Request $request)
     {
         $applicant =  Applicant::where('client_id', Auth::id())
-                    ->where('destination_id', $request->product_id)
-                    ->first();
+            ->where('destination_id', $request->product_id)
+            ->first();
 
         Applicant::where('client_id', Auth::id())
-                ->where('destination_id', $request->product_id)
-                ->update([
-                    'application_stage_status'=> 5,
-                    'status' => 'APPLICATION_SUBMITTED',
-                    'processing_status' => 'NOT_STARTED'
-                ]);
+            ->where('destination_id', $request->product_id)
+            ->update([
+                'application_stage_status' => 5,
+                'status' => 'APPLICATION_SUBMITTED',
+                'processing_status' => 'NOT_STARTED'
+            ]);
 
         // $this->_updateApplicationStatus($request->product_id,$applicant['id'], $request['user']);
 
         // Send Notifications on This Payment ##############
         $email = Auth::user()->email;
         $userID = Auth::user()->id;
-        
+
         $criteria = "Application Completed!";
         $message = "You have completed and submitted your application successfully. Kindly login to the PWG Client portal and check your receipt on 'My Application' for further updates";
 
         $link = "";
 
         $dataArray = [
-            'title' => $criteria .'Mail from PWG Group',
+            'title' => $criteria . 'Mail from PWG Group',
             'body' => $message,
             'link' => $link
         ];
-    
-        $check_noti = DB::table('notifications')
-                        ->where('criteria', '=', $criteria)
-                        ->where('client_id', '=', Auth::user()->id)
-                        ->first();
 
-        if ($check_noti === null) 
-        {
+        $check_noti = DB::table('notifications')
+            ->where('criteria', '=', $criteria)
+            ->where('client_id', '=', Auth::user()->id)
+            ->first();
+
+        if ($check_noti === null) {
             DB::table('notifications')->insert(
-                    ['client_id' => $userID, 'message' => $message, 'criteria' => $criteria, 'link' => $link]
+                ['client_id' => $userID, 'message' => $message, 'criteria' => $criteria, 'link' => $link]
             );
 
             Mail::to($email)->send(new NotifyMail($dataArray));
             // Notification Ends ############ 
-        }   
+        }
         return Response::json(array('success' => true), 200);
-    }   
+    }
 
     public function submitApplicantDetails(Request $request)
     {
         $response['status'] = false;
-        try{
+        try {
             Applicant::where('id', $request['applicantId'])
                 ->update(
                     [
@@ -512,10 +512,10 @@ class ApplicationController extends Controller
         }
 
         $data = User::where('family_member_id', Auth::id())
-                        ->where('is_dependent', 1)
-                        ->first();
+            ->where('is_dependent', 1)
+            ->first();
 
-        if($data){
+        if ($data) {
             $data->name = $request['dependent_first_name'];
             $data->middle_name = $request['dependent_middle_name'];
             $data->sur_name = $request['dependent_surname'];
@@ -543,9 +543,9 @@ class ApplicationController extends Controller
             $data->sex = $request['dependent_sex'];
             $data->civil_status = $request['dependent_civil_status'];
         }
-       
+
         if ($request->hasFile('dependent_resume')) {
-            $data->addMedia( $request->file('dependent_resume'))->toMediaCollection(User::$media_collection_main_resume);
+            $data->addMedia($request->file('dependent_resume'))->toMediaCollection(User::$media_collection_main_resume);
         }
 
         $data->save();
@@ -579,9 +579,9 @@ class ApplicationController extends Controller
         }
 
         $dependent = User::where('family_member_id', Auth::id())
-                        ->where('is_dependent', 1)
-                        ->first();
-        if($dependent){
+            ->where('is_dependent', 1)
+            ->first();
+        if ($dependent) {
             $dependent->passport_number = $request['dependent_passport_number'];
             $dependent->passport_issue_date =  date('Y-m-d', strtotime($request['dependent_passport_issue']));
             $dependent->passport_expiry = date('Y-m-d', strtotime($request['dependent_passport_expiry']));
@@ -607,21 +607,23 @@ class ApplicationController extends Controller
             $dependent->address_line_1 = $request['dependent_address_1'];
             $dependent->address_line_2 = $request['dependent_address_2'];
         }
-       
+
         $file = $request->file('dependent_passport_copy');
         $fileName = null;
-        if($request->hasFile('dependent_passport_copy')){
+        if ($request->hasFile('dependent_passport_copy')) {
             $fileName = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
             $dependent->addMedia($request->file('dependent_passport_copy'))->usingFileName($fileName)->toMediaCollection(User::$media_collection_main);
-        } 
+        }
 
         $dependent->save();
-        return Response::json(array(
-            'dependentId' => $this->getFamilyId(),
-            'success' => true,
-            'passport' => ($request->hasFile('dependent_passport_copy')) ? storage_path('passportCopy/'.$fileName) : '' ,
-        ),
-        200);
+        return Response::json(
+            array(
+                'dependentId' => $this->getFamilyId(),
+                'success' => true,
+                'passport' => ($request->hasFile('dependent_passport_copy')) ? storage_path('passportCopy/' . $fileName) : '',
+            ),
+            200
+        );
     }
 
     public function storeSpouseCurrentDetails(Request $request)
@@ -645,9 +647,9 @@ class ApplicationController extends Controller
         }
 
         $dependent = User::where('family_member_id', Auth::id())
-                        ->where('is_dependent', 1)
-                        ->first();
-        if($dependent){ 
+            ->where('is_dependent', 1)
+            ->first();
+        if ($dependent) {
             $dependent->country_of_residence = $request->dependent_current_country;
             $dependent->residence_mobile_number = $request->dependent_current_residance_mobile;
             $dependent->residence_id = $request->dependent_residence_id;
@@ -679,7 +681,7 @@ class ApplicationController extends Controller
             $file = $request->file('dependent_residence_copy');
             $residenceCopy = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
             $dependent->addMedia($request->file('dependent_residence_copy'))->usingFileName($residenceCopy)->toMediaCollection(User::$media_collection_main_residence_id);
-        } 
+        }
         $visaCopy = $request['dependent_visa_copy'];
         if ($request->hasFile('dependent_visa_copy')) {
             $file = $request->file('dependent_visa_copy');
@@ -695,7 +697,7 @@ class ApplicationController extends Controller
 
     public function storeSpouseSchenegenDetails(Request $request)
     {
-        if($request['is_schengen_visa_issued_last_five_year']  == 'YES'){
+        if ($request['is_schengen_visa_issued_last_five_year']  == 'YES') {
             $validator = \Validator::make($request->all(), [
                 'is_dependent_schengen_visa_issued_last_five_year' => 'required',
                 'is_dependent_finger_print_collected_for_Schengen_visa' => 'required',
@@ -716,7 +718,7 @@ class ApplicationController extends Controller
         $dependent = User::where('family_member_id', Auth::id())
             ->where('is_dependent', 1)
             ->first();
-        if($dependent){
+        if ($dependent) {
             $dependent->is_schengen_visa_issued_last_five_year = $request->is_dependent_schengen_visa_issued_last_five_year;
             $dependent->is_finger_print_collected_for_Schengen_visa  = $request->is_dependent_finger_print_collected_for_Schengen_visa;
         } else {
@@ -726,7 +728,7 @@ class ApplicationController extends Controller
             $dependent->is_schengen_visa_issued_last_five_year = $request->is_dependent_schengen_visa_issued_last_five_year;
             $dependent->is_finger_print_collected_for_Schengen_visa  = $request->is_dependent_finger_print_collected_for_Schengen_visa;
         }
-        
+
         if ($request->hasFile('dependent_schengen_copy')) {
             $file = $request->file('dependent_schengen_copy');
             $schengenCopy = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
@@ -742,44 +744,44 @@ class ApplicationController extends Controller
     public function getDependentExperience(Request $request)
     {
         $exp = ApplicantExperience::where('client_id', $request->dependentId)
-                            ->get();
+            ->get();
         return $exp;
     }
 
     public function storeChildrenDetails(Request $request)
     {
-        
-        for($i = 1; $i <= $request['childrenCount']; $i++ ){
+
+        for ($i = 1; $i <= $request['childrenCount']; $i++) {
             $validator = \Validator::make($request->all(), [
-                "child_".$i."_first_name" => 'required',
-                "child_".$i."_surname" => 'required',
-                "child_".$i."_dob" => 'required',
-                "child_".$i."_gender" => 'required',
+                "child_" . $i . "_first_name" => 'required',
+                "child_" . $i . "_surname" => 'required',
+                "child_" . $i . "_dob" => 'required',
+                "child_" . $i . "_gender" => 'required',
             ]);
             if ($validator->fails()) {
                 return Response::json(array(
                     'success' => false,
                     'errors' => $validator->getMessageBag()->toArray()
-    
+
                 ), 200); // 400 being the HTTP code for an invalid request.
             }
         }
-        
+
         User::where('family_member_id', Auth::id())->where('is_dependent', 2)->delete();
-        for($i = 1; $i <= $request['childrenCount']; $i++ ){
+        for ($i = 1; $i <= $request['childrenCount']; $i++) {
             $child = new User();
             $child->family_member_id = AUth::id();
             $child->is_dependent = 2;
-            $child->name = $request['child_'.$i.'_first_name'];
-            $child->middle_name = $request['child_'.$i.'_middle_name'];
-            $child->sur_name = $request['child_'.$i.'_surname'];
-            $child->date_of_birth = date('Y-m-d', strtotime($request['child_'.$i.'_dob']));
-            $child->sex = $request['child_'.$i.'_gender'];
+            $child->name = $request['child_' . $i . '_first_name'];
+            $child->middle_name = $request['child_' . $i . '_middle_name'];
+            $child->sur_name = $request['child_' . $i . '_surname'];
+            $child->date_of_birth = date('Y-m-d', strtotime($request['child_' . $i . '_dob']));
+            $child->sex = $request['child_' . $i . '_gender'];
             $child->client_submission_status = 1;
             $child->save();
-        }  
+        }
         Applicant::where('id', $request['applicant_id'])
-                ->update(['application_stage_status' =>  4]);
+            ->update(['application_stage_status' =>  4]);
 
         return Response::json(array(
             'success' => true
@@ -789,9 +791,9 @@ class ApplicationController extends Controller
     private static function getFamilyId()
     {
         return User::where('family_member_id', Auth::id())
-                            ->where('is_dependent', 1)
-                            ->pluck('id')
-                            ->first();
+            ->where('is_dependent', 1)
+            ->pluck('id')
+            ->first();
     }
 
     public function updateApplicantStatus(Request $request)
@@ -803,21 +805,21 @@ class ApplicationController extends Controller
 
     private static function _updateApplicationStatus($productId, $applicantId, $user)
     {
-        if($user == 'applicant'){
+        if ($user == 'applicant') {
             User::where('id', Auth::id())
-            ->update([
-                'client_submission_status' => 1,
-            ]);
+                ->update([
+                    'client_submission_status' => 1,
+                ]);
             return true;
-        } else if($user == 'family') {
+        } else if ($user == 'family') {
             User::where('family_member_id', Auth::id())
-                        ->where('is_dependent', 1)
-                        ->update(['client_submission_status' => 1]);
+                ->where('is_dependent', 1)
+                ->update(['client_submission_status' => 1]);
             return true;
-        } else if($user == 'children') {
+        } else if ($user == 'children') {
             User::where('family_member_id', Auth::id())
-                    ->where('is_dependent', 2)
-                    ->update(['client_submission_status' => 1]);
+                ->where('is_dependent', 2)
+                ->update(['client_submission_status' => 1]);
             return true;
         }
     }
@@ -826,31 +828,31 @@ class ApplicationController extends Controller
     {
         $response['status'] = false;
         $applicant = Applicant::where('client_id', Auth::id())
-                        ->where('destination_id', $request->product_id)
-                        ->first();
-        
-        if($applicant){
+            ->where('destination_id', $request->product_id)
+            ->first();
+
+        if ($applicant) {
             $response['status'] = true;
-            if($applicant['work_permit_category'] == 'FAMILY PACKAGE'){
-                if(Auth::user()->is_spouse  == 1){
+            if ($applicant['work_permit_category'] == 'FAMILY PACKAGE') {
+                if (Auth::user()->is_spouse  == 1) {
                     $family = User::where('family_member_id', Auth::id())
-                                ->where('is_dependent', 1)
-                                ->where('client_submission_status', 1)
-                                ->first();
-                    if($family) {
+                        ->where('is_dependent', 1)
+                        ->where('client_submission_status', 1)
+                        ->first();
+                    if ($family) {
                     } else {
                         $response['status'] = false;
                         $response['message'] = 'Family details should be completed before proceeding';
                     }
                 }
-                
-                if(Auth::user()->children_count > 0){
+
+                if (Auth::user()->children_count > 0) {
                     $children = User::where('family_member_id', Auth::id())
-                                ->where('is_dependent', 2)
-                                ->where('client_submission_status', 1)
-                                ->get(); 
-                        
-                    if(count($children) == Auth::user()->children_count) {
+                        ->where('is_dependent', 2)
+                        ->where('client_submission_status', 1)
+                        ->get();
+
+                    if (count($children) == Auth::user()->children_count) {
                     } else {
                         $response['status'] = false;
                         $response['message'] = 'Children details should be completed before proceeding';
@@ -864,7 +866,7 @@ class ApplicationController extends Controller
         return $response;
     }
 
-    public function getJobCategories(Request $request, $status=null) 
+    public function getJobCategories(Request $request, $status = null)
     {
         $filters = $request->input('filters');
         $query = JobCategoryOne::with('jobCategoryTwo.jobCategoryThree.jobCategoryFour');
@@ -875,12 +877,12 @@ class ApplicationController extends Controller
             $query->join('job_category_three', 'job_category_two.id', 'job_category_three.job_category_two_id');
             $query->join('job_category_four', 'job_category_three.id', 'job_category_four.job_category_three_id');
 
-            $query->where(function($query) use($filters){
+            $query->where(function ($query) use ($filters) {
 
-                $query = $query->where('job_category_one.name', 'like', '%'.$filters['search_keyword'] .'%');
-                $query = $query->orWhere('job_category_two.name', 'like', '%'.$filters['search_keyword'] .'%');
-                $query = $query->orWhere('job_category_three.name', 'like', '%'.$filters['search_keyword'] .'%');
-                $query = $query->orWhere('job_category_four.name', 'like', '%'.$filters['search_keyword'] .'%');
+                $query = $query->where('job_category_one.name', 'like', '%' . $filters['search_keyword'] . '%');
+                $query = $query->orWhere('job_category_two.name', 'like', '%' . $filters['search_keyword'] . '%');
+                $query = $query->orWhere('job_category_three.name', 'like', '%' . $filters['search_keyword'] . '%');
+                $query = $query->orWhere('job_category_four.name', 'like', '%' . $filters['search_keyword'] . '%');
             });
         }
         $jobCategoryList = $query->get();
@@ -888,7 +890,7 @@ class ApplicationController extends Controller
     }
 
 
-    public function getJobCategoryFourList(Request $request, $status=null)
+    public function getJobCategoryFourList(Request $request, $status = null)
     {
         $filters = $request->input('filters');
         $query = JobCategoryFour::orderBy('job_category_four.name', 'desc');
@@ -898,14 +900,14 @@ class ApplicationController extends Controller
             $query->join('job_category_three', 'job_category_three.id', 'job_category_four.job_category_three_id');
             $query->join('job_category_two', 'job_category_two.id', 'job_category_three.job_category_two_id');
             $query->join('job_category_one', 'job_category_one.id', 'job_category_two.job_category_one_id');
-            $query->where(function($query) use($filters){
+            $query->where(function ($query) use ($filters) {
 
-                $query = $query->where('job_category_one.name', 'like', '%'.$filters['search_keyword'] .'%');
-                $query = $query->orWhere('job_category_two.name', 'like', '%'.$filters['search_keyword'] .'%');
-                $query = $query->orWhere('job_category_three.name', 'like', '%'.$filters['search_keyword'] .'%');
-                $query = $query->orWhere('job_category_four.name', 'like', '%'.$filters['search_keyword'] .'%');
-                $query = $query->orWhere('job_category_four.description', 'like', '%'.$filters['search_keyword'] .'%');
-                $query = $query->orWhere('job_category_four.example_titles', 'like', '%'.$filters['search_keyword'] .'%');
+                $query = $query->where('job_category_one.name', 'like', '%' . $filters['search_keyword'] . '%');
+                $query = $query->orWhere('job_category_two.name', 'like', '%' . $filters['search_keyword'] . '%');
+                $query = $query->orWhere('job_category_three.name', 'like', '%' . $filters['search_keyword'] . '%');
+                $query = $query->orWhere('job_category_four.name', 'like', '%' . $filters['search_keyword'] . '%');
+                $query = $query->orWhere('job_category_four.description', 'like', '%' . $filters['search_keyword'] . '%');
+                $query = $query->orWhere('job_category_four.example_titles', 'like', '%' . $filters['search_keyword'] . '%');
             });
         }
         $jobCategoryList = $query->get();

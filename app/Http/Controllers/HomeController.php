@@ -653,7 +653,7 @@ class HomeController extends Controller
                 }
 
                 $data->coupon_code = $thisCode;
-                $data->application_stage_status = 2;
+                // $data->application_stage_status = 2;
 
                 $res = $data->save();
             } else {
