@@ -55,7 +55,14 @@
         width: 70px;
         margin-right:50px;
     }
-
+    .nav-item .dropdown-menu-left {
+         margin-left: -40px !important;   
+         width:200px !important;
+        }
+       
+        .nav-item .dropdown-menu-left button {
+            width: 150px !important;
+        }
     @media (min-width: 375px) and (max-width: 768px) {
 
         svg {
@@ -115,6 +122,7 @@
             padding: 0px !important;
             margin: 0 !important;
         }
+
     }
 </style>
 
