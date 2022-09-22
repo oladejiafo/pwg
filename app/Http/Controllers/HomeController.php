@@ -483,15 +483,23 @@ class HomeController extends Controller
                 ->where('client_id', '=', Auth::user()->id)
                 ->first();
 
-            $applicant_id = $apply->id;
+            $applicant_id = $apply->id; 
+            $vals =array(0,1,2);
 
-            $request->validate([
-                'totaldue' => 'required',
-                'totalpay' => 'numeric|gte:1000',
-                'current_location' => 'required',
-                'embassy_appearance' => 'required'
-            ]);
-
+            if(in_array($apply->application_stage_status, $vals) && (empty($apply->embassy_country) || $apply->embassy_country == null)) 
+            {
+                $request->validate([
+                    'totaldue' => 'required',
+                    'totalpay' => 'numeric|gte:1000',
+                    'current_location' => 'required',
+                    'embassy_appearance' => 'required'
+                ]);
+            } else {
+                $request->validate([
+                    'totaldue' => 'required',
+                    'totalpay' => 'numeric|gte:1000'
+                ]); 
+            }
 
             $thisPayment = $request->whichpayment;
             $thisVat = $request->vats;
@@ -555,10 +563,12 @@ class HomeController extends Controller
                 // }
                 $rre->save();
             }
-
+###################################################################
             $ppd = payment::where([
                 ['application_id', '=', $applicant_id],
                 ['payment_type', '=', $request->whichpayment],
+                ['paid_amount', '=', $request->totalpay],
+                ['remaining_amount', '=', null],
             ])->first();
 
             if ($ppd === null) {
@@ -585,14 +595,16 @@ class HomeController extends Controller
                 $ppd->save();
             }
 
-            // dd($re);
             $datas = applicant::where([
                 ['client_id', '=', Auth::user()->id],
                 ['destination_id', '=', $request->pid],
             ])->first();
             if ($datas === null) {
                 $data = new applicant;
-                $data->embassy_country = $request->embassy_appearance;
+                if(in_array($apply->application_stage_status, $vals) && (empty($apply->embassy_country) || $apply->embassy_country == null)) 
+                {
+                    $data->embassy_country = $request->embassy_appearance;
+                }
                 $data->pricing_plan_id = $request->ppid;
 
                 if ($request->whichpayment == 'First Payment') {
@@ -657,7 +669,10 @@ class HomeController extends Controller
 
                 $res = $data->save();
             } else {
-                $datas->embassy_country = $request->embassy_appearance;
+                if(in_array($apply->application_stage_status, $vals) && (empty($apply->embassy_country) || $apply->embassy_country == null)) 
+                {
+                    $datas->embassy_country = $request->embassy_appearance;
+                }
                 $datas->pricing_plan_id = $request->ppid;
 
                 if ($request->whichpayment == 'First Payment') {
@@ -715,7 +730,7 @@ class HomeController extends Controller
 
                 $res = $datas->save();
             }
-
+###########################################################################
 
             $datas = payment::where([
 
@@ -987,7 +1002,12 @@ class HomeController extends Controller
             if ($paymentResponse->authResponse->success == true && $paymentResponse->authResponse->resultCode == "00") {
 
                 $paymentDetails = Payment::where('id', $paymentId)->first();
-
+                
+                // if($paymentResponse->_id)
+                // {
+                //     $trans_id = explode('payment:', $paymentResponse->_id);
+                // }
+                
                 $paymentDetails->update([
                     'currency' => $paymentResponse->amount->currencyCode,
                     'transaction_id' => $paymentResponse->_id,
@@ -1045,9 +1065,10 @@ class HomeController extends Controller
                     $check_noti = notifications::where('criteria', '=', $criteria)->where('client_id', '=', Auth::user()->id)->first();
 
                     if ($check_noti === null) {
+                        $tday = date('Y-m-d');
 
                         DB::table('notifications')->insert(
-                            ['client_id' => $userID, 'message' => $message, 'criteria' => $criteria, 'link' => $link]
+                            ['client_id' => $userID, 'message' => $message, 'criteria' => $criteria, 'link' => $link,'created_at'=>$tday]
                         );
 
                         Mail::to($email)->send(new NotifyMail($dataArray));
@@ -1143,7 +1164,7 @@ class HomeController extends Controller
                 ->where('application_id', $applicant_id)
                 ->where('payment_type', $ptype)
                 ->orderBy('id', 'DESC')
-                ->first();
+                ->get();
 
             $pricing = DB::table('pricing_plans')
                 ->where('destination_id', $apply->destination_id)
@@ -1172,8 +1193,8 @@ class HomeController extends Controller
             $user = DB::table('payments')
                 ->where('application_id', $applicant_id)
                 ->where('payment_type', $ptype)
-                ->orderBy('id', 'DESC')
-                ->first();
+                // ->orderBy('id', 'DESC')
+                ->get();
 
             $pricing = DB::table('pricing_plans')
                 ->where('destination_id', $apply->destination_id)

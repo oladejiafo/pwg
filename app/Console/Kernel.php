@@ -27,8 +27,6 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-
-        // $schedule->command('inspire')->hourly();
         // $schedule->call(function () {
         //     notifications::where('updated_at', '<', Carbon::now()->subDays(1))->delete();
         // })->everyMinute();

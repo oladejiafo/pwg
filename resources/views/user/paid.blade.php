@@ -61,7 +61,7 @@
                       <p>
                           @if($paid->first_payment_status =='Paid')
                           
-                            <a class="btn btn-warning" target="_blank" href="{{ route('getReceipt','First Payment')}}">Get Reciept</a>
+                            <a class="btn btn-secondary" target="_blank" href="{{ route('getReceipt','First Payment')}}">Get Reciept</a>
                           @else
                           
                             <form action="{{ route('payment',$prod->id) }}" method="GET">

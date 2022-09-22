@@ -325,12 +325,12 @@ $cXamount=0;
                                     <p style="height: 13px">
                                         <span class="header"> Children</span>
                                         <ul class="children">
-                                            <li>
+                                            {{--<li>
                                                 <input type="radio" id="none" name="children" @if($ABC == 0 || $ABC==null ) checked="checked" @endif  onclick="handleKids(this);" value="0"/>
                                                 <label for="none">None</label>
-                                            </li>
+                                            </li> --}}
                                             <li>
-                                                <input type="radio" id="one" name="children" @if($ABC == 1 ) checked="checked" @endif onclick="handleKids(this);" value="1"/>
+                                                <input type="radio" id="one" name="children" @if($ABC == 1 || $ABC==null ) checked="checked" @endif onclick="handleKids(this);" value="1"/>
                                                 <label for="one">One</label>
                                             </li>
                                             <li>

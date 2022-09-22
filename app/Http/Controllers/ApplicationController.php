@@ -458,8 +458,9 @@ class ApplicationController extends Controller
             ->first();
 
         if ($check_noti === null) {
+            $tday = date('Y-m-d');
             DB::table('notifications')->insert(
-                ['client_id' => $userID, 'message' => $message, 'criteria' => $criteria, 'link' => $link]
+                ['client_id' => $userID, 'message' => $message, 'criteria' => $criteria, 'link' => $link, 'created_at'=>$tday]
             );
 
             Mail::to($email)->send(new NotifyMail($dataArray));
