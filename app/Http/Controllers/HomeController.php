@@ -1012,7 +1012,7 @@ class HomeController extends Controller
                     if ($status === null) {
                     } else {
                         if ($status->application_stage_status == 1) {
-                            $status->applicant_stage_status = '2';
+                            $status->application_stage_status = '2';
                             $status->save();
                         }
                     }
