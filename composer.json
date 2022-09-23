@@ -16,6 +16,7 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "livewire/livewire": "^2.5",
+        "quickbooks/v3-php-sdk": "^6.0",
         "spatie/laravel-medialibrary": "*"
     },
     "require-dev": {
