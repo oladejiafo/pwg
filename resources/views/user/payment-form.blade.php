@@ -59,7 +59,7 @@ $pid = Session::get('myproduct_id');
 } else {
 $pid = $app_id;
 }
-
+$vals=array(0,1,2);
 @endphp
 
 
@@ -150,6 +150,8 @@ $pid = $app_id;
                 <form method="POST" action="{{ url('add_payment') }}">
                         @csrf
                         <!-- col-lg-6 col-md-6 col-12 offset-md-3 offset-lg-3 -->
+
+                        @if(in_array($levels, $vals) && (empty($completed->embassy_country) || $completed->embassy_country == null)) 
                         <div class="row ">
                             <div class="col-lg-6 col-sm-12 mb-3">
                                 <div class="inputs">
@@ -189,6 +191,7 @@ $pid = $app_id;
                             </div>
                         </div>
                     <hr>
+                    @endif
 
 
                         @if(session()->has('myDiscount') && session()->has('haveCoupon') && session()->get('haveCoupon')==1)
@@ -355,7 +358,7 @@ $pid = $app_id;
                              
                             ?>
                     
-
+                
                                 <div class="row payament-sec">
                                     <div class="col-lg-6 col-md-12" style="padding-right:20px">
                                         <div class="total">

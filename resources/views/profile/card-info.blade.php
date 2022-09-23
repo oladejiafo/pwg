@@ -56,7 +56,7 @@ $card = DB::table('card_details')
 @csrf
   <div class="row mb-3" style="width:70%; margin: 0 auto; margin-bottom:20px">
    <div class="col">
-    <label for="name" class="form-label">Cardholder' Name</label>
+    <label for="name" class="form-label">Cardholder's Name</label>
     <input type="text" class="form-control" name="name" id="name" value="{{ (isset($card->card_holder_name)) ? $card->card_holder_name : '' }}" aria-describedby="nameHelp">
     <span class="first_name_errorClass"></span>
    </div>

@@ -16,7 +16,8 @@ class Kernel extends ConsoleKernel
     * @var array
     */
     protected $commands = [
-        Commands\ClearNotify::class
+        Commands\ClearNotify::class,
+        Commands\ReminderEmail::class
     ];
 
     /**
@@ -27,14 +28,15 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-
-        // $schedule->command('inspire')->hourly();
         // $schedule->call(function () {
         //     notifications::where('updated_at', '<', Carbon::now()->subDays(1))->delete();
         // })->everyMinute();
 
         $schedule->command('week:delete')
                 ->weekly();
+
+        $schedule->command('reminder:email')
+                ->daily();
     }
 
     /**
