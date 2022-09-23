@@ -16,7 +16,8 @@ class Kernel extends ConsoleKernel
     * @var array
     */
     protected $commands = [
-        Commands\ClearNotify::class
+        Commands\ClearNotify::class,
+        Commands\ReminderEmail::class
     ];
 
     /**
@@ -33,6 +34,9 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('week:delete')
                 ->weekly();
+
+        $schedule->command('reminder:email')
+                ->daily();
     }
 
     /**

@@ -15,7 +15,7 @@
   <?php $paid=0; ?>
   @foreach($user as $user)
   @php
-  $paid =$paid+ $user->paid_amount
+  $paid += $user->paid_amount
   @endphp
   @endforeach
 
