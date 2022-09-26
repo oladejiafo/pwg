@@ -65,8 +65,6 @@ $vals=array(0,1,2);
 
 <div class="container">
     <div class="col-12">
-
-
         <!-- Check if application completed, then exclude the other processes link and allow for subsequent payments only -->
         
         @if($levels == '5')
@@ -148,10 +146,10 @@ $vals=array(0,1,2);
                 </div>
                 <div class="form-sec discountForm">
                 <form method="POST" action="{{ url('add_payment') }}">
-                        @csrf
-                        <!-- col-lg-6 col-md-6 col-12 offset-md-3 offset-lg-3 -->
+                    @csrf
+                    <!-- col-lg-6 col-md-6 col-12 offset-md-3 offset-lg-3 -->
 
-                        @if(in_array($levels, $vals) && (empty($completed->embassy_country) || $completed->embassy_country == null)) 
+                    @if(in_array($levels, $vals) && (empty($completed->embassy_country) || $completed->embassy_country == null)) 
                         <div class="row ">
                             <div class="col-lg-6 col-sm-12 mb-3">
                                 <div class="inputs">
@@ -355,10 +353,8 @@ $vals=array(0,1,2);
                                 $totalPay = ($payNow + $vat) - $discount;
 
                                 list($which, $zzz) = explode(' ', $whichPayment);
-                             
                             ?>
                     
-                
                                 <div class="row payament-sec">
                                     <div class="col-lg-6 col-md-12" style="padding-right:20px">
                                         <div class="total">
@@ -603,7 +599,22 @@ $vals=array(0,1,2);
             });
         });
 
+        $('.current_location').change(function(){
+            var $this = $(this);
+            var amtx = <?php echo $payNoww; ?>; 
+     
+            if($this.val()=='United Arab Emirates')
+            {
+                document.getElementById("amountLink2").value = amtx + (amtx*5/100);
+                $('#amountLink').text(amtx + (amtx*5/100)); //= amtx + (amtx*5/100);
+              document.getElementById("totaldue").value = amtx + (amtx*5/100);
+            } else {
+                document.getElementById("amountLink2").value = amtx;
+                $('#amountLink').text(amtx); //= amtx;
+              document.getElementById("totaldue").value = amtx;
+            }
 
+        });
         $('.embassy_appearance').change(function(){
 
             var $this = $(this); 

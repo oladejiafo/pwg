@@ -87,10 +87,10 @@
                     {{ __('Cancel') }}
                 </x-jet-secondary-button>
 
-                <x-jet-button class="ml-3"
+                <x-jet-button class="ml-3" style="font: size 12px !important;" 
                             wire:click="logoutOtherBrowserSessions"
                             wire:loading.attr="disabled">
-                    {{ __('Log Out Other Browser Sessions') }}
+                    {{ __('LogOut') }}
                 </x-jet-button>
             </x-slot>
         </x-jet-dialog-modal>

@@ -87,7 +87,6 @@ class HomeController extends Controller
             }
 
             if (Session::get('myKids') == 0 || Session::get('myKids') == "none" || Session::get('myKids') == 5 || Session::get('myKids') == null) {
-
                 $kids = 1;
             } else {
                 $kids = Session::get('myKids');
@@ -97,8 +96,8 @@ class HomeController extends Controller
                 ->where('pricing_plan_type', 'FAMILY PACKAGE')
                 ->where('no_of_parent', $parentt)
                 ->where('no_of_children', $kids)
-
                 ->first();
+
             if ($request->response == 1) {
                 return $famdet;
             }
@@ -116,7 +115,6 @@ class HomeController extends Controller
 
     public function product(Request $request)
     {
-
         Session::put('packageType', $request->myPack);
         $id = Session::get('myproduct_id');
 
@@ -525,7 +523,7 @@ class HomeController extends Controller
 
             if ($request->totaldue == $request->totalpay) {
                 $whatsPaid = "Paid";
-            } elseif ($request->totaldue > $request->totalpay && $request->totalpay > 1000) {
+            } elseif ($request->totaldue > $request->totalpay && $request->totalpay >= 1000) {
                 if ($request->totalremaining == $request->totalpay) {
                     $whatsPaid = "Paid";
                 } else {
@@ -1176,8 +1174,8 @@ class HomeController extends Controller
                     'client_id' => Auth::id(),
                     'card_number' => $paymentResponse->paymentMethod->pan,
                     'card_holder_name' => $paymentResponse->paymentMethod->cardholderName,
-                    'month' => $monthYear[0],
-                    'year' =>  $monthYear[1],
+                    'month' => $monthYear[1], //sprintf("%02d", $monthYear[1])
+                    'year' =>  $monthYear[0],
                 ]);
 
                 if ($res) {
