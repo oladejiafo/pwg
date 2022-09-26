@@ -20,15 +20,15 @@ use Laravel\Jetstream\Rules\Role;
 |
 */
 
+Route::get('payment/success',[HomeController::class,'paymentSuccess'])->name('payment-success');
+Route::get('payment/fail',[HomeController::class,'paymentFail'])->name('payment-fail');
 Route::get('/get/receipt/{ptype}',[HomeController::class, 'getReceipt'])->name('getReceipt');
-Route::get('/get/invoice/{ptype}',[HomeController::class, 'getInvoice'])->name('getInvoice');
+Route::get('/get/invoice',[HomeController::class, 'getInvoice'])->name('getInvoice');
 
 // Route::get('/get/invoice/{ptype}',[HomeController::class, 'getInvoice'])->name('getInvoice');
 
 Route::post('/upload_signature', [HomeController::class,'upload'])->name('upload');
 
-Route::get('payment/success/{id}',[HomeController::class,'paymentSuccess'])->name('payment-success');
-Route::get('payment/fail/{id}',[HomeController::class,'paymentFail'])->name('payment-fail');
 Route::post('store/applicant/details', [ApplicationController::class,'storeApplicantDetails'])->name('store.applicant.details');
 Route::post('get-promo',[HomeController::class, 'getPromo'])->name('getPromo');
 Route::post('check-promo',[HomeController::class, 'checkPromo'])->name('checkPromo');

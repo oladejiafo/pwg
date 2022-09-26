@@ -526,7 +526,7 @@ class HomeController extends Controller
 
             if ($request->totaldue == $request->totalpay) {
                 $whatsPaid = "Paid";
-            } elseif ($request->totaldue > $request->totalpay && $request->totalpay > 1000) {
+            } elseif ($request->totaldue > $request->totalpay && $request->totalpay >= 1000) {
                 if ($request->totalremaining == $request->totalpay) {
                     $whatsPaid = "Paid";
                 } else {
@@ -719,12 +719,6 @@ class HomeController extends Controller
 //             }
 // ###########################################################################
 
-            $datas = payment::where([
-
-                ['payment_type', '=', $request->whichpayment],
-                ['application_id', '=', $applicant_id],
-            ])->first();
-
             set_time_limit(0);
 
             $outletRef           = '15d885ec-682a-4398-89d9-247254d71c18'; // config('app.payment_reference'); 
@@ -744,10 +738,9 @@ class HomeController extends Controller
             // dd($tokenResponse);
             $access_token  = $tokenResponse->access_token;
 
-
             $order = array();
-            $successUrl = url('/') . '/payment/success/' . $datas['id'];
-            $failUrl =  url('/') . '/payment/fail/' . $datas['id'];
+            $successUrl = url('/') . '/payment/success';
+            $failUrl =  url('/') . '/payment/fail';
 
             $order['action']                        = "PURCHASE";                                        // Transaction mode ("AUTH" = authorize only, no automatic settle/capture, "SALE" = authorize + automatic settle/capture)
             $order['amount']['currencyCode']       = "AED";                           // Payment currency ('AED' only for now)
@@ -942,6 +935,14 @@ class HomeController extends Controller
 
 
                     $res = $datas->save();
+
+                    $paymentId = payment::where([
+                                ['payment_type', '=', $request->whichpayment],
+                                ['application_id', '=', $applicant_id],
+                            ])
+                            ->pluck('id')
+                            ->first();
+                    Session::put('paymentId', $paymentId);
                 }
                 ###########################################################################
 
@@ -1131,7 +1132,7 @@ class HomeController extends Controller
         return response()->json(['status' => 'Cleared']);
     }
 
-    public function paymentSuccess($paymentId)
+    public function paymentSuccess()
     {
         session_start();
         $id = Session::get('myproduct_id');
@@ -1159,7 +1160,7 @@ class HomeController extends Controller
 
             if ($paymentResponse->authResponse->success == true && $paymentResponse->authResponse->resultCode == "00") {
 
-                $paymentDetails = Payment::where('id', $paymentId)->first();
+                $paymentDetails = Payment::where('id', Session::get('paymentId'))->first();
                 
                 // if($paymentResponse->_id)
                 // {
@@ -1248,10 +1249,10 @@ class HomeController extends Controller
         }
     }
 
-    public function paymentFail($paymentId)
+    public function paymentFail()
     {
         //Undo Application payment info
-        $pays = payment::where('id', $paymentId)->first();
+        $pays = payment::where('id', Session::get('paymentId'))->first();
 
         $datas = applicant::where([
                ['client_id', '=', Auth::user()->id],
@@ -1301,7 +1302,7 @@ class HomeController extends Controller
            } 
 
         //Undo Payment update
-        Payment::where('id', $paymentId)->delete();
+        Payment::where('id', Session::get('paymentId'))->delete();
 
         $id = Session::get('myproduct_id');
         return view('user.payment-fail', compact('id'));
@@ -1338,9 +1339,22 @@ class HomeController extends Controller
         }
     }
 
-    public function getInvoice($paymentType)
+    public function getInvoice()
     {
-        $authUrl = Quickbook::createInvoice($paymentType);
+        $payment = '';
+        $applcant = Applicant::select('first_payment_status', 'second_payment_status', 'third_payment_status')
+                        ->where('client_id', Auth::id())
+                        ->where('destination_id', Session::get('myproduct_id'))
+                        ->first();
+        if(($applcant->first_payment_status =="Paid" || $applcant->first_payment_status =="Partial") && $applcant->second_payment_status !="Paid")
+        {
+            $payment = 'First Payment';
+        }  else if($applcant->second_payment_status =="Paid" && $applcant->third_payment_status !="Paid"){
+            $payment = 'Second Payment';
+        } else if($applcant->first_payment_status =="Paid"  && $applcant->second_payment_status =="Paid" && $applcant->third_payment_status =="Paid"){
+            $payment = 'Third Payment';
+        }
+        $authUrl = Quickbook::createInvoice($payment);
         return $authUrl;
     }
 
