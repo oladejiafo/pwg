@@ -112,6 +112,10 @@
                         @php 
                           $linkk = "applicant.review";
                         @endphp   
+                        @else
+                          @php 
+                            $linkk = "payment";
+                          @endphp    
                        @endif
                       <a href="{{route($linkk, $paid->destination_id)}}">
                        <p style="display:fixed; align-content: center; text-align:center; font-size:9px !important; color:#ff0000;padding:1px;margin-left: 20px; line-height:100% !important">
@@ -323,6 +327,10 @@
                         @elseif($paid->application_stage_status==4)
                           @php 
                             $linkk = "applicant.review";
+                          @endphp   
+                        @else
+                          @php 
+                            $linkk = "payment";
                           @endphp   
                         @endif
                       <a href="{{route($linkk, $paid->destination_id)}}">
