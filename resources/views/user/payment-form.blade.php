@@ -133,7 +133,7 @@ $vals=array(0,1,2);
 
             <!-- Main Module Begins here -->
             <div class="payment-form" @if($levels == '5') style="margin-top: 150px" @endif>
-                <div class="heading" style="">
+                <div class="heading">
                     <div class="first-heading">
                         <h3>
                             Payment Details
