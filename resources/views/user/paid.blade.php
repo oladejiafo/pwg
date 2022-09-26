@@ -284,69 +284,61 @@
                 @endif
               </li>
 
-
-
               <!-- Modal -->
-<div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="statusModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="statusModalLabel">Application Status</h5>
-        <button type="button" style="float:right; font-size:11px; width:20px;height:20px" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body" style="height:auto">
+              <div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="statusModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="statusModalLabel">Application Status</h5>
+                      <button type="button" style="float:right; font-size:11px; width:20px;height:20px" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="height:auto">
 
-        @if($paid->third_payment_status =='Paid')
-         <p>Congratutaion! You have completed your payments. </p>
-         <p style="font-size:15px">Your embassy appearnce date will be indicated soon.</p>
+                      @if($paid->third_payment_status =='Paid')
+                      <p>Congratutaion! You have completed your payments. </p>
+                      <p style="font-size:15px">Your embassy appearnce date will be indicated soon.</p>
 
-        @elseif($paid->second_payment_status =='Paid')
-         <p>Your Application is in progress! </p> 
-         <p style="font-size:17px">Your third payment is pending. </p>
-         <p style="font-size:15px">Your work permit will be uploaded soon.</p>
-        @elseif($paid->first_payment_status =='Paid') 
-         <p>Your Application is in progress! </p>
-         <p style="font-size:15px">Your second payment pending.</p> 
-        @else 
-          @if($paid->first_payment_remaining >0 && $paid->first_payment_status !='Paid')
-          <p style="font-size:15px">You have outstanding payment of {{$paid->first_payment_remaining}} on first payment</p>
-          @endif
-        @endif
+                      @elseif($paid->second_payment_status =='Paid')
+                      <p>Your Application is in progress! </p> 
+                      <p style="font-size:17px">Your third payment is pending. </p>
+                      <p style="font-size:15px">Your work permit will be uploaded soon.</p>
+                      @elseif($paid->first_payment_status =='Paid') 
+                      <p>Your Application is in progress! </p>
+                      <p style="font-size:15px">Your second payment pending.</p> 
+                      @else 
+                        @if($paid->first_payment_remaining >0 && $paid->first_payment_status !='Paid')
+                        <p style="font-size:15px">You have outstanding payment of {{$paid->first_payment_remaining}} on first payment</p>
+                        @endif
+                      @endif                      
 
-        
+                      @if($paid->application_stage_status != 5)
+                        @if($paid->application_stage_status==2)
+                          @php 
+                            $linkk = "applicant";
+                          @endphp
+                        @elseif($paid->application_stage_status==3)
+                          @php 
+                            $linkk = "applicant.details";
+                          @endphp 
+                        @elseif($paid->application_stage_status==4)
+                          @php 
+                            $linkk = "applicant.review";
+                          @endphp   
+                        @endif
+                      <a href="{{route($linkk, $paid->destination_id)}}">
+                        <p style="display:fixed; align-content: center; text-align:center; font-size:11px !important; color:#ff0000;padding:1px;margin-left: 20px; line-height:100% !important">
+                          Application process not completed. Click here
+                        </p>
+                      </a>
+                      @endif
+                    </div>
 
-        @if($paid->application_stage_status != 5)
-          @if($paid->application_stage_status==2)
-            @php 
-              $linkk = "applicant";
-            @endphp
-          @elseif($paid->application_stage_status==3)
-            @php 
-              $linkk = "applicant.details";
-            @endphp 
-          @elseif($paid->application_stage_status==4)
-            @php 
-              $linkk = "applicant.review";
-            @endphp   
-          @endif
-         <a href="{{route($linkk, $paid->destination_id)}}">
-          <p style="display:fixed; align-content: center; text-align:center; font-size:11px !important; color:#ff0000;padding:1px;margin-left: 20px; line-height:100% !important">
-            Application process not completed. Click here
-          </p>
-         </a>
-        @endif
-      </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Modal Ends -->
 
-    </div>
-  </div>
-</div>
-<!-- Modal Ends -->
-              <?php
-              // while ($countt < $count) {
-              //  $countt = $countt + 1;
-              // } 
-              ?>
-              <!-- End Column  -->
+            <!-- End Column  -->
            
             </ul>
 
@@ -365,8 +357,6 @@
     </div>
 
   </div>
-
-
 
 </div>
 @if($paid->third_payment_status !='Paid')
@@ -391,6 +381,13 @@
     </div>
   @endif
 @endif
+
+<?php
+// $num = 4;
+// $num_padded = str_pad($num, 4, '0', STR_PAD_LEFT); //sprintf("%02d", $num);
+
+// echo $num_padded; // returns 04
+?>
 
 <!-- <script src="../user/assets/js/vendor/jquery-1.12.4.min.js"></script> -->
 <script>
