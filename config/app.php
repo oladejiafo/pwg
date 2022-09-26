@@ -138,6 +138,26 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Quickbook
+    |--------------------------------------------------------------------------
+    |
+    | Api key and reference are adding here will be automtically loaded on the request on 
+    | your appliction
+    |
+    */
+
+    'authorizationRequestUrl' => 'https://appcenter.intuit.com/connect/oauth2',
+    'tokenEndPointUrl' => 'https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer',
+    'client_id' => 'AB5mLL6k7Ls4UUZnk5kZ957ExGbszzam5Oelx2hi8K9VdqO4Ac',
+    'client_secret' => 'pcEIASrqn7ly0J23i7dedorked8ZiQPeEHJDRfPh',
+    'oauth_scope' => 'com.intuit.quickbooks.accounting',
+    'oauth_redirect_uri' => 'https://developer.intuit.com/v2/OAuth2Playground/RedirectUrl',
+    'accessTokenKey' => 'eyJlbmMiOiJBMTI4Q0JDLUhTMjU2IiwiYWxnIjoiZGlyIn0..WcYelUdJq0REiCh4VkYUFQ.pTqg5dex27bbcVqjliD3rELeticpT6JYUQXRU5ubp3oEyOjbJoqIt9HmMwaeuMXfx6UzDK5JuqkYQX4SoZKx7Wnn3SgdflekARUQTiXYD4YLkK1IVEr1VJI_0-a2InpXZG6uadCH_tKfn7prE75cWEeFx1jJo_T8w1OGIoFyk_yO5VIwnQmEbv3LMxTAgGh3KU-qF1-aYlAQXn3BhVKCSo4NXbYa1FVxjHS1Mspgk7dblUVFRDvZKG-nwemm0BMOcbc2Tmi4aMuhI3d13vlmbON3AYiNBDYN-rawRqZC-F6fxIT2JI-kNzWr5gOtuDckeENmB5Dq-kL2wO0-RH-NzXlOgzrw1YkxUI0lnJ9sKL2YEI3JG8BJQqFuV-zc21cxSktvbZpl1Q7B6K-pn3OHc7JacYs1UFTiJhstPd0bY3iueZRm4PpFwr19rWU4P09cxNiPh5OCfLxAN59zQTV_W01SXr2RkZt4vsrE-ukzfTMFlpTSQUH0WAhrpIbJw74PVDdYIKhUu9rp5ZfKHADMqVnPqL1c0-GkMl3yHJlkusYbeDXMKGNgUBsDhxaVein_OMnBWHgw5PnbLQh-cymgAqwA2YaueIqMjT0wq0MyAolCLImzhXSxrrovl2T5spo5Wrh2eVmqa6ixv5cOecXB4YEAihpcvIT0DLxw3BwZcKQk2h7xDnQJtSRCn7ngKGL4oo2yDlPwJ1DSN6Xh3-__ZDaH7cKqUZS3cqOZNLPHURBHoRytv-QszO60tXa2R73_.CoLeVJBP_9zH5MlfyIowjg',
+    'refreshTokenKey' => "AB11672657783U6VOr6hIxjsM5RhNWxMUcGZBWCO7gk5bp8D91",
+    'QBORealmID' => "4620816365244502690",
+
+    /*
+    |--------------------------------------------------------------------------
     | Autoloaded Service Providers
     |--------------------------------------------------------------------------
     |

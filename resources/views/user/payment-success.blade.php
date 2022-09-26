@@ -72,7 +72,7 @@
                                 <div class="invoice-image">
 
                                 </div>
-                                <p> Get the invoice now </p>
+                                <p><a href="{{url('/get/invoice')}}"> Get the invoice now </a></p>
                             </div>
                         </div>
                         <div class="invoice-later">

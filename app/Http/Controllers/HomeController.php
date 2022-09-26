@@ -17,6 +17,7 @@ use App\Models\product_details;
 use App\Models\family_breakdown;
 use App\Models\notifications;
 use App\Models\cardDetail;
+use App\Helpers\Quickbook;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NotifyMail;
 use Illuminate\Support\Facades\Response;
@@ -1187,7 +1188,7 @@ class HomeController extends Controller
                     if ($status === null) {
                     } else {
                         if ($status->application_stage_status == 1) {
-                            $status->applicant_stage_status = '2';
+                            $status->application_stage_status = '2';
                             $status->save();
                         }
                     }
@@ -1335,33 +1336,39 @@ class HomeController extends Controller
         }
     }
 
-    public function getInvoice($ptype)
+    public function getInvoice($paymentType)
     {
-        if (Auth::id()) {
-            $apply = DB::table('applications')
-                ->where('client_id', '=', Auth::user()->id)
-                ->orderBy('id', 'DESC')
-                ->first();
-
-            $applicant_id = $apply->id;
-
-            $user = DB::table('payments')
-                ->where('application_id', $applicant_id)
-                ->where('payment_type', $ptype)
-                // ->orderBy('id', 'DESC')
-                ->get();
-
-            $pricing = DB::table('pricing_plans')
-                ->where('destination_id', $apply->destination_id)
-                ->where('id', $apply->pricing_plan_id)
-                ->first();
-
-            $pdf = PDF::loadView('user.invoice', compact('user', 'apply', 'pricing'));
-
-            return $pdf->stream("", array("Attachment" => false));
-            // return $pdf->download('receipt.pdf');
-        } else {
-            return redirect('home');
-        }
+        $authUrl = Quickbook::createInvoice($paymentType);
+        return $authUrl;
     }
+
+    // public function getInvoice($ptype)
+    // {
+    //     if (Auth::id()) {
+    //         $apply = DB::table('applications')
+    //             ->where('client_id', '=', Auth::user()->id)
+    //             ->orderBy('id', 'DESC')
+    //             ->first();
+
+    //         $applicant_id = $apply->id;
+
+    //         $user = DB::table('payments')
+    //             ->where('application_id', $applicant_id)
+    //             ->where('payment_type', $ptype)
+    //             ->orderBy('id', 'DESC')
+    //             ->first();
+
+    //         $pricing = DB::table('pricing_plans')
+    //             ->where('destination_id', $apply->destination_id)
+    //             ->where('id', $apply->pricing_plan_id)
+    //             ->first();
+
+    //         $pdf = PDF::loadView('user.invoice', compact('user', 'apply', 'pricing'));
+
+    //         return $pdf->stream("", array("Attachment" => false));
+    //         // return $pdf->download('receipt.pdf');
+    //     } else {
+    //         return redirect('home');
+    //     }
+    // }
 }

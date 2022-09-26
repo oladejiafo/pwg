@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Response;
 use App\Mail\NotifyMail;
+use QuickBooksOnline\API\DataService\DataService;
 use DB;
 use Session;
 
