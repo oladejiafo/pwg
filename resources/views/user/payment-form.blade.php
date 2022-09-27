@@ -44,6 +44,12 @@
 @section('content')
 
 @php
+if(Session::has('payall'))
+{
+    $payall = Session::get('payall');
+} else {
+    $payall = 0;
+}
 
 $completed = DB::table('applications')
 ->where('client_id', '=', Auth::user()->id)
@@ -343,7 +349,7 @@ $vals=array(0,1,2);
                                 // $payNow = 0;
                                 $vatPercent = '5%';
                                 
-                                if(Auth::user()->country_of_residence == "United Arab Emirates")
+                                if(Auth::user()->country_of_residence == "United Arab Emirates" || Auth::user()->country_of_residence =='')
                                 {
                                   $vat = ($payNow * 5) / 100;
                                 } else {

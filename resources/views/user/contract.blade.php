@@ -1,6 +1,9 @@
 @extends('layouts.master')
 <link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
 @section('content')
+@php
+  $payall = $_REQUEST['payall'];
+@endphp
     <div class="container">
         <div class="col-12">
             <div class="contract">
@@ -30,10 +33,10 @@
                             {{-- <div class="agree">
                                 <p>&nbsp; <input type="checkbox" class="checkcolor" id="agree" style="font-size:25px;transform: scale(1.8); " checked required="" > &nbsp; By checking this box you accept our <a href="#" style="color:blue;margin:0">Terms & Conditions</a></p>
                             </div> --}}
-                            <button type="button" class="btn btn-secondary zoomOut" id="zoom" value="0" name="payall" style="width:100%; font-size:1.6em">ZOOM TO REVIEW</button>
-                            <button type="button" class="btn btn-secondary zoomIn" id="zoom" value="0" name="payall" style="width:100%; font-size:1.6em">ZOOM TO REVIEW</button>
+                            <button type="button" class="btn btn-secondary zoomOut" id="zoom" value="{{$payall}}" name="payall" style="width:100%; font-size:1.6em">ZOOM TO REVIEW</button>
+                            <button type="button" class="btn btn-secondary zoomIn" id="zoom" value="{{$payall}}" name="payall" style="width:100%; font-size:1.6em">ZOOM TO REVIEW</button>
 
-                            <button type="submit" class="btn btn-secondary" id="sign" value="0" name="payall" style="width:100%; font-size:1.6em;margin-top: 18px;">SIGNATURE</button>
+                            <button type="submit" class="btn btn-secondary" id="sign" value="{{$payall}}" name="payall" style="width:100%; font-size:1.6em;margin-top: 18px;">SIGNATURE</button>
                         </div>
                     </div>
                 </form>

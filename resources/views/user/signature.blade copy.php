@@ -82,6 +82,7 @@
 </style>
 
 @section('content')
+
     <div class="loginx">
 
         <div class="container-fluid">
@@ -93,14 +94,15 @@
                         <form action="{{ url('upload_signature') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" name="pid" value="{{$data->id}}">
-
+                          
                             <label>
+                               
                                 <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
                                 <input type="file" name="image" style="display: none;" required="">
                                 <img style="cursor: pointer; background-color:#fff;border-color:none" src="{{asset('user/images/upload.svg')}}" alt="signature" title="Click to upload file" class="upload img-fluid thumbnail">
                             </label>
                             <p align="center">Image Types: <b>.png, .jpg, .gif</b> <br> Max file size: <b>2mb</b></p>
-                            <button class="btn btn-primary" style="height:60px">SUBMIT</button>
+                            <button class="btn btn-primary"  style="height:60px">SUBMIT</button>
                         </form>
                     </div>
                 </div>

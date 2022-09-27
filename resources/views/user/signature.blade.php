@@ -37,7 +37,9 @@
   </div>
   @endif
   <div class="login">
-
+  @php
+  $payall = $_REQUEST['payall'];
+@endphp
     <div class="container">
       <div class="col-12">
         <div class="signature tt">
@@ -54,7 +56,7 @@
                   <input type="hidden" name="pid" value="{{$data->id}}">
                   <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
                   <!-- <textarea name="signed" id="signature64" required></textarea> -->
-
+                  <input type="text" name="payall" value="{{$payall}}">
                   <div id="signature-pad" class="signature-pad">
                     <div class="signature-pad--body">
                       <canvas id="sig"></canvas>
@@ -68,7 +70,7 @@
                           <button type="button" class="btn btn-primary clear" id="clear" data-action="clear">CLEAR</button>
                         </div>
                         <div class="col-6">
-                          <button type="submit" id="sigBtn" class="btn btn-primary">SUBMIT</button>
+                          <button type="submit" id="sigBtn"  class="btn btn-primary">SUBMIT</button>
                           
                         </div>
                       </div>
@@ -105,6 +107,7 @@
               data: {
                 "_token": "{{ csrf_token() }}",
                 signed: canvas_img_data,
+                payall: '{{$payall}}',
                 response: 1
               },
               success: function(data) {

@@ -28,6 +28,7 @@ use Session;
 use Exception;
 use Illuminate\Contracts\Session\Session as SessionSession;
 
+
 class HomeController extends Controller
 {
     public function redirect()
@@ -227,7 +228,7 @@ class HomeController extends Controller
                 ]);
 
             if ($res) {
-
+                Session::put('payall',$request->payall);
                 Session::put('info', 'Signature is Successful!');
                 Session::put('info_sub', 'Proceed to application');
                 return true;
@@ -258,6 +259,7 @@ class HomeController extends Controller
     public function myapplication()
     {
         if (Auth::id()) {
+          
             $id = Auth::user()->id;
 
             \DB::statement("SET SQL_MODE=''");
@@ -1061,7 +1063,7 @@ class HomeController extends Controller
     public function contract($productId)
     {
         if (Auth::id()) {
-
+        
             return view('user.contract', compact('productId'));
         } else {
             return redirect('home');
