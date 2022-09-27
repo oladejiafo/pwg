@@ -717,12 +717,6 @@ class HomeController extends Controller
 //             }
 // ###########################################################################
 
-            $datas = payment::where([
-
-                ['payment_type', '=', $request->whichpayment],
-                ['application_id', '=', $applicant_id],
-            ])->first();
-
             set_time_limit(0);
 
             $outletRef           = '15d885ec-682a-4398-89d9-247254d71c18'; // config('app.payment_reference'); 
@@ -744,8 +738,8 @@ class HomeController extends Controller
 
 
             $order = array();
-            $successUrl = url('/') . '/payment/success/' . $datas['id'];
-            $failUrl =  url('/') . '/payment/fail/' . $datas['id'];
+            $successUrl = url('/') . '/payment/success/';
+            $failUrl =  url('/') . '/payment/fail/';
 
             $order['action']                        = "PURCHASE";                                        // Transaction mode ("AUTH" = authorize only, no automatic settle/capture, "SALE" = authorize + automatic settle/capture)
             $order['amount']['currencyCode']       = "AED";                           // Payment currency ('AED' only for now)
@@ -941,6 +935,15 @@ class HomeController extends Controller
 
                     $res = $datas->save();
                 }
+
+                $datas = payment::where([
+
+                    ['payment_type', '=', $request->whichpayment],
+                    ['application_id', '=', $applicant_id],
+                ])->first();
+    
+                Session::put('paymentId',  $datas['id']);
+    
                 ###########################################################################
 
                 $paymentLink  = $orderCreateResponse->_links->payment->href;
@@ -956,178 +959,6 @@ class HomeController extends Controller
         }
     }
 
-    public function getPromo(Request $request)
-    {
-        $response['status'] = false;
-        $id = Session::get('myproduct_id');
-        $coupon = DB::table('coupons')
-            ->select('amount')
-            ->where('code', '=', $request->discount_code)
-            ->where('employee_id', '=', $id)
-            ->where('active_from', '<=', date('Y-m-d'))
-            ->where('active_until', '>=', date('Y-m-d'))
-            ->where('active', '=', 1)
-            ->get();
-
-        foreach ($coupon as $apply) {
-            $my_discount = $apply->amount;
-        }
-
-
-        if ($coupon->first()) {
-
-            $discountPercent = 'PROMO: ' . $my_discount . '%';
-            $discountamt = ($my_discount *  $request->totaldue) / 100;
-
-            $topaynow = $request->totaldue  - (($my_discount *  $request->totaldue) / 100);
-
-
-            Session::put('haveCoupon', 1);
-            Session::put('myDiscount', $my_discount);
-
-            $response['myDiscount'] = $my_discount;
-            $response['haveCoupon'] = 1;
-            $response['discountamt'] = $discountamt;
-            $response['topaynow'] = $topaynow;
-            $response['discountPercent'] = $discountPercent;
-
-            $response['status'] = true;
-
-
-            // return \Redirect::route('payment', $id);
-        } else {
-            $topaynoww = $request->totaldue; //If no promo
-            Session::put('haveCoupon', 0);
-            $response['haveCoupon'] = 0;
-            $response['topaynow'] = $topaynoww;
-            // return \Redirect::route('payment', $id)->with('failed', 'Invalid Discount/Promo Code');
-
-        }
-        return $response;
-    }
-
-    public function checkPromo(Request $request)
-    {
-        $response['status'] = false;
-
-        $id = Session::get('myproduct_id');
-
-        $coupon = DB::table('coupons')
-            ->select('amount')
-            ->where('location', '=', $request->embassy_appearance)
-            ->where('employee_id', '=', $id)
-            ->where('active_from', '<=', date('Y-m-d'))
-            ->where('active_until', '>=', date('Y-m-d'))
-            ->where('active', '=', 1)
-            ->get();
-
-        if ($coupon->first()) {
-            // $response['haveCoupon'] = 1;
-
-            $response['status'] = true;
-
-            // return \Redirect::route('payment', $id);
-        } else {
-            // Session::put('haveCoupon', 0);
-            // $response['haveCoupon'] = 0;
-            $response['status'] = false;
-            // return \Redirect::route('payment', $id)->with('failed', 'Invalid Discount/Promo Code');
-        }
-        return $response;
-    }
-
-
-    public function familyDetails(Request $request)
-    {
-        if (Auth::id()) {
-            return \Redirect::route('product', $request->productId);
-        } else {
-            // return redirect()->back()->with('failed', 'You are not authorized');
-            return redirect('home');
-        }
-    }
-
-    public function contract($productId)
-    {
-        if (Auth::id()) {
-
-            return view('user.contract', compact('productId'));
-        } else {
-            return redirect('home');
-        }
-    }
-
-    /**
-     * profile card details
-     * 
-     */
-    public function card_details(Request $request)
-    {
-        $validator = \Validator::make($request->all(), [
-            'card_number' => 'required|digits:16',
-            'name' => 'required',
-            'month' => 'required|numeric',
-            'year' => 'required|numeric|digits:4|max:' . (date('Y') + 100)
-
-        ]);
-
-        if ($validator->fails()) {
-            return Response::json(array(
-                'success' => false,
-                'errors' => $validator->getMessageBag()->toArray()
-
-            ), 200);
-        } else {
-
-            // Save Payment Information
-            $apply = DB::table('applications')
-                ->where('client_id', '=', Auth::user()->id)
-                ->first();
-            // $applicant_id = $apply->id;
-
-            $datas = cardDetail::where('client_id', '=', Auth::user()->id)->first();
-            if ($datas === null) {
-                $data = new cardDetail();
-
-                $data->client_id = Auth::user()->id;
-                $data->card_holder_name = $request->name;
-
-                $data->card_number = $request->card_number;
-                $data->month = $request->month;
-                $data->year = $request->year;
-                $data->cvv = $request->cvc;
-
-                $data->save();
-            } else {
-
-                $datas->client_id = Auth::user()->id;
-                $datas->card_holder_name = $request->name;
-
-                $datas->card_number = $request->card_number;
-                $datas->month = $request->month;
-                $datas->year = $request->year;
-                $datas->cvv = $request->cvc;
-
-                $datas->save();
-            }
-            // dd($datas);
-        }
-        return response()->json(['status' => 'Saved']);
-    }
-
-    public function mark_read(Request $request)
-    {
-
-        $notis = notifications::where('client_id', '=', Auth::user()->id)->get();
-
-        if ($notis) {
-            foreach ($notis as $noti) {
-                $noti->status = 'Read';
-                $noti->save();
-            }
-        }
-        return response()->json(['status' => 'Cleared']);
-    }
 
     public function paymentSuccess($paymentId)
     {
@@ -1305,6 +1136,180 @@ class HomeController extends Controller
         return view('user.payment-fail', compact('id'));
     }
 
+
+    public function getPromo(Request $request)
+    {
+        $response['status'] = false;
+        $id = Session::get('myproduct_id');
+        $coupon = DB::table('coupons')
+            ->select('amount')
+            ->where('code', '=', $request->discount_code)
+            ->where('employee_id', '=', $id)
+            ->where('active_from', '<=', date('Y-m-d'))
+            ->where('active_until', '>=', date('Y-m-d'))
+            ->where('active', '=', 1)
+            ->get();
+
+        foreach ($coupon as $apply) {
+            $my_discount = $apply->amount;
+        }
+
+
+        if ($coupon->first()) {
+
+            $discountPercent = 'PROMO: ' . $my_discount . '%';
+            $discountamt = ($my_discount *  $request->totaldue) / 100;
+
+            $topaynow = $request->totaldue  - (($my_discount *  $request->totaldue) / 100);
+
+
+            Session::put('haveCoupon', 1);
+            Session::put('myDiscount', $my_discount);
+
+            $response['myDiscount'] = $my_discount;
+            $response['haveCoupon'] = 1;
+            $response['discountamt'] = $discountamt;
+            $response['topaynow'] = $topaynow;
+            $response['discountPercent'] = $discountPercent;
+
+            $response['status'] = true;
+
+
+            // return \Redirect::route('payment', $id);
+        } else {
+            $topaynoww = $request->totaldue; //If no promo
+            Session::put('haveCoupon', 0);
+            $response['haveCoupon'] = 0;
+            $response['topaynow'] = $topaynoww;
+            // return \Redirect::route('payment', $id)->with('failed', 'Invalid Discount/Promo Code');
+
+        }
+        return $response;
+    }
+
+    public function checkPromo(Request $request)
+    {
+        $response['status'] = false;
+
+        $id = Session::get('myproduct_id');
+
+        $coupon = DB::table('coupons')
+            ->select('amount')
+            ->where('location', '=', $request->embassy_appearance)
+            ->where('employee_id', '=', $id)
+            ->where('active_from', '<=', date('Y-m-d'))
+            ->where('active_until', '>=', date('Y-m-d'))
+            ->where('active', '=', 1)
+            ->get();
+
+        if ($coupon->first()) {
+            // $response['haveCoupon'] = 1;
+
+            $response['status'] = true;
+
+            // return \Redirect::route('payment', $id);
+        } else {
+            // Session::put('haveCoupon', 0);
+            // $response['haveCoupon'] = 0;
+            $response['status'] = false;
+            // return \Redirect::route('payment', $id)->with('failed', 'Invalid Discount/Promo Code');
+        }
+        return $response;
+    }
+
+
+    public function familyDetails(Request $request)
+    {
+        if (Auth::id()) {
+            return \Redirect::route('product', $request->productId);
+        } else {
+            // return redirect()->back()->with('failed', 'You are not authorized');
+            return redirect('home');
+        }
+    }
+
+    public function contract($productId)
+    {
+        if (Auth::id()) {
+
+            return view('user.contract', compact('productId'));
+        } else {
+            return redirect('home');
+        }
+    }
+
+    /**
+     * profile card details
+     * 
+     */
+    public function card_details(Request $request)
+    {
+        $validator = \Validator::make($request->all(), [
+            'card_number' => 'required|digits:16',
+            'name' => 'required',
+            'month' => 'required|numeric',
+            'year' => 'required|numeric|digits:4|max:' . (date('Y') + 100)
+
+        ]);
+
+        if ($validator->fails()) {
+            return Response::json(array(
+                'success' => false,
+                'errors' => $validator->getMessageBag()->toArray()
+
+            ), 200);
+        } else {
+
+            // Save Payment Information
+            $apply = DB::table('applications')
+                ->where('client_id', '=', Auth::user()->id)
+                ->first();
+            // $applicant_id = $apply->id;
+
+            $datas = cardDetail::where('client_id', '=', Auth::user()->id)->first();
+            if ($datas === null) {
+                $data = new cardDetail();
+
+                $data->client_id = Auth::user()->id;
+                $data->card_holder_name = $request->name;
+
+                $data->card_number = $request->card_number;
+                $data->month = $request->month;
+                $data->year = $request->year;
+                $data->cvv = $request->cvc;
+
+                $data->save();
+            } else {
+
+                $datas->client_id = Auth::user()->id;
+                $datas->card_holder_name = $request->name;
+
+                $datas->card_number = $request->card_number;
+                $datas->month = $request->month;
+                $datas->year = $request->year;
+                $datas->cvv = $request->cvc;
+
+                $datas->save();
+            }
+            // dd($datas);
+        }
+        return response()->json(['status' => 'Saved']);
+    }
+
+    public function mark_read(Request $request)
+    {
+
+        $notis = notifications::where('client_id', '=', Auth::user()->id)->get();
+
+        if ($notis) {
+            foreach ($notis as $noti) {
+                $noti->status = 'Read';
+                $noti->save();
+            }
+        }
+        return response()->json(['status' => 'Cleared']);
+    }
+
     public function getReceipt($ptype)
     {
 
@@ -1321,7 +1326,7 @@ class HomeController extends Controller
                 ->where('payment_type', $ptype)
                 ->orderBy('id', 'DESC')
                 ->get();
-
+// dd($applicant_id);
             $pricing = DB::table('pricing_plans')
                 ->where('destination_id', $apply->destination_id)
                 ->where('id', $apply->pricing_plan_id)

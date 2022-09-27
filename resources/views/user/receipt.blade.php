@@ -10,15 +10,29 @@
 </style>
   </head>
   <?php $paid=0; ?>
+
   @foreach($user as $user)
+  
+  @if($user->paid_amount)
   @php
-  $paid =$paid+ $user->paid_amount
+  $paid =$paid+$user->paid_amount
   @endphp
+  @else
+  @php 
+    $paid=0;
+    @endphp
+  @endif
   @endforeach
+
+ @if(isset($user->payable_amount))
     @php
         $thisAmt = $user->payable_amount 
-
     @endphp
+@else  
+@php
+        $thisAmt = 0 
+    @endphp   
+ @endif 
   <body>
         <div class="row" style="margin-bottom:30px;display: block;text-align: center;">
             <div class="col-lg-2 pull-left" valign="top" style="display: inline-block; float:left; height:auto">
@@ -31,7 +45,7 @@
                 +971 45686033 || sales@pwggroup.pl
             </div>
             <div class="col-lg-2 pull-right" align="right" valign="top" style="color:#ccc; display: inline-block;float:right">
-               Receipt No.: <b>{{$user->invoice_no}}</b>
+               Receipt No.: <b>@if(isset($user->invoice_no)) {{ $user->invoice_no}} @endif</b>
             </div>
         </div><hr style="height:0.7px; opacity:0.5;color:#ccc;">
 
@@ -44,7 +58,7 @@
                 {{Auth::user()->email}}
             </div>
             <div class="col-lg-3 pull-right" align="right" style="display: inline-block;float:right;width:20%;padding:10px;background-color:#eee;height:50px; opacity: 0.7;border-radius:5px">
-                Payment Date <br>{{date("d-m-Y", strtotime($user->payment_date))}}
+                Payment Date <br>@if(isset($user->payment_date)){{date("d-m-Y", strtotime($user->payment_date))}}@endif
             </div>
         </div>
        
@@ -58,7 +72,7 @@
         </div><hr style="height:0.7px; opacity:0.2;color:#ccc;">
 
         <div class="row" style="display: block;height:40px">
-            <div align="left" class="col-3" style="width:40%;display: inline-block; height:20px"> {{$pricing->plan_name}} VISA Application {{$user->payment_type}}</div>
+            <div align="left" class="col-3" style="width:40%;display: inline-block; height:20px"> @if(isset($pricing->plan_name)) {{$pricing->plan_name}} @endif VISA Application @if(isset($user->payment_type)) {{$user->payment_type}} @endif</div>
             <div align="right" class="col-3" style="width:19%;display: inline-block; height:20px"> 1 </div>
             <div align="right" class="col-3" style="width:19%;display: inline-block; height:20px"> {{number_format($thisAmt,2)}}</div>
             <div align="right" class="col-3" style="width:19%;display: inline-block; height:20px"> {{number_format($thisAmt,2)}}</div>
