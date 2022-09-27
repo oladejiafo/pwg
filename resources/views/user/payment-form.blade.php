@@ -84,44 +84,44 @@ $vals=array(0,1,2);
                         <div class="linear"></div>
                         
                         @if ($levels == '5' || $levels == '4' || $levels == '3' || $levels == '2')
-	                        <div class="wrapper">
+	                        <!-- <div class="wrapper">
 	                            <a href="{{route('applicant', $pid)}}">
 	                                <div class="round3 m-2">2</div>
 	                            </a>
 	                            <div class="col-2 round-title">Application <br> Details</div>
 	                        </div>
-	                        <div class="linear"></div>
+	                        <div class="linear"></div> -->
 	                        <div class="wrapper">
 	                            <a href="{{route('applicant.details', $pid)}}">
-	                                <div class="round4 m-2">3</div>
+	                                <div class="round4 m-2">2</div>
 	                            </a>
 	                            <div class="col-2 round-title">Applicant <br> Details</div>
 	                        </div>
 	                        <div class="linear"></div>
 	                        <div class="wrapper">
 	                            <a href="{{url('applicant/review', $pid)}}">
-	                                <div class="round5 m-2">4</div>
+	                                <div class="round5 m-2">3</div>
 	                            </a>
 	                            <div class="col-2 round-title">Application <br> Review</div>
 	                        </div>
                         @else
-	                        <div class="wrapper">
+	                        <!-- <div class="wrapper">
 	                            <a href="#" onclick="return alert('You have to complete Payment first');">
 	                                <div class="round3 m-2">2</div>
 	                            </a>
 	                            <div class="col-2 round-title">Application <br> Details</div>
 	                        </div>
-	                        <div class="linear"></div>
+	                        <div class="linear"></div> -->
 	                        <div class="wrapper">
 	                            <a href="#" onclick="return alert('You have to complete Payment first');">
-	                                <div class="round4 m-2">3</div>
+	                                <div class="round4 m-2">2</div>
 	                            </a>
 	                            <div class="col-2 round-title">Applicant <br> Details</div>
 	                        </div>
 	                        <div class="linear"></div>
 	                        <div class="wrapper">
 	                            <a href="#" onclick="return alert('You have to complete Payment first');">
-	                                <div class="round5 m-2">4</div>
+	                                <div class="round5 m-2">3</div>
 	                            </a>
 	                            <div class="col-2 round-title">Application <br> Review</div>
 	                        </div>

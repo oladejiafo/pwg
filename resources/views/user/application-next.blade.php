@@ -17,7 +17,11 @@
    $levels = $completed->application_stage_status;
 @endphp
 
-    <div class="container" id="app" data-applicantId="{{$applicant['id']}}" data-dependentid="{{$dependent}}">
+@if ($levels != '3' && $levels != '2'&& $levels != '4') 
+    <script>window.location = "/payment_form/<?php echo $productId; ?>";</script>
+@endif
+
+<div class="container" id="app" data-applicantId="{{$applicant['id']}}" data-dependentid="{{$dependent}}">
         <div class="col-12">
             <div class="row">
                 <div class="wizard bg-white">
@@ -34,16 +38,14 @@
                               @endif
                               <div class="col-2 round-title">Payment <br> Details</div>
                             </div>
-                            <div class="linear"></div>
+                            <!-- <div class="linear"></div>
                             <div class="wrapper">
                                 <a href="{{route('applicant', $productId)}}" ><div class="round-completed round3  m-2">2</div></a>
                                 <div class="col-2 round-title">Application <br> Details</div>
-                            </div>
+                            </div> -->
                             <div class="linear"></div>
-
-
                             <div class="wrapper">
-                                <a href="{{route('applicant.details',  $productId)}}" ><div class="round-active  round4 m-2">3</div></a>
+                                <a href="{{route('applicant.details',  $productId)}}" ><div class="round-active  round4 m-2">2</div></a>
                                 <div class="col-2 round-title">Applicant <br> Details</div>
                             </div>
                             <div class="linear"></div>
@@ -53,7 +55,7 @@
                               if ($levels == '5' || $levels == '4') {
                             @endphp     
                             <div class="wrapper">
-                                <a href="{{url('applicant/review',  $productId)}}" ><div class="round5 m-2">4</div></a>
+                                <a href="{{url('applicant/review',  $productId)}}" ><div class="round5 m-2">3</div></a>
                                 <div class="col-2 round-title">Applicant <br> Reviews</div>
                             </div>
                             
@@ -61,8 +63,9 @@
                               } else {
                             @endphp
                             <div class="wrapper">
-                                <a href="#" onclick="return alert('You have to complete Applicants Details first');"><div class="round5 m-2">4</div></a>
+                                <a href="#" onclick="return alert('You have to complete Applicants Details first');"><div class="round5 m-2">3</div></a>
                                 <div class="col-2 round-title">Applicant <br> Reviews</div>
+                                
                             </div>
                             @php  
                               }

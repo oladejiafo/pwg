@@ -102,7 +102,7 @@
                       @if($paid->application_stage_status != 5)
                        @if($paid->application_stage_status==2)
                         @php 
-                          $linkk = "applicant";
+                          $linkk = "applicant.details";
                         @endphp
                        @elseif($paid->application_stage_status==3)
                         @php 
@@ -318,7 +318,7 @@
                       @if($paid->application_stage_status != 5)
                         @if($paid->application_stage_status==2)
                           @php 
-                            $linkk = "applicant";
+                           $linkk = "applicant.details";
                           @endphp
                         @elseif($paid->application_stage_status==3)
                           @php 

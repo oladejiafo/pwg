@@ -36,7 +36,6 @@ class HomeController extends Controller
         if (session('prod_id')) {
             $id = Session::get('prod_id');
 
-
             $data = product::find($id);
 
             $promo = promo::where('employee_id', '=', $id)->where('active_until', '>=', date('Y-m-d'))->get();
