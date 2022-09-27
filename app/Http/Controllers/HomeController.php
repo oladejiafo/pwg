@@ -1339,21 +1339,23 @@ class HomeController extends Controller
 
     public function getInvoice()
     {
-        $payment = '';
         $applcant = Applicant::select('first_payment_status', 'second_payment_status', 'third_payment_status')
-                        ->where('client_id', Auth::id())
-                        ->where('destination_id', Session::get('myproduct_id'))
-                        ->first();
-        if(($applcant->first_payment_status =="Paid" || $applcant->first_payment_status =="Partial") && $applcant->second_payment_status !="Paid")
-        {
-            $payment = 'First Payment';
-        }  else if($applcant->second_payment_status =="Paid" && $applcant->third_payment_status !="Paid"){
-            $payment = 'Second Payment';
-        } else if($applcant->first_payment_status =="Paid"  && $applcant->second_payment_status =="Paid" && $applcant->third_payment_status =="Paid"){
-            $payment = 'Third Payment';
-        }
-        $authUrl = Quickbook::createInvoice($payment);
-        return $authUrl;
+            ->where('client_id', Auth::id())
+            ->where('destination_id', Session::get('myproduct_id'))
+            ->first();
+        // if(){
+            $payment = '';
+            if(($applcant->first_payment_status =="Paid" || $applcant->first_payment_status =="Partial") && $applcant->second_payment_status !="Paid")
+            {
+                $payment = 'First Payment';
+            }  else if($applcant->second_payment_status =="Paid" && $applcant->third_payment_status !="Paid"){
+                $payment = 'Second Payment';
+            } else if($applcant->first_payment_status =="Paid"  && $applcant->second_payment_status =="Paid" && $applcant->third_payment_status =="Paid"){
+                $payment = 'Third Payment';
+            }
+            $authUrl = Quickbook::createInvoice($payment);
+            return $authUrl;
+        // }
     }
 
     // public function getInvoice($ptype)
