@@ -55,8 +55,6 @@
                                     </div>
                                     <div class="col-md-6" align="right">
                                         <p>
-
-                                           
                                         @if($paid->first_payment_status =='Paid')
 
                                             <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="{{ url('/get/receipt/First Payment')}}">Get Reciept</a>

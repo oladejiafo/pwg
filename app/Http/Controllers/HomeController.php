@@ -774,7 +774,6 @@ class HomeController extends Controller
                     ['paid_amount', '=', $request->totalpay],
                     ['remaining_amount', '=', null],
                 ])->first();
-
                 if ($ppd === null) {
                     $dat = new payment;
 
@@ -785,7 +784,10 @@ class HomeController extends Controller
                     $dat->paid_amount = $request->totalpay;
                     $dat->invoice_amount = $request->totalpay;
                     $dat->save();
+                    Session::put('paymentId', $dat->id);
                 } else {
+                    Session::put('paymentId', $ppd->id);
+
                     if (isset($request->totalremaining) && $request->totalremaining > 0) {
                         $ppd->payment_type = "Balance on " . $request->whichpayment;
                     } else {
@@ -1233,7 +1235,8 @@ class HomeController extends Controller
                     // Notification Ends ############ 
                     $dest = product::find($id);
                     $dest_name = $dest->name;
-
+                    //$payment = $this->getPaymentName();
+//$invoice = Quickbook::createInvoice($payment);
                     $msg = "Awesome! Payment Successful!";
                     return view('user.payment-success', compact('id'));
                 } else {
@@ -1308,7 +1311,6 @@ class HomeController extends Controller
 
     public function getReceipt($ptype)
     {
-
         if (Auth::id()) {
             $apply = DB::table('applications')
                 ->where('client_id', '=', Auth::user()->id)
@@ -1339,23 +1341,42 @@ class HomeController extends Controller
 
     public function getInvoice()
     {
-        $applcant = Applicant::select('first_payment_status', 'second_payment_status', 'third_payment_status')
-            ->where('client_id', Auth::id())
-            ->where('destination_id', Session::get('myproduct_id'))
-            ->first();
-        // if(){
-            $payment = '';
-            if(($applcant->first_payment_status =="Paid" || $applcant->first_payment_status =="Partial") && $applcant->second_payment_status !="Paid")
-            {
-                $payment = 'First Payment';
-            }  else if($applcant->second_payment_status =="Paid" && $applcant->third_payment_status !="Paid"){
-                $payment = 'Second Payment';
-            } else if($applcant->first_payment_status =="Paid"  && $applcant->second_payment_status =="Paid" && $applcant->third_payment_status =="Paid"){
-                $payment = 'Third Payment';
-            }
-            $authUrl = Quickbook::createInvoice($payment);
-            return $authUrl;
-        // }
+        $paymentDetails = Payment::where('id', Session::get('paymentId'))->first();
+        $payment = $this->getPaymentName();
+        $dataService = Quickbook::connectQucikBook();
+        Quickbook::createInvoice($payment);
+        $filename = Auth::id().'-'.$payment.'-'."Invoice.pdf";
+        $invoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
+        $pdfData = $dataService->DownloadPDF($invoice, null, true);
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/pdf');
+        header('Content-Disposition: attachment; filename='.$filename);
+        header('Content-Transfer-Encoding: binary');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . strlen($pdfData));
+        ob_clean();
+        flush();
+        return $pdfData;
+    }
+
+    private function getPaymentName()
+    {
+        $applicant = Applicant::select('first_payment_status', 'second_payment_status', 'third_payment_status')
+        ->where('client_id', Auth::id())
+        ->where('destination_id', Session::get('myproduct_id'))
+        ->first();
+        $payment = '';
+        if(($applicant->first_payment_status =="Paid" || $applicant->first_payment_status =="Partial") && $applicant->second_payment_status !="Paid")
+        {
+            $payment = 'First Payment';
+        }  else if($applicant->second_payment_status =="Paid" && $applicant->third_payment_status !="Paid"){
+            $payment = 'Second Payment';
+        } else if($applicant->first_payment_status =="Paid"  && $applicant->second_payment_status =="Paid" && $applicant->third_payment_status =="Paid"){
+            $payment = 'Third Payment';
+        }
+        return $payment;
     }
 
     // public function getInvoice($ptype)
