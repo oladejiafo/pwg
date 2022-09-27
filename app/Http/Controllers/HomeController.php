@@ -548,174 +548,6 @@ class HomeController extends Controller
                 $rre->country_of_residence =  $request->current_location;
                 $rre->save();
             }
-// ###################################################################
-//             $ppd = payment::where([
-//                 ['application_id', '=', $applicant_id],
-//                 ['payment_type', '=', $request->whichpayment],
-//                 ['paid_amount', '=', $request->totalpay],
-//                 ['remaining_amount', '=', null],
-//             ])->first();
-
-//             if ($ppd === null) {
-//                 $dat = new payment;
-
-//                 $dat->payment_type = $request->whichpayment;
-//                 $dat->application_id = $applicant_id;
-//                 $dat->payment_date = $thisDay;
-//                 $dat->payable_amount = $request->totaldue;
-//                 $dat->paid_amount = $request->totalpay;
-//                 $dat->invoice_amount = $request->totalpay;
-//                 $dat->save();
-//             } else {
-//                 if (isset($request->totalremaining) && $request->totalremaining > 0) {
-//                     $ppd->payment_type = "Balance on " . $request->whichpayment;
-//                 } else {
-//                     $ppd->payment_type = $request->whichpayment;
-//                 }
-//                 $ppd->application_id = $applicant_id;
-//                 $ppd->payment_date = $thisDay;
-//                 $ppd->payable_amount = $request->totaldue;
-//                 $ppd->paid_amount = $request->totalpay;
-//                 $ppd->invoice_amount = $request->totalpay;
-//                 $ppd->save();
-//             }
-
-//             $datas = applicant::where([
-//                 ['client_id', '=', Auth::user()->id],
-//                 ['destination_id', '=', $request->pid],
-//             ])->first();
-//             if ($datas === null) {
-//                 $data = new applicant;
-//                 if(in_array($apply->application_stage_status, $vals) && (empty($apply->embassy_country) || $apply->embassy_country == null)) 
-//                 {
-//                     $data->embassy_country = $request->embassy_appearance;
-//                 }
-//                 $data->pricing_plan_id = $request->ppid;
-
-//                 if ($request->whichpayment == 'First Payment') {
-//                     // $data->first_payment_price = $thisPayment;
-//                     // $data->first_payment_paid = $thisPaymentMade;
-//                     $data->first_payment_vat = $thisVat;
-//                     $data->first_payment_discount = $thisDiscount;
-//                     $data->first_payment_status = $whatsPaid;
-
-//                     if ($whatsPaid == 'Partial') {
-//                         $data->first_payment_remaining =  $thisPayment - $thisPaymentMade;
-
-//                         $data->is_first_payment_partially_paid = 1;
-//                         $data->status = 'WAITING_FOR_BALANCE_ON_FIRST_PAYMENT';
-//                     } else {
-//                         $data->first_payment_remaining = 0;
-
-//                         $data->is_first_payment_partially_paid = 0;
-//                         $data->status = 'WAITING_FOR_2ND_PAYMENT';
-//                     }
-//                     if (isset($request->totalremaining) && $request->totalremaining > 0) {
-//                         // $data->first_payment_price = $thisPayment;
-//                         $data->first_payment_paid = $thisPaymentMade + $request->totalremaining;
-//                     } else {
-//                         $data->first_payment_price = $thisPayment;
-//                         $data->first_payment_paid = $thisPaymentMade;
-//                     }
-//                 } elseif ($request->whichpayment == 'Second Payment') {
-//                     $data->second_payment_price = $thisPayment;
-//                     $data->second_payment_paid = $thisPaymentMade;
-//                     $data->second_payment_vat = $thisVat;
-//                     $data->second_payment_discount = $thisDiscount;
-//                     $data->second_payment_status = $whatsPaid;
-//                     $data->status = 'WAITING_FOR_3RD_PAYMENT';
-//                     if ($whatsPaid == 'Partial') {
-//                         $data->is_second_payment_partially_paid = 1;
-//                     }
-//                 } elseif ($request->whichpayment == 'Third Payment') {
-//                     $data->third_payment_price = $thisPayment;
-//                     $data->third_payment_paid = $thisPaymentMade;
-//                     $data->third_payment_vat = $thisVat;
-//                     $data->third_payment_discount = $thisDiscount;
-//                     $data->third_payment_status = $whatsPaid;
-//                     $data->status = 'WAITING_FOR_EMBASSY_APPEARANCE';
-//                     if ($whatsPaid == 'Partial') {
-//                         $data->is_third_payment_partially_paid = 1;
-//                     }
-
-//                     $data->coupon_code = $thisCode;
-//                     // $data->application_stage_status = 2;
-
-//                     $res = $data->save();
-//                 } else {
-//                     $data->total_price = $thisPayment;
-//                     $data->total_paid = $thisPaymentMade;
-//                     $data->total_vat = $thisVat;
-//                     $data->total_discount = $thisDiscount;
-//                 }
-
-//                 $data->coupon_code = $thisCode;
-//                 // $data->application_stage_status = 2;
-
-//                 $res = $data->save();
-//             } else {
-//                 if(in_array($apply->application_stage_status, $vals) && (empty($apply->embassy_country) || $apply->embassy_country == null)) 
-//                 {
-//                     $datas->embassy_country = $request->embassy_appearance;
-//                 }
-//                 $datas->pricing_plan_id = $request->ppid;
-
-//                 if ($request->whichpayment == 'First Payment') {
-//                     // $datas->first_payment_price = $thisPayment;
-//                     // $datas->first_payment_paid = $thisPaymentMade;
-
-//                     $datas->first_payment_vat = $thisVat;
-//                     $datas->first_payment_discount = $thisDiscount;
-//                     $datas->first_payment_status = $whatsPaid;
-
-//                     if ($whatsPaid == 'Partial') {
-//                         $datas->first_payment_remaining =  $thisPayment - $thisPaymentMade;
-
-//                         $datas->is_first_payment_partially_paid = 1;
-//                         $datas->status = 'WAITING_FOR_BALANCE_ON_FIRST_PAYMENT';
-//                     } else {
-//                         $datas->first_payment_remaining = 0;
-
-//                         $datas->is_first_payment_partially_paid = 0;
-//                         $datas->status = 'WAITING_FOR_2ND_PAYMENT';
-//                     }
-//                     if (isset($request->totalremaining) && $request->totalremaining > 0) {
-//                         $datas->first_payment_paid = $datas->first_payment_paid + $request->totalremaining;
-//                     } else {
-//                         $datas->first_payment_price = $thisPayment;
-//                         $datas->first_payment_paid = $thisPaymentMade;
-//                     }
-//                 } elseif ($request->whichpayment == 'Second Payment') {
-//                     $datas->second_payment_price = $thisPayment;
-//                     $datas->second_payment_paid = $thisPaymentMade;
-//                     $datas->second_payment_vat = $thisVat;
-//                     $datas->second_payment_discount = $thisDiscount;
-//                     $datas->second_payment_status = $whatsPaid;
-//                     if ($whatsPaid == 'Partial') {
-//                         $datas->is_second_payment_partially_paid = 1;
-//                     }
-//                 } elseif ($request->whichpayment == 'Third Payment') {
-//                     $datas->third_payment_price = $thisPayment;
-//                     $datas->third_payment_paid = $thisPaymentMade;
-//                     $datas->third_payment_vat = $thisVat;
-//                     $datas->third_payment_discount = $thisDiscount;
-//                     $datas->third_payment_status = $whatsPaid;
-//                     if ($whatsPaid == 'Partial') {
-//                         $datas->is_third_payment_partially_paid = 1;
-//                     }
-//                 } else {
-//                     $datas->total_price = $thisPayment;
-//                     $datas->total_paid = $thisPaymentMade;
-//                     $datas->total_vat = $thisVat;
-//                     $datas->total_discount = $thisDiscount;
-//                 }
-//                     $datas->coupon_code = $thisCode;
-//                     // $datas->application_stage_status = 2;
-
-
-//                 $res = $datas->save();
-//             }
-// ###########################################################################
 
             set_time_limit(0);
 
@@ -736,10 +568,9 @@ class HomeController extends Controller
             // dd($tokenResponse);
             $access_token  = $tokenResponse->access_token;
 
-
             $order = array();
-            $successUrl = url('/') . '/payment/success/';
-            $failUrl =  url('/') . '/payment/fail/';
+            $successUrl = url('/') . '/payment/success';
+            $failUrl =  url('/') . '/payment/fail';
 
             $order['action']                        = "PURCHASE";                                        // Transaction mode ("AUTH" = authorize only, no automatic settle/capture, "SALE" = authorize + automatic settle/capture)
             $order['amount']['currencyCode']       = "AED";                           // Payment currency ('AED' only for now)
@@ -934,15 +765,15 @@ class HomeController extends Controller
 
 
                     $res = $datas->save();
+
+                    $paymentId = payment::where([
+                                ['payment_type', '=', $request->whichpayment],
+                                ['application_id', '=', $applicant_id],
+                            ])
+                            ->pluck('id')
+                            ->first();
+                    Session::put('paymentId', $paymentId);
                 }
-
-                $datas = payment::where([
-
-                    ['payment_type', '=', $request->whichpayment],
-                    ['application_id', '=', $applicant_id],
-                ])->first();
-    
-                Session::put('paymentId',  $datas['id']);
     
                 ###########################################################################
 
@@ -960,7 +791,7 @@ class HomeController extends Controller
     }
 
 
-    public function paymentSuccess($paymentId)
+    public function paymentSuccess()
     {
         session_start();
         $id = Session::get('myproduct_id');
@@ -988,7 +819,7 @@ class HomeController extends Controller
 
             if ($paymentResponse->authResponse->success == true && $paymentResponse->authResponse->resultCode == "00") {
 
-                $paymentDetails = Payment::where('id', $paymentId)->first();
+                $paymentDetails = Payment::where('id', Session::get('paymentId'))->first();
                 
                 // if($paymentResponse->_id)
                 // {
@@ -1077,10 +908,10 @@ class HomeController extends Controller
         }
     }
 
-    public function paymentFail($paymentId)
+    public function paymentFail()
     {
         //Undo Application payment info
-        $pays = payment::where('id', $paymentId)->first();
+        $pays = payment::where('id', Session::get('paymentId'))->first();
 
         $datas = applicant::where([
                ['client_id', '=', Auth::user()->id],
@@ -1130,7 +961,7 @@ class HomeController extends Controller
            } 
 
         //Undo Payment update
-        Payment::where('id', $paymentId)->delete();
+        Payment::where('id', Session::get('paymentId'))->delete();
 
         $id = Session::get('myproduct_id');
         return view('user.payment-fail', compact('id'));
@@ -1341,10 +1172,25 @@ class HomeController extends Controller
         }
     }
 
-    public function getInvoice($paymentType)
+    public function getInvoice()
     {
-        $authUrl = Quickbook::createInvoice($paymentType);
-        return $authUrl;
+        $applcant = Applicant::select('first_payment_status', 'second_payment_status', 'third_payment_status')
+            ->where('client_id', Auth::id())
+            ->where('destination_id', Session::get('myproduct_id'))
+            ->first();
+        // if(){
+            $payment = '';
+            if(($applcant->first_payment_status =="Paid" || $applcant->first_payment_status =="Partial") && $applcant->second_payment_status !="Paid")
+            {
+                $payment = 'First Payment';
+            }  else if($applcant->second_payment_status =="Paid" && $applcant->third_payment_status !="Paid"){
+                $payment = 'Second Payment';
+            } else if($applcant->first_payment_status =="Paid"  && $applcant->second_payment_status =="Paid" && $applcant->third_payment_status =="Paid"){
+                $payment = 'Third Payment';
+            }
+            $authUrl = Quickbook::createInvoice($payment);
+            return $authUrl;
+        // }
     }
 
     // public function getInvoice($ptype)
