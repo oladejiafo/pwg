@@ -209,7 +209,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\FortifyServiceProvider::class,
         App\Providers\JetstreamServiceProvider::class,
-
+        Codedge\Fpdf\FpdfServiceProvider::class,
     ],
 
     /*
@@ -266,6 +266,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Constant' => App\Constant::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
+        'Fpdf' => Codedge\Fpdf\Facades\Fpdf::class,
     ],
 
 ];

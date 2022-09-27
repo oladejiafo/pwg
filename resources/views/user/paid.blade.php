@@ -102,7 +102,7 @@
                       @if($paid->application_stage_status != 5)
                        @if($paid->application_stage_status==2)
                         @php 
-                          $linkk = "applicant";
+                          $linkk = "applicant.details";
                         @endphp
                        @elseif($paid->application_stage_status==3)
                         @php 
@@ -318,7 +318,7 @@
                       @if($paid->application_stage_status != 5)
                         @if($paid->application_stage_status==2)
                           @php 
-                            $linkk = "applicant";
+                           $linkk = "applicant.details";
                           @endphp
                         @elseif($paid->application_stage_status==3)
                           @php 
@@ -390,12 +390,31 @@
   @endif
 @endif
 
-<?php
-// $num = 4;
-// $num_padded = str_pad($num, 4, '0', STR_PAD_LEFT); //sprintf("%02d", $num);
 
-// echo $num_padded; // returns 04
-?>
+<!-- 
+<div style="display:block">
+<a href="#" class="mi" style="display:inline">-</a>
+<div class="RegSpLeft" id="phone"  style="display:inline">
+<input type="text" value="Phone"><br>
+</div>
+<a href="#" class="pl" style="display:inline">+</a>
+</div>
+    
+<script type="text/javascript" src="dist/js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript">
+  $(function() {
+      $('a.pl').click(function(e) {
+          e.preventDefault();
+          $('#phone').append('<input type="text" value="Phone">');
+      });
+      $('a.mi').click(function (e) {
+          e.preventDefault();
+          if ($('#phone input').length > 1) {
+              $('#phone').children().last().remove();
+          }
+      });
+  });
+</script> -->
 
 <!-- <script src="../user/assets/js/vendor/jquery-1.12.4.min.js"></script> -->
 <script>

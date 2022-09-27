@@ -43,22 +43,22 @@
                             </div>
                             <div class="linear"></div>
                             
-                            <div class="wrapper">
+                            <!-- <div class="wrapper">
                                 <a href="{{route('applicant', $productId)}}" ><div class="round-active  round3  m-2">2</div></a>
                                 <div class="col-2 round-title">Application <br> Details</div>
                             </div>
-                            <div class="linear"></div>
+                            <div class="linear"></div> -->
 
                             @php 
                               if ($levels == '5' || $levels == '4' || $levels == '3' ) {
                             @endphp    
                             <div class="wrapper">
-                                <a href="{{route('applicant.details',  $productId)}}" ><div class="round4 m-2">3</div></a>
+                                <a href="{{route('applicant.details',  $productId)}}" ><div class="round4 m-2">2</div></a>
                                 <div class="col-2 round-title">Applicant <br> Details</div>
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href="{{url('applicant/review',  $productId)}}" ><div class="round5 m-2">4</div></a>
+                                <a href="{{url('applicant/review',  $productId)}}" ><div class="round5 m-2">3</div></a>
                                 <div class="col-2 round-title">Applicant <br> Reviews</div>
                             </div>
                             
@@ -67,12 +67,12 @@
                             @endphp
 
                             <div class="wrapper">
-                                <a href="#" onclick="return alert('You have to complete Application Details first');"><div class="round4 m-2">3</div></a>
+                                <a href="#" onclick="return alert('You have to complete Application Details first');"><div class="round4 m-2">2</div></a>
                                 <div class="col-2 round-title">Applicant <br> Details</div>
                             </div>
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href="#" onclick="return alert('You have to complete Application Details first');"><div class="round5 m-2">4</div></a>
+                                <a href="#" onclick="return alert('You have to complete Application Details first');"><div class="round5 m-2">3</div></a>
                                 <div class="col-2 round-title">Applicant <br> Reviews</div>
                             </div>
                             @php  

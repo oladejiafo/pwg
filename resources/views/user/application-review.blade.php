@@ -15,6 +15,12 @@
 
     $levels = $completed->application_stage_status;
 @endphp
+
+ 
+@if ($levels != '5' && $levels != '4') 
+    <script>window.location = "/applicant/details/<?php echo $productId; ?>";</script>
+@endif
+
 <div class="container" id="app" data-applicantId="{{$applicant['id']}}" @if($dependent)  data-dependentId="{{$dependent['id']}}" @endif>
     <div class="col-12">
             <div class="row">
@@ -46,28 +52,28 @@
                             @php 
                               if ($levels == '5' || $levels == '4') {
                             @endphp     
-                            <div class="wrapper">
+                            <!-- <div class="wrapper">
                                 <a href="#" onclick="return alert('Section completed already');"><div class="round-completed round3 m-2">2</div></a>
                                 <div class="col-2 round-title">Application <br> Details</div>
                             </div>
-                            <div class="linear"></div>
+                            <div class="linear"></div> -->
 
                             <div class="wrapper">
-                                <a href="#" onclick="return alert('Section completed already');"><div class="round-completed round4 m-2">3</div></a>
+                                <a href="#" onclick="return alert('Section completed already');"><div class="round-completed round4 m-2">2</div></a>
                                 <div class="col-2 round-title">Applicant <br> Details</div>
                             </div>
                             <div class="linear"></div>
                             @php
                                 } else {
                             @endphp 
-                            <div class="wrapper">
+                            <!-- <div class="wrapper">
                                 <a href="{{route('applicant', $productId)}}" ><div class="round-completed round3  m-2">2</div></a>
                                 <div class="col-2 round-title">Application <br> Details</div>
                             </div>
-                            <div class="linear"></div>
+                            <div class="linear"></div> -->
 
                             <div class="wrapper">
-                                <a href="{{route('applicant.details',  $productId)}}" ><div class="round-completed round4 m-2">3</div></a>
+                                <a href="{{route('applicant.details',  $productId)}}" ><div class="round-completed round4 m-2">2</div></a>
                                 <div class="col-2 round-title">Applicant <br> Details</div>
                             </div>
                             <div class="linear"></div>
@@ -75,7 +81,7 @@
                                 }
                             @endphp
                             <div class="wrapper">
-                                <a href="{{url('applicant/review',  $productId)}}" ><div class="round-active round5 m-2">4</div></a>
+                                <a href="{{url('applicant/review',  $productId)}}" ><div class="round-active round5 m-2">3</div></a>
                                 <div class="col-2 round-title">Applicant <br> Reviews</div>
                             </div> 
                         </div>
