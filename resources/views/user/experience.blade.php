@@ -172,6 +172,7 @@
                 </div>
             </div>
         </div>
+
         <div class="form-group row mt-4">
             <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
                 @if(($applicant['work_permit_category'])&&($client['is_spouse'] != null || $client['children_count'] != null)) 

@@ -113,6 +113,23 @@
                                 <span class="civil_status_errorClass"></span>
                             </div>
                         </div>
+                        <div class="col-sm-12 mt-3">
+                            <input type="text" name="agent_code" id="agent_code" class="form-control" placeholder="Please enter your agent code here if available" value="{{old('agent_code')}}" />
+                            <span class="agent_code_errorClass"></span>
+                        </div>
+                        <div class="form-group row mt-3">
+                            <div class="col-sm-12 mt-3">
+                                <input type="text" class="form-control cvupload" placeholder="Upload your cv (PDF only)*" name="cv" value="{{old('cv')}}" readonly required>
+                                <div class="input-group-btn">
+                                    <span class="fileUpload btn">
+                                        <span class="upl" id="upload">Choose File</span>
+                                        <input type="file" class="upload up cvupload" id="up"  name="cv" accept="application/pdf" onchange="readURL(this);" />
+                                        </span><!-- btn-orange -->
+                                </div><!-- btn -->
+                                @error('cv') <span class="error">{{ $message }}</span> @enderror
+                            </div>
+
+                        </div>
                         <div class="form-group row mt-4">
                             <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
                                 <button type="submit" class="btn btn-primary submitBtn applicantDetails" >Continue</button>

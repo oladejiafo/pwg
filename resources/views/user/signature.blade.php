@@ -56,7 +56,7 @@
                   <input type="hidden" name="pid" value="{{$data->id}}">
                   <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
                   <!-- <textarea name="signed" id="signature64" required></textarea> -->
-                  <input type="text" name="payall" value="{{$payall}}">
+                  <input type="hidden" name="payall" value="{{$payall}}">
                   <div id="signature-pad" class="signature-pad">
                     <div class="signature-pad--body">
                       <canvas id="sig"></canvas>

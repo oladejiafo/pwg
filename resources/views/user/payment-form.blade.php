@@ -47,6 +47,8 @@
 if(Session::has('payall'))
 {
     $payall = Session::get('payall');
+} elseif(isset($_REQUEST['payall'])) {
+    $payall = $_REQUEST['payall'];
 } else {
     $payall = 0;
 }
@@ -155,7 +157,7 @@ $vals=array(0,1,2);
                     @csrf
                     <!-- col-lg-6 col-md-6 col-12 offset-md-3 offset-lg-3 -->
 
-                    @if(in_array($levels, $vals) && (empty($completed->embassy_country) || $completed->embassy_country == null)) 
+                    @if(in_array($levels, $vals) && (empty($completed->embassy_country) || $completed->embassy_country == null || Auth::user()->country_of_residence == null)) 
                         <div class="row ">
                             <div class="col-lg-6 col-sm-12 mb-3">
                                 <div class="inputs">
@@ -312,28 +314,35 @@ $vals=array(0,1,2);
                                             $payNow = $pdet->total_price-$pays->first_payment_paid;
                                             $payNoww = $pdet->total_price-$pays->first_payment_paid;
                                             $pendMsg = "Part Paid already";
-                                            $discountPercent = $data->full_payment_discount . '%';
-                                            $discount = ($pdet->total_price * $data->full_payment_discount / 100);
+                                            $discountPercent =  '5%'; //$data->full_payment_discount
+                                            $discount = ($payNow * 5 / 100);
                                         } else {
                                             $payNow = $pdet->total_price;
                                             $payNoww = $pdet->total_price;
                                             $pendMsg = "Full Payment";
-                                            $discountPercent = $data->full_payment_discount . '%';
-                                            $discount = ($pdet->total_price * $data->full_payment_discount / 100);
+                                            $discountPercent = '5%';
+                                            $discount = ($payNow * 5 / 100);
                                         }
                                     } elseif($pays->first_payment_status =="Paid" && $pays->second_payment_status =="PENDING"){
                                         $payNow = $pdet->total_price - $pdet->first_payment_price;
                                         $payNoww = $payNow;
                                         $pendMsg = "Full Outstanding Payment";
 
-                                        $discountPercent = $data->full_payment_discount . '%';
-                                        $discount = ($pdet->total_price * $data->full_payment_discount / 100);
-                                    } elseif ($pays->second_payment_status =="Paid" && $pays->third_payment_status =="PENDING") {
+                                        $discountPercent = '5%';
+                                        $discount = ($payNow * 5 / 100);
+                                    } elseif ($pays->first_payment_status =="Paid" && $pays->second_payment_status =="Paid" && $pays->third_payment_status =="PENDING") {
                                         $payNow = $pdet->third_payment_price;
                                         $payNoww = $payNow;
                                         $pendMsg = "";
                                         $discountPercent = '';
                                         $discount = 0;
+                                    } elseif($pays->first_payment_status =="PENDING" && $pays->second_payment_status =="PENDING" & $pays->third_payment_status =="PENDING") {
+                                        $payNow = $pdet->total_price;
+                                        $payNoww = $payNow;
+                                        $pendMsg = "Full Payment";
+
+                                        $discountPercent = '5%';
+                                        $discount = ($payNow * 5 / 100);
                                     }else{
                                         $payNow = 0;
                                         $payNoww = $payNow;
@@ -374,7 +383,7 @@ $vals=array(0,1,2);
                                                     First Payment
 
                                                     @endif
-                                                    <span style="font-size:11px">(+ 5% VAT)</span>
+                                                    <span style="font-size:11px">@if($vat>0)(+ 5% VAT)@endif</span>
                                                     @if($pends>1) 
                                                     <br>
                                                     <font style='font-size:10px;color:red'><i fa fa-arrow-up></i>  {{ $pendMsg }} </font> 
@@ -400,7 +409,7 @@ $vals=array(0,1,2);
                                                     @else
                                                     Second Payment
                                                     @endif
-                                                    <span style="font-size:11px">(+ 5% VAT)</span>
+                                                    <span style="font-size:11px">@if($vat>0)(+ 5% VAT)@endif</span>
                                                 </div>
                                                 <div class="right-section col-6" align="right">
 
@@ -425,7 +434,7 @@ $vals=array(0,1,2);
                                                     @else
                                                     Third Payment
                                                     @endif
-                                                    <span style="font-size:11px">(+ 5% VAT)</span>
+                                                    <span style="font-size:11px">@if($vat>0)(+ 5% VAT)@endif</span>
                                                 </div>
                                                 <div class="right-section col-6" align="right">
                                                     @if( $whichPayment ==  "Third Payment")
@@ -470,6 +479,23 @@ $vals=array(0,1,2);
                                                     <span style="font-size:11px">AED</span>
                                                 </div>
                                             </div>
+                                            @if($payall==1 && isset($discount) && $discount>0)
+                                            <div class="total-sec row mt-3 showDiscount">
+                                                <div class="left-section col-6">
+                                                     Full Payment Discount (-{{($discountPercent) ? $discountPercent : ''}})
+                                                    
+                                                </div>
+                                                <div class="right-section col-6" align="right">
+                                              
+                                                    <span id="discountValue">{{number_format($discount,2)}} </span>
+                                                    <span style="font-size:11px" id="discountVal">AED</span>
+                                                    <input type="hidden" name="discount" id="myDiscount" value="{{$discount}}">
+                                                    <input type="hidden" name="discountCode" id="myDiscountCode" value="">
+                                                    
+                                                </div>
+                                                
+                                            </div>
+                                            @else
                                             <div class="total-sec row mt-3 showDiscount" id ="showDiscount">
                                                 <div class="left-section col-6">
                                                
@@ -486,6 +512,7 @@ $vals=array(0,1,2);
                                                 </div>
                                                 
                                             </div>
+                                            @endif
                                             <input type="hidden" name="vats" id="vats" value="{{$vat}}">
                                         </div>
                                     </div>
@@ -511,14 +538,14 @@ $vals=array(0,1,2);
                                     <div class="partial-total-sec">
                                   
                                     @if($diff > 0 && $payall ==0) 
-                                        <h2 style="font-size: 1em;">Now you will pay the balance on first installment only <b>{{ number_format($pends) }}</b> AED <span style="font-size:11px;opacity:0.6">@if($vat>0) (VAT inclusive) @endif</span></h2>
+                                        <h2 style="font-size: 1em;">Now you will pay the balance on first installment only <b>{{ number_format($pends) }}</b> AED <span style="font-size:11px;opacity:0.6">@if($vat>0) (VAT inclusive @if($discount>0) ,less Discount  @endif) @endif</span></h2>
                                         <input type="hidden" id="amountLink2" name="totalpay" value="{{  number_format($payNoww, 0, '.', '') }}">
                                         <input type="hidden" id="totaldue" name="totaldue" value="{{$payNow + $vat}}">
                                         <input type="hidden" name="totalremaining" value="{{$pends}}">
                                     @else
-                                        <h2 style="font-size: 1em;">Now you will pay {{strtolower($which)}} installment only <span id="amountLink"><b>{{number_format($payNoww + $vat)}}</b></span> AED <span style="font-size:11px;opacity:0.6">@if($vat>0) (VAT inclusive) @endif</span></h2>
-                                        <input type="hidden" id="amountLink2" name="totalpay" value="{{  number_format($payNoww + $vat, 0, '.', '') }}">
-                                        <input type="hidden" id="totaldue" name="totaldue" value="{{$payNoww + $vat}}">
+                                        <h2 style="font-size: 1em;">Now you will pay {{strtolower($which)}} installment only <span id="amountLink"><b>{{number_format($payNoww + $vat -$discount)}}</b></span> AED <span style="font-size:11px;opacity:0.6">@if($vat>0) (VAT inclusive @if($discount>0) ,less Discount  @endif) @else @if($discount>0) (less Discount)  @endif @endif</span></h2>
+                                        <input type="hidden" id="amountLink2" name="totalpay" value="{{  number_format($payNoww + $vat -$discount, 0, '.', '') }}">
+                                        <input type="hidden" id="totaldue" name="totaldue" value="{{$payNoww + $vat -$discount}}">
                                     @endif
 
                                     </div>
