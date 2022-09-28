@@ -79,33 +79,29 @@ class Quickbook
         $productObj = $dataService->Query("select * from Item Where Name='Concrete'");
         $updatItem = $dataService->FindbyId('Item', $productObj[0]->Id);
         $apply = DB::table('applications')
-            ->where('destination_id', '=', Session::get('myproduct_id'))
-            ->where('client_id', '=', Auth::id())
+            ->select('applications.*','pricing_plans.total_price as planTotal', 'pricing_plans.first_payment_price as planFirstPrice', 'pricing_plans.second_payment_price as  planSecondPrice', 'pricing_plans.third_payment_price as  planThirdPrice')
+            ->join('pricing_plans', 'pricing_plans.id', '=', 'applications.pricing_plan_id')
+            ->where('applications.destination_id', Session::get('myproduct_id'))
+            ->where('applications.client_id', Auth::id())
             ->first();
         $unitPrice = 0;
         $paidAmount = 0;
         $tax = 0;
 
-        // if ($paymentDetails->payment_type ==  'Full-Outstanding Payment') {
-        //     $unitPrice = $apply->total_price - $apply->total_vat;
-        //     $paidAmount = $paymentDetails->total_paid;
-        //     $tax = $apply->total_vat;
-        // } else {
-            if ($paymentType == 'First Payment') {
-                $unitPrice = $apply->first_payment_price - $apply->first_payment_vat;
-                $paidAmount = $apply->first_payment_paid;
-                $tax = $apply->first_payment_vat;
-            } else if ($paymentType == 'Second Payment') {
-                $unitPrice = $apply->second_payment_price - $apply->second_payment_vat;
-                $paidAmount = $apply->first_payment_paid;
-                $tax = $apply->second_payment_vat;
-            } else if ($paymentType == 'Third Payment') {
-                $unitPrice = $apply->third_payment_price - $apply->third_payment_vat;
-                $paidAmount = $apply->third_payment_paid;
-                $tax = $apply->third_payment_vat;
-            }
-        // }
-
+        if ($paymentType == 'First Payment') {
+            $unitPrice = $apply->first_payment_price - $apply->first_payment_vat;
+            $paidAmount = $apply->first_payment_paid;
+            $tax = $apply->first_payment_vat;
+        } else if ($paymentType == 'Second Payment') {
+            $unitPrice = $apply->second_payment_price - $apply->second_payment_vat;
+            $paidAmount = $apply->first_payment_paid;
+            $tax = $apply->second_payment_vat;
+        } else if ($paymentType == 'Third Payment') {
+            $unitPrice = $apply->third_payment_price - $apply->third_payment_vat;
+            $paidAmount = $apply->third_payment_paid;
+            $tax = $apply->third_payment_vat;
+        }
+        
         $productChange = [
             'UnitPrice' => $unitPrice,
             'Taxable' => true,
@@ -123,95 +119,98 @@ class Quickbook
             ->where('active_until', '>=', date('Y-m-d'))
             ->where('active', '=', 1)
             ->first();
-
-        if ($paymentDetails->invoice_no && $paymentDetails->invoice_id) {
-            $oldInvoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
-            $invoiceChange = [
-                "Deposit" => $paidAmount,
-            ];
-            $theInvoiceObj = Invoice::update($oldInvoice, $invoiceChange);
-            $invoiceData = $dataService->Update($theInvoiceObj);
-        } else {
-            if ($paymentDetails->payment_type ==  'Full-Outstanding Payment') {
-                $theResourceObj = Invoice::create([
-                    "Line" => [
+        
+        if ($paymentDetails->payment_type ==  'Full-Outstanding Payment') {
+            $destination = product::find($apply->destination_id);
+            $theResourceObj = Invoice::create([
+                "Line" => [
+                    [
+                        "Description" => 'First payment',
+                        "Amount" => $apply->planFirstPrice,
+                        "DetailType" => 
+                        "SalesItemLineDetail",
+                        "SalesItemLineDetail" =>
                         [
-                            "Amount" => $unitPrice,
-                            "DetailType" => 'SalesItemLineDetail',
-                            'SalesItemLineDetail' => [
-                                "ItemRef" => [
-                                    "value" => $productObj[0]->Id,
-                                    "name" => $updatItem->Name,
-                                    "Description" => $updatItem->Description
-                                ],
-                                "TaxCodeRef" => [
-                                    "value" => "Tax"
-                                ],
-                                'UnitPrice' => $unitPrice,
-                                'Qty' => 1.0
+                            "ItemRef" =>
+                            [
+                                "value" => 1,
+                                "name" => 'First payment'
                             ],
-
+                            'UnitPrice' => $apply->planFirstPrice,
+                            'Qty' => 1.0
                         ]
                     ],
-                    "Line" => [
-                        [
-                            "Amount" => $unitPrice,
-                            "DetailType" => 'SalesItemLineDetail',
-                            'SalesItemLineDetail' => [
-                                "ItemRef" => [
-                                    "value" => $productObj[0]->Id,
-                                    "name" => $updatItem->Name,
-                                    "Description" => $updatItem->Description
-                                ],
-                                "TaxCodeRef" => [
-                                    "value" => "Tax"
-                                ],
-                                'UnitPrice' => $unitPrice,
-                                'Qty' => 1.0
+                    [
+                        "Description" => 'Second Payment' ,
+                        "Amount" => $apply->planSecondPrice,
+                        "DetailType" => "SalesItemLineDetail",
+                        "SalesItemLineDetail" => [
+                            "ItemRef" =>
+                            [
+                                "value" => 2,
+                                "name" => 'Second Payment'
                             ],
-
+                            'UnitPrice' => $apply->planSecondPrice,
+                            'Qty' => 1.0
                         ]
                     ],
-                    "Line" => [
+                    [
+                        "Description" => 'Third Payment',
+                        "Amount" => $apply->planThirdPrice,
+                        "DetailType" => "SalesItemLineDetail",
+                        "SalesItemLineDetail" => 
                         [
-                            "Amount" => $unitPrice,
-                            "DetailType" => 'SalesItemLineDetail',
-                            'SalesItemLineDetail' => [
-                                "ItemRef" => [
-                                    "value" => $productObj[0]->Id,
-                                    "name" => $updatItem->Name,
-                                    "Description" => $updatItem->Description
-                                ],
-                                "TaxCodeRef" => [
-                                    "value" => "Tax"
-                                ],
-                                'UnitPrice' => $unitPrice,
-                                'Qty' => 1.0
+                            "ItemRef" => 
+                            [
+                                "value" => 3,
+                                "name" => "Hours"
                             ],
-
+                            'UnitPrice' => $apply->planThirdPrice,
+                            'Qty' => 1.0
                         ]
                     ],
-                    "Deposit" => $paidAmount,
-                    "TxnTaxDetail" => [
-                        "TxnTaxCodeRef" => [
-                            "value" => "5",  // tax rate
-                            "name" => "VAT" // tax rate name
-                        ],
-                        "TotalTax" => $tax,
-                    ],
-                    "CustomerRef" => [
-                        "value" => ($customer->Id) ??  $customer[0]->Id
-                    ],
-                    "BillEmail" => [
-                        "Address" => Auth::user()->email
-                    ],
-                    "BillEmailCc" => [
-                        "Address" => "a@intuit.com"
-                    ],
-                    "BillEmailBcc" => [
-                        "Address" => "v@intuit.com"
+                    [
+                        "DetailType" => "DiscountLineDetail",
+                        "DiscountLineDetail"  => [
+                            "PercentBased" => true,
+                            "DiscountPercent" => 0,  //$destination->full_payment_discount
+                        ]
                     ]
-                ]);
+                ],
+                "ApplyTaxAfterDiscount" => true, 
+                "Deposit" => $apply->total_paid,
+                "TxnTaxDetail" => [
+                    "TxnTaxCodeRef" => [
+                        "value" => "5",  // tax rate
+                        "name" => "VAT" // tax rate name
+                    ],
+                    "TotalTax" => $apply->total_vat,
+                ],
+                "CustomerRef" => [
+                    "value" => ($customer->Id) ??  $customer[0]->Id
+                ],
+                "BillEmail" => [
+                    "Address" => Auth::user()->email
+                ],
+                "BillEmailCc" => [
+                    "Address" => "a@intuit.com"
+                ],
+                "BillEmailBcc" => [
+                    "Address" => "v@intuit.com"
+                ]
+            ]);
+            $invoiceData = $dataService->Add($theResourceObj);
+            $paymentDetails->invoice_no = $invoiceData->DocNumber;
+            $paymentDetails->invoice_id = $invoiceData->Id;
+            $paymentDetails->save();
+        } else {
+            if ($paymentDetails->invoice_no && $paymentDetails->invoice_id) {
+                $oldInvoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
+                $invoiceChange = [
+                    "Deposit" => $paidAmount,
+                ];
+                $theInvoiceObj = Invoice::update($oldInvoice, $invoiceChange);
+                $invoiceData = $dataService->Update($theInvoiceObj);
             } else {
                 if ($coupon) {
                     $theResourceObj = Invoice::create([
@@ -232,7 +231,8 @@ class Quickbook
                                     'Qty' => 1.0
                                 ],
 
-                            ], [
+                            ], 
+                            [
 
                                 "DetailType" => "DiscountLineDetail",
                                 "DiscountLineDetail"  => [
@@ -312,6 +312,7 @@ class Quickbook
             $paymentDetails->invoice_id = $invoiceData->Id;
             $paymentDetails->save();
         }
+            
         if ($error) {
             echo "The Status code is: " . $error->getHttpStatusCode() . "\n";
             echo "The Helper message is: " . $error->getOAuthHelperError() . "\n";

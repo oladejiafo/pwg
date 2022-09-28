@@ -897,8 +897,8 @@ class HomeController extends Controller
                     // Notification Ends ############ 
                     $dest = product::find($id);
                     $dest_name = $dest->name;
-                    //$payment = $this->getPaymentName();
-//$invoice = Quickbook::createInvoice($payment);
+                    // $payment = $this->getPaymentName();
+                    // $invoice = Quickbook::createInvoice($payment);
                     $msg = "Awesome! Payment Successful!";
                     return view('user.payment-success', compact('id'));
                 } else {
@@ -1177,11 +1177,11 @@ class HomeController extends Controller
 
     public function getInvoice()
     {
-        $paymentDetails = Payment::where('id', Session::get('paymentId'))->first();
         $payment = $this->getPaymentName();
         $dataService = Quickbook::connectQucikBook();
-        Quickbook::createInvoice($payment);
+        $invoice = Quickbook::createInvoice($payment);
         $filename = Auth::id().'-'.$payment.'-'."Invoice.pdf";
+        $paymentDetails = Payment::where('id', Session::get('paymentId'))->first();
         $invoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
         $pdfData = $dataService->DownloadPDF($invoice, null, true);
         header('Content-Description: File Transfer');
