@@ -49,7 +49,6 @@ class ApplicationController extends Controller
         if (Auth::id()) {
             $request->validate([
                 'applied_country' => 'required',
-                'cv' => 'required|mimes:pdf',
             ]);
 
             $client = User::find(Auth::id());
@@ -58,6 +57,7 @@ class ApplicationController extends Controller
             $applicant = Applicant::where('client_id', Auth::id())
                 ->where('destination_id', $request->product_id)
                 ->first();
+
             $applicant->application_stage_status = 3;
             $applicant->assigned_agent_id = $request->agent_code;
             $applicant->save();
@@ -69,7 +69,6 @@ class ApplicationController extends Controller
     {
         Session::forget('info');
         if (Auth::id()) {
-            $client = User::find(Auth::id());
 
             $applicant = Applicant::where('client_id', Auth::id())
                 ->where('destination_id', $productId)
@@ -104,7 +103,9 @@ class ApplicationController extends Controller
             'country_birth' => 'required',
             'sex' => 'required',
             'civil_status' => 'required',
-            'citizenship' => 'required'
+            'citizenship' => 'required',
+            'cv' => 'required|mimes:pdf',
+
         ]);
 
         if ($validator->fails()) {
@@ -114,6 +115,9 @@ class ApplicationController extends Controller
 
             ), 200); // 400 being the HTTP code for an invalid request.
         }
+        $client = User::find(Auth::id());
+
+        $client->addMedia($request->file('cv'))->toMediaCollection(User::$media_collection_main_resume);
 
         User::where('id', Auth::id())
             ->update([
@@ -127,8 +131,16 @@ class ApplicationController extends Controller
                 'country_of_birth' => $request['country_birth'],
                 'citizenship' => $request['citizenship'],
                 'sex' => $request['sex'],
-                'civil_status' => $request['civil_status']
+                'civil_status' => $request['civil_status'],
             ]);
+
+            $applicant = Applicant::where('client_id', Auth::id())
+                ->where('destination_id', $request->destination_id)
+                // ->sortBy('id', 'desc')
+                ->first();
+            $applicant->assigned_agent_id = $request->agent_code;
+            $applicant->save();
+
         return Response::json(array(
             'success' => true
         ), 200);

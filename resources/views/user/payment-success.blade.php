@@ -78,12 +78,12 @@
                                 <input type="checkbox" name="invoicelater" value="1">
                                 <span class="slider round"></span>
                             </label>
-                            <p> Get the @if($applicant->first_payment_status == 'Paid' || $applicant->second_payment_status == 'Paid' || $applicant->third_payment_status == 'Paid') invoice @else reciept @endif Later </p>
+                            <p> Get the invoice reciept Later </p>
                         </div>
                         @if($applicant->application_stage_status == 5)
                           <form action="{{ url('myapplication') }}" method="GET">
                         @else
-                            <form action="{{ route('applicant',$id) }}" method="GET">
+                            <form action="{{ route('applicant/details',$id) }}" method="GET">
                         @endif
                             <input type="hidden" name="pid" value="{{$id}}">
                             <button  style="font-size:18px" class="btn btn-primary ose">APPLICATION DETAILS</button>

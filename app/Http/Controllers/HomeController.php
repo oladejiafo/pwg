@@ -261,6 +261,7 @@ class HomeController extends Controller
         if (Auth::id()) {
           
             $id = Auth::user()->id;
+            Session::forget('payall');
 
             \DB::statement("SET SQL_MODE=''");
 
@@ -696,11 +697,60 @@ class HomeController extends Controller
                         // $data->application_stage_status = 2;
 
                         $res = $data->save();
-                    } else {
+                    } else {                    
+
                         $data->total_price = $thisPayment;
                         $data->total_paid = $thisPaymentMade;
                         $data->total_vat = $thisVat;
                         $data->total_discount = $thisDiscount;
+                        $data->status = 'WAITING_FOR_EMBASSY_APPEARANCE';
+
+                        //Splits
+                        $paysplit = DB::table('pricing_plans')
+                        ->where('destination_id', '=', $request->pid)
+                        ->first();
+
+                        if(isset($paysplit))
+                        {
+                            //First Split
+                            if(isset($thisVat) && $thisVat>0) 
+                            { 
+                                $firstVat = ($paysplit->first_payment_price*5)/100;
+                            } else {
+                                $firstVat=0;
+                            }
+                            $data->first_payment_price = $paysplit->first_payment_price +$firstVat;
+                            $data->first_payment_paid = $paysplit->first_payment_price +$firstVat;
+                            $data->first_payment_vat = $firstVat;
+                            // $data->first_payment_discount = $thisDiscount;
+                            $data->first_payment_status = 'Paid';
+
+                            //Second Split
+                            if(isset($thisVat) && $thisVat>0) 
+                            { 
+                                $secondVat = ($paysplit->second_payment_price*5)/100;
+                            } else {
+                                $secondVat=0;
+                            }
+                            $data->second_payment_price = $paysplit->second_payment_price +$secondVat;
+                            $data->second_payment_paid = $paysplit->second_payment_price +$secondVat;
+                            $data->second_payment_vat = $secondVat;
+                            // $data->first_payment_discount = $thisDiscount;
+                            $data->second_payment_status = 'Paid';
+
+                            //Third Split
+                            if(isset($thisVat) && $thisVat>0) 
+                            { 
+                                $thirdVat = ($paysplit->third_payment_price*5)/100;
+                            } else {
+                                $thirdVat=0;
+                            }
+                            $data->third_payment_price = $paysplit->third_payment_price +$thirdVat;
+                            $data->third_payment_paid = $paysplit->third_payment_price +$thirdVat;
+                            $data->third_payment_vat = $thirdVat;
+                            $data->third_payment_discount = $thisDiscount;
+                            $data->third_payment_status = 'Paid';
+                        }
                     }
 
                     $data->coupon_code = $thisCode;
@@ -762,6 +812,49 @@ class HomeController extends Controller
                         $datas->total_paid = $thisPaymentMade;
                         $datas->total_vat = $thisVat;
                         $datas->total_discount = $thisDiscount;
+
+                        $datas->status = 'WAITING_FOR_EMBASSY_APPEARANCE';
+
+                        //Splits
+                        $paysplit = DB::table('pricing_plans')
+                        ->where('destination_id', '=', $request->pid)
+                        ->first();
+
+                        if(isset($paysplit))
+                        {
+                            //First Split
+                            if(isset($thisVat) && $thisVat>0) 
+                            { 
+                                $firstVat = ($paysplit->first_payment_price*5)/100;
+                            }
+                            $datas->first_payment_price = $paysplit->first_payment_price +$firstVat;
+                            $datas->first_payment_paid = $paysplit->first_payment_price +$firstVat;
+                            $datas->first_payment_vat = $firstVat;
+                            // $datas->first_payment_discount = $thisDiscount;
+                            $datas->first_payment_status = 'Paid';
+
+                            //Second Split
+                            if(isset($thisVat) && $thisVat>0) 
+                            { 
+                                $secondVat = ($paysplit->second_payment_price*5)/100;
+                            }
+                            $datas->second_payment_price = $paysplit->second_payment_price +$secondVat;
+                            $datas->second_payment_paid = $paysplit->second_payment_price +$secondVat;
+                            $datas->second_payment_vat = $secondVat;
+                            // $datas->first_payment_discount = $thisDiscount;
+                            $datas->second_payment_status = 'Paid';
+
+                            //Third Split
+                            if(isset($thisVat) && $thisVat>0) 
+                            { 
+                                $thirdVat = ($paysplit->third_payment_price*5)/100;
+                            }
+                            $datas->third_payment_price = $paysplit->third_payment_price +$thirdVat;
+                            $datas->third_payment_paid = $paysplit->third_payment_price +$thirdVat;
+                            $datas->third_payment_vat = $thirdVat;
+                            $datas->third_payment_discount = $thisDiscount;
+                            $datas->third_payment_status = 'Paid';
+                        }
                     }
                         $datas->coupon_code = $thisCode;
                         // $datas->application_stage_status = 2;

@@ -367,6 +367,7 @@
   </div>
 
 </div>
+
 @if($paid->third_payment_status !='Paid')
   @if(isset($prod->id))
     @php  
