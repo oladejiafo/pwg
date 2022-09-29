@@ -8,13 +8,12 @@ use QuickBooksOnline\API\DataService\DataService;
 use QuickBooksOnline\API\PlatformService\PlatformService;
 use QuickBooksOnline\API\Core\Http\Serialization\XmlObjectSerializer;
 use QuickBooksOnline\API\Facades\Invoice;
-use QuickBooksOnline\API\Facades\SalesReceipt;
+use QuickBooksOnline\API\Facades\payment;
 use QuickBooksOnline\API\Facades\Customer;
 use QuickBooksOnline\API\Facades\Item;
-use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
-use App\Models\payment;
+use App\Models\payment as PaymentDetails;
 use Session;
 use DB;
 
@@ -53,14 +52,13 @@ class Quickbook
         $dataService->setLogLocation("/Users/hlu2/Desktop/newFolderForLog");
         $customer = $dataService->Query("select * from Customer Where PrimaryEmailAddr='" . Auth::user()->email . "'");
         $dataService->throwExceptionOnError(true);
-        $paymentDetails = Payment::where('id', Session::get('paymentId'))->first();
-        // dd($paymentDetails);
+        $paymentDetails = PaymentDetails::where('id', Session::get('paymentId'))->first();
         $error = $dataService->getLastError();
         if ($customer) {
         } else {
             $customer = Customer::create([
                 "Notes" =>  "Applicant",
-                "Title" => ((Auth::user()->sex == 'MALE') ? 'Mr. ' : ((Auth::user()->sex == 'FEMALE') ? 'Miss ': ' ')),
+                "Title" => ((Auth::user()->sex == 'MALE') ? 'Mr. ' : ((Auth::user()->sex == 'FEMALE') ? 'Miss ' : ' ')),
                 "GivenName" =>  Auth::user()->name,
                 "MiddleName" =>  Auth::user()->middle_name,
                 "FamilyName" =>  Auth::user()->sur_name,
@@ -77,7 +75,7 @@ class Quickbook
             $customer = $dataService->Add($customer);
         }
 
-        // $item = $dataService->Query("select * from Item");
+        // $payment = $dataService->Query("select * from Payment");
         $productObj = $dataService->Query("select * from Item Where Name='Concrete'");
         $updatItem = $dataService->FindbyId('Item', $productObj[0]->Id);
         $apply = DB::table('applications')
@@ -174,7 +172,7 @@ class Quickbook
                         "DetailType" => "DiscountLineDetail",
                         "DiscountLineDetail"  => [
                             "PercentBased" => true,
-                            "DiscountPercent" => 0,  //$destination->full_payment_discount
+                            "DiscountPercent" => $destination->full_payment_discount,
                         ]
                     ]
                 ],
@@ -205,135 +203,54 @@ class Quickbook
             $paymentDetails->invoice_id = $invoiceData->Id;
             $paymentDetails->save();
         } else {
+            if ($paymentType == 'First Payment') {
+                $firstPaymentDue = PaymentDetails::where('application_id', $apply->id)
+                    ->where('payment_type', $paymentType)
+                    ->count();
+                if ($firstPaymentDue == 2) {
+                    $prevInvoice  =  PaymentDetails::where('application_id', $apply->id)
+                        ->where('payment_type', $paymentType)
+                        ->first();
+                    $paymentObj = Payment::create([
 
-            $firstPaymentDue = Payment::where('application_id' ,$apply->id)
-                                    ->where('payment_type', 'First Payment')
-                                    ->count();
-            if($firstPaymentDue == 2){
-                $prevInvoice  =  Payment::where('application_id' ,$apply->id)
-                            ->where('payment_type', 'First Payment')
-                            ->first();
-                // $data = $dataService->FindbyId('Invoice', $prevInvoice->invoice_id);
-                // dd($data);
-                $paymenttObj = Payment::create([
-                        "CustomerRef" =>
-                        [
-                            "value" => ($customer->Id) ??  $customer[0]->Id
-                        ],
-                        "TotalAmt" => $paymentDetails->invoice_amount,
+                        "TotalAmt" =>  $paymentDetails->invoice_amount,
+
+                        "UnappliedAmt" => 0.00,
+
+                        "CustomerRef" => ($customer->Id) ??  $customer[0]->Id,
+                        "PaymentRefNum" => $paymentDetails->bank_reference_no,
                         "Line" => [
-                        [
-                            "Amount" => $paymentDetails->invoice_amount,
-                            "LinkedTxn" => [
+
                             [
-                                "TxnId" => "234",
-                                "TxnType" => "Invoice"
-                            ]]
-                        ]]
-                    ]);
-                dd($paymenttObj);
-                $resultingObj = $dataService->Add($paymenttObj);
-                dd($resultingObj);
-                $paymentDetails->invoice_id = $resultingObj->Id;
-                $paymentDetails->save();
-            } else {
-                if ($coupon) {
-                    $theResourceObj = Invoice::create([
-                        "Line" => [
-                            [
-                                "Amount" => $unitPrice,
-                                "DetailType" => 'SalesItemLineDetail',
-                                'SalesItemLineDetail' => [
-                                    "ItemRef" => [
-                                        "value" => $productObj[0]->Id,
-                                        "name" => $updatItem->Name,
-                                        "Description" => $updatItem->Description
+
+                                "Amount" => $paymentDetails->invoice_amount,
+
+                                "LinkedTxn" => [
+
+                                    [
+
+                                        "TxnId" => $prevInvoice->invoice_id,
+
+                                        "TxnType" => "Invoice"
+
                                     ],
-                                    "TaxCodeRef" => [
-                                        "value" => "Tax"
-                                    ],
-                                    'UnitPrice' => $unitPrice,
-                                    'Qty' => 1.0
+
                                 ],
 
-                            ],
-                            [
-                                "DetailType" => "DiscountLineDetail",
-                                "DiscountLineDetail"  => [
-                                    "PercentBased" => true,
-                                    "DiscountPercent" => $coupon->amount
-                                ]
+                            ]
 
-                            ]
-                        ],
-                        "Deposit" => $paidAmount,
-                        "TxnTaxDetail" => [
-                            "TxnTaxCodeRef" => [
-                                "value" => "5",  // tax rate
-                                "name" => "VAT" // tax rate name
-                            ],
-                            "TotalTax" => $tax,
-                        ],
-                        "CustomerRef" => [
-                            "value" => ($customer->Id) ??  $customer[0]->Id
-                        ],
-                        "BillEmail" => [
-                            "Address" => Auth::user()->email
-                        ],
-                        "BillEmailCc" => [
-                            "Address" => "a@intuit.com"
-                        ],
-                        "BillEmailBcc" => [
-                            "Address" => "v@intuit.com"
                         ]
+
                     ]);
+                    $resultingObj = $dataService->Add($paymentObj);
+                    $paymentDetails->invoice_id = $resultingObj->Id;
+                    $paymentDetails->save();
                 } else {
-                    $theResourceObj = Invoice::create([
-                        "Line" => [
-                            [
-                                "Description" => $updatItem->Description,
-                                "Amount" => $unitPrice,
-                                "DetailType" => "SalesItemLineDetail",
-                                "SalesItemLineDetail" => [
-                                    "ItemRef" => [
-                                        "value" => $productObj[0]->Id,
-                                        "name" => $updatItem->Name
-                                    ],
-                                    "TaxCodeRef" => [
-                                        "value" => "Tax"
-                                    ],
-                                    'UnitPrice' => $unitPrice,
-                                    'Qty' => 1.0
-                                ]
-                            ]
-                        ],
-                        "Deposit" => $paidAmount,
-                        "TxnTaxDetail" => [
-                            "TxnTaxCodeRef" => [
-                                "value" => "5",  // tax rate
-                                "name" => "VAT" // tax rate name
-                            ],
-                            "TotalTax" => $tax,
-                        ],
-                        "CustomerRef" => [
-                            "value" => ($customer->Id) ??  $customer[0]->Id
-                        ],
-                        "BillEmail" => [
-                            "Address" => Auth::user()->email
-                        ],
-                        "BillEmailCc" => [
-                            "Address" => "a@intuit.com"
-                        ],
-                        "BillEmailBcc" => [
-                            "Address" => "v@intuit.com"
-                        ]
-                    ]);
+                    self::quickBook($dataService, $coupon, $unitPrice, $productObj, $updatItem, $paidAmount, $tax, $customer, $paymentDetails);
                 }
+            } elseif ($paymentType == 'Second Payment' || $paymentType == 'Third Payment') {
+                self::quickBook($dataService, $coupon, $unitPrice, $productObj, $updatItem, $paidAmount, $tax, $customer, $paymentDetails);
             }
-            $invoiceData = $dataService->Add($theResourceObj);
-            $paymentDetails->invoice_no = $invoiceData->DocNumber;
-            $paymentDetails->invoice_id = $invoiceData->Id;
-            $paymentDetails->save();
         }
 
         if ($error) {
@@ -344,5 +261,105 @@ class Quickbook
         } else {
             return  true;
         }
+    }
+
+    private static function quickBook($dataService, $coupon, $unitPrice, $productObj, $updatItem, $paidAmount, $tax, $customer, $paymentDetails)
+    {
+        if ($coupon) {
+            $theResourceObj = Invoice::create([
+                "Line" => [
+                    [
+                        "Amount" => $unitPrice,
+                        "DetailType" => 'SalesItemLineDetail',
+                        'SalesItemLineDetail' => [
+                            "ItemRef" => [
+                                "value" => $productObj[0]->Id,
+                                "name" => $updatItem->Name,
+                                "Description" => $updatItem->Description
+                            ],
+                            "TaxCodeRef" => [
+                                "value" => "Tax"
+                            ],
+                            'UnitPrice' => $unitPrice,
+                            'Qty' => 1.0
+                        ],
+
+                    ],
+                    [
+                        "DetailType" => "DiscountLineDetail",
+                        "DiscountLineDetail"  => [
+                            "PercentBased" => true,
+                            "DiscountPercent" => $coupon->amount
+                        ]
+
+                    ]
+                ],
+                "Deposit" => $paidAmount,
+                "TxnTaxDetail" => [
+                    "TxnTaxCodeRef" => [
+                        "value" => "5",  // tax rate
+                        "name" => "VAT" // tax rate name
+                    ],
+                    "TotalTax" => $tax,
+                ],
+                "CustomerRef" => [
+                    "value" => ($customer->Id) ??  $customer[0]->Id
+                ],
+                "BillEmail" => [
+                    "Address" => Auth::user()->email
+                ],
+                "BillEmailCc" => [
+                    "Address" => "a@intuit.com"
+                ],
+                "BillEmailBcc" => [
+                    "Address" => "v@intuit.com"
+                ]
+            ]);
+        } else {
+            $theResourceObj = Invoice::create([
+                "Line" => [
+                    [
+                        "Description" => $updatItem->Description,
+                        "Amount" => $unitPrice,
+                        "DetailType" => "SalesItemLineDetail",
+                        "SalesItemLineDetail" => [
+                            "ItemRef" => [
+                                "value" => $productObj[0]->Id,
+                                "name" => $updatItem->Name
+                            ],
+                            "TaxCodeRef" => [
+                                "value" => "Tax"
+                            ],
+                            'UnitPrice' => $unitPrice,
+                            'Qty' => 1.0
+                        ]
+                    ]
+                ],
+                "Deposit" => $paidAmount,
+                "TxnTaxDetail" => [
+                    "TxnTaxCodeRef" => [
+                        "value" => "5",  // tax rate
+                        "name" => "VAT" // tax rate name
+                    ],
+                    "TotalTax" => $tax,
+                ],
+                "CustomerRef" => [
+                    "value" => ($customer->Id) ??  $customer[0]->Id
+                ],
+                "BillEmail" => [
+                    "Address" => Auth::user()->email
+                ],
+                "BillEmailCc" => [
+                    "Address" => "a@intuit.com"
+                ],
+                "BillEmailBcc" => [
+                    "Address" => "v@intuit.com"
+                ]
+            ]);
+        }
+        $invoiceData = $dataService->Add($theResourceObj);
+        $paymentDetails->invoice_no = $invoiceData->DocNumber;
+        $paymentDetails->invoice_id = $invoiceData->Id;
+        $paymentDetails->save();
     }
 }

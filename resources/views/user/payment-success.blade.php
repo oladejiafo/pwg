@@ -70,7 +70,7 @@
                             <div class="invoice">
                                 <div class="invoice-image">
                                 </div>
-                                    <p><a href="{{url('/get/invoice')}}"> Get the invoice now </a></p>
+                                    <p><a href="{{url('/get/invoice')}}" target="_blank"> Get the invoice now </a></p>
                             </div>
                         </div>
                         <div class="invoice-later">

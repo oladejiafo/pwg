@@ -123,7 +123,7 @@
                                 <div class="input-group-btn">
                                     <span class="fileUpload btn">
                                         <span class="upl" id="upload">Choose File</span>
-                                        <input type="file" class="upload up cvupload" id="up"  name="cv" accept="application/pdf" onchange="readURL(this);" />
+                                        <input type="file" class="upload cvupload" id="up"  name="cv" accept="application/pdf" onchange="readURL(this);" />
                                         </span><!-- btn-orange -->
                                 </div><!-- btn -->
                                 @error('cv') <span class="error">{{ $message }}</span> @enderror

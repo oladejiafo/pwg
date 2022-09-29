@@ -228,7 +228,7 @@ class HomeController extends Controller
                 ]);
 
             if ($res) {
-                Session::put('payall',$request->payall);
+                Session::put('payall', $request->payall);
                 Session::put('info', 'Signature is Successful!');
                 Session::put('info_sub', 'Proceed to application');
                 return true;
@@ -259,7 +259,7 @@ class HomeController extends Controller
     public function myapplication()
     {
         if (Auth::id()) {
-          
+
             $id = Auth::user()->id;
             Session::forget('payall');
 
@@ -484,11 +484,10 @@ class HomeController extends Controller
                 ->where('client_id', '=', Auth::user()->id)
                 ->first();
 
-            $applicant_id = $apply->id; 
-            $vals =array(0,1,2);
+            $applicant_id = $apply->id;
+            $vals = array(0, 1, 2);
 
-            if(in_array($apply->application_stage_status, $vals) && (empty($apply->embassy_country) || $apply->embassy_country == null)) 
-            {
+            if (in_array($apply->application_stage_status, $vals) && (empty($apply->embassy_country) || $apply->embassy_country == null)) {
                 $request->validate([
                     'totaldue' => 'required',
                     'totalpay' => 'numeric|gte:1000',
@@ -499,7 +498,7 @@ class HomeController extends Controller
                 $request->validate([
                     'totaldue' => 'required',
                     'totalpay' => 'numeric'
-                ]); 
+                ]);
             }
             $thisPayment = $request->whichpayment;
             $thisVat = $request->vats;
@@ -639,8 +638,7 @@ class HomeController extends Controller
                 ])->first();
                 if ($datas === null) {
                     $data = new applicant;
-                    if(in_array($apply->application_stage_status, $vals) && (empty($apply->embassy_country) || $apply->embassy_country == null)) 
-                    {
+                    if (in_array($apply->application_stage_status, $vals) && (empty($apply->embassy_country) || $apply->embassy_country == null)) {
                         $data->embassy_country = $request->embassy_appearance;
                     }
                     $data->pricing_plan_id = $request->ppid;
@@ -695,7 +693,7 @@ class HomeController extends Controller
                         // $data->application_stage_status = 2;
 
                         $res = $data->save();
-                    } else {                    
+                    } else {
 
                         $data->total_price = $thisPayment;
                         $data->total_paid = $thisPaymentMade;
@@ -705,46 +703,42 @@ class HomeController extends Controller
 
                         //Splits
                         $paysplit = DB::table('pricing_plans')
-                        ->where('destination_id', '=', $request->pid)
-                        ->first();
+                            ->where('destination_id', '=', $request->pid)
+                            ->first();
 
-                        if(isset($paysplit))
-                        {
+                        if (isset($paysplit)) {
                             //First Split
-                            if(isset($thisVat) && $thisVat>0) 
-                            { 
-                                $firstVat = ($paysplit->first_payment_price*5)/100;
+                            if (isset($thisVat) && $thisVat > 0) {
+                                $firstVat = ($paysplit->first_payment_price * 5) / 100;
                             } else {
-                                $firstVat=0;
+                                $firstVat = 0;
                             }
-                            $data->first_payment_price = $paysplit->first_payment_price +$firstVat;
-                            $data->first_payment_paid = $paysplit->first_payment_price +$firstVat;
+                            $data->first_payment_price = $paysplit->first_payment_price + $firstVat;
+                            $data->first_payment_paid = $paysplit->first_payment_price + $firstVat;
                             $data->first_payment_vat = $firstVat;
                             // $data->first_payment_discount = $thisDiscount;
                             $data->first_payment_status = 'Paid';
 
                             //Second Split
-                            if(isset($thisVat) && $thisVat>0) 
-                            { 
-                                $secondVat = ($paysplit->second_payment_price*5)/100;
+                            if (isset($thisVat) && $thisVat > 0) {
+                                $secondVat = ($paysplit->second_payment_price * 5) / 100;
                             } else {
-                                $secondVat=0;
+                                $secondVat = 0;
                             }
-                            $data->second_payment_price = $paysplit->second_payment_price +$secondVat;
-                            $data->second_payment_paid = $paysplit->second_payment_price +$secondVat;
+                            $data->second_payment_price = $paysplit->second_payment_price + $secondVat;
+                            $data->second_payment_paid = $paysplit->second_payment_price + $secondVat;
                             $data->second_payment_vat = $secondVat;
                             // $data->first_payment_discount = $thisDiscount;
                             $data->second_payment_status = 'Paid';
 
                             //Third Split
-                            if(isset($thisVat) && $thisVat>0) 
-                            { 
-                                $thirdVat = ($paysplit->third_payment_price*5)/100;
+                            if (isset($thisVat) && $thisVat > 0) {
+                                $thirdVat = ($paysplit->third_payment_price * 5) / 100;
                             } else {
-                                $thirdVat=0;
+                                $thirdVat = 0;
                             }
-                            $data->third_payment_price = $paysplit->third_payment_price +$thirdVat;
-                            $data->third_payment_paid = $paysplit->third_payment_price +$thirdVat;
+                            $data->third_payment_price = $paysplit->third_payment_price + $thirdVat;
+                            $data->third_payment_paid = $paysplit->third_payment_price + $thirdVat;
                             $data->third_payment_vat = $thirdVat;
                             $data->third_payment_discount = $thisDiscount;
                             $data->third_payment_status = 'Paid';
@@ -756,8 +750,7 @@ class HomeController extends Controller
 
                     $res = $data->save();
                 } else {
-                    if(in_array($apply->application_stage_status, $vals) && (empty($apply->embassy_country) || $apply->embassy_country == null)) 
-                    {
+                    if (in_array($apply->application_stage_status, $vals) && (empty($apply->embassy_country) || $apply->embassy_country == null)) {
                         $datas->embassy_country = $request->embassy_appearance;
                     }
                     $datas->pricing_plan_id = $request->ppid;
@@ -815,47 +808,43 @@ class HomeController extends Controller
 
                         //Splits
                         $paysplit = DB::table('pricing_plans')
-                        ->where('destination_id', '=', $request->pid)
-                        ->first();
+                            ->where('destination_id', '=', $request->pid)
+                            ->first();
 
-                        if(isset($paysplit))
-                        {
+                        if (isset($paysplit)) {
                             //First Split
-                            if(isset($thisVat) && $thisVat>0) 
-                            { 
-                                $firstVat = ($paysplit->first_payment_price*5)/100;
+                            if (isset($thisVat) && $thisVat > 0) {
+                                $firstVat = ($paysplit->first_payment_price * 5) / 100;
                             }
-                            $datas->first_payment_price = $paysplit->first_payment_price +$firstVat;
-                            $datas->first_payment_paid = $paysplit->first_payment_price +$firstVat;
+                            $datas->first_payment_price = $paysplit->first_payment_price + $firstVat;
+                            $datas->first_payment_paid = $paysplit->first_payment_price + $firstVat;
                             $datas->first_payment_vat = $firstVat;
                             // $datas->first_payment_discount = $thisDiscount;
                             $datas->first_payment_status = 'Paid';
 
                             //Second Split
-                            if(isset($thisVat) && $thisVat>0) 
-                            { 
-                                $secondVat = ($paysplit->second_payment_price*5)/100;
+                            if (isset($thisVat) && $thisVat > 0) {
+                                $secondVat = ($paysplit->second_payment_price * 5) / 100;
                             }
-                            $datas->second_payment_price = $paysplit->second_payment_price +$secondVat;
-                            $datas->second_payment_paid = $paysplit->second_payment_price +$secondVat;
+                            $datas->second_payment_price = $paysplit->second_payment_price + $secondVat;
+                            $datas->second_payment_paid = $paysplit->second_payment_price + $secondVat;
                             $datas->second_payment_vat = $secondVat;
                             // $datas->first_payment_discount = $thisDiscount;
                             $datas->second_payment_status = 'Paid';
 
                             //Third Split
-                            if(isset($thisVat) && $thisVat>0) 
-                            { 
-                                $thirdVat = ($paysplit->third_payment_price*5)/100;
+                            if (isset($thisVat) && $thisVat > 0) {
+                                $thirdVat = ($paysplit->third_payment_price * 5) / 100;
                             }
-                            $datas->third_payment_price = $paysplit->third_payment_price +$thirdVat;
-                            $datas->third_payment_paid = $paysplit->third_payment_price +$thirdVat;
+                            $datas->third_payment_price = $paysplit->third_payment_price + $thirdVat;
+                            $datas->third_payment_paid = $paysplit->third_payment_price + $thirdVat;
                             $datas->third_payment_vat = $thirdVat;
                             $datas->third_payment_discount = $thisDiscount;
                             $datas->third_payment_status = 'Paid';
                         }
                     }
-                        $datas->coupon_code = $thisCode;
-                        // $datas->application_stage_status = 2;
+                    $datas->coupon_code = $thisCode;
+                    // $datas->application_stage_status = 2;
 
 
                     $res = $datas->save();
@@ -868,7 +857,7 @@ class HomeController extends Controller
                     //         ->first();
                     // Session::put('paymentId', $paymentId);
                 }
-    
+
                 ###########################################################################
 
                 $paymentLink  = $orderCreateResponse->_links->payment->href;
@@ -912,14 +901,12 @@ class HomeController extends Controller
             $paymentResponse = $paymentResponse->_embedded->payment[0];
 
             if ($paymentResponse->authResponse->success == true && $paymentResponse->authResponse->resultCode == "00") {
-
                 $paymentDetails = Payment::where('id', Session::get('paymentId'))->first();
-                
+
                 // if($paymentResponse->_id)
                 // {
                 //     $trans_id = explode('payment:', $paymentResponse->_id);
                 // }
-                
                 $paymentDetails->update([
                     'currency' => $paymentResponse->amount->currencyCode,
                     'bank_reference_no' => $paymentResponse->authResponse->authorizationCode,
@@ -981,7 +968,7 @@ class HomeController extends Controller
                         $tday = date('Y-m-d');
 
                         DB::table('notifications')->insert(
-                            ['client_id' => $userID, 'message' => $message, 'criteria' => $criteria, 'link' => $link,'created_at'=>$tday]
+                            ['client_id' => $userID, 'message' => $message, 'criteria' => $criteria, 'link' => $link, 'created_at' => $tday]
                         );
 
                         Mail::to($email)->send(new NotifyMail($dataArray));
@@ -989,8 +976,8 @@ class HomeController extends Controller
                     // Notification Ends ############ 
                     $dest = product::find($id);
                     $dest_name = $dest->name;
-                    // $payment = $this->getPaymentName();
-                    // $invoice = Quickbook::createInvoice($payment);
+                    $payment = $this->getPaymentName();
+                    Quickbook::createInvoice($payment);
                     $msg = "Awesome! Payment Successful!";
                     return view('user.payment-success', compact('id'));
                 } else {
@@ -1010,51 +997,50 @@ class HomeController extends Controller
         $pays = payment::where('id', Session::get('paymentId'))->first();
 
         $datas = applicant::where([
-               ['client_id', '=', Auth::user()->id],
-               ['id', '=', $pays->application_id],
-           ])->first();
+            ['client_id', '=', Auth::user()->id],
+            ['id', '=', $pays->application_id],
+        ])->first();
 
-           if ($datas === null) {
-           } else {
-       
-               if($pays->payment_type =='First Payment')
-               {
-                   $datas->first_payment_price = 0;
-                   $datas->first_payment_paid = 0;
-                   $datas->first_payment_vat = 0;
-                   $datas->first_payment_discount = 0;
-                   $datas->first_payment_status = 'PENDING';
-                   $datas->first_payment_remaining =  0;
-                   $datas->is_first_payment_partially_paid = 0;
-                   $datas->status = 'PENDING';
-               } elseif($pays->payment_type =='Balance on First Payment') {
+        if ($datas === null) {
+        } else {
+
+            if ($pays->payment_type == 'First Payment') {
+                $datas->first_payment_price = 0;
+                $datas->first_payment_paid = 0;
+                $datas->first_payment_vat = 0;
+                $datas->first_payment_discount = 0;
+                $datas->first_payment_status = 'PENDING';
+                $datas->first_payment_remaining =  0;
+                $datas->is_first_payment_partially_paid = 0;
+                $datas->status = 'PENDING';
+            } elseif ($pays->payment_type == 'Balance on First Payment') {
                 //    $datas->first_payment_price = 0;
-                    $datas->first_payment_paid = $datas->first_payment_paid - $pays->paid_amount;
+                $datas->first_payment_paid = $datas->first_payment_paid - $pays->paid_amount;
                 //    $datas->first_payment_vat = 0;
                 //    $datas->first_payment_discount = 0;
-                   $datas->first_payment_status = 'Partial';
-                   $datas->first_payment_remaining =  $datas->first_payment_remaining - $pays->paid_amount;
+                $datas->first_payment_status = 'Partial';
+                $datas->first_payment_remaining =  $datas->first_payment_remaining - $pays->paid_amount;
                 //    $datas->is_first_payment_partially_paid = 0;
                 //    $datas->status = 'PENDING';
-               } elseif($pays->payment_type =='Second Payment') {
-                   $datas->second_payment_price = 0;
-                   $datas->second_payment_paid = 0;
-                   $datas->second_payment_vat = 0;
-                   $datas->second_payment_discount = 0;
-                   $datas->second_payment_status = 'PENDING';
-                   $datas->status = 'PENDING';
-                   $datas->is_second_payment_partially_paid = 0;
-               } elseif($pays->payment_type =='Third Payment') {
-                   $datas->third_payment_price = 0;
-                   $datas->third_payment_paid = 0;
-                   $datas->third_payment_vat = 0;
-                   $datas->third_payment_discount = 0;
-                   $datas->third_payment_status = 'PENDING';
-                   $datas->status = 'PENDING';
-                   $datas->is_third_payment_partially_paid = 0;
-               }
-               $datas->save();
-           } 
+            } elseif ($pays->payment_type == 'Second Payment') {
+                $datas->second_payment_price = 0;
+                $datas->second_payment_paid = 0;
+                $datas->second_payment_vat = 0;
+                $datas->second_payment_discount = 0;
+                $datas->second_payment_status = 'PENDING';
+                $datas->status = 'PENDING';
+                $datas->is_second_payment_partially_paid = 0;
+            } elseif ($pays->payment_type == 'Third Payment') {
+                $datas->third_payment_price = 0;
+                $datas->third_payment_paid = 0;
+                $datas->third_payment_vat = 0;
+                $datas->third_payment_discount = 0;
+                $datas->third_payment_status = 'PENDING';
+                $datas->status = 'PENDING';
+                $datas->is_third_payment_partially_paid = 0;
+            }
+            $datas->save();
+        }
 
         //Undo Payment update
         Payment::where('id', Session::get('paymentId'))->delete();
@@ -1158,7 +1144,7 @@ class HomeController extends Controller
     public function contract($productId)
     {
         if (Auth::id()) {
-        
+
             return view('user.contract', compact('productId'));
         } else {
             return redirect('home');
@@ -1252,7 +1238,7 @@ class HomeController extends Controller
                 ->where('payment_type', $ptype)
                 ->orderBy('id', 'DESC')
                 ->get();
-// dd($applicant_id);
+            // dd($applicant_id);
             $pricing = DB::table('pricing_plans')
                 ->where('destination_id', $apply->destination_id)
                 ->where('id', $apply->pricing_plan_id)
@@ -1269,16 +1255,30 @@ class HomeController extends Controller
 
     public function getInvoice()
     {
-        $payment = $this->getPaymentName();
+        // $payment = $this->getPaymentName();
         $dataService = Quickbook::connectQucikBook();
-        $invoice = Quickbook::createInvoice($payment);
-        $filename = Auth::user()->name.'-'.$payment.'-'."Invoice.pdf";
         $paymentDetails = Payment::where('id', Session::get('paymentId'))->first();
-        $invoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
-        $pdfData = $dataService->DownloadPDF($invoice, null, true);
+        if ($paymentDetails->payment_type == 'First Payment') {
+            $firstPaymentDue = Payment::where('application_id', $paymentDetails->application_id)
+                                    ->where('payment_type', 'First Payment')
+                                    ->count();
+            if ($firstPaymentDue == 2) {
+                $filename = Auth::user()->name . '-' . $paymentDetails->payment_type . '-' . "Receipt.pdf";
+                $reciept = $dataService->FindById("Payment", $paymentDetails->invoice_id);
+                $pdfData = $dataService->DownloadPDF($reciept, null, true);
+            } else {
+                $filename = Auth::user()->name . '-' . $paymentDetails->payment_type . '-' . "Invoice.pdf";
+                $invoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
+                $pdfData = $dataService->DownloadPDF($invoice, null, true);
+            }
+        } else {
+            $filename = Auth::user()->name . '-' . $paymentDetails->payment_type . '-' . "Invoice.pdf";
+            $invoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
+            $pdfData = $dataService->DownloadPDF($invoice, null, true);
+        }
         header('Content-Description: File Transfer');
         header('Content-Type: application/pdf');
-        header('Content-Disposition: attachment; filename='.$filename);
+        header('Content-Disposition: attachment; filename=' . $filename);
         header('Content-Transfer-Encoding: binary');
         header('Expires: 0');
         header('Cache-Control: must-revalidate');
@@ -1291,19 +1291,14 @@ class HomeController extends Controller
 
     private function getPaymentName()
     {
-        $applicant = Applicant::select('first_payment_status', 'second_payment_status', 'third_payment_status')
-        ->where('client_id', Auth::id())
-        ->where('destination_id', Session::get('myproduct_id'))
-        ->first();
-        $payment = '';
-        if(($applicant->first_payment_status =="Paid" || $applicant->first_payment_status =="Partial") && $applicant->second_payment_status !="Paid")
-        {
-            $payment = 'First Payment';
-        }  else if($applicant->second_payment_status =="Paid" && $applicant->third_payment_status !="Paid"){
-            $payment = 'Second Payment';
-        } else if($applicant->first_payment_status =="Paid"  && $applicant->second_payment_status =="Paid" && $applicant->third_payment_status =="Paid"){
-            $payment = 'Third Payment';
-        }
+        $applicant = Applicant::select('*')
+            ->where('client_id', Auth::id())
+            ->orderBy('id', 'DESC')
+            ->first();
+        $payment = Payment::where('application_id', $applicant->id)
+                            ->pluck('payment_type')
+                            ->first();
+
         return $payment;
     }
 
