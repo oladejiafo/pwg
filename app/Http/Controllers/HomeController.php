@@ -498,10 +498,9 @@ class HomeController extends Controller
             } else {
                 $request->validate([
                     'totaldue' => 'required',
-                    'totalpay' => 'numeric|gte:1000'
+                    'totalpay' => 'numeric'
                 ]); 
             }
-
             $thisPayment = $request->whichpayment;
             $thisVat = $request->vats;
             $thisPayment = $request->totaldue;
@@ -514,7 +513,6 @@ class HomeController extends Controller
                 $thisCode = '';
             }
             $thisDay = date('Y-m-d');
-
 
             if ($request->totalpay == null || $request->totalpay == "" || $request->totalpay < 1000) {
                 $totalpay = 0;
@@ -862,13 +860,13 @@ class HomeController extends Controller
 
                     $res = $datas->save();
 
-                    $paymentId = payment::where([
-                                ['payment_type', '=', $request->whichpayment],
-                                ['application_id', '=', $applicant_id],
-                            ])
-                            ->pluck('id')
-                            ->first();
-                    Session::put('paymentId', $paymentId);
+                    // $paymentId = payment::where([
+                    //             ['payment_type', '=', $request->whichpayment],
+                    //             ['application_id', '=', $applicant_id],
+                    //         ])
+                    //         ->pluck('id')
+                    //         ->first();
+                    // Session::put('paymentId', $paymentId);
                 }
     
                 ###########################################################################
@@ -924,6 +922,7 @@ class HomeController extends Controller
                 
                 $paymentDetails->update([
                     'currency' => $paymentResponse->amount->currencyCode,
+                    'bank_reference_no' => $paymentResponse->authResponse->authorizationCode,
                     'transaction_id' => $paymentResponse->_id,
                 ]);
                 $monthYear = explode('-', $paymentResponse->paymentMethod->expiry);
@@ -1273,7 +1272,7 @@ class HomeController extends Controller
         $payment = $this->getPaymentName();
         $dataService = Quickbook::connectQucikBook();
         $invoice = Quickbook::createInvoice($payment);
-        $filename = Auth::id().'-'.$payment.'-'."Invoice.pdf";
+        $filename = Auth::user()->name.'-'.$payment.'-'."Invoice.pdf";
         $paymentDetails = Payment::where('id', Session::get('paymentId'))->first();
         $invoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
         $pdfData = $dataService->DownloadPDF($invoice, null, true);

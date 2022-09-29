@@ -69,7 +69,7 @@ class ApplicationController extends Controller
     {
         Session::forget('info');
         if (Auth::id()) {
-
+            $client = User::find(Auth::id());
             $applicant = Applicant::where('client_id', Auth::id())
                 ->where('destination_id', $productId)
                 ->first();
@@ -177,7 +177,7 @@ class ApplicationController extends Controller
 
         $file = $request->file('passport_copy');
         $client = User::find(Auth::id());
-
+        $fileName = '';
         if ($request->hasFile('passport_copy')) {
             $fileName = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
             $client->addMedia($request->file('passport_copy'))->usingFileName($fileName)->toMediaCollection(User::$media_collection_main);

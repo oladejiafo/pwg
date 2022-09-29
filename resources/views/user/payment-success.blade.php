@@ -83,7 +83,7 @@
                         @if($applicant->application_stage_status == 5)
                           <form action="{{ url('myapplication') }}" method="GET">
                         @else
-                            <form action="{{ route('applicant/details',$id) }}" method="GET">
+                            <form action="{{ url('applicant/details',$id) }}" method="GET">
                         @endif
                             <input type="hidden" name="pid" value="{{$id}}">
                             <button  style="font-size:18px" class="btn btn-primary ose">APPLICATION DETAILS</button>

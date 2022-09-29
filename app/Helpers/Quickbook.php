@@ -8,6 +8,7 @@ use QuickBooksOnline\API\DataService\DataService;
 use QuickBooksOnline\API\PlatformService\PlatformService;
 use QuickBooksOnline\API\Core\Http\Serialization\XmlObjectSerializer;
 use QuickBooksOnline\API\Facades\Invoice;
+use QuickBooksOnline\API\Facades\SalesReceipt;
 use QuickBooksOnline\API\Facades\Customer;
 use QuickBooksOnline\API\Facades\Item;
 use GuzzleHttp\Client;
@@ -53,12 +54,13 @@ class Quickbook
         $customer = $dataService->Query("select * from Customer Where PrimaryEmailAddr='" . Auth::user()->email . "'");
         $dataService->throwExceptionOnError(true);
         $paymentDetails = Payment::where('id', Session::get('paymentId'))->first();
+        dd($paymentDetails);
         $error = $dataService->getLastError();
         if ($customer) {
         } else {
             $customer = Customer::create([
                 "Notes" =>  "Applicant",
-                "Title" => (Auth::user()->sex == 'MALE') ? 'Mr. ' : 'Miss ',
+                "Title" => ((Auth::user()->sex == 'MALE') ? 'Mr. ' : ((Auth::user()->sex == 'FEMALE') ? 'Miss ': ' ')),
                 "GivenName" =>  Auth::user()->name,
                 "MiddleName" =>  Auth::user()->middle_name,
                 "FamilyName" =>  Auth::user()->sur_name,
@@ -79,7 +81,7 @@ class Quickbook
         $productObj = $dataService->Query("select * from Item Where Name='Concrete'");
         $updatItem = $dataService->FindbyId('Item', $productObj[0]->Id);
         $apply = DB::table('applications')
-            ->select('applications.*','pricing_plans.total_price as planTotal', 'pricing_plans.first_payment_price as planFirstPrice', 'pricing_plans.second_payment_price as  planSecondPrice', 'pricing_plans.third_payment_price as  planThirdPrice')
+            ->select('applications.*', 'pricing_plans.total_price as planTotal', 'pricing_plans.first_payment_price as planFirstPrice', 'pricing_plans.second_payment_price as  planSecondPrice', 'pricing_plans.third_payment_price as  planThirdPrice')
             ->join('pricing_plans', 'pricing_plans.id', '=', 'applications.pricing_plan_id')
             ->where('applications.destination_id', Session::get('myproduct_id'))
             ->where('applications.client_id', Auth::id())
@@ -101,7 +103,6 @@ class Quickbook
             $paidAmount = $apply->third_payment_paid;
             $tax = $apply->third_payment_vat;
         }
-        
         $productChange = [
             'UnitPrice' => $unitPrice,
             'Taxable' => true,
@@ -119,7 +120,7 @@ class Quickbook
             ->where('active_until', '>=', date('Y-m-d'))
             ->where('active', '=', 1)
             ->first();
-        
+
         if ($paymentDetails->payment_type ==  'Full-Outstanding Payment') {
             $destination = product::find($apply->destination_id);
             $theResourceObj = Invoice::create([
@@ -127,7 +128,7 @@ class Quickbook
                     [
                         "Description" => 'First payment',
                         "Amount" => $apply->planFirstPrice,
-                        "DetailType" => 
+                        "DetailType" =>
                         "SalesItemLineDetail",
                         "SalesItemLineDetail" =>
                         [
@@ -141,7 +142,7 @@ class Quickbook
                         ]
                     ],
                     [
-                        "Description" => 'Second Payment' ,
+                        "Description" => 'Second Payment',
                         "Amount" => $apply->planSecondPrice,
                         "DetailType" => "SalesItemLineDetail",
                         "SalesItemLineDetail" => [
@@ -158,9 +159,9 @@ class Quickbook
                         "Description" => 'Third Payment',
                         "Amount" => $apply->planThirdPrice,
                         "DetailType" => "SalesItemLineDetail",
-                        "SalesItemLineDetail" => 
+                        "SalesItemLineDetail" =>
                         [
-                            "ItemRef" => 
+                            "ItemRef" =>
                             [
                                 "value" => 3,
                                 "name" => "Hours"
@@ -177,7 +178,7 @@ class Quickbook
                         ]
                     ]
                 ],
-                "ApplyTaxAfterDiscount" => true, 
+                "ApplyTaxAfterDiscount" => true,
                 "Deposit" => $apply->total_paid,
                 "TxnTaxDetail" => [
                     "TxnTaxCodeRef" => [
@@ -204,13 +205,35 @@ class Quickbook
             $paymentDetails->invoice_id = $invoiceData->Id;
             $paymentDetails->save();
         } else {
-            if ($paymentDetails->invoice_no && $paymentDetails->invoice_id) {
-                $oldInvoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
-                $invoiceChange = [
-                    "Deposit" => $paidAmount,
-                ];
-                $theInvoiceObj = Invoice::update($oldInvoice, $invoiceChange);
-                $invoiceData = $dataService->Update($theInvoiceObj);
+            $firstPaymentDue = Payment::where('application_id' ,$apply->id)
+                                    ->where('payment_type', 'First Payment')
+                                    ->count();
+            if($firstPaymentDue == 2){
+                $prevInvoice  =  Payment::where('application_id' ,$apply->id)
+                            ->where('payment_type', 'First Payment')
+                            ->first();
+                $paymenttObj = Payment::create([
+                    "TotalAmt" =>  $paymentDetails->invoice_amount,
+                    "UnappliedAmt" => 0.0,
+                    "Line" => [
+                        [
+                            "Amount" => $paymentDetails->invoice_amount,
+                            "LinkedTxn" => [
+                                [
+                                  "TxnId" =>  $prevInvoice->invoice_no, 
+                                  "TxnType" => "Invoice"
+                              ]
+                            ],
+                        ],
+                    ],
+                    "CustomerRef" => [
+                        "value" => ($customer->Id) ??  $customer[0]->Id
+                    ]
+                ]);
+                $resultingpaymenttObj = $dataService->Add($paymenttObj);
+                dd($resultingpaymenttObj);
+                $paymentDetails->invoice_id = $resultingpaymenttObj->Id;
+                $paymentDetails->save();
             } else {
                 if ($coupon) {
                     $theResourceObj = Invoice::create([
@@ -231,9 +254,8 @@ class Quickbook
                                     'Qty' => 1.0
                                 ],
 
-                            ], 
+                            ],
                             [
-
                                 "DetailType" => "DiscountLineDetail",
                                 "DiscountLineDetail"  => [
                                     "PercentBased" => true,
@@ -267,21 +289,20 @@ class Quickbook
                     $theResourceObj = Invoice::create([
                         "Line" => [
                             [
+                                "Description" => $updatItem->Description,
                                 "Amount" => $unitPrice,
-                                "DetailType" => 'SalesItemLineDetail',
-                                'SalesItemLineDetail' => [
+                                "DetailType" => "SalesItemLineDetail",
+                                "SalesItemLineDetail" => [
                                     "ItemRef" => [
                                         "value" => $productObj[0]->Id,
-                                        "name" => $updatItem->Name,
-                                        "Description" => $updatItem->Description
+                                        "name" => $updatItem->Name
                                     ],
                                     "TaxCodeRef" => [
                                         "value" => "Tax"
                                     ],
                                     'UnitPrice' => $unitPrice,
                                     'Qty' => 1.0
-                                ],
-
+                                ]
                             ]
                         ],
                         "Deposit" => $paidAmount,
@@ -312,7 +333,7 @@ class Quickbook
             $paymentDetails->invoice_id = $invoiceData->Id;
             $paymentDetails->save();
         }
-            
+
         if ($error) {
             echo "The Status code is: " . $error->getHttpStatusCode() . "\n";
             echo "The Helper message is: " . $error->getOAuthHelperError() . "\n";
