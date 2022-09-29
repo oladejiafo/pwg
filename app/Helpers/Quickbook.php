@@ -54,7 +54,7 @@ class Quickbook
         $customer = $dataService->Query("select * from Customer Where PrimaryEmailAddr='" . Auth::user()->email . "'");
         $dataService->throwExceptionOnError(true);
         $paymentDetails = Payment::where('id', Session::get('paymentId'))->first();
-        dd($paymentDetails);
+        // dd($paymentDetails);
         $error = $dataService->getLastError();
         if ($customer) {
         } else {
@@ -205,6 +205,7 @@ class Quickbook
             $paymentDetails->invoice_id = $invoiceData->Id;
             $paymentDetails->save();
         } else {
+
             $firstPaymentDue = Payment::where('application_id' ,$apply->id)
                                     ->where('payment_type', 'First Payment')
                                     ->count();
@@ -212,27 +213,28 @@ class Quickbook
                 $prevInvoice  =  Payment::where('application_id' ,$apply->id)
                             ->where('payment_type', 'First Payment')
                             ->first();
+                // $data = $dataService->FindbyId('Invoice', $prevInvoice->invoice_id);
+                // dd($data);
                 $paymenttObj = Payment::create([
-                    "TotalAmt" =>  $paymentDetails->invoice_amount,
-                    "UnappliedAmt" => 0.0,
-                    "Line" => [
+                        "CustomerRef" =>
+                        [
+                            "value" => ($customer->Id) ??  $customer[0]->Id
+                        ],
+                        "TotalAmt" => $paymentDetails->invoice_amount,
+                        "Line" => [
                         [
                             "Amount" => $paymentDetails->invoice_amount,
                             "LinkedTxn" => [
-                                [
-                                  "TxnId" =>  $prevInvoice->invoice_no, 
-                                  "TxnType" => "Invoice"
-                              ]
-                            ],
-                        ],
-                    ],
-                    "CustomerRef" => [
-                        "value" => ($customer->Id) ??  $customer[0]->Id
-                    ]
-                ]);
-                $resultingpaymenttObj = $dataService->Add($paymenttObj);
-                dd($resultingpaymenttObj);
-                $paymentDetails->invoice_id = $resultingpaymenttObj->Id;
+                            [
+                                "TxnId" => "234",
+                                "TxnType" => "Invoice"
+                            ]]
+                        ]]
+                    ]);
+                dd($paymenttObj);
+                $resultingObj = $dataService->Add($paymenttObj);
+                dd($resultingObj);
+                $paymentDetails->invoice_id = $resultingObj->Id;
                 $paymentDetails->save();
             } else {
                 if ($coupon) {
