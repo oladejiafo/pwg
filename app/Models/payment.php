@@ -14,6 +14,7 @@ class payment extends Model
         'invoice_id',
         'currency',
         'transaction_id',
-        'bank_reference_no'
+        'bank_reference_no',
+        'paid_amount'
     ];
 }

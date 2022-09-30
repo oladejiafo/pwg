@@ -296,17 +296,18 @@ class Quickbook
 
                     ]
                 ],
+                "ApplyTaxAfterDiscount" => true,
                 "Deposit" => $paidAmount,
-                "PaymentRefNum" => $paymentDetails->bank_reference_no,
-                "CustomerMemo" => [
-                    "value" => $paymentDetails->bank_reference_no,
-                ],
                 "TxnTaxDetail" => [
                     "TxnTaxCodeRef" => [
                         "value" => "5",  // tax rate
                         "name" => "VAT" // tax rate name
                     ],
                     "TotalTax" => $tax,
+                ],
+                "PaymentRefNum" => $paymentDetails->bank_reference_no,
+                "CustomerMemo" => [
+                    "value" => $paymentDetails->bank_reference_no,
                 ],
                 "CustomerRef" => [
                     "value" => ($customer->Id) ??  $customer[0]->Id
@@ -349,8 +350,13 @@ class Quickbook
                     ],
                     "TotalTax" => $tax,
                 ],
+                "PaymentRefNum" => $paymentDetails->bank_reference_no,
+
                 "CustomerRef" => [
                     "value" => ($customer->Id) ??  $customer[0]->Id
+                ],
+                "CustomerMemo" => [
+                    "value" => $paymentDetails->bank_reference_no,
                 ],
                 "BillEmail" => [
                     "Address" => Auth::user()->email
