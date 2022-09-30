@@ -156,7 +156,7 @@ class ApplicationController extends Controller
     public function storeHomeCountryDetails(Request $request)
     {
         $validator = \Validator::make($request->all(), [
-            'passport_number' => 'Required',
+            'passport_number' => 'Required | unique:clients',
             'passport_issue' => 'required',
             'passport_expiry' => 'required',
             'issued_by' => 'Required',
