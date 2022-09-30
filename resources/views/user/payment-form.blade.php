@@ -538,14 +538,14 @@ $vals=array(0,1,2);
                                     <div class="partial-total-sec">
                                   
                                     @if($diff > 0 && $payall ==0) 
-                                        <h2 style="font-size: 1em;">Now you will pay the balance on first installment only <b>{{ number_format($pends) }}</b> AED <span style="font-size:11px;opacity:0.6">@if($vat>0) (VAT inclusive @if($discount>0) ,less Discount  @endif) @endif</span></h2>
-                                        <input type="hidden" id="amountLink2" name="totalpay" value="{{  number_format($payNoww, 0, '.', '') }}">
+                                        <h2 style="font-size: 1em;">Now you will pay the balance on first installment only <b>{{ number_format($pends,2) }}</b> AED <span style="font-size:11px;opacity:0.6">@if($vat>0) (VAT inclusive @if($discount>0) ,less Discount  @endif) @endif</span></h2>
+                                        <input type="hidden" id="amountLink2" name="totalpay" value="{{  $payNoww }}">
                                         <input type="hidden" id="totaldue" name="totaldue" value="{{$payNow + $vat}}">
                                         <input type="hidden" name="totalremaining" value="{{$pends}}">
                                     @else
-                                        <h2 style="font-size: 1em;">Now you will pay {{strtolower($which)}} installment only <span id="amountLink"><b>{{number_format($payNoww + $vat -$discount)}}</b></span> AED <span style="font-size:11px;opacity:0.6">@if($vat>0) (VAT inclusive @if($discount>0) ,less Discount  @endif) @else @if($discount>0) (less Discount)  @endif @endif</span></h2>
-                                        <input type="hidden" id="amountLink2" name="totalpay" value="{{  number_format($payNoww + $vat -$discount, 0, '.', '') }}">
-                                        <input type="hidden" id="totaldue" name="totaldue" value="{{$payNoww + $vat -$discount}}">
+                                        <h2 style="font-size: 1em;">Now you will pay {{strtolower($which)}} installment only <span id="amountLink"><b>{{number_format(($payNoww - $discount)+ $vat,2)}}</b></span> AED <span style="font-size:11px;opacity:0.6">@if($vat>0) (VAT inclusive @if($discount>0) ,less Discount  @endif) @else @if($discount>0) (less Discount)  @endif @endif</span></h2>
+                                        <input type="hidden" id="amountLink2" name="totalpay" value="{{ ($payNoww - $discount)+ $vat }}">
+                                        <input type="hidden" id="totaldue" name="totaldue" value="{{($payNoww - $discount) + $vat }}">
                                     @endif
 
                                     </div>

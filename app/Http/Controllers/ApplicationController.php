@@ -107,7 +107,6 @@ class ApplicationController extends Controller
             'civil_status' => 'required',
             'citizenship' => 'required',
             'cv' => 'required|mimes:pdf',
-
         ]);
 
         if ($validator->fails()) {

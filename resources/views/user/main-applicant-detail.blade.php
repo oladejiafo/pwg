@@ -114,7 +114,7 @@
                             </div>
                         </div>
                         <div class="col-sm-12 mt-3">
-                            <input type="text" name="agent_code" id="agent_code" class="form-control" placeholder="Please enter your agent code here if available" value="{{old('agent_code')}}" />
+                            <input type="number" name="agent_code" id="agent_code" class="form-control" placeholder="Please enter your agent code here if available" value="{{old('agent_code')}}" />
                             <span class="agent_code_errorClass"></span>
                         </div>
                         <div class="form-group row mt-3">

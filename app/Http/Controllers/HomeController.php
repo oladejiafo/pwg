@@ -363,7 +363,6 @@ class HomeController extends Controller
                 ->where('applications.destination_id', '=', $p_id)
                 ->groupBy('destinations.id')
                 ->first();
-
             return view('user.myapplication', compact('paid', 'pays', 'prod'));
         } else {
             return redirect('home');
@@ -1296,6 +1295,7 @@ class HomeController extends Controller
             ->orderBy('id', 'DESC')
             ->first();
         $payment = Payment::where('application_id', $applicant->id)
+                            ->orderBy('id', 'DESC')
                             ->pluck('payment_type')
                             ->first();
 

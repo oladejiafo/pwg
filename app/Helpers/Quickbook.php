@@ -90,17 +90,15 @@ class Quickbook
 
         if ($paymentType == 'First Payment') {
             $unitPrice = $apply->first_payment_price - $apply->first_payment_vat;
-            $paidAmount = $apply->first_payment_paid;
             $tax = $apply->first_payment_vat;
         } else if ($paymentType == 'Second Payment') {
             $unitPrice = $apply->second_payment_price - $apply->second_payment_vat;
-            $paidAmount = $apply->first_payment_paid;
             $tax = $apply->second_payment_vat;
         } else if ($paymentType == 'Third Payment') {
             $unitPrice = $apply->third_payment_price - $apply->third_payment_vat;
-            $paidAmount = $apply->third_payment_paid;
             $tax = $apply->third_payment_vat;
         }
+        $paidAmount = $paymentDetails->paid_amount;
         $productChange = [
             'UnitPrice' => $unitPrice,
             'Taxable' => true,
@@ -185,6 +183,10 @@ class Quickbook
                     ],
                     "TotalTax" => $apply->total_vat,
                 ],
+                "PaymentRefNum" => $paymentDetails->bank_reference_no,
+                "CustomerMemo" => [
+                    "value" => $paymentDetails->bank_reference_no,
+                ], 
                 "CustomerRef" => [
                     "value" => ($customer->Id) ??  $customer[0]->Id
                 ],
@@ -295,6 +297,10 @@ class Quickbook
                     ]
                 ],
                 "Deposit" => $paidAmount,
+                "PaymentRefNum" => $paymentDetails->bank_reference_no,
+                "CustomerMemo" => [
+                    "value" => $paymentDetails->bank_reference_no,
+                ],
                 "TxnTaxDetail" => [
                     "TxnTaxCodeRef" => [
                         "value" => "5",  // tax rate
