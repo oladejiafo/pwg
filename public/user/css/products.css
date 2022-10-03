@@ -295,6 +295,11 @@ display: none;  // Safari and Chrome
       font-style: normal;
     }
   
+    h6 {
+        font-size: 25px;
+        /* font-size: 1.0vw; */
+    }
+
     p {
       margin-top: 0;
       margin-bottom: 1rem;

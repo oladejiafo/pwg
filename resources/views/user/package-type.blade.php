@@ -98,7 +98,7 @@ $cXamount=0;
                             </div>
                                 <img src="{{asset('images/yellowWhiteCollar.svg')}}">
                                 <h6>Blue Collar Package</h6>
-                                <p class="amountSection"><span class="amount">{{number_format($blue_cost,0)}}</span><b>AED</b></p>
+                                <p class="amountSection"><span class="amount">{{number_format($blue_cost,0)}}</span><b style="font-size:15px">AED</b></p>
                             </div>
                         </div>
                     </div>
@@ -113,7 +113,7 @@ $cXamount=0;
                                 <img src="{{asset('images/yellowBlueCollar.svg')}}">
 
                                 <h6>{{$cSname}} Package</h6>
-                                <p class="amountSection"><span class="amount">{{($cSamount > 0) ? number_format($cSamount,0) : 0}}</span><b>AED</b></p>
+                                <p class="amountSection"><span class="amount">{{($cSamount > 0) ? number_format($cSamount,0) : 0}}</span><b style="font-size:15px">AED</b></p>
                             </div>
                         </div>
                     </div>
@@ -126,7 +126,7 @@ $cXamount=0;
                                 <img src="{{asset('images/yellowFamily.svg')}}">
 
                                 <h6>{{$cXname}} </h6>
-                                <p class="amountSection"><span class="amount">{{($cXamount > 0) ? number_format($cXamount,0) : 0}}</span><b>AED</b></p>
+                                <p class="amountSection"><span class="amount">{{($cXamount > 0) ? number_format($cXamount,0) : 0}}</span><b style="font-size:15px">AED</b></p>
                             </div>
                         </div>
                     </div>
@@ -160,7 +160,7 @@ $cXamount=0;
                                 <img src="{{asset('images/yellowBlueCollar.svg')}}">
 
                                 <h6>White Collar Package</h6>
-                                <p class="amountSection"><span class="amount">{{($whiteJob_cost > 0) ? number_format($whiteJob_cost,0) : 0}}</span><b>AED</b></p>
+                                <p class="amountSection"><span class="amount">{{($whiteJob_cost > 0) ? number_format($whiteJob_cost,0) : 0}}</span><b style="font-size:15px">AED</b></p>
                                                       
                                    @if($whiteJob_cost == 0)
                                    <p style="font-size: 14px">
@@ -193,7 +193,7 @@ $cXamount=0;
                             </div>
                                 <img src="{{asset('images/yellowFamily.svg')}}">
                                 <h6>Family Package</h6>
-                                <p class="amountSection"><span class="Famamount">{{($famdet) ?  number_format($famdet['total_price'],0) : 0 }}</span><b>AED</b></p>
+                                <p class="amountSection"><span class="Famamount">{{($famdet) ?  number_format($famdet['total_price'],0) : 0 }}</span><b style="font-size:15px">AED</b></p>
                                    @if(!$famdet)
                                    <p style="font-size: 14px">
                                      Package Not Available 
@@ -292,8 +292,7 @@ $cXamount=0;
                             </div>
 
                             <form method="POST" action="{{ url('product') }}">
-                            <!-- <form method="POST" action="{{url('family/details/submit')}}"> -->
-                          
+                           
                                 @csrf
                               
                                 <input type="hidden" name="productId" value="{{$productId}}">
@@ -360,7 +359,6 @@ $cXamount=0;
                                 </div>
                             </form>
 
-                        
                         </div>
                     </div>
                 </div>
@@ -368,8 +366,6 @@ $cXamount=0;
         </div>
 
     </div>
-
-
 
 @endSection
 @push('custom-scripts')

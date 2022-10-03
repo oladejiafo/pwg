@@ -29,3 +29,25 @@ class pdfBlock
         $pdf->Output("pdf/modified_pdf.pdf", "F");
     } 
 }
+
+
+//Not related///
+
+// if($request->hasfile('filename'))
+// {
+
+// foreach($request->file('filename') as $file)
+// {
+//     $name=$file->getClientOriginalName();
+//     $file->move(public_path().'/files/', $name);  
+//     $data[] = $name;  
+// }
+// }
+
+// $file= new File();
+// $file->filename=json_encode($data);
+
+
+// $file->save();
+
+// return back()->with('success', 'Your files has been successfully added');

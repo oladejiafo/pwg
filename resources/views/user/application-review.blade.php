@@ -252,6 +252,22 @@
                                                     </select>
                                                     <span class="civil_status_errorClass"></span>
                                                 </div>
+                                                <div class="col-sm-4 mt-3">
+                                                    <input type="text" name="agent_code" id="agent_code" class="form-control" placeholder="Please enter your agent code here if available" value="{{$applicant['assigned_agent_id']}}" />
+                                                    <span class="agent_code_errorClass"></span>
+                                                </div>
+                                                <div class="col-sm-8 mt-3">
+                                                    <input type="text" class="form-control cv_upload" placeholder="Upload your cv (PDF only)*" name="cv" value="{{$client['resumeName']}}"  onclick="showResumeFormat('applicant')" autocomplete="off" readonly required>
+                                                    <div class="input-group-btn">
+                                                        <span class="fileUpload btn">
+                                                            <span class="upl" id="upload">Choose File</span>
+                                                            <input type="file" class="upload up cv_upload" id="up"  name="cv"  value="{{$client['resumeName']}}"/>
+                                                            </span><!-- btn-orange -->
+                                                    </div><!-- btn -->
+                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#cvModal" onclick="showResume()">click to view uploaded CV copy</a>
+                                                    <span class="cv_errorClass"></span>
+                                                </div>
+
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
@@ -550,20 +566,31 @@
                                                     <span class="is_schengen_visa_issued_last_five_year_errorClass"></span>
                                                 </div>
                                             </div>
+                                            @php  
+                                             $vall = $client['schengenVisaName'];
+                                             $sheng = $client['schengenVisaUrl'];
+                                             $phold = "Image of Schengen Or National Visa Issued During Last 5 Years";
+                                             @endphp
                                             <div class="form-group row mt-4 schengen_visa">
-                                                <div class="col-sm-12 mt-3">
+                                                <div class="col-sm-12 mt-3" id="schengen_visa">
+
                                                     <input type="text" class="form-control schengen_copy" name="schengen_copy" onclick="showSchengenVisaFormat('applicant')" @if($client['schengenVisaUrl'])  value="{{$client['schengenVisaName']}}" @else placeholder="Image of Schengen Or National Visa Issued During Last 5 Years" @endif readonly >
+                                                    
                                                     <div class="input-group-btn">
                                                         <span class="fileUpload btn">
                                                             <span class="upl" id="upload">Choose File</span>
                                                             <input type="file" class="upload schengen_copy" accept="image/png, image/gif, image/jpeg" name="schengen_copy" />
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
+                                                   
                                                     @if($client['schengenVisaUrl'])
                                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#schengenVisatModal" onclick="schengenVisatModal()">click to view uploaded schengen visa copy</a>
                                                     @endif
                                                 </div>
+                                                <div style="display: block;"><a href="#" class="pl" style="display:inline">+</a> Add another VISA <a href="#" class="mi" id="mi" style="display:inline">-</a></div>
                                             </div>
+                                            <!-- Add more inputs dynamycally here -->
+
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-12 mt-3">
                                                     <select name="is_finger_print_collected_for_Schengen_visa" id="is_finger_print_collected_for_Schengen_visa" aria-required="true" class="form-control form-select" autocomplete="off">
@@ -1594,6 +1621,18 @@
                 </div>
             </div>
         </div>
+        <div id="cvModal" class="modal fade" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <embed src="{{$client['resumeUrl']}}#toolbar=0" frameBorder="0" borders="false" width="100%" height="400px" style="border: none" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary close" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div id="residenceCopyModal" class="modal fade" tabindex="-1">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -1832,8 +1871,27 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+
+<script type="text/javascript">
+    $(function() {
+        //Add more file input box for schengen visa upload
+        $('a.pl').click(function(e) {
+            e.preventDefault();
+            $('#schengen_visa').append('<div class="col-sm-12 mt-3" id="schengen_visa"><input type="text" class="form-control schengen_copy1[]" name="schengen_copy1[]" onclick="showSchengenVisaFormat(\'applicant\')" @if($sheng)  value="{{$vall}}" @else placeholder="{{$phold}}" @endif readonly ><div class="input-group-btn"><span class="fileUpload btn"><span class="upl" id="upload">Choose File</span><input type="file" class="upload schengen_copy1[]" accept="image/png, image/gif, image/jpeg" name="schengen_copy1[]" /></span></div></div>');
+        });
+        //Remove the extra file input box for schengen visa upload
+        $('a.mi').click(function (e) {
+            e.preventDefault();
+            if ($('#schengen_visa div').length > 1) {
+                $('#schengen_visa').children().last().remove();
+            }
+        });
+    });
+</script> 
+
 <script>
     $(document).ready(function(){
+
         $('.dependentReviewSpin, .childReviewSpin, .applicantReviewSpin').hide();
                // Main Applicant
         $('.schengen_visa, .applicantData, .homeCountryData, .currentCountryData, .schengenData, .dependent_schengen_visa, #is_finger_print_collected_for_Schengen_visa', '#is_dependent_finger_print_collected_for_Schengen_visa').hide();
@@ -2118,6 +2176,8 @@
         $('.close').click(function(e){
             $("#passportModal").modal('hide');
             $("#passportFormatModal").modal('hide');
+            $("#cvModal").modal('hide');
+            $("#cvFormatModal").modal('hide');
             $('#residenceCopyModal').modal('hide');
             $('#visaCopyModal').modal('hide');
             $('#schengenVisatModal').modal('hide');
@@ -2184,8 +2244,9 @@
         // Spouse/Dependent
         $('.spouseApplicantData, .spouseHomeCountryData, .spouseCurrentCountryData, .spouseSchengenData').hide();
         $('#dependant, #children').hide();
-        $('.passport_upload, .residence_upload, .visa_upload, .schengen_upload, .dependent_passport_upload, .dependent_residence_upload, .dependent_visa_upload, .dependent_schengen_upload').click(function(){
+        $('.passport_upload,.cv_upload, .residence_upload, .visa_upload, .schengen_upload, .dependent_passport_upload, .dependent_residence_upload, .dependent_visa_upload, .dependent_schengen_upload').click(function(){
             $("#passportFormatModal").modal('hide');
+            $("#cvFormatModal").modal('hide');
             $("#visaFormatModal").modal('hide');
             $("#residenceIdFormatModal").modal('hide');
             $('#schengenVisaFormatModal').modal('hide');
@@ -2718,12 +2779,24 @@
         $("#passportModal").modal('show');
     }
 
+    function showResume()
+    {
+        $("#cvModal").modal('show');
+    }
+
     function showPassportFormat(type)
     {
         if(type == 'applicant') {
             $("#passportFormatModal").modal('show');
         } else {
             $("#passportDependentFormatModal").modal('show');
+        }
+    }
+
+    function showResumeFormat(type)
+    {
+        if(type == 'applicant') {
+            $("#cvFormatModal").modal('show');
         }
     }
     

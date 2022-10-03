@@ -210,14 +210,14 @@
               names.push($(this).get(0).files[i].name);
           }
           // $("input[name=file]").val(names);
-        if(length>2){
+        if(length>2)
+        {
           var fileName = names.join(', ');
           $('.cvupload').attr("value",length+" files selected");
-        }
-        else{
+        } else {
           $('.cvupload').attr("value",names);
         }
-     });
+    });
 </script>
 
 @endpush

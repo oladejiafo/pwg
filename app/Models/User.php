@@ -97,7 +97,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
         $this->addMediaCollection('client_collection_signature')->singleFile();
         $this->addMediaCollection('client_collection_resume')->singleFile();
         $this->addMediaCollection('client_passport_collection_img')->singleFile();
-        $this->addMediaCollection('client_collection_schengen_visa')->singleFile();
+        $this->addMediaCollection('client_collection_schengen_visa')->singleFile(); //
         $this->addMediaCollection('client_collection_residence_id')->singleFile();
         $this->addMediaCollection('client_residence_visa_copy')->singleFile();
     }

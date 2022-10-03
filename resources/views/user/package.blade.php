@@ -83,7 +83,7 @@
             @else
                {{number_format($ppay->total_price,2)}} 
             @endif 
-            {{$data->currency}}
+            <span style="font-size:25px">{{$data->currency}} </span>
           </h2>
 
           <p class="subheading" style="margin-left: 0px;">

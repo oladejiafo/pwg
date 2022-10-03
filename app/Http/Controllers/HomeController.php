@@ -50,7 +50,7 @@ class HomeController extends Controller
         } else {
             // $ppay = product_payments::where('destination_id', '=', $id)->first();
             $package = DB::table('destinations')->orderBy(DB::raw('FIELD(name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
-            // $package = product::all()->sortBy(DB::raw('FIELD(product_name, "Czech", "Poland", "Malta", "Canada", "Germany")'));
+
             $promo = promo::where('active_until', '>=', date('Y-m-d'))->get();
 
             return view('user.home', compact('package', 'promo'));
@@ -179,7 +179,7 @@ class HomeController extends Controller
             list($part_a, $image_parts) = explode(";base64,", $request->signed);
             $image_type_aux = explode("image/", $part_a);
             $image_type = $image_type_aux[1];
-            $signate = time() . '.' . $image_type;
+            $signate = Auth::user()->id.'_'.time() . '.' . $image_type;
             $signature = user::find(Auth::user()->id);
             $signature->addMediaFromBase64($request->signed)->usingFileName($signate)->toMediaCollection(User::$media_collection_main_signture);
 
@@ -537,7 +537,6 @@ class HomeController extends Controller
                 $overPay = $request->totalpay - $request->totaldue;
             }
 
-
             $haveSpouse =  Session::get('mySpouse');
             $kids =  Session::get('myKids');
 
@@ -553,7 +552,7 @@ class HomeController extends Controller
 
             set_time_limit(0);
 
-            $outletRef           = '15d885ec-682a-4398-89d9-247254d71c18'; // config('app.payment_reference'); 
+            $outletRef       = '15d885ec-682a-4398-89d9-247254d71c18'; // config('app.payment_reference'); 
             $apikey          = "MmM2ODJiOGMtOGFmNS00NzUyLTg2MjUtM2Y5MTg3OWU5YjRlOjViMzhjM2I5LTUyMDItNDBmZi1hNzAyLTFlYTIwZDkwYjhiMQ=="; //config('app.payment_api_key'); 
 
             // Test URLS 
@@ -574,10 +573,10 @@ class HomeController extends Controller
             $successUrl = url('/') . '/payment/success';
             $failUrl =  url('/') . '/payment/fail';
 
-            $order['action']                        = "PURCHASE";                                        // Transaction mode ("AUTH" = authorize only, no automatic settle/capture, "SALE" = authorize + automatic settle/capture)
+            $order['action']                        = "PURCHASE";                      // Transaction mode ("AUTH" = authorize only, no automatic settle/capture, "SALE" = authorize + automatic settle/capture)
             $order['amount']['currencyCode']       = "AED";                           // Payment currency ('AED' only for now)
-            $order['amount']['value']                = ($amount) * 100;                                   // Minor units (1000 = 10.00 AED)
-            $order['language']                       = "en";                              // Payment page language ('en' or 'ar' only)
+            $order['amount']['value']                = ($amount) * 100;              // Minor units (1000 = 10.00 AED)
+            $order['language']                       = "en";                        // Payment page language ('en' or 'ar' only)
             $order['emailAddress']                    = "pwggroup@pwggroup.pl";
             $order['billingAddress']['firstName'] = "PWG";
             $order['billingAddress']['lastName']  = "Group";
@@ -606,7 +605,7 @@ class HomeController extends Controller
                     ['application_id', '=', $applicant_id],
                     ['payment_type', '=', $request->whichpayment],
                     ['paid_amount', '=', $request->totalpay],
-                    ['remaining_amount', '=', null],
+                    // ['remaining_amount', '=', null],
                 ])->first();
 
                 if ($ppd === null) {
@@ -931,7 +930,7 @@ class HomeController extends Controller
                     'client_id' => Auth::id(),
                     'card_number' => $paymentResponse->paymentMethod->pan,
                     'card_holder_name' => $paymentResponse->paymentMethod->cardholderName,
-                    'month' => $monthYear[1], //sprintf("%02d", $monthYear[1])
+                    'month' => sprintf("%02d", $monthYear[1]), //$monthYear[1], //sprintf("%02d", $monthYear[1])
                     'year' =>  $monthYear[0],
                 ]);
 
@@ -1251,7 +1250,7 @@ class HomeController extends Controller
                 ->where('payment_type', $ptype)
                 ->orderBy('id', 'DESC')
                 ->get();
-// dd($applicant_id);
+
             $pricing = DB::table('pricing_plans')
                 ->where('destination_id', $apply->destination_id)
                 ->where('id', $apply->pricing_plan_id)

@@ -196,7 +196,7 @@
 @auth
    <div class="d-flex align-items-center justify-content-center jobbers">
      <a class="nav-link btn create-new-button"  aria-expanded="false" href="{{url('myapplication')}}">
-       <span style="display:inline-block"><img src="{{asset('images/icon1.png')}}"></span><span class="title" style="padding-top:0px; display:inline-block">My Application </span>
+       <span style="display:inline-block"><img src="{{asset('images/icon1.png')}}"></span><span class="title" style="padding-top:0px; display:inline-block">{{ __('My Application') }} </span>
      </a>
    </div>
  @else

@@ -1,9 +1,7 @@
 <!DOCTYPE html>
-
 <html>
 
 @include('user/header')
-
 
 <!-- bootstrap core css -->
 <link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
@@ -63,7 +61,6 @@
         @auth
        <div class="carousel" id="carouselThree"  data-ride="carousel" style="margin-block:20px ;">
 
-
           <div class="outer  scroll-pane" id="container">
             <div class="container-fluid text-center">
 
@@ -72,40 +69,33 @@
                     <ul>
                         @foreach($package as $offer)
 
-                        @if($promo->first())
-                        @foreach($promo as $prom)
-            
-                        <?php
-                                        //    $offer_discount= $offer->prev_discount - $offer->discount;
-                                           if($prom->discount_percent >0 && $prom->product_id == $offer->id)
-                                           { 
+                            @if($promo->first())
+                                @foreach($promo as $prom)
+                                    <?php
+                                        if($prom->discount_percent >0 && $prom->product_id == $offer->id)
+                                        { 
                                             $icon = 'fa fa-minus-circle';
                                             $offer_discount_msg = 'Promo Offer: ' .$prom->discount_percent .'% off !';
-                                        //    }
-                                        //    else if($offer_discount < 0)
-                                        //    { 
-                                        //     $icon = 'fa fa-plus-circle';
-                                        //     $offer_discount_msg = ($offer_discount*-1) .'% higher than last month';
-                                           } else {
+                                        } else {
                                             $icon = '';
                                             $offer_discount_msg = '-';
-                                           }
-                                           
-                ?>
-                        @endforeach
-                        @else 
-                        @php
-                        $icon = '';
-                                            $offer_discount_msg = '-'; @endphp
-                @endif
+                                        }
+                                    ?>
+                                @endforeach
+                            @else 
+                                @php
+                                    $icon = '';
+                                    $offer_discount_msg = '-'; 
+                                @endphp
+                            @endif
                         <!-- Start Column  -->
                         <li>
-                            <div class="col-4 cellContainer">
+                            <div class="col-4 cellContainer" style="margin-top:50px">
                                 <span class="product-item item-hints" href="#">
                                     <span class="positionAnchor hint"  data-position="1">
                                         <img src="../user/images/{{$offer->image}}" style="height:458px" class="img-fluid product-thumbnail home_img">
                                         <div class="hint-content do--split-children">
-                                        <p>{{$offer->description}}</p>
+                                            <p>{{$offer->description}}</p>
                                         </div>
                                         <span class="bottom">
                                             <h3 class="product-title intro-excerpt" style="font-size: 35px; color:aliceblue">{{$offer->name}}</h3>
@@ -115,12 +105,11 @@
 
                                         <strong class="product-price">  {{number_format($offer->unit_price,2)}} {{$offer->currency}}</strong>
                                         <p> 
-                                            <i class="<?php echo $icon; ?>"></i> {{$offer_discount_msg}}
+                                            <i class="{{$icon}}"></i> {{$offer_discount_msg}}
                                         </p>
-                                        <p><a class="btn btn-secondary" href="{{ url('package/type', $offer->id) }}">Apply Now</a></p>
-
-                                        {{-- <p><a class="btn btn-secondary" href="{{ url('product', $offer->id) }}">Apply Now</a></p> --}}
-
+                                        <p>
+                                            <a class="btn btn-secondary" href="{{ url('package/type', $offer->id) }}">Apply Now</a>
+                                        </p>
                                     </span>
                                 </span>
                             </div>
@@ -132,12 +121,14 @@
 
                 </div>
             </div>
+            <div  style="margin-top:20px">
             <a class="carousel-control-prev" id="slideBack" href="#carouselThree" style="text-decoration:none;" role="button" data-slide="prev">
                 <i class="lni lni-arrow-left"></i>
             </a>
             <a class="carousel-control-next" id="slide" href="#carouselThree" style="text-decoration:none;" role="button" data-slide="next">
                 <i class="lni lni-arrow-right"></i>
             </a>
+            </div>
  
         </div>
 
@@ -149,36 +140,32 @@
         <div class="container-fluid text-center">
 
             <div class="row">
-                @foreach($package as $offer)
+              @foreach($package as $offer)
                 @if($promo->first())
-                 @foreach($promo as $prom)
+                    @foreach($promo as $prom)
+                        <?php
 
-                <?php
-                                        //    $offer_discount= $offer->prev_discount - $offer->discount;
-                                           if($prom->discount_percent >0 && $prom->product_id == $offer->id)
-                                           { 
-                                            $icon = 'fa fa-minus-circle';
-                                            $offer_discount_msg = 'Promo Offer: ' .$prom->discount_percent .'% off !';
-                                        //    }
-                                        //    else if($offer_discount < 0)
-                                        //    { 
-                                        //     $icon = 'fa fa-plus-circle';
-                                        //     $offer_discount_msg = ($offer_discount*-1) .'% higher than last month';
-                                           } else {
-                                            $icon = '';
-                                            $offer_discount_msg = '-';
-                                           }
-                                           
-                ?>
-                                 @endforeach
+                            if($prom->discount_percent >0 && $prom->product_id == $offer->id)
+                            { 
+                            $icon = 'fa fa-minus-circle';
+                            $offer_discount_msg = 'Promo Offer: ' .$prom->discount_percent .'% off !';
+        
+                            } else {
+                            $icon = '';
+                            $offer_discount_msg = '-';
+                            }
+                                                
+                        ?>
+                    @endforeach
 
-                                 @else 
-                                 @php
+                @else 
+                    @php
                         $icon = '';
-                                            $offer_discount_msg = '-'; @endphp
+                        $offer_discount_msg = '-'; 
+                    @endphp
                 @endif
                 <!-- Start Column  -->
-                <div class="col-4 cellContainer">
+                <div class="col-lg-4 cellContainer" style="margin-top:50px">
                     <span class="product-item item-hints" href="#">
                         <span class="positionAnchor hint"  data-position="1">
                             <img src="../user/images/{{$offer->image}}" style="height:458px" class="img-fluid product-thumbnail home_img">
@@ -193,12 +180,11 @@
                             <strong class="product-price">{{number_format($offer->unit_price,2)}} {{$offer->currency}}</strong>
 
                             <p>
-                                <i class="<?php echo $icon; ?>"></i> {{$offer_discount_msg}} 
-                        </p>
-                            <p><a class="btn btn-secondary" href="{{ url('package/type', $offer->id) }}">Apply Now</a></p>
-
-                            {{-- <p><a class="btn btn-secondary buy_now" href="{{ url('product', $offer->id) }}">Apply Now</a></p> --}}
-
+                                <i class="{{$icon}}"></i> {{$offer_discount_msg}} 
+                            </p>
+                            <p>
+                                <a class="btn btn-secondary" href="{{ url('package/type', $offer->id) }}">Apply Now</a>
+                            </p>
                         </span>
                     </span>
                 </div>
@@ -207,15 +193,12 @@
                 <div class="col-4 cellContainer">
                     <span class="product-itemx" href="#">
                         <span class="positionAnchorx" data-position="1">
-                            
                             <span class="bottom">
                                 <h3 class="product-title intro-excerpt" style="font-size: 35px; color:aliceblue"></h3>
                                 <p style="font-size:20px"></p>
                             </span>
                             <strong class="product-price"></strong>
                             <p></p>
-
-
                         </span>
                     </span>
                 </div>

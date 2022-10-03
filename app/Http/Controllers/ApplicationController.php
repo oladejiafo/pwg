@@ -79,6 +79,8 @@ class ApplicationController extends Controller
                 ->pluck('id')
                 ->first();
 
+            $client = User::find(Auth::id()); //check this line ???
+
             return view('user.application-next', compact('client', 'productId', 'applicant', 'dependent'))->with('info', 'Data saved successfully!');
         } else {
             return back();
@@ -118,7 +120,7 @@ class ApplicationController extends Controller
         $client = User::find(Auth::id());
 
         $client->addMedia($request->file('cv'))->toMediaCollection(User::$media_collection_main_resume);
-
+        $client->save();
         User::where('id', Auth::id())
             ->update([
                 'name' => $request['first_name'],
@@ -179,7 +181,7 @@ class ApplicationController extends Controller
         $client = User::find(Auth::id());
 
         if ($request->hasFile('passport_copy')) {
-            $fileName = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
+            $fileName = Auth::user()->id.'_'.time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
             $client->addMedia($request->file('passport_copy'))->usingFileName($fileName)->toMediaCollection(User::$media_collection_main);
         }
 
@@ -221,6 +223,9 @@ class ApplicationController extends Controller
 
         $client->visaName = (isset($client->getMedia(User::$media_collection_main_residence_visa)[0])) ? $client->getMedia(User::$media_collection_main_residence_visa)[0]['name'] : ' ';
         $client->visaCopyUrl = (isset($client->getMedia(User::$media_collection_main_residence_visa)[0])) ? $client->getMedia(User::$media_collection_main_residence_visa)[0]->getUrl() : null;
+
+        $client->resumeName = (isset($client->getMedia(User::$media_collection_main_resume)[0])) ? $client->getMedia(User::$media_collection_main_resume)[0]['name'] : null;
+        $client->resumeUrl = (isset($client->getMedia(User::$media_collection_main_resume)[0])) ? $client->getMedia(User::$media_collection_main_resume)[0]->getUrl() : null;
 
         $client->schengenVisaUrl = (isset($client->getMedia(User::$media_collection_main_schengen_visa)[0])) ? $client->getMedia(User::$media_collection_main_schengen_visa)[0]->getUrl() : null;
         $client->schengenVisaName = (isset($client->getMedia(User::$media_collection_main_schengen_visa)[0])) ? $client->getMedia(User::$media_collection_main_schengen_visa)[0]['name'] : ' ';
@@ -274,7 +279,7 @@ class ApplicationController extends Controller
         $client = User::find(Auth::id());
         if ($request->hasFile('residence_copy')) {
             $file = $request->file('residence_copy');
-            $residenceCopy = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
+            $residenceCopy = Auth::user()->id.'_'.time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
             $client->addMedia($request->file('residence_copy'))->usingFileName($residenceCopy)->toMediaCollection(User::$media_collection_main_residence_id);
         } else {
             $residenceCopy = $request->file('residence_copy');
@@ -282,7 +287,7 @@ class ApplicationController extends Controller
         $visaCopy = $request['visa_copy'];
         if ($request->hasFile('visa_copy')) {
             $file = $request->file('visa_copy');
-            $visaCopy = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
+            $visaCopy = Auth::user()->id.'_'.time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
             $client->addMedia($request->file('visa_copy'))->usingFileName($visaCopy)->toMediaCollection(User::$media_collection_main_residence_visa);
         }
         $client->country_of_residence = $request->current_country;
@@ -332,8 +337,20 @@ class ApplicationController extends Controller
         $client = User::find(AUth::id());
         if ($request->hasFile('schengen_copy')) {
             $file = $request->file('schengen_copy');
-            $schengenCopy = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
+            $schengenCopy = Auth::user()->id.'_'.time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
             $client->addMediaFromRequest('schengen_copy')->withCustomProperties(['mime-type' => 'image/jpeg'])->preservingOriginal()->usingFileName($schengenCopy)->toMediaCollection(User::$media_collection_main_schengen_visa);
+        }
+
+        //Save the added array of schengen visas if available
+        if($request->hasfile('schengen_copy1'))
+        {
+            foreach($request->file('schengen_copy1') as $copy1)
+            {
+                $file = $copy1;
+                $name=$copy1->getClientOriginalName();
+                $schengenCopy1 = Auth::user()->id.'_'.time() . '_' . str_replace(' ', '_',  $name);
+                $client->addMediaFromRequest('schengen_copy1')->withCustomProperties(['mime-type' => 'image/jpeg'])->preservingOriginal()->usingFileName($schengenCopy1)->toMediaCollection(User::$media_collection_main_schengen_visa);
+            }
         }
 
         $client->is_schengen_visa_issued_last_five_year  = $request->is_schengen_visa_issued_last_five_year;
@@ -625,7 +642,7 @@ class ApplicationController extends Controller
         $file = $request->file('dependent_passport_copy');
         $fileName = null;
         if ($request->hasFile('dependent_passport_copy')) {
-            $fileName = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
+            $fileName = Auth::user()->id.'_'.time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
             $dependent->addMedia($request->file('dependent_passport_copy'))->usingFileName($fileName)->toMediaCollection(User::$media_collection_main);
         }
 
@@ -693,13 +710,13 @@ class ApplicationController extends Controller
         }
         if ($request->hasFile('dependent_residence_copy')) {
             $file = $request->file('dependent_residence_copy');
-            $residenceCopy = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
+            $residenceCopy = Auth::user()->id.'_'.time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
             $dependent->addMedia($request->file('dependent_residence_copy'))->usingFileName($residenceCopy)->toMediaCollection(User::$media_collection_main_residence_id);
         }
         $visaCopy = $request['dependent_visa_copy'];
         if ($request->hasFile('dependent_visa_copy')) {
             $file = $request->file('dependent_visa_copy');
-            $visaCopy = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
+            $visaCopy = Auth::user()->id.'_'.time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
             $dependent->addMedia($request->file('dependent_visa_copy'))->usingFileName($visaCopy)->toMediaCollection(User::$media_collection_main_residence_visa);
         }
         $dependent->save();
@@ -745,7 +762,7 @@ class ApplicationController extends Controller
 
         if ($request->hasFile('dependent_schengen_copy')) {
             $file = $request->file('dependent_schengen_copy');
-            $schengenCopy = time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
+            $schengenCopy = Auth::user()->id.'_'.time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
             $dependent->addMediaFromRequest('dependent_schengen_copy')->withCustomProperties(['mime-type' => 'image/jpeg'])->preservingOriginal()->usingFileName($schengenCopy)->toMediaCollection(User::$media_collection_main_schengen_visa);
         }
         $dependent->save();

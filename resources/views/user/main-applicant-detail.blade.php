@@ -406,7 +406,7 @@
                 <div class="col-6 my-auto">
                     <div class="first-heading d-flex justify-content-center">
                         <h3>
-                            Schengen Details
+                            {{ __('Schengen Details')}}
                         </h3>
                     </div>
                 </div>
@@ -439,8 +439,13 @@
                                 <span class="is_schengen_visa_issued_last_five_year_errorClass"></span>
                             </div>
                         </div>
+                        @php  
+                            $vall = $client['schengenVisaName'];
+                            $sheng = $client['schengenVisaUrl'];
+                            $phold = "Image of Schengen Or National Visa Issued During Last 5 Years";
+                        @endphp
                         <div class="form-group row mt-4 schengen_visa">
-                            <div class="col-sm-12 mt-3">
+                            <div class="col-sm-12 mt-3" id="schengen_visa">
                                 <input type="text" class="form-control schengen_copy" onclick="showSchengenVisaFormat('applicant')" name="schengen_copy" placeholder="Image of Schengen Or National Visa Issued During Last 5 Years" readonly >
                                 <div class="input-group-btn">
                                     <span class="fileUpload btn">
@@ -449,7 +454,10 @@
                                     </span><!-- btn-orange -->
                                 </div><!-- btn -->
                             </div>
+                            <div style="display: block;"><a href="#" class="pl" style="display:inline">+</a> Add another VISA <a href="#" class="mi" id="mi" style="display:inline">-</a></div>
                         </div>
+                        <!-- Add more inputs dynamycally here -->
+
                         <div class="form-group row mt-4">
                             <div class="col-sm-12 mt-3">
                                 <select name="is_finger_print_collected_for_Schengen_visa" id="is_finger_print_collected_for_Schengen_visa" aria-required="true" class="form-control form-select" autocomplete="off">
@@ -505,3 +513,20 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    $(function() {
+        //Add more file input box for schengen visa upload
+        $('a.pl').click(function(e) {
+            e.preventDefault();
+            $('#schengen_visa').append('<div class="col-sm-12 mt-3" id="schengen_visa"><input type="text" class="form-control schengen_copy1[]" name="schengen_copy1[]" onclick="showSchengenVisaFormat(\'applicant\')" @if($sheng)  value="{{$vall}}" @else placeholder="{{$phold}}" @endif readonly ><div class="input-group-btn"><span class="fileUpload btn"><span class="upl" id="upload">Choose File</span><input type="file" class="upload schengen_copy1[]" accept="image/png, image/gif, image/jpeg" name="schengen_copy1[]" /></span></div></div>');
+        });
+        //Remove the extra file input box for schengen visa upload
+        $('a.mi').click(function (e) {
+            e.preventDefault();
+            if ($('#schengen_visa div').length > 1) {
+                $('#schengen_visa').children().last().remove();
+            }
+        });
+    });
+</script> 

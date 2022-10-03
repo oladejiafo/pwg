@@ -357,8 +357,8 @@ $vals=array(0,1,2);
                                 }
                                 // $payNow = 0;
                                 $vatPercent = '5%';
-                                
-                                if(Auth::user()->country_of_residence == "United Arab Emirates" || Auth::user()->country_of_residence =='')
+
+                                if(Auth::user()->country_of_residence == "United Arab Emirates" || Auth::user()->country_of_residence ==null)
                                 {
                                   $vat = ($payNow * 5) / 100;
                                 } else {
@@ -369,7 +369,7 @@ $vals=array(0,1,2);
 
                                 list($which, $zzz) = explode(' ', $whichPayment);
                             ?>
-                    
+                                               
                                 <div class="row payament-sec">
                                     <div class="col-lg-6 col-md-12" style="padding-right:20px">
                                         <div class="total">
@@ -391,7 +391,7 @@ $vals=array(0,1,2);
                                                 </div>
                                                 <div class="right-section col-6" align="right">
                                                     @if($whichPayment == "First Payment")
-                                                    @php $vat = $first_pay*5/100; @endphp
+                                                  
                                                     <b>{{number_format($first_pay,2)}}</b>
 
                                                     @else
@@ -414,7 +414,7 @@ $vals=array(0,1,2);
                                                 <div class="right-section col-6" align="right">
 
                                                     @if( $whichPayment ==  "Second Payment")
-                                                    @php $vat = $second_pay*5/100; @endphp
+                                                    
                                                     <b>{{number_format($second_pay,2)}}</b>
 
                                                     @else
@@ -438,7 +438,7 @@ $vals=array(0,1,2);
                                                 </div>
                                                 <div class="right-section col-6" align="right">
                                                     @if( $whichPayment ==  "Third Payment")
-                                                    @php $vat = $third_pay*5/100; @endphp
+                                                    
                                                     <b>{{number_format($third_pay,2)}}</b>
 
                                                     @else
@@ -479,11 +479,21 @@ $vals=array(0,1,2);
                                                     <span style="font-size:11px">AED</span>
                                                 </div>
                                             </div>
+                                            @if(isset($vat) && $vat>0)
+                                            <div class="total-sec row mt-3 showDiscount">
+                                                <div class="left-section col-6">
+                                                     VAT (+ 5% of {{$whichPayment}})
+                                                </div>
+                                                <div class="right-section col-6" align="right">
+                                                    <span id="vatt">{{number_format($vat,2)}} </span>
+                                                    <span style="font-size:11px">AED</span>
+                                                </div>
+                                            </div>
+                                            @endif
                                             @if($payall==1 && isset($discount) && $discount>0)
                                             <div class="total-sec row mt-3 showDiscount">
                                                 <div class="left-section col-6">
                                                      Full Payment Discount (-{{($discountPercent) ? $discountPercent : ''}})
-                                                    
                                                 </div>
                                                 <div class="right-section col-6" align="right">
                                               
@@ -518,36 +528,28 @@ $vals=array(0,1,2);
                                     </div>
                                     <div class="col-lg-6 col-md-12">
                                         @if($whichPayment =="First Payment" && ($diff == 0 || empty($diff)))
-                                        <div class="partial" style="height: 100%;">
-
+                                          <div class="partial" style="height: 100%;">
                                             <p>Pay {{strtolower($which)}} installment in partial</p>
                                             <input type="text" class="form-control" name="amount" id="amount" placeholder="Enter partial payment" style="text-align:left !important" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');">
                                             @if($errors->has('totalpay'))
-                                            <div class="error">{{ $errors->first('totalpay') }}</div>
-                                            @endif
-
+                                              <div class="error">{{ $errors->first('totalpay') }}</div>
+                                            @endif 
                                             <p>Minimum amount of <b> 1,000 AED</b></p>
-
-                                            <?php
-                                           // $axx = "<script>document.write(ax)</script>";
-                                            ?>
-
-                                        </div>
+                                          </div>
                                         @endif
                                     </div>
                                     <div class="partial-total-sec">
-                                  
-                                    @if($diff > 0 && $payall ==0) 
+                                      @if($diff > 0 && $payall ==0) 
                                         <h2 style="font-size: 1em;">Now you will pay the balance on first installment only <b>{{ number_format($pends) }}</b> AED <span style="font-size:11px;opacity:0.6">@if($vat>0) (VAT inclusive @if($discount>0) ,less Discount  @endif) @endif</span></h2>
                                         <input type="hidden" id="amountLink2" name="totalpay" value="{{  number_format($payNoww, 0, '.', '') }}">
+                                        <!-- number_format($payNoww, 0, '.', '') -->
                                         <input type="hidden" id="totaldue" name="totaldue" value="{{$payNow + $vat}}">
                                         <input type="hidden" name="totalremaining" value="{{$pends}}">
-                                    @else
+                                      @else
                                         <h2 style="font-size: 1em;">Now you will pay {{strtolower($which)}} installment only <span id="amountLink"><b>{{number_format($payNoww + $vat -$discount)}}</b></span> AED <span style="font-size:11px;opacity:0.6">@if($vat>0) (VAT inclusive @if($discount>0) ,less Discount  @endif) @else @if($discount>0) (less Discount)  @endif @endif</span></h2>
                                         <input type="hidden" id="amountLink2" name="totalpay" value="{{  number_format($payNoww + $vat -$discount, 0, '.', '') }}">
                                         <input type="hidden" id="totaldue" name="totaldue" value="{{$payNoww + $vat -$discount}}">
-                                    @endif
-
+                                      @endif
                                     </div>
                                 </div>
                             </div>
