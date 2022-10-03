@@ -383,6 +383,17 @@
             }
             $('.passport_copy, .up').attr("value",names);
         });
+
+        $(document).on('change','.cvupload', function(){
+            $('.cvupload').attr("value", ' ');
+            $("input[name=cvupload]").val('');
+            var names = [];
+            var length = $(this).get(0).files.length;
+            for (var i = 0; i < $(this).get(0).files.length; ++i) {
+                names.push($(this).get(0).files[i].name);
+            }
+            $('.cvupload').attr("value",names);
+        });
         $('.passport_upload, .residence_upload, .visa_upload, .schengen_upload, .dependent_passport_upload, .dependent_residence_upload, .dependent_visa_upload, .dependent_schengen_upload').click(function(){
             $("#passportFormatModal").modal('hide');
             $("#visaFormatModal").modal('hide');

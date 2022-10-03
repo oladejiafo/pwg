@@ -10,13 +10,11 @@ class payment extends Model
     use HasFactory;
     protected $fillable = [
         'application_id',
-        'total_paid',
-        'product_payment_id',
-        'total',
-        'currency_code',
-        'payment_status',
-        'payment_type',
-        'card_type',
-        'transaction_id'
+        'invoice_no',
+        'invoice_id',
+        'currency',
+        'transaction_id',
+        'bank_reference_no',
+        'paid_amount'
     ];
 }

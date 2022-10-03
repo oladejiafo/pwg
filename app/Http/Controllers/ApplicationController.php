@@ -7,6 +7,8 @@ use App\Models\Applicant;
 use App\Models\ApplicantExperience;
 use App\Models\JobCategoryOne;
 use App\Models\JobCategoryFour;
+use App\Models\JobCategoryThree;
+use App\Models\JobCategoryTwo;
 use Exception;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
@@ -69,7 +71,7 @@ class ApplicationController extends Controller
     {
         Session::forget('info');
         if (Auth::id()) {
-
+            $client = User::find(Auth::id());
             $applicant = Applicant::where('client_id', Auth::id())
                 ->where('destination_id', $productId)
                 ->first();
@@ -107,7 +109,6 @@ class ApplicationController extends Controller
             'civil_status' => 'required',
             'citizenship' => 'required',
             'cv' => 'required|mimes:pdf',
-
         ]);
 
         if ($validator->fails()) {
@@ -157,7 +158,7 @@ class ApplicationController extends Controller
     public function storeHomeCountryDetails(Request $request)
     {
         $validator = \Validator::make($request->all(), [
-            'passport_number' => 'Required',
+            'passport_number' => 'Required | unique:clients',
             'passport_issue' => 'required',
             'passport_expiry' => 'required',
             'issued_by' => 'Required',
@@ -179,7 +180,7 @@ class ApplicationController extends Controller
 
         $file = $request->file('passport_copy');
         $client = User::find(Auth::id());
-
+        $fileName = '';
         if ($request->hasFile('passport_copy')) {
             $fileName = Auth::user()->id.'_'.time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
             $client->addMedia($request->file('passport_copy'))->usingFileName($fileName)->toMediaCollection(User::$media_collection_main);
@@ -368,6 +369,8 @@ class ApplicationController extends Controller
      */
     public function addExperience(Request $request)
     {
+        $job_category_two_id = ($request['job_category_two_id']) ?? JobCategoryThree::where('id', $request['job_category_three_id'])->pluck('job_category_two_id')->first(); 
+        $job_category_one_id = ($request['job_category_one_id']) ?? JobCategoryTwo::where('id', $job_category_two_id)->pluck('job_category_one_id')->first();
         if ($request['userType'] == 'dependent') {
             $exist = ApplicantExperience::where('client_id', $request->dependentId)
                 ->where('job_category_three_id', $request['job_category_three_id'])
@@ -392,12 +395,13 @@ class ApplicationController extends Controller
                 ->where('job_category_three_id', $request['job_category_three_id'])
                 ->where('job_category_four_id', $request['job_category_four_id'])
                 ->first();
+
             if (!$exist) {
                 $exp = new ApplicantExperience();
                 $exp->client_id = Auth::id();
                 $exp->job_title = $request['job_title'];
-                $exp->job_category_one_id = (int)$request['job_category_one_id'];
-                $exp->job_category_two_id = (int)$request['job_category_two_id'];
+                $exp->job_category_one_id =  $job_category_one_id;
+                $exp->job_category_two_id = $job_category_two_id;
                 $exp->job_category_three_id = (int)$request['job_category_three_id'];
                 $exp->job_category_four_id = (int)$request['job_category_four_id'];
                 $exp->created_by = Auth::id();

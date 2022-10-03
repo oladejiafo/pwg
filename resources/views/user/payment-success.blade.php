@@ -47,10 +47,9 @@
 </style>
 </head>
 <?php
- $status = DB::table('applications')
+ $applicant = DB::table('applications')
                 ->where('client_id', '=', Auth::user()->id)
                 ->where('destination_id', $id)
-                ->pluck('application_stage_status')
                 ->first();
 ?>
 
@@ -70,9 +69,8 @@
                         <div class="invoice-now">
                             <div class="invoice">
                                 <div class="invoice-image">
-
                                 </div>
-                                <p><a href="{{url('/get/invoice')}}"> Get the invoice now </a></p>
+                                    <p><a href="{{url('/get/invoice')}}" target="_blank"> Get the invoice now </a></p>
                             </div>
                         </div>
                         <div class="invoice-later">
@@ -80,12 +78,12 @@
                                 <input type="checkbox" name="invoicelater" value="1">
                                 <span class="slider round"></span>
                             </label>
-                            <p> Get the invoice later </p>
+                            <p> Get the invoice reciept Later </p>
                         </div>
-                        @if($status == 5)
+                        @if($applicant->application_stage_status == 5)
                           <form action="{{ url('myapplication') }}" method="GET">
                         @else
-                            <form action="{{ route('applicant/details',$id) }}" method="GET">
+                            <form action="{{ url('applicant/details',$id) }}" method="GET">
                         @endif
                             <input type="hidden" name="pid" value="{{$id}}">
                             <button  style="font-size:18px" class="btn btn-primary ose">APPLICATION DETAILS</button>

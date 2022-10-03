@@ -22,7 +22,7 @@ const app = new Vue({
     methods: {
         getCategories() { 
             axios
-            .get('/get/job/category/list')
+            .post('/get/job/category/list')
             .then(function (response) {
                 app.jobCategories = response.data;
             })

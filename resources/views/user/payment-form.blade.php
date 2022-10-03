@@ -360,13 +360,11 @@ $vals=array(0,1,2);
 
                                 if(Auth::user()->country_of_residence == "United Arab Emirates" || Auth::user()->country_of_residence ==null)
                                 {
-                                  $vat = ($payNow * 5) / 100;
+                                  $vat = (($payNow - $discount) * 5) / 100;
                                 } else {
                                     $vat = 0;
                                 }
-                                
-                                $totalPay = ($payNow + $vat) - $discount;
-
+                                $totalPay = round((($payNow - $discount) + $vat),2);
                                 list($which, $zzz) = explode(' ', $whichPayment);
                             ?>
                                                
@@ -539,17 +537,17 @@ $vals=array(0,1,2);
                                         @endif
                                     </div>
                                     <div class="partial-total-sec">
-                                      @if($diff > 0 && $payall ==0) 
-                                        <h2 style="font-size: 1em;">Now you will pay the balance on first installment only <b>{{ number_format($pends) }}</b> AED <span style="font-size:11px;opacity:0.6">@if($vat>0) (VAT inclusive @if($discount>0) ,less Discount  @endif) @endif</span></h2>
-                                        <input type="hidden" id="amountLink2" name="totalpay" value="{{  number_format($payNoww, 0, '.', '') }}">
-                                        <!-- number_format($payNoww, 0, '.', '') -->
-                                        <input type="hidden" id="totaldue" name="totaldue" value="{{$payNow + $vat}}">
-                                        <input type="hidden" name="totalremaining" value="{{$pends}}">
-                                      @else
-                                        <h2 style="font-size: 1em;">Now you will pay {{strtolower($which)}} installment only <span id="amountLink"><b>{{number_format($payNoww + $vat -$discount)}}</b></span> AED <span style="font-size:11px;opacity:0.6">@if($vat>0) (VAT inclusive @if($discount>0) ,less Discount  @endif) @else @if($discount>0) (less Discount)  @endif @endif</span></h2>
-                                        <input type="hidden" id="amountLink2" name="totalpay" value="{{  number_format($payNoww + $vat -$discount, 0, '.', '') }}">
-                                        <input type="hidden" id="totaldue" name="totaldue" value="{{$payNoww + $vat -$discount}}">
-                                      @endif
+
+                                        @if($diff > 0 && $payall ==0) 
+                                            <h2 style="font-size: 1em;">Now you will pay the balance on first installment only <b>{{ number_format((round($pends,2)),2) }}</b> AED <span style="font-size:11px;opacity:0.6" id="amountText">@if($vat>0) (VAT inclusive @if($discount>0) ,less Discount  @endif) @endif</span></h2>
+                                            <input type="hidden" id="amountLink2" name="totalpay" value="{{  round($payNoww, 2) }}">
+                                            <input type="hidden" id="totaldue" name="totaldue" value="{{ round(($payNow + $vat),2) }}">
+                                            <input type="hidden" name="totalremaining" value="{{round($pends,2)}}">
+                                        @else
+                                            <h2 style="font-size: 1em;">Now you will pay {{strtolower($which)}} installment only <span id="amountLink"><b>{{number_format((round((($payNoww - $discount)+ $vat),2)),2)}}</b></span> AED <span style="font-size:11px;opacity:0.6"  id="amountText">@if($vat>0) (VAT inclusive @if($discount>0) ,less Discount  @endif) @else @if($discount>0) (less Discount)  @endif @endif</span></h2>
+                                            <input type="hidden" id="amountLink2" name="totalpay" value="{{ round((($payNoww - $discount)+ $vat),2) }}">
+                                            <input type="hidden" id="totaldue" name="totaldue" value="{{round((($payNoww - $discount) + $vat),2) }}">
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -636,17 +634,18 @@ $vals=array(0,1,2);
 
         $('.current_location').change(function(){
             var $this = $(this);
-            var amtx = <?php echo $payNoww; ?>; 
-     
+            var paynow = <?php echo $payNoww; ?>; 
+            var discount = (paynow * 5 / 100);
+            var amtx = (paynow - discount);
             if($this.val()=='United Arab Emirates')
             {
-                document.getElementById("amountLink2").value = amtx + (amtx*5/100);
-                $('#amountLink').text(amtx + (amtx*5/100)); //= amtx + (amtx*5/100);
-              document.getElementById("totaldue").value = amtx + (amtx*5/100);
+                document.getElementById("amountLink2").value = (amtx + (amtx*5/100)).toFixed(2);
+                $('#amountLink').text((amtx + (amtx*5/100)).toFixed(2)); //= amtx + (amtx*5/100);
+              document.getElementById("totaldue").value = (amtx + (amtx*5/100)).toFixed(2);
             } else {
-                document.getElementById("amountLink2").value = amtx;
-                $('#amountLink').text(amtx); //= amtx;
-              document.getElementById("totaldue").value = amtx;
+                document.getElementById("amountLink2").value = amtx.toFixed(2);
+                $('#amountLink').text(amtx.toFixed(2)); //= amtx;
+              document.getElementById("totaldue").value = amtx.toFixed(2);
             }
 
         });
