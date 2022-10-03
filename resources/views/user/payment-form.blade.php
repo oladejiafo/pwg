@@ -477,17 +477,7 @@ $vals=array(0,1,2);
                                                     <span style="font-size:11px">AED</span>
                                                 </div>
                                             </div>
-                                            @if(isset($vat) && $vat>0)
-                                            <div class="total-sec row mt-3 showDiscount">
-                                                <div class="left-section col-6">
-                                                     VAT (+ 5% of {{$whichPayment}})
-                                                </div>
-                                                <div class="right-section col-6" align="right">
-                                                    <span id="vatt">{{number_format($vat,2)}} </span>
-                                                    <span style="font-size:11px">AED</span>
-                                                </div>
-                                            </div>
-                                            @endif
+
                                             @if($payall==1 && isset($discount) && $discount>0)
                                             <div class="total-sec row mt-3 showDiscount">
                                                 <div class="left-section col-6">
@@ -519,6 +509,17 @@ $vals=array(0,1,2);
                                                     
                                                 </div>
                                                 
+                                            </div>
+                                            @endif
+                                            @if(isset($vat) && $vat>0)
+                                            <div class="total-sec row mt-3 showDiscount">
+                                                <div class="left-section col-6">
+                                                     VAT (+ 5% of {{$whichPayment}})
+                                                </div>
+                                                <div class="right-section col-6" align="right">
+                                                    <span id="vatt">{{number_format($vat,2)}} </span>
+                                                    <span style="font-size:11px">AED</span>
+                                                </div>
                                             </div>
                                             @endif
                                             <input type="hidden" name="vats" id="vats" value="{{$vat}}">
