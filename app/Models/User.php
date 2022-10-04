@@ -89,9 +89,12 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
     public static $media_collection_main_resume = 'client_collection_resume';
     public static $media_collection_main = 'client_passport_collection_img';
     public static $media_collection_main_residence_visa = 'client_residence_visa_copy';
-    public static $media_collection_main_schengen_visa = 'client_collection_schengen_visa';
     public static $media_collection_main_residence_id = 'client_collection_residence_id';
-
+    public static $media_collection_main_schengen_visa = 'client_collection_schengen_visa';
+    public static $media_collection_main_schengen_visa1 = 'client_collection_schengen_visa1';
+    public static $media_collection_main_schengen_visa2 = 'client_collection_schengen_visa2';
+    public static $media_collection_main_schengen_visa3 = 'client_collection_schengen_visa3';
+    public static $media_collection_main_schengen_visa4 = 'client_collection_schengen_visa4';
 
     public function registerMediaCollections(): void
     {
@@ -102,6 +105,10 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
         // $this->addMediaCollection('client_collection_schengen_visa')->singleFile(); //
 
         $this->addMediaCollection('client_collection_schengen_visa');
+        $this->addMediaCollection('client_collection_schengen_visa1')->singleFile();
+        $this->addMediaCollection('client_collection_schengen_visa2')->singleFile();
+        $this->addMediaCollection('client_collection_schengen_visa3')->singleFile();
+        $this->addMediaCollection('client_collection_schengen_visa4')->singleFile();
 
         $this->addMediaCollection('client_collection_residence_id')->singleFile();
         $this->addMediaCollection('client_residence_visa_copy')->singleFile();

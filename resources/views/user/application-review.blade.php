@@ -587,7 +587,7 @@
                                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#schengenVisatModal" onclick="schengenVisatModal()">click to view uploaded schengen visa copy</a>
                                                     @endif
                                                 </div>
-                                                <div style="display: block;"><a href="#" class="pl" style="display:inline">+</a> Add another VISA <a href="#" class="mi" id="mi" style="display:inline">-</a></div>
+                                                <div style="display: block;color:blue"><a href="#" class="pl" title="click here to add another row for upload" style="display:inline"><i class="fa fa-plus-circle"></i></a> Add another Visa <a href="#" class="mi" id="mi" title="click here to remove the last added row for upload" style="display:inline"><i class="fa fa-minus-circle"></i></a></div>
                                             </div>
                                             <!-- Add more inputs dynamycally here -->
 
@@ -1866,30 +1866,86 @@
             </div>
         </div>
     </div>
+    @php  
+        $vall1 = $client['schengenVisaName1'];
+        $vall2 = $client['schengenVisaName2'];
+        $vall3 = $client['schengenVisaName3'];
+        $vall4 = $client['schengenVisaName4'];
+
+        $sheng = $client['schengenVisaUrl1'];
+        $phold = "Image of Schengen Or National Visa Issued During Last 5 Years";
+    @endphp
 @endSection  
 @push('custom-scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 
-<script type="text/javascript">
+<script>
+    var cnt=0;
+    var valle='';
     $(function() {
         //Add more file input box for schengen visa upload
         $('a.pl').click(function(e) {
-            e.preventDefault();
-            $('#schengen_visa').append('<div class="col-sm-12 mt-3" id="schengen_visa"><input type="text" class="form-control schengen_copy1[]" name="schengen_copy1[]" onclick="showSchengenVisaFormat(\'applicant\')" @if($sheng)  value="{{$vall}}" @else placeholder="{{$phold}}" @endif readonly ><div class="input-group-btn"><span class="fileUpload btn"><span class="upl" id="upload">Choose File</span><input type="file" class="upload schengen_copy1[]" accept="image/png, image/gif, image/jpeg" name="schengen_copy1[]" /></span></div></div>');
+          e.preventDefault();
+          if (cnt < 4) {
+            cnt = cnt+1;
+            // alert(cnt)
+            if(cnt == 1)
+            {
+                valle="<?php echo $vall1; ?>";                
+            }
+            else if(cnt === 2)
+            {
+                 valle="<?php echo $vall2; ?>";                
+            }
+            else if(cnt === 3)
+            {
+                 valle="<?php echo $vall3; ?>";                
+            }
+            else if(cnt === 4)
+            {
+                 valle="<?php echo $vall4; ?>";                
+            }
+
+            $('#schengen_visa').append('<div class="col-sm-12 mt-3" id="schengen_visa"><input type="text" class="form-control schengen_copy1_'+cnt+'" name="schengen_copy1[]" onclick="showSchengenVisaFormat(\'applicant\')" @if($sheng)  value="'+valle+ '" @else placeholder="{{$phold}}" @endif readonly ><div class="input-group-btn"><span class="fileUpload btn"><span class="upl" id="upload">Choose File</span><input style="position: absolute;top: 0; right: 0; margin: 0; padding: 0; font-size: 20px; cursor: pointer; opacity: 0; filter: alpha(opacity=0);" type="file" class="schengen_copy1_'+cnt+'" accept="image/png, image/gif, image/jpeg" name="schengen_copy1[]" /></span></div></div>');
+          }
         });
+
         //Remove the extra file input box for schengen visa upload
         $('a.mi').click(function (e) {
             e.preventDefault();
             if ($('#schengen_visa div').length > 1) {
+                cnt = cnt-1;
                 $('#schengen_visa').children().last().remove();
             }
-        });
+        }); 
     });
-</script> 
+     
+    $(document).on('change',"[name='schengen_copy1[]']", function(){
+        let clsName =$(this).attr("class");
 
-<script>
+        $('.'+clsName).attr("value", ' ');
+        $("input[name=schengen_upload]").val('');
+    
+        var names = [];
+        var length = $(this).get(0).files.length;
+        for (var i = 0; i < $(this).get(0).files.length; ++i) {
+            names.push($(this).get(0).files[i].name);
+        }
+        
+        // $("input[name=file]").val(names);
+        if(length>2)
+        {
+            var fileName = names.join(', ');
+            $('.'+clsName).attr("value",length+" files selected");
+        } else {
+            $('.'+clsName).attr("value",names);
+        }
+        $('.schengen_upload')[0].files[0] = ' ';
+    });
+
+
     $(document).ready(function(){
 
         $('.dependentReviewSpin, .childReviewSpin, .applicantReviewSpin').hide();
@@ -2165,6 +2221,7 @@
             $('.schengen_copy').attr("value",names);
             }
         });
+
 
         function addExperience(cat1, cat2, cat3, cat4, jobTitle)
         {

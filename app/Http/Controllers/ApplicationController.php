@@ -209,6 +209,7 @@ class ApplicationController extends Controller
 
     public function applicantReview($productId)
     {
+      if (Auth::id()) {
         $client = User::find(Auth::id());
         $applicant = Applicant::where('client_id', Auth::id())
             ->where('destination_id', $productId)
@@ -230,6 +231,19 @@ class ApplicationController extends Controller
 
         $client->schengenVisaUrl = (isset($client->getMedia(User::$media_collection_main_schengen_visa)[0])) ? $client->getMedia(User::$media_collection_main_schengen_visa)[0]->getUrl() : null;
         $client->schengenVisaName = (isset($client->getMedia(User::$media_collection_main_schengen_visa)[0])) ? $client->getMedia(User::$media_collection_main_schengen_visa)[0]['name'] : ' ';
+
+        $client->schengenVisaUrl1 = (isset($client->getMedia(User::$media_collection_main_schengen_visa1)[0])) ? $client->getMedia(User::$media_collection_main_schengen_visa1)[0]->getUrl() : null;
+        $client->schengenVisaName1 = (isset($client->getMedia(User::$media_collection_main_schengen_visa1)[0])) ? $client->getMedia(User::$media_collection_main_schengen_visa1)[0]['name'] : ' ';
+
+        $client->schengenVisaUrl2 = (isset($client->getMedia(User::$media_collection_main_schengen_visa2)[0])) ? $client->getMedia(User::$media_collection_main_schengen_visa2)[0]->getUrl() : null;
+        $client->schengenVisaName2 = (isset($client->getMedia(User::$media_collection_main_schengen_visa2)[0])) ? $client->getMedia(User::$media_collection_main_schengen_visa2)[0]['name'] : ' ';
+
+        $client->schengenVisaUrl3 = (isset($client->getMedia(User::$media_collection_main_schengen_visa3)[0])) ? $client->getMedia(User::$media_collection_main_schengen_visa3)[0]->getUrl() : null;
+        $client->schengenVisaName3 = (isset($client->getMedia(User::$media_collection_main_schengen_visa3)[0])) ? $client->getMedia(User::$media_collection_main_schengen_visa3)[0]['name'] : ' ';
+
+        $client->schengenVisaUrl4 = (isset($client->getMedia(User::$media_collection_main_schengen_visa4)[0])) ? $client->getMedia(User::$media_collection_main_schengen_visa4)[0]->getUrl() : null;
+        $client->schengenVisaName4 = (isset($client->getMedia(User::$media_collection_main_schengen_visa4)[0])) ? $client->getMedia(User::$media_collection_main_schengen_visa4)[0]['name'] : ' ';
+
         if ($dependent) {
             $dependent->passportUrl = (isset($dependent->getMedia(User::$media_collection_main)[0])) ? $dependent->getMedia(User::$media_collection_main)[0]->getUrl() : null;
             $dependent->passportName = (isset($dependent->getMedia(User::$media_collection_main)[0])) ? $dependent->getMedia(User::$media_collection_main)[0]['name'] : null;
@@ -250,6 +264,9 @@ class ApplicationController extends Controller
 
 
         return view('user.application-review', compact('client', 'applicant', 'productId', 'dependent', 'children'))->with('success', 'Data saved successfully!');
+     } else {
+        return redirect('home');
+     }
     }
 
     /**
@@ -314,15 +331,17 @@ class ApplicationController extends Controller
      */
     public function storeSchengenDetails(Request $request)
     {
-
         if ($request['is_schengen_visa_issued_last_five_year']  == 'YES') {
             $validator = \Validator::make($request->all(), [
                 'is_schengen_visa_issued_last_five_year' => 'required',
+                'schengen_copy' => 'required',
                 'is_finger_print_collected_for_Schengen_visa' => 'required'
             ]);
         } else {
             $validator = \Validator::make($request->all(), [
                 'is_schengen_visa_issued_last_five_year' => 'required',
+                'is_finger_print_collected_for_Schengen_visa' => 'required'
+
             ]);
         }
 
@@ -345,12 +364,16 @@ class ApplicationController extends Controller
         //Save the added array of schengen visas if available
         if($request->hasfile('schengen_copy1'))
         {
+            $x = 0;
             foreach($request->file('schengen_copy1') as $copy1)
             {
-                $file = $copy1;
+                $x=$x+1;
+                
+                //$file1 = $copy1;
                 $name=$copy1->getClientOriginalName();
+                list($nName,$nExt) = explode('.',$name);
                 $schengenCopy1 = Auth::user()->id.'_'.time() . '_' . str_replace(' ', '_',  $name);
-                $client->addMediaFromRequest('schengen_copy1')->withCustomProperties(['mime-type' => 'image/jpeg'])->preservingOriginal()->usingFileName($schengenCopy1)->toMediaCollection(User::$media_collection_main_schengen_visa);
+                $client->addMediaFromRequest('schengen_copy1')->withCustomProperties(['mime-type' => 'image/jpeg'])->preservingOriginal()->usingName($nName)->usingFileName($schengenCopy1)->toMediaCollection(User::$media_collection_main_schengen_visa.$x);
             }
         }
 

@@ -290,6 +290,17 @@
             </div>
         </div>
     </div>
+
+    @php  
+        $vall = $client['schengenVisaName'];
+        $vall1 = $client['schengenVisaName1'];
+        $vall2 = $client['schengenVisaName2'];
+        $vall3 = $client['schengenVisaName3'];
+        $vall4 = $client['schengenVisaName4'];
+
+        $sheng = $client['schengenVisaUrl'];
+        $phold = "Image of Schengen Or National Visa Issued During Last 5 Years";
+    @endphp
 @endSection
 @push('custom-scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
@@ -503,6 +514,7 @@
                 $("input[name=schengen_upload]").val(names);
             }
         });
+        
         $('#is_schengen_visa_issued_last_five_year').on('change', function(){
             if($('#is_schengen_visa_issued_last_five_year').val() == "YES"){
                 $('.schengen_visa').show();
@@ -740,7 +752,12 @@
         $('#schengen_details').submit(function(e){
             e.preventDefault(); 
             $("#schengen_details :input").each(function(index, elm){
-                $("."+elm.name+"_errorClass").empty();
+                if(elm.name == "schengen_copy1[]"){
+
+                } else {
+                    $("."+elm.name+"_errorClass").empty();
+
+                }
             });
             $.ajaxSetup({
                 headers: {
@@ -751,6 +768,7 @@
             if($("input[name=schengen_upload]").val()) {
                 formData.append('schengen_copy', $('.schengen_upload')[0].files[0]);
             }
+            console.log(formData);
             $.ajax({
                 type: 'POST',
                 url: "{{ url('store/schengen/details') }}",
@@ -758,6 +776,7 @@
                 processData: false,
                 contentType: false,
                 success: function (data) {
+                    console.log(data);
                     if(data.success) {
                         $('#collapseSchengen').removeClass('show');
                         $('.schengenData').show();
@@ -794,6 +813,74 @@
             }
             $('.schengen_upload')[0].files[0] = ' ';
         });
+       
+        var cnt=0;
+        // let cntt = 0;
+    
+        $(function() {
+            //Add more file input box for schengen visa upload
+            $('a.pl').click(function(e) {
+      
+                e.preventDefault();
+                if (cnt < 4) {
+                    cnt = cnt+1;
+
+                    if(cnt == 1)
+                    {
+                        valle="<?php echo $vall1; ?>";                
+                    }
+                    else if(cnt === 2)
+                    {
+                        valle="<?php echo $vall2; ?>";                
+                    }
+                    else if(cnt === 3)
+                    {
+                        valle="<?php echo $vall3; ?>";                
+                    }
+                    else if(cnt === 4)
+                    {
+                        valle="<?php echo $vall4; ?>";                
+                    }
+
+                    $('#schengen_visa').append('<div class="col-sm-12 mt-3" id="schengen_visa"><input type="text" class="form-control schengen_copy1_'+cnt+'" name="schengen_copy1[]" onclick="showSchengenVisaFormat(\'applicant\')" @if($sheng)  value="'+valle+ '" @else placeholder="{{$phold}}" @endif readonly ><div class="input-group-btn"><span class="fileUpload btn"><span class="upl" id="upload">Choose File</span><input style="position: absolute;top: 0; right: 0; margin: 0; padding: 0; font-size: 20px; cursor: pointer; opacity: 0; filter: alpha(opacity=0);" type="file" class="schengen_copy1_'+cnt+'" accept="image/png, image/gif, image/jpeg" name="schengen_copy1[]" /></span></div></div>');
+                }
+
+            });
+            //Remove the extra file input box for schengen visa upload
+            $('a.mi').click(function (e) {
+                e.preventDefault();
+                if ($('#schengen_visa div').length > 1) {
+                    cnt = cnt-1;
+                    $('#schengen_visa').children().last().remove();
+                }
+            }); 
+
+        });
+     
+        $(document).on('change',"[name='schengen_copy1[]']", function(){
+            let clsName =$(this).attr("class");
+
+            $('.'+clsName).attr("value", ' ');
+            $("input[name=schengen_upload]").val('');
+       
+            var names = [];
+            var length = $(this).get(0).files.length;
+            for (var i = 0; i < $(this).get(0).files.length; ++i) {
+                names.push($(this).get(0).files[i].name);
+            }
+           
+            // $("input[name=file]").val(names);
+            if(length>2)
+            {
+                var fileName = names.join(', ');
+                $('.'+clsName).attr("value",length+" files selected");
+            } else {
+                $('.'+clsName).attr("value",names);
+            }
+            $('.schengen_upload')[0].files[0] = ' ';
+        });
+
+
         $('.closeBtn').click(function(){
             $("#passportFormatModal").modal('hide');
             $("#residenceIdFormatModal").modal('hide');
