@@ -93,7 +93,9 @@
                             <div class="col-4 cellContainer" style="margin-top:50px">
                                 <span class="product-item item-hints" href="#">
                                     <span class="positionAnchor hint"  data-position="1">
-                                        <img src="../user/images/{{$offer->image}}" style="height:458px" class="img-fluid product-thumbnail home_img">
+                                        {{-- <div class="home-img"> --}}
+                                            <img src="../user/images/{{$offer->image}}" width="100%" class="img-fluid product-thumbnail home_img">
+                                        {{-- </div> --}}
                                         <div class="hint-content do--split-children">
                                             <p>{{$offer->description}}</p>
                                         </div>
@@ -165,10 +167,12 @@
                     @endphp
                 @endif
                 <!-- Start Column  -->
-                <div class="col-lg-4 cellContainer" style="margin-top:50px">
+                <div class="col-sm-12 col-lg-4 cellContainer" style="margin-top:50px">
                     <span class="product-item item-hints" href="#">
                         <span class="positionAnchor hint"  data-position="1">
-                            <img src="../user/images/{{$offer->image}}" style="height:458px" class="img-fluid product-thumbnail home_img">
+                            {{-- <div class="home-img"> --}}
+                                <img src="../user/images/{{$offer->image}}" width="100%"  class="img-fluid product-thumbnail home_img">
+                            {{-- </div> --}}
                             <div class="hint-content do--split-children">
                               <p>{{$offer->description}}</p>
                             </div>

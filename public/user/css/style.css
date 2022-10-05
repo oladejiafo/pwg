@@ -89,6 +89,9 @@ a.more {
   box-shadow: none;
   outline: none;
 }
+.bottom .product-title {
+  text-align: left;
+}
 
 @media (min-width: 992px) {
   .custom-navbar .custom-navbar-nav li {
@@ -460,6 +463,7 @@ a.more {
   .product-section .product-item {
     margin-top: 30px;
     margin-left: 0px;
+    height: 546px;
   }
 
   .product-section .product-item .btn {
@@ -568,6 +572,9 @@ a.more {
   .product-section .product-item {
     margin-top: 30px;
     margin-left: 0px;
+  }
+  .product-section .product-item .positionAnchor {
+    display: block;
   }
 }
 
@@ -2459,6 +2466,10 @@ iframe img {
 
   .package .switch {
     margin-right: 157px;
+  }
+
+  .product-section .product-item .positionAnchor {
+    display: block;
   }
 }
 

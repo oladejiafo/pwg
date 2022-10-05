@@ -19,6 +19,7 @@ use App\Models\notifications;
 use App\Models\cardDetail;
 use App\Helpers\Quickbook;
 use Illuminate\Support\Facades\Mail;
+use QuickBooksOnline\API\DataService\DataService;
 use App\Mail\NotifyMail;
 use Illuminate\Support\Facades\Response;
 use Config;
@@ -179,7 +180,7 @@ class HomeController extends Controller
             list($part_a, $image_parts) = explode(";base64,", $request->signed);
             $image_type_aux = explode("image/", $part_a);
             $image_type = $image_type_aux[1];
-            $signate = Auth::user()->id.'_'.time() . '.' . $image_type;
+            $signate = Auth::user()->id . '_' . time() . '.' . $image_type;
             $signature = user::find(Auth::user()->id);
             $signature->addMediaFromBase64($request->signed)->usingFileName($signate)->toMediaCollection(User::$media_collection_main_signture);
 
@@ -363,6 +364,7 @@ class HomeController extends Controller
                 ->where('applications.destination_id', '=', $p_id)
                 ->groupBy('destinations.id')
                 ->first();
+
             return view('user.myapplication', compact('paid', 'pays', 'prod'));
         } else {
             return redirect('home');
@@ -599,10 +601,14 @@ class HomeController extends Controller
                 ###################################################################
                 $ppd = payment::where([
                     ['application_id', '=', $applicant_id],
-                    ['payment_type', '=', $request->whichpayment],
-                    ['paid_amount', '=', $request->totalpay],
-                    // ['remaining_amount', '=', null],
-                ])->first();
+                    ['invoice_amount', $request->totalpay],
+                    ['payment_type', $request->whichpayment]
+                ])
+                    ->where(function ($query) use ($request) {
+                        $query->where('paid_amount', $request->totalpay)
+                            ->orWhere('paid_amount', NULL);
+                    })
+                    ->first();
                 if ($ppd === null) {
                     $dat = new payment;
 
@@ -653,13 +659,11 @@ class HomeController extends Controller
                         // $data->first_payment_paid = $thisPaymentMade;
                         $data->first_payment_vat = $thisVat;
                         $data->first_payment_discount = $thisDiscount;
-                        
                     } elseif ($request->whichpayment == 'Second Payment') {
                         $data->second_payment_price = $thisPayment;
                         $data->second_payment_paid = $thisPaymentMade;
                         $data->second_payment_vat = $thisVat;
                         $data->second_payment_discount = $thisDiscount;
-                       
                     } elseif ($request->whichpayment == 'Third Payment') {
                         $data->third_payment_price = $thisPayment;
                         $data->third_payment_paid = $thisPaymentMade;
@@ -1280,7 +1284,8 @@ class HomeController extends Controller
     public function getInvoice($ptype = null)
     {
         $dataService = Quickbook::connectQucikBook();
-        $payment = $dataService->Query("select * from Payment");
+        
+        //$payment = $dataService->Query("select * from Payment");
         $paymentDetails = Payment::where('id', Session::get('paymentId'))->first();
         if ($ptype) {
             $apply = Applicant::where('client_id', Auth::id())
@@ -1302,7 +1307,11 @@ class HomeController extends Controller
         if ($paymentDetails->payment_type == 'Full-Outstanding Payment') {
             $filename = Auth::user()->name . '-' . $paymentDetails->payment_type . '-' . "Invoice.pdf";
             $invoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
-            $pdfData = $dataService->DownloadPDF($invoice, null, true);
+            if($invoice){
+                $pdfData = $dataService->DownloadPDF($invoice, null, true);
+            } else {
+                return self::getInvoiceDevelop($paymentDetails->payment_type);
+            }
         } else {
             if ($paymentDetails->payment_type == 'First Payment') {
                 $firstPaymentDue = Payment::where('application_id', $paymentDetails->application_id)
@@ -1315,7 +1324,11 @@ class HomeController extends Controller
                             ->first();
                         $filename = Auth::user()->name . '-' . $paymentDetails->payment_type . '-' . "Invoice.pdf";
                         $invoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
-                        $pdfData = $dataService->DownloadPDF($invoice, null, true);
+                        if($invoice){
+                            $pdfData = $dataService->DownloadPDF($invoice, null, true);
+                        } else {
+                            return self::getInvoiceDevelop($paymentDetails->payment_type);
+                        }
                     } else {
                         $filename = Auth::user()->name . '-' . $paymentDetails->payment_type . '-' . "Receipt.pdf";
                         $reciept = $dataService->FindById("Payment", $paymentDetails->invoice_id);
@@ -1324,12 +1337,20 @@ class HomeController extends Controller
                 } else {
                     $filename = Auth::user()->name . '-' . $paymentDetails->payment_type . '-' . "Invoice.pdf";
                     $invoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
-                    $pdfData = $dataService->DownloadPDF($invoice, null, true);
+                    if($invoice){
+                        $pdfData = $dataService->DownloadPDF($invoice, null, true);
+                    } else {
+                        return self::getInvoiceDevelop($paymentDetails->payment_type);
+                    }
                 }
             } else {
                 $filename = Auth::user()->name . '-' . $paymentDetails->payment_type . '-' . "Invoice.pdf";
                 $invoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
-                $pdfData = $dataService->DownloadPDF($invoice, null, true);
+                if($invoice){
+                    $pdfData = $dataService->DownloadPDF($invoice, null, true);
+                } else {
+                    return self::getInvoiceDevelop($paymentDetails->payment_type);
+                }
             }
         }
         header('Content-Description: File Transfer');
@@ -1359,33 +1380,34 @@ class HomeController extends Controller
         return $payment;
     }
 
-    // public function getInvoice($ptype)
-    // {
-    //     if (Auth::id()) {
-    //         $apply = DB::table('applications')
-    //             ->where('client_id', '=', Auth::user()->id)
-    //             ->orderBy('id', 'DESC')
-    //             ->first();
+    public static function getInvoiceDevelop($ptype)
+    {
+        if (Auth::id()) {
+            $apply = DB::table('applications')
+                ->where('client_id', '=', Auth::user()->id)
+                ->orderBy('id', 'DESC')
+                ->first();
 
-    //         $applicant_id = $apply->id;
+            $applicant_id = $apply->id;
 
-    //         $user = DB::table('payments')
-    //             ->where('application_id', $applicant_id)
-    //             ->where('payment_type', $ptype)
-    //             ->orderBy('id', 'DESC')
-    //             ->first();
+            $user = DB::table('payments')
+                ->where('application_id', $applicant_id)
+                ->where('payment_type', $ptype)
+                ->orderBy('id', 'DESC')
+                ->first();
 
-    //         $pricing = DB::table('pricing_plans')
-    //             ->where('destination_id', $apply->destination_id)
-    //             ->where('id', $apply->pricing_plan_id)
-    //             ->first();
+            $pricing = DB::table('pricing_plans')
+                ->where('destination_id', $apply->destination_id)
+                ->where('id', $apply->pricing_plan_id)
+                ->first();
 
-    //         $pdf = PDF::loadView('user.invoice', compact('user', 'apply', 'pricing'));
+            $pdf = PDF::loadView('user.invoice', compact('user', 'apply', 'pricing'));
 
-    //         return $pdf->stream("", array("Attachment" => false));
-    //         // return $pdf->download('receipt.pdf');
-    //     } else {
-    //         return redirect('home');
-    //     }
-    // }
+            return $pdf->stream("", array("Attachment" => false));
+            // return $pdf->download('receipt.pdf');
+        } else {
+            return redirect('home');
+        }
+    }
+
 }

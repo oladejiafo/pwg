@@ -635,8 +635,8 @@ $vals=array(0,1,2);
 
         $('.current_location').change(function(){
             var $this = $(this);
-            var paynow = <?php echo $payNoww; ?>; 
-            var discount = (paynow * 5 / 100);
+            var paynow = <?php echo $payNoww; ?>;            
+            var discount = '{{$discount}}';
             var amtx = (paynow - discount);
             if($this.val()=='United Arab Emirates')
             {
