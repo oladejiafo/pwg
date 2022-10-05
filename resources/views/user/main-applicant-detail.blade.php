@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-2">
                     <div class="image my-auto">
-                        <img src="{{asset('images/Icons_applicant_details.svg')}}" width="100%" height="100%">
+                        <img src="{{asset('images/Icons_applicant_details.svg')}}" width="100%" height="100%" alt="PWG Group">
                     </div>
                 </div>
                 <div class="col-1">
@@ -19,12 +19,12 @@
                 </div>
                 <div class="col-1">
                     <div class="dataCompleted applicantData">
-                        <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved" >
+                        <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="PWG Group approved" >
                     </div>
                 </div>
                 <div class="col-2 mx-auto my-auto">
                     <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseapplicant" aria-expanded="false" aria-controls="collapseapplicant">
-                        <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
+                        <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%" alt="PWG Group">
                     </div>
                 </div>
             </div>
@@ -146,7 +146,7 @@
             <div class="row">
                 <div class="col-2 my-auto">
                     <div class="image">
-                        <img src="{{asset('images/Icons_home_country_details.svg')}}" width="100%" height="100%">
+                        <img src="{{asset('images/Icons_home_country_details.svg')}}" width="100%" height="100%" alt="PWG Group">
                     </div>
                 </div>
                 <div class="col-1">
@@ -161,12 +161,12 @@
                 </div>
                 <div class="col-1">
                     <div class="dataCompleted homeCountryData">
-                        <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved" >
+                        <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="PWG Group approved" >
                     </div>
                 </div>
                 <div class="col-2 mx-auto my-auto">
                     <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseHome" aria-expanded="false" aria-controls="collapseHome">
-                        <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
+                        <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%" alt="PWG Group">
                     </div>
                 </div>
             </div>
@@ -265,7 +265,7 @@
             <div class="row">
                 <div class="col-2 my-auto">
                     <div class="image">
-                        <img src="{{asset('images/Icons_current_residency_and_work_details.svg')}}" width="100%" height="100%">
+                        <img src="{{asset('images/Icons_current_residency_and_work_details.svg')}}" width="100%" height="100%" alt="PWG Group">
                     </div>
                 </div>
                 <div class="col-1">
@@ -280,7 +280,7 @@
                 </div>
                 <div class="col-1">
                     <div class="dataCompleted currentCountryData">
-                        <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved">
+                        <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="PWG Group approved">
                     </div>
                 </div>
                 <div class="col-2 mx-auto my-auto">
@@ -397,7 +397,7 @@
             <div class="row">
                 <div class="col-2 my-auto">
                     <div class="image">
-                        <img src="{{asset('images/Icons_schengen_details.svg')}}" width="100%" height="100%">
+                        <img src="{{asset('images/Icons_schengen_details.svg')}}" width="100%" height="100%" alt="PWG Group">
                     </div>
                 </div>
                 <div class="col-1">
@@ -412,12 +412,12 @@
                 </div>
                 <div class="col-1">
                     <div class="dataCompleted schengenData">
-                        <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved">
+                        <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="PWG Group approved">
                     </div>
                 </div>
                 <div class="col-2 mx-auto my-auto">
                     <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseSchengen" aria-expanded="false" aria-controls="collapseSchengen">
-                        <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
+                        <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%" alt="PWG Group">
                     </div>
                 </div>
             </div>
@@ -496,14 +496,14 @@
                             Experience
                         </h3>
                         {{-- <div class="dataCompleted experiencenData" v-if="selectedJob.length > 0">
-                            <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="approved">
+                            <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="PWG Group approved">
                         </div> --}}
                     </div>
                 </div>
                 <div class="col-1"></div>
                 <div class="col-2 mx-auto my-auto">
                     <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseExperience" aria-expanded="false" aria-controls="collapseExperience">
-                        <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
+                        <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%" alt="PWG Group">
                     </div>
                 </div>
             </div>

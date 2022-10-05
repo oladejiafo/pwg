@@ -437,7 +437,7 @@
                             </div>
                         </div>
                         <div class="form-group row mt-4 dependent_schengen_visa">
-                            <div class="col-sm-12 mt-3">
+                            <div class="col-sm-12 mt-3" id="dependent_schengen_visa">
                                 <input type="text" class="form-control dependent_schengen_copy" name="dependent_schengen_copy" onclick="showSchengenVisaFormat('dependent')" placeholder="Image of Schengen Or National Visa Issued During Last 5 Years" readonly >
                                 <div class="input-group-btn">
                                     <span class="fileUpload btn">
@@ -446,7 +446,10 @@
                                     </span><!-- btn-orange -->
                                 </div><!-- btn -->
                             </div>
+                            <div style="display: block;color:blue"><a href="#" class="plus" title="click here to add another row for upload" style="display:inline"><i class="fa fa-plus-circle"></i></a> Add another Visa <a href="#" class="minus" id="minus" title="click here to remove the last added row for upload" style="display:inline"><i class="fa fa-minus-circle"></i></a></div>
                         </div>
+                        <!-- Add more inputs dynamycally here -->
+
                         <div class="form-group row mt-4">
                             <div class="col-sm-12 mt-3">
                                 <select name="is_dependent_finger_print_collected_for_Schengen_visa" id="is_dependent_finger_print_collected_for_Schengen_visa" aria-required="true" class="form-control form-select" autocomplete="off">

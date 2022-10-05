@@ -11,8 +11,6 @@ class EnvironmentPathGenerator extends DefaultPathGenerator
 {
     protected $path;
 
-
-
     public function getPath(Media $media): string
     {
 

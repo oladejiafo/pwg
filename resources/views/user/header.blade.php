@@ -1,180 +1,176 @@
-
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
-        <title>PWG Client Portal</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+    <meta name="description" content="This is PWG Group client portal. PWG Group is an immigration company that helps students and professionals migrate abroad to either pursue their studies or careers.">
+    <title>PWG Client Portal</title>
 
-    <!-- Bootstrap CSS -->
-    <!-- <link rel="stylesheet" href="../user/extra/assets/css/bootstrap.min.css" > -->
-    <!-- Icon -->
+    <meta name="keywords" content="Immigration, visa, travel,,abroad work visa consultants, affordable immigration,work permit, 188 visa,canadian immigration, UAE, POLAND, Malta, Czech, Canada, Germany">
+
+        <!-- Icon -->
     <link rel="stylesheet" href="{{asset('user/extra/assets/fonts/line-icons.css')}}">
-    <!-- Owl carousel -->
-    <!-- <link rel="stylesheet" href="../user/extra/assets/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="../user/extra/assets/css/owl.theme.css"> -->
-    
-    <!-- Animate -->
-    <!-- <link rel="stylesheet" href="../user/extra/assets/css/animate.css"> -->
     <!-- Main Style -->
     <link rel="stylesheet" href="{{asset('user/extra/assets/css/main.css')}}">
     <!-- Responsive Style -->
     <link rel="stylesheet" href="{{asset('user/extra/assets/css/responsive.css')}}">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
-<link rel='stylesheet' type='text/css' media='screen' href='{{asset('user/css/style.css')}}'>
-<link rel='stylesheet' type='text/css' media='screen' href='{{asset('css/login.css')}}'>
-<link rel='stylesheet' type='text/css' media='screen' href='{{asset('fonts/stylesheet.css')}}'>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel='stylesheet' type='text/css' media='screen' href='{{asset('user/css/style.css')}}'>
+    <link rel='stylesheet' type='text/css' media='screen' href='{{asset('css/login.css')}}'>
+    <link rel='stylesheet' type='text/css' media='screen' href='{{asset('fonts/stylesheet.css')}}'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 	
-<style>
-    html, body {
-        padding: 0;
-        margin: 0%;
-    }
-    .navbar-profile-name {
-      text-decoration: none !important;
-      color:black !important;
-    }
-
-    .navbar .container {
-        padding-left: 0px;
-        padding: 5px;
-        width: 100vw;
-        margin: 0px;
-        margin-left: 50px;
-        margin-right: 50px;
-        display: absolute;
-    }
-    .scrolling-navbar {
-        width: 100%;
-        margin: 0;
-    }
-
-    .navbar .jobbers a,
-    .navbar .jobber a {
-        text-decoration: none;
-        color:black;
-        background-color:#e0e0e0; 
-        border-radius:10px; 
-        padding:5px;
-        padding-top: 10px;
-        padding-bottom: 10px;
-        margin-top: 10px;
-        margin-left: 50px;
-        width:200px;
-        height: 50px;
-        font-family: 'TT Norms Pro';
-        font-weight: 500;
-        font-size: 20px;
-        display: block;
-        
-    }
-    .navbar .logos img {
-      /* content: url('../images/logo.png'); */
-        /* height: 40px; */
-        padding: 5px;
-        align-items: left;
-        align-content: flex-start;
-        padding-bottom: 10px;
-    }
-
-    .navbar .jobbers img,
-    .navbar .jobber img {
-        height: 40px;
-        padding: 3px;
-        padding-bottom: 10px;
-        float: left;
-    }
-
-
- .navbar .jobbers .title{
-  width:75%;
-  text-align: left;
-  float: right;
-}
-    .nav-item {
-        color: #fff;
-    }
-
-    @media (max-width:768px) {
-
-        .navbar {
-            padding-bottom: -10px;
-            margin-bottom: 30px;
+    <style>
+        html, body {
+            padding: 0;
+            margin: 0%;
         }
+        .navbar-profile-name {
+          text-decoration: none !important;
+          color:black !important;
+        }
+
         .navbar .container {
-        padding-left: 0px;
-        padding: 5px;
-        width: 100%;
-        margin: 10px;
-        margin-left: 15px;
-        display: cover;
-    }
-      .button{
-        /* background: url(../user/images/User.svg) no-repeat; */
-        cursor:pointer;
-        border: none;
-        float: right;
-        text-align: right;
-        min-width: 160px;
-        background-position: 10px left;
-    }
+            padding-left: 0px;
+            padding: 5px;
+            width: 100vw;
+            margin: 0px;
+            margin-left: 50px;
+            margin-right: 50px;
+            display: absolute;
+        }
+        .scrolling-navbar {
+            width: 100%;
+            margin: 0;
+        }
 
-    .navbar .jobbers a {
-        text-decoration: none;
-        color:black;
-        background-color:#e0e0e0; 
-        border-radius:10px; 
-        padding:5px;
-        padding-top: 10px;
-        padding-bottom: 5px;
-        margin-top: 5px;
-        margin-left: 20px;
-        width:160px;
-        height: 50px;
-        font-family: 'TT Norms Pro';
-        font-weight: 500;
-        font-size: 14px;
-        display: block;
-    }
-    .navbar .jobbers img {
-      width: auto;
-        height: 40px;
-        padding: 5px;
-        padding-bottom: 10px;
-    }
+        .navbar .jobbers a,
+        .navbar .jobber a {
+            text-decoration: none;
+            color:black;
+            background-color:#e0e0e0; 
+            border-radius:10px; 
+            padding:5px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            margin-top: 10px;
+            margin-left: 50px;
+            width:200px;
+            height: 50px;
+            font-family: 'TT Norms Pro';
+            font-weight: 500;
+            font-size: 20px;
+            display: block;
+            
+        }
+        .navbar .logos img {
+          /* content: url('../images/logo.png'); */
+            /* height: 40px; */
+            padding: 5px;
+            align-items: left;
+            align-content: flex-start;
+            padding-bottom: 10px;
+        }
 
-    .navbar .jobber a {
-        text-decoration: none;
-        color:black;
-        background-color:#e0e0e0; 
-        border-radius:10px; 
-        padding:5px;
-        padding-top: 5px;
-        padding-bottom: 5px;
-        margin-top: 5px;
-        margin-left: 5px;
-        width:110px;
-        height: 35px;
-        font-family: 'TT Norms Pro';
-        font-weight: 500;
-        font-size: 12px;
-        display: block;
+        .navbar .jobbers img,
+        .navbar .jobber img {
+            height: 40px;
+            padding: 3px;
+            padding-bottom: 10px;
+            float: left;
+        }
+
+
+    .navbar .jobbers .title{
+      width:75%;
+      text-align: left;
+      float: right;
     }
-    .navbar .jobber img {
-      width: auto;
-        height: 30px;
-        padding: 5px;
-        padding-bottom: 10px;
-    }
-    .navbar-expand-md .navbar-brand {
-        margin: 0 3px;
-    }
-  }
-</style>
-		
+        .nav-item {
+            color: #fff;
+        }
+
+        @media (max-width:768px) {
+
+            .navbar {
+                padding-bottom: -10px;
+                margin-bottom: 30px;
+            }
+            .navbar .container {
+            padding-left: 0px;
+            padding: 5px;
+            width: 100%;
+            margin: 10px;
+            margin-left: 15px;
+            display: cover;
+        }
+          .button{
+            /* background: url(../user/images/User.svg) no-repeat; */
+            cursor:pointer;
+            border: none;
+            float: right;
+            text-align: right;
+            min-width: 160px;
+            background-position: 10px left;
+        }
+
+        .navbar .jobbers a {
+            text-decoration: none;
+            color:black;
+            background-color:#e0e0e0; 
+            border-radius:10px; 
+            padding:5px;
+            padding-top: 10px;
+            padding-bottom: 5px;
+            margin-top: 5px;
+            margin-left: 20px;
+            width:160px;
+            height: 50px;
+            font-family: 'TT Norms Pro';
+            font-weight: 500;
+            font-size: 14px;
+            display: block;
+        }
+        .navbar .jobbers img {
+          width: auto;
+            height: 40px;
+            padding: 5px;
+            padding-bottom: 10px;
+        }
+
+        .navbar .jobber a {
+            text-decoration: none;
+            color:black;
+            background-color:#e0e0e0; 
+            border-radius:10px; 
+            padding:5px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            margin-top: 5px;
+            margin-left: 5px;
+            width:110px;
+            height: 35px;
+            font-family: 'TT Norms Pro';
+            font-weight: 500;
+            font-size: 12px;
+            display: block;
+        }
+        .navbar .jobber img {
+          width: auto;
+            height: 30px;
+            padding: 5px;
+            padding-bottom: 10px;
+        }
+        .navbar-expand-md .navbar-brand {
+            margin: 0 3px;
+        }
+      }
+    </style>		
 </head>
+
 <body>
     <nav class="navbar navbar-expand-md bg-inverse fixed-top scrolling-navbarx">
         <div class="container">
@@ -186,32 +182,32 @@
 
               <source media="(min-width:375px)" srcset="{{asset('images/logo2.png')}}">
 
-             <img class="logos" src="{{asset('images/logo.png')}}" alt="logo">
+             <img class="logos" src="{{asset('images/logo.png')}}" alt="PWG logo">
              </picture>
             <!-- <img class="logos" src="../images/logo.png" data-device-pixel-ratio-1="../images/logo2.png" alt="logo"> -->
           </a>       
 
           @if(Route::has('login'))
 
-@auth
-   <div class="d-flex align-items-center justify-content-center jobbers">
-     <a class="nav-link btn create-new-button"  aria-expanded="false" href="{{url('myapplication')}}">
-       <span style="display:inline-block"><img src="{{asset('images/icon1.png')}}"></span><span class="title" style="padding-top:0px; display:inline-block">{{ __('My Application') }} </span>
-     </a>
-   </div>
- @else
-   <!-- <div class="d-flex align-items-center justify-content-center jobber">
-     <a class="nav-link btn create-new-button"  aria-expanded="false" href="{{route('login')}}">
-     <span><img src="{{asset('images/icon1.png')}}"></span><span style="padding-top:5px">Applicants </span>
-    </a>
-   </div> -->
-   <!-- <div class="d-flex align-items-center justify-content-center jobber">
-     <a class="nav-link btn create-new-button" aria-expanded="false" href="#">
-     <span><img src="{{asset('images/icon2.png')}}"></span><span style="padding-top:5px">Affiliates</span>
-   </a>
-   </div> -->
- @endauth
- @endif
+          @auth
+            <div class="d-flex align-items-center justify-content-center jobbers">
+              <a class="nav-link btn create-new-button"  aria-expanded="false" href="{{url('myapplication')}}">
+                <span style="display:inline-block"><img alt="PWG" src="{{asset('images/icon1.png')}}"></span><span class="title" style="padding-top:0px; display:inline-block">{{ __('My Application') }} </span>
+              </a>
+            </div>
+          @else
+            <!-- <div class="d-flex align-items-center justify-content-center jobber">
+              <a class="nav-link btn create-new-button"  aria-expanded="false" href="{{route('login')}}">
+              <span><img src="{{asset('images/icon1.png')}}"></span><span style="padding-top:5px">Applicants </span>
+              </a>
+            </div> -->
+            <!-- <div class="d-flex align-items-center justify-content-center jobber">
+              <a class="nav-link btn create-new-button" aria-expanded="false" href="#">
+              <span><img src="{{asset('images/icon2.png')}}"></span><span style="padding-top:5px">Affiliates</span>
+            </a>
+            </div> -->
+          @endauth
+          @endif
 
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <i class="lni-menu"></i>
@@ -223,13 +219,13 @@
             @auth
               <li class="nav-item d-lg-block">
                 <a class="nav-link" href="#">
-                  <img src="{{asset('user/images/Search.svg')}}" width="30px" height="30px" alt="icon3">
+                  <img src="{{asset('user/images/Search.svg')}}" width="30px" height="30px" alt="PWG icon3">
                 </a>
               </li>
               <li class="nav-item">
                 <a target="_blank" class="nav-link" href="https://wa.link/iz7ait" title="Click Here To Chat on WhatsAPP">
                   <!-- <i class="mdi mdi-email" style="width: 30px; height: 30px;"></i> -->
-                  <img src="{{asset('user/images/Chat.svg')}}" width="30px" height="30px" alt="icon3">
+                  <img src="{{asset('user/images/Chat.svg')}}" width="30px" height="30px" alt="PWG icon3">
                   <span class="count bg-success"></span>
                 </a>
               </li>
@@ -249,7 +245,7 @@
               <li class="nav-item dropdown">
                 <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
                   <div class="navbar-profile">
-                    <img class="img-xs rounded-circle" src="{{asset('user/images/signin.svg')}}" style="width: 40px; height: 40px;" alt="">
+                    <img class="img-xs rounded-circle" src="{{asset('user/images/signin.svg')}}" style="width: 40px; height: 40px;" alt="PWG ">
                     <p class="mb-0 d-none d-sm-block navbar-profile-name">{{ Auth::user()->name }}</p>
                     <i class="mdi mdi-menu-down d-none d-sm-block"></i>
                   </div>
@@ -284,15 +280,15 @@
                 </div>
               </li> </ul>
              @else
-<ul>
-              <li class="nav-item">
-                <a class="nav-link" href="{{route('login')}}">
-                  <div class="navbar-profile" style="font-family:'TT Norms Pro'; font-size: 18px; font-weight:500">
-                    <img class="img-xs rounded-circlex" src="{{asset('user/images/signin.svg')}}" style="width: 40px; height: 40px;" alt="">&nbsp; Sign In
-                  </div>
-                </a>
-              </li>
-</ul>
+              <ul>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{route('login')}}">
+                      <div class="navbar-profile" style="font-family:'TT Norms Pro'; font-size: 18px; font-weight:500">
+                        <img class="img-xs rounded-circlex" src="{{asset('user/images/signin.svg')}}" style="width: 40px; height: 40px;" alt="PWG ">&nbsp; Sign In
+                      </div>
+                    </a>
+                  </li>
+              </ul>
               @endauth
             @endif
             </ul>

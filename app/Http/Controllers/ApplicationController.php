@@ -369,9 +369,8 @@ class ApplicationController extends Controller
             {
                 $x=$x+1;
                 
-                //$file1 = $copy1;
                 $name=$copy1->getClientOriginalName();
-                //$myMedia = "$" ."media_collection_main_schengen_visa".$x;
+              
                 list($nName,$nExt) = explode('.',$name);
                 $schengenCopy1 = Auth::user()->id.'_'.time() . '_' . str_replace(' ', '_',  $name);
            
@@ -758,6 +757,7 @@ class ApplicationController extends Controller
 
     public function storeSpouseSchenegenDetails(Request $request)
     {
+       
         if ($request['is_schengen_visa_issued_last_five_year']  == 'YES') {
             $validator = \Validator::make($request->all(), [
                 'is_dependent_schengen_visa_issued_last_five_year' => 'required',
@@ -776,6 +776,7 @@ class ApplicationController extends Controller
 
             ), 200); // 400 being the HTTP code for an invalid request.
         }
+        dd($validator);
         $dependent = User::where('family_member_id', Auth::id())
             ->where('is_dependent', 1)
             ->first();
@@ -795,6 +796,25 @@ class ApplicationController extends Controller
             $schengenCopy = Auth::user()->id.'_'.time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
             $dependent->addMediaFromRequest('dependent_schengen_copy')->withCustomProperties(['mime-type' => 'image/jpeg'])->preservingOriginal()->usingFileName($schengenCopy)->toMediaCollection(User::$media_collection_main_schengen_visa);
         }
+
+        //Save the added array of schengen visas if available
+        if($request->hasfile('dependent_schengen_copy1'))
+        {
+            $x = 0;
+            foreach($request->file('dependent_schengen_copy1') as $copy1)
+            {
+                $x=$x+1;
+                
+                $name=$copy1->getClientOriginalName();
+                
+                list($nName,$nExt) = explode('.',$name);
+                $schengenCopy1 = Auth::user()->id.'_'.time() . '_' . str_replace(' ', '_',  $name);
+            
+                $dependent->addMediaFromRequest('dependent_schengen_copy1')->withCustomProperties(['mime-type' => 'image/jpeg'])->preservingOriginal()->usingName($nName)->usingFileName($schengenCopy1)->toMediaCollection(User::$media_collection_main_schengen_visa.$x);
+                
+            }
+        }
+        
         $dependent->save();
         return Response::json(array(
             'dependentId' => $this->getFamilyId(),
