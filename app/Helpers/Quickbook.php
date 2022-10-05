@@ -68,16 +68,62 @@ class Quickbook
             ]);
             $customer = $dataService->Add($customer);
         }
-
-        // $payment = $dataService->Query("select * from Payment");
-        $productObj = $dataService->Query("select * from Item Where Name='Concrete'");
-        $updatItem = $dataService->FindbyId('Item', $productObj[0]->Id);
         $apply = DB::table('applications')
             ->select('applications.*', 'pricing_plans.total_price as planTotal', 'pricing_plans.first_payment_price as planFirstPrice', 'pricing_plans.second_payment_price as  planSecondPrice', 'pricing_plans.third_payment_price as  planThirdPrice')
             ->join('pricing_plans', 'pricing_plans.id', '=', 'applications.pricing_plan_id')
             ->where('applications.destination_id', Session::get('myproduct_id'))
             ->where('applications.client_id', Auth::id())
+            ->orderBy('id', 'DESC')
             ->first();
+        $destination = product::find($apply->destination_id);
+        // $productObj = null;
+        // $updatItem  = null;
+        // $updatFirstItem =null;
+        //  $updatSecondItem = null;
+        // $updatThirdItem = null;
+        // if ($paymentDetails->payment_type ==  'Full-Outstanding Payment') {
+            // $firstPaymentName = $paymentDetails->payment_type.'-'.$destination->name;
+            // $secondPaymentName = $paymentDetails->payment_type.'-'.$destination->name;
+            // $thirdPaymentName = $paymentDetails->payment_type.'-'.$destination->name;
+            // $firstPaymentObj = $dataService->Query("select * from Item Where Name='".$firstPaymentName."'");
+            // $updatFirstItem = $dataService->FindbyId('Item', $firstPaymentObj[0]->Id);
+
+            // $secondPaymentObj = $dataService->Query("select * from Item Where Name='".$firstPaymentName."'");
+            // $updatSecondItem = $dataService->FindbyId('Item', $secondPaymentObj[0]->Id);
+
+            // $thirdPaymentObj = $dataService->Query("select * from Item Where Name='".$firstPaymentName."'"); 
+            // $updatThirdItem = $dataService->FindbyId('Item', $thirdPaymentObj[0]->Id);
+
+            // $productFirstChange = [
+            //     'UnitPrice' => $apply->planFirstPrice,
+            //     'Taxable' => true   
+            // ];
+            // if ($firstPaymentObj) {
+            //     $theFirstResourceObj = Item::update($updatFirstItem, $productFirstChange);
+            //     $dataService->Update($theFirstResourceObj);
+            // }
+             // $productSecondChange = [
+            //     'UnitPrice' => $apply->planSecondPrice,
+            //     'Taxable' => true   
+            // ];
+            // if ($secondPaymentObj) {
+                //$theSecondResourceObj = Item::update($updatSecondItem, $productSecondChange);
+                //     $dataService->Update($theSecondResourceObj);
+            //}
+            // $productthirdChange = [
+            //     'UnitPrice' => $apply->planThirdPrice,
+            //     'Taxable' => true   
+            // ];
+            // if ($thirdPaymentObj) {
+            //     $theThirdResourceObj = Item::update($updatThirdItem, $productthirdChange);
+            //     $dataService->Update($theThirdResourceObj);
+            // }
+        // } else {
+                    // $name = $paymentDetails->payment_type.'-'.$destination->name;
+            $productObj = $dataService->Query("select * from Item Where Name='Concrete'");
+            $updatItem = $dataService->FindbyId('Item', $productObj[0]->Id);
+        // }
+
         $unitPrice = 0;
         $paidAmount = 0;
         $tax = 0;
@@ -93,15 +139,31 @@ class Quickbook
             $tax = $apply->third_payment_vat;
         }
         $paidAmount = $paymentDetails->paid_amount;
-        $productChange = [
-            'UnitPrice' => $unitPrice,
-            'Taxable' => true,
-            'SalesTaxIncluded' => 200
-        ];
-        if ($productObj) {
-            $theResourceObj = Item::update($updatItem, $productChange);
-            $dataService->Update($theResourceObj);
-        }
+        // if ($paymentDetails->payment_type ==  'Full-Outstanding Payment') {
+
+        // } else {
+            $productChange = [
+                'UnitPrice' => $unitPrice,
+                'Taxable' => true   
+            ];
+            if ($productObj) {
+                $theResourceObj = Item::update($updatItem, $productChange);
+                $dataService->Update($theResourceObj);
+            } else {
+                $Item = Item::create([
+                    "Name" => $paymentDetails->payment_type.'-'.$destination->name,
+                    "Description" => $paymentDetails->payment_type.'-'.$destination->name,
+                    "Active" => true,
+                    "FullyQualifiedName" => $paymentDetails->payment_type.'-'.$destination->name,
+                    "Taxable" => true,
+                    "UnitPrice" => $unitPrice,
+                    "Type" => "Service",
+              ]);
+              $resultingObj = $dataService->Add($Item);
+              $updatItem = $Item;
+            }
+
+        // }
 
         $coupon = DB::table('coupons')
             ->where('location', '=', $apply->embassy_country)
@@ -112,7 +174,6 @@ class Quickbook
             ->first();
 
         if ($paymentDetails->payment_type ==  'Full-Outstanding Payment') {
-            $destination = product::find($apply->destination_id);
             $theResourceObj = Invoice::create([
                 "Line" => [
                     [
@@ -124,8 +185,9 @@ class Quickbook
                         [
                             "ItemRef" =>
                             [
-                                "value" => 1,
-                                "name" => 'First payment'
+                                "value" => 1, //$updatFirstItem->Id
+                                "name" => 'First payment', //$updatFirstItem->Name
+                                // "Description" => $updatFirstItem->Description
                             ],
                             'UnitPrice' => $apply->planFirstPrice,
                             'Qty' => 1.0
@@ -138,8 +200,9 @@ class Quickbook
                         "SalesItemLineDetail" => [
                             "ItemRef" =>
                             [
-                                "value" => 2,
-                                "name" => 'Second Payment'
+                                "value" => 2, //$updatSecondItem->Id
+                                "name" => 'Second Payment',  //$updatSecondItem->Name
+                                // "Description" => $updatSecondItem->Description
                             ],
                             'UnitPrice' => $apply->planSecondPrice,
                             'Qty' => 1.0
@@ -153,8 +216,9 @@ class Quickbook
                         [
                             "ItemRef" =>
                             [
-                                "value" => 3,
-                                "name" => "Hours"
+                                "value" => 3, //$updatThirdItem->Id
+                                "name" => "Hours", //$updatThirdItem->Name
+                                // "Description" => $updatThirdItem->Description
                             ],
                             'UnitPrice' => $apply->planThirdPrice,
                             'Qty' => 1.0
@@ -164,7 +228,7 @@ class Quickbook
                         "DetailType" => "DiscountLineDetail",
                         "DiscountLineDetail"  => [
                             "PercentBased" => true,
-                            "DiscountPercent" => $destination->full_payment_discount,
+                            "DiscountPercent" => ($destination->full_payment_discount) ?? 5,
                         ]
                     ]
                 ],
@@ -246,10 +310,10 @@ class Quickbook
                     $paymentDetails->invoice_id = $resultingObj->Id;
                     $paymentDetails->save();
                 } else {
-                    self::quickBook($dataService, $coupon, $unitPrice, $productObj, $updatItem, $paidAmount, $tax, $customer, $paymentDetails);
+                    self::quickBook($dataService, $coupon, $unitPrice, $updatItem, $paidAmount, $tax, $customer, $paymentDetails);
                 }
             } elseif ($paymentType == 'Second Payment' || $paymentType == 'Third Payment') {
-                self::quickBook($dataService, $coupon, $unitPrice, $productObj, $updatItem, $paidAmount, $tax, $customer, $paymentDetails);
+                self::quickBook($dataService, $coupon, $unitPrice, $updatItem, $paidAmount, $tax, $customer, $paymentDetails);
             }
         }
 
@@ -263,7 +327,7 @@ class Quickbook
         }
     }
 
-    private static function quickBook($dataService, $coupon, $unitPrice, $productObj, $updatItem, $paidAmount, $tax, $customer, $paymentDetails)
+    private static function quickBook($dataService, $coupon, $unitPrice, $updatItem, $paidAmount, $tax, $customer, $paymentDetails)
     {
         if ($coupon) {
             $theResourceObj = Invoice::create([
@@ -273,7 +337,7 @@ class Quickbook
                         "DetailType" => 'SalesItemLineDetail',
                         'SalesItemLineDetail' => [
                             "ItemRef" => [
-                                "value" => $productObj[0]->Id,
+                                "value" => $updatItem->Id,
                                 "name" => $updatItem->Name,
                                 "Description" => $updatItem->Description
                             ],
@@ -330,7 +394,7 @@ class Quickbook
                         "DetailType" => "SalesItemLineDetail",
                         "SalesItemLineDetail" => [
                             "ItemRef" => [
-                                "value" => $productObj[0]->Id,
+                                "value" => $updatItem->Id,
                                 "name" => $updatItem->Name
                             ],
                             "TaxCodeRef" => [

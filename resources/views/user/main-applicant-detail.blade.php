@@ -126,7 +126,7 @@
                                         <input type="file" class="upload cvupload" id="up"  name="cv" accept="application/pdf" onchange="readURL(this);" />
                                         </span><!-- btn-orange -->
                                 </div><!-- btn -->
-                                @error('cv') <span class="error">{{ $message }}</span> @enderror
+                                <span class="cv_errorClass"></span>
                             </div>
 
                         </div>

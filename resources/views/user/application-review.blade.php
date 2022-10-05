@@ -2749,7 +2749,7 @@
                 contentType: false,
                 success: function (data) {
                     if(data.success) {
-                        toastr.error('Data Updated Successully');
+                        toastr.success('Data Updated Successully');
                         location.href = "{{url('myapplication')}}"
                     } else {
                         var validationError = data.errors;

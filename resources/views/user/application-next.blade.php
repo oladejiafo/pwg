@@ -831,29 +831,31 @@
             $('a.pl').click(function(e) {
       
                 e.preventDefault();
-                if (cnt < 4) {
-                    cnt = cnt+1;
+                if($('.schengen_copy').val()){
+                    if (cnt < 4) {
+                        cnt = cnt+1;
+                        if(cnt == 1)
+                        {
+                            valle="<?php echo $vall1; ?>";                
+                        }
+                        else if(cnt === 2)
+                        {
+                            valle="<?php echo $vall2; ?>";                
+                        }
+                        else if(cnt === 3)
+                        {
+                            valle="<?php echo $vall3; ?>";                
+                        }
+                        else if(cnt === 4)
+                        {
+                            valle="<?php echo $vall4; ?>";                
+                        }
 
-                    if(cnt == 1)
-                    {
-                        valle="<?php echo $vall1; ?>";                
+                        $('#schengen_visa').append('<div class="col-sm-12 mt-3" id="schengen_visa"><input type="text" class="form-control schengen_copy1_'+cnt+'" name="schengen_copy1[]" onclick="showSchengenVisaFormat(\'applicant\')" @if($sheng)  value="'+valle+ '" @else placeholder="{{$phold}}" @endif readonly ><div class="input-group-btn"><span class="fileUpload btn"><span class="upl" id="upload">Choose File</span><input style="position: absolute;top: 0; right: 0; margin: 0; padding: 0; font-size: 20px; cursor: pointer; opacity: 0; filter: alpha(opacity=0);" type="file" class="schengen_copy1_'+cnt+'" accept="image/png, image/gif, image/jpeg" name="schengen_copy1[]" /></span></div></div>');
                     }
-                    else if(cnt === 2)
-                    {
-                        valle="<?php echo $vall2; ?>";                
-                    }
-                    else if(cnt === 3)
-                    {
-                        valle="<?php echo $vall3; ?>";                
-                    }
-                    else if(cnt === 4)
-                    {
-                        valle="<?php echo $vall4; ?>";                
-                    }
-
-                    $('#schengen_visa').append('<div class="col-sm-12 mt-3" id="schengen_visa"><input type="text" class="form-control schengen_copy1_'+cnt+'" name="schengen_copy1[]" onclick="showSchengenVisaFormat(\'applicant\')" @if($sheng)  value="'+valle+ '" @else placeholder="{{$phold}}" @endif readonly ><div class="input-group-btn"><span class="fileUpload btn"><span class="upl" id="upload">Choose File</span><input style="position: absolute;top: 0; right: 0; margin: 0; padding: 0; font-size: 20px; cursor: pointer; opacity: 0; filter: alpha(opacity=0);" type="file" class="schengen_copy1_'+cnt+'" accept="image/png, image/gif, image/jpeg" name="schengen_copy1[]" /></span></div></div>');
+                } else {
+                    toastr.error('Please fill pevious field before adding field');
                 }
-
             });
             //Remove the extra file input box for schengen visa upload
             $('a.mi').click(function (e) {

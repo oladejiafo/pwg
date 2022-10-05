@@ -206,6 +206,7 @@ class HomeController extends Controller
 
             $datas = Applicant::where('client_id', Auth::id())
                 ->where('destination_id', $pid)
+                ->where('work_permit_category', (Session::get('packageType')) ?? 'BLUE COLLAR')
                 ->first();
             if ($datas === null) {
                 $data = new applicant();
@@ -356,7 +357,6 @@ class HomeController extends Controller
                 ->orderBy('applications.id', 'desc')
                 ->first();
 
-            // dd($paid);
             $prod = DB::table('destinations')
                 ->join('applications', 'destinations.id', '=', 'applications.destination_id')
                 ->select('destinations.name', 'destinations.id')
@@ -412,7 +412,6 @@ class HomeController extends Controller
             } else {
                 $payall = 0;
             }
-
             if (isset($complete->work_permit_category) && $complete->third_payment_status == 'PENDING') {
                 $packageType = $complete->work_permit_category;
             } elseif (Session::has('packageType')) {
@@ -427,15 +426,14 @@ class HomeController extends Controller
                 ->select('applications.pricing_plan_id', 'applications.total_price', 'applications.total_paid', 'applications.first_payment_status', 'applications.second_payment_status', 'applications.third_payment_status', 'first_payment_price', 'first_payment_paid', 'first_payment_remaining', 'is_first_payment_partially_paid', 'second_payment_price', 'second_payment_paid', 'second_payment_remaining', 'third_payment_price', 'third_payment_paid', 'third_payment_remaining')
                 ->where('applications.client_id', '=', Auth::user()->id)
                 ->where('applications.destination_id', '=', $id)
+                ->where('work_permit_category', $packageType)
                 // ->whereNotIn('status',  ['APPLICATION_COMPLETED','VISA_REFUSED', 'APPLICATION_CANCELLED','REFUNDED'] )
                 ->limit(1)
                 ->first();
-            // dd($pays);
             $pdet = DB::table('pricing_plans')
                 ->where('destination_id', '=', Session::get('myproduct_id'))
                 ->where('pricing_plan_type', '=', $packageType)
                 ->first();
-
             return view('user.payment-form', compact('data', 'pdet', 'pays', 'payall'));
         } else {
             // return redirect()->back()->with('message', 'You are not authorized');
@@ -484,8 +482,8 @@ class HomeController extends Controller
                 ->where('destination_id', '=', $id)
                 // ->whereNotIn('status',  ['APPLICATION_COMPLETED','VISA_REFUSED', 'APPLICATION_CANCELLED','REFUNDED'] )
                 ->where('client_id', '=', Auth::user()->id)
+                ->OrderBy('id', "DESC")
                 ->first();
-
             $applicant_id = $apply->id;
             $vals = array(0, 1, 2);
 
@@ -637,7 +635,9 @@ class HomeController extends Controller
                 $datas = applicant::where([
                     ['client_id', '=', Auth::user()->id],
                     ['destination_id', '=', $request->pid],
-                ])->first();
+                ])
+                ->orderBy('id', 'Desc')
+                ->first();
                 $paymentCreds = [
                     'whatsPaid' => $whatsPaid,
                     'thisPayment' => $thisPayment,
@@ -794,7 +794,6 @@ class HomeController extends Controller
                     $datas->coupon_code = $thisCode;
                     // $datas->application_stage_status = 2;
 
-
                     $res = $datas->save();
 
                     // $paymentId = payment::where([
@@ -856,7 +855,9 @@ class HomeController extends Controller
                 $data = applicant::where([
                     ['client_id', '=', Auth::user()->id],
                     ['destination_id', '=', $id],
-                ])->first();
+                ])
+                ->orderBy('id', 'DESC')
+                ->first();
                 if ($paymentCreds['whichpayment'] == 'First Payment') {
                     $data->first_payment_status = $paymentCreds['whatsPaid'];
                     if ($paymentCreds['whatsPaid'] == 'Partial') { // add in payment success
@@ -926,7 +927,9 @@ class HomeController extends Controller
                     $status = applicant::where([
                         ['client_id', '=', Auth::user()->id],
                         ['destination_id', '=', $id],
-                    ])->first();
+                    ])
+                    ->orderBy('id', 'DESC')
+                    ->first();
                     if ($status === null) {
                     } else {
                         if ($status->application_stage_status == 1) {
@@ -1001,7 +1004,9 @@ class HomeController extends Controller
         $datas = applicant::where([
             ['client_id', '=', Auth::user()->id],
             ['id', '=', $pays->application_id],
-        ])->first();
+        ])
+        ->orderBy('id', 'DESC')
+        ->first();
 
         if ($datas === null) {
         } else {
@@ -1400,7 +1405,6 @@ class HomeController extends Controller
                 ->where('destination_id', $apply->destination_id)
                 ->where('id', $apply->pricing_plan_id)
                 ->first();
-
             $pdf = PDF::loadView('user.invoice', compact('user', 'apply', 'pricing'));
 
             return $pdf->stream("", array("Attachment" => false));
