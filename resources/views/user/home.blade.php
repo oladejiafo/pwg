@@ -225,29 +225,13 @@
 
     <!--====== Jquery js ======-->
     <script src="../user/assets/js/vendor/jquery-1.12.4.min.js"></script>
-    <!-- <script src="../user/assets/js/vendor/modernizr-3.7.1.min.js"></script> -->
-    
-    <!--====== Bootstrap js ======-->
-    <!-- <script src="../user/assets/js/popper.min.js"></script> -->
-    <!-- <script src="../user/assets/js/bootstrap.min.js"></script> -->
-    
-    <!--====== Slick js ======-->
-    <!-- <script src="../user/assets/js/slick.min.js"></script> -->
-    
-    
-    <!--====== Scrolling Nav js ======-->
-    <!-- <script src="../user/assets/js/jquery.easing.min.js"></script>
-    <script src="../user/assets/js/scrolling-nav.js"></script> -->
-    
-    <!--====== Main js ======-->
-    <!-- <script src="../user/assets/js/main.js"></script> -->
 
   </body>
 
 </html>
 
 <script>
-  var button = document.getElementById('slide');
+var button = document.getElementById('slide');
 button.onclick = function () {
     var container = document.getElementById('container');
     sideScroll(container,'right',25,100,10);
