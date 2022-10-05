@@ -2393,6 +2393,7 @@ iframe img {
 
   .family-desc .bottoom-title p {
     font-size: 14px;
+    text-align: left;
   }
 
   .family-desc .children {
@@ -2411,17 +2412,22 @@ iframe img {
 
   .partner-sec p {
     font-size: 14px;
+    text-align: left;
   }
 
   .package .header {
     margin-right: 10px;
   }
 
+  .children-sec p {
+    text-align: left;
+  }
+
   .package .switch {
     margin-right: 0px;
-    width: 57px;
+    width: 53px;
     height: 32px;
-    margin-left: 15px;
+    margin-left: 10px;
   }
 
   .alert-infox {
@@ -2474,6 +2480,10 @@ iframe img {
 }
 
 @media only screen and (max-width: 985px) and (min-width: 768px) {
+  .family-desc p {
+    text-align: left;
+  }
+
   .agree-terms {
     margin-left: 81px;
   }
@@ -2501,7 +2511,7 @@ iframe img {
 
   .package .amount,
   .package .Famamount {
-    font-size: 30px;
+    font-size: 25px;
   }
 
   .content h6 {

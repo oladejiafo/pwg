@@ -13,11 +13,9 @@
 </style>
   </head>
   <?php $paid=0; ?>
-  @foreach($user as $user)
   @php
   $paid += $user->paid_amount
   @endphp
-  @endforeach
 
     @php
         if($user->payment_type =="First Payment")
