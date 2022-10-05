@@ -23,6 +23,18 @@ class EnvironmentPathGenerator extends DefaultPathGenerator
             case 'client_collection_schengen_visa':
                 $path = 'Clients/SchengenVisas/';
                 break;
+            case 'client_collection_schengen_visa1':
+                $path = 'Clients/SchengenVisas/';
+                break;    
+            case 'client_collection_schengen_visa2':
+                $path = 'Clients/SchengenVisas/';
+                break;
+            case 'client_collection_schengen_visa3':
+                $path = 'Clients/SchengenVisas/';
+                break;
+            case 'client_collection_schengen_visa4':
+                $path = 'Clients/SchengenVisas/';
+                break;
             case 'client_collection_residence_id':
                 $path = 'Clients/ResidenceIDs/';
                 break;

@@ -371,9 +371,12 @@ class ApplicationController extends Controller
                 
                 //$file1 = $copy1;
                 $name=$copy1->getClientOriginalName();
+                //$myMedia = "$" ."media_collection_main_schengen_visa".$x;
                 list($nName,$nExt) = explode('.',$name);
                 $schengenCopy1 = Auth::user()->id.'_'.time() . '_' . str_replace(' ', '_',  $name);
+           
                 $client->addMediaFromRequest('schengen_copy1')->withCustomProperties(['mime-type' => 'image/jpeg'])->preservingOriginal()->usingName($nName)->usingFileName($schengenCopy1)->toMediaCollection(User::$media_collection_main_schengen_visa.$x);
+              
             }
         }
 

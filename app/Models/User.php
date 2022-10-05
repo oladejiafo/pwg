@@ -104,7 +104,7 @@ class User extends Authenticatable implements MustVerifyEmail, HasMedia
 
         // $this->addMediaCollection('client_collection_schengen_visa')->singleFile(); //
 
-        $this->addMediaCollection('client_collection_schengen_visa');
+        $this->addMediaCollection('client_collection_schengen_visa')->singleFile();
         $this->addMediaCollection('client_collection_schengen_visa1')->singleFile();
         $this->addMediaCollection('client_collection_schengen_visa2')->singleFile();
         $this->addMediaCollection('client_collection_schengen_visa3')->singleFile();
