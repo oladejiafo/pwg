@@ -60,7 +60,7 @@
         <!-- <p style="font-style: italics; text-decoration:none"><a href="/"><b><i>Packages </a> > {{$data->name}} </i></b></p> -->
 
         <div class="col-12 col-md-12 col-lg-6 img-fluid packageImage" style="margin-bottom: 0px;">
-          <img src="../user/images/{{$data->image}}" style="border-radius:10px" width="100%" height="100%" border="0" alt="" />
+          <img src="../user/images/{{$data->image}}" style="border-radius:10px" width="100%" height="100%" border="0" alt="PWG Group" />
         </div>
         <div class="col-12 col-md-12 col-lg-6 text">
           <h1>{{$data->name}}</h1>
@@ -106,20 +106,20 @@
           <table border=0 style="border-radius:10px">
             <tr>
               <td align="left" class="pie" style="border-color:#fff;">
-                <img src="../user/images/progress_payment_1.svg" alt="">
+                <img src="../user/images/progress_payment_1.svg" alt="PWG Group">
               </td>
               <td align="center" class="line" style="border-color:#fff;">
-                <img src="../user/images/progress_bar.svg" alt="">
+                <img src="../user/images/progress_bar.svg" alt="PWG Group">
               </td>
               <td align="left" class="pie" style="border-color:#fff;">
-                <img src="../user/images/progress_payment_2.svg" alt="">
+                <img src="../user/images/progress_payment_2.svg" alt="PWG Group">
               </td>
               @if($ppay->third_payment_price > 0)
               <td align="center" class="line" style="border-color:#fff;">
-                <img src="../user/images/progress_bar.svg" alt="">
+                <img src="../user/images/progress_bar.svg" alt="PWG Group">
               </td>
               <td align="left" class="pie" style="border-color:#fff;">
-                <img src="../user/images/progress_payment_3.svg" alt="">
+                <img src="../user/images/progress_payment_3.svg" alt="PWG Group">
               </td>
               @endif              
             </tr>

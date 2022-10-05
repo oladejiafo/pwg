@@ -94,9 +94,9 @@ $cXamount=0;
                         <div class="package-type blue-collar">
                             <div class="content">
                             <div class="dataCompletedx" id="blueSelect">
-                                <img class="selected" style="width:30px" src="{{asset('images/Affiliate_Program_Section_Completed.svg')}}" alt="approved">
+                                <img class="selected" style="width:30px" src="{{asset('images/Affiliate_Program_Section_Completed.svg')}}" alt="PWG Group approved">
                             </div>
-                                <img src="{{asset('images/yellowWhiteCollar.svg')}}">
+                                <img src="{{asset('images/yellowWhiteCollar.svg')}}" alt="PWG Group">
                                 <h6>Blue Collar Package</h6>
                                 <p class="amountSection"><span class="amount">{{number_format($blue_cost,0)}}</span><b style="font-size:15px">AED</b></p>
                             </div>
@@ -108,9 +108,9 @@ $cXamount=0;
                         <div class="package-type  study-permit">                            
                             <div class="content">
                              <div class="dataCompletedx" id="studySelect">
-                                <img class="selected" style="width:30px" src="{{asset('images/Affiliate_Program_Section_Completed.svg')}}" alt="approved">
+                                <img class="selected" style="width:30px" src="{{asset('images/Affiliate_Program_Section_Completed.svg')}}" alt="PWG Group approved">
                              </div>
-                                <img src="{{asset('images/yellowBlueCollar.svg')}}">
+                                <img src="{{asset('images/yellowBlueCollar.svg')}}" alt="PWG Group">
 
                                 <h6>{{$cSname}} Package</h6>
                                 <p class="amountSection"><span class="amount">{{($cSamount > 0) ? number_format($cSamount,0) : 0}}</span><b style="font-size:15px">AED</b></p>
@@ -121,9 +121,9 @@ $cXamount=0;
                         <div class="package-type  express-entry">                            
                             <div class="content">
                              <div class="dataCompletedx" id="expressSelect">
-                                <img class="selected" style="width:30px" src="{{asset('images/Affiliate_Program_Section_Completed.svg')}}" alt="approved">
+                                <img class="selected" style="width:30px" src="{{asset('images/Affiliate_Program_Section_Completed.svg')}}" alt="PWG Group approved">
                              </div>
-                                <img src="{{asset('images/yellowFamily.svg')}}">
+                                <img src="{{asset('images/yellowFamily.svg')}}" alt="PWG Group">
 
                                 <h6>{{$cXname}} </h6>
                                 <p class="amountSection"><span class="amount">{{($cXamount > 0) ? number_format($cXamount,0) : 0}}</span><b style="font-size:15px">AED</b></p>
@@ -155,9 +155,9 @@ $cXamount=0;
                         <div class="package-type  white-collar">                            
                             <div class="content">
                              <div class="dataCompletedx" id="whiteSelect">
-                                <img class="selected" style="width:30px" src="{{asset('images/Affiliate_Program_Section_Completed.svg')}}" alt="approved">
+                                <img class="selected" style="width:30px" src="{{asset('images/Affiliate_Program_Section_Completed.svg')}}" alt="PWG Group approved">
                              </div>
-                                <img src="{{asset('images/yellowBlueCollar.svg')}}">
+                                <img src="{{asset('images/yellowBlueCollar.svg')}}" alt="PWG Group">
 
                                 <h6>White Collar Package</h6>
                                 <p class="amountSection"><span class="amount">{{($whiteJob_cost > 0) ? number_format($whiteJob_cost,0) : 0}}</span><b style="font-size:15px">AED</b></p>
@@ -189,9 +189,9 @@ $cXamount=0;
                         <div class="package-type family-package">
                             <div class="content">
                             <div class="dataCompletedx" id="familySelect">
-                                <img class="selected" style="width:30px" src="{{asset('images/Affiliate_Program_Section_Completed.svg')}}"  alt="approved">
+                                <img class="selected" style="width:30px" src="{{asset('images/Affiliate_Program_Section_Completed.svg')}}"  alt="PWG Group approved">
                             </div>
-                                <img src="{{asset('images/yellowFamily.svg')}}">
+                                <img src="{{asset('images/yellowFamily.svg')}}" alt="PWG Group">
                                 <h6>Family Package</h6>
                                 <p class="amountSection"><span class="Famamount">{{($famdet) ?  number_format($famdet['total_price'],0) : 0 }}</span><b style="font-size:15px">AED</b></p>
                                    @if(!$famdet)

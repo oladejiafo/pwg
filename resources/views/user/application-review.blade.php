@@ -1890,7 +1890,7 @@
           e.preventDefault();
           if (cnt < 4) {
             cnt = cnt+1;
-            // alert(cnt)
+            
             if(cnt == 1)
             {
                 valle="<?php echo $vall1; ?>";                
@@ -1946,8 +1946,8 @@
     });
 
 
-    $(document).ready(function(){
-
+    $(document).ready(function()
+    {
         $('.dependentReviewSpin, .childReviewSpin, .applicantReviewSpin').hide();
                // Main Applicant
         $('.schengen_visa, .applicantData, .homeCountryData, .currentCountryData, .schengenData, .dependent_schengen_visa, #is_finger_print_collected_for_Schengen_visa', '#is_dependent_finger_print_collected_for_Schengen_visa').hide();
@@ -2186,19 +2186,22 @@
                 data: formData,
                 processData: false,
                 contentType: false,
-                success: function (data) {
-                    if(data.success) {
-                        toastr.error('Schengen Details updated Successfully');
+                success: function (data) 
+                {
+                    if(data.success) 
+                    {
+                        toastr.success('Schengen details updated successfully');
                     } else {
                         var validationError = data.errors;
-                        $.each(validationError, function(index, value) {
+                        $.each(validationError, function(index, value) 
+                        {
                             $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
-
                             toastr.error(value);
                         });
                     }
                 },
-                errror: function (error) {
+                errror: function (error) 
+                {
                     toastr.error(error);
                 }
             });
@@ -2222,12 +2225,10 @@
             }
         });
 
-
         function addExperience(cat1, cat2, cat3, cat4, jobTitle)
         {
             console.log(cat1, cat2, cat3, cat4);
             $('.jobSelected .table tbody').append('<tr><th style="text-align: left;" data-bs-toggle="collapse" data-bs-target="#collapseExperienceFour"'+cat1+cat2+cat3+cat4+' aria-expanded="false" aria-controls="collapseExperienceFour"'+cat1+cat2+cat3+cat4+'>'+jobTitle+'</th><td style="text-align: right;"><button class="btn btn-danger">Remove</button></td></tr>');
-            
         }
 
         $('.close').click(function(e){

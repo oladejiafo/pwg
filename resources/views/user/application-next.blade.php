@@ -143,7 +143,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-body">
-                    <img src="{{asset('images/Passport_Requirement.jpg')}}" width ="760px" height ="760px;">
+                    <img src="{{asset('images/Passport_Requirement.jpg')}}" width ="760px" height ="760px;" alt="PWG Group">
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" name="passport_upload" class="form-control" placeholder="Upload Passport Copy*" class="passportFormatModal"  autocomplete="off" readonly/>
@@ -162,7 +162,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-body">
-                    <img src="{{asset('images/ResidenceID.jpg')}}" width ="100%" height ="100%;">
+                    <img src="{{asset('images/ResidenceID.jpg')}}" width ="100%" height ="100%;" alt="PWG Group">
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" class="form-control" name="residence_upload" placeholder="Residence/Emirates ID*" readonly >
@@ -181,7 +181,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-body">
-                    <img src="{{asset('images/Visa.jpg')}}" width ="100%" height ="100%;">
+                    <img src="{{asset('images/Visa.jpg')}}" width ="100%" height ="100%;" alt="PWG Group">
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" class="form-control"  name="visa_upload" placeholder="Visa Copy" readonly autocomplete="off">
@@ -200,7 +200,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-body">
-                    <img src="{{asset('images/ShengenVisa.jpg')}}" width ="100%" height ="100%;">
+                    <img src="{{asset('images/ShengenVisa.jpg')}}" width ="100%" height ="100%;" alt="PWG Group">
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" class="form-control" name="schengen_upload" readonly >
@@ -219,7 +219,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-body">
-                    <img src="{{asset('images/Passport_Requirement.jpg')}}" width ="760px" height ="760px;">
+                    <img src="{{asset('images/Passport_Requirement.jpg')}}" width ="760px" height ="760px;" alt="PWG Group">
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" name="dependent_passport_upload" class="form-control " placeholder="Upload Passport Copy*"  autocomplete="off" readonly/>
@@ -257,7 +257,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-body">
-                    <img src="{{asset('images/Visa.jpg')}}" width ="100%" height ="100%;">
+                    <img src="{{asset('images/Visa.jpg')}}" width ="100%" height ="100%;" alt="PWG Group">
                 </div>
                 <div class="modal-footer">
                     <div class="input-group-btn">
@@ -275,7 +275,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-body">
-                    <img src="{{asset('images/ShengenVisa.jpg')}}" width ="100%" height ="100%;">
+                    <img src="{{asset('images/ShengenVisa.jpg')}}" width ="100%" height ="100%;" alt="PWG Group">
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" class="form-control" name="dependent_schengen_upload"  >
@@ -300,6 +300,14 @@
 
         $sheng = $client['schengenVisaUrl'];
         $phold = "Image of Schengen Or National Visa Issued During Last 5 Years";
+
+        $vall1_dep = $client['schengenVisaName1_dep'];
+        $vall2_dep = $client['schengenVisaName2_dep'];
+        $vall3_dep = $client['schengenVisaName3_dep'];
+        $vall4_dep = $client['schengenVisaName4_dep'];
+
+        $sheng_dep = $client['schengenVisaUrl1_dep'];
+        $phold_dep = "Image of Schengen Or National Visa Issued During Last 5 Years";
     @endphp
 @endSection
 @push('custom-scripts')
@@ -815,6 +823,7 @@
         });
        
         var cnt=0;
+        var cnt_dep=0;
         // let cntt = 0;
     
         $(function() {
@@ -855,6 +864,42 @@
                 }
             }); 
 
+            //Add more file input box for depenant schengen visa upload
+            $('a.plus').click(function(e) {
+                
+                e.preventDefault();
+                if (cnt_dep < 4) {
+                    cnt_dep = cnt_dep+1;
+
+                    if(cnt_dep == 1)
+                    {
+                        valle_dep="<?php echo $vall1_dep; ?>";                
+                    }
+                    else if(cnt_dep === 2)
+                    {
+                        valle_dep="<?php echo $vall2_dep; ?>";                
+                    }
+                    else if(cnt_dep === 3)
+                    {
+                        valle_dep="<?php echo $vall3_dep; ?>";                
+                    }
+                    else if(cnt_dep === 4)
+                    {
+                        valle_dep="<?php echo $vall4_dep; ?>";                
+                    }
+
+                    $('#dependent_schengen_visa').append('<div class="col-sm-12 mt-3" id="dependent_schengen_visa"><input type="text" class="form-control dependent_schengen_copy1_'+cnt_dep+'" name="dependent_schengen_copy1[]" onclick="showSchengenVisaFormat(\'dependent\')" @if($sheng_dep)  value="'+valle_dep+ '" @else placeholder="{{$phold_dep}}" @endif readonly ><div class="input-group-btn"><span class="fileUpload btn"><span class="upl" id="upload">Choose File</span><input style="position: absolute;top: 0; right: 0; margin: 0; padding: 0; font-size: 20px; cursor: pointer; opacity: 0; filter: alpha(opacity=0);" type="file" class="dependent_schengen_copy1_'+cnt_dep+'" accept="image/png, image/gif, image/jpeg" name="dependent_schengen_copy1[]" /></span></div></div>');
+                }
+
+            });
+            //Remove the extra file input box for dependent schengen visa upload
+            $('a.minus').click(function (e) {
+                e.preventDefault();
+                if ($('#dependent_schengen_visa div').length > 1) {
+                    cnt_dep = cnt_dep-1;
+                    $('#dependent_schengen_visa').children().last().remove();
+                }
+            });                     
         });
      
         $(document).on('change',"[name='schengen_copy1[]']", function(){
@@ -880,6 +925,28 @@
             $('.schengen_upload')[0].files[0] = ' ';
         });
 
+        $(document).on('change',"[name='dependent_schengen_copy1[]']", function(){
+            let clsName_dep =$(this).attr("class");
+
+            $('.'+clsName_dep).attr("value", ' ');
+            $("input[name=dependent_schengen_upload]").val('');
+       
+            var names_dep = [];
+            var length_dep = $(this).get(0).files.length;
+            for (var i = 0; i < $(this).get(0).files.length; ++i) {
+                names_dep.push($(this).get(0).files[i].name);
+            }
+           
+            // $("input[name=file]").val(names);
+            if(length_dep>2)
+            {
+                var fileName_dep = names_dep.join(', ');
+                $('.'+clsName_dep).attr("value",length_dep+" files selected");
+            } else {
+                $('.'+clsName_dep).attr("value",names_dep);
+            }
+            $('.dependent_schengen_upload')[0].files[0] = ' ';
+        });
 
         $('.closeBtn').click(function(){
             $("#passportFormatModal").modal('hide');
@@ -1052,9 +1119,17 @@
         });
         $('#dependent_schengen_details').submit(function(e){
             e.preventDefault(); 
-            $("#dependent_schengen_details :input").each(function(index, elm){
+ 
+            // $("#dependent_schengen_details :input").each(function(index, elm){
+            //     $("."+elm.name+"_errorClass").empty();
+            // });
+
+            if(elm.name == "dependent_schengen_copy1[]"){
+
+            } else {
                 $("."+elm.name+"_errorClass").empty();
-            });
+            }
+            
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -1453,7 +1528,7 @@
     }
 </script>
 <script src="https://unpkg.com/vue@next"></script>
-<script src="{{ asset('js/application-details.js') }}" type="text/javascript"></script>
+<!-- <script src="{{ asset('js/application-details.js') }}" type="text/javascript"></script> -->
 @endpush
 <script src="../user/extra/assets/js/jquery-min.js"></script>
 <script src="{{asset('js/alert.js')}}"></script>
