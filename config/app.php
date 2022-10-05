@@ -151,10 +151,9 @@ return [
     'client_id' => 'AB5mLL6k7Ls4UUZnk5kZ957ExGbszzam5Oelx2hi8K9VdqO4Ac',
     'client_secret' => 'pcEIASrqn7ly0J23i7dedorked8ZiQPeEHJDRfPh',
     'oauth_scope' => 'com.intuit.quickbooks.accounting',
-    'oauth_redirect_uri' => 'https://developer.intuit.com/v2/OAuth2Playground/RedirectUrl',
-    'accessTokenKey' => 'eyJlbmMiOiJBMTI4Q0JDLUhTMjU2IiwiYWxnIjoiZGlyIn0..FsCEmdjg6BTgK2gZov9hEw.RI165Z_ha13PZGK8_f5LkqSSmARMv2SNuvgWn4oixtI0PQOnsBQLSZmKDDuswWMLTW-Daax1cj7w9nan1ZnyIWeqFSjYiEvx9_7YM4o3lb_9oOLqxgosjgw4T2-oUIv3Vh7Rm8cfBZceYo2738HJdwLi2fvvAD6pQe1vtrqUWLWdPZY1I9VTbDewGCMo6RDAcaj_IBxrp0eRrxPtn-kaqaq_aJWpaNSdyxWieADPW41Xe8ACbs6Vd3cQ9_yARgyUyUxUwC4c0-LIlvKHp8Iy172RnULI3W72riXkqGaKf82iQvWp6YdvdukLW3Z0sAzIAC672rhxYA2I1mR4R3-7f-gjJaQ5394VfyLGIpHDwvlR4yfMbRnEjJCuqmXH_Hlh-OTMt-62G3CeIgNIlrCJIC4u93BkcKiuU13K2tkhGfF_Lz18nENXk9hxnvmLStc4dFMcyQBHeVRkWjt0nFqagzEyimCDBo3Sd14yDir8TLjf9aOgGrvttMXA9KOwiNotABrzUoybQVhntWAywv19Cnr76COTNKaJNEByJifEYQGDIpY3HSiXcw8FVBHZilUYifJvIR6JuWaRFnvlz9rZ4gvbUddEmBt5776MDhzwy7ZQA9a9OjH7Fgj-olBao5seRC2MSeRn6iibpCdrlL2dLr-i7Ixi-bW1sqApwpNNFJFifw5kaKERdnYuJvjOgCFCK6JuLAUTA-ZF4DVH2_6VpCC80N_P5SCQ8JpgrSkWPLKZPb6TOfb-Xkhs5SuuPuqq.dFGx7I1CGghWZC0GE9qXuQ',
-    'refreshTokenKey' => "AB11673241039URoJGOXBAkqVgUvO0LBD0W7dxZlGJS3xu0GG4",
+    'oauth_redirect_uri' => 'http://localhost:8000/quickbook/token',
     'QBORealmID' => "4620816365244502690",
+    
 
     /*
     |--------------------------------------------------------------------------

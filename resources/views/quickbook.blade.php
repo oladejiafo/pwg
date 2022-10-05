@@ -1,40 +1,42 @@
+
 <?php
 
-use QuickBooksOnline\API\Core\ServiceContext;
 use QuickBooksOnline\API\DataService\DataService;
-use QuickBooksOnline\API\PlatformService\PlatformService;
-use QuickBooksOnline\API\Core\Http\Serialization\XmlObjectSerializer;
-use QuickBooksOnline\API\Facades\Customer;
+
+
 session_start();
-    $dataService = DataService::Configure(array(
-        'auth_mode' => 'oauth2',
-        'ClientID' => config('app.client_id'),
-        'ClientSecret' =>  config('app.client_secret'),
-        'RedirectURI' => config('app.oauth_redirect_uri'),
-        'scope' => config('app.oauth_scope'),
-        'baseUrl' => "development"
-    ));
-    $OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
-    $authUrl = $OAuth2LoginHelper->getAuthorizationCodeURL();
 
-    // Store the url in PHP Session Object;
-    $_SESSION['authUrl'] = $authUrl;
-    //set the access token using the auth object
-    if (isset($_SESSION['sessionAccessToken'])) {
+$dataService = DataService::Configure(array(
+            'auth_mode' => 'oauth2',
+            'ClientID' => config('app.client_id'),
+            'ClientSecret' => config('app.client_secret'),
+            'RedirectURI' => config('app.oauth_redirect_uri'),
+            'scope' => "com.intuit.quickbooks.accounting",
+            'baseUrl' => "Development"
+        ));
 
-        $accessToken = $_SESSION['sessionAccessToken'];
-        $accessTokenJson = array('token_type' => 'bearer',
-            'access_token' => $accessToken->getAccessToken(),
-            'refresh_token' => $accessToken->getRefreshToken(),
-            'x_refresh_token_expires_in' =>
-    $accessToken->getRefreshTokenExpiresAt(),
-            'expires_in' => $accessToken->getAccessTokenExpiresAt()
-        );
-        $dataService->updateOAuth2Token($accessToken);
-        $oauthLoginHelper = $dataService -> getOAuth2LoginHelper();
-        $CompanyInfo = $dataService->getCompanyInfo();
-        var_dump( $CompanyInfo);
-    }
+$OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
+$authUrl = $OAuth2LoginHelper->getAuthorizationCodeURL();
+
+
+// Store the url in PHP Session Object;
+$_SESSION['authUrl'] = $authUrl;
+
+//set the access token using the auth object
+if (isset($_SESSION['sessionAccessToken'])) {
+
+    $accessToken = $_SESSION['sessionAccessToken'];
+    $accessTokenJson = array('token_type' => 'bearer',
+        'access_token' => $accessToken->getAccessToken(),
+        'refresh_token' => $accessToken->getRefreshToken(),
+        'x_refresh_token_expires_in' => $accessToken->getRefreshTokenExpiresAt(),
+        'expires_in' => $accessToken->getAccessTokenExpiresAt()
+    );
+    $dataService->updateOAuth2Token($accessToken);
+    $oauthLoginHelper = $dataService -> getOAuth2LoginHelper();
+    $CompanyInfo = $dataService->getCompanyInfo();
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -88,7 +90,7 @@ session_start();
                  */
                 $.ajax({
                     type: "GET",
-                    url: "apiCall.php",
+                    url: "{{url('api/call')}}",
                 }).done(function( msg ) {
                     $( '#apiCall' ).html( msg );
                 });
@@ -97,7 +99,7 @@ session_start();
             this.refreshToken = function() {
                 $.ajax({
                     type: "POST",
-                    url: "refreshToken.php",
+                    url: "{{url('refresh/token')}}",
                 }).done(function( msg ) {
 
                 });

@@ -122,3 +122,7 @@ Route::post('mark_read', [HomeController::class, 'mark_read'])->name('mark_read'
 Route::post('/get/job/category/list', [ApplicationController::class, 'getJobCategories']);
 Route::post('/get/job/category/four/list', [ApplicationController::class, 'getJobCategoryFourList']);
 
+//Quickbook
+Route::get('quickbook/token', [HomeController::class, 'getQuickbookToken']);
+Route::get('refresh/token', [HomeController::class, 'refreshToken']);
+

@@ -13,6 +13,7 @@ use QuickBooksOnline\API\Facades\Customer;
 use QuickBooksOnline\API\Facades\Item;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
+use App\Models\Quickbook as QuickModel;
 use App\Models\payment as PaymentDetails;
 use Session;
 use DB;
@@ -22,12 +23,13 @@ class Quickbook
 
     public static function connectQucikBook()
     {
+        $quickbook = QuickModel::first();
         $dataService = DataService::Configure(array(
             'auth_mode' => 'oauth2',
             'ClientID' => config('app.client_id'),
             'ClientSecret' => config('app.client_secret'),
-            'accessTokenKey' => config('app.accessTokenKey'),
-            'refreshTokenKey' => config('app.refreshTokenKey'),
+            'accessTokenKey' => $quickbook['access_token'],
+            'refreshTokenKey' => $quickbook['refresh_token'],
             'QBORealmID' => config('app.QBORealmID'),
             'baseUrl' => "Development"
         ));
@@ -40,15 +42,7 @@ class Quickbook
 
     public static function createInvoice($paymentType)
     {
-        $dataService = DataService::Configure(array(
-            'auth_mode' => 'oauth2',
-            'ClientID' => config('app.client_id'),
-            'ClientSecret' => config('app.client_secret'),
-            'accessTokenKey' => config('app.accessTokenKey'),
-            'refreshTokenKey' => config('app.refreshTokenKey'),
-            'QBORealmID' => config('app.QBORealmID'),
-            'baseUrl' => "Development"
-        ));
+        $dataService = self::connectQucikBook();
         $dataService->setLogLocation("/Users/hlu2/Desktop/newFolderForLog");
         $customer = $dataService->Query("select * from Customer Where PrimaryEmailAddr='" . Auth::user()->email . "'");
         $dataService->throwExceptionOnError(true);
@@ -186,7 +180,8 @@ class Quickbook
                 "PaymentRefNum" => $paymentDetails->bank_reference_no,
                 "CustomerMemo" => [
                     "value" => $paymentDetails->bank_reference_no,
-                ], 
+                ],
+                "PrivateNote" => $paymentDetails->bank_reference_no,
                 "CustomerRef" => [
                     "value" => ($customer->Id) ??  $customer[0]->Id
                 ],
@@ -208,8 +203,10 @@ class Quickbook
             if ($paymentType == 'First Payment') {
                 $firstPaymentDue = PaymentDetails::where('application_id', $apply->id)
                     ->where('payment_type', $paymentType)
+                    ->where('paid_amount', '!=', null)
                     ->count();
-                if ($firstPaymentDue == 2) {
+                // dd($firstPaymentDue);
+                if ($firstPaymentDue > 1) {
                     $prevInvoice  =  PaymentDetails::where('application_id', $apply->id)
                         ->where('payment_type', $paymentType)
                         ->first();
@@ -220,6 +217,7 @@ class Quickbook
                         "UnappliedAmt" => 0.00,
 
                         "CustomerRef" => ($customer->Id) ??  $customer[0]->Id,
+                        "PrivateNote" => $paymentDetails->bank_reference_no,
                         "PaymentRefNum" => $paymentDetails->bank_reference_no,
                         "Line" => [
 
@@ -309,6 +307,7 @@ class Quickbook
                 "CustomerMemo" => [
                     "value" => $paymentDetails->bank_reference_no,
                 ],
+                "PrivateNote" => $paymentDetails->bank_reference_no,
                 "CustomerRef" => [
                     "value" => ($customer->Id) ??  $customer[0]->Id
                 ],
@@ -358,6 +357,7 @@ class Quickbook
                 "CustomerMemo" => [
                     "value" => $paymentDetails->bank_reference_no,
                 ],
+                "PrivateNote" => $paymentDetails->bank_reference_no,
                 "BillEmail" => [
                     "Address" => Auth::user()->email
                 ],

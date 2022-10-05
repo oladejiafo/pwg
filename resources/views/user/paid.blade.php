@@ -24,7 +24,7 @@
 <link rel="stylesheet" href="../user/assets/css/style.css">
 
 <div class="card d-flex aligns-items-center justify-content-center text-center" style="margin-top:120px">
-  <div class="card-header" style="background-color:white;">My Applications</div>
+  <div class="card-header" style="background-color:white;">My Applications </div>
   <div class="card-body paid-section" style="background-color:#FAE008;">
 
     <div class="carousel" id="carouselThree" data-ride="carousel">
@@ -452,4 +452,6 @@
       }
     }, speed);
   }
+
+
 </script>
