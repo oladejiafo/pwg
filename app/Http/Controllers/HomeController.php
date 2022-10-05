@@ -391,8 +391,10 @@ class HomeController extends Controller
             $children = Auth::user()->children_count;
             if ($hasSpouse == 1) {
                 $yesSpouse = 2;
+                $mySpouse =2;
             } else {
                 $yesSpouse = 1;
+                $mySpouse =1;
             }
 
 
@@ -430,10 +432,22 @@ class HomeController extends Controller
                 // ->whereNotIn('status',  ['APPLICATION_COMPLETED','VISA_REFUSED', 'APPLICATION_CANCELLED','REFUNDED'] )
                 ->limit(1)
                 ->first();
-            $pdet = DB::table('pricing_plans')
-                ->where('destination_id', '=', Session::get('myproduct_id'))
-                ->where('pricing_plan_type', '=', $packageType)
-                ->first();
+
+                if($packageType=="FAMILY PACKAGE")
+                {
+                    $pdet = DB::table('pricing_plans')
+                    ->where('destination_id', '=', Session::get('myproduct_id'))
+                    ->where('pricing_plan_type', '=', $packageType)
+                    ->where('no_of_parent','=', $mySpouse)
+                    ->where('no_of_children','=',$children)
+                    ->first();
+                } else {
+                    $pdet = DB::table('pricing_plans')
+                    ->where('destination_id', '=', Session::get('myproduct_id'))
+                    ->where('pricing_plan_type', '=', $packageType)
+                    ->first();
+                }
+
             return view('user.payment-form', compact('data', 'pdet', 'pays', 'payall'));
         } else {
             // return redirect()->back()->with('message', 'You are not authorized');
