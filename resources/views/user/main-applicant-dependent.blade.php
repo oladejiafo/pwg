@@ -471,7 +471,7 @@
         </div>
     </div>
 
-    <div class="applicant-detail-sec" style="margin-bottom: 70px">
+    <div class="applicant-detail-sec" style="margin-bottom: 70px" >
         <div class="heading">
             <div class="row">
                 <div class="col-2 my-auto">

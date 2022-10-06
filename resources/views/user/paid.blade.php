@@ -24,7 +24,9 @@
 <link rel="stylesheet" href="../user/assets/css/style.css">
 
 <div class="card d-flex aligns-items-center justify-content-center text-center" style="margin-top:120px">
-  <div class="card-header" style="background-color:white;">My Applications </div>
+  <div class="card-header" style="background-color:white;">My Applications
+     {{-- <button class="btn btn-primary" href="#" onclick="OAuthCode('{{$authUrl}}')">Connect to Quickbook</button> --}}
+    </div>
   <div class="card-body paid-section" style="background-color:#FAE008;">
 
     <div class="carousel" id="carouselThree" data-ride="carousel">
@@ -397,7 +399,29 @@
   @endif
 @endif
 
+<script>
 
+  function OAuthCode(url) {
+          // Launch Popup
+          var parameters = "location=1,width=800,height=650";
+          parameters += ",left=" + (screen.width - 800) / 2 + ",top=" + (screen.height - 650) / 2;
+
+          var win = window.open(url, 'connectPopup', parameters);
+          console.log(win);
+          var pollOAuth = window.setInterval(function () {
+              try {
+
+                  if (win.document.URL.indexOf("code") != -1) {
+                      window.clearInterval(pollOAuth);
+                      win.close();
+                      location.reload();
+                  }
+              } catch (e) {
+                  console.log(e)
+              }
+          }, 100);
+  }
+</script>
 <!-- 
 <div style="display:block">
 <a href="#" class="mi" style="display:inline">-</a>

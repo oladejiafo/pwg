@@ -2088,6 +2088,7 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]({
   },
   methods: {
     getCategories: function getCategories() {
+      console.log('here');
       axios__WEBPACK_IMPORTED_MODULE_1___default().post('/get/job/category/list').then(function (response) {
         app.jobCategories = response.data;
       })["catch"](function (error) {

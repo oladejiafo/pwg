@@ -8,9 +8,9 @@ session_start();
 
 $dataService = DataService::Configure(array(
             'auth_mode' => 'oauth2',
-            'ClientID' => config('app.client_id'),
-            'ClientSecret' => config('app.client_secret'),
-            'RedirectURI' => config('app.oauth_redirect_uri'),
+            'ClientID' => config('services.client_id'),
+            'ClientSecret' => config('services.client_secret'),
+            'RedirectURI' => config('services.oauth_redirect_uri'),
             'scope' => "com.intuit.quickbooks.accounting",
             'baseUrl' => "Development"
         ));

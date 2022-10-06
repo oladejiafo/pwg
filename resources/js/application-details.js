@@ -21,6 +21,8 @@ const app = new Vue({
     },
     methods: {
         getCategories() { 
+            console.log('here');
+
             axios
             .post('/get/job/category/list')
             .then(function (response) {

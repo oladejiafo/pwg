@@ -18,6 +18,8 @@ use App\Models\family_breakdown;
 use App\Models\notifications;
 use App\Models\cardDetail;
 use App\Helpers\Quickbook;
+use App\Models\Quickbook as QuickModel;
+
 use Illuminate\Support\Facades\Mail;
 use QuickBooksOnline\API\DataService\DataService;
 use App\Mail\NotifyMail;
@@ -62,7 +64,8 @@ class HomeController extends Controller
     {
         $package = DB::table('destinations')->orderBy(DB::raw('FIELD(name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
         $promo = promo::where('active_until', '>=', date('Y-m-d'))->get();
-
+        //Quickbook
+        Quickbook::checkRefreshToken();
         return view('user.home', compact('package', 'promo'));
     }
 
@@ -365,7 +368,18 @@ class HomeController extends Controller
                 ->groupBy('destinations.id')
                 ->first();
 
-            return view('user.myapplication', compact('paid', 'pays', 'prod'));
+            $dataService = DataService::Configure(array(
+                'auth_mode' => 'oauth2',
+                'ClientID' => config('services.quickbook.client_id'),
+                'ClientSecret' =>  config('services.quickbook.client_secret'),
+                'RedirectURI' =>  config('services.quickbook.oauth_redirect_uri'),
+                'scope' => config('services.quickbook.oauth_scope'),
+                'baseUrl' => "development"
+            ));
+
+            $OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
+            $authUrl = $OAuth2LoginHelper->getAuthorizationCodeURL();
+            return view('user.myapplication', compact('paid', 'pays', 'prod', 'authUrl'));
         } else {
             return redirect('home');
         }
@@ -391,10 +405,10 @@ class HomeController extends Controller
             $children = Auth::user()->children_count;
             if ($hasSpouse == 1) {
                 $yesSpouse = 2;
-                $mySpouse =2;
+                $mySpouse = 2;
             } else {
                 $yesSpouse = 1;
-                $mySpouse =1;
+                $mySpouse = 1;
             }
 
 
@@ -433,20 +447,19 @@ class HomeController extends Controller
                 ->limit(1)
                 ->first();
 
-                if($packageType=="FAMILY PACKAGE")
-                {
-                    $pdet = DB::table('pricing_plans')
+            if ($packageType == "FAMILY PACKAGE") {
+                $pdet = DB::table('pricing_plans')
                     ->where('destination_id', '=', Session::get('myproduct_id'))
                     ->where('pricing_plan_type', '=', $packageType)
-                    ->where('no_of_parent','=', $mySpouse)
-                    ->where('no_of_children','=',$children)
+                    ->where('no_of_parent', '=', $mySpouse)
+                    ->where('no_of_children', '=', $children)
                     ->first();
-                } else {
-                    $pdet = DB::table('pricing_plans')
+            } else {
+                $pdet = DB::table('pricing_plans')
                     ->where('destination_id', '=', Session::get('myproduct_id'))
                     ->where('pricing_plan_type', '=', $packageType)
                     ->first();
-                }
+            }
 
             return view('user.payment-form', compact('data', 'pdet', 'pays', 'payall'));
         } else {
@@ -650,8 +663,8 @@ class HomeController extends Controller
                     ['client_id', '=', Auth::user()->id],
                     ['destination_id', '=', $request->pid],
                 ])
-                ->orderBy('id', 'Desc')
-                ->first();
+                    ->orderBy('id', 'Desc')
+                    ->first();
                 $paymentCreds = [
                     'whatsPaid' => $whatsPaid,
                     'thisPayment' => $thisPayment,
@@ -870,8 +883,8 @@ class HomeController extends Controller
                     ['client_id', '=', Auth::user()->id],
                     ['destination_id', '=', $id],
                 ])
-                ->orderBy('id', 'DESC')
-                ->first();
+                    ->orderBy('id', 'DESC')
+                    ->first();
                 if ($paymentCreds['whichpayment'] == 'First Payment') {
                     $data->first_payment_status = $paymentCreds['whatsPaid'];
                     if ($paymentCreds['whatsPaid'] == 'Partial') { // add in payment success
@@ -942,8 +955,8 @@ class HomeController extends Controller
                         ['client_id', '=', Auth::user()->id],
                         ['destination_id', '=', $id],
                     ])
-                    ->orderBy('id', 'DESC')
-                    ->first();
+                        ->orderBy('id', 'DESC')
+                        ->first();
                     if ($status === null) {
                     } else {
                         if ($status->application_stage_status == 1) {
@@ -992,6 +1005,7 @@ class HomeController extends Controller
                     $dest = product::find($id);
                     $dest_name = $dest->name;
                     $payment = $this->getPaymentName();
+                    Quickbook::updateTokenAccess();
                     Quickbook::createInvoice($payment);
                     $msg = "Awesome! Payment Successful!";
                     Session::forget('paymentCreds');
@@ -1019,8 +1033,8 @@ class HomeController extends Controller
             ['client_id', '=', Auth::user()->id],
             ['id', '=', $pays->application_id],
         ])
-        ->orderBy('id', 'DESC')
-        ->first();
+            ->orderBy('id', 'DESC')
+            ->first();
 
         if ($datas === null) {
         } else {
@@ -1302,8 +1316,9 @@ class HomeController extends Controller
 
     public function getInvoice($ptype = null)
     {
+        Quickbook::updateTokenAccess();
         $dataService = Quickbook::connectQucikBook();
-        
+
         //$payment = $dataService->Query("select * from Payment");
         $paymentDetails = Payment::where('id', Session::get('paymentId'))->first();
         if ($ptype) {
@@ -1326,7 +1341,7 @@ class HomeController extends Controller
         if ($paymentDetails->payment_type == 'Full-Outstanding Payment') {
             $filename = Auth::user()->name . '-' . $paymentDetails->payment_type . '-' . "Invoice.pdf";
             $invoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
-            if($invoice){
+            if ($invoice) {
                 $pdfData = $dataService->DownloadPDF($invoice, null, true);
             } else {
                 return self::getInvoiceDevelop($paymentDetails->payment_type);
@@ -1343,7 +1358,7 @@ class HomeController extends Controller
                             ->first();
                         $filename = Auth::user()->name . '-' . $paymentDetails->payment_type . '-' . "Invoice.pdf";
                         $invoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
-                        if($invoice){
+                        if ($invoice) {
                             $pdfData = $dataService->DownloadPDF($invoice, null, true);
                         } else {
                             return self::getInvoiceDevelop($paymentDetails->payment_type);
@@ -1356,7 +1371,7 @@ class HomeController extends Controller
                 } else {
                     $filename = Auth::user()->name . '-' . $paymentDetails->payment_type . '-' . "Invoice.pdf";
                     $invoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
-                    if($invoice){
+                    if ($invoice) {
                         $pdfData = $dataService->DownloadPDF($invoice, null, true);
                     } else {
                         return self::getInvoiceDevelop($paymentDetails->payment_type);
@@ -1365,7 +1380,7 @@ class HomeController extends Controller
             } else {
                 $filename = Auth::user()->name . '-' . $paymentDetails->payment_type . '-' . "Invoice.pdf";
                 $invoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
-                if($invoice){
+                if ($invoice) {
                     $pdfData = $dataService->DownloadPDF($invoice, null, true);
                 } else {
                     return self::getInvoiceDevelop($paymentDetails->payment_type);
@@ -1428,4 +1443,38 @@ class HomeController extends Controller
         }
     }
 
+    public function getQuickbookToken()
+    {
+        $dataService = DataService::Configure(array(
+            'auth_mode' => 'oauth2',
+            'ClientID' => config('services.quickbook.client_id'),
+            'ClientSecret' =>  config('services.quickbook.client_secret'),
+            'RedirectURI' => config('services.quickbook.oauth_redirect_uri'),
+            'scope' => config('services.quickbook.oauth_scope'),
+            'baseUrl' => "development"
+        ));
+
+        $OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
+        $parseUrl = self::parseAuthRedirectUrl(htmlspecialchars_decode($_SERVER['QUERY_STRING']));
+
+        /*
+         * Update the OAuth2Token
+         */
+        $accessToken = $OAuth2LoginHelper->exchangeAuthorizationCodeForToken($parseUrl['code'], $parseUrl['realmId']);
+        $dataService->updateOAuth2Token($accessToken);
+
+        /*
+         * Setting the accessToken for session variable
+         */
+        Session::put('sessionAccessToken',$accessToken);
+    }
+
+    private static function parseAuthRedirectUrl($url)
+    {
+        parse_str($url, $qsArray);
+        return array(
+            'code' => $qsArray['code'],
+            'realmId' => $qsArray['realmId']
+        );
+    }
 }
