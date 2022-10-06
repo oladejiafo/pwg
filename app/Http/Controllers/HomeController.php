@@ -239,8 +239,8 @@ class HomeController extends Controller
 
             if ($res) {
                 Session::put('payall', $request->payall);
-                Session::put('info', 'Signature is Successful!');
-                Session::put('info_sub', 'Proceed to application');
+                Session::put('infox', 'Signature is Successful!');
+                Session::put('infox_sub', 'Proceed to application');
                 return true;
             } else {
                 Session::put('failed', 'Oppss! Something went wrong.');
@@ -452,8 +452,16 @@ class HomeController extends Controller
                 ->limit(1)
                 ->first();
 
-            if ($packageType == "FAMILY PACKAGE") {
-                $pdet = DB::table('pricing_plans')
+               
+                if(!$pays)
+                {
+                    return redirect('home');
+                    die();
+                }
+                
+                if($packageType=="FAMILY PACKAGE")
+                {
+                    $pdet = DB::table('pricing_plans')
                     ->where('destination_id', '=', Session::get('myproduct_id'))
                     ->where('pricing_plan_type', '=', $packageType)
                     ->where('no_of_parent', '=', $mySpouse)

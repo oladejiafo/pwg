@@ -29,7 +29,7 @@
                         <div class="tabs-detail d-flex justify-content-center">
                             
                         <div class="wrapper">
-                              @if ($levels == '2' || $levels == '5' || $levels == '4' || $levels == '3') 
+                              @if ($levels == '2' || $levels == '5' || $levels == '4' || $levels == '3')
                                 <a href="#" onclick="return alert('Payment Concluded Already!');"><div class="round-completed round2 m-2">1</div></a>
                               @else 
                                 <a href="{{ url('payment_form', $productId) }}" >
@@ -1139,10 +1139,8 @@
 
                 } else {
                     $("."+elm.name+"_errorClass").empty();
-
                 }
-            });
-            
+
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

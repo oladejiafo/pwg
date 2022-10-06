@@ -35,6 +35,8 @@
 
     </div>
     <!-- End Product Section -->
+
+
     <script>
         @if(Session::has('message'))
         toastr.options =
