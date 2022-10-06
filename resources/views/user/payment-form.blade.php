@@ -57,9 +57,19 @@ $completed = DB::table('applications')
 ->where('client_id', '=', Auth::user()->id)
 ->orderBy('id','desc')
 ->first();
+@endphp
 
-$levels = $completed->application_stage_status;
-$app_id= $completed->id;
+@if($completed)
+    @php
+        $levels = $completed->application_stage_status;
+        $app_id= $completed->id;
+    @endphp
+@else
+    <script>window.location = "/home";</script>
+@endif
+
+
+@php
 
 if(Session::has('myproduct_id'))
 {
@@ -69,6 +79,16 @@ $pid = $app_id;
 }
 $vals=array(0,1,2);
 @endphp
+
+
+@if(Session::has('infox'))
+    <script type="text/javascript">
+     toastr.success("{{ session('infox') }}", '', { closeButton: false, timeOut: 4000, progressBar: true, enableHtml: true });
+    </script>
+    @php 
+     Session::forget('infox');
+    @endphp
+@endif
 
 
 <div class="container">
@@ -381,7 +401,7 @@ $vals=array(0,1,2);
                                                     First Payment
 
                                                     @endif
-                                                    <span style="font-size:11px">@if($vat>0)(+ 5% VAT)@endif</span>
+                                                    <span style="font-size:11px" class="vtt">@if($vat>0)(+ 5% VAT)@endif</span>
                                                     @if($pends>1) 
                                                     <br>
                                                     <font style='font-size:10px;color:red'><i fa fa-arrow-up></i>  {{ $pendMsg }} </font> 
@@ -407,7 +427,7 @@ $vals=array(0,1,2);
                                                     @else
                                                     Second Payment
                                                     @endif
-                                                    <span style="font-size:11px">@if($vat>0)(+ 5% VAT)@endif</span>
+                                                    <span style="font-size:11px" class="vtt">@if($vat>0)(+ 5% VAT)@endif</span>
                                                 </div>
                                                 <div class="right-section col-6" align="right">
 
@@ -432,7 +452,7 @@ $vals=array(0,1,2);
                                                     @else
                                                     Third Payment
                                                     @endif
-                                                    <span style="font-size:11px">@if($vat>0)(+ 5% VAT)@endif</span>
+                                                    <span style="font-size:11px" class="vtt">@if($vat>0)(+ 5% VAT)@endif</span>
                                                 </div>
                                                 <div class="right-section col-6" align="right">
                                                     @if( $whichPayment ==  "Third Payment")
@@ -512,7 +532,7 @@ $vals=array(0,1,2);
                                             </div>
                                             @endif
                                             @if(isset($vat) && $vat>0)
-                                            <div class="total-sec row mt-3 showDiscount">
+                                            <div class="total-sec row mt-3 showVat" id="showVat">
                                                 <div class="left-section col-6">
                                                      VAT (+ 5% of {{$whichPayment}})
                                                 </div>
@@ -545,7 +565,7 @@ $vals=array(0,1,2);
                                             <input type="hidden" id="totaldue" name="totaldue" value="{{ round(($payNow + $vat),2) }}">
                                             <input type="hidden" name="totalremaining" value="{{round($pends,2)}}">
                                         @else
-                                            <h2 style="font-size: 1em;">Now you will pay {{strtolower($which)}} installment only <span id="amountLink"><b>{{number_format((round((($payNoww - $discount)+ $vat),2)),2)}}</b></span> AED <span style="font-size:11px;opacity:0.6"  id="amountText">@if($vat>0) (VAT inclusive @if($discount>0) ,less Discount  @endif) @else @if($discount>0) (less Discount)  @endif @endif</span></h2>
+                                            <h2 style="font-size: 1em;">Now you will pay {{strtolower($which)}} installment only <span id="amountLink"><b>{{number_format((round((($payNoww - $discount)+ $vat),2)),2)}}</b></span> AED <span style="font-size:11px;opacity:0.6"  id="amountText">@if($vat>0) (<span id="vt">VAT inclusive</span> @if($discount>0) ,less Discount  @endif) @else @if($discount>0) (less Discount)  @endif @endif</span></h2>
                                             <input type="hidden" id="amountLink2" name="totalpay" value="{{ round((($payNoww - $discount)+ $vat),2) }}">
                                             <input type="hidden" id="totaldue" name="totaldue" value="{{round((($payNoww - $discount) + $vat),2) }}">
                                         @endif
@@ -638,15 +658,24 @@ $vals=array(0,1,2);
             var paynow = <?php echo $payNoww; ?>;            
             var discount = '{{$discount}}';
             var amtx = (paynow - discount);
+            var vt =(amtx*5)/100;
             if($this.val()=='United Arab Emirates')
             {
                 document.getElementById("amountLink2").value = (amtx + (amtx*5/100)).toFixed(2);
-                $('#amountLink').text((amtx + (amtx*5/100)).toFixed(2)); //= amtx + (amtx*5/100);
+                $('#amountLink').text(parseFloat((amtx + (amtx*5/100)).toFixed(2)).toLocaleString('en')); //= amtx + (amtx*5/100);
               document.getElementById("totaldue").value = (amtx + (amtx*5/100)).toFixed(2);
+              $('#showVat').show();
+              $('#vt').text("VAT Inclusive");
+              $('.vtt').text("(+ 5% VAT)");
             } else {
                 document.getElementById("amountLink2").value = amtx.toFixed(2);
-                $('#amountLink').text(amtx.toFixed(2)); //= amtx;
+                $('#amountLink').text(parseFloat(amtx.toFixed(2)).toLocaleString('en')); //= amtx;
+                // (1234567.89).toLocaleString('en') 
               document.getElementById("totaldue").value = amtx.toFixed(2);
+              $('#showVat').hide();
+            //   $('#vt').hide();
+              $('#vt').text("No VAT");
+              $('.vtt').text("");
             }
 
         });
@@ -679,3 +708,32 @@ $vals=array(0,1,2);
 </script>
 @endpush
 <script src="{{asset('js/alert.js')}}"></script>
+<script type="text/javascript" src="/path/to/toastr.js"></script>
+<script>
+        @if(Session::has('message'))
+        toastr.options =
+        {
+            "closeButton" : true,
+            "progressBar" : true
+        }
+                toastr.success("{{ session('message') }}");
+        @endif
+
+        @if(Session::has('error'))
+        toastr.options =
+        {
+            "closeButton" : true,
+            "progressBar" : true
+        }
+                toastr.error("{{ session('error') }}");
+        @endif
+
+        @if(Session::has('warning'))
+        toastr.options =
+        {
+            "closeButton" : true,
+            "progressBar" : true
+        }
+                toastr.warning("{{ session('warning') }}");
+        @endif
+    </script>
