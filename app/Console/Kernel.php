@@ -39,9 +39,6 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('reminder:email')
                 ->daily();
-
-        $schedule->command('quickbook:cron')
-                ->hourlyAt(5);
     }
 
     /**

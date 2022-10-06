@@ -136,24 +136,6 @@ return [
     'payment_api_key' => 'MmM2ODJiOGMtOGFmNS00NzUyLTg2MjUtM2Y5MTg3OWU5YjRlOjViMzhjM2I5LTUyMDItNDBmZi1hNzAyLTFlYTIwZDkwYjhiMQ==',
     'payment_reference' => '15d885ec-682a-4398-89d9-247254d71c18', 
 
-    /*
-    |--------------------------------------------------------------------------
-    | Quickbook
-    |--------------------------------------------------------------------------
-    |
-    | Api key and reference are adding here will be automtically loaded on the request on 
-    | your appliction
-    |
-    */
-
-    'authorizationRequestUrl' => 'https://appcenter.intuit.com/connect/oauth2',
-    'tokenEndPointUrl' => 'https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer',
-    'client_id' => 'AB5mLL6k7Ls4UUZnk5kZ957ExGbszzam5Oelx2hi8K9VdqO4Ac',
-    'client_secret' => 'pcEIASrqn7ly0J23i7dedorked8ZiQPeEHJDRfPh',
-    'oauth_scope' => 'com.intuit.quickbooks.accounting',
-    'oauth_redirect_uri' => 'http://localhost:8000/quickbook/token',
-    'QBORealmID' => "4620816365244502690",
-    
 
     /*
     |--------------------------------------------------------------------------

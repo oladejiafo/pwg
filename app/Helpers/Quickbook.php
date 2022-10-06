@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
 use App\Models\Quickbook as QuickModel;
 use App\Models\payment as PaymentDetails;
+use Carbon\Carbon;
 use Session;
 use DB;
 
@@ -26,11 +27,11 @@ class Quickbook
         $quickbook = QuickModel::first();
         $dataService = DataService::Configure(array(
             'auth_mode' => 'oauth2',
-            'ClientID' => config('app.client_id'),
-            'ClientSecret' => config('app.client_secret'),
+            'ClientID' => config('services.quickbook.client_id'),
+            'ClientSecret' => config('services.quickbook.client_secret'),
             'accessTokenKey' => $quickbook['access_token'],
-            'refreshTokenKey' => $quickbook['refresh_token'],
-            'QBORealmID' => config('app.QBORealmID'),
+            'refreshTokenKey' => $quickbook['refresh_token'], 
+            'QBORealmID' => config('services.quickbook.QBORealmID'),
             'baseUrl' => "Development"
         ));
         $dataService->setLogLocation("/Users/hlu2/Desktop/newFolderForLog");
@@ -43,6 +44,7 @@ class Quickbook
     public static function createInvoice($paymentType)
     {
         $dataService = self::connectQucikBook();
+
         $dataService->setLogLocation("/Users/hlu2/Desktop/newFolderForLog");
         $customer = $dataService->Query("select * from Customer Where PrimaryEmailAddr='" . Auth::user()->email . "'");
         $dataService->throwExceptionOnError(true);
@@ -437,5 +439,61 @@ class Quickbook
         $paymentDetails->invoice_no = $invoiceData->DocNumber;
         $paymentDetails->invoice_id = $invoiceData->Id;
         $paymentDetails->save();
+    }
+
+    public static function checkRefreshToken()
+    {
+        $quickbook = QuickModel::first();
+        $dataService = DataService::Configure(array(
+            'auth_mode' => 'oauth2',
+            'ClientID' => config('app.client_id'),
+            'ClientSecret' =>  config('app.client_secret'),
+            'RedirectURI' => config('app.oauth_redirect_uri'),
+            'scope' => config('app.oauth_scope'),
+            'baseUrl' => "development",
+            'refreshTokenKey' => $quickbook['refresh_token'], // Manual Fetch on firt tyme
+            'QBORealmID' => config('app.QBORealmID'),
+        ));
+        
+        if(Carbon::now()->toDateString() >= date('Y-m-d', strtotime($quickbook['refresh_token_expires_in']. ' - 10 days'))){
+            /*
+            * Update the OAuth2Token of the dataService object
+            */
+            $OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
+            $refreshedAccessTokenObj = $OAuth2LoginHelper->refreshToken();
+    
+            $dataService->updateOAuth2Token($refreshedAccessTokenObj);
+            if($quickbook){
+                $quickbook->access_token = $refreshedAccessTokenObj->getAccessToken();
+                $quickbook->refresh_token = $refreshedAccessTokenObj->getRefreshToken();
+                $quickbook->refresh_token_expires_in = $refreshedAccessTokenObj->getRefreshTokenExpiresAt();
+                $quickbook->access_token_expires_in =  $refreshedAccessTokenObj->getAccessTokenExpiresAt();
+                $quickbook->realmId = $refreshedAccessTokenObj->getRealmID();
+                $quickbook->save();
+            } else {
+                $quick = new QuickModel();
+                $quick->access_token = $refreshedAccessTokenObj->getAccessToken();
+                $quick->refresh_token = $refreshedAccessTokenObj->getRefreshToken();
+                $quick->refresh_token_expires_in = $refreshedAccessTokenObj->getRefreshTokenExpiresAt();
+                $quick->access_token_expires_in =  $refreshedAccessTokenObj->getAccessTokenExpiresAt();
+                $quickbook->realmId = $refreshedAccessTokenObj->getRealmID();
+                $quick->save();
+            }
+        } 
+    }
+
+    public static function updateTokenAccess() 
+    {
+        $quickbook = QuickModel::first();
+        $dataService = self::connectQucikBook();
+        if(Carbon::now()->format('Y/m/d H:i:s')  >= '2022/10/06 06:22:20'){
+            $OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
+            $refreshedAccessTokenObj = $OAuth2LoginHelper->refreshToken();
+    
+            $dataService->updateOAuth2Token($refreshedAccessTokenObj);
+            $quickbook->access_token = $refreshedAccessTokenObj->getAccessToken();
+            $quickbook->access_token_expires_in =  $refreshedAccessTokenObj->getAccessTokenExpiresAt();
+            $quickbook->save();
+        }
     }
 }

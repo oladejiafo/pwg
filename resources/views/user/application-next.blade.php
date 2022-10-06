@@ -78,7 +78,7 @@
                         <div class="row">
                             @if(($applicant['work_permit_category']) && ($client['is_spouse'] != null || $client['is_spouse'] != 0) && ($client['children_count'] != null || $client['children_count'] != 0))
                                 <div class="col-4">
-                                    <div class="mainApplicant active" data-toggle="tab" role="tab" style="border-radius: 20px 0 0 20px;">
+                                    <div class="mainApplicant active" data-toggle="tab" role="tab">
                                         <a  href="#mainApplicant">
                                             <h4>Main Applicant</h4> 
                                         </a>
@@ -92,7 +92,7 @@
                                     </div>
                                 </div>
                                 <div class="col-4">
-                                    <div class="children" style="border-radius: 0 20px 20px 0;">
+                                    <div class="children">
                                         <a href="#children" data-toggle="tab" role="tab">
                                             <h4>Children</h4>
                                         </a>
@@ -100,7 +100,7 @@
                                 </div>
                             @elseif(($applicant['work_permit_category']) && ($client['is_spouse'] != null || $client['is_spouse'] != 0) &&  ($client['children_count'] == null || $client['children_count'] == 0))
                                 <div class="col-6">
-                                    <div class="mainApplicant active" data-toggle="tab" role="tab" style="border-radius: 20px 0 0 20px;">
+                                    <div class="mainApplicant active" data-toggle="tab" role="tab" >
                                         <a  href="#mainApplicant">
                                             <h4>Main Applicant</h4> 
                                         </a>
@@ -115,7 +115,7 @@
                                 </div>
                             @elseif(($applicant['work_permit_category']) && ($client['is_spouse'] == null || $client['is_spouse'] == 0) && ($client['children_count'] != null || $client['children_count'] != 0))
                                 <div class="col-6">
-                                    <div class="mainApplicant active" data-toggle="tab" role="tab" style="border-radius: 20px 0 0 20px;">
+                                    <div class="mainApplicant active" data-toggle="tab" role="tab">
                                         <a  href="#mainApplicant">
                                             <h4>Main Applicant</h4> 
                                         </a>
@@ -123,7 +123,7 @@
                                 </div>
                                 <div class="col-6">
                                     <div class="children">
-                                        <a href="#children" data-toggle="tab" role="tab" style="border-radius: 0 20px 20px 0;">
+                                        <a href="#children" data-toggle="tab" role="tab">
                                             <h4>Children</h4>
                                         </a>
                                     </div>
@@ -315,7 +315,10 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script>
+<script src="https://unpkg.com/vue@next"></script>
+<script src="{{ asset('js/application-details.js') }}" type="text/javascript"></script>
+
+<script type="application/javascript"> 
     $(document).ready(function(){
         // $('.country_birth, .citizenship, .home_country, .current_country').select2();
         // Main Applicant
@@ -851,7 +854,7 @@
                             valle="<?php echo $vall4; ?>";                
                         }
 
-                        $('#schengen_visa').append('<div class="col-sm-12 mt-3" id="schengen_visa"><input type="text" class="form-control schengen_copy1_'+cnt+'" name="schengen_copy1[]" onclick="showSchengenVisaFormat(\'applicant\')" @if($sheng)  value="'+valle+ '" @else placeholder="{{$phold}}" @endif readonly ><div class="input-group-btn"><span class="fileUpload btn"><span class="upl" id="upload">Choose File</span><input style="position: absolute;top: 0; right: 0; margin: 0; padding: 0; font-size: 20px; cursor: pointer; opacity: 0; filter: alpha(opacity=0);" type="file" class="schengen_copy1_'+cnt+'" accept="image/png, image/gif, image/jpeg" name="schengen_copy1[]" /></span></div></div>');
+                        $('#schengen_visa').append('<div class="col-sm-12 mt-3" id="schengen_visa"><input type="text" class="form-control schengen_copy1_'+cnt+'" name="schengen_copy1[]" @if($sheng)  value="'+valle+ '" @else placeholder="{{$phold}}" @endif readonly ><div class="input-group-btn"><span class="fileUpload btn"><span class="upl" id="upload">Choose File</span><input style="position: absolute;top: 0; right: 0; margin: 0; padding: 0; font-size: 20px; cursor: pointer; opacity: 0; filter: alpha(opacity=0);" type="file" class="schengen_copy1_'+cnt+'" accept="image/png, image/gif, image/jpeg" name="schengen_copy1[]" /></span></div></div>');
                     }
                 } else {
                     toastr.error('Please fill pevious field before adding field');
@@ -868,31 +871,31 @@
 
             //Add more file input box for depenant schengen visa upload
             $('a.plus').click(function(e) {
-                
                 e.preventDefault();
-                if (cnt_dep < 4) {
-                    cnt_dep = cnt_dep+1;
+                if($('.dependent_schengen_copy').val()){
+                    if (cnt_dep < 4) {
+                        cnt_dep = cnt_dep+1;
 
-                    if(cnt_dep == 1)
-                    {
-                        valle_dep="<?php echo $vall1_dep; ?>";                
-                    }
-                    else if(cnt_dep === 2)
-                    {
-                        valle_dep="<?php echo $vall2_dep; ?>";                
-                    }
-                    else if(cnt_dep === 3)
-                    {
-                        valle_dep="<?php echo $vall3_dep; ?>";                
-                    }
-                    else if(cnt_dep === 4)
-                    {
-                        valle_dep="<?php echo $vall4_dep; ?>";                
-                    }
+                        if(cnt_dep == 1)
+                        {
+                            valle_dep="<?php echo $vall1_dep; ?>";                
+                        }
+                        else if(cnt_dep === 2)
+                        {
+                            valle_dep="<?php echo $vall2_dep; ?>";                
+                        }
+                        else if(cnt_dep === 3)
+                        {
+                            valle_dep="<?php echo $vall3_dep; ?>";                
+                        }
+                        else if(cnt_dep === 4)
+                        {
+                            valle_dep="<?php echo $vall4_dep; ?>";                
+                        }
 
-                    $('#dependent_schengen_visa').append('<div class="col-sm-12 mt-3" id="dependent_schengen_visa"><input type="text" class="form-control dependent_schengen_copy1_'+cnt_dep+'" name="dependent_schengen_copy1[]" onclick="showSchengenVisaFormat(\'dependent\')" @if($sheng_dep)  value="'+valle_dep+ '" @else placeholder="{{$phold_dep}}" @endif readonly ><div class="input-group-btn"><span class="fileUpload btn"><span class="upl" id="upload">Choose File</span><input style="position: absolute;top: 0; right: 0; margin: 0; padding: 0; font-size: 20px; cursor: pointer; opacity: 0; filter: alpha(opacity=0);" type="file" class="dependent_schengen_copy1_'+cnt_dep+'" accept="image/png, image/gif, image/jpeg" name="dependent_schengen_copy1[]" /></span></div></div>');
+                        $('#dependent_schengen_visa').append('<div class="col-sm-12 mt-3" id="dependent_schengen_visa"><input type="text" class="form-control dependent_schengen_copy1_'+cnt_dep+'" name="dependent_schengen_copy1[]"  @if($sheng_dep)  value="'+valle_dep+ '" @else placeholder="{{$phold_dep}}" @endif readonly ><div class="input-group-btn"><span class="fileUpload btn"><span class="upl" id="upload">Choose File</span><input style="position: absolute;top: 0; right: 0; margin: 0; padding: 0; font-size: 20px; cursor: pointer; opacity: 0; filter: alpha(opacity=0);" type="file" class="dependent_schengen_copy1_'+cnt_dep+'" accept="image/png, image/gif, image/jpeg" name="dependent_schengen_copy1[]" /></span></div></div>');
+                    }
                 }
-
             });
             //Remove the extra file input box for dependent schengen visa upload
             $('a.minus').click(function (e) {
@@ -1529,8 +1532,6 @@
         return returnValue;
     }
 </script>
-<script src="https://unpkg.com/vue@next"></script>
-<!-- <script src="{{ asset('js/application-details.js') }}" type="text/javascript"></script> -->
 @endpush
 <script src="../user/extra/assets/js/jquery-min.js"></script>
 <script src="{{asset('js/alert.js')}}"></script>
