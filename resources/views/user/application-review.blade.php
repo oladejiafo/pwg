@@ -2350,13 +2350,17 @@
                 processData: false,
                 contentType: false,
                 success: function (data) {
-                    if(data.success) {
+                    if(data.status) {
                         toastr.success('Dependent Deails Updated Successfully !');
                         $('.spouseApplicantData').show();
                         $('#collapsespouseHome').addClass('show');
                         $('.dependentApplicantCompleted').val(1);
                         $('.addExperience, .container').attr('data-dependentId', data.dependentId);
                     } else {
+                        if(data.message){
+                            toastr.error(data.message);
+                        }
+
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
                             $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');

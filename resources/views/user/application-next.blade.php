@@ -895,6 +895,8 @@
 
                         $('#dependent_schengen_visa').append('<div class="col-sm-12 mt-3" id="dependent_schengen_visa"><input type="text" class="form-control dependent_schengen_copy1_'+cnt_dep+'" name="dependent_schengen_copy1[]"  @if($sheng_dep)  value="'+valle_dep+ '" @else placeholder="{{$phold_dep}}" @endif readonly ><div class="input-group-btn"><span class="fileUpload btn"><span class="upl" id="upload">Choose File</span><input style="position: absolute;top: 0; right: 0; margin: 0; padding: 0; font-size: 20px; cursor: pointer; opacity: 0; filter: alpha(opacity=0);" type="file" class="dependent_schengen_copy1_'+cnt_dep+'" accept="image/png, image/gif, image/jpeg" name="dependent_schengen_copy1[]" /></span></div></div>');
                     }
+                } else {
+                    toastr.error('Please fill pevious field before adding field');
                 }
             });
             //Remove the extra file input box for dependent schengen visa upload
@@ -1017,16 +1019,20 @@
                 processData: false,
                 contentType: false,
                 success: function (data) {
-                    if(data.success) {
+                    if(data.status) {
                         $('#collapsespouseapplicant').removeClass('show');
                         $('.spouseApplicantData').show();
                         $('#collapsespouseHome').addClass('show');
                         $('.dependentApplicantCompleted').val(1);
                         $('.addExperience, .container').attr('data-dependentId', data.dependentId);
                     } else {
+                        if(data.message){
+                            toastr.error(data.message);
+                        }
+
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
-                            $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                            $("#dependent_applicant_details ."+index+"_errorClass").append('<span class="error">'+value+'</span>');
                             toastr.error(value);
                         });
                     }
@@ -1067,7 +1073,7 @@
                     } else {
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
-                            $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
+                            $("#dependent_home_country_details ."+index+"_errorClass").append('<span class="error">'+value+'</span>');
                             toastr.error(value);
                         });
                     }
@@ -1128,12 +1134,14 @@
             // $("#dependent_schengen_details :input").each(function(index, elm){
             //     $("."+elm.name+"_errorClass").empty();
             // });
+            $("#dependent_schengen_details :input").each(function(index, elm){
+                if(elm.name == "dependent_schengen_copy1[]"){
 
-            if(elm.name == "dependent_schengen_copy1[]"){
+                } else {
+                    $("."+elm.name+"_errorClass").empty();
 
-            } else {
-                $("."+elm.name+"_errorClass").empty();
-            }
+                }
+            });
             
             $.ajaxSetup({
                 headers: {

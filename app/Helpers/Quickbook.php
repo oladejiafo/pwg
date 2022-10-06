@@ -446,13 +446,13 @@ class Quickbook
         $quickbook = QuickModel::first();
         $dataService = DataService::Configure(array(
             'auth_mode' => 'oauth2',
-            'ClientID' => config('app.client_id'),
-            'ClientSecret' =>  config('app.client_secret'),
-            'RedirectURI' => config('app.oauth_redirect_uri'),
-            'scope' => config('app.oauth_scope'),
+            'ClientID' => config('services.quickbook.client_id'),
+            'ClientSecret' =>  config('services.quickbook.client_secret'),
+            'RedirectURI' => config('services.quickbook.oauth_redirect_uri'),
+            'scope' => config('services.quickbook.oauth_scope'),
             'baseUrl' => "development",
-            'refreshTokenKey' => $quickbook['refresh_token'], // Manual Fetch on firt tyme
-            'QBORealmID' => config('app.QBORealmID'),
+            'refreshTokenKey' => ($quickbook['refresh_token']) ?? 'AB11673704203bHwMh7gUmbfuJfBB4XIPnpIUxjnCCJqzhCzrJ', // Manual Fetch on firt tyme
+            'QBORealmID' => config('services.quickbook.QBORealmID'),
         ));
         
         if(Carbon::now()->toDateString() >= date('Y-m-d', strtotime($quickbook['refresh_token_expires_in']. ' - 10 days'))){

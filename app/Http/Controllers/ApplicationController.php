@@ -21,6 +21,7 @@ use App\Mail\NotifyMail;
 use QuickBooksOnline\API\DataService\DataService;
 use DB;
 use Session;
+use Carbon\Carbon;
 
 class ApplicationController extends Controller
 {
@@ -137,12 +138,12 @@ class ApplicationController extends Controller
                 'civil_status' => $request['civil_status'],
             ]);
 
-            $applicant = Applicant::where('client_id', Auth::id())
-                ->where('destination_id', $request->destination_id)
-                // ->sortBy('id', 'desc')
-                ->first();
-            $applicant->assigned_agent_id = $request->agent_code;
-            $applicant->save();
+        $applicant = Applicant::where('client_id', Auth::id())
+            ->where('destination_id', $request->destination_id)
+            // ->sortBy('id', 'desc')
+            ->first();
+        $applicant->assigned_agent_id = $request->agent_code;
+        $applicant->save();
 
         return Response::json(array(
             'success' => true
@@ -182,7 +183,7 @@ class ApplicationController extends Controller
         $client = User::find(Auth::id());
         $fileName = '';
         if ($request->hasFile('passport_copy')) {
-            $fileName = Auth::user()->id.'_'.time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
+            $fileName = Auth::user()->id . '_' . time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
             $client->addMedia($request->file('passport_copy'))->usingFileName($fileName)->toMediaCollection(User::$media_collection_main);
         }
 
@@ -209,64 +210,64 @@ class ApplicationController extends Controller
 
     public function applicantReview($productId)
     {
-      if (Auth::id()) {
-        $client = User::find(Auth::id());
-        $applicant = Applicant::where('client_id', Auth::id())
-            ->where('destination_id', $productId)
-            ->first();
-        $dependent = User::where('family_member_id', Auth::id())->where('is_dependent', 1)->first();
-        $children = User::where('family_member_id', Auth::id())->where('is_dependent', 2)->get();
+        if (Auth::id()) {
+            $client = User::find(Auth::id());
+            $applicant = Applicant::where('client_id', Auth::id())
+                ->where('destination_id', $productId)
+                ->first();
+            $dependent = User::where('family_member_id', Auth::id())->where('is_dependent', 1)->first();
+            $children = User::where('family_member_id', Auth::id())->where('is_dependent', 2)->get();
 
-        $client->passportName = (isset($client->getMedia(User::$media_collection_main)[0])) ? $client->getMedia(User::$media_collection_main)[0]['name'] : null;
-        $client->passporUrl = (isset($client->getMedia(User::$media_collection_main)[0])) ? $client->getMedia(User::$media_collection_main)[0]->getUrl() : null;
+            $client->passportName = (isset($client->getMedia(User::$media_collection_main)[0])) ? $client->getMedia(User::$media_collection_main)[0]['name'] : null;
+            $client->passporUrl = (isset($client->getMedia(User::$media_collection_main)[0])) ? $client->getMedia(User::$media_collection_main)[0]->getUrl() : null;
 
-        $client->residenceName = (isset($client->getMedia(User::$media_collection_main_residence_id)[0])) ? $client->getMedia(User::$media_collection_main_residence_id)[0]['name'] : ' ';
-        $client->residenceUrl = (isset($client->getMedia(User::$media_collection_main_residence_id)[0])) ? $client->getMedia(User::$media_collection_main_residence_id)[0]->getUrl() : null;
+            $client->residenceName = (isset($client->getMedia(User::$media_collection_main_residence_id)[0])) ? $client->getMedia(User::$media_collection_main_residence_id)[0]['name'] : ' ';
+            $client->residenceUrl = (isset($client->getMedia(User::$media_collection_main_residence_id)[0])) ? $client->getMedia(User::$media_collection_main_residence_id)[0]->getUrl() : null;
 
-        $client->visaName = (isset($client->getMedia(User::$media_collection_main_residence_visa)[0])) ? $client->getMedia(User::$media_collection_main_residence_visa)[0]['name'] : ' ';
-        $client->visaCopyUrl = (isset($client->getMedia(User::$media_collection_main_residence_visa)[0])) ? $client->getMedia(User::$media_collection_main_residence_visa)[0]->getUrl() : null;
+            $client->visaName = (isset($client->getMedia(User::$media_collection_main_residence_visa)[0])) ? $client->getMedia(User::$media_collection_main_residence_visa)[0]['name'] : ' ';
+            $client->visaCopyUrl = (isset($client->getMedia(User::$media_collection_main_residence_visa)[0])) ? $client->getMedia(User::$media_collection_main_residence_visa)[0]->getUrl() : null;
 
-        $client->resumeName = (isset($client->getMedia(User::$media_collection_main_resume)[0])) ? $client->getMedia(User::$media_collection_main_resume)[0]['name'] : null;
-        $client->resumeUrl = (isset($client->getMedia(User::$media_collection_main_resume)[0])) ? $client->getMedia(User::$media_collection_main_resume)[0]->getUrl() : null;
+            $client->resumeName = (isset($client->getMedia(User::$media_collection_main_resume)[0])) ? $client->getMedia(User::$media_collection_main_resume)[0]['name'] : null;
+            $client->resumeUrl = (isset($client->getMedia(User::$media_collection_main_resume)[0])) ? $client->getMedia(User::$media_collection_main_resume)[0]->getUrl() : null;
 
-        $client->schengenVisaUrl = (isset($client->getMedia(User::$media_collection_main_schengen_visa)[0])) ? $client->getMedia(User::$media_collection_main_schengen_visa)[0]->getUrl() : null;
-        $client->schengenVisaName = (isset($client->getMedia(User::$media_collection_main_schengen_visa)[0])) ? $client->getMedia(User::$media_collection_main_schengen_visa)[0]['name'] : ' ';
+            $client->schengenVisaUrl = (isset($client->getMedia(User::$media_collection_main_schengen_visa)[0])) ? $client->getMedia(User::$media_collection_main_schengen_visa)[0]->getUrl() : null;
+            $client->schengenVisaName = (isset($client->getMedia(User::$media_collection_main_schengen_visa)[0])) ? $client->getMedia(User::$media_collection_main_schengen_visa)[0]['name'] : ' ';
 
-        $client->schengenVisaUrl1 = (isset($client->getMedia(User::$media_collection_main_schengen_visa1)[0])) ? $client->getMedia(User::$media_collection_main_schengen_visa1)[0]->getUrl() : null;
-        $client->schengenVisaName1 = (isset($client->getMedia(User::$media_collection_main_schengen_visa1)[0])) ? $client->getMedia(User::$media_collection_main_schengen_visa1)[0]['name'] : ' ';
+            $client->schengenVisaUrl1 = (isset($client->getMedia(User::$media_collection_main_schengen_visa1)[0])) ? $client->getMedia(User::$media_collection_main_schengen_visa1)[0]->getUrl() : null;
+            $client->schengenVisaName1 = (isset($client->getMedia(User::$media_collection_main_schengen_visa1)[0])) ? $client->getMedia(User::$media_collection_main_schengen_visa1)[0]['name'] : ' ';
 
-        $client->schengenVisaUrl2 = (isset($client->getMedia(User::$media_collection_main_schengen_visa2)[0])) ? $client->getMedia(User::$media_collection_main_schengen_visa2)[0]->getUrl() : null;
-        $client->schengenVisaName2 = (isset($client->getMedia(User::$media_collection_main_schengen_visa2)[0])) ? $client->getMedia(User::$media_collection_main_schengen_visa2)[0]['name'] : ' ';
+            $client->schengenVisaUrl2 = (isset($client->getMedia(User::$media_collection_main_schengen_visa2)[0])) ? $client->getMedia(User::$media_collection_main_schengen_visa2)[0]->getUrl() : null;
+            $client->schengenVisaName2 = (isset($client->getMedia(User::$media_collection_main_schengen_visa2)[0])) ? $client->getMedia(User::$media_collection_main_schengen_visa2)[0]['name'] : ' ';
 
-        $client->schengenVisaUrl3 = (isset($client->getMedia(User::$media_collection_main_schengen_visa3)[0])) ? $client->getMedia(User::$media_collection_main_schengen_visa3)[0]->getUrl() : null;
-        $client->schengenVisaName3 = (isset($client->getMedia(User::$media_collection_main_schengen_visa3)[0])) ? $client->getMedia(User::$media_collection_main_schengen_visa3)[0]['name'] : ' ';
+            $client->schengenVisaUrl3 = (isset($client->getMedia(User::$media_collection_main_schengen_visa3)[0])) ? $client->getMedia(User::$media_collection_main_schengen_visa3)[0]->getUrl() : null;
+            $client->schengenVisaName3 = (isset($client->getMedia(User::$media_collection_main_schengen_visa3)[0])) ? $client->getMedia(User::$media_collection_main_schengen_visa3)[0]['name'] : ' ';
 
-        $client->schengenVisaUrl4 = (isset($client->getMedia(User::$media_collection_main_schengen_visa4)[0])) ? $client->getMedia(User::$media_collection_main_schengen_visa4)[0]->getUrl() : null;
-        $client->schengenVisaName4 = (isset($client->getMedia(User::$media_collection_main_schengen_visa4)[0])) ? $client->getMedia(User::$media_collection_main_schengen_visa4)[0]['name'] : ' ';
+            $client->schengenVisaUrl4 = (isset($client->getMedia(User::$media_collection_main_schengen_visa4)[0])) ? $client->getMedia(User::$media_collection_main_schengen_visa4)[0]->getUrl() : null;
+            $client->schengenVisaName4 = (isset($client->getMedia(User::$media_collection_main_schengen_visa4)[0])) ? $client->getMedia(User::$media_collection_main_schengen_visa4)[0]['name'] : ' ';
 
-        if ($dependent) {
-            $dependent->passportUrl = (isset($dependent->getMedia(User::$media_collection_main)[0])) ? $dependent->getMedia(User::$media_collection_main)[0]->getUrl() : null;
-            $dependent->passportName = (isset($dependent->getMedia(User::$media_collection_main)[0])) ? $dependent->getMedia(User::$media_collection_main)[0]['name'] : null;
+            if ($dependent) {
+                $dependent->passportUrl = (isset($dependent->getMedia(User::$media_collection_main)[0])) ? $dependent->getMedia(User::$media_collection_main)[0]->getUrl() : null;
+                $dependent->passportName = (isset($dependent->getMedia(User::$media_collection_main)[0])) ? $dependent->getMedia(User::$media_collection_main)[0]['name'] : null;
 
-            $dependent->residenceUrl = (isset($dependent->getMedia(User::$media_collection_main_residence_id)[0])) ? $dependent->getMedia(User::$media_collection_main_residence_id)[0]->getUrl() : null;
-            $dependent->residenceName = (isset($dependent->getMedia(User::$media_collection_main_residence_id)[0])) ? $dependent->getMedia(User::$media_collection_main_residence_id)[0]['name'] : ' ';
+                $dependent->residenceUrl = (isset($dependent->getMedia(User::$media_collection_main_residence_id)[0])) ? $dependent->getMedia(User::$media_collection_main_residence_id)[0]->getUrl() : null;
+                $dependent->residenceName = (isset($dependent->getMedia(User::$media_collection_main_residence_id)[0])) ? $dependent->getMedia(User::$media_collection_main_residence_id)[0]['name'] : ' ';
 
-            $dependent->resumeName = (isset($dependent->getMedia(User::$media_collection_main_resume)[0])) ? $dependent->getMedia(User::$media_collection_main_resume)[0]['name'] : null;
-            $dependent->resumeUrl = (isset($dependent->getMedia(User::$media_collection_main_resume)[0])) ? $dependent->getMedia(User::$media_collection_main_resume)[0]->getUrl() : null;
+                $dependent->resumeName = (isset($dependent->getMedia(User::$media_collection_main_resume)[0])) ? $dependent->getMedia(User::$media_collection_main_resume)[0]['name'] : null;
+                $dependent->resumeUrl = (isset($dependent->getMedia(User::$media_collection_main_resume)[0])) ? $dependent->getMedia(User::$media_collection_main_resume)[0]->getUrl() : null;
 
 
-            $dependent->schengenVisaName = (isset($dependent->getMedia(User::$media_collection_main_schengen_visa)[0])) ? $dependent->getMedia(User::$media_collection_main_schengen_visa)[0]['name'] : ' ';
-            $dependent->schengenVisaUrl = (isset($dependent->getMedia(User::$media_collection_main_schengen_visa)[0])) ? $dependent->getMedia(User::$media_collection_main_schengen_visa)[0]->getUrl() : null;
+                $dependent->schengenVisaName = (isset($dependent->getMedia(User::$media_collection_main_schengen_visa)[0])) ? $dependent->getMedia(User::$media_collection_main_schengen_visa)[0]['name'] : ' ';
+                $dependent->schengenVisaUrl = (isset($dependent->getMedia(User::$media_collection_main_schengen_visa)[0])) ? $dependent->getMedia(User::$media_collection_main_schengen_visa)[0]->getUrl() : null;
 
-            $dependent->visaName = (isset($dependent->getMedia(User::$media_collection_main_residence_visa)[0])) ? $dependent->getMedia(User::$media_collection_main_residence_visa)[0]['name'] : ' ';
-            $dependent->visaCopyUrl = (isset($dependent->getMedia(User::$media_collection_main_residence_visa)[0])) ? $dependent->getMedia(User::$media_collection_main_residence_visa)[0]->getUrl() : null;
+                $dependent->visaName = (isset($dependent->getMedia(User::$media_collection_main_residence_visa)[0])) ? $dependent->getMedia(User::$media_collection_main_residence_visa)[0]['name'] : ' ';
+                $dependent->visaCopyUrl = (isset($dependent->getMedia(User::$media_collection_main_residence_visa)[0])) ? $dependent->getMedia(User::$media_collection_main_residence_visa)[0]->getUrl() : null;
+            }
+
+
+            return view('user.application-review', compact('client', 'applicant', 'productId', 'dependent', 'children'))->with('success', 'Data saved successfully!');
+        } else {
+            return redirect('home');
         }
-
-
-        return view('user.application-review', compact('client', 'applicant', 'productId', 'dependent', 'children'))->with('success', 'Data saved successfully!');
-     } else {
-        return redirect('home');
-     }
     }
 
     /**
@@ -297,7 +298,7 @@ class ApplicationController extends Controller
         $client = User::find(Auth::id());
         if ($request->hasFile('residence_copy')) {
             $file = $request->file('residence_copy');
-            $residenceCopy = Auth::user()->id.'_'.time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
+            $residenceCopy = Auth::user()->id . '_' . time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
             $client->addMedia($request->file('residence_copy'))->usingFileName($residenceCopy)->toMediaCollection(User::$media_collection_main_residence_id);
         } else {
             $residenceCopy = $request->file('residence_copy');
@@ -305,7 +306,7 @@ class ApplicationController extends Controller
         $visaCopy = $request['visa_copy'];
         if ($request->hasFile('visa_copy')) {
             $file = $request->file('visa_copy');
-            $visaCopy = Auth::user()->id.'_'.time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
+            $visaCopy = Auth::user()->id . '_' . time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
             $client->addMedia($request->file('visa_copy'))->usingFileName($visaCopy)->toMediaCollection(User::$media_collection_main_residence_visa);
         }
         $client->country_of_residence = $request->current_country;
@@ -340,8 +341,6 @@ class ApplicationController extends Controller
         } else {
             $validator = \Validator::make($request->all(), [
                 'is_schengen_visa_issued_last_five_year' => 'required',
-                'is_finger_print_collected_for_Schengen_visa' => 'required'
-
             ]);
         }
 
@@ -359,32 +358,40 @@ class ApplicationController extends Controller
             $file = $request->file('schengen_copy');
             $schengenCopy = Auth::user()->id.'_'.time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
             $client->addMediaFromRequest('schengen_copy')->withCustomProperties(['mime-type' => 'image/jpeg'])->preservingOriginal()->usingFileName($schengenCopy)->toMediaCollection(User::$media_collection_main_schengen_visa);
+            $client->save();
         }
 
         //Save the added array of schengen visas if available
         if($request->hasfile('schengen_copy1'))
         {
             $x = 0;
+            $file = [];
             foreach($request->file('schengen_copy1') as $copy1)
             {
-                $x=$x+1;
+                $x++;
                 
                 $name=$copy1->getClientOriginalName();
               
                 list($nName,$nExt) = explode('.',$name);
                 $schengenCopy1 = Auth::user()->id.'_'.time() . '_' . str_replace(' ', '_',  $name);
-           
-                $client->addMediaFromRequest('schengen_copy1')->withCustomProperties(['mime-type' => 'image/jpeg'])->preservingOriginal()->usingName($nName)->usingFileName($schengenCopy1)->toMediaCollection(User::$media_collection_main_schengen_visa.$x);
-              
+            
+                $client
+                ->addMedia($copy1) //starting method
+                ->withCustomProperties(['mime-type' => 'image/jpeg']) //middle method
+                ->preservingOriginal() //middle method
+                ->usingName($nName)
+                ->usingFileName($schengenCopy1)
+                ->toMediaCollection(User::$media_collection_main_schengen_visa.$x); //finishing method
+                $client->save();
             }
         }
-
         $client->is_schengen_visa_issued_last_five_year  = $request->is_schengen_visa_issued_last_five_year;
         $client->is_finger_print_collected_for_Schengen_visa = $request->is_finger_print_collected_for_Schengen_visa;
         $client->save();
 
         return Response::json(array('success' => true), 200);
     }
+
 
     /**
      * Store applicant experience as step 4
@@ -394,7 +401,7 @@ class ApplicationController extends Controller
      */
     public function addExperience(Request $request)
     {
-        $job_category_two_id = ($request['job_category_two_id']) ?? JobCategoryThree::where('id', $request['job_category_three_id'])->pluck('job_category_two_id')->first(); 
+        $job_category_two_id = ($request['job_category_two_id']) ?? JobCategoryThree::where('id', $request['job_category_three_id'])->pluck('job_category_two_id')->first();
         $job_category_one_id = ($request['job_category_one_id']) ?? JobCategoryTwo::where('id', $job_category_two_id)->pluck('job_category_one_id')->first();
         if ($request['userType'] == 'dependent') {
             $exist = ApplicantExperience::where('client_id', $request->dependentId)
@@ -519,7 +526,7 @@ class ApplicationController extends Controller
         if ($check_noti === null) {
             $tday = date('Y-m-d');
             DB::table('notifications')->insert(
-                ['client_id' => $userID, 'message' => $message, 'criteria' => $criteria, 'link' => $link, 'created_at'=>$tday]
+                ['client_id' => $userID, 'message' => $message, 'criteria' => $criteria, 'link' => $link, 'created_at' => $tday]
             );
 
             Mail::to($email)->send(new NotifyMail($dataArray));
@@ -550,75 +557,82 @@ class ApplicationController extends Controller
 
     public function storeDependentDetails(Request $request)
     {
-        $validator = \Validator::make($request->all(), [
-            'dependent_first_name' => 'required',
-            'dependent_surname' => 'required',
-            'dependent_email' => 'required',
-            'dependent_phone_number' => 'required',
-            'dependent_resume' => 'required',
-            'dependent_dob' => 'required',
-            'dependent_place_birth' =>  'required',
-            'dependent_country_birth' => 'required',
-            'dependent_sex' => 'required',
-            'dependent_civil_status' => 'required',
-            'dependent_citizenship' => 'required'
-        ]);
-        if ($validator->fails()) {
+        try {
+            $validator = \Validator::make($request->all(), [
+                'dependent_first_name' => 'required',
+                'dependent_surname' => 'required',
+                'email' => 'required | unique:clients',
+                'dependent_phone_number' => 'required',
+                'dependent_resume' => 'required',
+                'dependent_dob' => 'required',
+                'dependent_place_birth' =>  'required',
+                'dependent_country_birth' => 'required',
+                'dependent_sex' => 'required',
+                'dependent_civil_status' => 'required',
+                'dependent_citizenship' => 'required'
+            ]);
+            if ($validator->fails()) {
+                return Response::json(array(
+                    'status' => false,
+                    'errors' => $validator->getMessageBag()->toArray()
+
+                ), 200); // 400 being the HTTP code for an invalid request.
+            }
+
+            $data = User::where('family_member_id', Auth::id())
+                ->where('is_dependent', 1)
+                ->first();
+
+            if ($data) {
+                $data->name = $request['dependent_first_name'];
+                $data->middle_name = $request['dependent_middle_name'];
+                $data->sur_name = $request['dependent_surname'];
+                $data->email  = $request['dependent_email'];
+                $data->phone_number  = $request['dependent_phone_number'];
+                $data->date_of_birth = date('Y-m-d', strtotime($request['dependent_dob']));
+                $data->place_of_birth = $request['dependent_place_birth'];
+                $data->country_of_birth = $request['dependent_country_birth'];
+                $data->citizenship = $request['dependent_citizenship'];
+                $data->sex = $request['dependent_sex'];
+                $data->civil_status = $request['dependent_civil_status'];
+            } else {
+                $data = new User();
+                $data->family_member_id = Auth::id();
+                $data->is_dependent = 1;
+                $data->name = $request['dependent_first_name'];
+                $data->middle_name = $request['dependent_middle_name'];
+                $data->sur_name = $request['dependent_surname'];
+                $data->email  = $request['dependent_email'];
+                $data->phone_number  = $request['dependent_phone_number'];
+                $data->date_of_birth = date('Y-m-d', strtotime($request['dependent_dob']));
+                $data->place_of_birth = $request['dependent_place_birth'];
+                $data->country_of_birth = $request['dependent_country_birth'];
+                $data->citizenship = $request['dependent_citizenship'];
+                $data->sex = $request['dependent_sex'];
+                $data->civil_status = $request['dependent_civil_status'];
+            }
+
+            if ($request->hasFile('dependent_resume')) {
+                $data->addMedia($request->file('dependent_resume'))->toMediaCollection(User::$media_collection_main_resume);
+            }
+
+            $data->save();
             return Response::json(array(
-                'success' => false,
-                'errors' => $validator->getMessageBag()->toArray()
-
-            ), 200); // 400 being the HTTP code for an invalid request.
+                'dependentId' => $this->getFamilyId(),
+                'status' => true
+            ), 200);
+        } catch (Exception $e) {
+            return Response::json(array(
+                'status' => false,
+                'message' => $e->getMessage()
+            ), 200);
         }
-
-        $data = User::where('family_member_id', Auth::id())
-            ->where('is_dependent', 1)
-            ->first();
-
-        if ($data) {
-            $data->name = $request['dependent_first_name'];
-            $data->middle_name = $request['dependent_middle_name'];
-            $data->sur_name = $request['dependent_surname'];
-            $data->email  = $request['dependent_email'];
-            $data->phone_number  = $request['dependent_phone_number'];
-            $data->date_of_birth = date('Y-m-d', strtotime($request['dependent_dob']));
-            $data->place_of_birth = $request['dependent_place_birth'];
-            $data->country_of_birth = $request['dependent_country_birth'];
-            $data->citizenship = $request['dependent_citizenship'];
-            $data->sex = $request['dependent_sex'];
-            $data->civil_status = $request['dependent_civil_status'];
-        } else {
-            $data = new User();
-            $data->family_member_id = Auth::id();
-            $data->is_dependent = 1;
-            $data->name = $request['dependent_first_name'];
-            $data->middle_name = $request['dependent_middle_name'];
-            $data->sur_name = $request['dependent_surname'];
-            $data->email  = $request['dependent_email'];
-            $data->phone_number  = $request['dependent_phone_number'];
-            $data->date_of_birth = date('Y-m-d', strtotime($request['dependent_dob']));
-            $data->place_of_birth = $request['dependent_place_birth'];
-            $data->country_of_birth = $request['dependent_country_birth'];
-            $data->citizenship = $request['dependent_citizenship'];
-            $data->sex = $request['dependent_sex'];
-            $data->civil_status = $request['dependent_civil_status'];
-        }
-
-        if ($request->hasFile('dependent_resume')) {
-            $data->addMedia($request->file('dependent_resume'))->toMediaCollection(User::$media_collection_main_resume);
-        }
-
-        $data->save();
-        return Response::json(array(
-            'dependentId' => $this->getFamilyId(),
-            'success' => true
-        ), 200);
     }
 
     public function storeDependentHomeContryDetails(Request $request)
     {
         $validator = \Validator::make($request->all(), [
-            'dependent_passport_number' => 'Required',
+            'passport_number' => 'Required | unique:clients',
             'dependent_passport_issue' => 'required',
             'dependent_passport_expiry' => 'required',
             'dependent_issued_by' => 'Required',
@@ -671,7 +685,7 @@ class ApplicationController extends Controller
         $file = $request->file('dependent_passport_copy');
         $fileName = null;
         if ($request->hasFile('dependent_passport_copy')) {
-            $fileName = Auth::user()->id.'_'.time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
+            $fileName = Auth::user()->id . '_' . time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
             $dependent->addMedia($request->file('dependent_passport_copy'))->usingFileName($fileName)->toMediaCollection(User::$media_collection_main);
         }
 
@@ -739,13 +753,13 @@ class ApplicationController extends Controller
         }
         if ($request->hasFile('dependent_residence_copy')) {
             $file = $request->file('dependent_residence_copy');
-            $residenceCopy = Auth::user()->id.'_'.time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
+            $residenceCopy = Auth::user()->id . '_' . time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
             $dependent->addMedia($request->file('dependent_residence_copy'))->usingFileName($residenceCopy)->toMediaCollection(User::$media_collection_main_residence_id);
         }
         $visaCopy = $request['dependent_visa_copy'];
         if ($request->hasFile('dependent_visa_copy')) {
             $file = $request->file('dependent_visa_copy');
-            $visaCopy = Auth::user()->id.'_'.time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
+            $visaCopy = Auth::user()->id . '_' . time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
             $dependent->addMedia($request->file('dependent_visa_copy'))->usingFileName($visaCopy)->toMediaCollection(User::$media_collection_main_residence_visa);
         }
         $dependent->save();
@@ -757,10 +771,10 @@ class ApplicationController extends Controller
 
     public function storeSpouseSchenegenDetails(Request $request)
     {
-       
         if ($request['is_schengen_visa_issued_last_five_year']  == 'YES') {
             $validator = \Validator::make($request->all(), [
                 'is_dependent_schengen_visa_issued_last_five_year' => 'required',
+                'dependent_schengen_copy' => 'required',
                 'is_dependent_finger_print_collected_for_Schengen_visa' => 'required',
             ]);
         } else {
@@ -776,45 +790,48 @@ class ApplicationController extends Controller
 
             ), 200); // 400 being the HTTP code for an invalid request.
         }
-        dd($validator);
         $dependent = User::where('family_member_id', Auth::id())
             ->where('is_dependent', 1)
             ->first();
         if ($dependent) {
             $dependent->is_schengen_visa_issued_last_five_year = $request->is_dependent_schengen_visa_issued_last_five_year;
             $dependent->is_finger_print_collected_for_Schengen_visa  = $request->is_dependent_finger_print_collected_for_Schengen_visa;
+            $dependent->save();
         } else {
             $dependent = new User();
             $dependent->family_member_id = AUth::id();
             $dependent->is_dependent = 1;
             $dependent->is_schengen_visa_issued_last_five_year = $request->is_dependent_schengen_visa_issued_last_five_year;
             $dependent->is_finger_print_collected_for_Schengen_visa  = $request->is_dependent_finger_print_collected_for_Schengen_visa;
+            $dependent->save();
         }
-
         if ($request->hasFile('dependent_schengen_copy')) {
             $file = $request->file('dependent_schengen_copy');
-            $schengenCopy = Auth::user()->id.'_'.time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
+            $schengenCopy = Auth::user()->id . '_' . time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
             $dependent->addMediaFromRequest('dependent_schengen_copy')->withCustomProperties(['mime-type' => 'image/jpeg'])->preservingOriginal()->usingFileName($schengenCopy)->toMediaCollection(User::$media_collection_main_schengen_visa);
+            $dependent->save();
         }
-
         //Save the added array of schengen visas if available
-        if($request->hasfile('dependent_schengen_copy1'))
-        {
+        if ($request->hasfile('dependent_schengen_copy1')) {
             $x = 0;
-            foreach($request->file('dependent_schengen_copy1') as $copy1)
-            {
-                $x=$x+1;
-                
-                $name=$copy1->getClientOriginalName();
-                
-                list($nName,$nExt) = explode('.',$name);
-                $schengenCopy1 = Auth::user()->id.'_'.time() . '_' . str_replace(' ', '_',  $name);
-            
-                $dependent->addMediaFromRequest('dependent_schengen_copy1')->withCustomProperties(['mime-type' => 'image/jpeg'])->preservingOriginal()->usingName($nName)->usingFileName($schengenCopy1)->toMediaCollection(User::$media_collection_main_schengen_visa.$x);
-                
+            foreach ($request->file('dependent_schengen_copy1') as $copy1) {
+                $x = $x + 1;
+
+                $name = $copy1->getClientOriginalName();
+
+                list($nName, $nExt) = explode('.', $name);
+                $schengenCopy1 = Auth::user()->id . '_' . time() . '_' . str_replace(' ', '_',  $name);
+                $dependent
+                ->addMedia($copy1) //starting method
+                ->withCustomProperties(['mime-type' => 'image/jpeg']) //middle method
+                ->preservingOriginal() //middle method
+                ->usingName($nName)
+                ->usingFileName($schengenCopy1)
+                ->toMediaCollection(User::$media_collection_main_schengen_visa.$x); //finishing method
+                $dependent->save();
             }
         }
-        
+
         $dependent->save();
         return Response::json(array(
             'dependentId' => $this->getFamilyId(),

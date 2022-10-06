@@ -458,9 +458,9 @@
                         </div>
                         <!-- Add more inputs dynamycally here -->
 
-                        <div class="form-group row mt-4">
+                        <div class="form-group row mt-4" id="is_finger_print_collected_for_Schengen_visa" >
                             <div class="col-sm-12 mt-3">
-                                <select name="is_finger_print_collected_for_Schengen_visa" id="is_finger_print_collected_for_Schengen_visa" aria-required="true" class="form-control form-select" autocomplete="off">
+                                <select name="is_finger_print_collected_for_Schengen_visa" aria-required="true" class="form-control form-select" autocomplete="off">
                                     <option value="">Fingerprints Collected Previously For The Purpose Of Applying For Schengen Visa*</option>
                                     <option value="NO">No</option>
                                     <option value="YES">Yes</option>
