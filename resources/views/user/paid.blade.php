@@ -25,7 +25,7 @@
 
 <div class="card d-flex aligns-items-center justify-content-center text-center" style="margin-top:120px">
   <div class="card-header" style="background-color:white;">My Applications
-     <button class="btn btn-primary" href="#" onclick="OAuthCode('{{$authUrl}}')">Connect to Quickbook</button>
+     {{-- <button class="btn btn-primary" href="#" onclick="OAuthCode('{{$authUrl}}')">Connect to Quickbook</button> --}}
     </div>
   <div class="card-body paid-section" style="background-color:#FAE008;">
 
