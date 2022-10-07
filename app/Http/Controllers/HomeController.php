@@ -1333,7 +1333,8 @@ class HomeController extends Controller
         $dataService = Quickbook::connectQucikBook();
 
         //$payment = $dataService->Query("select * from Payment");
-        $paymentDetails = Payment::where('id', Session::get('paymentId'))->first();
+        $paymentDetails = Payment::where('id', Session::get('paymentId'))
+                                    ->first();
         if ($ptype) {
             $apply = Applicant::where('client_id', Auth::id())
                 ->orderBy('id', 'DESC')

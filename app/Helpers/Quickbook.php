@@ -486,7 +486,7 @@ class Quickbook
     {
         $quickbook = QuickModel::first();
         $dataService = self::connectQucikBook();
-        if(Carbon::now()->format('Y/m/d H:i:s')  >= '2022/10/06 06:22:20'){
+        if(Carbon::now()->format('Y/m/d H:i:s')  >= $quickbook['access_token_expires_in']){
             $OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
             $refreshedAccessTokenObj = $OAuth2LoginHelper->refreshToken();
     

@@ -1130,17 +1130,14 @@
         });
         $('#dependent_schengen_details').submit(function(e){
             e.preventDefault(); 
- 
-            // $("#dependent_schengen_details :input").each(function(index, elm){
-            //     $("."+elm.name+"_errorClass").empty();
-            // });
+
             $("#dependent_schengen_details :input").each(function(index, elm){
                 if(elm.name == "dependent_schengen_copy1[]"){
 
                 } else {
                     $("."+elm.name+"_errorClass").empty();
                 }
-
+            });
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

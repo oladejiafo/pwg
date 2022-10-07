@@ -66,22 +66,21 @@ $notifications = DB::table('notifications')
 
 <script>
     $('#noty').on('click', function(e){
-    e.preventDefault(); //1
+        e.preventDefault(); //1
 
-    var $this = $(this); //alias form reference
-    $.ajax({ //2
-        url: '{{ route("mark_read") }}',
-        method: 'POST',
-        data: {
-            "_token": "{{ csrf_token() }}",
-        }
-    }).done( function (response) {
-     
-        if (response) {
-            $('#tbod').load(document.URL +  ' #tbod');
-            // $('#target-div').html(response.status); 
-        }
+        var $this = $(this); //alias form reference
+        $.ajax({ //2
+            url: '{{ route("mark_read") }}',
+            method: 'POST',
+            data: {
+                "_token": "{{ csrf_token() }}",
+            }
+        }).done( function (response) {  
+            if (response) {
+                $('#tbod').load(document.URL +  ' #tbod');
+                // $('#target-div').html(response.status); 
+            }
+        });
     });
-});
 
 </script>

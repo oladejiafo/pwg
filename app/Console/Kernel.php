@@ -18,7 +18,6 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\ClearNotify::class,
         Commands\ReminderEmail::class,
-        Commands\QuickbookCron::class
 
     ];
 
