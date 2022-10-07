@@ -81,6 +81,7 @@ Route::get('contract/view/{id}', [HomeController::class, 'contractReview'])->nam
 // Reset Password
 Route::post('reset/password', [ResetPasswordController::class,'updatePassword'])->name('customize.password.update');
 Route::post('reset/forgot/password', [ResetPasswordController::class,'forgotPassword'])->name('customize.forgot.password');
+Route::post('update/password', [ResetPasswordController::class, 'updateCurrentPassword'])->name('update.current.password');
 
 //Payments
 Route::get('payment_form/{id}',[HomeController::class,'payment'])->name('payment');

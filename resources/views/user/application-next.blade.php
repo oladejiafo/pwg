@@ -658,7 +658,7 @@
                 processData: false,
                 contentType: false,
                 success: function (data) {
-                    if(data.success) {
+                    if(data.status) {
                         $('#collapseapplicant').removeClass('show');
                         $('.applicantData').show();
                         $('#collapseHome').addClass('show');
@@ -698,7 +698,7 @@
                 processData: false,
                 contentType: false,
                 success: function (data) {
-                    if(data.success) {
+                    if(data.status) {
                         $('#collapseHome').removeClass('show');
                         $('.homeCountryData').show();
                         $('#collapseCurrent').addClass('show');
@@ -742,7 +742,7 @@
                 processData: false,
                 contentType: false,
                 success: function (data) {
-                    if(data.success) {
+                    if(data.status) {
                         $('#collapseCurrent').removeClass('show');
                         $('.currentCountryData').show();
                         $('#collapseSchengen').addClass('show');
@@ -779,7 +779,6 @@
             if($("input[name=schengen_upload]").val()) {
                 formData.append('schengen_copy', $('.schengen_upload')[0].files[0]);
             }
-            console.log(formData);
             $.ajax({
                 type: 'POST',
                 url: "{{ url('store/schengen/details') }}",
@@ -787,8 +786,7 @@
                 processData: false,
                 contentType: false,
                 success: function (data) {
-                    console.log(data);
-                    if(data.success) {
+                    if(data.status) {
                         $('#collapseSchengen').removeClass('show');
                         $('.schengenData').show();
                         $('#collapseExperience').addClass('show');
@@ -1064,13 +1062,16 @@
                 processData: false,
                 contentType: false,
                 success: function (data) {
-                    if(data.success) {
+                    if(data.status) {
                         $('#collapsespouseHome').removeClass('show');
                         $('.spouseHomeCountryData').show();
                         $('#collapseSpouseCurrent').addClass('show');
                         $('.spouseHomeCountryCompleted').val(1);
                         $('.addExperience, .container').data('data-dependentId', data.dependentId);
                     } else {
+                        if(data.message){
+                            toastr.error(data.message);
+                        }
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
                             $("#dependent_home_country_details ."+index+"_errorClass").append('<span class="error">'+value+'</span>');
@@ -1109,13 +1110,16 @@
                 processData: false,
                 contentType: false,
                 success: function (data) {
-                    if(data.success) {
+                    if(data.status) {
                         $('#collapseSpouseCurrent').removeClass('show');
                         $('.spouseCurrentCountryData').show();
                         $('#collapseSpouseSchengen').addClass('show');
                         $('.spouseCurrentCountryCompleted').val(1);
                         $('.addExperience, .container').data('data-dependentId', data.dependentId);
                     } else {
+                        if(data.message){
+                            toastr.error(data.message);
+                        }
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
                             $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
@@ -1154,13 +1158,16 @@
                 processData: false,
                 contentType: false,
                 success: function (data) {
-                    if(data.success) {
+                    if(data.status) {
                         $('#collapseSpouseSchengen').removeClass('show');
                         $('.spouseSchengenData').show();
                         $('#collapseSpouseExperience').addClass('show');
                         $('.schengenSpouseCompleted').val(1);
                         $('.addExperience, .container').data('data-dependentId', data.dependentId);
                     } else {
+                        if(data.message){
+                            toastr.error(data.message);
+                        }
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
                             $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
@@ -1338,7 +1345,7 @@
                 processData: false,
                 contentType: false,
                 success: function (data) {
-                    if(data.success) {
+                    if(data.status) {
                         checkdata = checkStatus('{{$productId}}');
                         $('.childReviewSpin').hide();
                         if(checkdata.status){

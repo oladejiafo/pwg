@@ -36,7 +36,6 @@
         //    $("span").text("$" + inputElement.value);
         //  $('#amountLink').attr("href","donate.php?amount="+inputElement.value);
         // $('#amountLink').text("$" + inputElement.value);
-        //console.log($('#donateLink').attr("href"));
     }
 </script>
 <script src="https://paypage.sandbox.ngenius-payments.com/hosted-sessions/sdk.js"></script>
@@ -619,7 +618,6 @@ $vals=array(0,1,2);
                 if (response.status == true) {
                     // alert(response.myDiscount);
                     // alert(response.status);
-                    console.log(response);
          
                     var nf = Intl.NumberFormat(); 
                     let amtNow = response.topaynow;
@@ -693,7 +691,6 @@ $vals=array(0,1,2);
 
                 if (response.status) {
                     // alert(response.status);
-                    console.log(response);
                         $('#discount').show();
                     // $('#target-div').html(response.status); 
                 } else {

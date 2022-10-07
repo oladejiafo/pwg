@@ -455,7 +455,7 @@ class Quickbook
             'QBORealmID' => config('services.quickbook.QBORealmID'),
         ));
         
-        if(Carbon::now()->toDateString() >= date('Y-m-d', strtotime($quickbook['refresh_token_expires_in']. ' - 10 days'))){
+        if(Carbon::now()->toDateString() >= date('Y-m-d', strtotime($quickbook['refresh_token_expires_in']. ' - 20 days'))){
             /*
             * Update the OAuth2Token of the dataService object
             */
@@ -485,15 +485,23 @@ class Quickbook
     public static function updateTokenAccess() 
     {
         $quickbook = QuickModel::first();
-        $dataService = self::connectQucikBook();
+        $dataService = DataService::Configure(array(
+            'auth_mode' => 'oauth2',
+            'ClientID' => config('services.quickbook.client_id'),
+            'ClientSecret' =>  config('services.quickbook.client_secret'),
+            'RedirectURI' => config('services.quickbook.oauth_redirect_uri'),
+            'scope' => config('services.quickbook.oauth_scope'),
+            'baseUrl' => "development",
+            'refreshTokenKey' => ($quickbook['refresh_token']) ?? 'AB11673704203bHwMh7gUmbfuJfBB4XIPnpIUxjnCCJqzhCzrJ', // Manual Fetch on firt tyme
+            'QBORealmID' => config('services.quickbook.QBORealmID'),
+        ));
         if(Carbon::now()->format('Y/m/d H:i:s')  >= $quickbook['access_token_expires_in']){
             $OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
             $refreshedAccessTokenObj = $OAuth2LoginHelper->refreshToken();
-    
             $dataService->updateOAuth2Token($refreshedAccessTokenObj);
             $quickbook->access_token = $refreshedAccessTokenObj->getAccessToken();
             $quickbook->access_token_expires_in =  $refreshedAccessTokenObj->getAccessTokenExpiresAt();
             $quickbook->save();
-        }
+        }        
     }
 }

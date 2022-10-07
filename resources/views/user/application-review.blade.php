@@ -2006,7 +2006,7 @@
                 url: "{{ route('store.applicant.details') }}",
                 data: formdata, 
                 success: function (data) {
-                    if(data.success) {
+                    if(data.status) {
                         toastr.success('Applicant Details Updated Successfully !');
                     } else {
                         var validationError = data.errors;
@@ -2043,7 +2043,7 @@
                 processData: false,
                 contentType: false,
                 success: function (data) {
-                    if(data.success) {
+                    if(data.status) {
                         toastr.success('Home Country Details Updated Successfully !');
                         $('.passportFrame').src = data.passport;
                     } else {
@@ -2078,7 +2078,6 @@
             if($("input[name=visa_upload]").val()){
                 formData.append('visa_copy', $('.visa_upload')[0].files[0]);
             }
-            console.log($("input[name=residence_upload]").val());
             if($("input[name=residence_upload]").val()){
                 formData.append('residence_copy', $('.residence_upload')[0].files[0]);
             }
@@ -2089,7 +2088,7 @@
                 processData: false,
                 contentType: false,
                 success: function (data) {
-                    if(data.success) {
+                    if(data.status) {
                         toastr.success('Current Residence Details Updated Successfully');
                     } else {
                         var validationError = data.errors;
@@ -2169,7 +2168,11 @@
         $('#schengen_details').submit(function(e){
             e.preventDefault(); 
             $("#schengen_details :input").each(function(index, elm){
-                $("."+elm.name+"_errorClass").empty();
+                if(elm.name == "schengen_copy1[]"){
+
+                } else {
+                    $("."+elm.name+"_errorClass").empty();
+                }
             });
             $.ajaxSetup({
                 headers: {
@@ -2188,7 +2191,7 @@
                 contentType: false,
                 success: function (data) 
                 {
-                    if(data.success) 
+                    if(data.status) 
                     {
                         toastr.success('Schengen details updated successfully');
                     } else {
@@ -2227,7 +2230,6 @@
 
         function addExperience(cat1, cat2, cat3, cat4, jobTitle)
         {
-            console.log(cat1, cat2, cat3, cat4);
             $('.jobSelected .table tbody').append('<tr><th style="text-align: left;" data-bs-toggle="collapse" data-bs-target="#collapseExperienceFour"'+cat1+cat2+cat3+cat4+' aria-expanded="false" aria-controls="collapseExperienceFour"'+cat1+cat2+cat3+cat4+'>'+jobTitle+'</th><td style="text-align: right;"><button class="btn btn-danger">Remove</button></td></tr>');
         }
 
@@ -2395,13 +2397,16 @@
                 processData: false,
                 contentType: false,
                 success: function (data) {
-                    if(data.success) {
+                    if(data.status) {
                         toastr.success('Dependent Home Country Details Updated Successfully !');
                         $('.spouseHomeCountryData').show();
                         $('#collapseSpouseCurrent').addClass('show');
                         $('.spouseHomeCountryCompleted').val(1);
                         $('.addExperience, .container').data('data-dependentId', data.dependentId);
                     } else {
+                        if(data.message){
+                            toastr.error(data.message);
+                        }
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
                             $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
@@ -2441,10 +2446,6 @@
                 if($("input[name=dependent_residence_upload]").val()){
                     formData.append('dependent_residence_copy', $('.dependent_residence_upload')[0].files[0]);
                 }
-                console.log($("input[name=dependent_residence_upload]").val());
-                console.log($('.dependent_residence_upload')[0].files[0]);
-                console.log($("input[name=dependent_visa_upload]").val());
-                console.log($('.dependent_visa_upload')[0].files[0]);
                 if($("input[name=dependent_visa_upload]").val()){
                     formData.append('dependent_visa_copy', $('.dependent_visa_upload')[0].files[0]);
                 }
@@ -2455,13 +2456,16 @@
                     processData: false,
                     contentType: false,
                     success: function (data) {
-                        if(data.success) {
+                        if(data.status) {
                             toastr.success('Dependent Current Residence Details Updated Successflly !')
                             $('.spouseCurrentCountryData').show();
                             $('#collapseSpouseSchengen').addClass('show');
                             $('.spouseCurrentCountryCompleted').val(1);
                             $('.addExperience, .container').data('data-dependentId', data.dependentId);
                         } else {
+                            if(data.message){
+                                toastr.error(data.message);
+                            }
                             var validationError = data.errors;
                             $.each(validationError, function(index, value) {
                                 $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
@@ -2480,7 +2484,11 @@
         $('#dependent_schengen_details').submit(function(e){
             e.preventDefault(); 
             $("#dependent_schengen_details :input").each(function(index, elm){
-                $("."+elm.name+"_errorClass").empty();
+                if(elm.name == "dependent_schengen_copy1[]"){
+
+                } else {
+                    $("."+elm.name+"_errorClass").empty();
+                }
             });
             $.ajaxSetup({
                 headers: {
@@ -2498,13 +2506,16 @@
                 processData: false,
                 contentType: false,
                 success: function (data) {
-                    if(data.success) {
+                    if(data.status) {
                         toastr.success('Dependent Schengen Details Updated Successfully !');
                         $('.spouseSchengenData').show();
                         $('#collapseSpouseExperience').addClass('show');
                         $('.schengenSpouseCompleted').val(1);
                         $('.addExperience, .container').data('data-dependentId', data.dependentId);
                     } else {
+                        if(data.message){
+                            toastr.error(data.message);
+                        }
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
                             $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
@@ -2752,7 +2763,7 @@
                 processData: false,
                 contentType: false,
                 success: function (data) {
-                    if(data.success) {
+                    if(data.status) {
                         toastr.success('Data Updated Successully');
                         location.href = "{{url('myapplication')}}"
                     } else {

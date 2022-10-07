@@ -45,12 +45,16 @@ const app = new Vue({
                 userType: userType,
                 dependentId: app.dependentId
             }).then(function (response) {
-                if(response){
+                if(response.data.status === true){
                     toastr.success('Experience Added Successfully !');
                     app.getSelectedExperience();
                     app.getDependentExperience();
                 } else {
-                    alert('You have to complete Payment first');
+                    if(response.data.message){
+                        toastr.error(response.data.message);
+                    } else {
+                        alert('You have to complete Payment first');
+                    }
                 }
             })
             .catch(function (error) {

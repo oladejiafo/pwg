@@ -114,7 +114,7 @@ class ApplicationController extends Controller
 
         if ($validator->fails()) {
             return Response::json(array(
-                'success' => false,
+                'status' => false,
                 'errors' => $validator->getMessageBag()->toArray()
 
             ), 200); // 400 being the HTTP code for an invalid request.
@@ -146,7 +146,7 @@ class ApplicationController extends Controller
         $applicant->save();
 
         return Response::json(array(
-            'success' => true
+            'status' => true
         ), 200);
     }
 
@@ -173,7 +173,7 @@ class ApplicationController extends Controller
 
         if ($validator->fails()) {
             return Response::json(array(
-                'success' => false,
+                'status' => false,
                 'errors' => $validator->getMessageBag()->toArray()
 
             ), 200); // 400 being the HTTP code for an invalid request.
@@ -201,7 +201,7 @@ class ApplicationController extends Controller
 
         return Response::json(
             array(
-                'success' => true,
+                'status' => true,
                 'passport' => storage_path('passportCopy/' . $fileName)
             ),
             200
@@ -290,7 +290,7 @@ class ApplicationController extends Controller
 
         if ($validator->fails()) {
             return Response::json(array(
-                'success' => false,
+                'status' => false,
                 'errors' => $validator->getMessageBag()->toArray()
 
             ), 200); // 400 being the HTTP code for an invalid request.
@@ -321,7 +321,7 @@ class ApplicationController extends Controller
         $client->employer_phone_number = $request->employer_phone;
         $client->employer_email = $request->employer_email;
         $client->save();
-        return Response::json(array('success' => true), 200);
+        return Response::json(array('status' => true), 200);
     }
 
     /**
@@ -332,6 +332,7 @@ class ApplicationController extends Controller
      */
     public function storeSchengenDetails(Request $request)
     {
+        // dd($request->file('schengen_copy'));
         if ($request['is_schengen_visa_issued_last_five_year']  == 'YES') {
             $validator = \Validator::make($request->all(), [
                 'is_schengen_visa_issued_last_five_year' => 'required',
@@ -347,7 +348,7 @@ class ApplicationController extends Controller
 
         if ($validator->fails()) {
             return Response::json(array(
-                'success' => false,
+                'status' => false,
                 'errors' => $validator->getMessageBag()->toArray()
 
             ), 200); // 400 being the HTTP code for an invalid request.
@@ -389,7 +390,7 @@ class ApplicationController extends Controller
         $client->is_finger_print_collected_for_Schengen_visa = $request->is_finger_print_collected_for_Schengen_visa;
         $client->save();
 
-        return Response::json(array('success' => true), 200);
+        return Response::json(array('status' => true), 200);
     }
 
 
@@ -404,24 +405,41 @@ class ApplicationController extends Controller
         $job_category_two_id = ($request['job_category_two_id']) ?? JobCategoryThree::where('id', $request['job_category_three_id'])->pluck('job_category_two_id')->first();
         $job_category_one_id = ($request['job_category_one_id']) ?? JobCategoryTwo::where('id', $job_category_two_id)->pluck('job_category_one_id')->first();
         if ($request['userType'] == 'dependent') {
-            $exist = ApplicantExperience::where('client_id', $request->dependentId)
-                ->where('job_category_three_id', $request['job_category_three_id'])
-                ->where('job_category_four_id', $request['job_category_four_id'])
+            $data = User::where('family_member_id', Auth::id())
+                ->where('is_dependent', 1)
                 ->first();
-            if (!$exist) {
-                $exp = new ApplicantExperience();
-                $exp->client_id = $request->dependentId;
-                $exp->job_title = $request['job_title'];
-                $exp->job_category_one_id = $request['job_category_one_id'];
-                $exp->job_category_two_id = $request['job_category_two_id'];
-                $exp->job_category_three_id  = $request['job_category_three_id'];
-                $exp->job_category_four_id   = $request['job_category_four_id'];
-                $exp->created_by = $request->dependentId;
-                $exp->save();
-                return true;
+            if($data){
+                $exist = ApplicantExperience::where('client_id', $request->dependentId)
+                    ->where('job_category_three_id', $request['job_category_three_id'])
+                    ->where('job_category_four_id', $request['job_category_four_id'])
+                    ->first();
+                if (!$exist) {
+                    $exp = new ApplicantExperience();
+                    $exp->client_id = $request->dependentId;
+                    $exp->job_title = $request['job_title'];
+                    $exp->job_category_one_id = $request['job_category_one_id'];
+                    $exp->job_category_two_id = $request['job_category_two_id'];
+                    $exp->job_category_three_id  = $request['job_category_three_id'];
+                    $exp->job_category_four_id   = $request['job_category_four_id'];
+                    $exp->created_by = $request->dependentId;
+                    $exp->save();
+                    $response = [
+                        'status' => true
+                    ];
+                    
+                } else {
+                    $response = [
+                        'status' => false,
+                        'message' => 'Experience already added!'
+                    ];
+                }
             } else {
-                return false;
+                $response = [
+                    'status' => false,
+                    'message' => 'Please provide dependent details!'
+                ];
             }
+            
         } else {
             $exist = ApplicantExperience::where('client_id', Auth::id())
                 ->where('job_category_three_id', $request['job_category_three_id'])
@@ -438,11 +456,17 @@ class ApplicationController extends Controller
                 $exp->job_category_four_id = (int)$request['job_category_four_id'];
                 $exp->created_by = Auth::id();
                 $exp->save();
-                return true;
+                $response = [
+                    'status' => true
+                ];
             } else {
-                return false;
+                $response = [
+                    'status' => false,
+                    'message' => 'Experience already added'
+                ];
             }
         }
+        return $response;
     }
 
     /**
@@ -646,7 +670,7 @@ class ApplicationController extends Controller
 
         if ($validator->fails()) {
             return Response::json(array(
-                'success' => false,
+                'status' => false,
                 'errors' => $validator->getMessageBag()->toArray()
 
             ), 200); // 400 being the HTTP code for an invalid request.
@@ -667,19 +691,13 @@ class ApplicationController extends Controller
             $dependent->address_line_1 = $request['dependent_address_1'];
             $dependent->address_line_2 = $request['dependent_address_2'];
         } else {
-            $dependent = new User();
-            $dependent->family_member_id = Auth::id();
-            $dependent->is_dependent = 1;
-            $dependent->passport_number = $request['dependent_passport_number'];
-            $dependent->passport_issue_date =  date('Y-m-d', strtotime($request['dependent_passport_issue']));
-            $dependent->passport_expiry = date('Y-m-d', strtotime($request['dependent_passport_expiry']));
-            $dependent->passport_issued_by = $request['dependent_issued_by'];
-            $dependent->country = $request['dependent_home_country'];
-            $dependent->state = $request['dependent_state'];
-            $dependent->city = $request['dependent_city'];
-            $dependent->postal_code = $request['dependent_postal_code'];
-            $dependent->address_line_1 = $request['dependent_address_1'];
-            $dependent->address_line_2 = $request['dependent_address_2'];
+            return Response::json(
+                array(
+                    'status' => false,
+                    'message' => 'Please provide dependent details',
+                ),
+                200
+            );
         }
 
         $file = $request->file('dependent_passport_copy');
@@ -693,7 +711,7 @@ class ApplicationController extends Controller
         return Response::json(
             array(
                 'dependentId' => $this->getFamilyId(),
-                'success' => true,
+                'status' => true,
                 'passport' => ($request->hasFile('dependent_passport_copy')) ? storage_path('passportCopy/' . $fileName) : '',
             ),
             200
@@ -714,7 +732,7 @@ class ApplicationController extends Controller
 
         if ($validator->fails()) {
             return Response::json(array(
-                'success' => false,
+                'status' => false,
                 'errors' => $validator->getMessageBag()->toArray()
 
             ), 200); // 400 being the HTTP code for an invalid request.
@@ -736,20 +754,13 @@ class ApplicationController extends Controller
             $dependent->employer_phone_number = $request->dependent_employer_phone;
             $dependent->employer_email = $request->dependent_employer_email;
         } else {
-            $dependent = new User();
-            $dependent->family_member_id = AUth::id();
-            $dependent->is_dependent = 1;
-            $dependent->country_of_residence = $request->dependent_current_country;
-            $dependent->residence_mobile_number = $request->dependent_current_residance_mobile;
-            $dependent->residence_id = $request->dependent_residence_id;
-            $dependent->visa_validity = date('Y-m-d', strtotime($request->dependent_visa_validity));
-            $dependent->work_state = $request->dependent_work_state;
-            $dependent->work_city = $request->dependent_work_city;
-            $dependent->work_postal_code = $request->dependent_work_postal_code;
-            $dependent->work_address = $request->dependent_work_street;
-            $dependent->company_name = $request->dependent_company_name;
-            $dependent->employer_phone_number = $request->dependent_employer_phone;
-            $dependent->employer_email = $request->dependent_employer_email;
+            return Response::json(
+                array(
+                    'status' => false,
+                    'message' => 'Please provide dependent details',
+                ),
+                200
+            );
         }
         if ($request->hasFile('dependent_residence_copy')) {
             $file = $request->file('dependent_residence_copy');
@@ -765,7 +776,7 @@ class ApplicationController extends Controller
         $dependent->save();
         return Response::json(array(
             'dependentId' => $this->getFamilyId(),
-            'success' => true
+            'status' => true
         ), 200);
     }
 
@@ -785,7 +796,7 @@ class ApplicationController extends Controller
 
         if ($validator->fails()) {
             return Response::json(array(
-                'success' => false,
+                'status' => false,
                 'errors' => $validator->getMessageBag()->toArray()
 
             ), 200); // 400 being the HTTP code for an invalid request.
@@ -798,12 +809,13 @@ class ApplicationController extends Controller
             $dependent->is_finger_print_collected_for_Schengen_visa  = $request->is_dependent_finger_print_collected_for_Schengen_visa;
             $dependent->save();
         } else {
-            $dependent = new User();
-            $dependent->family_member_id = AUth::id();
-            $dependent->is_dependent = 1;
-            $dependent->is_schengen_visa_issued_last_five_year = $request->is_dependent_schengen_visa_issued_last_five_year;
-            $dependent->is_finger_print_collected_for_Schengen_visa  = $request->is_dependent_finger_print_collected_for_Schengen_visa;
-            $dependent->save();
+            return Response::json(
+                array(
+                    'status' => false,
+                    'message' => 'Please provide dependent details',
+                ),
+                200
+            );
         }
         if ($request->hasFile('dependent_schengen_copy')) {
             $file = $request->file('dependent_schengen_copy');
@@ -835,7 +847,7 @@ class ApplicationController extends Controller
         $dependent->save();
         return Response::json(array(
             'dependentId' => $this->getFamilyId(),
-            'success' => true
+            'status' => true
         ), 200);
     }
 
@@ -858,7 +870,7 @@ class ApplicationController extends Controller
             ]);
             if ($validator->fails()) {
                 return Response::json(array(
-                    'success' => false,
+                    'status' => false,
                     'errors' => $validator->getMessageBag()->toArray()
 
                 ), 200); // 400 being the HTTP code for an invalid request.
@@ -882,7 +894,7 @@ class ApplicationController extends Controller
             ->update(['application_stage_status' =>  4]);
 
         return Response::json(array(
-            'success' => true
+            'status' => true
         ), 200);
     }
 
