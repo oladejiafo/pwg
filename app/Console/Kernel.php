@@ -18,7 +18,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\ClearNotify::class,
         Commands\ReminderEmail::class,
-
+        Commands\QuickbookCron::class
     ];
 
     /**
@@ -38,6 +38,10 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('reminder:email')
                 ->daily();
+
+        $schedule->command('quickbook:cron')
+                        ->hourlyAt(17);	
+
     }
 
     /**

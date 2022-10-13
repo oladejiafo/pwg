@@ -66,7 +66,7 @@ class HomeController extends Controller
             $package = DB::table('destinations')->orderBy(DB::raw('FIELD(name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
             $promo = promo::where('active_until', '>=', date('Y-m-d'))->get();
             //Quickbook
-            Quickbook::checkRefreshToken();
+            //Quickbook::checkRefreshToken();
             return view('user.home', compact('package', 'promo'));
         } catch (Exception $e){
             Session::put('error', $e->getMessage());
@@ -1022,7 +1022,7 @@ class HomeController extends Controller
                     $dest = product::find($id);
                     $dest_name = $dest->name;
                     $payment = $this->getPaymentName();
-                    Quickbook::updateTokenAccess();
+                    //Quickbook::updateTokenAccess();
                     Quickbook::createInvoice($payment);
                     $msg = "Awesome! Payment Successful!";
                     Session::forget('paymentCreds');
@@ -1333,7 +1333,7 @@ class HomeController extends Controller
 
     public function getInvoice($ptype = null)
     {
-        Quickbook::updateTokenAccess();
+        // QuickcheckRefreshTokenbook::updateTokenAccess();
         $dataService = Quickbook::connectQucikBook();
 
         //$payment = $dataService->Query("select * from Payment");

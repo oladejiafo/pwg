@@ -21,7 +21,7 @@
     <script>window.location = "/applicant/details/<?php echo $productId; ?>";</script>
 @endif
 
-<div class="container" id="app" data-applicantId="{{$applicant['id']}}" @if($dependent)  data-dependentId="{{$dependent['id']}}" @endif>
+<div class="container" id="app" data-applicantId="{{$client['id']}}" @if($dependent)  data-dependentId="{{$dependent['id']}}" @endif>
     <div class="col-12">
             <div class="row">
                 <div class="wizard-details bg-white">
@@ -638,8 +638,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row" id="importExperience" data-applicantId="{{$applicant['id']}}">
-                                <div class="collapse show" id="collapseExperience" data-applicantId="{{$applicant['id']}}" data-dependentId="{{($dependent != null) ? $dependent['id']  : ''}}">
+                            <div class="row" id="importExperience" data-applicantId="{{$client['id']}}">
+                                <div class="collapse show" id="collapseExperience" data-applicantId="{{$client['id']}}" data-dependentId="{{($dependent != null) ? $dependent['id']  : ''}}">
                                     <div class="form-sec">
                                         <div class="jobSelected">
                                             <table class="table" v-if="selectedJob.length > 0">
@@ -705,7 +705,7 @@
                                                         <div class="form-group row mt-4" style="margin-bottom: 20px">
                                                             <div class="row">
                                                                 <button type="button" v-if="selectedJobTitle.includes(data.name)" class="btn btn-primary submitBtn" disabled  style="line-height: 22px">Added</button>
-                                                                <button type="button" v-else class="btn btn-primary submitBtn" applicantId="{{$applicant['id']}}" v-on:click="addExperience(null,null,data.job_category_three_id,data.id,data.name,'applicant')" style="line-height: 22px">Add Experience</button>                                                            </div>
+                                                                <button type="button" v-else class="btn btn-primary submitBtn" applicantId="{{$client['id']}}" v-on:click="addExperience(null,null,data.job_category_three_id,data.id,data.name,'applicant')" style="line-height: 22px">Add Experience</button>                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -792,7 +792,7 @@
                                                                                 <div class="form-group row mt-4" style="margin-bottom: 20px">
                                                                                     <div class="row">
                                                                                         <button type="button" v-if="selectedJobTitle.includes(jobCategoryFour.name)" class="btn btn-primary submitBtn" disabled  style="line-height: 22px">Added</button>
-                                                                                        <button type="button" v-else class="btn btn-primary submitBtn" data-applicantId="{{$applicant['id']}}" v-on:click="addExperience(jobCategoryOne.id,jobCategoryTwo.id,jobCategoryThree.id,jobCategoryFour.id,jobCategoryFour.name,'applicant')" style="line-height: 22px">Add Experience</button>
+                                                                                        <button type="button" v-else class="btn btn-primary submitBtn" data-applicantId="{{$client['id']}}" v-on:click="addExperience(jobCategoryOne.id,jobCategoryTwo.id,jobCategoryThree.id,jobCategoryFour.id,jobCategoryFour.name,'applicant')" style="line-height: 22px">Add Experience</button>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -808,7 +808,7 @@
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                            @if($applicant['is_spouse'] != null || $applicant['children_count'] != null) 
+                                            @if($client['is_spouse'] != null || $client['children_count'] != null) 
                                                 <button type="submit" class="btn btn-primary submitBtn applicantNext">  Next </button>
                                             @else
                                                 <button type="submit" class="btn btn-primary submitBtn applicantReview">  Submit <i class="fa fa-spinner fa-spin applicantReviewSpin"></i></button>
@@ -1258,6 +1258,7 @@
                                                             <input type="file" class="upload dependent_schengen_copy" accept="image/png, image/gif, image/jpeg" name="dependent_schengen_copy" />
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
+                                                    <div style="display: block;color:blue"><a href="#" class="plus" title="click here to add another row for upload" style="display:inline"><i class="fa fa-plus-circle"></i></a> Add another Visa <a href="#" class="minus" id="minus" title="click here to remove the last added row for upload" style="display:inline"><i class="fa fa-minus-circle"></i></a></div>
                                                     @if($dependent['schengenVisaUrl'] != null)
                                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#dependentSchengenVisatModal" onclick="dependentSchengenVisatModal()">click to view uploaded schengen visa copy</a>
                                                     @endif
@@ -1310,8 +1311,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row" id="importExperience" data-applicantId="{{$applicant['id']}}" data-dependentId="{{$dependent}}">
-                                <div class="collapse show" id="collapseSpouseExperience" data-applicantId="{{$applicant['id']}}" data-dependentId="{{($dependent != null) ? $dependent['id']  : ''}}">
+                            <div class="row" id="importExperience" data-applicantId="{{$client['id']}}" data-dependentId="{{$dependent}}">
+                                <div class="collapse show" id="collapseSpouseExperience" data-applicantId="{{$client['id']}}" data-dependentId="{{($dependent != null) ? $dependent['id']  : ''}}">
                                     <div class="form-sec">
                                         <div class="jobSelected">
                                             <table class="table" v-if="dependentJob.length > 0">
@@ -1483,7 +1484,7 @@
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                            @if($applicant['is_spouse'] != null && $applicant['children_count'] == null)
+                                            @if($client['is_spouse'] != null && $client['children_count'] == null)
                                                 <button type="submit" class="btn btn-primary submitBtn dependentReview">Submit <i class="fa fa-spinner fa-spin dependentReviewSpin"></i></button>
                                             @else 
                                                 <button type="submit" class="btn btn-primary submitBtn dependentNext">Next</button>
@@ -1501,7 +1502,7 @@
                         <form method="POST" id="child_details">
                             @csrf
                             @foreach($children as $key => $child)
-                                <div class="applicant-detail-sec" @if($key+1 ==  $applicant['children_count']) style="margin-bottom:70px" @endif>
+                                <div class="applicant-detail-sec" @if($key+1 ==  $client['children_count']) style="margin-bottom:70px" @endif>
                                     <div class="heading">
                                         <div class="row">
                                             <div class="col-2 my-auto">
@@ -1874,6 +1875,13 @@
 
         $sheng = $client['schengenVisaUrl1'];
         $phold = "Image of Schengen Or National Visa Issued During Last 5 Years";
+        $vall1_dep = $client['schengenVisaName1_dep'];
+        $vall2_dep = $client['schengenVisaName2_dep'];
+        $vall3_dep = $client['schengenVisaName3_dep'];
+        $vall4_dep = $client['schengenVisaName4_dep'];
+
+        $sheng_dep = $client['schengenVisaUrl1_dep'];
+        $phold_dep = "Image of Schengen Or National Visa Issued During Last 5 Years";
     @endphp
 @endSection  
 @push('custom-scripts')
@@ -1920,6 +1928,45 @@
                 $('#schengen_visa').children().last().remove();
             }
         }); 
+
+        //Add more file input box for depenant schengen visa upload
+        $('a.plus').click(function(e) {
+            e.preventDefault();
+            if($('.dependent_schengen_copy').val()){
+                if (cnt_dep < 4) {
+                    cnt_dep = cnt_dep+1;
+
+                    if(cnt_dep == 1)
+                    {
+                        valle_dep="<?php echo $vall1_dep; ?>";                
+                    }
+                    else if(cnt_dep === 2)
+                    {
+                        valle_dep="<?php echo $vall2_dep; ?>";                
+                    }
+                    else if(cnt_dep === 3)
+                    {
+                        valle_dep="<?php echo $vall3_dep; ?>";                
+                    }
+                    else if(cnt_dep === 4)
+                    {
+                        valle_dep="<?php echo $vall4_dep; ?>";                
+                    }
+
+                    $('#dependent_schengen_visa').append('<div class="col-sm-12 mt-3" id="dependent_schengen_visa"><input type="text" class="form-control dependent_schengen_copy1_'+cnt_dep+'" name="dependent_schengen_copy1[]"  @if($sheng_dep)  value="'+valle_dep+ '" @else placeholder="{{$phold_dep}}" @endif readonly ><div class="input-group-btn"><span class="fileUpload btn"><span class="upl" id="upload">Choose File</span><input style="position: absolute;top: 0; right: 0; margin: 0; padding: 0; font-size: 20px; cursor: pointer; opacity: 0; filter: alpha(opacity=0);" type="file" class="dependent_schengen_copy1_'+cnt_dep+'" accept="image/png, image/gif, image/jpeg" name="dependent_schengen_copy1[]" /></span></div></div>');
+                }
+            } else {
+                toastr.error('Please fill pevious field before adding field');
+            }
+        });
+        //Remove the extra file input box for dependent schengen visa upload
+        $('a.minus').click(function (e) {
+            e.preventDefault();
+            if ($('#dependent_schengen_visa div').length > 1) {
+                cnt_dep = cnt_dep-1;
+                $('#dependent_schengen_visa').children().last().remove();
+            }
+        });  
     });
      
     $(document).on('change',"[name='schengen_copy1[]']", function(){
@@ -2741,7 +2788,7 @@
         })
         // children
 
-        for(var i= 1 ; i<='{{$applicant['children_count']}}'; i++)
+        for(var i= 1 ; i<='{{$client['children_count']}}'; i++)
         {
             $('.childData'+i).hide();
         }
@@ -2782,7 +2829,7 @@
 
         $('.applicantNext').click(function(e){
             e.preventDefault(); 
-            if('{{$applicant['is_spouse']}}' == null || '{{$applicant['is_spouse']}}' == 0){
+            if('{{$client['is_spouse']}}' == null || '{{$client['is_spouse']}}' == 0){
                 $('#children').show();
                 $('#mainApplicant, #dependant').hide();
                 $('.children').addClass('active');

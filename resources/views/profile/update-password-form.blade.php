@@ -111,7 +111,7 @@
     </div>
     <div class="row mb-3" style="width:70%; margin: 50px auto; margin-bottom:20px">
         <div align="center" class="col-12">
-            <button type="submit" class="btn btn-primary my-button">Save</button>
+            <button type="submit" class="btn btn-primary my-button">Save<i class="fa fa-spinner fa-spin updateSpin"></i></button>
         </div>
         <div id="target-otp"></div>
     </div>
@@ -121,10 +121,11 @@
 <script src="{{asset('user/extra/js/jquery.min.js')}}"></script>
 <script>
     $(document).ready(function(){
+        $('.updateSpin').hide();
         $('#updatePassword').submit(function(e){
-            $('.my-button').prop('disabled', true)
-
             e.preventDefault(); 
+            $('.updateSpin').show();
+            $('.my-button').prop('disabled', true)
             $("#updatePassword :input").each(function(index, elm){
                 $("."+elm.name+"_errorClass").empty();
             });
@@ -149,6 +150,7 @@
                             $('#target-otp').html(data.message); 
                         }
                         $('.my-button').prop('disabled', false)
+                        $('.updateSpin').hide();
                     } else {
 
                         if(data.message){
@@ -159,9 +161,11 @@
                             $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
                         });
                         $('.my-button').prop('disabled', false)
+                        $('.updateSpin').hide();
                     }
                 },
                 errror: function (error) {
+                    $('.updateSpin').hide();
                     toastr.error('error');
                 }
             });

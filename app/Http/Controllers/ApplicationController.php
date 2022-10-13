@@ -109,7 +109,7 @@ class ApplicationController extends Controller
             'sex' => 'required',
             'civil_status' => 'required',
             'citizenship' => 'required',
-            'cv' => 'required|mimes:pdf',
+            'cv' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -120,9 +120,10 @@ class ApplicationController extends Controller
             ), 200); // 400 being the HTTP code for an invalid request.
         }
         $client = User::find(Auth::id());
-
-        $client->addMedia($request->file('cv'))->toMediaCollection(User::$media_collection_main_resume);
-        $client->save();
+        if($request->hasFile('cv')){
+            $client->addMedia($request->file('cv'))->toMediaCollection(User::$media_collection_main_resume);
+            $client->save();
+        }
         User::where('id', Auth::id())
             ->update([
                 'name' => $request['first_name'],

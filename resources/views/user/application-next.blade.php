@@ -21,7 +21,7 @@
     <script>window.location = "/payment_form/<?php echo $productId; ?>";</script>
 @endif
 
-<div class="container" id="app" data-applicantId="{{$applicant['id']}}" data-dependentid="{{$dependent}}">
+<div class="container" id="app" data-applicantId="{{$client['id']}}" data-dependentid="{{$dependent}}">
         <div class="col-12">
             <div class="row">
                 <div class="wizard bg-white">
@@ -546,7 +546,7 @@
                                 type: 'POST',
                                 url: "{{ url('/submit/applicant/Details/') }}",
                                 data: {
-                                    applicantId: '{{$applicant['id']}}',
+                                    applicantId: '{{$client['id']}}',
                                     user: 'applicant',
                                 },
                                 success: function (response) {
@@ -1378,7 +1378,7 @@
                                 type: 'POST',
                                 url: "{{ url('/submit/applicant/Details/') }}",
                                 data: {
-                                    applicantId: '{{$applicant['id']}}',
+                                    applicantId: '{{$client['id']}}',
                                     user: 'family',
                                 },
                                 success: function (response) {
