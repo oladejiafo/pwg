@@ -710,30 +710,30 @@ $vals=array(0,1,2);
 <script src="{{asset('js/alert.js')}}"></script>
 <script type="text/javascript" src="/path/to/toastr.js"></script>
 <script>
-        @if(Session::has('message'))
+    @if(Session::has('message'))
         toastr.options =
         {
             "closeButton" : true,
             "progressBar" : true
         }
-                toastr.success("{{ session('message') }}");
-        @endif
+            toastr.success("{{ session('message') }}");
+    @endif
 
-        @if(Session::has('error'))
+    @if(Session::has('error'))
         toastr.options =
         {
             "closeButton" : true,
             "progressBar" : true
         }
-                toastr.error("{{ session('error') }}");
-        @endif
+            toastr.error("{{ session('error') }}");
+    @endif
 
-        @if(Session::has('warning'))
+    @if(Session::has('warning'))
         toastr.options =
         {
             "closeButton" : true,
             "progressBar" : true
         }
-                toastr.warning("{{ session('warning') }}");
-        @endif
+            toastr.warning("{{ session('warning') }}");
+    @endif
     </script>

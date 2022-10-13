@@ -33,8 +33,13 @@ class ApplicationController extends Controller
                 ->where('destination_id', '=', $productId)
                 ->where('client_id', '=', Auth::user()->id)
                 ->first();
-            $levels = $completed->application_stage_status;
-            return view('user.applicant', compact('productId', 'levels'));
+            if(isset($completed->application_stage_status)){
+                $levels = $completed->application_stage_status;
+            } else {
+                $levels = 4;
+            }
+            // $levels = $completed->application_stage_status;
+            return view('user.application-next', compact('productId', 'levels'));
         } else {
             return back();
         }
@@ -71,6 +76,12 @@ class ApplicationController extends Controller
     {
         Session::forget('info');
         if (Auth::id()) {
+            if(isset($productId)){
+
+            } else {
+                $productId =  Session::get('myproduct_id');
+            }
+
             $client = User::find(Auth::id());
             $applicant = Applicant::where('client_id', Auth::id())
                 ->where('destination_id', $productId)
@@ -141,7 +152,7 @@ class ApplicationController extends Controller
                 ->where('destination_id', $request->destination_id)
                 // ->sortBy('id', 'desc')
                 ->first();
-            $applicant->assigned_agent_id = $request->agent_code;
+            $applicant->assigned_agent_id = strip_tags($request->agent_code);
             $applicant->save();
 
         return Response::json(array(
@@ -341,10 +352,8 @@ class ApplicationController extends Controller
             $validator = \Validator::make($request->all(), [
                 'is_schengen_visa_issued_last_five_year' => 'required',
                 'is_finger_print_collected_for_Schengen_visa' => 'required'
-
             ]);
         }
-
 
         if ($validator->fails()) {
             return Response::json(array(
@@ -368,14 +377,13 @@ class ApplicationController extends Controller
             foreach($request->file('schengen_copy1') as $copy1)
             {
                 $x=$x+1;
-                
+
                 $name=$copy1->getClientOriginalName();
-              
+
                 list($nName,$nExt) = explode('.',$name);
                 $schengenCopy1 = Auth::user()->id.'_'.time() . '_' . str_replace(' ', '_',  $name);
-           
+
                 $client->addMediaFromRequest('schengen_copy1')->withCustomProperties(['mime-type' => 'image/jpeg'])->preservingOriginal()->usingName($nName)->usingFileName($schengenCopy1)->toMediaCollection(User::$media_collection_main_schengen_visa.$x);
-              
             }
         }
 

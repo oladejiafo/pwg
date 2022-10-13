@@ -8,8 +8,14 @@
 
 @php 
  //Session::get('myproduct_id');
+ if(isset($productId)){
+
+ } else {
+    $productId =  Session::get('myproduct_id');
+ }
+
     $completed = DB::table('applications')
-                ->where('destination_id', '=', $productId)
+                ->where('destination_id', '=', $productId)  
                 ->where('client_id', '=', Auth::user()->id)
                 ->orderBy('id', 'desc')
                 ->first();
