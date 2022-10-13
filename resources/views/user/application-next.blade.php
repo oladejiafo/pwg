@@ -546,7 +546,7 @@
                                 type: 'POST',
                                 url: "{{ url('/submit/applicant/Details/') }}",
                                 data: {
-                                    applicantId: '{{$client['id']}}',
+                                    applicantId: '{{$applicant['id']}}',
                                     user: 'applicant',
                                 },
                                 success: function (response) {
@@ -1378,7 +1378,7 @@
                                 type: 'POST',
                                 url: "{{ url('/submit/applicant/Details/') }}",
                                 data: {
-                                    applicantId: '{{$client['id']}}',
+                                    applicantId: '{{$applicant['id']}}',
                                     user: 'family',
                                 },
                                 success: function (response) {
