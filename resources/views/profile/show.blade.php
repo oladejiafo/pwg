@@ -252,7 +252,8 @@
 
                                     @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::updatePasswords()))
                                     <div class="mt-10 sm:mt-0">
-                                        @livewire('profile.update-password-form')
+                                        {{-- @livewire('profile.update-password-form') --}}
+                                            @include('profile.update-password-form')
                                     </div>
 
                                     <x-jet-section-border />
@@ -425,16 +426,4 @@
     </div>
 </body>
 
-<script src="{{asset('user/extra/js/jquery.min.js')}}"></script>
-<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script> -->
-<!-- Bootstrap -->
-<!-- <script src="{{asset('user/extra/js/bootstrap.min.js')}}"></script> -->
-<script>
-    $(document).ready(function(){
-        $('.otp-profile').hide();
-        $('.updatePassword').click(function(){
-            $('.otp-profile').show();
-        });
-    });
-</script>
 @livewireScripts

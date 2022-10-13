@@ -495,8 +495,6 @@ function getCost(kidd, parents)
         url: "{{ route('packageType',$productId)  }}",
         data: {kid : kidd, parents: parents , response : 1}, 
         success: function (data) {
-            console.log(data)
-
             $('.Famamount').text(parseFloat(data.total_price).toLocaleString());
             $('.hiddenFamAmount').val(data.total_price);
         },

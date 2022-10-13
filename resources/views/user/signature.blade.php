@@ -98,7 +98,6 @@
           onrendered: function(canvas) {
             var canvas_img_data = canvas.toDataURL('image/png');
             var img_data = canvas_img_data.replace(/^data:image\/(png|jpg);base64,/, "");
-            console.log(canvas_img_data);
             // document.getElementById("canvasImage").src="data:image/gif;base64,"+img_data;
 
             $.ajax({

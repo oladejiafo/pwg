@@ -392,7 +392,6 @@
           parameters += ",left=" + (screen.width - 800) / 2 + ",top=" + (screen.height - 650) / 2;
 
           var win = window.open(url, 'connectPopup', parameters);
-          console.log(win);
           var pollOAuth = window.setInterval(function () {
               try {
 

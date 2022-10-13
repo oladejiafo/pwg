@@ -55,8 +55,8 @@
                         </div>
                         <div class="form-group row mt-4">
                             <div class="col-sm-6 mt-3">
-                                <input type="email" name="dependent_email" class="form-control dependent_email" placeholder="Email*" value="" autocomplete="off" />
-                                <span class="dependent_email_errorClass"></span>
+                                <input type="email" name="email" class="form-control dependent_email" placeholder="Email*" value="" autocomplete="off" />
+                                <span class="email_errorClass"></span>
                             </div>
                             <div class="col-sm-6 mt-3">
                                 <input type="tel" name="dependent_phone_number" class="form-control dependent_phone_number" id="dependent_phone" placeholder="Phone Number*" value="" autocomplete="off"  />
@@ -176,8 +176,8 @@
                         <input type="hidden" name="applicant_id" value="{{$applicant['id']}}">
                         <div class="form-group row mt-4">
                             <div class="col-sm-12 mt-3">
-                                <input type="text" name="dependent_passport_number" class="form-control dependent_passport_number" placeholder="Passport Number*" value="{{old('dependent_passport_number')}}" autocomplete="off"/>
-                                <span class="dependent_passport_number_errorClass"></span>
+                                <input type="text" name="passport_number" class="form-control passport_number" placeholder="Passport Number*" value="{{old('passport_number')}}" autocomplete="off"/>
+                                <span class="passport_number_errorClass"></span>
                             </div>
                         </div>
                         <div class="form-group row mt-4">
@@ -442,7 +442,7 @@
                                 <div class="input-group-btn">
                                     <span class="fileUpload btn">
                                         <span class="upl" id="upload">Choose File</span>
-                                        <input type="file" class="upload dependent_schengen_copy" accept="image/png, image/gif, image/jpeg" name="schengen_copy" />
+                                        <input type="file" class="upload dependent_schengen_copy" accept="image/png, image/gif, image/jpeg" name="dependent_schengen_copy" />
                                     </span><!-- btn-orange -->
                                 </div><!-- btn -->
                             </div>

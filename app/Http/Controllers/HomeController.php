@@ -62,11 +62,23 @@ class HomeController extends Controller
 
     public function index()
     {
-        $package = DB::table('destinations')->orderBy(DB::raw('FIELD(name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
-        $promo = promo::where('active_until', '>=', date('Y-m-d'))->get();
-        //Quickbook
-        // Quickbook::checkRefreshToken();
-        return view('user.home', compact('package', 'promo'));
+
+        // $package = DB::table('destinations')->orderBy(DB::raw('FIELD(name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
+        // $promo = promo::where('active_until', '>=', date('Y-m-d'))->get();
+
+        // return view('user.home', compact('package', 'promo'));
+
+        try {
+            $package = DB::table('destinations')->orderBy(DB::raw('FIELD(name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
+            $promo = promo::where('active_until', '>=', date('Y-m-d'))->get();
+            //Quickbook
+            //Quickbook::checkRefreshToken();
+            return view('user.home', compact('package', 'promo'));
+        } catch (Exception $e){
+            Session::put('error', $e->getMessage());
+            return view('user.home', compact('package', 'promo'));
+        }      
+
     }
 
     public function packageType($productId, Request $request)
@@ -298,13 +310,11 @@ class HomeController extends Controller
             if (!isset($children)) {
                 $children = 0;
             }
-
             $families = DB::table('pricing_plans')
                 ->where('no_of_children', '=', $children)
                 ->where('no_of_parent', '=', $yesSpouse)
                 ->where('pricing_plan_type', '=', 'FAMILY PACKAGE')
                 ->get();
-
             foreach ($families as $famili) {
                 $famCode = $famili->id;
             }
@@ -333,14 +343,42 @@ class HomeController extends Controller
                 }
             }
 
+            // $pays = DB::table('pricing_plans')
+            //     ->join('applications', 'applications.destination_id', '=', 'pricing_plans.destination_id')
+            //     ->select('applications.destination_id', 'pricing_plans.id', 'pricing_plans.pricing_plan_type', 'pricing_plans.total_price', 'pricing_plans.destination_id', 'pricing_plans.first_payment_price', 'pricing_plans.second_payment_price', 'pricing_plans.third_payment_price')
+            //     ->where('pricing_plans.pricing_plan_type', '=', $packageType)
+            //     ->where('applications.destination_id', '=', $p_id)
+            //     ->where('applications.client_id', '=', $id)
+            //     ->orderBy('pricing_plans.id')
+            //     ->first();
             $pays = DB::table('pricing_plans')
-                ->join('applications', 'applications.destination_id', '=', 'pricing_plans.destination_id')
-                ->select('applications.destination_id', 'pricing_plans.id', 'pricing_plans.pricing_plan_type', 'pricing_plans.total_price', 'pricing_plans.destination_id', 'pricing_plans.first_payment_price', 'pricing_plans.second_payment_price', 'pricing_plans.third_payment_price')
-                ->where('pricing_plans.pricing_plan_type', '=', $packageType)
-                ->where('applications.destination_id', '=', $p_id)
-                ->where('applications.client_id', '=', $id)
-                ->orderBy('pricing_plans.id')
-                ->first();
+
+                // ->join('applications', 'applications.destination_id', '=', 'pricing_plans.destination_id')
+                // ->select('applications.destination_id', 'pricing_plans.id', 'pricing_plans.pricing_plan_type', 'pricing_plans.total_price', 'pricing_plans.destination_id', 'pricing_plans.first_payment_price', 'pricing_plans.second_payment_price', 'pricing_plans.third_payment_price')
+                // ->where('pricing_plans.pricing_plan_type', '=', $packageType)
+                // ->where('applications.destination_id', '=', $p_id)
+                // ->where('applications.client_id', '=', $id)
+                // ->orderBy('pricing_plans.id')
+                // ->first();
+
+                    ->join('applications', 'applications.pricing_plan_id', '=', 'pricing_plans.id')
+                    ->select('applications.pricing_plan_id', 'applications.destination_id', 'pricing_plans.id', 'pricing_plans.pricing_plan_type', 'pricing_plans.total_price', 'pricing_plans.destination_id', 'pricing_plans.first_payment_price', 'pricing_plans.second_payment_price', 'pricing_plans.third_payment_price')
+                    ->where('pricing_plans.pricing_plan_type', '=', $packageType)
+                    ->where('applications.destination_id', '=', $p_id)
+                    ->where('applications.client_id', '=', $id)
+                    ->orderBy('pricing_plans.id')
+                    ->first();
+            // $paid = DB::table('payments')
+            //     ->join('applications', 'payments.application_id', '=', 'applications.id')
+            //     ->selectRaw('payments.*, applications.*, COUNT(payments.id) as count')
+            //     ->where('applications.destination_id', '=', $p_id)
+            //     ->where('applications.client_id', '=', $id)
+            //     ->groupBy('payments.id')
+            //     // ->groupBy('applicants.id')
+            //     ->orderBy('applications.id', 'desc')
+            //     // ->limit(1)
+            //     ->first();
+
 
             $paid = DB::table('applications')
                 ->where('applications.destination_id', '=', $p_id)
@@ -940,7 +978,6 @@ class HomeController extends Controller
                 $res = cardDetail::updateOrCreate([
                     'client_id' => Auth::id()
                 ], [
-                    'client_id' => Auth::id(),
                     'card_number' => $paymentResponse->paymentMethod->pan,
                     'card_holder_name' => $paymentResponse->paymentMethod->cardholderName,
                     'month' => sprintf("%02d", $monthYear[1]), //$monthYear[1], //sprintf("%02d", $monthYear[1])
@@ -1003,8 +1040,10 @@ class HomeController extends Controller
                     $dest = product::find($id);
                     $dest_name = $dest->name;
                     $payment = $this->getPaymentName();
-                    // Quickbook::updateTokenAccess();
-                    // Quickbook::createInvoice($payment);
+
+                    //Quickbook::updateTokenAccess();
+                    Quickbook::createInvoice($payment);
+
                     $msg = "Awesome! Payment Successful!";
                     Session::forget('paymentCreds');
                     return view('user.payment-success', compact('id'));
@@ -1314,11 +1353,12 @@ class HomeController extends Controller
 
     public function getInvoice($ptype = null)
     {
-        Quickbook::updateTokenAccess();
+        // QuickcheckRefreshTokenbook::updateTokenAccess();
         $dataService = Quickbook::connectQucikBook();
 
         //$payment = $dataService->Query("select * from Payment");
-        $paymentDetails = Payment::where('id', Session::get('paymentId'))->first();
+        $paymentDetails = Payment::where('id', Session::get('paymentId'))
+                                    ->first();
         if ($ptype) {
             $apply = Applicant::where('client_id', Auth::id())
                 ->orderBy('id', 'DESC')
