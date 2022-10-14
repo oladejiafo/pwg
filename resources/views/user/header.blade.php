@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
     <meta name="description" content="This is PWG Group client portal. PWG Group is an immigration company that helps students and professionals migrate abroad to either pursue their studies or careers.">
     <title>PWG Client Portal</title>
-
+    <link rel="icon" type="image/png" href="{{asset('/images/logo2.png')}}">
     <meta name="keywords" content="Immigration, visa, travel,,abroad work visa consultants, affordable immigration,work permit, 188 visa,canadian immigration, UAE, POLAND, Malta, Czech, Canada, Germany">
 
         <!-- Icon -->
@@ -305,7 +305,7 @@
     <script src="{{asset('user/extra/assets/js/bootstrap.min.js')}}"></script>
     <script src="{{asset('user/extra/assets/js/owl.carousel.min.js')}}"></script>
     <script src="{{asset('user/extra/assets/js/wow.js')}}"></script>
-    <script src="{{asset('user/extra/assets/js/main.js')}}"></script>
+    {{-- <script src="{{asset('user/extra/assets/js/main.js')}}"></script> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
    {{-- <script src="{{asset('user/extra/assets/js/jquery.nav.js')}}"></script>

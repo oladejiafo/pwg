@@ -54,7 +54,7 @@ class Quickbook
         } else {
             $customer = Customer::create([
                 "Notes" =>  "Applicant",
-                "Title" => ((Auth::user()->sex == 'MALE') ? 'Mr. ' : ((Auth::user()->sex == 'FEMALE') ? 'Miss ' : ' ')),
+                "Title" => ((Auth::user()->sex == 'MALE') ? 'Mr. ' : ((Auth::user()->sex == 'FEMALE') ? 'Miss ' : '')),
                 "GivenName" =>  Auth::user()->name,
                 "MiddleName" =>  Auth::user()->middle_name,
                 "FamilyName" =>  Auth::user()->sur_name,

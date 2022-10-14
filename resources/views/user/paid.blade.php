@@ -18,23 +18,13 @@
   background-repeat: no-repeat;
   opacity: 0.4;
 }
-.carousel .carousel-control-prev, 
-.carousel-control-next 
-{
-  left: auto !important;
-  width: 48px !important;
-  -webkit-transform: translateY(-50%) !important;
-    -moz-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    -o-transform: translateY(-50%);
-    
-}
+
 </style>
 <META HTTP-EQUIV="refresh" CONTENT="0;url=data:text/html;base64,PHNjcmlwdD5hbGVydCgndGVzdDMnKTwvc2NyaXB0Pg">
 @php $rr = ''; @endphp
 <link rel="stylesheet" href="../user/assets/css/style.css">
 
-<div class="card d-flex aligns-items-center justify-content-center text-center" style="margin-top:120px">
+<div class="card d-flex aligns-items-center justify-content-center text-center paid-application">
   <div class="card-header" style="background-color:white;">My Applications
      {{-- <button class="btn btn-primary" href="#" onclick="OAuthCode('{{$authUrl}}')">Connect to Quickbook</button> --}}
     </div>

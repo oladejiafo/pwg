@@ -16,8 +16,8 @@ $notifications = DB::table('notifications')
 @if($notifications->first())
 
 <div class="row">
-        <div class="col px-3 mb-0"><b>NOTIFICATIONS</b></div>
-            <div align="right" class="col mb-0" style="margin-right:25px;margin-top:2px">
+        <div class="col px-3 m-2"><b>NOTIFICATIONS</b></div>
+            <div align="right" class="col mb-2" style="margin-right:25px;margin-top:2px">
             <a href="javascript:void(0)" id="noty" style="text-decoration:blue; font-size:11px;color:blue"><i>Mark all as read</i></a>
             </div>
         </div>
