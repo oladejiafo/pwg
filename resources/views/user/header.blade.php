@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
+{{-- <!DOCTYPE html>
+<html lang="en"> --}}
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -171,7 +171,7 @@
     </style>		
 </head>
 
-<body>
+<header>
     <nav class="navbar navbar-expand-md bg-inverse fixed-top scrolling-navbarx">
         <div class="container">
           <!-- Brand and toggle get grouped for better mobile display -->
@@ -296,7 +296,7 @@
         </div>
       </nav><p style="margin-bottom:70px"></p>
       <!-- Navbar End -->
-</body>
+    </header>
       <!-- jQuery first, then Popper.js, then Bootstrap JS -->
   
     <script src="{{asset('user/extra/assets/js/jquery-min.js')}}"></script>

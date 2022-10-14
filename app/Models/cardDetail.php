@@ -11,7 +11,7 @@ class cardDetail extends Model
 
     protected $table = 'card_details';
     protected $fillable = [
-            'user_id',
+            'client_id',
             'application_id',
             'card_number',
             'card_holder_name',

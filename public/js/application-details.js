@@ -2107,8 +2107,6 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]({
         userType: userType,
         dependentId: app.dependentId
       }).then(function (response) {
-        console.log(response);
-
         if (response.data.status === true) {
           toastr.success('Experience Added Successfully !');
           app.getSelectedExperience();

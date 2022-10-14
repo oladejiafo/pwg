@@ -2445,6 +2445,10 @@ iframe img {
   .applicant-detail-sec .heading {
     height: 90px;
   }
+
+  .ui-widget.ui-widget-content {
+    width: 71% !important;
+  }
 }
 
 @media only screen and (max-width: 1024px) and (min-width: 986px) {
@@ -2483,6 +2487,10 @@ iframe img {
 
   .product-section .product-item .positionAnchor {
     display: block;
+  }
+
+  .ui-widget.ui-widget-content {
+    width: 29% !important;
   }
 }
 
@@ -2545,6 +2553,10 @@ iframe img {
 
   .family-desc .children {
     margin-left: 134px;
+  }
+
+  .ui-widget.ui-widget-content {
+    width: 38% !important;
   }
 }
 

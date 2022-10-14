@@ -513,23 +513,3 @@
         </div>
     </div>
 </div>
-
-<script type="text/javascript">
-    // $(function() {
-    //     //Add more file input box for schengen visa upload
-    //     $('a.pl').click(function(e) {
-    //         let cnt = $('#schengen_visa div').length;
-           
-    //         // alert(cnt)
-    //         e.preventDefault();
-    //         $('#schengen_visa').append('<div class="col-sm-12 mt-3" id="schengen_visa"><input type="text" class="form-control schengen_copy1_'+cnt+'" name="schengen_copy1[]" onclick="showSchengenVisaFormat(\'applicant\')" @if($sheng)  value="{{$vall}}" @else placeholder="{{$phold}}" @endif readonly ><div class="input-group-btn"><span class="fileUpload btn"><span class="upl" id="upload">Choose File</span><input type="file" class="upload schengen_copy1" accept="image/png, image/gif, image/jpeg" name="schengen_copy1[]" /></span></div></div>');
-    //     });
-    //     //Remove the extra file input box for schengen visa upload
-    //     $('a.mi').click(function (e) {
-    //         e.preventDefault();
-    //         if ($('#schengen_visa div').length > 1) {
-    //             $('#schengen_visa').children().last().remove();
-    //         }
-    //     });
-    // });
-</script> 
