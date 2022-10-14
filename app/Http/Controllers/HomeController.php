@@ -62,6 +62,12 @@ class HomeController extends Controller
 
     public function index()
     {
+
+        // $package = DB::table('destinations')->orderBy(DB::raw('FIELD(name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
+        // $promo = promo::where('active_until', '>=', date('Y-m-d'))->get();
+
+        // return view('user.home', compact('package', 'promo'));
+
         try {
             $package = DB::table('destinations')->orderBy(DB::raw('FIELD(name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
             $promo = promo::where('active_until', '>=', date('Y-m-d'))->get();
@@ -72,6 +78,7 @@ class HomeController extends Controller
             Session::put('error', $e->getMessage());
             return view('user.home', compact('package', 'promo'));
         }      
+
     }
 
     public function packageType($productId, Request $request)
@@ -345,6 +352,15 @@ class HomeController extends Controller
             //     ->orderBy('pricing_plans.id')
             //     ->first();
             $pays = DB::table('pricing_plans')
+
+                // ->join('applications', 'applications.destination_id', '=', 'pricing_plans.destination_id')
+                // ->select('applications.destination_id', 'pricing_plans.id', 'pricing_plans.pricing_plan_type', 'pricing_plans.total_price', 'pricing_plans.destination_id', 'pricing_plans.first_payment_price', 'pricing_plans.second_payment_price', 'pricing_plans.third_payment_price')
+                // ->where('pricing_plans.pricing_plan_type', '=', $packageType)
+                // ->where('applications.destination_id', '=', $p_id)
+                // ->where('applications.client_id', '=', $id)
+                // ->orderBy('pricing_plans.id')
+                // ->first();
+
                     ->join('applications', 'applications.pricing_plan_id', '=', 'pricing_plans.id')
                     ->select('applications.pricing_plan_id', 'applications.destination_id', 'pricing_plans.id', 'pricing_plans.pricing_plan_type', 'pricing_plans.total_price', 'pricing_plans.destination_id', 'pricing_plans.first_payment_price', 'pricing_plans.second_payment_price', 'pricing_plans.third_payment_price')
                     ->where('pricing_plans.pricing_plan_type', '=', $packageType)
@@ -363,6 +379,7 @@ class HomeController extends Controller
             //     // ->limit(1)
             //     ->first();
 
+
             $paid = DB::table('applications')
                 ->where('applications.destination_id', '=', $p_id)
                 ->where('applications.client_id', '=', $id)
@@ -378,17 +395,18 @@ class HomeController extends Controller
                 ->groupBy('destinations.id')
                 ->first();
 
-            $dataService = DataService::Configure(array(
-                'auth_mode' => 'oauth2',
-                'ClientID' => config('services.quickbook.client_id'),
-                'ClientSecret' =>  config('services.quickbook.client_secret'),
-                'RedirectURI' =>  config('services.quickbook.oauth_redirect_uri'),
-                'scope' => config('services.quickbook.oauth_scope'),
-                'baseUrl' => "development"
-            ));
+            $authUrl = '';
+            // $dataService = DataService::Configure(array(
+            //     'auth_mode' => 'oauth2',
+            //     'ClientID' => config('services.quickbook.client_id'),
+            //     'ClientSecret' =>  config('services.quickbook.client_secret'),
+            //     'RedirectURI' =>  config('services.quickbook.oauth_redirect_uri'),
+            //     'scope' => config('services.quickbook.oauth_scope'),
+            //     'baseUrl' => "development"
+            // ));
 
-            $OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
-            $authUrl = $OAuth2LoginHelper->getAuthorizationCodeURL();
+            // $OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
+            // $authUrl = $OAuth2LoginHelper->getAuthorizationCodeURL();
             return view('user.myapplication', compact('paid', 'pays', 'prod', 'authUrl'));
         } else {
             return redirect('home');
@@ -551,7 +569,7 @@ class HomeController extends Controller
             $thisPaymentMade = $request->totalpay;
             if ($request->discount > 0) {
                 $thisDiscount = $request->discount;
-                $thisCode = $request->discount_code;
+                $thisCode = strip_tags($request->discount_code);
             } else {
                 $thisDiscount = 0;
                 $thisCode = '';
@@ -1022,8 +1040,10 @@ class HomeController extends Controller
                     $dest = product::find($id);
                     $dest_name = $dest->name;
                     $payment = $this->getPaymentName();
+
                     //Quickbook::updateTokenAccess();
                     Quickbook::createInvoice($payment);
+
                     $msg = "Awesome! Payment Successful!";
                     Session::forget('paymentCreds');
                     return view('user.payment-success', compact('id'));
@@ -1134,7 +1154,7 @@ class HomeController extends Controller
         $id = Session::get('myproduct_id');
         $coupon = DB::table('coupons')
             ->select('amount')
-            ->where('code', '=', $request->discount_code)
+            ->where('code', '=', strip_tags($request->discount_code))
             ->where('employee_id', '=', $id)
             ->where('active_from', '<=', date('Y-m-d'))
             ->where('active_until', '>=', date('Y-m-d'))
@@ -1262,10 +1282,10 @@ class HomeController extends Controller
                 $data = new cardDetail();
 
                 $data->client_id = Auth::user()->id;
-                $data->card_holder_name = $request->name;
+                $data->card_holder_name = preg_replace("/[^A-Za-z- ]/", '', strip_tags($request->name));
 
                 $data->card_number = $request->card_number;
-                $data->month = $request->month;
+                $data->month = sprintf("%02d", $request->month);  //sprintf("%02d", $monthYear[1])
                 $data->year = $request->year;
                 $data->cvv = $request->cvc;
 
@@ -1273,10 +1293,10 @@ class HomeController extends Controller
             } else {
 
                 $datas->client_id = Auth::user()->id;
-                $datas->card_holder_name = $request->name;
+                $datas->card_holder_name = preg_replace("/[^A-Za-z- ]/", '', strip_tags($request->name));
 
                 $datas->card_number = $request->card_number;
-                $datas->month = $request->month;
+                $datas->month = sprintf("%02d", $request->month);
                 $datas->year = $request->year;
                 $datas->cvv = $request->cvc;
 

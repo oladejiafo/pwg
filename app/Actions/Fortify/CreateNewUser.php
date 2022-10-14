@@ -30,9 +30,9 @@ class CreateNewUser implements CreatesNewUsers
         ])->validate();
 
         return User::create([
-            'name' => $input['name'],
+            'name' => preg_replace("/[^A-Za-z- ]/", '', strip_tags($input['name'])),
             'email' => $input['email'],
-            'phone_number' => $input['phone_number'],
+            'phone_number' => preg_replace("/[^0-9+]/", '', strip_tags($input['phone_number'])),
             'password' => Hash::make($input['password']),
         ]);
     }
