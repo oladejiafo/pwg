@@ -264,7 +264,7 @@
                                                             <input type="file" class="upload up cv_upload" id="up"  name="cv"  value="{{$client['resumeName']}}"/>
                                                             </span><!-- btn-orange -->
                                                     </div><!-- btn -->
-                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#cvModal" onclick="showResume()">click to view uploaded CV copy</a>
+                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#cvModal" onclick="showCV()">click to view uploaded CV copy</a>
                                                     <span class="cv_errorClass"></span>
                                                 </div>
 
@@ -320,11 +320,11 @@
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="text" name="passport_issue" class="form-control passport_issue" placeholder="Passport Date of Issue*" value="{{ date('d-m-Y', strtotime($client['passport_issue_date']))}}" autocomplete="off"/>
+                                                    <input type="text" name="passport_issue" class="form-control passport_issue" placeholder="Passport Date of Issue*" value="{{ date('d-m-Y', strtotime($client['passport_issue_date']))}}" autocomplete="off" readonly="readonly"/>
                                                     <span class="passport_issue_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="text" name="passport_expiry" class="form-control passport_expiry" placeholder="passport Date of Expiry*" value="{{ date('d-m-Y', strtotime($client['passport_expiry']))}}" autocomplete="off" />
+                                                    <input type="text" name="passport_expiry" class="form-control passport_expiry" placeholder="passport Date of Expiry*" value="{{ date('d-m-Y', strtotime($client['passport_expiry']))}}" autocomplete="off" readonly="readonly"/>
                                                     <span class="passport_expiry_errorClass"></span>
                                                 </div>
                                             </div>
@@ -447,7 +447,7 @@
                                                     <span class="residence_id_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-6 mt-3">
-                                                    <input type="text" class="form-control visa_validity" name="visa_validity" value="{{ date('d-m-Y', strtotime($client['visa_validity']))}}" placeholder="Your ID/Visa Date of Validity*" >
+                                                    <input type="text" class="form-control visa_validity" name="visa_validity" value="{{ date('d-m-Y', strtotime($client['visa_validity']))}}" placeholder="Your ID/Visa Date of Validity*" readonly="readonly">
                                                     <span class="visa_validity_errorClass"></span>
                                                 </div>
                                             </div>
@@ -2899,7 +2899,7 @@
         $("#passportModal").modal('show');
     }
 
-    function showResume()
+    function showCV()
     {
         $("#cvModal").modal('show');
     }

@@ -31,40 +31,44 @@
                     <div class="collapse" id="collapsechild{{$i}}">
                         <div class="form-sec">
                             <div class="form-group row mt-4">
-                                <div class="col-sm-4 mt-3">
+                                <div class="form-floating col-sm-4 mt-3">
                                     <input type="hidden" name="applicant_id" value="{{$applicant['id']}}">
                                     <input type="hidden" name="childrenCount" value="{{$client['children_count']}}">
                                     <input type="hidden" name="product_id" value="{{$productId}}">
                                     <input type="hidden" name="child" value="{{$i}}">
-                                    <input type="text" name="child_{{$i}}_first_name" class="form-control child_{{$i}}_first_name" placeholder="First Name*" value="" autocomplete="off" />
+                                    <input type="text" name="child_{{$i}}_first_name" id="child_{{$i}}_first_name" class="form-control child_{{$i}}_first_name" placeholder="First Name*" value="" autocomplete="off" />
+                                    <label for="child_{{$i}}_first_name">First Name*</label>
                                     <span class="child_{{$i}}_first_name_errorClass"></span>
                                     @error('child_{{$i}}_first_name') <span class="error">{{ $message }}</span> @enderror
                                 </div>
-                                <div class="col-sm-4 mt-3">
-                                    <input type="text" name="child_{{$i}}_middle_name" class="form-control " placeholder="Middle Name" value=""  autocomplete="off"/>
+                                <div class="form-floating col-sm-4 mt-3">
+                                    <input type="text" name="child_{{$i}}_middle_name"id="child_{{$i}}_middle_name" class="form-control " placeholder="Middle Name" value=""  autocomplete="off"/>
+                                    <label for="child_{{$i}}_middle_name">Middle Name</label>
                                 </div>
-                                <div class="col-sm-4 mt-3">
-                                    <input type="text" name="child_{{$i}}_surname" class="form-control child_{{$i}}_surname" placeholder="Surname*" value="" autocomplete="off"  />
+                                <div class="form-floating col-sm-4 mt-3">
+                                    <input type="text" name="child_{{$i}}_surname" id="child_{{$i}}_surname" class="form-control child_{{$i}}_surname" placeholder="Surname*" value="" autocomplete="off"  />
+                                    <label for="child_{{$i}}_surname">Surname*</label>
                                     <span class="child_{{$i}}_surname_errorClass"></span>
                                     @error('child_{{$i}}_surname') <span class="error">{{ $message }}</span> @enderror
                                 </div>
                             </div>
                             <div class="form-group row mt-4">
-                                <div class="col-sm-6 mt-3">
-                                    <input type="text"  name="child_{{$i}}_dob" class="child-dob form-control" placeholder="Date Of Birth*" >
+                                <div class="form-floating col-sm-6 mt-3">
+                                    <input type="text"  name="child_{{$i}}_dob"  id="child_{{$i}}_dob" class="child-dob form-control" placeholder="Date Of Birth*" readonly>
+                                    <label for="child_{{$i}}_dob">Date Of Birth*</label>
                                     <span class="child_{{$i}}_dob_errorClass"></span>
                                     @error('child_{{$i}}_dob') <span class="error">{{ $message }}</span> @enderror
 
                                 </div>
-                                <div class="col-sm-6 mt-3">
-                                    <select name="child_{{$i}}_gender" aria-required="true" class="form-control form-select child_{{$i}}_gender" >
-                                        <option selected disabled>Gender *</option>
+                                <div class="form-floating col-sm-6 mt-3">
+                                    <select name="child_{{$i}}_gender" id="child_{{$i}}_gender" aria-required="true" class="form-control form-select child_{{$i}}_gender" >
+                                        <option selected disabled>Gender</option>
                                         <option value="MALE">Male</option>
                                         <option value="FEMALE">Female</option>
                                     </select>
+                                    <label for="child_{{$i}}_gender">Gender *</label>
                                     <span class="child_{{$i}}_gender_errorClass"></span>
                                     @error('child_{{$i}}_gender') <span class="error">{{ $message }}</span> @enderror
-
                                 </div>
                             </div>
                         </div>

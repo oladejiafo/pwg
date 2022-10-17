@@ -4,6 +4,12 @@
 <link href="{{asset('user/css/select2.min.css') }}" rel="stylesheet" />
 <link href="{{asset('css/alert.css')}}" rel="stylesheet">
 <meta name="csrf-token" content="{{ csrf_token() }}" />
+<style>
+    .form-control {
+        height: calc(3.5rem + 2px) !important;
+    }
+    
+</style>
 @section('content')
 
 @php 
@@ -359,7 +365,7 @@
             changeYear: true,
             constrainInput: false   
         });
-        const phoneInputField = document.querySelector("#phone");
+        const phoneInputField = document.querySelector(".phone");
         const phoneInput = window.intlTelInput(phoneInputField, {
             separateDialCode: false,
             preferredCountries:["ae"],
