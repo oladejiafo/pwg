@@ -16,6 +16,7 @@ $notifications = DB::table('notifications')
 @if($notifications->first())
 
 <div class="row">
+
         <div class="col px-3 m-2"><b>NOTIFICATIONS</b></div>
             <div align="right" class="col mb-2" style="margin-right:25px;margin-top:2px">
             <a href="javascript:void(0)" id="noty" style="text-decoration:blue; font-size:11px;color:blue"><i>Mark all as read</i></a>
@@ -30,9 +31,9 @@ $notifications = DB::table('notifications')
             content: url("{{asset('user/images/Notification.svg')}}");
             }
         </style>
-        <a class="dropdown-item preview-item" style="background-color:#FAFDFE !important;color:#000 !important; font-weight:bold !important">
+        <a class="dropdown-item preview-item" href="#" style="background-color:#FAFDFE !important;color:#000 !important; font-weight:bold !important">
         @else  
-        <a class="dropdown-item preview-item" style="background-color:transparent !important;">
+        <a class="dropdown-item preview-item" href="#" style="background-color:transparent !important;">
         @endif
 
         <div class="preview-thumbnail">

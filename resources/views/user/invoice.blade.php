@@ -69,8 +69,6 @@
        
         <hr style="height:0.7px; opacity:0.5;color:#ccc;"><br>
 
-
-        
         <div class="row" style="display: block;width:100%">
             <div align="left" class="col-3" style="width:40%;display: inline-block; height:20px"><b>DESCRIPTION</b></div>
             <div align="right" class="col-3" style="width:19%;display: inline-block; height:20px"><b>QTY</b></div>

@@ -180,67 +180,78 @@
                                             @csrf
                                             <input type="hidden" name="product_id" value="{{$productId}}">
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-4 mt-3">
-                                                    <input type="tel" name="first_name" class="form-control" placeholder="First Name*" value="{{$client['name']}}" autocomplete="off" required/>
+                                                <div class="col-sm-4 mt-3 form-floating">
+                                                    <input type="tel" id="first_name" name="first_name" class="form-control" placeholder="First Name*" value="{{$client['name']}}" autocomplete="off" required/>
                                                     <span class="first_name_errorClass"></span>
+                                                    <label for="first_name">First Name*</label>
                                                 </div>
-                                                <div class="col-sm-4 mt-3">
-                                                    <input type="text" name="middle_name" class="form-control" placeholder="Middle Name" value="{{$client['middle_name']}}"  autocomplete="off"/>
+                                                <div class="col-sm-4 mt-3 form-floating">
+                                                    <input type="text" id="middle_name" name="middle_name" class="form-control" placeholder="Middle Name" value="{{$client['middle_name']}}"  autocomplete="off"/>
+                                                    <label for="middle_name">Middle Name</label>
                                                 </div>
-                                                <div class="col-sm-4 mt-3">
-                                                    <input type="text" name="surname" class="form-control" placeholder="Surname*" value="{{$client['sur_name']}}" autocomplete="off" required />
+                                                <div class="col-sm-4 mt-3 form-floating">
+                                                    <input type="text" id="surname" name="surname" class="form-control" placeholder="Surname*" value="{{$client['sur_name']}}" autocomplete="off" required />
                                                     <span class="surname_errorClass"></span>
+                                                    <label for="surname">Surname*</label>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-6 mt-3">
-                                                    <input type="text" name="email" class="form-control" placeholder="Email*" value="{{$client['email']}}" autocomplete="off" required/>
+                                                <div class="col-sm-6 mt-3 form-floating">
+                                                    <input type="text" id="email" name="email" class="form-control" placeholder="Email*" value="{{$client['email']}}" autocomplete="off" required/>
                                                     <span class="email_errorClass"></span>
+                                                    <label for="email">Email*</label>
                                                 </div>
-                                                <div class="col-sm-6 mt-3">
-                                                    <input type="tel" name="phone_number" class="form-control" id="phone" placeholder="Phone Number*" value="{{$client['phone_number']}}" autocomplete="off"  required/>
+                                                <div class="col-sm-6 mt-3 form-floating">
+                                                    <input type="hidden" name="phone_number1" class="form-control" id="phone_no" placeholder="Phone Number*" value="{{$client['phone_number']}}" autocomplete="off"/>
+                                                    <input type="tel" style="margin-left: -10px !important;" name="phone_number" class="form-control" id="phone" placeholder="Phone Number*" value="{{$client['phone_number']}}" autocomplete="off"  required/>
                                                     <span class="phone_number_errorClass"></span>
+                                                    <label for="phone_no" style="margin-top: -5px !important; margin-left: -5px !important;">Phone Number*</label>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-4 mt-3 dob">
-                                                    <input type="text" name="dob" class="form-control datepicker" placeholder="Date of Birth*" value="{{ date('d-m-Y', strtotime($client['date_of_birth']))}}" id="datepicker" autocomplete="off"  readonly="readonly" required/>
+                                                <div class="col-sm-4 mt-3 dob form-floating">
+                                                    <input type="text" id="dob" name="dob" class="form-control datepicker" placeholder="Date of Birth*" value="{{ date('d-m-Y', strtotime($client['date_of_birth']))}}" id="datepicker" autocomplete="off"  readonly="readonly" required/>
                                                     <span class="dob_errorClass"></span>
+                                                    <label for="email">Date of Birth*</label>
                                                 </div>
-                                                <div class="col-sm-4 mt-3">
-                                                    <input type="text" name="place_birth" class="form-control" placeholder="Place of Birth*" value="{{$client['place_of_birth']}}" autocomplete="off" required/>
+                                                <div class="col-sm-4 mt-3 form-floating">
+                                                    <input type="text" id="place_of_birth" name="place_birth" class="form-control" placeholder="Place of Birth*" value="{{$client['place_of_birth']}}" autocomplete="off" required/>
                                                     <span class="place_birth_errorClass"></span>
+                                                    <label for="place_of_birth">Place of Birth*</label>
                                                 </div>
-                                                <div class="col-sm-4 mt-3">
-                                                    <select class="form-select form-control" name="country_birth" placeholder="Country of Birth*"  required>
+                                                <div class="col-sm-4 mt-3 form-floating">
+                                                    <select class="form-select form-control" id="country_birth" name="country_birth" placeholder="Country of Birth*"  required>
                                                         <option selected>{{$client['country_of_birth']}}</option>
                                                         @foreach (Constant::countries as $key => $item)
                                                             <option {{($key == $client['country_of_birth']) ? 'seleceted' : ''}} value="{{$key}}">{{$item}}</option>
                                                         @endforeach
                                                     </select>
                                                     <span class="country_birth_errorClass"></span>
+                                                    <label for="country_birth">Country of Birth*</label>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-4 mt-3">
-                                                    <select class="form-select form-control" name="citizenship" placeholder="Citizenship*"  required>
+                                                <div class="col-sm-4 mt-3 form-floating">
+                                                    <select class="form-select form-control" id="citizenship" name="citizenship" placeholder="Citizenship*"  required>
                                                         <option selected>{{$client['citizenship']}}</option>
                                                         @foreach (Constant::countries as $key => $item)
                                                                 <option {{($key == $client['citizenship']) ? 'seleceted' : ''}} value="{{$key}}">{{$item}}</option>
                                                             @endforeach
                                                     </select>
                                                     <span class="citizenship_errorClass"></span>
+                                                    <label for="citizenship">Citizenship*</label>
                                                 </div>
-                                                <div class="col-sm-4 mt-3">
-                                                    <select name="sex"  aria-required="true" class="form-control form-select" required>
+                                                <div class="col-sm-4 mt-3 form-floating">
+                                                    <select name="sex" id="sex" aria-required="true" class="form-control form-select" required>
                                                         <option selected disabled>Sex *</option>
                                                         <option {{($client['sex'] == 'MALE') ? 'selected' : '' }} value="MALE"> Male
                                                         </option>
                                                         <option {{($client['sex'] == 'FEMALE') ? 'selected' : ''}} value="FEMALE">Female</option>
                                                     </select>
                                                     <span class="sex_errorClass"></span>
+                                                    <label for="sex">Sex*</label>
                                                 </div>
-                                                <div class="col-sm-4 mt-3">
+                                                <div class="col-sm-4 mt-3 form-floating">
                                                     <select name="civil_status" id="civil_status" required="" aria-required="true" class="form-control form-select">
                                                         <option selected disabled>Civil Status *</option>
                                                         <option  {{($client['civil_status'] == 'SINGLE') ? 'selected' : '' }} value="SINGLE">Single</option>
@@ -251,13 +262,15 @@
                                                         <option  {{($client['civil_status'] == 'OTHER') ? 'selected' : '' }} value="OTHER">Other</option>
                                                     </select>
                                                     <span class="civil_status_errorClass"></span>
+                                                    <label for="civil_status">Civil Status*</label>
                                                 </div>
-                                                <div class="col-sm-4 mt-3">
+                                                <div class="col-sm-4 mt-3 form-floating">
                                                     <input type="text" name="agent_code" id="agent_code" class="form-control" placeholder="Please enter your agent code here if available" value="{{$applicant['assigned_agent_id']}}" />
                                                     <span class="agent_code_errorClass"></span>
+                                                    <label for="agent_code">Agent Code, if any</label>
                                                 </div>
-                                                <div class="col-sm-8 mt-3">
-                                                    <input type="text" class="form-control cv_upload" placeholder="Upload your cv (PDF only)*" name="cv" value="{{$client['resumeName']}}"  onclick="showResumeFormat('applicant')" autocomplete="off" readonly required>
+                                                <div class="col-sm-8 mt-3 form-floating">
+                                                    <input type="text" id="cv" class="form-control cv_upload" placeholder="Upload your cv (PDF only)*" name="cv" value="{{$client['resumeName']}}"  onclick="showResumeFormat('applicant')" autocomplete="off" readonly required>
                                                     <div class="input-group-btn">
                                                         <span class="fileUpload btn">
                                                             <span class="upl" id="upload">Choose File</span>
@@ -266,6 +279,7 @@
                                                     </div><!-- btn -->
                                                     <a href="javascript:void(0)" data-toggle="modal" data-target="#cvModal" onclick="showCV()">click to view uploaded CV copy</a>
                                                     <span class="cv_errorClass"></span>
+                                                    <label for="cv">CV</label>
                                                 </div>
 
                                             </div>
@@ -313,30 +327,34 @@
                                             @csrf
                                             <input type="hidden" name="product_id" value="1">
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-12 mt-3">
-                                                    <input type="text" name="passport_number" class="form-control" placeholder="Passport Number*" value="{{$client['passport_number']}}" autocomplete="off"/>
+                                                <div class="col-sm-12 mt-3 form-floating">
+                                                    <input type="text" id="passport_number" name="passport_number" class="form-control" placeholder="Passport Number*" value="{{$client['passport_number']}}" autocomplete="off"/>
                                                     <span class="passport_number_errorClass"></span>
+                                                    <label for="passport_number">Passport Number*</label>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-6 mt-3">
-                                                    <input type="text" name="passport_issue" class="form-control passport_issue" placeholder="Passport Date of Issue*" value="{{ date('d-m-Y', strtotime($client['passport_issue_date']))}}" autocomplete="off" readonly="readonly"/>
+                                                <div class="col-sm-6 mt-3 form-floating">
+                                                    <input type="text" id="passport_issue_date" name="passport_issue" class="form-control passport_issue" placeholder="Passport Date of Issue*" value="{{ date('d-m-Y', strtotime($client['passport_issue_date']))}}" autocomplete="off"/>
                                                     <span class="passport_issue_errorClass"></span>
+                                                    <label for="passport_issue_date">Passport Issue Date*</label>
                                                 </div>
-                                                <div class="col-sm-6 mt-3">
-                                                    <input type="text" name="passport_expiry" class="form-control passport_expiry" placeholder="passport Date of Expiry*" value="{{ date('d-m-Y', strtotime($client['passport_expiry']))}}" autocomplete="off" readonly="readonly"/>
+                                                <div class="col-sm-6 mt-3 form-floating">
+                                                    <input type="text" id="passport_expiry" name="passport_expiry" class="form-control passport_expiry" placeholder="passport Date of Expiry*" value="{{ date('d-m-Y', strtotime($client['passport_expiry']))}}" autocomplete="off" />
                                                     <span class="passport_expiry_errorClass"></span>
+                                                    <label for="passport_expiry">Passport Expiry Date*</label>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-12 mt-3">
-                                                    <input type="text" name="issued_by" class="form-control" placeholder="Issued By(Authority that issued the passport)*" value="{{$client['passport_issued_by']}}" autocomplete="off"/>
+                                                <div class="col-sm-12 mt-3 form-floating">
+                                                    <input type="text" id="issued_by" name="issued_by" class="form-control" placeholder="Issued By(Authority that issued the passport)*" value="{{$client['passport_issued_by']}}" autocomplete="off"/>
                                                     <span class="issued_by_errorClass"></span>
+                                                    <label for="issued_by">Issued By*</label>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-12 mt-3">
-                                                    <input type="text" name="passport_copy" class="form-control passport_copy" placeholder="Upload Passport Copy*" value="{{$client['passportName']}}"  onclick="showPassportFormat('applicant')" autocomplete="off" readonly/>
+                                                <div class="col-sm-12 mt-3 form-floating">
+                                                    <input type="text" id="passport_copy" name="passport_copy" class="form-control passport_copy" placeholder="Upload Passport Copy*" value="{{$client['passportName']}}"  onclick="showPassportFormat('applicant')" autocomplete="off" readonly/>
                                                     <div class="input-group-btn">
                                                         <span class="fileUpload btn">
                                                             <span class="upl" id="upload">Choose File</span>
@@ -345,42 +363,49 @@
                                                     </div><!-- btn -->
                                                     <a href="javascript:void(0)" data-toggle="modal" data-target="#passportModal" onclick="showPassport()">click to view uploaded passport copy</a>
                                                     <span class="passport_copy_errorClass"></span>
+                                                    <label for="passport_copy">Passport Copy Upload*</label>
                                                 </div>
                                                 {{-- <div class="col-sm-6 mt-3">
                                                     <input type="tel" name="home_phone_number" id="home_phone_number" class="form-control" placeholder="Phone Number" value="{{$client['residence_mobile_number']}}" autocomplete="off" />
                                                 </div> --}}
                                             </div>
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-3 mt-3">
-                                                    <select class="form-select form-control" name="home_country" placeholder="home_country*" autocomplete="off">
+                                                <div class="col-sm-3 mt-3 form-floating">
+                                                    <select class="form-select form-control" id="home_country" name="home_country" placeholder="home_country*" autocomplete="off">
                                                         <option selected>{{$client['country']}}</option>
                                                             @foreach (Constant::countries as $key => $item)
                                                                 <option {{($key == $client['country']) ? 'seleceted' : ''}} value="{{$key}}">{{$item}}</option>
                                                             @endforeach
                                                     </select>
                                                     <span class="home_country_errorClass"></span>
+                                                    <label for="home_country">Home Country*</label>
                                                 </div>
-                                                <div class="col-sm-3 mt-3">
-                                                    <input type="text" name="state" class="form-control" placeholder="State/Province*" value="{{$client['state']}}" autocomplete="off">
+                                                <div class="col-sm-3 mt-3 form-floating">
+                                                    <input type="text" name="state" id="state" class="form-control" placeholder="State/Province*" value="{{$client['state']}}" autocomplete="off">
                                                     @error('state') <span class="error">{{ $message }}</span> @enderror
                                                     <span class="state_errorClass"></span>
+                                                    <label for="state">State/Province*</label>
                                                 </div>
-                                                <div class="col-sm-3 mt-3">
-                                                    <input type="text" name="city" class="form-control" placeholder="City*" autocomplete="off" value="{{$client['city']}}">
+                                                <div class="col-sm-3 mt-3 form-floating">
+                                                    <input type="text" id="city" name="city" class="form-control" placeholder="City*" autocomplete="off" value="{{$client['city']}}">
                                                     <span class="city_errorClass"></span>
+                                                    <label for="city">City*</label>
                                                 </div>
-                                                <div class="col-sm-3 mt-3">
-                                                    <input type="integer" name="postal_code" value="{{$client['postal_code']}}" class="form-control" placeholder="Postal Code*" autocomplete="off">
+                                                <div class="col-sm-3 mt-3 form-floating">
+                                                    <input type="integer" id="postal_code" name="postal_code" value="{{$client['postal_code']}}" class="form-control" placeholder="Postal Code*" autocomplete="off">
                                                     <span class="postal_code_errorClass"></span>
+                                                    <label for="postal_code">Postal Code</label>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-6 mt-3">
-                                                    <input type="text" name="address_1" class="form-control" placeholder="Address (Street And Number) Line 1*" value="{{$client['address_line_1']}}" autocomplete="off">
+                                                <div class="col-sm-6 mt-3 form-floating">
+                                                    <input type="text" id="address_1" name="address_1" class="form-control" placeholder="Address (Street And Number) Line 1*" value="{{$client['address_line_1']}}" autocomplete="off">
                                                     <span class="address1_errorClass"></span>
+                                                    <label for="address_1">Address Line 1*</label>
                                                 </div>
-                                                <div class="col-sm-6 mt-3">
-                                                    <input type="text" name="address_2" class="form-control" placeholder="Address (Street And Number) Line 2" value="{{$client['address_line_2']}}" autocomplete="off">
+                                                <div class="col-sm-6 mt-3 form-floating">
+                                                    <input type="text" id="address_2" name="address_2" class="form-control" placeholder="Address (Street And Number) Line 2" value="{{$client['address_line_2']}}" autocomplete="off">
+                                                    <label for="address_2">Address Line 2</label>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
@@ -427,90 +452,110 @@
                                             @csrf
                                             <input type="hidden" name="product_id" value="1">
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-6 mt-3">
-                                                    <select class="form-select form-control" name="current_country" placeholder="current_country*">
+                                                <div class="col-sm-6 mt-3 form-floating">
+                                                    <select class="form-select form-control" id="current_country" name="current_country" placeholder="current_country*">
                                                         <option selected> {{$client['country']}} </option>
                                                         @foreach (Constant::countries as $key => $item)
                                                             <option {{($key == $client['country']) ? 'seleceted' : ''}} value="{{$key}}">{{$item}}</option>
                                                         @endforeach
                                                     </select>
                                                     <span class="current_country_errorClass"></span>
+                                                    <label for="current_country">Current Country*</label>
                                                 </div>
-                                                <div class="col-sm-6 mt-3">
-                                                    <input type="tel" class="form-control" id="current_residance_mobile" name='current_residance_mobile' value="{{$client['residence_mobile_number']}}" placeholder="Current Residence Mobile Number" autocomplete="off">
+                                                <div class="col-sm-6 mt-3 form-floating">
+                                                    <input type="tel" style="margin-left: -10px !important;" class="form-control" id="current_residance_mobile" name='current_residance_mobile' value="{{$client['residence_mobile_number']}}" placeholder="Current Residence Mobile Number" autocomplete="off">
+                                                    <input type="hidden" class="form-control" id="current_mobile" name='current_residance_mobile1' value="{{$client['residence_mobile_number']}}" placeholder="Current Residence Mobile Number" autocomplete="off">
                                                     <span class="current_residance_mobile_errorClass"></span>
+                                                    <label for="current_mobile" style="margin-top: -5px !important; margin-left: -5px !important">Current Residence Mobile Number*</label>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-6 mt-3">
-                                                    <input type="text" name="residence_id" class="form-control" placeholder="Residence Id*" value="{{$client['residence_id']}}" autocomplete="off"/>
+                                                <div class="col-sm-6 mt-3 form-floating">
+                                                    <input type="text" id="residence_id" name="residence_id" class="form-control" placeholder="Residence Id*" value="{{$client['residence_id']}}" autocomplete="off"/>
                                                     <span class="residence_id_errorClass"></span>
+                                                    <label for="residence_id">Residence ID*</label>
                                                 </div>
+<<<<<<< HEAD
                                                 <div class="col-sm-6 mt-3">
                                                     <input type="text" class="form-control visa_validity" name="visa_validity" value="{{ date('d-m-Y', strtotime($client['visa_validity']))}}" placeholder="Your ID/Visa Date of Validity*" readonly="readonly">
+=======
+                                                <div class="col-sm-6 mt-3 form-floating">
+                                                    <input type="text" id="visa_validity" class="form-control visa_validity" name="visa_validity" value="{{ date('d-m-Y', strtotime($client['visa_validity']))}}" placeholder="Your ID/Visa Date of Validity*" >
+>>>>>>> d8433263235868cef8fc6d81c0e87f2ebd70daab
                                                     <span class="visa_validity_errorClass"></span>
+                                                    <label for="visa_validity">Visa Validity*</label>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-6 mt-3">
-                                                    <input type="text" class="form-control residence_id" name="residence_copy" onclick="showResidenceIdFormat('applicant')" placeholder="Residence/Emirates ID*" value="{{$client['residenceName']}}" readonly >
+                                                <div class="col-sm-6 mt-3 form-floating">
+                                                    <input type="text" id="residence_copy" class="form-control residence_id" name="residence_copy" onclick="showResidenceIdFormat('applicant')" placeholder="Residence/Emirates ID*" value="{{$client['residenceName']}}" readonly >
                                                     <div class="input-group-btn">
                                                         <span class="fileUpload btn">
                                                             <span class="upl" id="upload">Choose File</span>
                                                             <input type="file" class="upload residence_id" id="up"  name="residence_copy" />
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
-                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#residenceCopyModal" onclick="residenceCopyModal()">click to view uploaded residence copy</a>
+                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#residenceCopyModal" onclick="residenceCopyModal()">click to view uploaded residence id copy</a>
                                                     <span class="residence_copy_errorClass"></span>
+                                                    <label for="residence_copy">Residence ID Copy*</label>
                                                 </div>
-                                                <div class="col-sm-6 mt-3">
-                                                    <input type="text" class="form-control visa_copy" name="visa_copy" onclick="showVisaFormat('applicant')" @if($client['visaCopyUrl']) value="{{$client['visaName']}}" @else placeholder="Visa Copy" @endif readonly >
+                                                <div class="col-sm-6 mt-3 form-floating">
+                                                    <input type="text" class="form-control visa_copy" id="visa_copy" name="visa_copy" onclick="showVisaFormat('applicant')" @if($client['visaCopyUrl']) value="{{$client['visaName']}}" @else placeholder="Visa Copy" @endif readonly >
                                                     <div class="input-group-btn">
                                                         <span class="fileUpload btn">
                                                             <span class="upl" id="upload">Choose File</span>
                                                             <input type="file" class="upload visa_copy" id="up"  name="visa_copy" />
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
+                                                    <label for="visa_copy">Visa Copy*</label>
                                                     @if($client['visaCopyUrl'])
                                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#visaCopyModal" onclick="visaCopyModal()">click to view uploaded visa copy</a>
                                                     @endif
                                                 </div>
                                             </div>
                                             {{-- <div class="form-group row mt-4">
-                                                <div class="col-sm-12 mt-3">
-                                                    <input type="text" name="current_job" class="form-control" placeholder="Profession As Per Current Job (or on Visa)*" value="{{$client['current_job']}}" autocomplete="off">
+                                                <div class="col-sm-12 mt-3 form-floating">
+                                                    <input type="text" name="current_job" id="current_job" class="form-control" placeholder="Profession As Per Current Job (or on Visa)*" value="{{$client['current_job']}}" autocomplete="off">
                                                     <span class="current_job_errorClass"></span>
+                                                    <label for="current_job">Current Job*</label>
                                                 </div>
                                             </div> --}}
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-4 mt-3">
-                                                    <input type="text" name="work_state" class="form-control" placeholder="Work State/Province*" value="{{$client['work_state']}}" autocomplete="off"/>
+                                                <div class="col-sm-4 mt-3 form-floating">
+                                                    <input type="text" id="work_state" name="work_state" class="form-control" placeholder="Work State/Province*" value="{{$client['work_state']}}" autocomplete="off"/>
                                                     <span class="work_state_errorClass"></span>
+                                                    <label for="work_state">Work State*</label>
                                                 </div>
-                                                <div class="col-sm-4 mt-3">
-                                                    <input type="text" class="form-control" name="work_city" placeholder="Work City*" value="{{$client['work_city']}}" autocomplete="off">
+                                                <div class="col-sm-4 mt-3 form-floating">
+                                                    <input type="text" id="work_city" class="form-control" name="work_city" placeholder="Work City*" value="{{$client['work_city']}}" autocomplete="off">
                                                     <span class="work_city_errorClass"></span>
+                                                    <label for="work_city">Work City*</label>
                                                 </div>
-                                                <div class="col-sm-4 mt-3">
-                                                    <input type="text" class="form-control" name="work_postal_code" placeholder="Work Place Postal Code*" value="{{$client['work_postal_code']}}" autocomplete="off">
+                                                <div class="col-sm-4 mt-3 form-floating">
+                                                    <input type="text" id="work_postal_code" class="form-control" name="work_postal_code" placeholder="Work Place Postal Code*" value="{{$client['work_postal_code']}}" autocomplete="off">
                                                     <span class="work_postal_code_errorClass"></span>
+                                                    <label for="work_postal_code">Work Postal Code*</label>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-4 mt-3">
-                                                    <input type="text" name="work_street" class="form-control" placeholder="Work Place Street & Number*" value="{{$client['work_address']}}" autocomplete="off"/>
+                                                <div class="col-sm-4 mt-3 form-floating">
+                                                    <input type="text" id="work_street" name="work_street" class="form-control" placeholder="Work Place Street & Number*" value="{{$client['work_address']}}" autocomplete="off"/>
                                                     <span class="work_street_errorClass"></span>
+                                                    <label for="work_street">Work Street Address*</label>
                                                 </div>
-                                                <div class="col-sm-4 mt-3">
-                                                    <input type="text" class="form-control" name="company_name" placeholder="Name of Company" value="{{$client['company_name']}}" autocomplete="off">
+                                                <div class="col-sm-4 mt-3 form-floating">
+                                                    <input type="text" class="form-control" id="company_name" name="company_name" placeholder="Name of Company" value="{{$client['company_name']}}" autocomplete="off">
+                                                    <label for="company_name">Company Name</label>
                                                 </div>
-                                                <div class="col-sm-4 mt-3">
-                                                    <input type="text" class="form-control" name="employer_phone" placeholder="Employer Phone Number" value="{{$client['employer_phone_number']}}" autocomplete="off">
+                                                <div class="col-sm-4 mt-3 form-floating">
+                                                    <input type="text" class="form-control" id="employer_phone" name="employer_phone" placeholder="Employer Phone Number" value="{{$client['employer_phone_number']}}" autocomplete="off">
+                                                    <label for="employer_phone">Employer Phone</label>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-12 mt-3">
-                                                    <input type="email" name="employer_email" class="form-control" placeholder="Email of the employer" value="{{$client['employer_email']}}" autocomplete="off">
+                                                <div class="col-sm-12 mt-3 form-floating">
+                                                    <input type="email" id="employer_email" name="employer_email" class="form-control" placeholder="Email of the employer" value="{{$client['employer_email']}}" autocomplete="off">
+                                                    <label for="employer_email">Employer Email</label>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
@@ -557,13 +602,15 @@
                                             @csrf
                                             <input type="hidden" name="product_id" value="1">
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-12 mt-3">
+                                                <div class="col-sm-12 mt-3 form-floating">
+                                                    <input type="hidden" id="have_schengen">
                                                     <select name="is_schengen_visa_issued_last_five_year" id="is_schengen_visa_issued_last_five_year" aria-required="true" class="form-control form-select" autocomplete="off">
                                                         <option selected disabled>Schengen Or National Visa Issued During Last 5 Years*</option>
                                                         <option {{($client['is_schengen_visa_issued_last_five_year'] == "NO") ? 'selected' : ''}} value="NO">No</option>
                                                         <option {{($client['is_schengen_visa_issued_last_five_year'] == "YES") ? 'selected' : ''}} value="YES">Yes</option> 
                                                     </select>
                                                     <span class="is_schengen_visa_issued_last_five_year_errorClass"></span>
+                                                    <label for="have_schengen">Have Schengen or National Visa in the Last 5 Years?*</label>
                                                 </div>
                                             </div>
                                             @php  
@@ -572,9 +619,9 @@
                                              $phold = "Image of Schengen Or National Visa Issued During Last 5 Years";
                                              @endphp
                                             <div class="form-group row mt-4 schengen_visa">
-                                                <div class="col-sm-12 mt-3" id="schengen_visa">
+                                                <div class="col-sm-12 mt-3 form-floating" id="schengen_visa">
 
-                                                    <input type="text" class="form-control schengen_copy" name="schengen_copy" onclick="showSchengenVisaFormat('applicant')" @if($client['schengenVisaUrl'])  value="{{$client['schengenVisaName']}}" @else placeholder="Image of Schengen Or National Visa Issued During Last 5 Years" @endif readonly >
+                                                    <input type="text" class="form-control schengen_copy" id="schengen_copy" name="schengen_copy" onclick="showSchengenVisaFormat('applicant')" @if($client['schengenVisaUrl'])  value="{{$client['schengenVisaName']}}" @else placeholder="Image of Schengen Or National Visa Issued During Last 5 Years" @endif readonly >
                                                     
                                                     <div class="input-group-btn">
                                                         <span class="fileUpload btn">
@@ -582,6 +629,7 @@
                                                             <input type="file" class="upload schengen_copy" accept="image/png, image/gif, image/jpeg" name="schengen_copy" />
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
+                                                    <label for="schengen_copy">Copy of Schengen Visa*</label>
                                                    
                                                     @if($client['schengenVisaUrl'])
                                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#schengenVisatModal" onclick="schengenVisatModal()">click to view uploaded schengen visa copy</a>
@@ -592,13 +640,15 @@
                                             <!-- Add more inputs dynamycally here -->
 
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-12 mt-3">
+                                                <div class="col-sm-12 mt-3 form-floating">
+                                                    <input type="hidden" id="have_fingerprint">
                                                     <select name="is_finger_print_collected_for_Schengen_visa" id="is_finger_print_collected_for_Schengen_visa" aria-required="true" class="form-control form-select" autocomplete="off">
                                                         <option value="">Fingerprints Collected Previously For The Purpose Of Applying For Schengen Visa*</option>
                                                         <option {{($client['is_finger_print_collected_for_Schengen_visa'] == "NO") ? 'selected' : ''}} value="NO">No</option>
                                                         <option {{($client['is_finger_print_collected_for_Schengen_visa'] == "YES") ? 'selected' : ''}} value="YES">Yes</option>
                                                     </select>
                                                     <span class="is_finger_print_collected_for_Schengen_visa_errorClass"></span>
+                                                    <label for="have_fingerprint">Have Fingerprints Collected Previously?</label>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
@@ -860,15 +910,15 @@
                                             <input type="hidden" name="product_id" value="{{$productId}}">
                                             <input type="hidden" name="applicant_id" value="{{$applicant['id']}}">
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-4 mt-3">
+                                                <div class="col-sm-4 mt-3 form-floating">
                                                     <input type="hidden" name="dependentApplicantCompleted" value="0" class="dependentApplicantCompleted">
                                                     <input type="text" name="dependent_first_name" class="form-control dependent_first_name" placeholder="First Name*" value="{{$dependent['name']}}" autocomplete="off"/>
                                                     <span class="dependent_first_name_errorClass"></span>
                                                 </div>
-                                                <div class="col-sm-4 mt-3">
+                                                <div class="col-sm-4 mt-3 form-floating">
                                                     <input type="text" name="dependent_middle_name" class="form-control" placeholder="Middle Name" value="{{$dependent['middle_name']}}"  autocomplete="off"/>
                                                 </div>
-                                                <div class="col-sm-4 mt-3">
+                                                <div class="col-sm-4 mt-3 form-floating">
                                                     <input type="text" name="dependent_surname" class="form-control dependent_surname" placeholder="Surname*" value="{{$dependent['sur_name']}}" autocomplete="off"  />
                                                     <span class="dependent_surname_errorClass"></span>
                                                 </div>
@@ -901,11 +951,11 @@
                                                     <input type="text" name="dependent_dob" class="form-control dependent_datepicker" placeholder="Date of Birth*" value="{{ date('d-m-Y', strtotime($dependent['date_of_birth']))}}" id="dependent_datepicker" autocomplete="off"  readonly="readonly" />
                                                     <span class="dependent_dob_errorClass"></span>
                                                 </div>
-                                                <div class="col-sm-4 mt-3">
+                                                <div class="col-sm-4 mt-3 form-floating">
                                                     <input type="text" name="dependent_place_birth" class="form-control dependent_place_birth" placeholder="Place of Birth*" value="{{$dependent['place_of_birth']}}" autocomplete="off" />
                                                     <span class="dependent_place_birth_errorClass"></span>
                                                 </div>
-                                                <div class="col-sm-4 mt-3">
+                                                <div class="col-sm-4 mt-3 form-floating">
                                                     <select class="form-select form-control dependent_country_birth" name="dependent_country_birth" placeholder="Country of Birth*" >
                                                         <option selected>{{$dependent['country_of_birth']}}</option>
                                                         @foreach (Constant::countries as $key => $item)
@@ -916,7 +966,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-4 mt-3">
+                                                <div class="col-sm-4 mt-3 form-floating">
                                                     <select class="form-select form-control dependent_citizenship" name="dependent_citizenship" placeholder="Citizenship*" >
                                                         <option selected>{{$dependent['citizenship']}}</option>
                                                         @foreach (Constant::countries as $key => $item)
@@ -925,7 +975,7 @@
                                                     </select>
                                                     <span class="dependent_citizenship_errorClass"></span>
                                                 </div>
-                                                <div class="col-sm-4 mt-3">
+                                                <div class="col-sm-4 mt-3 form-floating">
                                                     <select name="dependent_sex"  aria-required="true" class="form-control form-select dependent_sex">
                                                         <option selected disabled>Sex *</option>
                                                         <option {{($dependent['sex'] == 'MALE') ? 'selected' : '' }} value="MALE">Male</option>
@@ -933,7 +983,7 @@
                                                     </select>
                                                     <span class="dependent_sex_errorClass"></span>
                                                 </div>
-                                                <div class="col-sm-4 mt-3">
+                                                <div class="col-sm-4 mt-3 form-floating">
                                                     <select name="dependent_civil_status" id="civil_status" required="" aria-required="true" class="form-control form-select">
                                                         <option selected disabled>Civil Status *</option>
                                                         <option  {{($dependent['civil_status'] == 'SINGLE') ? 'selected' : '' }} value="SINGLE">Single</option>
@@ -1164,28 +1214,28 @@
                                                 </div>
                                             </div> --}}
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-4 mt-3">
+                                                <div class="col-sm-4 mt-3 form-floating">
                                                     <input type="text" name="dependent_work_state" class="form-control" value="{{$dependent['work_state']}}" placeholder="Work State/Province*" autocomplete="off"/>
                                                     <span class="dependent_work_state_errorClass"></span>
                                                 </div>
-                                                <div class="col-sm-4 mt-3">
+                                                <div class="col-sm-4 mt-3 form-floating">
                                                     <input type="text" class="form-control" name="dependent_work_city"  value="{{$dependent['work_city']}}" placeholder="Work City*" autocomplete="off">
                                                     <span class="dependent_work_city_errorClass"></span>
                                                 </div>
-                                                <div class="col-sm-4 mt-3">
+                                                <div class="col-sm-4 mt-3 form-floating">
                                                     <input type="text" class="form-control" name="dependent_work_postal_code" value="{{$dependent['work_postal_code']}}" placeholder="Work Place Postal Code*" autocomplete="off">
                                                     <span class="dependent_work_postal_code_errorClass"></span>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-4 mt-3">
+                                                <div class="col-sm-4 mt-3 form-floating">
                                                     <input type="text" name="dependent_work_street" class="form-control" value="{{$dependent['work_address']}}" placeholder="Work Place Street & Number*" autocomplete="off"/>
                                                     <span class="dependent_work_street_errorClass"></span>
                                                 </div>
-                                                <div class="col-sm-4 mt-3">
+                                                <div class="col-sm-4 mt-3 form-floating">
                                                     <input type="text" class="form-control" name="dependent_company_name"  value="{{$dependent['company_name']}}" placeholder="Name of Company" autocomplete="off">
                                                 </div>
-                                                <div class="col-sm-4 mt-3">
+                                                <div class="col-sm-4 mt-3 form-floating">
                                                     <input type="text" class="form-control" name="dependent_employer_phone" value="{{$dependent['employer_phone_number']}}" placeholder="Employer Phone Number" autocomplete="off">
                                                 </div>
                                             </div>
@@ -1536,7 +1586,7 @@
                                         <div class="collapse show" id="collapsechild{{$key+1}}">
                                             <div class="form-sec">
                                                 <div class="form-group row mt-4">
-                                                    <div class="col-sm-4 mt-3">
+                                                    <div class="col-sm-4 mt-3 form-floating">
                                                         <input type="hidden" name="applicant_id" value="{{$applicant['id']}}">
                                                         <input type="hidden" name="childrenCount" value="{{$client['children_count']}}">
                                                         <input type="hidden" name="product_id" value="{{$productId}}">
@@ -1545,10 +1595,10 @@
                                                         <span class="child_{{$key+1}}_first_name_errorClass"></span>
                                                         @error('child_{{$key+1}}_first_name') <span class="error">{{ $message }}</span> @enderror
                                                     </div>
-                                                    <div class="col-sm-4 mt-3">
+                                                    <div class="col-sm-4 mt-3 form-floating">
                                                         <input type="text" name="child_{{$key+1}}_middle_name" class="form-control " placeholder="Middle Name" value="{{$child['middle_name']}}"  autocomplete="off"/>
                                                     </div>
-                                                    <div class="col-sm-4 mt-3">
+                                                    <div class="col-sm-4 mt-3 form-floating">
                                                         <input type="text" name="child_{{$key+1}}_surname" class="form-control child_{{$key+1}}_surname" placeholder="Surname*" value="{{$child['sur_name']}}" autocomplete="off"  />
                                                         <span class="child_{{$key+1}}_surname_errorClass"></span>
                                                         @error('child_{{$key+1}}_surname') <span class="error">{{ $message }}</span> @enderror

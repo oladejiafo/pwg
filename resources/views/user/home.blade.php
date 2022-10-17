@@ -2,6 +2,7 @@
 <html>
 
 @include('user/header')
+
     <!-- bootstrap core css -->
     <link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
@@ -127,10 +128,10 @@
                 </div>
             </div>
             <div  style="margin-top:20px">
-            <a class="carousel-control-prev" id="slideBack" href="#carouselThree" style="text-decoration:none;" role="button" data-slide="prev">
+            <a class="carousel-control-prev" alt="PWG" id="slideBack" href="#carouselThree" style="text-decoration:none;" role="button" data-slide="prev" aria-label="Navigate Back">
                 <i class="lni lni-arrow-left"></i>
             </a>
-            <a class="carousel-control-next" id="slide" href="#carouselThree" style="text-decoration:none;" role="button" data-slide="next">
+            <a class="carousel-control-next" alt="PWG" id="slide" href="#carouselThree" style="text-decoration:none;" role="button" data-slide="next" aria-label="Navigate forward">
                 <i class="lni lni-arrow-right"></i>
             </a>
             </div>

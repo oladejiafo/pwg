@@ -154,7 +154,7 @@
                                     <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne" style="vertical-align: middle;">
                                         <span style="display:inline-block">
 
-                                            <svg height="auto"  id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 109.62 109.62">
+                                            <svg height="100%"  id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 109.62 109.62">
                                                 <defs>
                                                     <style>
                                                         .cls-1 {
@@ -194,7 +194,6 @@
                             <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                                 <div class="panel-body">
 
-
                                     @if (Laravel\Fortify\Features::canUpdateProfileInformation())
                                     @livewire('profile.update-profile-information-form')
 
@@ -214,7 +213,7 @@
                                     <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" style="vertical-align: middle;">
                                         <span style="display:inline-block">
 
-                                            <svg  height="auto" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 109.02 109.04">
+                                            <svg  height="100%" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 109.02 109.04">
                                                 <defs>
                                                     <style>
                                                         .cls-1 {
@@ -272,7 +271,7 @@
                                     <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style="vertical-align: middle;">
                                         <span style="display:inline-block">
 
-                                            <svg height="auto"  id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 114.77 114.78">
+                                            <svg height="100%"  id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 114.77 114.78">
                                                 <defs>
                                                     <style>
                                                         .cls-1 {
@@ -379,7 +378,7 @@
                                     <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive" style="vertical-align: middle;">
                                         <span style="display:inline-block">
 
-                                            <svg  height="auto" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 109.02 109.02">
+                                            <svg  height="100%" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 109.02 109.02">
                                                     <defs>
                                                         <style>
                                                             .cls-1 {
