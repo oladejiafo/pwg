@@ -180,9 +180,10 @@
                                             @csrf
                                             <input type="hidden" name="product_id" value="{{$productId}}">
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-4 mt-3">
-                                                    <input type="tel" name="first_name" class="form-control" placeholder="First Name*" value="{{$client['name']}}" autocomplete="off" required/>
+                                                <div class="col-sm-4 mt-3 form-floating">
+                                                    <input type="tel" id="first_name" name="first_name" class="form-control" placeholder="First Name*" value="{{$client['name']}}" autocomplete="off" required/>
                                                     <span class="first_name_errorClass"></span>
+                                                    <label for="first_name">First Name</label>
                                                 </div>
                                                 <div class="col-sm-4 mt-3">
                                                     <input type="text" name="middle_name" class="form-control" placeholder="Middle Name" value="{{$client['middle_name']}}"  autocomplete="off"/>

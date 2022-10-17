@@ -18,8 +18,9 @@ $notifications = DB::table('notifications')
 <div class="row">
         <div class="col px-3 mb-0"><b>NOTIFICATIONS</b></div>
             <div align="right" class="col mb-0" style="margin-right:25px;margin-top:2px">
-            <a href="javascript:void(0)" id="noty" style="text-decoration:blue; font-size:11px;color:blue"><i>Mark all as read</i></a>
-            </div>
+            <a href="#" id="noty" style="text-decoration:blue; font-size:11px;color:blue"><i>Mark all as read</i></a>
+            </div> 
+            <!-- javascript:void(0) -->
         </div>
         <div class="dropdown-divider"></div>
         <div style="overflow-y: scroll; height:500px">
@@ -30,9 +31,9 @@ $notifications = DB::table('notifications')
             content: url("{{asset('user/images/Notification.svg')}}");
             }
         </style>
-        <a class="dropdown-item preview-item" style="background-color:#FAFDFE !important;color:#000 !important; font-weight:bold !important">
+        <a class="dropdown-item preview-item" href="#" style="background-color:#FAFDFE !important;color:#000 !important; font-weight:bold !important">
         @else  
-        <a class="dropdown-item preview-item" style="background-color:transparent !important;">
+        <a class="dropdown-item preview-item" href="#" style="background-color:transparent !important;">
         @endif
 
         <div class="preview-thumbnail">

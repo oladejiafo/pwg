@@ -2,27 +2,28 @@
 <html lang="en">
 
 <head>
+    <!-- <meta http-equiv="Content-Security-Policy" content="script-src 'self'"> -->
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
     <meta name="description" content="This is PWG Group client portal. PWG Group is an immigration company that helps students and professionals migrate abroad to either pursue their studies or careers.">
     <title>PWG Client Portal</title>
 
     <meta name="keywords" content="Immigration, visa, travel,,abroad work visa consultants, affordable immigration,work permit, 188 visa,canadian immigration, UAE, POLAND, Malta, Czech, Canada, Germany">
-
         <!-- Icon -->
     <link rel="stylesheet" href="{{asset('user/extra/assets/fonts/line-icons.css')}}">
     <!-- Main Style -->
     <link rel="stylesheet" href="{{asset('user/extra/assets/css/main.css')}}">
     <!-- Responsive Style -->
     <link rel="stylesheet" href="{{asset('user/extra/assets/css/responsive.css')}}">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
-    <link rel='stylesheet' type='text/css' media='screen' href='{{asset('user/css/style.css')}}'>
+ 	  <link rel='stylesheet' type='text/css' media='screen' href='{{asset('user/css/style.css')}}'>
     <link rel='stylesheet' type='text/css' media='screen' href='{{asset('css/login.css')}}'>
     <link rel='stylesheet' type='text/css' media='screen' href='{{asset('fonts/stylesheet.css')}}'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-	
+
     <style>
         html, body {
             padding: 0;
@@ -185,7 +186,7 @@
              <img class="logos" src="{{asset('images/logo.png')}}" alt="PWG logo">
              </picture>
             <!-- <img class="logos" src="../images/logo.png" data-device-pixel-ratio-1="../images/logo2.png" alt="logo"> -->
-          </a>       
+          </a>
 
           @if(Route::has('login'))
 
@@ -201,10 +202,10 @@
               <span><img src="{{asset('images/icon1.png')}}"></span><span style="padding-top:5px">Applicants </span>
               </a>
             </div> -->
-            <!-- <div class="d-flex align-items-center justify-content-center jobber">
+            <!-- <div class="d-flex align-items-center justify-content-center jobbers">
               <a class="nav-link btn create-new-button" aria-expanded="false" href="#">
-              <span><img src="{{asset('images/icon2.png')}}"></span><span style="padding-top:5px">Affiliates</span>
-            </a>
+                <span style="display:inline-block"><img alt="PWG" src="{{asset('images/icon2.png')}}"></span><span class="title" style="padding-top:0px;padding-left:15px; display:inline-block">Affiliates</span>
+              </a>
             </div> -->
           @endauth
           @endif
@@ -254,7 +255,7 @@
                 <div class="dropdown-menu dropdown-menu-left navbar-dropdown preview-list" style="left:-10px;  min-width: 150px;" aria-labelledby="profileDropdown">
                   
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item preview-item">
+                  <a class="dropdown-item preview-item" href="#">
                     <div class="preview-item-content">
                     <form method="GET" action="{{ route('profile.show') }}" x-data>
                            
@@ -264,7 +265,7 @@
                     </div>
                   </a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item preview-item">
+                  <a class="dropdown-item preview-item" href="#">
                   
                     <div class="preview-item-content">
                       <p class="preview-subject mb-1">
