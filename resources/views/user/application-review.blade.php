@@ -28,14 +28,14 @@
                     <div class="row">
                         <div class="tabs-detail d-flex justify-content-center">
 
-
-
-                        <div class="wrapper">
+                            <div class="wrapper">
                               @php 
                                 if ($levels == '2' || $levels == '5' || $levels == '4' || $levels == '3') 
                                 {
                               @endphp    
-                                <a href="#" onclick="return alert('Payment Concluded Already!');"><div class="round-completed round2 m-2">1</div></a>
+                                <a href="#" onclick="return alert('Payment Concluded Already!');">
+                                    <div class="round-completed round2 m-2">1</div>
+                                </a>
                               @php
                                 } else {
                               @endphp    
@@ -114,7 +114,7 @@
                         @elseif(($applicant['work_permit_category']) && ($client['is_spouse'] != null || $client['is_spouse'] != 0) &&  ($client['children_count'] == null || $client['children_count'] == 0))
                             <div class="col-6">
                                 <div class="mainApplicant active" data-toggle="tab" role="tab" style="border-radius: 20px 0 0 20px;">
-                                    <a  href="#mainApplicant">
+                                    <a href="#mainApplicant">
                                         <h4>Main Applicant</h4> 
                                     </a>
                                 </div>
@@ -223,7 +223,7 @@
                                                     <select class="form-select form-control" id="country_birth" name="country_birth" placeholder="Country of Birth*"  required>
                                                         <option selected>{{$client['country_of_birth']}}</option>
                                                         @foreach (Constant::countries as $key => $item)
-                                                            <option {{($key == $client['country_of_birth']) ? 'seleceted' : ''}} value="{{$key}}">{{$item}}</option>
+                                                            <option {{($key == $client['country_of_birth']) ? 'selected' : ''}} value="{{$key}}">{{$item}}</option>
                                                         @endforeach
                                                     </select>
                                                     <span class="country_birth_errorClass"></span>
@@ -235,7 +235,7 @@
                                                     <select class="form-select form-control" id="citizenship" name="citizenship" placeholder="Citizenship*"  required>
                                                         <option selected>{{$client['citizenship']}}</option>
                                                         @foreach (Constant::countries as $key => $item)
-                                                                <option {{($key == $client['citizenship']) ? 'seleceted' : ''}} value="{{$key}}">{{$item}}</option>
+                                                                <option {{($key == $client['citizenship']) ? 'selected' : ''}} value="{{$key}}">{{$item}}</option>
                                                             @endforeach
                                                     </select>
                                                     <span class="citizenship_errorClass"></span>
@@ -374,7 +374,7 @@
                                                     <select class="form-select form-control" id="home_country" name="home_country" placeholder="home_country*" autocomplete="off">
                                                         <option selected>{{$client['country']}}</option>
                                                             @foreach (Constant::countries as $key => $item)
-                                                                <option {{($key == $client['country']) ? 'seleceted' : ''}} value="{{$key}}">{{$item}}</option>
+                                                                <option {{($key == $client['country']) ? 'selected' : ''}} value="{{$key}}">{{$item}}</option>
                                                             @endforeach
                                                     </select>
                                                     <span class="home_country_errorClass"></span>
@@ -705,7 +705,7 @@
                                         <h4 style="margin-top:60px">Job Sector List</h4>
                                         <div class="form-group row mt-4 searchForm">
                                             <div class="col-lg-10 col-md-8 mt-3" >
-                                                <input type="text" class="form-control" v-model="search" name="search" placeholder="Enter Job Title" >
+                                                <input type="text" class="form-control" v-model="search" style="max-height:50px !important" name="search" placeholder="Enter Job Title" >
                                             </div>
                                             <div class="col-lg-2 col-md-4 mt-3" style="padding-left: 0px">
                                                 <button class="btn btn-danger" v-on:click="filterJob()">Search</button>
