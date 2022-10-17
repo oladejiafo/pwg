@@ -1,4 +1,4 @@
-<div class="card d-flex aligns-items-center justify-content-center text-center" style="margin-top: 150px;">
+<div class="card d-flex aligns-items-center justify-content-center text-center paid-application" >
     <div class="card-header">My Applications</div>
     <div class="card-body" style="margin-top: 50px;">
         <hr>
