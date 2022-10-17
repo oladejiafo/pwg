@@ -28,12 +28,11 @@
 @endif
 
 <div class="container" id="app" data-applicantId="{{$client['id']}}" data-dependentid="{{$dependent}}">
-        <div class="col-12">
-            <div class="row">
-                <div class="wizard bg-white">
-                    <div class="row">
-                        <div class="tabs-detail d-flex justify-content-center">
-                            
+    <div class="col-12">
+        <div class="row">
+            <div class="wizard bg-white">
+                <div class="row">
+                    <div class="tabs-detail d-flex justify-content-center">
                         <div class="wrapper">
                               @if ($levels == '2' || $levels == '5' || $levels == '4' || $levels == '3')
                                 <a href="#" onclick="return alert('Payment Concluded Already!');"><div class="round-completed round2 m-2">1</div></a>
@@ -80,63 +79,63 @@
                         </div>
                     </div>
                 </div>
-                    <div class="applicant-tab-sec">
-                        <div class="row">
-                            @if(($applicant['work_permit_category']) && ($client['is_spouse'] != null || $client['is_spouse'] != 0) && ($client['children_count'] != null || $client['children_count'] != 0))
-                                <div class="col-4">
-                                    <div class="mainApplicant active" data-toggle="tab" role="tab">
-                                        <a  href="#mainApplicant">
-                                            <h4>Main Applicant</h4> 
-                                        </a>
-                                    </div>
+                <div class="applicant-tab-sec">
+                    <div class="row">
+                        @if(($applicant['work_permit_category']) && ($client['is_spouse'] != null || $client['is_spouse'] != 0) && ($client['children_count'] != null || $client['children_count'] != 0))
+                            <div class="col-4">
+                                <div class="mainApplicant active" data-toggle="tab" role="tab">
+                                    <a  href="#mainApplicant">
+                                        <h4>Main Applicant</h4> 
+                                    </a>
                                 </div>
-                                <div class="col-4">
-                                    <div class="dependant">
-                                        <a href="#dependant" data-toggle="tab" role="tab">
-                                            <h4>Spouse/Depedant</h4>
-                                        </a>
-                                    </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="dependant">
+                                    <a href="#dependant" data-toggle="tab" role="tab">
+                                        <h4>Spouse/Depedant</h4>
+                                    </a>
                                 </div>
-                                <div class="col-4">
-                                    <div class="children">
-                                        <a href="#children" data-toggle="tab" role="tab">
-                                            <h4>Children</h4>
-                                        </a>
-                                    </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="children">
+                                    <a href="#children" data-toggle="tab" role="tab">
+                                        <h4>Children</h4>
+                                    </a>
                                 </div>
-                            @elseif(($applicant['work_permit_category']) && ($client['is_spouse'] != null || $client['is_spouse'] != 0) &&  ($client['children_count'] == null || $client['children_count'] == 0))
-                                <div class="col-6">
-                                    <div class="mainApplicant active" data-toggle="tab" role="tab" >
-                                        <a  href="#mainApplicant">
-                                            <h4>Main Applicant</h4> 
-                                        </a>
-                                    </div>
+                            </div>
+                        @elseif(($applicant['work_permit_category']) && ($client['is_spouse'] != null || $client['is_spouse'] != 0) &&  ($client['children_count'] == null || $client['children_count'] == 0))
+                            <div class="col-6">
+                                <div class="mainApplicant active" data-toggle="tab" role="tab" >
+                                    <a  href="#mainApplicant">
+                                        <h4>Main Applicant</h4> 
+                                    </a>
                                 </div>
-                                <div class="col-6">
-                                    <div class="dependant">
-                                        <a href="#dependant" data-toggle="tab" role="tab"  style="border-radius: 0 20px 20px 0;">
-                                            <h4>Spouse/Dependant</h4>
-                                        </a>
-                                    </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="dependant">
+                                    <a href="#dependant" data-toggle="tab" role="tab"  style="border-radius: 0 20px 20px 0;">
+                                        <h4>Spouse/Dependant</h4>
+                                    </a>
                                 </div>
-                            @elseif(($applicant['work_permit_category']) && ($client['is_spouse'] == null || $client['is_spouse'] == 0) && ($client['children_count'] != null || $client['children_count'] != 0))
-                                <div class="col-6">
-                                    <div class="mainApplicant active" data-toggle="tab" role="tab">
-                                        <a  href="#mainApplicant">
-                                            <h4>Main Applicant</h4> 
-                                        </a>
-                                    </div>
+                            </div>
+                        @elseif(($applicant['work_permit_category']) && ($client['is_spouse'] == null || $client['is_spouse'] == 0) && ($client['children_count'] != null || $client['children_count'] != 0))
+                            <div class="col-6">
+                                <div class="mainApplicant active" data-toggle="tab" role="tab">
+                                    <a  href="#mainApplicant">
+                                        <h4>Main Applicant</h4> 
+                                    </a>
                                 </div>
-                                <div class="col-6">
-                                    <div class="children">
-                                        <a href="#children" data-toggle="tab" role="tab">
-                                            <h4>Children</h4>
-                                        </a>
-                                    </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="children">
+                                    <a href="#children" data-toggle="tab" role="tab">
+                                        <h4>Children</h4>
+                                    </a>
                                 </div>
-                            @endif
-                        </div>
+                            </div>
+                        @endif
                     </div>
+                </div>
                 <div class="tab-content clearfix" style="margin: 0; padding: 0;">
                     @include('user.main-applicant-detail')
                     @include('user.main-applicant-dependent')
@@ -322,8 +321,7 @@
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="https://unpkg.com/vue@next"></script>
-<script src="{{ asset('js/application-details.js') }}" type="text/javascript"></script>
-
+<script src="{{ asset('js/application-details.js') }}" type="application/javascript"></script>
 <script type="application/javascript"> 
     $(document).ready(function(){
         // $('.country_birth, .citizenship, .home_country, .current_country').select2();
@@ -1549,5 +1547,6 @@
     }
 </script>
 @endpush
+
 <script src="../user/extra/assets/js/jquery-min.js"></script>
 <script src="{{asset('js/alert.js')}}"></script>

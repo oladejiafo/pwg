@@ -1099,6 +1099,18 @@ a.more {
   font-size: 14px;
 }
 
+.form-floating > label{
+  padding: 1rem 1.55rem !important;
+}
+
+.agent_code > label{
+  padding: 1rem 0.55rem !important;
+}
+
+.form-control {
+  height: calc(3.5rem + 2px) !important;
+}
+
 .footer-section .subscription-form .form-control::-moz-placeholder {
   font-size: 14px;
 }
@@ -2445,6 +2457,10 @@ iframe img {
   .applicant-detail-sec .heading {
     height: 90px;
   }
+
+  .ui-widget.ui-widget-content {
+    width: 71% !important;
+  }
 }
 
 @media only screen and (max-width: 1024px) and (min-width: 986px) {
@@ -2483,6 +2499,10 @@ iframe img {
 
   .product-section .product-item .positionAnchor {
     display: block;
+  }
+
+  .ui-widget.ui-widget-content {
+    width: 29% !important;
   }
 }
 
@@ -2545,6 +2565,10 @@ iframe img {
 
   .family-desc .children {
     margin-left: 134px;
+  }
+
+  .ui-widget.ui-widget-content {
+    width: 38% !important;
   }
 }
 

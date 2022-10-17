@@ -2,10 +2,10 @@
 <html>
 
 @include('user/header')
-    
-<!-- bootstrap core css -->
-<link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <!-- bootstrap core css -->
+    <link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
     <!--====== Line Icons CSS ======-->
     <link rel="stylesheet" href="../user/assets/css/LineIcons.css">
@@ -13,19 +13,19 @@
     <!--====== Style CSS ======-->
     <link rel="stylesheet" href="../user/assets/css/style.css">
     <link href="{{asset('user/css/products.css')}}" rel="stylesheet">
-<style>
-.banner_bg {
-  width: 100%;
-  float: left;
-  background-image: url(../user/images/v1_17125.png) !important;
-  background-color: rgba(6, 45, 83, 0.7);
-  height: 480px;
-  padding-top: 30px;
-  background-size: 100%;
-  background-repeat: no-repeat;
-}
+    <style>
+        .banner_bg {
+        width: 100%;
+        float: left;
+        background-image: url(../user/images/v1_17125.png) !important;
+        background-color: rgba(6, 45, 83, 0.7);
+        height: 480px;
+        padding-top: 30px;
+        background-size: 100%;
+        background-repeat: no-repeat;
+        }
 
-</style>
+    </style>
 
 <body>
 

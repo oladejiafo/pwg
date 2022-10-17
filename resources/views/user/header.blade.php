@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
+{{-- <!DOCTYPE html>
+<html lang="en"> --}}
 
 <head>
     <!-- <meta http-equiv="Content-Security-Policy" content="script-src 'self'"> -->
@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
     <meta name="description" content="This is PWG Group client portal. PWG Group is an immigration company that helps students and professionals migrate abroad to either pursue their studies or careers.">
     <title>PWG Client Portal</title>
-
+    <link rel="icon" type="image/png" href="{{asset('/images/logo2.png')}}">
     <meta name="keywords" content="Immigration, visa, travel,,abroad work visa consultants, affordable immigration,work permit, 188 visa,canadian immigration, UAE, POLAND, Malta, Czech, Canada, Germany">
         <!-- Icon -->
     <link rel="stylesheet" href="{{asset('user/extra/assets/fonts/line-icons.css')}}">
@@ -172,7 +172,7 @@
     </style>		
 </head>
 
-<body>
+<header>
     <nav class="navbar navbar-expand-md bg-inverse fixed-top scrolling-navbarx">
         <div class="container">
           <!-- Brand and toggle get grouped for better mobile display -->
@@ -297,7 +297,7 @@
         </div>
       </nav><p style="margin-bottom:70px"></p>
       <!-- Navbar End -->
-</body>
+    </header>
       <!-- jQuery first, then Popper.js, then Bootstrap JS -->
   
     <script src="{{asset('user/extra/assets/js/jquery-min.js')}}"></script>
@@ -306,7 +306,7 @@
     <script src="{{asset('user/extra/assets/js/bootstrap.min.js')}}"></script>
     <script src="{{asset('user/extra/assets/js/owl.carousel.min.js')}}"></script>
     <script src="{{asset('user/extra/assets/js/wow.js')}}"></script>
-    <script src="{{asset('user/extra/assets/js/main.js')}}"></script>
+    {{-- <script src="{{asset('user/extra/assets/js/main.js')}}"></script> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
    {{-- <script src="{{asset('user/extra/assets/js/jquery.nav.js')}}"></script>
