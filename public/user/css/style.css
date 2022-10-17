@@ -1099,6 +1099,18 @@ a.more {
   font-size: 14px;
 }
 
+.form-floating > label{
+  padding: 1rem 1.55rem !important;
+}
+
+.agent_code > label{
+  padding: 1rem 0.55rem !important;
+}
+
+.form-control {
+  height: calc(3.5rem + 2px) !important;
+}
+
 .footer-section .subscription-form .form-control::-moz-placeholder {
   font-size: 14px;
 }
