@@ -3,7 +3,40 @@
 @section('content')
 @php
   $payall = $_REQUEST['payall'];
+
+  $prodd = DB::table('destinations')
+    ->where('id', '=', $productId)
+    ->orderBy('id','desc')
+    ->first();
 @endphp
+
+
+@if(Session::has('packageType'))
+   @php
+    $package = Session::get('packageType');
+   @endphp
+@endif
+
+@if(isset($prodd) && isset($package))
+ @if($prodd->name == "Czech")
+    @php $contract_name = "czech.pdf"; @endphp
+ @elseif($prodd->name == "Malta")
+    @php $contract_name = "malta.pdf"; @endphp
+ @elseif($prodd->name == "Canada")
+   @if($package == "Express Entry")
+    @php $contract_name = "canada_express_entry.pdf"; @endphp
+   @elseif($package == "Study Permit")
+    @php $contract_name = "canada_study.pdf"; @endphp
+   @else
+    @php $contract_name = "canada.pdf"; @endphp
+   @endif
+ @else  
+   @php $contract_name = "poland.pdf"; @endphp
+ @endif
+@else 
+ @php $contract_name = "poland.pdf"; @endphp
+@endif
+
     <div class="container">
         <div class="col-12">
             <div class="contract">
@@ -23,11 +56,11 @@
                                 <img src="{{asset('images/Magnifying_Glass.svg')}}" width="124px" height="124px" class="zoomOut">
                             </div>
                             <div class="contractPdf">
-                                <embed src="{{asset('pdf/PROMO_July_Poland_BC_Contract.pdf')}}#toolbar=0" type="application/pdf" frameBorder="0" alt="pdf" borders="false" style="border: none" />
+                                <embed src="{{asset('pdf/'.$contract_name)}}#toolbar=0" type="application/pdf" frameBorder="0" alt="pdf" borders="false" style="border: none" />
                             </div>
                         </div>
                         <div class="contractPreview">
-                            <embed src="{{ asset('pdf/PROMO_July_Poland_BC_Contract.pdf') }}#toolbar=0" type="application/pdf"frameBorder="0" alt="pdf" borders="false" style="border: none" />
+                            <embed src="{{ asset('pdf/'.$contract_name) }}#toolbar=0" type="application/pdf"frameBorder="0" alt="pdf" borders="false" style="border: none" />
                         </div>
                         <div class="col-12 col-md-8 col-lg-8 offset-md-2 offset-lg-2">
                             {{-- <div class="agree">
