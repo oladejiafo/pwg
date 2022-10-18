@@ -789,6 +789,7 @@
             if($("input[name=schengen_upload]").val()) {
                 formData.append('schengen_copy', $('.schengen_upload')[0].files[0]);
             }
+            console.log(formData);
             $.ajax({
                 type: 'POST',
                 url: "{{ url('store/schengen/details') }}",
@@ -921,7 +922,6 @@
             let clsName =$(this).attr("class");
 
             $('.'+clsName).attr("value", ' ');
-            $("input[name=schengen_upload]").val('');
        
             var names = [];
             var length = $(this).get(0).files.length;
@@ -971,6 +971,7 @@
             $('#passportDependentFormatModal').modal('hide');
             $('#visaDependentFormatModal').modal('hide');
             $('#schengenVisaDependentFormatModal').modal('hide');
+            $('#residenceIdDependentFormatModal').modal('hide');
         });
         $('.mainApplicant').click(function(){
             $('#mainApplicant').show();

@@ -62,9 +62,11 @@
                                 <label for="email">Email*</label>
                                 <span class="email_errorClass"></span>
                             </div>
-                            <div class=" col-sm-6 mt-3">
+                            <div class="form-floating col-sm-6 mt-3">
+                                <input type="hidden" name="dependent_phone_number_label" class="form-control dependent_phone_number" id="dependent_phone_number_label" placeholder="Phone Number*" autocomplete="off"/>
                                 <input type="tel" name="dependent_phone_number" class="form-control dependent_phone_number" id="dependent_phone" placeholder="Phone Number*" value="" autocomplete="off"  />
                                 <span class="dependent_phone_number_errorClass"></span>
+                                <label for="dependent_phone_number_label" style="margin-top: -5px !important; margin-left: -5px !important;">Phone Number*</label>
                             </div>
                         </div>
                         <div class="form-group row mt-4">
@@ -326,9 +328,11 @@
                                 <label for="dependent_current_country">Current Country Are You Living Right Now?</label>
                                 <span class="dependent_current_country_errorClass"></span>
                             </div>
-                            <div class="col-sm-6 mt-3">
+                            <div class="form-floating col-sm-6 mt-3">
+                                <input type="hidden" name="dependent_current_residance_mobile_label" class="form-control" id="dependent_current_residance_mobile_label" placeholder="Current Residence Mobile Number" value="{{$client['phone_number']}}" autocomplete="off"/>
                                 <input type="tel" class="form-control" id="dependent_current_residance_mobile" name='dependent_current_residance_mobile' value="{{old('dependent_current_residance_mobile')}}" placeholder="Current Residence Mobile Number" autocomplete="off">
                                 <span class="dependent_current_residance_mobile_errorClass"></span>
+                                <label for="dependent_current_residance_mobile_label" style="margin-top: -5px !important; margin-left: -5px !important;">Current Residence Mobile Number</label>
                             </div>
                         </div>
                         <div class="form-group row mt-4">

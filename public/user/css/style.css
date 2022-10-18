@@ -1107,6 +1107,10 @@ a.more {
   padding: 1rem 0.55rem !important;
 }
 
+.expSearch {
+  padding: 28px !important;
+}
+
 .form-control {
   height: calc(3.5rem + 2px) !important;
 }

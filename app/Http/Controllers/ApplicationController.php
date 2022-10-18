@@ -152,12 +152,11 @@ class ApplicationController extends Controller
 
 
             $applicant = Applicant::where('client_id', Auth::id())
-                ->where('destination_id', $request->destination_id)
-                // ->sortBy('id', 'desc')
+                ->where('destination_id', $request->product_id)
                 ->first();
+
             $applicant->assigned_agent_id = strip_tags($request->agent_code);
             $applicant->save();
-
         return Response::json(array(
             'status' => true
         ), 200);
@@ -272,10 +271,21 @@ class ApplicationController extends Controller
                 $dependent->schengenVisaName = (isset($dependent->getMedia(User::$media_collection_main_schengen_visa)[0])) ? $dependent->getMedia(User::$media_collection_main_schengen_visa)[0]['name'] : ' ';
                 $dependent->schengenVisaUrl = (isset($dependent->getMedia(User::$media_collection_main_schengen_visa)[0])) ? $dependent->getMedia(User::$media_collection_main_schengen_visa)[0]->getUrl() : null;
 
+                $dependent->schengenVisaUrl1_dep = (isset($dependent->getMedia(User::$media_collection_main_schengen_visa1)[0])) ? $dependent->getMedia(User::$media_collection_main_schengen_visa1)[0]->getUrl() : null;
+                $dependent->schengenVisaName1_dep = (isset($dependent->getMedia(User::$media_collection_main_schengen_visa1)[0])) ? $dependent->getMedia(User::$media_collection_main_schengen_visa1)[0]['name'] : ' ';
+
+                $dependent->schengenVisaUrl2_dep = (isset($dependent->getMedia(User::$media_collection_main_schengen_visa2)[0])) ? $dependent->getMedia(User::$media_collection_main_schengen_visa2)[0]->getUrl() : null;
+                $dependent->schengenVisaName2_dep = (isset($dependent->getMedia(User::$media_collection_main_schengen_visa2)[0])) ? $dependent->getMedia(User::$media_collection_main_schengen_visa2)[0]['name'] : ' ';
+
+                $dependent->schengenVisaUrl3_dep = (isset($dependent->getMedia(User::$media_collection_main_schengen_visa3)[0])) ? $dependent->getMedia(User::$media_collection_main_schengen_visa3)[0]->getUrl() : null;
+                $dependent->schengenVisaName3_dep = (isset($dependent->getMedia(User::$media_collection_main_schengen_visa3)[0])) ? $dependent->getMedia(User::$media_collection_main_schengen_visa3)[0]['name'] : ' ';
+
+                $dependent->schengenVisaUrl4_dep = (isset($dependent->getMedia(User::$media_collection_main_schengen_visa4)[0])) ? $dependent->getMedia(User::$media_collection_main_schengen_visa4)[0]->getUrl() : null;
+                $dependent->schengenVisaName4_dep = (isset($dependent->getMedia(User::$media_collection_main_schengen_visa4)[0])) ? $dependent->getMedia(User::$media_collection_main_schengen_visa4)[0]['name'] : ' ';
+
                 $dependent->visaName = (isset($dependent->getMedia(User::$media_collection_main_residence_visa)[0])) ? $dependent->getMedia(User::$media_collection_main_residence_visa)[0]['name'] : ' ';
                 $dependent->visaCopyUrl = (isset($dependent->getMedia(User::$media_collection_main_residence_visa)[0])) ? $dependent->getMedia(User::$media_collection_main_residence_visa)[0]->getUrl() : null;
             }
-
             return view('user.application-review', compact('client', 'applicant', 'productId', 'dependent', 'children'))->with('success', 'Data saved successfully!');
         } else {
             return redirect('home');
@@ -344,7 +354,6 @@ class ApplicationController extends Controller
      */
     public function storeSchengenDetails(Request $request)
     {
-        // dd($request->file('schengen_copy'));
         if ($request['is_schengen_visa_issued_last_five_year']  == 'YES') {
             $validator = \Validator::make($request->all(), [
                 'is_schengen_visa_issued_last_five_year' => 'required',
@@ -354,7 +363,6 @@ class ApplicationController extends Controller
         } else {
             $validator = \Validator::make($request->all(), [
                 'is_schengen_visa_issued_last_five_year' => 'required',
-                'is_finger_print_collected_for_Schengen_visa' => 'required'
             ]);
         }
 
@@ -625,7 +633,7 @@ class ApplicationController extends Controller
                 $data->name = $request['dependent_first_name'];
                 $data->middle_name = $request['dependent_middle_name'];
                 $data->sur_name = $request['dependent_surname'];
-                $data->email  = $request['dependent_email'];
+                $data->email  = $request['email'];
                 $data->phone_number  = $request['dependent_phone_number'];
                 $data->date_of_birth = date('Y-m-d', strtotime($request['dependent_dob']));
                 $data->place_of_birth = $request['dependent_place_birth'];
