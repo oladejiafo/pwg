@@ -211,9 +211,8 @@ span {
     .step-1,
     .step-2,
     .step-3 {
-        position: relative;
-        Width: 280px;
-        Height: 400px;
+        Width: 100%;
+        Height: auto;
     }
 
     .step-1-desc,
