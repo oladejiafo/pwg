@@ -83,14 +83,251 @@
                         Learn how to start earning with PWG Group Refferal program.
                     </p>
                 </div>
-                <div class="col-6">
-                    
+                {{-- <div class="col-6">
+
                 </div>
                 <div class="col-6">
 
+                </div> --}}
+                <div class="col-xs-11 col-sm-7">
+                    <div class="panel-group" id="accordion">
+                
+                        <!-- start panel left -->
+                        <div class="panel-left col-sm-6">
+                            <!-- start panel -->
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#TEST_1">
+                                        TEST_1
+                                     </a>
+                                    </h4>
+                                </div>
+                                <div id="TEST_1" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        TESTTESTTESTTESTTEST
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end panel -->
+                
+                            <!-- start panel -->
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#TEST_2">
+                                        TEST_2
+                                     </a>
+                                    </h4>
+                                </div>
+                                <div id="TEST_2" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        TESTTESTTESTTESTTEST
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end panel -->
+                
+                            <!-- start panel -->
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#TEST_3">
+                                        TEST_3
+                                     </a>
+                                    </h4>
+                                </div>
+                                <div id="TEST_3" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        TESTTESTTESTTESTTEST
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end panel -->
+                
+                            <!-- start panel -->
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#TEST_4">
+                                        TEST_4
+                                     </a>
+                                    </h4>
+                                </div>
+                                <div id="TEST_4" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        TESTTESTTESTTESTTEST
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end panel -->
+                
+                            <!-- start panel -->
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#TEST_5">
+                                        TEST_5
+                                     </a>
+                                    </h4>
+                                </div>
+                                <div id="TEST_5" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        TESTTESTTESTTESTTEST
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end panel -->
+                
+                            <!-- start panel -->
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#TEST_6">
+                                        TEST_6
+                                     </a>
+                                    </h4>
+                                </div>
+                                <div id="TEST_6" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        TESTTESTTESTTESTTEST
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end panel -->
+                
+                
+                
+                
+                        </div> 
+                        <!-- end panel left -->
+                
+                
+                        <!-- start panel right -->
+                        <div class="panel-left col-sm-6">
+                            <!-- start panel -->
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#TEST_7">
+                                        TEST_7
+                                     </a>
+                                    </h4>
+                                </div>
+                                <div id="TEST_7" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        TESTTESTTESTTESTTEST
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end panel -->
+                
+                            <!-- start panel -->
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#TEST_8">
+                                        TEST_8
+                                     </a>
+                                    </h4>
+                                </div>
+                                <div id="TEST_8" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        TESTTESTTESTTESTTEST
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end panel -->
+                
+                            <!-- start panel -->
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#TEST_9">
+                                        TEST_9
+                                     </a>
+                                    </h4>
+                                </div>
+                                <div id="TEST_9" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        TESTTESTTESTTESTTEST
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end panel -->
+                
+                            <!-- start panel -->
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#TEST_10">
+                                        TEST_10
+                                     </a>
+                                    </h4>
+                                </div>
+                                <div id="TEST_10" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        TESTTESTTESTTESTTEST
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end panel -->
+                
+                            <!-- start panel -->
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#TEST_11">
+                                        TEST_11
+                                     </a>
+                                    </h4>
+                                </div>
+                                <div id="TEST_11" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        TESTTESTTESTTESTTEST
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end panel -->
+                
+                            <!-- start panel -->
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#TEST_12">
+                                        TEST_12
+                                     </a>
+                                    </h4>
+                                </div>
+                                <div id="TEST_12" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        TESTTESTTESTTESTTEST
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end panel -->
+                
+                
+                
+                
+                        </div> 
+                        <!-- end panel right -->
+                
+                
+                
+                
+                    </div>
                 </div>
+                
             </div>
         </div>
     </div>
 </div>
 @endsection
+@push('affiliate-scripts')
+    <script>
+        $('#accordion').on('show.bs.collapse', function () {
+            $('#accordion .in').collapse('hide');
+        });
+    </script>    
+@endpush

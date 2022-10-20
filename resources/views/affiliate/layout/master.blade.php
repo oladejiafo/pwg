@@ -3,6 +3,6 @@
     @include('affiliate.layout.header')
     <body>
         @yield('content')
-        @stack('custom-scripts')
+        @stack('affiliate-scripts')
     </body>
 </html>
