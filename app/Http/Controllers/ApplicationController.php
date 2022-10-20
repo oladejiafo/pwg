@@ -607,7 +607,7 @@ class ApplicationController extends Controller
             $validator = \Validator::make($request->all(), [
                 'dependent_first_name' => 'required',
                 'dependent_surname' => 'required',
-                'email' => 'required | unique:clients',
+                'email' => 'required',
                 'dependent_phone_number' => 'required',
                 'dependent_resume' => 'required',
                 'dependent_dob' => 'required',
@@ -702,7 +702,7 @@ class ApplicationController extends Controller
             ->where('is_dependent', 1)
             ->first();
         if ($dependent) {
-            $dependent->passport_number = $request['dependent_passport_number'];
+            $dependent->passport_number = $request['passport_number'];
             $dependent->passport_issue_date =  date('Y-m-d', strtotime($request['dependent_passport_issue']));
             $dependent->passport_expiry = date('Y-m-d', strtotime($request['dependent_passport_expiry']));
             $dependent->passport_issued_by = $request['dependent_issued_by'];

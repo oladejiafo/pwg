@@ -2205,6 +2205,12 @@ iframe img {
   margin-top: 20px;
   border-radius: 20px;
   box-shadow: 0px 6px 20px rgb(0 0 0 / 5%);
+  line-height: 0px;
+}
+
+.wrapper-link {
+  padding: 0px;
+  margin: 0px;
 }
 
 .dataCompleted {

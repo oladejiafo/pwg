@@ -553,7 +553,7 @@ class HomeController extends Controller
             if (in_array($apply->application_stage_status, $vals) && (empty($apply->embassy_country) || $apply->embassy_country == null)) {
                 $request->validate([
                     'totaldue' => 'required',
-                    'totalpay' => 'numeric|gte:1000',
+                    'totalpay' => 'numeric|gte:1000|lte:'.$request->totaldue,
                     'current_location' => 'required',
                     'embassy_appearance' => 'required'
                 ]);

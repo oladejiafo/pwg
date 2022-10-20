@@ -86,7 +86,7 @@
 
 
     .navbar .jobbers .title{
-      width:75%;
+      /* width:75%; */
       text-align: left;
       float: right;
     }
@@ -202,11 +202,11 @@
               <span><img src="{{asset('images/icon1.png')}}"></span><span style="padding-top:5px">Applicants </span>
               </a>
             </div> -->
-            <!-- <div class="d-flex align-items-center justify-content-center jobbers">
-              <a class="nav-link btn create-new-button" aria-expanded="false" href="#">
-                <span style="display:inline-block"><img alt="PWG" src="{{asset('images/icon2.png')}}"></span><span class="title" style="padding-top:0px;padding-left:15px; display:inline-block">Affiliates</span>
+            <div class="d-flex align-items-center justify-content-center jobbers">
+              <a class="nav-link btn create-new-button" aria-expanded="false" href="{{route('affiliate.home')}}">
+                <span style="display:inline-block"><img alt="PWG" src="{{asset('images/icon2.png')}}"></span><span class="title" style="padding-top:0px;display:inline-block">Affiliates Partner</span>
               </a>
-            </div> -->
+            </div> 
           @endauth
           @endif
 
@@ -259,7 +259,7 @@
                     <div class="preview-item-content">
                     <form method="GET" action="{{ route('profile.show') }}" x-data>
                            
-                      <button style="border-color: #fff; padding:3px; margin:0; width:100px; background-color:#fff; shadow:none;">Profile</button>
+                      <button style="border-color: #fff; padding:3px; margin:0; width:100px; background-color:#fff; shadow:none;font-weight: normal !important; font-size: inherit !important">Profile</button>
                     </form>
                       <!-- <p class="preview-subject mb-1"><a href="{{ route('profile.show') }}">Profile</a></p> -->
                     </div>
@@ -271,7 +271,7 @@
                       <p class="preview-subject mb-1">
                       <form method="POST" action="{{ route('logout') }}" x-data>
                             @csrf  
-                      <button style="border-color: #fff; padding:3px; margin:0; width:100px; background-color:#fff; shadow:none;">Log out</button>
+                      <button style="border-color: #fff; padding:3px; margin:0; width:100px; background-color:#fff; shadow:none;font-weight: normal !important; font-size: inherit !important">Log out</button>
                       </form>
                     </p>
                     </div>

@@ -1,0 +1,123 @@
+.logoImg {
+    padding-left: 70px;
+    padding-top: 12px;
+}
+
+.affiliateNav {
+    background-color: white;
+}
+
+.jobber,
+.jobbers {
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    width: 187px;
+}
+
+.jobber:hover, .jobbers:hover {
+    background: linear-gradient(180deg, rgba(250, 210, 8, 0.8) 0%, #FAE008 100%);
+}
+
+.jobbers {
+    margin-left: 42px;
+}
+
+.jobber {
+    margin-left: 58px;
+}
+
+body {
+    background-color: #f0f3f4;
+    font-family: TT Norms Pro;
+}
+
+h1, h2, h3, h4, h5, h6, p, span {
+    font-family: TT Norms Pro;
+}
+
+.nav-link,
+.nav-link:hover {
+    color: black;
+}
+
+.bannerImage {
+    background-color: white;
+    padding: 80px 200px 80px 200px;
+}
+
+.landingpageicon {
+    height: 411px;
+    width: 670px;
+    padding: 24px;
+}
+
+.land-font {
+    font-family: TT Norms Pro;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 68.5501px;
+    line-height: 81px;
+
+    color: #383838;
+}
+
+.left-sub {
+    font-family: TT Norms Pro;
+    float: right;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 27.4201px;
+    line-height: 32px;
+    color: #000000;
+}
+
+.start {
+    margin-left: 12px;
+    background: #FACB08;
+    height: 59px;
+    width: 50%;
+    border-radius: 0px;
+}
+
+.left-sec {
+    padding: 60px;
+}
+
+.steps {
+    padding: 80px 200px 80px 200px;
+
+}
+
+.step-1, .step-2, .step-3 {
+    position: relative;
+    Width: 400px;
+    Height: 400px;
+}
+
+.step-1 img, .step-2 img, .step-3 img {
+    padding: 5px;
+    
+}
+
+.step-1-desc, .step-2-desc, .step-3-desc {
+    position: absolute;
+    top: 237px;
+    left: 60px;
+    padding : 0px 0px 15px 34px;
+    width: 290px;
+}
+
+.step-1-desc p, .step-2-desc p, .step-3-desc p {
+    font-family: TT Norms Pro;
+    font-weight: 400;
+    font-size: 16.1914px;
+    line-height: 19px;
+}
+
+.step-1-desc h5, .step-2-desc h5, .step-3-desc h5 {
+    font-family: TT Norms Pro;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24.4732px;
+    line-height: 30px;
+}

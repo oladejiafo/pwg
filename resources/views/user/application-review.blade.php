@@ -33,13 +33,13 @@
                                 if ($levels == '2' || $levels == '5' || $levels == '4' || $levels == '3') 
                                 {
                               @endphp    
-                                <a href="#" onclick="return alert('Payment Concluded Already!');">
+                                <a href="#" onclick="return alert('Payment Concluded Already!');" class="wrapper-link">
                                     <div class="round-completed round2 m-2">1</div>
                                 </a>
                               @php
                                 } else {
                               @endphp    
-                                <a href="{{ url('payment_form', $productId) }}" >
+                                <a href="{{ url('payment_form', $productId) }}" class="wrapper-link">
                                     <div class="round-completed round2  m-2">1</div>
                                 </a>
                               @php   
@@ -53,13 +53,13 @@
                               if ($levels == '5' || $levels == '4') {
                             @endphp     
                             <!-- <div class="wrapper">
-                                <a href="#" onclick="return alert('Section completed already');"><div class="round-completed round3 m-2">2</div></a>
+                                <a href="#" onclick="return alert('Section completed already');" class="wrapper-link"><div class="round-completed round3 m-2">2</div></a>
                                 <div class="col-2 round-title">Application <br> Details</div>
                             </div>
                             <div class="linear"></div> -->
 
                             <div class="wrapper">
-                                <a href="#" onclick="return alert('Section completed already');"><div class="round-completed round4 m-2">2</div></a>
+                                <a href="#" onclick="return alert('Section completed already');" class="wrapper-link"><div class="round-completed round4 m-2">2</div></a>
                                 <div class="col-2 round-title">Applicant <br> Details</div>
                             </div>
                             <div class="linear"></div>
@@ -67,13 +67,13 @@
                                 } else {
                             @endphp 
                             <!-- <div class="wrapper">
-                                <a href="{{route('applicant', $productId)}}" ><div class="round-completed round3  m-2">2</div></a>
+                                <a href="{{route('applicant', $productId)}}" class="wrapper-link" ><div class="round-completed round3  m-2">2</div></a>
                                 <div class="col-2 round-title">Application <br> Details</div>
                             </div>
                             <div class="linear"></div> -->
 
                             <div class="wrapper">
-                                <a href="{{route('applicant.details',  $productId)}}" ><div class="round-completed round4 m-2">2</div></a>
+                                <a href="{{route('applicant.details',  $productId)}}" class="wrapper-link"><div class="round-completed round4 m-2">2</div></a>
                                 <div class="col-2 round-title">Applicant <br> Details</div>
                             </div>
                             <div class="linear"></div>
@@ -81,7 +81,7 @@
                                 }
                             @endphp
                             <div class="wrapper">
-                                <a href="{{url('applicant/review',  $productId)}}" ><div class="round-active round5 m-2">3</div></a>
+                                <a href="{{url('applicant/review',  $productId)}}" class="wrapper-link"><div class="round-active round5 m-2">3</div></a>
                                 <div class="col-2 round-title">Applicant <br> Reviews</div>
                             </div> 
                         </div>
@@ -1187,8 +1187,8 @@
                                                     <span class="dependent_current_country_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-6 mt-3 form-floating">
-                                                    <input type="hidden" name="dependent_current_residance_mobile_label" class="form-control" id="dependent_current_residance_mobile_label" placeholder="Current Residence Mobile Number" value="{{$client['phone_number']}}" autocomplete="off"/>
-                                                    <input type="tel" class="form-control" id="dependent_current_residance_mobile" name='dependent_current_residance_mobile' value="{{$dependent['dependent_current_residance_mobile']}}" placeholder="Current Residence Mobile Number" autocomplete="off">
+                                                    <input type="hidden" name="dependent_current_residance_mobile_label" class="form-control" id="dependent_current_residance_mobile_label" placeholder="Current Residence Mobile Number" value="{{$client['residence_mobile_number']}}" autocomplete="off"/>
+                                                    <input type="tel" class="form-control" id="dependent_current_residance_mobile" name='dependent_current_residance_mobile' value="{{$dependent['residence_mobile_number']}}" placeholder="Current Residence Mobile Number" autocomplete="off">
                                                     <span class="dependent_current_residance_mobile_errorClass"></span>
                                                     <label for="dependent_current_residance_mobile_label" style="margin-top: -5px !important; margin-left: -5px !important;">Current Residence Mobile Number</label>
                                                 </div>
@@ -2909,7 +2909,20 @@
                 success: function (data) {
                     if(data.status) {
                         toastr.success('Data Updated Successully');
-                        location.href = "{{url('myapplication')}}"
+                        $.ajax({
+                            type: 'POST',
+                            url: "{{ url('submit/applicant/review/') }}",
+                            data: {
+                                product_id : '{{$productId}}'
+                            },
+                            success: function (response) {
+                                $('.dependentReviewSpin, .childReviewSpin, .applicantReviewSpin').hide();
+                                location.href = "{{url('myapplication')}}"
+                            },
+                            errror: function (error) {
+                                $('.dependentReviewSpin, .childReviewSpin, .applicantReviewSpin').hide();
+                            }
+                        });
                     } else {
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
@@ -2931,12 +2944,14 @@
                 $('#mainApplicant, #dependant').hide();
                 $('.children').addClass('active');
                 $('.mainApplicant, .dependant').removeClass('active');
+                $(window).scrollTop(0);
             } else {
                 $('#dependant').show();
                 $('#mainApplicant, #children').hide();
                 $('.dependant').addClass('active');
                 $('.mainApplicant, .children').removeClass('active');
                 $('#collapsespouseapplicant').addClass('show');
+                $(window).scrollTop(0);
             }
         });
 
@@ -2946,7 +2961,7 @@
             $('#mainApplicant, #dependant').hide();
             $('.children').addClass('active');
             $('.mainApplicant, .dependant').removeClass('active');
-            
+            $(window).scrollTop(0);
         });
 
         const phoneInputField = document.querySelector("#phone");

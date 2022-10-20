@@ -41,9 +41,9 @@
                     <div class="tabs-detail d-flex justify-content-center">
                         <div class="wrapper">
                               @if ($levels == '2' || $levels == '5' || $levels == '4' || $levels == '3')
-                                <a href="#" onclick="return alert('Payment Concluded Already!');"><div class="round-completed round2 m-2">1</div></a>
+                                <a href="#" class="wrapper-link" onclick="return alert('Payment Concluded Already!');"><div class="round-completed round2 m-2">1</div></a>
                               @else 
-                                <a href="{{ url('payment_form', $productId) }}" >
+                                <a href="{{ url('payment_form', $productId) }}" class="wrapper-link">
                                     <div class="round-completed round2  m-2">1</div>
                                 </a>
                               @endif
@@ -56,7 +56,7 @@
                             </div> -->
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href="{{route('applicant.details',  $productId)}}" ><div class="round-active  round4 m-2">2</div></a>
+                                <a href="{{route('applicant.details',  $productId)}}" class="wrapper-link"><div class="round-active  round4 m-2">2</div></a>
                                 <div class="col-2 round-title">Applicant <br> Details</div>
                             </div>
                             <div class="linear"></div>
@@ -66,7 +66,7 @@
                               if ($levels == '5' || $levels == '4') {
                             @endphp     
                             <div class="wrapper">
-                                <a href="{{url('applicant/review',  $productId)}}" ><div class="round5 m-2">3</div></a>
+                                <a href="{{url('applicant/review',  $productId)}}" class="wrapper-link" ><div class="round5 m-2">3</div></a>
                                 <div class="col-2 round-title">Applicant <br> Reviews</div>
                             </div>
                             
@@ -74,7 +74,7 @@
                               } else {
                             @endphp
                             <div class="wrapper">
-                                <a href="#" onclick="return alert('You have to complete Applicants Details first');"><div class="round5 m-2">3</div></a>
+                                <a href="#" onclick="return alert('You have to complete Applicants Details first');" class="wrapper-link"><div class="round5 m-2">3</div></a>
                                 <div class="col-2 round-title">Applicant <br> Reviews</div>
                                 
                             </div>
@@ -601,9 +601,7 @@
                 $('#collapseapplicant').addClass('show');
                 $('#collapseExperience').removeClass('show');
                 toastr.error('Please provide all details');
-                $('html, body').animate({
-                    scrollTop: $("#collapseapplicant").offset().top
-                }, 2000);
+                $(window).scrollTop(0);
             }
         });
         $('.applicantNext').click(function(e){
@@ -618,6 +616,7 @@
                                 $('#mainApplicant, #dependant').hide();
                                 $('.children').addClass('active');
                                 $('.mainApplicant, .dependant').removeClass('active');
+                                $(window).scrollTop(0);
                             } else {
                                 updateStatus('applicant'); 
                                 $('#dependant').show();
@@ -625,6 +624,7 @@
                                 $('.dependant').addClass('active');
                                 $('.mainApplicant, .children').removeClass('active');
                                 $('#collapsespouseapplicant').addClass('show');
+                                $(window).scrollTop(0);
                             }
                         } else {
                             toastr.error('Please provide all details');
@@ -645,9 +645,7 @@
                 $('#collapseapplicant').addClass('show');
                 $('#collapseExperience').removeClass('show');
                 toastr.error('Please provide all details');
-                $('html, body').animate({
-                    scrollTop: $("#collapseapplicant").offset().top
-                }, 2000);
+                $(window).scrollTop(0);
             }
         });
         $("#applicant_details").submit(function(e){
@@ -1447,6 +1445,7 @@
                                 $('#mainApplicant, #dependant').hide();
                                 $('.children').addClass('active');
                                 $('.mainApplicant, .dependant').removeClass('active');
+                                $("body").scrollTop(0);
                             } else {
                                 location.href = "{{url('applicant/review')}}/"+'{{$productId}}'
                             }
@@ -1472,6 +1471,7 @@
                 $('html, body').animate({
                     scrollTop: $("#collapsespouseapplicant").offset().top
                 }, 2000);
+                $("body").scrollTop(0);
             }
         });
     });
