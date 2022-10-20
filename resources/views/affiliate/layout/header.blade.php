@@ -37,7 +37,7 @@
                     <li class="nav-item">
                         <div class="d-flex align-items-center justify-content-center jobbers">
                             <a class="nav-link btn create-new-button" aria-expanded="false" href="#">
-                              <span style="display:inline-block"><img alt="PWG" src="{{asset('images/icon2.png')}}"></span><span class="title" style="padding-top:0px;padding-left:15px; display:inline-block">Affiliates Partner</span>
+                              <span style="display:inline-block"><img alt="PWG" src="{{asset('images/icon2.png')}}"></span><span class="title" style="padding-top:0px;padding-left:15px; display:inline-block">Affiliate Partner</span>
                             </a>
                         </div> 
                     </li>
@@ -57,7 +57,7 @@
                         <li class="nav-item">
                           <a class="nav-link" href="{{route('login')}}">
                             <div class="navbar-profile" style="font-family:'TT Norms Pro'; font-size: 18px; font-weight:500">
-                              <img class="img-xs rounded-circlex" src="{{asset('user/images/signin.svg')}}" style="width: 40px; height: 40px;" alt="PWG ">&nbsp; Sign In
+                              <img class="img-xs rounded-circlex" src="{{asset('user/images/signin.svg')}}" style="width: 40px; height: 40px;" alt="PWG ">&nbsp;Affiliate Sign In
                             </div>
                           </a>
                         </li>
