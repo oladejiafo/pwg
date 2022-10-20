@@ -1,5 +1,5 @@
-{{-- <!DOCTYPE html>
-<html lang="en"> --}}
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
     <!-- <meta http-equiv="Content-Security-Policy" content="script-src 'self'"> -->
