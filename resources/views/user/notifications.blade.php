@@ -16,10 +16,10 @@ $notifications = DB::table('notifications')
 @if($notifications->first())
 
 <div class="row">
-
+<!-- javascript:void(0) -->
         <div class="col px-3 m-2"><b>NOTIFICATIONS</b></div>
             <div align="right" class="col mb-2" style="margin-right:25px;margin-top:2px">
-            <a href="javascript:void(0)" id="noty" style="text-decoration:blue; font-size:11px;color:blue"><i>Mark all as read</i></a>
+            <a href="#" id="noty" style="text-decoration:blue; font-size:11px;color:blue"><i>Mark all as read</i></a>
             </div>
         </div>
         <div class="dropdown-divider"></div>
