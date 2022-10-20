@@ -14,7 +14,8 @@
     width: 187px;
 }
 
-.jobber:hover, .jobbers:hover {
+.jobber:hover,
+.jobbers:hover {
     background: linear-gradient(180deg, rgba(250, 210, 8, 0.8) 0%, #FAE008 100%);
 }
 
@@ -31,7 +32,14 @@ body {
     font-family: TT Norms Pro;
 }
 
-h1, h2, h3, h4, h5, h6, p, span {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span {
     font-family: TT Norms Pro;
 }
 
@@ -88,36 +96,76 @@ h1, h2, h3, h4, h5, h6, p, span {
 
 }
 
-.step-1, .step-2, .step-3 {
+.step-1,
+.step-2,
+.step-3 {
     position: relative;
     Width: 400px;
     Height: 400px;
 }
 
-.step-1 img, .step-2 img, .step-3 img {
+.step-1 img,
+.step-2 img,
+.step-3 img {
     padding: 5px;
-    
+
 }
 
-.step-1-desc, .step-2-desc, .step-3-desc {
+.step-1-desc,
+.step-2-desc,
+.step-3-desc {
     position: absolute;
     top: 237px;
     left: 60px;
-    padding : 0px 0px 15px 34px;
+    padding: 0px 0px 15px 34px;
     width: 290px;
 }
 
-.step-1-desc p, .step-2-desc p, .step-3-desc p {
+.step-1-desc p,
+.step-2-desc p,
+.step-3-desc p {
     font-family: TT Norms Pro;
     font-weight: 400;
     font-size: 16.1914px;
     line-height: 19px;
 }
 
-.step-1-desc h5, .step-2-desc h5, .step-3-desc h5 {
+.step-1-desc h5,
+.step-2-desc h5,
+.step-3-desc h5 {
     font-family: TT Norms Pro;
     font-style: normal;
     font-weight: 400;
     font-size: 24.4732px;
     line-height: 30px;
+}
+
+.faq-accordion {
+    padding: 30px 200px 80px 200px;
+}
+
+.accordion-item {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+/* Custom style */
+.accordion-button::after {
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='%23333' xmlns='http://www.w3.org/2000/svg'%3e%3cpath fill-rule='evenodd' d='M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z' clip-rule='evenodd'/%3e%3c/svg%3e");
+    transform: scale(.7) !important;
+}
+
+.accordion-button:not(.collapsed)::after {
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='%23333' xmlns='http://www.w3.org/2000/svg'%3e%3cpath fill-rule='evenodd' d='M0 8a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H1a1 1 0 0 1-1-1z' clip-rule='evenodd'/%3e%3c/svg%3e");
+}
+
+.accordion-button:not(.collapsed) {
+    color: #000000;
+    background-color: #ffffff;
+    box-shadow: inset 0 -1px 0 rgb(0 0 0 / 13%);
+}
+
+.accordion-button:focus {
+    box-shadow: 0 0 0 0.25rem rgb(255 255 255 / 25%);
+    border-color: #ffffff;
 }

@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApplicationController;
-use App\Http\Controllers\Affiliate\AffiliatePartnerrController;
+use App\Http\Controllers\Affiliate\AffiliatePartnerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ResetPasswordController;
@@ -131,7 +131,7 @@ Route::get('refresh/token', [HomeController::class, 'refreshToken']);
 
 Route::group(['namespace' => 'Affiliate', 'prefix' => '/affiliate','as' => 'affiliate.',
   ], function () {
-      Route::get('/', [AffiliatePartnerrController::class, 'index'])->name('home');
+      Route::get('/', [AffiliatePartnerController::class, 'index'])->name('home');
 
       
   });

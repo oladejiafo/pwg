@@ -83,242 +83,56 @@
                         Learn how to start earning with PWG Group Refferal program.
                     </p>
                 </div>
-                {{-- <div class="col-6">
-
-                </div>
-                <div class="col-6">
-
-                </div> --}}
-                <div class="col-xs-11 col-sm-7">
-                    <div class="panel-group" id="accordion">
-                
-                        <!-- start panel left -->
-                        <div class="panel-left col-sm-6">
-                            <!-- start panel -->
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#TEST_1">
-                                        TEST_1
-                                     </a>
-                                    </h4>
-                                </div>
-                                <div id="TEST_1" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        TESTTESTTESTTESTTEST
-                                    </div>
+                <div class="row faq-accordion">
+                    <div class="col-6">
+                        <div class="accordion accordion-flush" id="accordionFlushFaqLeft">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="flush-headingThree">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                                        How to become a PWG Group Direct affiliate?
+                                    </button>
+                                </h2>
+                                <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushFaqLeft">
+                                    <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting happening here in terms of content, but just filling up the space to make it look, at least at first glance, a bit more representative of how this would look in a real-world application.</div>
                                 </div>
                             </div>
-                            <!-- end panel -->
-                
-                            <!-- start panel -->
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#TEST_2">
-                                        TEST_2
-                                     </a>
-                                    </h4>
-                                </div>
-                                <div id="TEST_2" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        TESTTESTTESTTESTTEST
-                                    </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="faq-four">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-faq" aria-expanded="false" aria-controls="flush-faq">
+                                        How to become a PWG Group Direct affiliate?
+                                    </button>
+                                </h2>
+                                <div id="flush-faq" class="accordion-collapse collapse" aria-labelledby="faq-four" data-bs-parent="#accordionFlushFaqLeft">
+                                    <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting happening here in terms of content, but just filling up the space to make it look, at least at first glance, a bit more representative of how this would look in a real-world application.</div>
                                 </div>
                             </div>
-                            <!-- end panel -->
-                
-                            <!-- start panel -->
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#TEST_3">
-                                        TEST_3
-                                     </a>
-                                    </h4>
-                                </div>
-                                <div id="TEST_3" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        TESTTESTTESTTESTTEST
-                                    </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="accordion accordion-flush" id="accordionFlushFaqRight">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="flush-headingOne">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                        How to become a PWG Group Direct affiliate?
+                                    </button>
+                                </h2>
+                                <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushFaqRight">
+                                    <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
                                 </div>
                             </div>
-                            <!-- end panel -->
-                
-                            <!-- start panel -->
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#TEST_4">
-                                        TEST_4
-                                     </a>
-                                    </h4>
-                                </div>
-                                <div id="TEST_4" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        TESTTESTTESTTESTTEST
-                                    </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="flush-headingTwo">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                                        How to become a PWG Group Direct affiliate?
+                                    </button>
+                                </h2>
+                                <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushFaqRight">
+                                    <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this being filled with some actual content.</div>
                                 </div>
                             </div>
-                            <!-- end panel -->
-                
-                            <!-- start panel -->
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#TEST_5">
-                                        TEST_5
-                                     </a>
-                                    </h4>
-                                </div>
-                                <div id="TEST_5" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        TESTTESTTESTTESTTEST
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end panel -->
-                
-                            <!-- start panel -->
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#TEST_6">
-                                        TEST_6
-                                     </a>
-                                    </h4>
-                                </div>
-                                <div id="TEST_6" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        TESTTESTTESTTESTTEST
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end panel -->
-                
-                
-                
-                
-                        </div> 
-                        <!-- end panel left -->
-                
-                
-                        <!-- start panel right -->
-                        <div class="panel-left col-sm-6">
-                            <!-- start panel -->
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#TEST_7">
-                                        TEST_7
-                                     </a>
-                                    </h4>
-                                </div>
-                                <div id="TEST_7" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        TESTTESTTESTTESTTEST
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end panel -->
-                
-                            <!-- start panel -->
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#TEST_8">
-                                        TEST_8
-                                     </a>
-                                    </h4>
-                                </div>
-                                <div id="TEST_8" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        TESTTESTTESTTESTTEST
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end panel -->
-                
-                            <!-- start panel -->
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#TEST_9">
-                                        TEST_9
-                                     </a>
-                                    </h4>
-                                </div>
-                                <div id="TEST_9" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        TESTTESTTESTTESTTEST
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end panel -->
-                
-                            <!-- start panel -->
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#TEST_10">
-                                        TEST_10
-                                     </a>
-                                    </h4>
-                                </div>
-                                <div id="TEST_10" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        TESTTESTTESTTESTTEST
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end panel -->
-                
-                            <!-- start panel -->
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#TEST_11">
-                                        TEST_11
-                                     </a>
-                                    </h4>
-                                </div>
-                                <div id="TEST_11" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        TESTTESTTESTTESTTEST
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end panel -->
-                
-                            <!-- start panel -->
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#TEST_12">
-                                        TEST_12
-                                     </a>
-                                    </h4>
-                                </div>
-                                <div id="TEST_12" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        TESTTESTTESTTESTTEST
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end panel -->
-                
-                
-                
-                
-                        </div> 
-                        <!-- end panel right -->
-                
-                
-                
-                
+                        </div>
                     </div>
                 </div>
-                
             </div>
         </div>
     </div>
@@ -326,8 +140,6 @@
 @endsection
 @push('affiliate-scripts')
     <script>
-        $('#accordion').on('show.bs.collapse', function () {
-            $('#accordion .in').collapse('hide');
-        });
+        
     </script>    
 @endpush
