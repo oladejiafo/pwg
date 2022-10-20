@@ -33,13 +33,13 @@
                                 if ($levels == '2' || $levels == '5' || $levels == '4' || $levels == '3') 
                                 {
                               @endphp    
-                                <a href="#" onclick="return alert('Payment Concluded Already!');">
+                                <a href="#" onclick="return alert('Payment Concluded Already!');" class="wrapper-link">
                                     <div class="round-completed round2 m-2">1</div>
                                 </a>
                               @php
                                 } else {
                               @endphp    
-                                <a href="{{ url('payment_form', $productId) }}" >
+                                <a href="{{ url('payment_form', $productId) }}" class="wrapper-link">
                                     <div class="round-completed round2  m-2">1</div>
                                 </a>
                               @php   
@@ -53,13 +53,13 @@
                               if ($levels == '5' || $levels == '4') {
                             @endphp     
                             <!-- <div class="wrapper">
-                                <a href="#" onclick="return alert('Section completed already');"><div class="round-completed round3 m-2">2</div></a>
+                                <a href="#" onclick="return alert('Section completed already');" class="wrapper-link"><div class="round-completed round3 m-2">2</div></a>
                                 <div class="col-2 round-title">Application <br> Details</div>
                             </div>
                             <div class="linear"></div> -->
 
                             <div class="wrapper">
-                                <a href="#" onclick="return alert('Section completed already');"><div class="round-completed round4 m-2">2</div></a>
+                                <a href="#" onclick="return alert('Section completed already');" class="wrapper-link"><div class="round-completed round4 m-2">2</div></a>
                                 <div class="col-2 round-title">Applicant <br> Details</div>
                             </div>
                             <div class="linear"></div>
@@ -67,13 +67,13 @@
                                 } else {
                             @endphp 
                             <!-- <div class="wrapper">
-                                <a href="{{route('applicant', $productId)}}" ><div class="round-completed round3  m-2">2</div></a>
+                                <a href="{{route('applicant', $productId)}}" class="wrapper-link" ><div class="round-completed round3  m-2">2</div></a>
                                 <div class="col-2 round-title">Application <br> Details</div>
                             </div>
                             <div class="linear"></div> -->
 
                             <div class="wrapper">
-                                <a href="{{route('applicant.details',  $productId)}}" ><div class="round-completed round4 m-2">2</div></a>
+                                <a href="{{route('applicant.details',  $productId)}}" class="wrapper-link"><div class="round-completed round4 m-2">2</div></a>
                                 <div class="col-2 round-title">Applicant <br> Details</div>
                             </div>
                             <div class="linear"></div>
@@ -81,7 +81,7 @@
                                 }
                             @endphp
                             <div class="wrapper">
-                                <a href="{{url('applicant/review',  $productId)}}" ><div class="round-active round5 m-2">3</div></a>
+                                <a href="{{url('applicant/review',  $productId)}}" class="wrapper-link"><div class="round-active round5 m-2">3</div></a>
                                 <div class="col-2 round-title">Applicant <br> Reviews</div>
                             </div> 
                         </div>
@@ -394,7 +394,7 @@
                                                 <div class="col-sm-3 mt-3 form-floating">
                                                     <input type="integer" id="postal_code" name="postal_code" value="{{$client['postal_code']}}" class="form-control" placeholder="Postal Code*" autocomplete="off">
                                                     <span class="postal_code_errorClass"></span>
-                                                    <label for="postal_code">Postal Code</label>
+                                                    <label for="postal_code">Postal Code*</label>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
@@ -616,7 +616,7 @@
                                             <div class="form-group row mt-4 schengen_visa">
                                                 <div class="col-sm-12 mt-3 form-floating" id="schengen_visa">
 
-                                                    <input type="text" class="form-control schengen_copy" id="schengen_copy" name="schengen_copy" onclick="showSchengenVisaFormat('applicant')" @if($client['schengenVisaUrl'])  value="{{$client['schengenVisaName']}}" @else placeholder="Image of Schengen Or National Visa Issued During Last 5 Years" @endif readonly >
+                                                    <input type="text" class="form-control schengen_copy" id="schengen_copy" name="schengen_copy" onclick="showSchengenVisaFormat('applicant')" @if($client['schengenVisaUrl'])  value="{{$client['schengenVisaName']}}" @endif placeholder="Image of Schengen Or National Visa Issued During Last 5 Years"  readonly >
                                                     
                                                     <div class="input-group-btn">
                                                         <span class="fileUpload btn">
@@ -624,7 +624,7 @@
                                                             <input type="file" class="upload schengen_copy" accept="image/png, image/gif, image/jpeg" name="schengen_copy" />
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
-                                                    <label for="schengen_copy">Copy of Schengen Visa*</label>
+                                                    <label for="schengen_copy">Image of Schengen Or National Visa Issued During Last 5 Years*</label>
                                                    
                                                     @if($client['schengenVisaUrl'])
                                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#schengenVisatModal" onclick="schengenVisatModal()">click to view uploaded schengen visa copy</a>
@@ -634,10 +634,9 @@
                                             </div>
                                             <!-- Add more inputs dynamycally here -->
 
-                                            <div class="form-group row mt-4">
+                                            <div class="form-group row mt-4" id="is_finger_print_collected_for_Schengen_visa">
                                                 <div class="col-sm-12 mt-3 form-floating">
-                                                    <input type="hidden" id="have_fingerprint">
-                                                    <select name="is_finger_print_collected_for_Schengen_visa" id="is_finger_print_collected_for_Schengen_visa" aria-required="true" class="form-control form-select" autocomplete="off">
+                                                    <select name="is_finger_print_collected_for_Schengen_visa" id="have_fingerprint" aria-required="true" class="form-control form-select" autocomplete="off">
                                                         <option value="">Fingerprints Collected Previously For The Purpose Of Applying For Schengen Visa*</option>
                                                         <option {{($client['is_finger_print_collected_for_Schengen_visa'] == "NO") ? 'selected' : ''}} value="NO">No</option>
                                                         <option {{($client['is_finger_print_collected_for_Schengen_visa'] == "YES") ? 'selected' : ''}} value="YES">Yes</option>
@@ -708,7 +707,7 @@
                                                 <input type="text" class="form-control" v-model="search" style="max-height:50px !important" name="search" placeholder="Enter Job Title" >
                                             </div>
                                             <div class="col-lg-2 col-md-4 mt-3" style="padding-left: 0px">
-                                                <button class="btn btn-danger" v-on:click="filterJob()">Search</button>
+                                                <button class="btn btn-danger expSearch" v-on:click="filterJob()">Search</button>
                                             </div>
                                         </div>
                                         <div v-if="filterData.length > 0">
@@ -907,30 +906,36 @@
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-4 mt-3 form-floating">
                                                     <input type="hidden" name="dependentApplicantCompleted" value="0" class="dependentApplicantCompleted">
-                                                    <input type="text" name="dependent_first_name" class="form-control dependent_first_name" placeholder="First Name*" value="{{$dependent['name']}}" autocomplete="off"/>
+                                                    <input type="text" name="dependent_first_name" id="dependent_first_name" class="form-control dependent_first_name" placeholder="First Name*" value="{{$dependent['name']}}" autocomplete="off"/>
+                                                    <label for="dependent_first_name">First Name*</label>
                                                     <span class="dependent_first_name_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-4 mt-3 form-floating">
-                                                    <input type="text" name="dependent_middle_name" class="form-control" placeholder="Middle Name" value="{{$dependent['middle_name']}}"  autocomplete="off"/>
+                                                    <input type="text" name="dependent_middle_name" id="dependent_middle_name" class="form-control" placeholder="Middle Name" value="{{$dependent['middle_name']}}"  autocomplete="off"/>
+                                                    <label for="dependent_middle_name">Middle Name</label>
                                                 </div>
                                                 <div class="col-sm-4 mt-3 form-floating">
-                                                    <input type="text" name="dependent_surname" class="form-control dependent_surname" placeholder="Surname*" value="{{$dependent['sur_name']}}" autocomplete="off"  />
+                                                    <input type="text" name="dependent_surname" class="form-control dependent_surname" id="dependent_surname" placeholder="Surname*" value="{{$dependent['sur_name']}}" autocomplete="off"  />
+                                                    <label for="dependent_surname">Surname*</label>
                                                     <span class="dependent_surname_errorClass"></span>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-6 mt-3">
-                                                    <input type="email" name="dependent_email" class="form-control dependent_email" placeholder="Email*" value="{{$dependent['email']}}" autocomplete="off" />
-                                                    <span class="dependent_email_errorClass"></span>
+                                                <div class="form-floating col-sm-6 mt-3">
+                                                    <input type="email" name="email" class="form-control dependent_email" id="dependent_email" placeholder="Email*" value="{{$dependent['email']}}" autocomplete="off" />
+                                                    <label for="dependent_email">Email*</label>
+                                                    <span class="email_errorClass"></span>
                                                 </div>
-                                                <div class="col-sm-6 mt-3">
+                                                <div class="col-sm-6 mt-3 form-floating">
+                                                    <input type="hidden" name="phone_no_label" class="form-control" id="phone_no_label" placeholder="Phone Number*" value="{{$client['phone_number']}}" autocomplete="off"/>
                                                     <input type="tel" name="dependent_phone_number" class="form-control dependent_phone_number" id="dependent_phone" placeholder="Phone Number*" value="{{$dependent['phone_number']}}" autocomplete="off"  />
                                                     <span class="dependent_phone_number_errorClass"></span>
+                                                    <label for="phone_no_label" style="margin-top: -5px !important; margin-left: -5px !important;">Phone Number*</label>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-12 mt-3">
-                                                    <input type="text" class="form-control dependent_resume" placeholder="Upload your cv (PDF only)*" name="dependent_resume" value="{{$dependent['resumeName']}}" readonly required>
+                                                <div class="form-floating col-sm-12 mt-3">
+                                                    <input type="text" class="form-control dependent_resume" id="dependent_resume" placeholder="Upload your cv (PDF only)*" name="dependent_resume" value="{{$dependent['resumeName']}}" readonly required>
                                                     <div class="input-group-btn">
                                                         <span class="fileUpload btn">
                                                             <span class="upl" id="upload">Choose File</span>
@@ -938,49 +943,55 @@
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
                                                     <a href="javascript:void(0)" data-toggle="modal" data-target="#resumeModal" onclick="showResume()">click to view uploaded resume</a>
+                                                    <label for="dependent_resume">Upload your cv (PDF only)*</label>
                                                     <span class="dependent_resume_errorClass"></span>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-4 mt-3 dob">
-                                                    <input type="text" name="dependent_dob" class="form-control dependent_datepicker" placeholder="Date of Birth*" value="{{ date('d-m-Y', strtotime($dependent['date_of_birth']))}}" id="dependent_datepicker" autocomplete="off"  readonly="readonly" />
+                                                <div class="col-sm-4 mt-3 dob form-floating">
+                                                    <input type="text" name="dependent_dob" id="dependent_datepicker" class="form-control dependent_datepicker" placeholder="Date of Birth*" value="{{ date('d-m-Y', strtotime($dependent['date_of_birth']))}}" id="dependent_datepicker" autocomplete="off"  readonly="readonly" />
+                                                    <label for="dependent_datepicker">Date of Birth*</label>
                                                     <span class="dependent_dob_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-4 mt-3 form-floating">
-                                                    <input type="text" name="dependent_place_birth" class="form-control dependent_place_birth" placeholder="Place of Birth*" value="{{$dependent['place_of_birth']}}" autocomplete="off" />
+                                                    <input type="text" name="dependent_place_birth" class="form-control dependent_place_birth" id="dependent_place_birth" placeholder="Place of Birth*" value="{{$dependent['place_of_birth']}}" autocomplete="off" />
+                                                    <label for="dependent_place_birth">Place of Birth*</label>
                                                     <span class="dependent_place_birth_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-4 mt-3 form-floating">
-                                                    <select class="form-select form-control dependent_country_birth" name="dependent_country_birth" placeholder="Country of Birth*" >
+                                                    <select class="form-select form-control dependent_country_birth" id="dependent_country_birth" name="dependent_country_birth" placeholder="Country of Birth*" >
                                                         <option selected>{{$dependent['country_of_birth']}}</option>
                                                         @foreach (Constant::countries as $key => $item)
                                                             <option {{($dependent['country_birth'] == $key) ? 'seleceted' : ''}} value="{{$key}}">{{$item}}</option>
                                                         @endforeach
                                                     </select>
+                                                    <label id="dependent_country_birth">Country of Birth*</label>
                                                     <span class="dependent_country_birth_errorClass"></span>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-4 mt-3 form-floating">
-                                                    <select class="form-select form-control dependent_citizenship" name="dependent_citizenship" placeholder="Citizenship*" >
+                                                    <select class="form-select form-control dependent_citizenship" name="dependent_citizenship" id="dependent_citizenship" placeholder="Citizenship*" >
                                                         <option selected>{{$dependent['citizenship']}}</option>
                                                         @foreach (Constant::countries as $key => $item)
                                                             <option {{($key == $dependent['citizenship']) ? 'seleceted' : ''}} value="{{$key}}">{{$item}}</option>
                                                         @endforeach
                                                     </select>
+                                                    <label for="dependent_citizenship">Citizenship*</label>
                                                     <span class="dependent_citizenship_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-4 mt-3 form-floating">
-                                                    <select name="dependent_sex"  aria-required="true" class="form-control form-select dependent_sex">
-                                                        <option selected disabled>Sex *</option>
+                                                    <select name="dependent_sex"  id="dependent_sex" aria-required="true" class="form-control form-select dependent_sex">
+                                                        <option selected disabled>Sex </option>
                                                         <option {{($dependent['sex'] == 'MALE') ? 'selected' : '' }} value="MALE">Male</option>
                                                         <option {{($dependent['sex'] == 'FEMALE') ? 'selected' : ''}} value="FEMALE">Female</option>
                                                     </select>
+                                                    <label for="dependent_sex">Sex *</label>
                                                     <span class="dependent_sex_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-4 mt-3 form-floating">
                                                     <select name="dependent_civil_status" id="civil_status" required="" aria-required="true" class="form-control form-select">
-                                                        <option selected disabled>Civil Status *</option>
+                                                        <option selected disabled>Civil Status</option>
                                                         <option  {{($dependent['civil_status'] == 'SINGLE') ? 'selected' : '' }} value="SINGLE">Single</option>
                                                         <option  {{($dependent['civil_status'] == 'MARRIED') ? 'selected' : '' }} value="MARRIED">Married</option>
                                                         <option  {{($dependent['civil_status'] == 'SEPARATED') ? 'selected' : '' }} value="SEPARATED">Separated</option>
@@ -988,6 +999,7 @@
                                                         <option  {{($dependent['civil_status'] == 'WIDOW') ? 'selected' : '' }} value="WIDOW">Widow</option>
                                                         <option  {{($dependent['civil_status'] == 'OTHER') ? 'selected' : '' }} value="OTHER">Other</option>
                                                     </select>
+                                                    <label for="civil_status">Civil Status *</label>
                                                     <span class="civil_status_errorClass"></span>
                                                 </div>
                                             </div>
@@ -1037,29 +1049,33 @@
                                             <input type="hidden" name="product_id" value="{{$productId}}">
                                             <input type="hidden" name="applicant_id" value="{{$applicant['id']}}">
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-12 mt-3">
-                                                    <input type="text" name="dependent_passport_number" class="form-control dependent_passport_number" placeholder="Passport Number*" value="{{$dependent['passport_number']}}" autocomplete="off"/>
+                                                <div class="form-floating col-sm-12 mt-3">
+                                                    <input type="text" name="passport_number" id="dependent_passport_number" class="form-control dependent_passport_number" placeholder="Passport Number*" value="{{$dependent['passport_number']}}" autocomplete="off"/>
+                                                    <label for="dependent_passport_number">Passport Number*</label>
                                                     <span class="dependent_passport_number_errorClass"></span>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-6 mt-3">
-                                                    <input type="text" name="dependent_passport_issue" class="form-control dependent_passport_issue" placeholder="Passport Date of Issue*" value="{{ date('d-m-Y', strtotime($dependent['passport_issue_date']))}}" autocomplete="off"/>
+                                                <div class="form-floating col-sm-6 mt-3">
+                                                    <input type="text" name="dependent_passport_issue" class="form-control dependent_passport_issue" id="dependent_passport_issue" placeholder="Passport Date of Issue*" value="{{ date('d-m-Y', strtotime($dependent['passport_issue_date']))}}" autocomplete="off" readonly/>
+                                                    <label for="dependent_passport_issue">Passport Date of Issue*</label>
                                                     <span class="dependent_passport_issue_errorClass"></span>
                                                 </div>
-                                                <div class="col-sm-6 mt-3">
-                                                    <input type="text" name="dependent_passport_expiry" class="form-control dependent_passport_expiry" placeholder="passport Date of Expiry*" value="{{ date('d-m-Y', strtotime($dependent['passport_expiry']))}}" autocomplete="off" />
+                                                <div class="form-floating col-sm-6 mt-3">
+                                                    <input type="text" name="dependent_passport_expiry" class="form-control dependent_passport_expiry" id="dependent_passport_expiry" placeholder="Passport Date of Expiry*" value="{{ date('d-m-Y', strtotime($dependent['passport_expiry']))}}" autocomplete="off" readonly/>
+                                                    <label for="dependent_passport_expiry">Passport Date of Expiry*</label>
                                                     <span class="dependent_passport_expiry_errorClass"></span>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-12 mt-3">
-                                                    <input type="text" name="dependent_issued_by" class="form-control dependent_issued_by" placeholder="Issued By(Authority that issued the passport)*" value="{{$dependent['passport_issued_by']}}" autocomplete="off"/>
+                                                <div class="form-floating col-sm-12 mt-3">
+                                                    <input type="text" name="dependent_issued_by" class="form-control dependent_issued_by"  id="dependent_issued_by" placeholder="Issued By(Authority that issued the passport)*" value="{{$dependent['passport_issued_by']}}" autocomplete="off"/>
+                                                    <label for="dependent_issued_by">Issued By(Authority that issued the passport)*</label>
                                                     <span class="dependent_issued_by_errorClass"></span>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-12 mt-3">
+                                                <div class="form-floating col-sm-12 mt-3">
                                                     <input type="text" name="dependent_passport_copy" class="form-control dependent_passport_copy" placeholder="Upload Passport Copy*" value="{{$dependent['passportName']}}"  onclick="showPassportFormat('dependent')" autocomplete="off" readonly/>
 
                                                     <div class="input-group-btn">
@@ -1069,6 +1085,7 @@
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
                                                     <a href="javascript:void(0)" data-toggle="modal" data-target="#dependentPassword" onclick="dependentPassword()">click to view uploaded passport copy</a>
+                                                    <label for="dependent_passport_copy">Upload Passport Copy*</label>
                                                     <span class="dependent_passport_copy_errorClass"></span>
                                                 </div>
                                                 {{-- <div class="col-sm-6 mt-3">
@@ -1076,35 +1093,41 @@
                                                 </div> --}}
                                             </div>
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-3 mt-3">
-                                                    <select class="form-select form-control dependent_home_country" name="dependent_home_country" placeholder="home_country*" value="{{$dependent['country']}}" autocomplete="off">
+                                                <div class="form-floating col-sm-3 mt-3">
+                                                    <select class="form-select form-control dependent_home_country" name="dependent_home_country" id="dependent_home_country" placeholder="home_country*" value="{{$dependent['country']}}" autocomplete="off">
                                                         <option selected>{{$dependent['country']}}</option>
                                                         @foreach (Constant::countries as $key => $item)
                                                             <option {{($key == $dependent['country']) ? 'seleceted' : ''}} value="{{$key}}">{{$item}}</option>
                                                         @endforeach
                                                     </select>
+                                                    <label for="dependent_home_country">Home Country</label>
                                                     <span class="dependent_home_country_errorClass"></span>
                                                 </div>
-                                                <div class="col-sm-3 mt-3">
-                                                    <input type="text" name="dependent_state" class="form-control dependent_state" placeholder="State/Province*" value="{{$dependent['state']}}" autocomplete="off">
+                                                <div class="form-floating col-sm-3 mt-3">
+                                                    <input type="text" name="dependent_state" id="dependent_state" class="form-control dependent_state" placeholder="State/Province*" value="{{$dependent['state']}}" autocomplete="off">
+                                                    <label for="dependent_state">State/Province*</label>
                                                     <span class="dependent_state_errorClass"></span>
                                                 </div>
-                                                <div class="col-sm-3 mt-3">
-                                                    <input type="text" name="dependent_city" class="form-control dependent_city" placeholder="City*" value="{{$dependent['city']}}" autocomplete="off">
+                                                <div class="form-floating col-sm-3 mt-3">
+                                                    <input type="text" name="dependent_city" class="form-control dependent_city" id="dependent_city" placeholder="City*" value="{{$dependent['city']}}" autocomplete="off">
+                                                    <label for="dependent_city">City*</label>
                                                     <span class="dependent_city_errorClass"></span>
                                                 </div>
-                                                <div class="col-sm-3 mt-3">
-                                                    <input type="integer" name="dependent_postal_code" value="{{$dependent['postal_code']}}" class="form-control dependent_postal_code" placeholder="Postal Code*" autocomplete="off">
+                                                <div class="form-floating col-sm-3 mt-3">
+                                                    <input type="integer" name="dependent_postal_code" id="dependent_postal_code" value="{{$dependent['postal_code']}}" class="form-control dependent_postal_code" placeholder="Postal Code*" autocomplete="off">
+                                                    <label for="dependent_postal_code">Postal Code*</label>
                                                     <span class="dependent_postal_code_errorClass"></span>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-6 mt-3">
-                                                    <input type="text" name="dependent_address_1" class="form-control dependent_address_1" value="{{$dependent['address_line_1']}}" placeholder="Address (Street And Number) Line 1*" autocomplete="off">
+                                                <div class="form-floating col-sm-6 mt-3">
+                                                    <input type="text" name="dependent_address_1" id="dependent_address_1" class="form-control dependent_address_1" value="{{$dependent['address_line_1']}}" placeholder="Address (Street And Number) Line 1*" autocomplete="off">
+                                                    <label for="dependent_address_1">Address (Street And Number) Line 1*</label>
                                                     <span class="dependent_address_1_errorClass"></span>
                                                 </div>
-                                                <div class="col-sm-6 mt-3">
+                                                <div class="form-floating col-sm-6 mt-3">
                                                     <input type="text" name="dependent_address_2" class="form-control dependent_address_2" value="{{$dependent['address_line_2']}}" placeholder="Address (Street And Number) Line 2" autocomplete="off">
+                                                    <label for="dependent_address_2">Address (Street And Number) Line 2</label>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
@@ -1153,32 +1176,37 @@
                                             <input type="hidden" name="applicant_id" value="{{$applicant['id']}}">
                                             <input type="hidden" name="spouseCurrentCountryCompleted" value="0" class="spouseCurrentCountryCompleted">
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-6 mt-3">
-                                                    <select class="form-select form-control" name="dependent_current_country" placeholder="current_country*"  >
+                                                <div class="form-floating col-sm-6 mt-3">
+                                                    <select class="form-select form-control" name="dependent_current_country" id="dependent_current_country" placeholder="current_country*"  >
                                                         <option selected>{{$dependent['country_of_residence']}}</option>
                                                         @foreach (Constant::countries as $key => $item)
                                                             <option {{($key == $dependent['country_of_residence']) ? 'seleceted' : ''}} value="{{$key}}">{{$item}}</option>
                                                         @endforeach
                                                     </select>
+                                                    <label for="dependent_current_country">Current Country *</label>
                                                     <span class="dependent_current_country_errorClass"></span>
                                                 </div>
-                                                <div class="col-sm-6 mt-3">
-                                                    <input type="tel" class="form-control" id="dependent_current_residance_mobile" name='dependent_current_residance_mobile' value="{{$dependent['dependent_current_residance_mobile']}}" placeholder="Current Residence Mobile Number" autocomplete="off">
+                                                <div class="col-sm-6 mt-3 form-floating">
+                                                    <input type="hidden" name="dependent_current_residance_mobile_label" class="form-control" id="dependent_current_residance_mobile_label" placeholder="Current Residence Mobile Number" value="{{$client['residence_mobile_number']}}" autocomplete="off"/>
+                                                    <input type="tel" class="form-control" id="dependent_current_residance_mobile" name='dependent_current_residance_mobile' value="{{$dependent['residence_mobile_number']}}" placeholder="Current Residence Mobile Number" autocomplete="off">
                                                     <span class="dependent_current_residance_mobile_errorClass"></span>
+                                                    <label for="dependent_current_residance_mobile_label" style="margin-top: -5px !important; margin-left: -5px !important;">Current Residence Mobile Number</label>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-6 mt-3">
-                                                    <input type="text" name="dependent_residence_id" class="form-control" placeholder="Residence Id*"  value="{{$dependent['residence_id']}}" autocomplete="off"/>
+                                                <div class="form-floating col-sm-6 mt-3">
+                                                    <input type="text" name="dependent_residence_id" id="dependent_residence_id" class="form-control" placeholder="Residence Id*"  value="{{$dependent['residence_id']}}" autocomplete="off"/>
+                                                    <label for="dependent_residence_id">Residence Id*</label>
                                                     <span class="dependent_residence_id_errorClass"></span>
                                                 </div>
-                                                <div class="col-sm-6 mt-3">
-                                                    <input type="text" class="form-control dependent_visa_validity" name="dependent_visa_validity" value="{{$dependent['visa_validity']}}" placeholder="Your ID/Visa Date of Validity*" >
+                                                <div class="form-floating col-sm-6 mt-3">
+                                                    <input type="text" class="form-control dependent_visa_validity" id="dependent_visa_validity" name="dependent_visa_validity" value="{{$dependent['visa_validity']}}" placeholder="Your ID/Visa Date of Validity*" >
+                                                    <label for="dependent_visa_validity">Your ID/Visa Date of Validity*</label>
                                                     <span class="dependent_visa_validity_errorClass"></span>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-6 mt-3">
+                                                <div class="form-floating col-sm-6 mt-3">
                                                     <input type="text" class="form-control dependent_residence_copy" name="dependent_residence_copy" onclick="showResidenceIdFormat('dependent')" value="{{$dependent['residenceName']}}" placeholder="Residence/Emirates ID*" readonly >
                                                     <div class="input-group-btn">
                                                         <span class="fileUpload btn">
@@ -1187,9 +1215,10 @@
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
                                                     <a href="javascript:void(0)" data-toggle="modal" data-target="#dependentResidence" onclick="dependentResidence()">click to view uploaded residence copy</a>
+                                                    <label for="dependent_residence_copy">Residence/Emirates ID*</label>
                                                     <span class="dependent_residence_copy_errorClass"></span>
                                                 </div>
-                                                <div class="col-sm-6 mt-3">
+                                                <div class="form-floating col-sm-6 mt-3">
                                                     <input type="text" class="form-control dependent_visa_copy" name="dependent_visa_copy" onclick="showVisaFormat('dependent')" @if($dependent['visaCopyUrl'] != null)  value="{{$dependent['visaName']}}" @else  placeholder="Visa Copy" @endif readonly >
                                                     <div class="input-group-btn">
                                                         <span class="fileUpload btn">
@@ -1197,6 +1226,7 @@
                                                             <input type="file" class="upload dependent_visa_copy" id="up"  name="dependent_visa_copy" />
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
+                                                    <label for="dependent_visa_copy">Visa Copy</label>
                                                     @if($dependent['visaCopyUrl'] != null)
                                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#dependentVisa" onclick="dependentVisa()">click to view uploaded visa copy</a>
                                                     @endif
@@ -1210,33 +1240,40 @@
                                             </div> --}}
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-4 mt-3 form-floating">
-                                                    <input type="text" name="dependent_work_state" class="form-control" value="{{$dependent['work_state']}}" placeholder="Work State/Province*" autocomplete="off"/>
+                                                    <input type="text" name="dependent_work_state" id="dependent_work_state" class="form-control" value="{{$dependent['work_state']}}" placeholder="Work State/Province*" autocomplete="off"/>
+                                                    <label for="dependent_work_state">Work State/Province*</label>
                                                     <span class="dependent_work_state_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-4 mt-3 form-floating">
-                                                    <input type="text" class="form-control" name="dependent_work_city"  value="{{$dependent['work_city']}}" placeholder="Work City*" autocomplete="off">
+                                                    <input type="text" class="form-control" name="dependent_work_city" id="dependent_work_city" value="{{$dependent['work_city']}}" placeholder="Work City*" autocomplete="off">
+                                                    <label for="dependent_work_city">Work City*</label>
                                                     <span class="dependent_work_city_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-4 mt-3 form-floating">
-                                                    <input type="text" class="form-control" name="dependent_work_postal_code" value="{{$dependent['work_postal_code']}}" placeholder="Work Place Postal Code*" autocomplete="off">
+                                                    <input type="text" class="form-control" name="dependent_work_postal_code" id="dependent_work_postal_code" value="{{$dependent['work_postal_code']}}" placeholder="Work Place Postal Code*" autocomplete="off">
+                                                    <label for="dependent_work_postal_code">Work Place Postal Code*</label>
                                                     <span class="dependent_work_postal_code_errorClass"></span>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-4 mt-3 form-floating">
-                                                    <input type="text" name="dependent_work_street" class="form-control" value="{{$dependent['work_address']}}" placeholder="Work Place Street & Number*" autocomplete="off"/>
+                                                    <input type="text" name="dependent_work_street" id="dependent_work_street" class="form-control" value="{{$dependent['work_address']}}" placeholder="Work Place Street & Number*" autocomplete="off"/>
+                                                    <label for="dependent_work_street">Work Place Street & Number*</label>
                                                     <span class="dependent_work_street_errorClass"></span>
                                                 </div>
                                                 <div class="col-sm-4 mt-3 form-floating">
-                                                    <input type="text" class="form-control" name="dependent_company_name"  value="{{$dependent['company_name']}}" placeholder="Name of Company" autocomplete="off">
+                                                    <input type="text" class="form-control" name="dependent_company_name" id="dependent_company_name"  value="{{$dependent['company_name']}}" placeholder="Name of Company" autocomplete="off">
+                                                    <label for="dependent_company_name">Name of Company</label>
                                                 </div>
                                                 <div class="col-sm-4 mt-3 form-floating">
-                                                    <input type="text" class="form-control" name="dependent_employer_phone" value="{{$dependent['employer_phone_number']}}" placeholder="Employer Phone Number" autocomplete="off">
+                                                    <input type="text" class="form-control" name="dependent_employer_phone" id="dependent_employer_phone" value="{{$dependent['employer_phone_number']}}" placeholder="Employer Phone Number" autocomplete="off">
+                                                    <label>Employer Phone Number</label>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-12 mt-3">
-                                                    <input type="email" name="dependent_employer_email" class="form-control" value="{{$dependent['employer_email']}}" placeholder="Email of the employer" autocomplete="off">
+                                                <div class="form-floating col-sm-12 mt-3">
+                                                    <input type="email" name="dependent_employer_email" id="dependent_employer_email" class="form-control" value="{{$dependent['employer_email']}}" placeholder="Email of the employer" autocomplete="off">
+                                                    <label for="dependent_employer_email" >Email of the employer</label>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
@@ -1285,37 +1322,41 @@
                                             <input type="hidden" name="applicant_id" value="{{$applicant['id']}}">
                                             <input type="hidden" name="schengenSpouseCompleted" value="0" class="schengenSpouseCompleted">
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-12 mt-3">
+                                                <div class="form-floating col-sm-12 mt-3">
                                                     <select name="is_dependent_schengen_visa_issued_last_five_year" id="is_dependent_schengen_visa_issued_last_five_year" aria-required="true" class="form-control form-select" autocomplete="off">
-                                                        <option selected disabled>Schengen Or National Visa Issued During Last 5 Years*</option>
+                                                        <option selected disabled>Schengen Or National Visa Issued During Last 5 Years</option>
                                                         <option {{($dependent['is_schengen_visa_issued_last_five_year'] == "NO") ? 'selected' : ''}} value="NO">No</option>
                                                         <option {{($dependent['is_schengen_visa_issued_last_five_year'] == "YES") ? 'selected' : ''}} value="YES">Yes</option> 
                                                     </select>
+                                                    <label for="is_dependent_schengen_visa_issued_last_five_year">Schengen Or National Visa Issued During Last 5 Years*</label>
                                                     <span class="is_dependent_schengen_visa_issued_last_five_year_errorClass"></span>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4 dependent_schengen_visa">
-                                                <div class="col-sm-12 mt-3">
-                                                    <input type="text" class="form-control dependent_schengen_copy" name="dependent_schengen_copy" onclick="showSchengenVisaFormat('dependent')" @if($dependent['schengenVisaUrl'] != null) value="{{$dependent['schengenVisaName']}}" @else placeholder="Image of Schengen Or National Visa Issued During Last 5 Years" @endif readonly >
+                                                <div class="form-floating col-sm-12 mt-3" id="dependent_schengen_visa">
+                                                    <input type="text" class="form-control dependent_schengen_copy" name="dependent_schengen_copy" id="dependent_schengen_copy" onclick="showSchengenVisaFormat('dependent')" @if($dependent['schengenVisaUrl'] != null) value="{{$dependent['schengenVisaName']}}" @else placeholder="Image of Schengen Or National Visa Issued During Last 5 Years" @endif readonly >
                                                     <div class="input-group-btn">
                                                         <span class="fileUpload btn">
                                                             <span class="upl" id="upload">Choose File</span>
                                                             <input type="file" class="upload dependent_schengen_copy" accept="image/png, image/gif, image/jpeg" name="dependent_schengen_copy" />
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
-                                                    <div style="display: block;color:blue"><a href="#" class="plus" title="click here to add another row for upload" style="display:inline"><i class="fa fa-plus-circle"></i></a> Add another Visa <a href="#" class="minus" id="minus" title="click here to remove the last added row for upload" style="display:inline"><i class="fa fa-minus-circle"></i></a></div>
+                                                    <label for="dependent_schengen_copy">Image of Schengen Or National Visa Issued During Last 5 Years</label>
                                                     @if($dependent['schengenVisaUrl'] != null)
                                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#dependentSchengenVisatModal" onclick="dependentSchengenVisatModal()">click to view uploaded schengen visa copy</a>
-                                                    @endif
+                                                    @endif                                                    
                                                 </div>
+                                                <div style="display: block;color:blue"><a href="#" class="plus" title="click here to add another row for upload" style="display:inline"><i class="fa fa-plus-circle"></i></a> Add another Visa <a href="#" class="minus" id="minus" title="click here to remove the last added row for upload" style="display:inline"><i class="fa fa-minus-circle"></i></a></div>
+
                                             </div>
-                                            <div class="form-group row mt-4">
-                                                <div class="col-sm-12 mt-3">
-                                                    <select name="is_dependent_finger_print_collected_for_Schengen_visa" id="is_dependent_finger_print_collected_for_Schengen_visa" aria-required="true" class="form-control form-select" autocomplete="off">
-                                                        <option value="">Fingerprints Collected Previously For The Purpose Of Applying For Schengen Visa*</option>
+                                            <div class="form-group row mt-4" id="is_dependent_finger_print_collected_for_Schengen_visa">
+                                                <div class="form-floating col-sm-12 mt-3">
+                                                    <select name="is_dependent_finger_print_collected_for_Schengen_visa" id="dependent_finger" aria-required="true" class="form-control form-select" autocomplete="off">
+                                                        <option value="">Fingerprints Collected Previously For The Purpose Of Applying For Schengen Visa</option>
                                                         <option {{($dependent['is_finger_print_collected_for_Schengen_visa'] == "NO") ? 'selected' : ''}} value="NO">No</option>
                                                         <option {{($dependent['is_finger_print_collected_for_Schengen_visa'] == "YES") ? 'selected' : ''}} value="YES">Yes</option> 
                                                     </select>
+                                                    <label for="dependent_finger">Fingerprints Collected Previously For The Purpose Of Applying For Schengen Visa</label>
                                                     <span class="is_dependent_finger_print_collected_for_Schengen_visa_errorClass"></span>
                                                 </div>
                                             </div>
@@ -1586,32 +1627,36 @@
                                                         <input type="hidden" name="childrenCount" value="{{$client['children_count']}}">
                                                         <input type="hidden" name="product_id" value="{{$productId}}">
                                                         <input type="hidden" name="child" value="{{$key+1}}">
-                                                        <input type="text" name="child_{{$key+1}}_first_name" class="form-control child_{{$key+1}}_first_name" placeholder="First Name*" value="{{$child['name']}}" autocomplete="off" />
+                                                        <input type="text" name="child_{{$key+1}}_first_name" id="child_{{$key+1}}_first_name" class="form-control child_{{$key+1}}_first_name" placeholder="First Name*" value="{{$child['name']}}" autocomplete="off" />
+                                                        <label for="child_{{$key+1}}_first_name">First Name*</label>
                                                         <span class="child_{{$key+1}}_first_name_errorClass"></span>
                                                         @error('child_{{$key+1}}_first_name') <span class="error">{{ $message }}</span> @enderror
                                                     </div>
                                                     <div class="col-sm-4 mt-3 form-floating">
-                                                        <input type="text" name="child_{{$key+1}}_middle_name" class="form-control " placeholder="Middle Name" value="{{$child['middle_name']}}"  autocomplete="off"/>
+                                                        <input type="text" name="child_{{$key+1}}_middle_name" id="child_{{$key+1}}_middle_name" class="form-control " placeholder="Middle Name" value="{{$child['middle_name']}}"  autocomplete="off"/>
+                                                        <label for="child_{{$key+1}}_middle_name">Middle Name</label>
                                                     </div>
                                                     <div class="col-sm-4 mt-3 form-floating">
-                                                        <input type="text" name="child_{{$key+1}}_surname" class="form-control child_{{$key+1}}_surname" placeholder="Surname*" value="{{$child['sur_name']}}" autocomplete="off"  />
+                                                        <input type="text" name="child_{{$key+1}}_surname" id="child_{{$key+1}}_surname" class="form-control child_{{$key+1}}_surname" placeholder="Surname*" value="{{$child['sur_name']}}" autocomplete="off"  />
+                                                        <label for="child_{{$key+1}}_surname">Surname*</label>
                                                         <span class="child_{{$key+1}}_surname_errorClass"></span>
                                                         @error('child_{{$key+1}}_surname') <span class="error">{{ $message }}</span> @enderror
                                                     </div>
                                                 </div>
                                                 <div class="form-group row mt-4">
-                                                    <div class="col-sm-6 mt-3">
-                                                        <input type="text"  name="child_{{$key+1}}_dob" class="child-dob form-control" placeholder="Date Of Birth*" value="{{$child['date_of_birth']}}">
+                                                    <div class="col-sm-6 mt-3 form-floating">
+                                                        <input type="text"  name="child_{{$key+1}}_dob" id="child_{{$key+1}}_dob" class="child-dob form-control" placeholder="Date Of Birth*" value="{{$child['date_of_birth']}}">
+                                                        <label for="child_{{$key+1}}_dob">Date Of Birth*</label>
                                                         <span class="child_{{$key+1}}_dob_errorClass"></span>
                                                         @error('child_{{$key+1}}_dob') <span class="error">{{ $message }}</span> @enderror
-
                                                     </div>
-                                                    <div class="col-sm-6 mt-3">
-                                                        <select name="child_{{$key+1}}_gender" aria-required="true" class="form-control form-select child_{{$key+1}}_gender" >
-                                                            <option selected disabled>Sex *</option>
-                                                            <option {{($child['sex'] == 'MALE') ? 'selected' : '' }} value="Male"></option>
+                                                    <div class="col-sm-6 mt-3 form-floating">
+                                                        <select name="child_{{$key+1}}_gender" id="child_{{$key+1}}_gender" aria-required="true" class="form-control form-select child_{{$key+1}}_gender" >
+                                                            <option selected disabled>Sex</option>
+                                                            <option {{($child['sex'] == 'MALE') ? 'selected' : '' }} value="Male">Male</option>
                                                             <option {{($child['sex'] == 'FEMALE') ? 'selected' : ''}} value="FEMALE">Female</option>
                                                             </select>
+                                                        <label for="child_{{$key+1}}_gender">Sex</label>
                                                         <span class="child_{{$key+1}}_gender_errorClass"></span>
                                                         @error('child_{{$key+1}}_gender') <span class="error">{{ $message }}</span> @enderror
 
@@ -1913,19 +1958,19 @@
         </div>
     </div>
     @php  
-        $vall1 = $client['schengenVisaName1'];
-        $vall2 = $client['schengenVisaName2'];
-        $vall3 = $client['schengenVisaName3'];
-        $vall4 = $client['schengenVisaName4'];
+        $vall1 = ($client['schengenVisaName1']) ?? null;
+        $vall2 = ($client['schengenVisaName2']) ?? null;
+        $vall3 = ($client['schengenVisaName3']) ?? null;
+        $vall4 = ($client['schengenVisaName4']) ?? null;
 
-        $sheng = $client['schengenVisaUrl1'];
+        $sheng = ($client['schengenVisaUrl1']) ?? null;
         $phold = "Image of Schengen Or National Visa Issued During Last 5 Years";
-        $vall1_dep = $client['schengenVisaName1_dep'];
-        $vall2_dep = $client['schengenVisaName2_dep'];
-        $vall3_dep = $client['schengenVisaName3_dep'];
-        $vall4_dep = $client['schengenVisaName4_dep'];
+        $vall1_dep = $dependent['schengenVisaName1_dep'];
+        $vall2_dep = $dependent['schengenVisaName2_dep'];
+        $vall3_dep = $dependent['schengenVisaName3_dep'];
+        $vall4_dep = $dependent['schengenVisaName4_dep'];
 
-        $sheng_dep = $client['schengenVisaUrl1_dep'];
+        $sheng_dep = $dependent['schengenVisaUrl1_dep'];
         $phold_dep = "Image of Schengen Or National Visa Issued During Last 5 Years";
     @endphp
 @endSection  
@@ -1936,7 +1981,8 @@
 
 <script>
     var cnt=0;
-    var valle='';
+    var cnt_dep = 0; 
+    var valle=null;
     $(function() {
         //Add more file input box for schengen visa upload
         $('a.pl').click(function(e) {
@@ -1946,23 +1992,28 @@
             
             if(cnt == 1)
             {
-                valle="<?php echo $vall1; ?>";                
+                valle="<?php echo $vall1;?>";                
             }
             else if(cnt === 2)
             {
-                 valle="<?php echo $vall2; ?>";                
+                 valle="<?php echo $vall2;?>";                
             }
             else if(cnt === 3)
             {
-                 valle="<?php echo $vall3; ?>";                
+                 valle="{{($vall3) ?? null}}";                
             }
             else if(cnt === 4)
             {
-                 valle="<?php echo $vall4; ?>";                
+                 valle="<?php echo $vall4;?>";                
             }
-
-            $('#schengen_visa').append('<div class="col-sm-12 mt-3" id="schengen_visa"><input type="text" class="form-control schengen_copy1_'+cnt+'" name="schengen_copy1[]" onclick="showSchengenVisaFormat(\'applicant\')" @if($sheng)  value="'+valle+ '" @else placeholder="{{$phold}}" @endif readonly ><div class="input-group-btn"><span class="fileUpload btn"><span class="upl" id="upload">Choose File</span><input style="position: absolute;top: 0; right: 0; margin: 0; padding: 0; font-size: 20px; cursor: pointer; opacity: 0; filter: alpha(opacity=0);" type="file" class="schengen_copy1_'+cnt+'" accept="image/png, image/gif, image/jpeg" name="schengen_copy1[]" /></span></div></div>');
-          }
+            var appendData = '<div class="col-sm-12 mt-3" id="schengen_visa"><input type="text" class="form-control schengen_copy1_'+cnt+'" placeholder="Image of Schengen Or National Visa Issued During Last 5 Years" name="schengen_copy1[]"  ';
+            if(valle.length > 1)  { 
+                appendData += 'value="'+valle+'"';
+            }
+            appendData += ' readonly ><div class="input-group-btn"><span class="fileUpload btn"><span class="upl" id="upload">Choose File</span><input style="position: absolute;top: 0; right: 0; margin: 0; padding: 0; font-size: 20px; cursor: pointer; opacity: 0; filter: alpha(opacity=0);" type="file" class="schengen_copy1_'+cnt+'" accept="image/png, image/gif, image/jpeg" name="schengen_copy1[]" /></span></div></div>';
+            $('#schengen_visa').append(appendData);
+            
+        }
         });
 
         //Remove the extra file input box for schengen visa upload
@@ -1980,7 +2031,6 @@
             if($('.dependent_schengen_copy').val()){
                 if (cnt_dep < 4) {
                     cnt_dep = cnt_dep+1;
-
                     if(cnt_dep == 1)
                     {
                         valle_dep="<?php echo $vall1_dep; ?>";                
@@ -1998,7 +2048,7 @@
                         valle_dep="<?php echo $vall4_dep; ?>";                
                     }
 
-                    $('#dependent_schengen_visa').append('<div class="col-sm-12 mt-3" id="dependent_schengen_visa"><input type="text" class="form-control dependent_schengen_copy1_'+cnt_dep+'" name="dependent_schengen_copy1[]"  @if($sheng_dep)  value="'+valle_dep+ '" @else placeholder="{{$phold_dep}}" @endif readonly ><div class="input-group-btn"><span class="fileUpload btn"><span class="upl" id="upload">Choose File</span><input style="position: absolute;top: 0; right: 0; margin: 0; padding: 0; font-size: 20px; cursor: pointer; opacity: 0; filter: alpha(opacity=0);" type="file" class="dependent_schengen_copy1_'+cnt_dep+'" accept="image/png, image/gif, image/jpeg" name="dependent_schengen_copy1[]" /></span></div></div>');
+                    $('#dependent_schengen_visa').append('<div class="col-sm-12 mt-3" id="dependent_schengen_visa"><input type="text" class="form-control dependent_schengen_copy1_'+cnt_dep+'" name="dependent_schengen_copy1[]" placeholder="Image of Schengen Or National Visa Issued During Last 5 Years" @if($sheng_dep)  value="'+valle_dep+'"  @endif readonly ><div class="input-group-btn"><span class="fileUpload btn"><span class="upl" id="upload">Choose File</span><input style="position: absolute;top: 0; right: 0; margin: 0; padding: 0; font-size: 20px; cursor: pointer; opacity: 0; filter: alpha(opacity=0);" type="file" class="dependent_schengen_copy1_'+cnt_dep+'" accept="image/png, image/gif, image/jpeg" name="dependent_schengen_copy1[]" /></span></div></div>');
                 }
             } else {
                 toastr.error('Please fill pevious field before adding field');
@@ -2624,8 +2674,10 @@
         $('#is_dependent_schengen_visa_issued_last_five_year').on('change', function(){
             if($('#is_dependent_schengen_visa_issued_last_five_year').val() == "YES"){
                 $('.dependent_schengen_visa').show();
+                $('#is_dependent_finger_print_collected_for_Schengen_visa').show();
             } else {
                 $('.dependent_schengen_visa').hide();
+                $('#is_dependent_finger_print_collected_for_Schengen_visa').hide();
             }
         });
 
@@ -2857,7 +2909,20 @@
                 success: function (data) {
                     if(data.status) {
                         toastr.success('Data Updated Successully');
-                        location.href = "{{url('myapplication')}}"
+                        $.ajax({
+                            type: 'POST',
+                            url: "{{ url('submit/applicant/review/') }}",
+                            data: {
+                                product_id : '{{$productId}}'
+                            },
+                            success: function (response) {
+                                $('.dependentReviewSpin, .childReviewSpin, .applicantReviewSpin').hide();
+                                location.href = "{{url('myapplication')}}"
+                            },
+                            errror: function (error) {
+                                $('.dependentReviewSpin, .childReviewSpin, .applicantReviewSpin').hide();
+                            }
+                        });
                     } else {
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
@@ -2879,12 +2944,14 @@
                 $('#mainApplicant, #dependant').hide();
                 $('.children').addClass('active');
                 $('.mainApplicant, .dependant').removeClass('active');
+                $(window).scrollTop(0);
             } else {
                 $('#dependant').show();
                 $('#mainApplicant, #children').hide();
                 $('.dependant').addClass('active');
                 $('.mainApplicant, .children').removeClass('active');
                 $('#collapsespouseapplicant').addClass('show');
+                $(window).scrollTop(0);
             }
         });
 
@@ -2894,7 +2961,7 @@
             $('#mainApplicant, #dependant').hide();
             $('.children').addClass('active');
             $('.mainApplicant, .dependant').removeClass('active');
-            
+            $(window).scrollTop(0);
         });
 
         const phoneInputField = document.querySelector("#phone");
@@ -2916,10 +2983,11 @@
             autoHideDialCode: false,
             utilsScript:'https://intl-tel-input.com/node_modules/intl-tel-input/build/js/utils.js',
         });
-
+        let dependentPhoneInput = null;
+        let dependentcurrentresidancemobileInput = null;
         if(('{{$applicant['work_permit_category']}}' == 'FAMILY PACKAGE') && ('{{$client['is_spouse']}}' > 0)){
             const dependentPhone = document.querySelector("#dependent_phone");
-            const dependentPhoneInput = window.intlTelInput(dependentPhone,{
+            dependentPhoneInput = window.intlTelInput(dependentPhone,{
                 separateDialCode: false,
                 preferredCountries:["ae"],
                 nationalMode: false,
@@ -2929,7 +2997,7 @@
             });
 
             const dependentcurrentresidancemobile = document.querySelector("#dependent_current_residance_mobile");
-            const dependentcurrentresidancemobileInput = window.intlTelInput(dependentcurrentresidancemobile,{
+            dependentcurrentresidancemobileInput = window.intlTelInput(dependentcurrentresidancemobile,{
                 separateDialCode: false,
                 preferredCountries:["ae"],
                 nationalMode: false,

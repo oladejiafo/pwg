@@ -83,7 +83,7 @@
 
 
  .navbar .jobbers .title{
-  width:75%;
+  /* width:75%; */
   text-align: left;
   float: right;
 }

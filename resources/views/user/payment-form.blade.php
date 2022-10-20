@@ -103,7 +103,7 @@ $vals=array(0,1,2);
                     <div class="tabs d-flex justify-content-center">
 
                         <div class="wrapper">
-                            <a href="{{ url('payment_form', $pid)}}">
+                            <a href="{{ url('payment_form', $pid)}}" class="wrapper-link">
                                 <div class="round-active round2 m-2">1</div>
                             </a>
                             <div class="col-2 round-title">Payment <br> Details</div>
@@ -119,14 +119,14 @@ $vals=array(0,1,2);
 	                        </div>
 	                        <div class="linear"></div> -->
 	                        <div class="wrapper">
-	                            <a href="{{route('applicant.details', $pid)}}">
+	                            <a href="{{route('applicant.details', $pid)}}" class="wrapper-link">
 	                                <div class="round4 m-2">2</div>
 	                            </a>
 	                            <div class="col-2 round-title">Applicant <br> Details</div>
 	                        </div>
 	                        <div class="linear"></div>
 	                        <div class="wrapper">
-	                            <a href="{{url('applicant/review', $pid)}}">
+	                            <a href="{{url('applicant/review', $pid)}}" class="wrapper-link">
 	                                <div class="round5 m-2">3</div>
 	                            </a>
 	                            <div class="col-2 round-title">Application <br> Review</div>
@@ -140,14 +140,14 @@ $vals=array(0,1,2);
 	                        </div>
 	                        <div class="linear"></div> -->
 	                        <div class="wrapper">
-	                            <a href="#" onclick="return alert('You have to complete Payment first');">
+	                            <a href="#" onclick="return alert('You have to complete Payment first');" class="wrapper-link">
 	                                <div class="round4 m-2">2</div>
 	                            </a>
 	                            <div class="col-2 round-title">Applicant <br> Details</div>
 	                        </div>
 	                        <div class="linear"></div>
 	                        <div class="wrapper">
-	                            <a href="#" onclick="return alert('You have to complete Payment first');">
+	                            <a href="#" onclick="return alert('You have to complete Payment first');"  class="wrapper-link">
 	                                <div class="round5 m-2">3</div>
 	                            </a>
 	                            <div class="col-2 round-title">Application <br> Review</div>

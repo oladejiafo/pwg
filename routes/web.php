@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApplicationController;
-use App\Http\Controllers\BotmanController;
+use App\Http\Controllers\Affiliate\AffiliatePartnerrController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ResetPasswordController;
@@ -127,3 +127,11 @@ Route::post('/get/job/category/four/list', [ApplicationController::class, 'getJo
 Route::get('quickbook/token', [HomeController::class, 'getQuickbookToken']);
 Route::get('refresh/token', [HomeController::class, 'refreshToken']);
 
+// Affiliate
+
+Route::group(['namespace' => 'Affiliate', 'prefix' => '/affiliate','as' => 'affiliate.',
+  ], function () {
+      Route::get('/', [AffiliatePartnerrController::class, 'index'])->name('home');
+
+      
+  });

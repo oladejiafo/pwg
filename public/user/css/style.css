@@ -1107,6 +1107,10 @@ a.more {
   padding: 1rem 0.55rem !important;
 }
 
+.expSearch {
+  padding: 28px !important;
+}
+
 .form-control {
   height: calc(3.5rem + 2px) !important;
 }
@@ -2201,6 +2205,12 @@ iframe img {
   margin-top: 20px;
   border-radius: 20px;
   box-shadow: 0px 6px 20px rgb(0 0 0 / 5%);
+  line-height: 0px;
+}
+
+.wrapper-link {
+  padding: 0px;
+  margin: 0px;
 }
 
 .dataCompleted {

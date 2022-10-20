@@ -38,7 +38,7 @@
                     
                     <form method="POST" enctype="multipart/form-data" id="applicant_details">
                         @csrf
-                        <input type="hidden" name="destination_id" value="{{$productId}}">
+                        <input type="hidden" name="product_id" value="{{$productId}}">
                         <input type="hidden" name="applicantCompleted" value="0" class="applicantCompleted">
                         <div class="form-group row mt-4">
                             <div class="form-floating col-sm-4 mt-3">
@@ -62,9 +62,11 @@
                                 <label for="floatingInput">Email*</label>
                                 <span class="email_errorClass"></span>
                             </div>
-                            <div class=" col-sm-6 mt-3">
+                            <div class="form-floating col-sm-6 mt-3">
+                                <input type="hidden" name="phone_number_label" class="form-control phone_number_label" id="phone_number_label" placeholder="Phone Number*" autocomplete="off"/>
                                 <input type="tel" name="phone_number" class="form-control phone_number phone"   placeholder="Phone Number*" value="{{$client['phone_number']}}" autocomplete="off"  />
                                 <span class="phone_number_errorClass"></span>
+                                <label for="phone_number_label" style="margin-top: -5px !important; margin-left: -5px !important;">Phone Number*</label>
                             </div>
                         </div>
                         <div class="form-group row mt-4">
@@ -333,9 +335,11 @@
                             
                         </div>
                         <div class="form-group row mt-4">
-                            <div class="col-sm-4 mt-3">
+                            <div class="form-floating col-sm-4 mt-3">
+                                <input type="hidden" name="current_residence_phone_number_label" class="form-control current_residence_phone_number_label" id="current_residence_phone_number_label" placeholder="Phone Number*" autocomplete="off"/>
                                 <input type="tel" class="form-control" id="current_residance_mobile" name='current_residance_mobile' value="{{old('current_residance_mobile')}}" placeholder="Current Residence Mobile Number" autocomplete="off">
                                 <span class="current_residance_mobile_errorClass"></span>
+                                <label for="current_residence_phone_number_label" style="margin-top: -5px !important; margin-left: -5px !important;">Phone Number*</label>
                             </div>
                             <div class="form-floating col-sm-4 mt-3">
                                 <input type="text" name="residence_id" class="form-control" id="residence_id" placeholder="Residence Id*" autocomplete="off"/>

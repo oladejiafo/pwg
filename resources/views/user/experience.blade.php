@@ -27,7 +27,7 @@
                         <input type="text" class="form-control" v-model="search" name="search" placeholder="Enter Job Title" >
                     </div>
                     <div class="col-4 col-md-2 col-lg-2 mt-3" style="padding-left: 0px">
-                        <button class="btn btn-danger" v-on:click="filterJob()">Search</button>
+                        <button class="btn btn-danger expSearch" v-on:click="filterJob()">Search</button>
                     </div>
                 </div>
             </div>

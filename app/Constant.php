@@ -148,7 +148,7 @@ class Constant {
         'Paraguay'=>"Paraguay",
         'Peru'=>"Peru",
         'Philippines'=>"Philippines",
-        'Poland'=>"Poland",
+        'Czech'=>"Poland",
         'Portugal'=>"Portugal",
         'Qatar'=>"Qatar",
         'Romania'=>"Romania",
@@ -205,6 +205,28 @@ class Constant {
         'Yemen'=>"Yemen",
         'Zambia'=>"Zambia",
         'Zimbabwe'=>"Zimbabwe"
+    ];
+
+    const payments = [
+        'First Payment-Poland' => 'First Payment-Poland',
+        'Second Payment-Poland' => 'Second Payment-Poland',
+        'Third Payment-Poland' => 'Third Payment-Poland',
+
+        'First Payment-Canada' => 'First Payment-Canada',
+        'Second Payment-Canada' => 'Second Payment-Canada',
+        'Third Payment-Canada' => 'Third Payment-Canada',
+
+        'First Payment-Malta' => 'First Payment-Malta',
+        'Second Payment-Malta' => 'Second Payment-Malta',
+        'Third Payment-Malta' => 'Third Payment-Malta',
+
+        'First Payment-Czech' => 'First Payment-Czech',
+        'Second Payment-Czech' => 'Second Payment-Czech',
+        'Third Payment-Czech' => 'Third Payment-Czech',
+
+        'First Payment-Germany' => 'First Payment-Germany',
+        'Second Payment-Germany' => 'Second Payment-Germany',
+        'Third Payment-Germany' => 'Third Payment-Germany',
     ];
 
 }
