@@ -117,7 +117,7 @@ span {
     position: absolute;
     top: 237px;
     left: 60px;
-    padding: 0px 0px 15px 34px;
+    padding: 0px 7px 15px 34px;
     width: 290px;
 }
 
@@ -168,4 +168,196 @@ span {
 .accordion-button:focus {
     box-shadow: 0 0 0 0.25rem rgb(255 255 255 / 25%);
     border-color: #ffffff;
+}
+
+.accordion-left,
+.accordion-right {
+    width: 100%;
+}
+
+/* Responsive */
+
+@media only screen and (max-width: 479px) and (min-width: 320px) {
+
+    .bannerImage {
+        padding: 80px 40px 80px 40px;
+    }
+
+    .start {
+        height: 45px;
+        width: 100%;
+    }
+
+    .land-font {
+        font-size: 42px;
+        line-height: 60px;
+    }
+
+    .left-sub {
+        font-weight: 200;
+        font-size: 20px;
+    }
+
+    .landingpageicon {
+        height: 355px;
+        width: 277px;
+        padding: 0px;
+    }
+
+    .steps {
+        padding: 40px 40px 40px 40px;
+    }
+
+    .step-1,
+    .step-2,
+    .step-3 {
+        position: relative;
+        Width: 280px;
+        Height: 400px;
+    }
+
+    .step-1-desc,
+    .step-2-desc,
+    .step-3-desc {
+        position: absolute;
+        top: 222px;
+        left: 0px;
+        padding: 0px 18px 0px 22px;
+        width: 100%;
+    }
+
+    .step-1-desc p,
+    .step-2-desc p,
+    .step-3-desc p {
+        font-size: 12px;
+    }
+
+    .step-1-desc h5,
+    .step-2-desc h5,
+    .step-3-desc h5 {
+        font-size: 23px;
+    }
+
+    .faq-accordion {
+        padding: 30px 40px 80px 40px;
+    }
+
+    .accordion-left,
+    .accordion-right {
+        width: 100%;
+    }
+
+    .faqs p {
+        font-size: 11px;
+    }
+
+    .logoImg {
+        padding-left: 24px;
+    }
+
+    .navbar-light .navbar-toggler {
+        margin-left: 20px;
+        margin-top: 12px;
+    }
+}
+
+@media only screen and (max-width: 768px) and (min-width: 479px) {
+    .steps {
+        padding: 80px 20px 80px 20px;
+    }
+
+    .step-1,
+    .step-2,
+    .step-3 {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .step-1-desc,
+    .step-2-desc,
+    .step-3-desc {
+        left: 190px;
+    }
+
+
+    .step-1 img,
+    .step-2 img,
+    .step-3 img {
+        padding: 0px;
+    }
+
+    .bannerImage {
+        padding: 80px 60px 80px 60px;
+    }
+
+    .left-sub {
+        font-size: 16px;
+        line-height: 26px;
+    }
+
+    .land-font {
+        font-size: 58px;
+        line-height: 62px;
+    }
+
+    .landingpageicon {
+        height: 100%;
+        width: 100%;
+        padding: 0px;
+    }
+
+    .faq-accordion {
+        padding: 30px 120px 80px 120px;
+    }
+
+}
+
+@media only screen and (max-width: 1024px) and (min-width: 986px) {
+    .steps {
+        padding: 80px 50px 80px 50px;
+    }
+
+    .step-1 img,
+    .step-2 img,
+    .step-3 img {
+        padding: 0px;
+    }
+
+    .step-1,
+    .step-2,
+    .step-3 {
+        Width: 100%;
+        Height: 100%;
+    }
+
+    .step-1-desc,
+    .step-2-desc,
+    .step-3-desc {
+        top: 214px;
+        left: 0px;
+        padding: 0px 0px 15px 20px;
+        width: 100%;
+    }
+
+    .bannerImage {
+        padding: 80px 80px 80px 80px;
+    }
+
+    .landingpageicon {
+        height: auto;
+        width: 100%;
+    }
+
+    .land-font {
+        font-size: 60px;
+        line-height: 64px;
+    }
+
+    .left-sub {
+        font-size: 22px;
+    }
+
+    .faq-accordion {
+        padding: 30px 80px 80px 80px;
+    }
 }
