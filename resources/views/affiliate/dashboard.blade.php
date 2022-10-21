@@ -39,8 +39,10 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <div class="header-group">
-                                            <span class="head">Current Available Revenue</span>
-                                            <img src="{{asset('images/affiliate/Bargraph.svg')}}" class="bargraph">
+                                            <a href="#">
+                                                <span class="head">Current Available Revenue</span>
+                                                <img src="{{asset('images/affiliate/Bargraph.svg')}}" class="bargraph">
+                                            </a>
                                         </div>
                                     </div>
                                     <div class="card-body align-items-center justify-content-center">
@@ -60,10 +62,12 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <div class="header-group">
-                                            <span class="head">Total Refferals</span>
-                                            <span class="dot"></span>
-                                            <span class="dot"></span>
-                                            <span class="dot"></span>
+                                            <a href="#">
+                                                <span class="head">Total Refferals</span>
+                                                <span class="dot"></span>
+                                                <span class="dot"></span>
+                                                <span class="dot"></span>
+                                            </a>
                                         </div>
                                     </div>
                                     <div class="card-body align-items-center justify-content-center">
@@ -80,10 +84,12 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <div class="header-group">
-                                            <span class="head">Total Amount Earned</span>
-                                            <span class="dot"></span>
-                                            <span class="dot"></span>
-                                            <span class="dot"></span>
+                                            <a href="#">
+                                                <span class="head">Total Amount Earned</span>
+                                                <span class="dot"></span>
+                                                <span class="dot"></span>
+                                                <span class="dot"></span>
+                                            </a>
                                         </div>
                                     </div>
                                     <div class="card-body align-items-center justify-content-center">

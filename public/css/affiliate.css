@@ -201,7 +201,6 @@ span {
 .landingpageicondashboard {
     height: 304px;
     width: 488px;
-    padding: 50px;
 }
 
 .current-available .card-header {
@@ -359,6 +358,15 @@ span {
     list-style-type: none;
     float: right;
     display: flex;
+}
+
+.current-available .card-header a {
+    color: #fff;
+}
+
+.card-header a {
+    text-decoration: none;
+    color: #000;
 }
 
 /* Responsive */
@@ -563,5 +571,58 @@ span {
     .left-sub-dashboard {
         font-size: 16px;
         line-height: 23px;
+    }
+
+    .navItems ul li div a,
+    .navItems ul li a {
+        margin-right: 8px;
+        font-size: 14px;
+
+    }
+
+    .navItems ul li div a img {
+        margin-right: 20px;
+    }
+
+    .navbar-expand-lg .navbar-nav .nav-link {
+        padding: 0px !important;
+    }
+
+    .card-body {
+        padding: 5px 10px 5px 10px !important;
+    }
+
+    .card-body .card-title {
+        font-size: 38px;
+    }
+
+    .transfer {
+        height: 30px;
+        width: 150px;
+    }
+
+    .current-available .card-header .head,
+    .total-refferals .card-header .head,
+    .total-earn .card-header .head {
+        font-size: 12px;
+    }
+
+    .total-earn .card-text,
+    .total-refferals .card-text {
+        margin-top: 47px;
+    }
+
+    .current-available .card-header {
+        padding: 0.5rem 1rem !important;
+    }
+
+    .total-refferals .card-header,
+    .total-earn .card-header {
+        height: 57px;
+        padding: 0.5rem 1rem !important;
+    }
+
+    .recommend {
+        padding: 40px 40px 40px 40px;
     }
 }
