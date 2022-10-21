@@ -37,7 +37,7 @@
         <div class="row justify-content-md-center">
             <div class="col-12">
                 <div class="row">
-                    <div class="col-4">
+                    <div class="col-sm-12 col-md-12 col-lg-4">
                         <div class="step-1">
                             <img src="{{asset('images/affiliate/Step1.svg')}}" width="100%" height="100%" >
                             <div class="step-1-desc">
@@ -46,7 +46,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-4">
+                    <div class="col-sm-12 col-md-12 col-lg-4">
                         <div class="step-2">
                             <img src="{{asset('images/affiliate/Step2.svg')}}" width="100%" height="100%">
                             <div class="step-2-desc">
@@ -55,12 +55,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-4">
+                    <div class="col-sm-12 col-md-12 col-lg-4">
                         <div class="step-3">
                             <img src="{{asset('images/affiliate/Step3.svg')}}" width="100%" height="100%">
                             <div class="step-3-desc">
                                 <h5>Withdraw your Earnings</h5>
                                 <p>Transfer your earnings to your prefered bank account.</p>
+
                             </div>
                         </div>
                     </div>
@@ -80,242 +81,60 @@
                         Learn how to start earning with PWG Group Refferal program.
                     </p>
                 </div>
-                {{-- <div class="col-6">
-
-                </div>
-                <div class="col-6">
-
-                </div> --}}
-                <div class="col-xs-11 col-sm-7">
-                    <div class="panel-group" id="accordion">
-                
-                        <!-- start panel left -->
-                        <div class="panel-left col-sm-6">
-                            <!-- start panel -->
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#TEST_1">
-                                        TEST_1
-                                     </a>
-                                    </h4>
-                                </div>
-                                <div id="TEST_1" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        TESTTESTTESTTESTTEST
+                <div class="faq-accordion">
+                    <div class="accordion accordion-flush" id="accordionFlushFaqLeft">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 col-lg-6">
+                                <div class="row accordion-left">                        
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="flush-headingThree">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                                                What is PWG Group?
+                                            </button>
+                                        </h2>
+                                        <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushFaqLeft">
+                                            <div class="accordion-body">PWG Group is an immigration company that helps students and professionals migrate abroad to either pursue their studies or careers.</div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="faq-four">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-faq" aria-expanded="false" aria-controls="flush-faq">
+                                                Is PWG legitimate?
+                                            </button>
+                                        </h2>
+                                        <div id="flush-faq" class="accordion-collapse collapse" aria-labelledby="faq-four" data-bs-parent="#accordionFlushFaqLeft">
+                                            <div class="accordion-body">Yes,  PWG Group is registered in the UAE and has been in operation for 8 years. It has helped more than 3000 professionals to migrate to Poland, Germany, Czech Republic, Malta and Canada. You can check out some testimonial videos from some of our successful applicants here.</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <!-- end panel -->
-                
-                            <!-- start panel -->
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#TEST_2">
-                                        TEST_2
-                                     </a>
-                                    </h4>
-                                </div>
-                                <div id="TEST_2" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        TESTTESTTESTTESTTEST
+                            <div class="col-sm-12 col-md-12 col-lg-6">
+                                <div class="row accordion-right">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="flush-headingOne">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                                How do I pay for my application process?
+                                            </button>
+                                        </h2>
+                                        <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushFaqLeft">
+                                            <div class="accordion-body">You must pay a down payment to start the application process, followed by a second installment once the visa is approved. The third and final payment is made after you arrive at your dream destination. </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="flush-headingTwo">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                                                I’m outside the UAE, can I apply for my visa through PWG?
+                                            </button>
+                                        </h2>
+                                        <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushFaqLeft">
+                                            <div class="accordion-body">Yes, you can apply virtually from any country by contacting us via Whatsapp +971 50 423 0438</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <!-- end panel -->
-                
-                            <!-- start panel -->
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#TEST_3">
-                                        TEST_3
-                                     </a>
-                                    </h4>
-                                </div>
-                                <div id="TEST_3" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        TESTTESTTESTTESTTEST
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end panel -->
-                
-                            <!-- start panel -->
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#TEST_4">
-                                        TEST_4
-                                     </a>
-                                    </h4>
-                                </div>
-                                <div id="TEST_4" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        TESTTESTTESTTESTTEST
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end panel -->
-                
-                            <!-- start panel -->
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#TEST_5">
-                                        TEST_5
-                                     </a>
-                                    </h4>
-                                </div>
-                                <div id="TEST_5" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        TESTTESTTESTTESTTEST
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end panel -->
-                
-                            <!-- start panel -->
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#TEST_6">
-                                        TEST_6
-                                     </a>
-                                    </h4>
-                                </div>
-                                <div id="TEST_6" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        TESTTESTTESTTESTTEST
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end panel -->
-                
-                
-                
-                
-                        </div> 
-                        <!-- end panel left -->
-                
-                
-                        <!-- start panel right -->
-                        <div class="panel-left col-sm-6">
-                            <!-- start panel -->
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#TEST_7">
-                                        TEST_7
-                                     </a>
-                                    </h4>
-                                </div>
-                                <div id="TEST_7" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        TESTTESTTESTTESTTEST
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end panel -->
-                
-                            <!-- start panel -->
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#TEST_8">
-                                        TEST_8
-                                     </a>
-                                    </h4>
-                                </div>
-                                <div id="TEST_8" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        TESTTESTTESTTESTTEST
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end panel -->
-                
-                            <!-- start panel -->
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#TEST_9">
-                                        TEST_9
-                                     </a>
-                                    </h4>
-                                </div>
-                                <div id="TEST_9" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        TESTTESTTESTTESTTEST
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end panel -->
-                
-                            <!-- start panel -->
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#TEST_10">
-                                        TEST_10
-                                     </a>
-                                    </h4>
-                                </div>
-                                <div id="TEST_10" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        TESTTESTTESTTESTTEST
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end panel -->
-                
-                            <!-- start panel -->
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#TEST_11">
-                                        TEST_11
-                                     </a>
-                                    </h4>
-                                </div>
-                                <div id="TEST_11" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        TESTTESTTESTTESTTEST
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end panel -->
-                
-                            <!-- start panel -->
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#TEST_12">
-                                        TEST_12
-                                     </a>
-                                    </h4>
-                                </div>
-                                <div id="TEST_12" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        TESTTESTTESTTESTTEST
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end panel -->
-                
-                
-                
-                
-                        </div> 
-                        <!-- end panel right -->
-                
-                
-                
-                
+                        </div>
                     </div>
                 </div>
-                
             </div>
         </div>
     </div>
@@ -323,8 +142,6 @@
 @endsection
 @push('affiliate-scripts')
     <script>
-        $('#accordion').on('show.bs.collapse', function () {
-            $('#accordion .in').collapse('hide');
-        });
+        
     </script>    
 @endpush
