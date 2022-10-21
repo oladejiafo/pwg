@@ -42,7 +42,7 @@
                             <img src="{{asset('images/affiliate/Step1.svg')}}" width="100%" height="100%" >
                             <div class="step-1-desc">
                                 <h4>Register on our platform</h4>
-                                <p>Easy registration,few details and you </br> are set to go </p>
+                                <p>Easy registration,few details and you are set to go </p>
                             </div>
                         </div>
                     </div>
@@ -51,9 +51,7 @@
                             <img src="{{asset('images/affiliate/Step2.svg')}}" width="100%" height="100%">
                             <div class="step-2-desc">
                                 <h5>Refer your friend & Earn</h5>
-                                <p>Invite friends and other people to<br>
-                                    have their Europe dream come true <br>
-                                   by working in Poland </p>
+                                <p>Invite friends and other people to have their Europe dream come true by working in Poland </p>
                             </div>
                         </div>
                     </div>
@@ -62,8 +60,7 @@
                             <img src="{{asset('images/affiliate/Step3.svg')}}" width="100%" height="100%">
                             <div class="step-3-desc">
                                 <h5>Withdraw your Earnings</h5>
-                                <p>Transfer your earnings to your prefered <br>
-                                    bank account.</p>
+                                <p>Transfer your earnings to your prefered bank account.</p>
                             </div>
                         </div>
                     </div>

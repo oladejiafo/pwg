@@ -7,7 +7,7 @@
     
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
         <meta name="description" content="This is PWG Group client portal. PWG Group is an immigration company that helps students and professionals migrate abroad to either pursue their studies or careers.">
-        <title>Affiliate Partner</title>
+        <title>PWG Group - Affiliate Portal</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <link rel='stylesheet' type='text/css' media='screen' href='{{asset('css/affiliate.css')}}'>
 	
