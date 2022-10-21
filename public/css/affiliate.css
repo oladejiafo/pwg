@@ -175,6 +175,200 @@ span {
     width: 100%;
 }
 
+.bannerImageDashboard {
+    background-color: white;
+    padding: 80px 120px 0px 120px;
+    width: 80%;
+    margin-top: 30px;
+}
+
+.land-font-dashboard {
+    font-size: 55px;
+    line-height: 60px;
+    font-weight: bolder;
+}
+
+.left-sub-dashboard {
+    font-family: TT Norms Pro;
+    float: right;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 32px;
+    color: #000000;
+}
+
+.landingpageicondashboard {
+    height: 304px;
+    width: 488px;
+}
+
+.current-available .card-header {
+    background: linear-gradient(90deg, #24911C 0%, #00761C 99.98%);
+    color: #fff;
+    padding: 1rem 1.5rem !important;
+}
+
+.steps-dashboard {
+    padding: 40px 0px 40px 0px;
+    width: 80%;
+}
+
+.bargraph {
+    float: right;
+    /* margin: 10px 20px 10px 20px */
+}
+
+.card {
+    font-family: TT Norms Pro;
+    height: 258px;
+}
+
+.current-available .card-header .head,
+.total-refferals .card-header .head,
+.total-earn .card-header .head {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 25px;
+    letter-spacing: 0em;
+    text-align: left;
+
+}
+
+.card-body .card-title {
+    font-size: 45px;
+    text-align: center;
+    margin-top: 14px;
+    color: #4F5E66;
+}
+
+.card-body .card-text {
+    font-style: normal;
+    font-weight: lighter;
+    font-size: 16px;
+    line-height: 20px;
+    color: #4F5E66;
+    text-align: center;
+}
+
+.transfer {
+    border: 0.5px solid #333333;
+    border-radius: 0px;
+    height: 39px;
+    width: 165px;
+    font-weight: 800;
+}
+
+.total-refferals .card-header {
+    background: linear-gradient(90deg, #FFD500 -0.01%, #FFE000 99.99%);
+    color: #000;
+    padding: 1rem 1.5rem !important;
+    height: 74px;
+}
+
+.total-earn .card-header {
+    height: 74px;
+    background: linear-gradient(90deg, #FFC437 0%, #FE9D82 99.99%);
+    color: #000;
+    padding: 1rem 1.5rem !important;
+}
+
+.dot {
+    height: 5px;
+    width: 5px;
+    background-color: #fff;
+    border-radius: 50%;
+    display: inline-block;
+    float: right;
+    margin: 10px 3px 2px 2px;
+}
+
+.card-header {
+    border-bottom: 0px;
+}
+
+.total-earn .card-text,
+.total-refferals .card-text {
+    margin-top: 54px;
+}
+
+.recommend {
+    background-color: #fff;
+    padding: 40px 70px 40px 70px;
+    width: 80%;
+    margin-bottom: 40px;
+}
+
+.recommend h6 {
+    font-weight: bold;
+}
+
+.news1,
+.news2,
+.news3,
+.news4,
+.news5 {
+    width: 16%;
+    height: 268px;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 0px 12px 0px 12px;
+
+}
+
+.news1 p,
+.news5 p {
+    font-family: TT Norms Pro;
+    color: #4F5E66;
+    font-weight: 100;
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+.logoImgAffiliate {
+    padding-top: 12px;
+}
+
+.navItems {
+    margin-left: 80px;
+}
+
+.navItems ul li div a,
+.navItems ul li a {
+    margin-right: 10px;
+    font-family: TT Norms Pro;
+    font-weight: bolder;
+    font-size: 20px;
+    color: #2C3144 !important;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: #2C3144 !important;
+}
+
+.navItems ul li div a img {
+    margin-right: 27px;
+}
+
+.affiliateNavLogin .container-fluid {
+    width: 80%;
+}
+
+.navbar-right-section {
+    list-style-type: none;
+    float: right;
+    display: flex;
+}
+
+.current-available .card-header a {
+    color: #fff;
+}
+
+.card-header a {
+    text-decoration: none;
+    color: #000;
+}
+
 /* Responsive */
 
 @media only screen and (max-width: 479px) and (min-width: 320px) {
@@ -358,5 +552,77 @@ span {
 
     .faq-accordion {
         padding: 30px 80px 80px 80px;
+    }
+
+    .landingpageicondashboard {
+        width: 400px;
+        height: 300px;
+    }
+
+    .land-font-dashboard {
+        font-size: 47px;
+        line-height: 53px;
+    }
+
+    .bannerImageDashboard {
+        padding: 80px 80px 0px 80px
+    }
+
+    .left-sub-dashboard {
+        font-size: 16px;
+        line-height: 23px;
+    }
+
+    .navItems ul li div a,
+    .navItems ul li a {
+        margin-right: 8px;
+        font-size: 14px;
+
+    }
+
+    .navItems ul li div a img {
+        margin-right: 20px;
+    }
+
+    .navbar-expand-lg .navbar-nav .nav-link {
+        padding: 0px !important;
+    }
+
+    .card-body {
+        padding: 5px 10px 5px 10px !important;
+    }
+
+    .card-body .card-title {
+        font-size: 38px;
+    }
+
+    .transfer {
+        height: 30px;
+        width: 150px;
+    }
+
+    .current-available .card-header .head,
+    .total-refferals .card-header .head,
+    .total-earn .card-header .head {
+        font-size: 12px;
+    }
+
+    .total-earn .card-text,
+    .total-refferals .card-text {
+        margin-top: 47px;
+    }
+
+    .current-available .card-header {
+        padding: 0.5rem 1rem !important;
+    }
+
+    .total-refferals .card-header,
+    .total-earn .card-header {
+        height: 57px;
+        padding: 0.5rem 1rem !important;
+    }
+
+    .recommend {
+        padding: 40px 40px 40px 40px;
     }
 }
