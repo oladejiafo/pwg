@@ -142,8 +142,3 @@
     </div>
 </div>
 @endsection
-@push('affiliate-scripts')
-    <script>
-        
-    </script>    
-@endpush
