@@ -26,24 +26,30 @@ input [type="phone"]
       <div class="heading">
         <div class="first-heading">
           <h3>
-            Let’s get you started!
+            Let's get you started!
           </h3>
         </div>
         <div class="bottoom-title">
-          <p>Please create your account</p>
+          <p>Please create your affiliate account</p>
         </div>
       </div>
       <div class="tab-sec">
-        <a href="{{route('register')}}" class="signupBtn">Signup</a>
-        <a href="{{route('login')}}" >Login</a>
+        <a href="{{route('affiliate.register')}}" class="signupBtn">Signup</a>
+        <a href="{{route('affiliate.login')}}" >Login</a>
       </div>
       <div class="form-sec">
-        <form method="POST" action="{{ route('register') }}">
+        <form method="POST" action="{{ route('affiliate.affiliate-register') }}">
           @csrf
           <div class="mb-3">
-            <div class="label"><label for="name" class="form-label">Name</label></div>
+            <div class="label"><label for="name" class="form-label">First Name</label></div>
             <div class="inputs">
               <input type="text" style="padding: 10px;" class="form-control" id="exampleInputName" name="name" aria-describedby="emailHelp" autocomplete="off" required value="{{ old('name') }}">
+            </div>
+          </div>
+          <div class="mb-3">
+            <div class="label"><label for="name" class="form-label">Surname</label></div>
+            <div class="inputs">
+              <input type="text" style="padding: 10px;" class="form-control" id="exampleInputName" name="surname" aria-describedby="emailHelp" autocomplete="off" required value="{{ old('surname') }}">
             </div>
           </div>
           <div class="mb-3">
@@ -79,6 +85,13 @@ input [type="phone"]
               <img src="{{asset('images/Eye_Icon.png')}}" alt=img id="cofirmation">
               <img src="{{asset('images/view_password.svg')}}" alt=img class="confirmation_viewIcon">
               @error('password') <span class="error">{{ $message }}</span> @enderror
+            </div>
+          </div>
+          <div class="mb-3">
+            <div class="label"><label for="refferer" class="form-label">Refferer Code</label></div>
+            <div class="inputs">
+              <input type="text" style="paddingx: 10px;" placeholder="Who reffered you? Type the code here, if any" class="form-control refferer" id="refferer" name="refferer" aria-describedby="emailHelp" autocomplete="off" value="{{ old('refferer') }}">
+              @error('refferer') <span class="error">{{ $message }}</span> @enderror
             </div>
           </div>
           <div class="mb-3">

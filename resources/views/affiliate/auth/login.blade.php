@@ -11,15 +11,15 @@
         <div class="heading">
           <div class="first-heading">
               <h3>
-                  Welcome Back Affiliate
+                  Welcome Back
               </h3>
           </div>
           <div class="bottoom-title">
-            <p>Please login with your account</p>
+            <p>Please login with your affiliate account</p>
           </div>
         </div>
         <div class="tab-sec">
-            <a href="{{route('register')}}">Signup</a>
+            <a href="{{route('affiliate.register')}}">Signup</a>
             <a href="{{route('affiliate.login')}}" class="signupBtn">Login</a>
         </div>
         <div class="form-sec">
@@ -47,8 +47,8 @@
             
             <button type="submit" class="btn btn-primary submitBtn">Login</button>
             <div class="bottom-sec">
-                <div class="signuplink"><a href="{{route('register')}}">Signup</a></div>
-                <div class="forgot"><a href="{{route('password.request')}}">forgot your password ?</a></div>
+                <div class="signuplink"><a href="{{route('affiliate.register')}}">Signup</a></div>
+                <div class="forgot"><a href="{{route('affiliate.forgot-password')}}">forgot your password ?</a></div>
             </div>
           </form>
         </div>

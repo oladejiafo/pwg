@@ -9,4 +9,12 @@ class Affiliate extends Model
 {
     use HasFactory;
 
+    protected $table= 'affiliate';
+
+    protected $fillable = [
+        'first_name',
+        'email',
+        'phone_number',
+        'password',
+    ];
 }
