@@ -17,12 +17,12 @@
                             <p class="left-sub">
                                 Recommend clients. Start earning immediately.
                                 <br>
-                                We are for people !
+                                We are for people ! 
                             </p>
                         </div>
                         <div class="row">
                             <button class="btn start">Start Earning Now</button>
-                        </div>
+                        </div> 
                     </div>
                     <div class="col-sm-12 col-md-6 col-lg-6 land-right-sec">
                         <div class="landingpageicon">
@@ -51,9 +51,7 @@
                             <img src="{{asset('images/affiliate/Step2.svg')}}" width="100%" height="100%">
                             <div class="step-2-desc">
                                 <h5>Refer your friend & Earn</h5>
-                                <p>Invite friends and other people to
-                                    have their Europe dream come true 
-                                   by working in Poland </p>
+                                <p>Invite friends and other people to have their Europe dream come true by working in Poland </p>
                             </div>
                         </div>
                     </div>
@@ -62,8 +60,8 @@
                             <img src="{{asset('images/affiliate/Step3.svg')}}" width="100%" height="100%">
                             <div class="step-3-desc">
                                 <h5>Withdraw your Earnings</h5>
-                                <p>Transfer your earnings to your prefered 
-                                    bank account.</p>
+                                <p>Transfer your earnings to your prefered bank account.</p>
+
                             </div>
                         </div>
                     </div>

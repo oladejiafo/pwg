@@ -133,5 +133,10 @@ Route::group(['namespace' => 'Affiliate', 'prefix' => '/affiliate','as' => 'affi
   ], function () {
       Route::get('/', [AffiliatePartnerController::class, 'index'])->name('home');
 
-      
+      Route::post('affiliate-login', [AffiliatePartnerController::class,'affiliate_login'])->name('affiliate-login');
+      Route::get('affiliateLogin', [AffiliatePartnerController::class,'affiliateLogin'])->name('login'); //->middleware('alreadyLoggedIn')
+      Route::get('affiliateLogout', [AffiliatePartnerController::class,'affiliateLogout'])->name('logout');
+      Route::get('dashboard',[AffiliatePartnerController::class,'dashboard'])->middleware('isLoggedIn');
+
+      Route::get('/affiliate/register', [AffiliatePartnerController::class,'affiliateRegister'])->name('register');
   });
