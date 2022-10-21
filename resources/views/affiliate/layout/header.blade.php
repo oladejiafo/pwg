@@ -55,11 +55,23 @@
                     </ul>
                     <ul style="list-style-type:none;">
                         <li class="nav-item">
-                          <a class="nav-link" href="{{route('login')}}">
+                        @if(Session::has('loginId'))
+ 
+                          <a class="nav-link" href="{{route('affiliate.logout')}}">
                             <div class="navbar-profile" style="font-family:'TT Norms Pro'; font-size: 18px; font-weight:500">
-                              <img class="img-xs rounded-circlex" src="{{asset('user/images/signin.svg')}}" style="width: 40px; height: 40px;" alt="PWG ">&nbsp;Affiliate Sign In
-                            </div>
+                              <img class="img-xs rounded-circlex" src="{{asset('user/images/signin.svg')}}" style="width: 40px; height: 40px;" alt="PWG ">
+                              &nbsp; Sign Out
+                             </div>
                           </a>
+                          @else
+                          <a class="nav-link" href="{{route('affiliate.login')}}">
+                            <div class="navbar-profile" style="font-family:'TT Norms Pro'; font-size: 18px; font-weight:500">
+                              <img class="img-xs rounded-circlex" src="{{asset('user/images/signin.svg')}}" style="width: 40px; height: 40px;" alt="PWG ">
+                              &nbsp; Affiliate Sign In
+                             </div>
+                          </a>
+                          @endif
+
                         </li>
                     </ul>
                 </div>

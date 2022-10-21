@@ -17,12 +17,12 @@
                             <p class="left-sub">
                                 Recommend clients. Start earning immediately.
                                 <br>
-                                We are for people !
+                                We are for people ! 
                             </p>
                         </div>
                         <div class="row">
                             <button class="btn start">Start Earning Now</button>
-                        </div>
+                        </div> 
                     </div>
                     <div class="col-sm-12 col-md-6 col-lg-6 land-right-sec">
                         <div class="landingpageicon">
