@@ -20,7 +20,7 @@
             <nav class="navbar navbar-expand-lg navbar-light affiliateNavLogin">
                 <div class="container-fluid">
                     <div class="logoImgAffiliate">
-                        <a class="navbar-brand" href="{{url('/')}}">
+                        <a class="navbar-brand" href="{{url('affiliate')}}">
                             <picture>
                                 <img class="logos" src="{{asset('images/affiliate/affiliatelogin.svg')}}" alt="PWG logo">
                             </picture>
@@ -32,7 +32,7 @@
                     <div class="collapse navbar-collapse navItems" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <a class="nav-link btn create-new-button"  aria-expanded="false" href="#">
+                                <a class="nav-link btn create-new-button"  aria-expanded="false" href="{{route('affiliate.news')}}">
                                     <span style="padding-top:5px">NEWS </span>
                                 </a>
                             </li>

@@ -256,6 +256,10 @@ span {
     text-align: center;
 }
 
+.card-body {
+    background-color: #fff;
+}
+
 .transfer {
     border: 0.5px solid #333333;
     border-radius: 0px;
@@ -373,8 +377,76 @@ span {
     text-decoration: none;
     color: #000;
 }
-.btn-check:focus+.btn, .btn:focus {
+
+.btn-check:focus+.btn,
+.btn:focus {
     box-shadow: 0 0 0 0.25rem rgb(240 243 244) !important;
+}
+
+/* News */
+
+.news {
+    padding: 0px 200px 80px 200px;
+}
+
+.news-left-section {
+    background: #FFFFFF;
+    border-radius: 30px 30px 30px 30px;
+    height: 900px;
+    margin-top: 40px;
+}
+
+.news-banner {
+    height: auto;
+    width: 100%;
+}
+
+.news-banner img {
+    height: 450px;
+    width: 100%;
+    border-radius: 30px 30px 0px 0px;
+}
+
+.news-desc {
+    margin: 50px 50px 5px 20px;
+    /* height: 350px; */
+}
+
+.news-sub-desc {
+    margin-top: 20px;
+}
+
+.checkout-news {
+    background: #FAE008;
+    width: 95%;
+    border-radius: 0px !important;
+}
+
+.checkout-news:hover {
+    background: #fff;
+    border: 0.5px solid black;
+}
+
+.news-desc-hr {
+    border-bottom: 1px solid #EDF0FD;
+    margin: 10px 0px 30px 0px;
+}
+
+.news-bottom {
+    width: 100%;
+    height: 50px;
+    background-color: #fff;
+    border-radius: 0px 0px 30px 30px !important;
+    display: contents;
+}
+
+.news-right-section {
+    position: fixed;
+}
+
+.news-banner video {
+    height: 450px;
+    width: 100%;
 }
 
 /* Responsive */
@@ -685,7 +757,7 @@ span {
 }
 
 @media only screen and (max-width: 1024px) and (min-width: 986px) {
-    .navbar-right-section .nav-item{
+    .navbar-right-section .nav-item {
         margin: 0px 5px 0px 5px;
     }
 
