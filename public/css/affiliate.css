@@ -389,6 +389,12 @@ span {
         display: inline-block;
     }
 
+    .navbar-right-section {
+        display: flex;
+        flex-direction: row !important;
+        float: left;
+    }
+
     .bannerImage {
         padding: 80px 40px 80px 40px;
     }
@@ -547,10 +553,8 @@ span {
 
     .navbar-right-section {
         display: flex;
-    }
-
-    .navbar-right-section .navbar-nav {
         flex-direction: row !important;
+        float: left;
     }
 
     .steps {
@@ -681,6 +685,10 @@ span {
 }
 
 @media only screen and (max-width: 1024px) and (min-width: 986px) {
+    .navbar-right-section .nav-item{
+        margin: 0px 5px 0px 5px;
+    }
+
     .steps {
         padding: 80px 50px 80px 50px;
     }
