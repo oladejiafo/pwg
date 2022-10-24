@@ -142,7 +142,6 @@
                                 <label for="cvupload">Upload your cv (PDF only)*</label>
                                 <span class="cv_errorClass"></span>
                             </div>
-
                         </div>
                         <div class="form-group row mt-4">
                             <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">

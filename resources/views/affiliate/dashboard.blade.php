@@ -1,4 +1,10 @@
 @extends('affiliate.layout.master')
+<style>
+    #text {
+        text-decoration: none;
+        color: #02c3fa;
+    }
+</style>
 @section('content')
     <div class="container-fluid">
         <div class="row justify-content-md-center">
@@ -27,9 +33,11 @@
                             </div>
                         </div>
                     </div>
+                    <div class="pull-right">My Refferal Code: <a href="javascript:void(0);" id="text" onclick="copyToClipboard('#text')" title="Click to copy code">{{Session::get('ref_code')}}</a></div>
                 </div>
             </div>
         </div>
+
         <div class="row justify-content-md-center">
             <div class="steps-dashboard">
                 <div class="col-12">
@@ -50,7 +58,7 @@
                                         <p class="card-text"> 
                                             <i class="fa fa-plus-circle"></i>
                                             5% higher than last month</p>
-                                        <div class="align-items-center justify-content-center" style="text-align: center">
+                                        <div class="align-items-center justify-content-center" style="text-align: center;">
                                             <a href="#" class="btn transfer">Transfer <i class="fa fa-exchange fa-2xs" aria-hidden="true"></i></a>
                                         </div>
                                     </div>
@@ -131,3 +139,22 @@
         </div>
     </div>
 @endsection
+
+<script>
+function copyToClipboard(element) {
+  var $temp = $("<input>");
+  $("body").append($temp);
+  $temp.val($(element).text()).select();
+  document.execCommand("copy");
+  $temp.remove();
+
+  toastr.options =
+    {
+        "closeButton" : true,
+        "progressBar" : true,
+        'positionClass': 'toast-bottom-right',
+    }
+  toastr.info("Code copied!");
+}
+
+</script>

@@ -18,15 +18,21 @@ class AffiliatePartnerController extends Controller
 {
     public function index()
     {
-        return view('affiliate.dashboard');
+        if(Session::has('loginId'))
+        {
+          
+            return view('affiliate.dashboard');
+        } else {
+            return view('affiliate.home');
+        }
     }
 
     public function affiliateLogin(){
-        if(!Session::has('loginId'))
+        if(Session::has('loginId'))
         {
-            return view('affiliate.auth.login');
+            return view('affiliate.dashboard');
         } else {
-            return back();
+            return view('affiliate.auth.login');
         }
     }
 
@@ -37,11 +43,13 @@ class AffiliatePartnerController extends Controller
         ]));
 
         $affiliated = Affiliate::where('email', '=', $request->auth)->first();
-        // dd($affiliated);
+         
         if($affiliated){
             if(Hash::check($request->password, $affiliated->password)){
                 $request->session()->put('loginId',$affiliated->id);
                 $request->session()->put('loginName',$affiliated->first_name);
+                $request->session()->put('loginSName',$affiliated->surname);
+                $request->session()->put('ref_code',$affiliated->affiliate_code);
                 return redirect('affiliate');
             } else {
                 return back()->with('failed', 'wrong password');
@@ -78,7 +86,8 @@ class AffiliatePartnerController extends Controller
                         'updated_at' => Carbon::now()
                     ]
                 );
-                Session::put('email',$email);
+                  
+            Session::put('email',$email);
             Mail::to($request->email)->send(new ResetPassword($token));
 
             // return view('affiliate..auth.reset-password', compact('email'));
@@ -92,21 +101,21 @@ class AffiliatePartnerController extends Controller
         $user = Affiliate::where('email','=', $request->email)->first();
 
         $validator = \Validator::make($request->all(), [
-            'current_password' => ['required', 'string'],
-            'password' => $this->passwordRules(),
+            'current_password' => 'required',
+            'password' => 'required|confirmed'
         ])->after(function ($validator) use ($user, $request) {
             if (! isset($request['current_password']) || ! Hash::check($request['current_password'], $user->password)) {
                 $validator->errors()->add('current_password', __('The provided password does not match your current password.'));
             }
         });
-        if ($validator->fails()) {
-            return Response::json(array(
-                'status' => false,
-                'errors' => $validator->getMessageBag()->toArray()
-
-            ), 200); // 400 being the HTTP code for an invalid request.
-        }
-        return redirect()->route('affiliate.affiliateLogin')->with('success', trans('A reset link has been sent to your email address.'));
+        DB::table('affiliate')
+        ->where('email', $request->email)
+        ->update(
+            [
+                'password' => Hash::make($request->password)
+            ]
+        );
+        return redirect()->route('affiliate.login')->with('success', trans('Password reset successfully.'));
 
     }
 
@@ -115,6 +124,9 @@ class AffiliatePartnerController extends Controller
         if(Session::has('loginId'))
         {
             Session::pull('loginId');
+            Session::pull('loginName');
+            Session::pull('loginSName');
+            Session::pull('ref_code');
             return redirect('affiliate');
         }
     }
@@ -151,10 +163,25 @@ class AffiliatePartnerController extends Controller
             $affiliate->phone_number =$request->phone_number;
             $affiliate->password = Hash::make($request->password);
             $res = $affiliate->save();
+
             if($res){
+
                 $affiliated = Affiliate::where('email', '=', $request->email)->first();
                 $request->session()->put('loginId',$affiliated->id);
                 $request->session()->put('loginName',$affiliated->first_name);
+                $request->session()->put('loginSName',$affiliated->surname);
+
+                DB::table('affiliate')
+                ->where('email', $request->email)
+                ->update(
+                    [
+                        'affiliate_code' => substr(Session::get('loginName'),0,1) . substr(Session::get('loginSName'),0,1) . sprintf("%04d", Session::get('loginId')) . strtoupper(substr(md5(microtime()),rand(0,26),4)) 
+                    ]
+                );
+                
+                $affiliated = Affiliate::where('email', '=', $request->email)->first();
+                $request->session()->put('ref_code',$affiliated->affiliate_code);
+                
                 return redirect('affiliate');
             } else {
                 return back();

@@ -20,6 +20,11 @@ input [type="phone"]
   padding: 10px;
 }
 </style>
+
+@if(Session::has('loginId'))
+    <script>window.location = "/home";</script>
+@endif
+
 @Section('content')
   <div class="container">
     <div class="form-sec1">

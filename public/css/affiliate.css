@@ -80,11 +80,17 @@ span {
 }
 
 .start {
-    margin-left: 12px;
+
     background: #FACB08;
     height: 59px;
     width: 50%;
     border-radius: 0px;
+}
+
+.start:hover {
+    background: #FFF;
+    border-color: #000;
+
 }
 
 .left-sec {
@@ -253,10 +259,16 @@ span {
 
 .transfer {
     border: 0.5px solid #333333;
-    border-radius: 0px;
+    font-family: TT Norms Pro;
+    border-radius: 5px;
     height: 39px;
     width: 165px;
     font-weight: 800;
+}
+
+.transfer:hover {
+    background-color: #FACB08;
+    border: none;
 }
 
 .total-refferals .card-header {
