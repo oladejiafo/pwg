@@ -14,7 +14,7 @@ class AffiliatePartnerController extends Controller
 {
     public function index()
     {
-        return view('affiliate.dashboard');
+        return view('affiliate.home');
     }
 
     public function affiliateLogin(){
