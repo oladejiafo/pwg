@@ -21,7 +21,10 @@
                             </p>
                         </div>
                         <div class="row">
-                            <button class="btn start">Start Earning Now</button>
+                            <form action="{{ route('affiliate.login') }}">
+                                @csrf
+                                <button class="btn start">Start Earning Now</button>
+                            </form>
                         </div> 
                     </div>
                     <div class="col-sm-12 col-md-6 col-lg-6 land-right-sec">

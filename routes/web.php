@@ -133,13 +133,20 @@ Route::group(['namespace' => 'Affiliate', 'prefix' => '/affiliate','as' => 'affi
   ], function () {
         Route::get('/', [AffiliatePartnerController::class, 'index'])->name('home');
 
+        Route::get('dashboard',[AffiliatePartnerController::class,'dashboard'])->middleware('isLoggedIn');
+
+        //Authentications 
         Route::post('affiliate-login', [AffiliatePartnerController::class,'affiliate_login'])->name('affiliate-login');
         Route::get('affiliateLogin', [AffiliatePartnerController::class,'affiliateLogin'])->name('login'); //->middleware('alreadyLoggedIn')
         Route::get('affiliateLogout', [AffiliatePartnerController::class,'affiliateLogout'])->name('logout');
-        Route::get('dashboard',[AffiliatePartnerController::class,'dashboard'])->middleware('isLoggedIn');
 
-        Route::get('/affiliate/register', [AffiliatePartnerController::class,'affiliateRegister'])->name('register');
-
-    //   NEWS
+        Route::get('forgot-password', [AffiliatePartnerController::class,'forgotPassword'])->name('forgot-password');
+        Route::post('PasswordRequest',[AffiliatePartnerController::class,'PasswordRequest'])->name('PasswordRequest');
+        Route::get('reset-password', [AffiliatePartnerController::class,'resetPassword'])->name('reset-password');
+        Route::post('passwordUpdate',[AffiliatePartnerController::class, 'passwordUpdate'])->name('passwordUpdate');
+        //New Registration
+        Route::post('affiliate-register', [AffiliatePartnerController::class,'affiliate_register'])->name('affiliate-register');
+        Route::get('affiliateRegister', [AffiliatePartnerController::class,'affiliateRegister'])->name('register');
+  
         Route::get('news', [AffiliatePartnerController::class, 'news'])->name('news');
-  });
+});
