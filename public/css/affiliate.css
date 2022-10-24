@@ -48,6 +48,11 @@ span {
     color: black;
 }
 
+.navbar-right-section .nav-link {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+}
+
 .bannerImage {
     background-color: white;
     padding: 80px 200px 80px 200px;
@@ -321,7 +326,7 @@ span {
 .news4,
 .news5 {
     width: 16%;
-    height: 268px;
+    /* height: 268px; */
     margin-left: 5px;
     margin-right: 5px;
     padding: 0px 12px 0px 12px;
@@ -369,7 +374,7 @@ span {
 .navbar-right-section {
     list-style-type: none;
     float: right;
-    display: flex;
+    display: contents;
 }
 
 .current-available .card-header a {
@@ -380,10 +385,27 @@ span {
     text-decoration: none;
     color: #000;
 }
+.btn-check:focus+.btn, .btn:focus {
+    box-shadow: 0 0 0 0.25rem rgb(240 243 244) !important;
+}
 
 /* Responsive */
 
 @media only screen and (max-width: 479px) and (min-width: 320px) {
+
+    .navbar-light .navbar-toggler {
+        margin: 0px;
+    }
+
+    .nav-link {
+        display: inline-block;
+    }
+
+    .navbar-right-section {
+        display: flex;
+        flex-direction: row !important;
+        float: left;
+    }
 
     .bannerImage {
         padding: 80px 40px 80px 40px;
@@ -464,9 +486,89 @@ span {
         margin-left: 20px;
         margin-top: 12px;
     }
+
+    .bannerImageDashboard {
+        padding: 60px 60px 0px 60px;
+        width: 100%;
+    }
+
+    .landingpageicondashboard {
+        height: 230px;
+        width: 302px;
+    }
+
+    .left-sub-dashboard {
+        font-size: 15px;
+        line-height: 27px;
+    }
+
+    .total-earn,
+    .total-refferals {
+        margin-top: 20px;
+    }
+
+    .news1,
+    .news2,
+    .news3,
+    .news4,
+    .news5 {
+        width: 100%;
+        margin-top: 40px;
+    }
+
+    .recommend {
+        padding: 38px 40px 40px 55px;
+        width: 100%;
+    }
+
+    .recommend h6 {
+        font-size: 24px;
+    }
+
+    .news1 img,
+    .news2 img,
+    .news3 img,
+    .news4 img,
+    .news5 img {
+        width: 100px;
+    }
+
+    .sub-cont {
+        display: none;
+    }
+
+    .land-font-dashboard {
+        font-size: 50px;
+    }
+
+    .card {
+        height: 285px;
+    }
+
+    .navItems {
+        margin-left: 0px;
+    }
 }
 
 @media only screen and (max-width: 768px) and (min-width: 479px) {
+    .navItems {
+        margin-left: 0px;
+    }
+
+    .navbar-light .navbar-toggler {
+        margin: 0px;
+    }
+
+    .nav-link {
+        display: inline-block;
+    }
+
+    .navbar-right-section {
+        display: flex;
+        flex-direction: row !important;
+        float: left;
+    }
+
     .steps {
         padding: 80px 20px 80px 20px;
     }
@@ -515,9 +617,90 @@ span {
         padding: 30px 120px 80px 120px;
     }
 
+    .bannerImageDashboard {
+        padding: 80px 80px 0px 80px;
+    }
+
+    .land-font-dashboard {
+        font-size: 40px;
+        line-height: 44px;
+    }
+
+    .landingpageicondashboard {
+        height: 243px;
+        width: 263px;
+    }
+
+    .left-sub-dashboard {
+        font-size: 11px;
+        line-height: 20px;
+    }
+
+    .current-available .card-header,
+    .total-refferals .card-header,
+    .total-earn .card-header {
+        padding: 1rem 1rem !important;
+    }
+
+    .current-available .card-header .head,
+    .total-refferals .card-header .head,
+    .total-earn .card-header .head {
+        font-size: 10px;
+    }
+
+    .bargraph {
+        width: 30px;
+    }
+
+    .current-available .card-header {
+        height: 74px;
+    }
+
+    .card-body .card-title {
+        font-size: 36px;
+    }
+
+    .card-body .card-text {
+        font-size: 12px;
+    }
+
+    .total-earn .card-text,
+    .total-refferals .card-text {
+        margin-top: 50px;
+    }
+
+    .transfer {
+        width: 138px;
+    }
+
+    .card {
+        height: 240px;
+    }
+
+    .news1 img,
+    .news2 img,
+    .news3 img,
+    .news4 img,
+    .news5 img {
+        width: 90px;
+        height: 130px;
+    }
+
+    .news1 p,
+    .news5 p {
+        font-size: 6px;
+    }
+
+    .recommend {
+        padding: 40px 40px 40px 40px;
+    }
 }
 
 @media only screen and (max-width: 1024px) and (min-width: 986px) {
+    .navbar-right-section .nav-item{
+        margin: 0px 5px 0px 5px;
+    }
+
     .steps {
         padding: 80px 50px 80px 50px;
     }
@@ -636,5 +819,14 @@ span {
 
     .recommend {
         padding: 40px 40px 40px 40px;
+    }
+
+    .news1 img,
+    .news2 img,
+    .news3 img,
+    .news4 img,
+    .news5 img {
+        width: 140px;
+        height: 200px;
     }
 }

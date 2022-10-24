@@ -7,13 +7,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
         <meta name="description" content="This is PWG Group client portal. PWG Group is an immigration company that helps students and professionals migrate abroad to either pursue their studies or careers.">
         <title>PWG Group - Affiliate Portal</title>
+        <link rel="icon" type="image/png" href="{{asset('/images/affiliate/affiliatelogin.svg')}}">
+
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <link rel='stylesheet' type='text/css' media='screen' href='{{asset('css/affiliate.css')}}'>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
-
         <header>
+
             <nav class="navbar navbar-expand-lg navbar-light affiliateNavLogin">
                 <div class="container-fluid">
                     <div class="logoImgAffiliate">
@@ -42,54 +44,45 @@
                     <div class="collapse navbar-collapse navItems" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <div class="d-flex align-items-center justify-content-center">
-                                    <a class="nav-link btn create-new-button"  aria-expanded="false" href="#">
-                                        <span style="padding-top:5px">NEWS </span>
-                                    </a>
-                                </div> 
+                                <a class="nav-link btn create-new-button"  aria-expanded="false" href="#">
+                                    <span style="padding-top:5px">NEWS </span>
+                                </a>
                             </li>
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuButton1" role="button" aria-haspopup="true" data-bs-toggle="dropdown" aria-expanded="false">
                                     INFO
                                 </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                     <li><a class="dropdown-item" href="#">About Us</a></li>
                                     <li><a class="dropdown-item" href="#">ToolBox</a></li>
                                 </ul>
                             </li>
                             <li class="nav-item">
-                                <div class="d-flex align-items-center justify-content-center">
                                     <a class="nav-link btn create-new-button" aria-expanded="false" href="#">
-                                        <span class="title" style="padding-top:0px;padding-left:15px; display:inline-block">BONUS</span>
+                                        <span class="title" >BONUS</span>
                                     </a>
-                                </div> 
                             </li>
                             <li class="nav-item">
-                                <div class="d-flex align-items-center justify-content-center">
                                     <a class="nav-link btn create-new-button" aria-expanded="false" href="#">
-                                        <span class="title" style="padding-top:0px;padding-left:15px; display:inline-block">REFERRALS</span>
+                                        <span class="title" >REFERRALS</span>
                                     </a>
-                                </div> 
                             </li>
                             <li class="nav-item">
-                                <div class="d-flex align-items-center justify-content-center">
-                                    <a class="nav-link btn create-new-button" aria-expanded="false" href="#">
-                                        <span class="title" style="padding-top:0px;padding-left:15px; display:inline-block">PWG-STORE</span>
-                                    </a>
-                                </div> 
+                                <a class="nav-link btn create-new-button" aria-expanded="false" href="#">
+                                    <span class="title" >PWG-STORE</span>
+                                </a>
                             </li>
                         </ul>
                         <ul class="navbar-nav me-autox mb-2 mb-lg-0 navbar-right-section">
                             <li class="nav-item">
-                                <div class="d-flex align-items-center justify-content-center">
-                                    <a class="nav-link btn create-new-button" aria-expanded="false" href="#">
-                                        <img src="{{asset('user/images/Search.svg')}}" width="30px" height="30px" alt="PWG icon3">
-                                    </a>
-                                </div> 
+                                <a class="nav-link btn create-new-button" aria-expanded="false" href="#">
+                                    <img src="{{asset('user/images/Search.svg')}}" width="30px" height="30px" alt="PWG icon3">
+                                </a>
                             </li>
 
 
                             <li class="nav-item">
+
                             <div class="d-flex align-items-center justify-content-center">
                                     <a class="nav-link btn create-new-button" aria-expanded="false" href="https://wa.link/iz7ait">
                                         <img src="{{asset('user/images/Chat.svg')}}" width="30px" height="30px" alt="PWG icon3">
@@ -126,6 +119,7 @@
                                     </a>
                                 </div> 
                             </li> -->
+
                             <li class="nav-item">
 
                             <a class="nav-link" href="{{route('affiliate.logout')}}">
@@ -154,8 +148,5 @@
       
     <script src="{{asset('user/extra/assets/js/jquery-min.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
        

@@ -39,10 +39,13 @@
         </div>
 
         <div class="row justify-content-md-center">
+
+        <!-- <div class="row align-items-center justify-content-center"> -->
+
             <div class="steps-dashboard">
                 <div class="col-12">
                     <div class="row">
-                        <div class="col-4">
+                        <div class="col-sm-12 col-md-4 col-lg-4">
                             <div class="current-available">
                                 <div class="card">
                                     <div class="card-header">
@@ -65,7 +68,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-4">
+                        <div class="col-sm-12 col-md-4 col-lg-4">
                             <div class="total-refferals">
                                 <div class="card">
                                     <div class="card-header">
@@ -87,7 +90,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-4">
+                        <div class="col-sm-12 col-md-4 col-lg-4">
                             <div class="total-earn">
                                 <div class="card">
                                     <div class="card-header">
@@ -113,13 +116,13 @@
                 </div>
             </div>
         </div>
-        <div class="row justify-content-md-center">
-            <div class="recommend">
+        <div class="row align-items-center justify-content-md-center">
+            <div class="recommend align-items-center justify-content-md-center">
                 <h6>Recommended for you</h6>
                 <div class="row">
                     <div class="col news1">
                         <img src="{{asset('images/affiliate/news1.png')}}">
-                        <p>Learn Polish in 6 weeks</p>
+                        <p class="sub-cont">Learn Polish in 6 weeks</p>
                     </div>
                     <div class="col news2">
                         <img src="{{asset('images/affiliate/news2.png')}}">

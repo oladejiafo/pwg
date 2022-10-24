@@ -18,6 +18,7 @@ class AffiliatePartnerController extends Controller
 {
     public function index()
     {
+
         if(Session::has('loginId'))
         {
           
