@@ -103,39 +103,20 @@
                                 </div>
                             </li>
 
-
-                            <!-- <li class="nav-item">
-                                <div class="d-flex align-items-center justify-content-center">
-                                    <a class="nav-link btn create-new-button" aria-expanded="false" href="#">
-                                        <img src="{{asset('user/images/NotificationNo.svg')}}" width="30px" height="30px" alt="icon3">
-                                        <span class="count bg-danger"></span>
-                                    </a>
-                                </div> 
-                            </li>
                             <li class="nav-item">
-                                <div class="d-flex align-items-center justify-content-center">
-                                    <a class="nav-link btn create-new-button" aria-expanded="false" href="#">
-                                        <img src="{{asset('user/images/Chat.svg')}}" width="30px" height="30px" alt="PWG icon3">
-                                    </a>
-                                </div> 
-                            </li> -->
-
-                            <li class="nav-item">
-
-                            <a class="nav-link" href="{{route('affiliate.logout')}}">
-                            <div class="navbar-profile" style="font-family:'TT Norms Pro'; font-size: 18px; font-weight:500">
-                                <img class="img-xs rounded-circlex" src="{{asset('user/images/signin.svg')}}" style="width: 40px; height: 40px;" alt="PWG ">
-                                &nbsp; Sign Out
-                                </div>
-                            </a>
-                            @else
-                            <a class="nav-link" href="{{route('affiliate.login')}}">
-                            <div class="navbar-profile" style="font-family:'TT Norms Pro'; font-size: 18px; font-weight:500">
-                                <img class="img-xs rounded-circlex" src="{{asset('user/images/signin.svg')}}" style="width: 40px; height: 40px;" alt="PWG ">
-                                &nbsp; Affiliate Sign In
-                                </div>
-                            </a>
-                           
+                                <a class="nav-link" href="{{route('affiliate.logout')}}">
+                                    <div class="navbar-profile" style="font-family:'TT Norms Pro'; font-size: 18px; font-weight:500">
+                                        <img class="img-xs rounded-circlex" src="{{asset('user/images/signin.svg')}}" style="width: 40px; height: 40px;" alt="PWG ">
+                                        &nbsp; Sign Out
+                                    </div>
+                                </a>
+                                @else
+                                <a class="nav-link" href="{{route('affiliate.login')}}">
+                                    <div class="navbar-profile" style="font-family:'TT Norms Pro'; font-size: 18px; font-weight:500">
+                                        <img class="img-xs rounded-circlex" src="{{asset('user/images/signin.svg')}}" style="width: 40px; height: 40px;" alt="PWG ">
+                                        &nbsp; Affiliate Sign In
+                                    </div>
+                                </a>
                             </li>
                         </ul>
                     </div>
@@ -143,10 +124,5 @@
                 </div>
             </nav>
         </header>
-
-          <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-      
-    <script src="{{asset('user/extra/assets/js/jquery-min.js')}}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</head>
        

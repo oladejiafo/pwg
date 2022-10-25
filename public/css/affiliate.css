@@ -53,6 +53,11 @@ span {
     padding-right: 1rem !important;
 }
 
+.nav-item {
+    list-style-type: none;
+
+}
+
 .bannerImage {
     background-color: white;
     padding: 80px 200px 80px 200px;
@@ -395,7 +400,11 @@ span {
     box-shadow: 0 0 0 0.25rem rgb(240 243 244) !important;
 }
 
-/* News */
+/* 
+*
+News 
+*
+*/
 
 .news {
     padding: 0px 200px 80px 200px;
@@ -404,7 +413,7 @@ span {
 .news-left-section {
     background: #FFFFFF;
     border-radius: 30px 30px 30px 30px;
-    height: 900px;
+    height: 850px;
     margin-top: 40px;
 }
 
@@ -413,8 +422,9 @@ span {
     width: 100%;
 }
 
-.news-banner img {
-    height: 450px;
+.news-banner img,
+.news-banner video {
+    height: 380px;
     width: 100%;
     border-radius: 30px 30px 0px 0px;
 }
@@ -454,11 +464,40 @@ span {
 
 .news-right-section {
     position: fixed;
+    display: block;
 }
 
-.news-banner video {
-    height: 450px;
-    width: 100%;
+.head-news-right-section {
+    background-color: #fff;
+    height: 50%;
+    border-radius: 30px 30px 30px 30px;
+    margin: 40px 40px 40px 40px;
+    float: right;
+}
+
+.share-news-right-section {
+    height: 20%;
+    background-color: #fff;
+    border-radius: 30px 30px 30px 30px;
+    margin: 0px 40px 40px 40px;
+    float: right;
+}
+
+.news-head {
+    list-style-type: none;
+    margin: 36px 20px 30px 20px;
+}
+
+.news-head h3 {
+    font-size: 18px;
+}
+
+.news-head p {
+    font-size: 12px;
+}
+
+.share-news-right-section p {
+    margin: 30px 50px 30px 50px
 }
 
 /* Responsive */
@@ -620,6 +659,63 @@ span {
     .navItems {
         margin-left: 0px;
     }
+
+    .news {
+        padding: 0px 40px 80px 40px;
+    }
+
+    .news-banner img,
+    .news-banner video {
+        object-fit: cover;
+    }
+
+    .news-desc {
+        margin: 30px 30px 5px 20px;
+    }
+
+    .news-desc h3 {
+        font-size: 18px;
+    }
+
+    .news-sub-desc b,
+    .desc {
+        font-size: 12px;
+    }
+
+    .news-right-section {
+        position: unset;
+        padding: 0px 10px 0px 10px;
+    }
+
+    .head-news-right-section,
+    .share-news-right-section {
+        margin: 40px 0px 40px 0px;
+    }
+
+    .share-news-right-section p {
+        margin: 30px 30px 30px 30px;
+    }
+
+    .news-head h3 b {
+        font-size: 16px;
+    }
+
+    .share-news-right-section p {
+        font-size: 12px;
+    }
+
+    .affiliateNavLogin .container-fluid {
+        width: 100%;
+    }
+
+}
+
+@media only screen and (max-width: 736px) and (min-width: 414px) {
+
+    .news-sub-desc b,
+    .desc {
+        font-size: 14px;
+    }
 }
 
 @media only screen and (max-width: 768px) and (min-width: 479px) {
@@ -766,6 +862,96 @@ span {
     .recommend {
         padding: 40px 40px 40px 40px;
     }
+
+    .news {
+        padding: 0px 80px 0px 80px;
+    }
+
+    .news-desc {
+        margin: 50px 5px 5px 20px;
+    }
+
+    .news-sub-desc,
+    .desc {
+        font-size: 15px;
+    }
+
+    .news-desc b {
+        font-size: 20px;
+    }
+
+    .head-news-right-section {
+        margin: 40px 0px 0px 0px;
+    }
+
+    .head-news-right-section ul {
+        padding: 0px !important;
+        margin: 0px !important;
+    }
+
+    .share-news-right-section {
+        margin: 40px 0px 30px 0px;
+    }
+
+    .news-right-section {
+        position: unset;
+        padding: 0px 10px 0px 10px;
+    }
+
+    .news-desc b {
+        font-size: 18px;
+    }
+
+    .news-sub-desc,
+    .desc {
+        font-size: 12px;
+    }
+
+    .share-news-right-section p {
+        margin: 30px 30px 30px 30px;
+    }
+}
+
+@media only screen and (max-width: 985px) and (min-width: 769px) {
+    .bannerImageDashboard {
+        padding: 80px 80px 0px 80px;
+    }
+
+    .land-font-dashboard {
+        font-size: 39px;
+    }
+
+    .left-sub-dashboard {
+        font-size: 10px;
+    }
+
+    .landingpageicondashboard {
+        height: 268px;
+        width: 293px;
+    }
+
+    .bargraph {
+        width: 25px;
+    }
+
+    .current-available .card-header .head,
+    .total-refferals .card-header .head,
+    .total-earn .card-header .head {
+        font-size: 9px;
+    }
+
+    .recommend {
+        padding: 40px 40px 40px 40px;
+    }
+
+    .news1 img,
+    .news2 img,
+    .news3 img,
+    .news4 img,
+    .news5 img {
+        width: 90px;
+        height: 130px;
+    }
 }
 
 @media only screen and (max-width: 1024px) and (min-width: 986px) {
@@ -901,4 +1087,89 @@ span {
         width: 140px;
         height: 200px;
     }
+
+    .news {
+        padding: 0px 80px 0px 80px;
+    }
+
+    .affiliateNavLogin .container-fluid {
+        width: 100%;
+    }
+
+    .news-desc {
+        margin: 30px 30px 5px 20px;
+    }
+
+    .desc {
+        padding: 0px 20px 20px 0px;
+    }
+
+    .news-desc h3 {
+        font-size: 20px;
+    }
+
+    .news-sub-desc b {
+        font-size: 14px;
+    }
+
+    .desc {
+        font-size: 15px;
+    }
+
+    .news-right-section {
+        width: 35%;
+    }
+}
+
+@media only screen and (max-width: 1453px) and (min-width: 1025px) {
+    .bannerImageDashboard {
+        padding: 80px 90px 0px 90px;
+    }
+
+    .affiliateNavLogin .container-fluid {
+        width: 100%;
+    }
+
+    .bargraph {
+        width: 25px;
+    }
+
+    .current-available .card-header .head,
+    .total-refferals .card-header .head,
+    .total-earn .card-header .head {
+        font-size: 15px;
+    }
+
+    .total-earn .card-text,
+    .total-refferals .card-text {
+        margin-top: 42px;
+    }
+
+    .recommend {
+        padding: 40px 40px 40px 40px;
+    }
+
+    .landingpageicondashboard {
+        height: 274px;
+        width: 391px;
+    }
+
+    .news1 img,
+    .news2 img,
+    .news3 img,
+    .news4 img,
+    .news5 img {
+        width: 140px;
+        height: 200px;
+    }
+
+    .news {
+        padding: 0px 80px 80px 80px;
+    }
+
+    .news-sub-desc b,
+    .desc {
+        font-size: 14px;
+    }
+
 }
