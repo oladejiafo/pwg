@@ -149,4 +149,7 @@ Route::group(['namespace' => 'Affiliate', 'prefix' => '/affiliate','as' => 'affi
         Route::get('affiliateRegister', [AffiliatePartnerController::class,'affiliateRegister'])->name('register');
   
         Route::get('news', [AffiliatePartnerController::class, 'news'])->name('news');
+        Route::get('news/{id}', [AffiliatePartnerController::class, 'newsBrief'])->name('news.brief');
+
+        Route::get('about-us', [AffiliatePartnerController::class, 'aboutUs'])->name('about');
 });

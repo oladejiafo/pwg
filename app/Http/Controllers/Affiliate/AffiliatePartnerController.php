@@ -195,8 +195,20 @@ class AffiliatePartnerController extends Controller
 
     public function news()
     {
-        $news = News::latest()->take(3)->get();
-        $oldNews = News::latest()->skip(3)->take(5)->get();
+        $news = News::where('active', 1)->latest()->take(3)->get();
+
+        $oldNews = News::where('active', 1)->latest()->skip(3)->take(5)->get();
         return view('affiliate.news', compact('news', 'oldNews'));
+    }
+
+    public function newsBrief($id)
+    {
+        $news = News::find($id);
+        return view('affiliate.news-details', compact('news'));
+    }
+
+    public function aboutUs()
+    {
+        return view('affiliate.about-us');
     }
 }

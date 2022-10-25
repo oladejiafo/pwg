@@ -53,7 +53,7 @@
                                     INFO
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li><a class="dropdown-item" href="#">About Us</a></li>
+                                    <li><a class="dropdown-item" href="{{route('affiliate.about')}}">About Us</a></li>
                                     <li><a class="dropdown-item" href="#">ToolBox</a></li>
                                 </ul>
                             </li>
