@@ -58,6 +58,7 @@ span {
 
 }
 
+
 .bannerImage {
     background-color: white;
     padding: 80px 200px 80px 200px;
@@ -413,7 +414,7 @@ News
 .news-left-section {
     background: #FFFFFF;
     border-radius: 30px 30px 30px 30px;
-    height: 850px;
+    height: 34%;
     margin-top: 40px;
 }
 
@@ -471,7 +472,7 @@ News
     background-color: #fff;
     height: 50%;
     border-radius: 30px 30px 30px 30px;
-    margin: 40px 40px 40px 40px;
+    margin: 40px 0px 40px 40px;
     float: right;
 }
 
@@ -479,7 +480,7 @@ News
     height: 20%;
     background-color: #fff;
     border-radius: 30px 30px 30px 30px;
-    margin: 40px 40px 40px 40px;
+    margin: 20px 40px 40px 40px;
     float: right;
 }
 
@@ -500,9 +501,137 @@ News
     margin: 30px 50px 30px 50px
 }
 
+.no-news-left-section {
+    margin: 40px 40px 40px 40px;
+    background-color: #fff;
+    height: 20%;
+    border-radius: 30px 30px 30px 30px;
+    padding: 40px;
+    text-align: center;
+}
+
+.no-news-left-section p {
+    margin-top: -10px;
+}
+
+/* 
+About
+*/
+
+.aboutUs {
+    background-color: #fff;
+    padding: 45px 90px 45px 90px;
+    text-align: center;
+    margin-top: 60px;
+}
+
+.aboutUs p {
+    color: #383838;
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 22px;
+}
+
+.aboutUs b {
+    font-size: 34px;
+}
+
+.learn {
+    background: #FACB08;
+    height: 40px;
+    max-width: 70%;
+    min-width: 40%;
+    border-radius: 0px;
+}
+
+.aboutright {
+    background: #FACB08;
+    padding: 50px 30px 40px 80px;
+    height: 430px
+}
+
+.aboutright b {
+    font-size: 38px;
+}
+
+.aboutright h6 {
+    margin: 20px 0px 20px 0px;
+    font-size: 24px;
+    font-weight: 300;
+    color: #515154;
+}
+
+.aboutright p {
+    color: #383838;
+
+}
+
+.aboutleft {
+    background: #FFF;
+    padding: 40px 30px 40px 80px;
+    height: 430px;
+}
+
+.about,
+.about-sub,
+.client-count {
+    padding: 0px 200px 80px 200px;
+}
+
+.aboutus-icon {
+    width: 100px;
+    text-align: center;
+}
+
+.aboutus-icon img {
+    width: 100%;
+    height: 100%;
+}
+
+.aboutus-icon p {
+    font-weight: lighter;
+    font-size: 11px;
+    line-height: 13px;
+    margin: 15px 0px 15px 0px;
+}
+
+.count-banner {
+    background-color: #fff;
+    padding: 90px 90px 90px 90px;
+    text-align: center;
+}
+
+.nopadding {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.about-sub .row {
+    display: table;
+    width: 100%;
+}
+
+.about-sub .row [class*="col-"] {
+    float: none;
+    display: table-cell;
+    vertical-align: top;
+}
+
+.count-banner h1 {
+    font-weight: 700;
+    font-size: 60px;
+    line-height: 71px;
+}
+
+.count-banner p {
+    font-weight: 300;
+    font-size: 17.8691px;
+    line-height: 21px;
+}
+
 /* Responsive */
 
-@media only screen and (max-width: 479px) and (min-width: 320px) {
+@media only screen and (max-width: 479px) and (min-width: 280px) {
 
     .navbar-light .navbar-toggler {
         margin: 0px;
@@ -510,12 +639,28 @@ News
 
     .nav-link {
         display: inline-block;
+        padding-left: 0px;
     }
 
     .navbar-right-section {
         display: flex;
         flex-direction: row !important;
         float: left;
+    }
+
+    .current-available .card-header {
+        height: 74px;
+    }
+
+    .bargraph {
+        width: 20%;
+        height: 70%;
+    }
+
+    .current-available .card-header .head,
+    .total-refferals .card-header .head,
+    .total-earn .card-header .head {
+        font-size: 13px;
     }
 
     .bannerImage {
@@ -538,13 +683,14 @@ News
     }
 
     .landingpageicon {
-        height: 355px;
-        width: 277px;
+        height: auto;
+        width: auto;
         padding: 0px;
+        padding-top: 32px;
     }
 
     .steps {
-        padding: 40px 40px 40px 40px;
+        padding: 40px 20px 40px 20px;
     }
 
     .step-1,
@@ -558,7 +704,7 @@ News
     .step-2-desc,
     .step-3-desc {
         position: absolute;
-        top: 222px;
+        top: 240px;
         left: 0px;
         padding: 0px 18px 0px 22px;
         width: 100%;
@@ -567,17 +713,17 @@ News
     .step-1-desc p,
     .step-2-desc p,
     .step-3-desc p {
-        font-size: 12px;
+        font-size: 10px;
     }
 
     .step-1-desc h5,
     .step-2-desc h5,
     .step-3-desc h5 {
-        font-size: 23px;
+        font-size: 16px;
     }
 
     .faq-accordion {
-        padding: 30px 40px 80px 40px;
+        padding: 30px 20px 80px 20px;
     }
 
     .accordion-left,
@@ -604,13 +750,18 @@ News
     }
 
     .landingpageicondashboard {
-        height: 230px;
-        width: 302px;
+        height: 100%;
+        width: 100%;
     }
 
     .left-sub-dashboard {
-        font-size: 15px;
+        font-size: 14px;
         line-height: 27px;
+    }
+
+    .bannerImageDashboard .pull-right {
+        margin: 8px 0px 8px 0px;
+        float: left;
     }
 
     .total-earn,
@@ -625,15 +776,26 @@ News
     .news5 {
         width: 100%;
         margin-top: 40px;
+        text-align: center;
     }
 
-    .recommend {
-        padding: 38px 40px 40px 55px;
+    .steps-dashboard {
+        padding: 40px 40px 40px 40px;
         width: 100%;
     }
 
+    .news-right-section ul {
+        padding: 0px;
+    }
+
+    .recommend {
+        padding: 40px 40px 40px 40px;
+        width: 100%;
+        /* margin: 0px 40px 0px 40px; */
+    }
+
     .recommend h6 {
-        font-size: 24px;
+        font-size: 22px;
     }
 
     .news1 img,
@@ -641,7 +803,7 @@ News
     .news3 img,
     .news4 img,
     .news5 img {
-        width: 100px;
+        width: auto;
     }
 
     .sub-cont {
@@ -649,7 +811,7 @@ News
     }
 
     .land-font-dashboard {
-        font-size: 50px;
+        font-size: 39px;
     }
 
     .card {
@@ -661,7 +823,7 @@ News
     }
 
     .news {
-        padding: 0px 40px 80px 40px;
+        padding: 0px 30px 80px 30px;
     }
 
     .news-banner img,
@@ -679,7 +841,7 @@ News
 
     .news-sub-desc b,
     .desc {
-        font-size: 12px;
+        font-size: 11px;
     }
 
     .news-right-section {
@@ -687,7 +849,10 @@ News
         padding: 0px 10px 0px 10px;
     }
 
-    .head-news-right-section,
+    .head-news-right-section {
+        margin: 220px 0px 40px 0px;
+    }
+
     .share-news-right-section {
         margin: 40px 0px 40px 0px;
     }
@@ -706,6 +871,76 @@ News
 
     .affiliateNavLogin .container-fluid {
         width: 100%;
+    }
+
+    .about,
+    .about-sub,
+    .client-count {
+        padding: 0px 50px 50px 50px;
+    }
+
+    .aboutUs {
+        padding: 45px 10px 45px 10px;
+    }
+
+    .aboutUs b {
+        font-size: 24px;
+    }
+
+    .aboutUs p {
+        font-size: 12px;
+        text-align: center;
+    }
+
+    .learn {
+        width: 70%;
+    }
+
+    .aboutleft {
+        padding: 40px;
+        height: auto;
+    }
+
+    .aboutus-icon img {
+        width: 50%;
+        height: auto;
+    }
+
+    .about-sub .row {
+        display: flex;
+        width: auto;
+    }
+
+    .aboutus-icon {
+        width: auto;
+    }
+
+    .aboutright {
+        padding: 45px 10px 45px 10px
+    }
+
+    .aboutright b {
+        font-size: 20px;
+    }
+
+    .aboutright h6 {
+        font-size: 18px;
+    }
+
+    .aboutright p {
+        font-size: 14px;
+    }
+
+    .count-banner {
+        padding: 45px 10px 45px 10px;
+    }
+
+    .count-banner p {
+        font-size: 16px;
+    }
+
+    .count-banner .row div {
+        margin-bottom: 40px;
     }
 
 }
@@ -786,22 +1021,36 @@ News
     }
 
     .bannerImageDashboard {
-        padding: 80px 80px 0px 80px;
+        padding: 80px 80px 40px 80px;
+        width: 100%;
+    }
+
+    .bannerImageDashboard .pull-right {
+        float: left !important;
     }
 
     .land-font-dashboard {
         font-size: 40px;
-        line-height: 44px;
+        line-height: 50px;
+    }
+
+    .news-left-section {
+        /* height: 375px; */
     }
 
     .landingpageicondashboard {
-        height: 243px;
-        width: 263px;
+        height: auto;
+        width: auto;
     }
 
     .left-sub-dashboard {
-        font-size: 11px;
-        line-height: 20px;
+        font-size: 14px;
+        line-height: 27px;
+    }
+
+    .steps-dashboard {
+        padding: 40px 40px 40px 40px;
+        width: 100%;
     }
 
     .current-available .card-header,
@@ -850,17 +1099,23 @@ News
     .news3 img,
     .news4 img,
     .news5 img {
-        width: 90px;
-        height: 130px;
+        width: auto;
+        height: auto;
     }
 
     .news1 p,
     .news5 p {
         font-size: 6px;
+        display: none;
     }
 
     .recommend {
         padding: 40px 40px 40px 40px;
+        width: 100%;
+    }
+
+    .recommend h6 {
+        font-size: 24px;
     }
 
     .news {
@@ -881,7 +1136,7 @@ News
     }
 
     .head-news-right-section {
-        margin: 40px 0px 0px 0px;
+        margin: 230px 0px 0px 0px;
     }
 
     .head-news-right-section ul {
@@ -896,6 +1151,7 @@ News
     .news-right-section {
         position: unset;
         padding: 0px 10px 0px 10px;
+
     }
 
     .news-desc b {
@@ -910,11 +1166,113 @@ News
     .share-news-right-section p {
         margin: 30px 30px 30px 30px;
     }
+
+    .aboutUs {
+        padding: 45px 20px 45px 20px;
+    }
+
+    .aboutUs b {
+        font-size: 30px;
+    }
+
+    .about,
+    .about-sub,
+    .client-count {
+        padding: 0px 80px 80px 80px;
+    }
+
+    .learn {
+        width: 40%;
+    }
+
+    .aboutleft,
+    .aboutright {
+        padding: 80px 40px 40px 40px;
+    }
+
+    .about-sub .row {
+        display: flex;
+        width: auto;
+    }
+
+    .aboutus-icon img {
+        width: auto;
+    }
+
+    .aboutus-icon {
+        width: 100%;
+        text-align: center;
+    }
+
+    .count-banner {
+        padding: 90px 60px 90px 60px;
+    }
+
+    .count-banner h1 {
+        font-weight: 700;
+        font-size: 46px;
+    }
+
+    .count-banner p {
+        font-size: 12px;
+    }
+
+    .aboutleft {
+        height: auto;
+    }
+
+    .aboutright b {
+        font-size: 25px;
+    }
+
+    .aboutright p {
+        font-size: 14px;
+    }
+
+    .aboutus-icon p {
+        font-size: 14px;
+    }
+
+    .news1,
+    .news2,
+    .news3,
+    .news4,
+    .news5 {
+        text-align: center;
+        width: auto;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
 }
 
-@media only screen and (max-width: 985px) and (min-width: 769px) {
+@media only screen and (max-width: 995px) and (min-width: 769px) {
+
+    .affiliateNavLogin .container-fluid {
+        width: 100%;
+    }
+
     .bannerImageDashboard {
         padding: 80px 80px 0px 80px;
+    }
+
+    .bannerImage {
+        padding: 80px 80px 80px 80px;
+    }
+
+    .land-font {
+        font-size: 57px;
+        line-height: 65px;
+    }
+
+    .left-sub {
+        font-size: 20px;
+        line-height: 28px;
+    }
+
+    .landingpageicon {
+        width: 100%;
+        height: 80%;
+        padding: 0px;
     }
 
     .land-font-dashboard {
@@ -952,6 +1310,50 @@ News
         width: 90px;
         height: 130px;
     }
+
+    .about,
+    .about-sub,
+    .client-count {
+        padding: 0px 80px 80px 80px;
+    }
+
+    .aboutright {
+        padding: 50px 30px 40px 30px
+    }
+
+    .aboutright p {
+        font-size: 14px;
+    }
+
+    .about-sub .row {
+        display: flex;
+        width: auto;
+    }
+
+    .count-banner h1 {
+        font-size: 46px;
+    }
+
+    .count-banner p {
+        font-size: 12px;
+    }
+
+    .desc {
+        font-size: 13px;
+    }
+
+    .news-right-section {
+        position: unset;
+    }
+
+    .head-news-right-section {
+        margin: 220px 0px 40px 0px;
+    }
+
+    .share-news-right-section {
+        margin: 40px 0px 40px 0px;
+    }
+
 }
 
 @media only screen and (max-width: 1024px) and (min-width: 986px) {
@@ -1119,9 +1521,76 @@ News
     .news-right-section {
         width: 35%;
     }
+
+    .about,
+    .about-sub,
+    .client-count {
+        padding: 0px 80px 80px 80px;
+    }
+
+    .aboutright {
+        padding: 50px 30px 40px 30px
+    }
+
+    .aboutright p {
+        font-size: 14px;
+    }
+
+
+
 }
 
 @media only screen and (max-width: 1453px) and (min-width: 1025px) {
+
+    .bannerImage {
+        padding: 80px    ;
+    }
+
+    .land-font {
+        font-size: 56px;
+        line-height: 65px;
+    }
+
+    .left-sub {
+        font-size: 24px;
+    }
+
+    .landingpageicon {
+        width: auto;
+        height: auto;
+        padding: 0px;
+    }
+
+    .steps {
+        padding: 80px;
+    }
+
+    .step-1, .step-2, .step-3{
+        width: auto;
+        height: auto;
+    }
+
+    .step-1-desc, .step-2-desc, .step-3-desc {
+        top: 198px;
+        left: 0px;
+    }
+
+    .step-1-desc h5, .step-2-desc h5, .step-3-desc h5{
+                font-size: 20px;
+    }
+
+    .step-1-desc p, .step-2-desc p, .step-3-desc p{
+        font-size: 12px;
+    }
+
+    .faq-accordion {
+        padding: 30px 80px 80px 80px;
+    }
+
+    .step-1-desc, .step-2-desc, .step-3-desc {
+        width: auto;
+    }
+
     .bannerImageDashboard {
         padding: 80px 90px 0px 90px;
     }
@@ -1169,6 +1638,21 @@ News
 
     .news-sub-desc b,
     .desc {
+        font-size: 14px;
+    }
+
+
+    .about,
+    .about-sub,
+    .client-count {
+        padding: 0px 80px 80px 80px;
+    }
+
+    .aboutright {
+        padding: 50px 30px 40px 30px
+    }
+
+    .aboutright p {
         font-size: 14px;
     }
 

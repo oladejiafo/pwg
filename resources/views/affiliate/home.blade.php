@@ -44,7 +44,7 @@
                         <div class="step-1">
                             <img src="{{asset('images/affiliate/Step1.svg')}}" width="100%" height="100%" >
                             <div class="step-1-desc">
-                                <h4>Register on our platform</h4>
+                                <h5>Register on our platform</h5>
                                 <p>Easy registration,few details and you are set to go </p>
                             </div>
                         </div>

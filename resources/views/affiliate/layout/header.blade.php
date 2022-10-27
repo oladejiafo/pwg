@@ -13,9 +13,7 @@
         <link rel='stylesheet' type='text/css' media='screen' href='{{asset('css/affiliate.css')}}'>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-
         <header>
-
             <nav class="navbar navbar-expand-lg navbar-light affiliateNavLogin">
                 <div class="container-fluid">
                     <div class="logoImgAffiliate">
@@ -30,6 +28,7 @@
                         <picture>
                         <source media="(min-width:769px)" srcset="{{asset('images/logo.png')}}">
                         <source media="(min-width:375px)" srcset="{{asset('images/logoo.png')}}">
+                        <source media="(min-width:320px)" srcset="{{asset('images/logoo.png')}}">
 
                         <img class="logos" src="{{asset('images/logo.png')}}" alt="PWG logo">
                         </picture>
@@ -125,4 +124,3 @@
             </nav>
         </header>
 </head>
-       

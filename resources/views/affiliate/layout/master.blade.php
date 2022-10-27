@@ -35,6 +35,11 @@
             }
                     toastr.warning("{{ session('warning') }}");
             @endif
+
+            @if(Session::has('loginId'))
+            @else
+                $(".navbar-toggler").css("display", "none");
+            @endif
         </script>
     </body>
 </html>

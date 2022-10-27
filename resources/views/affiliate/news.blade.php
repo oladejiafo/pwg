@@ -6,36 +6,42 @@
                 <div class="col-12">
                     <div class="row">
                         <div class="col-12 col-md-12 col-lg-6">
-                            @foreach ($news as $new)
-                                <div class="news-left-section">
-                                    <div class="news-banner">
-                                        @if($new->video_link)
-                                            <video width="100" height="240" controls>
-                                                <source src="{{asset('storage/news/'.$new->video_link)}}" type="video/mp4">
-                                                Your browser does not support the video tag.
-                                            </video>
-                                        @else
-                                            <img src="{{asset('storage/news/'.$new->image_url)}}">
-                                        @endif
+                            @if($news->count() > 0)
+                                @foreach ($news as $new)
+                                    <div class="news-left-section">
+                                        <div class="news-banner">
+                                            @if($new->video_link)
+                                                <video width="100" height="240" controls>
+                                                    <source src="{{asset('storage/news/'.$new->video_link)}}" type="video/mp4">
+                                                    Your browser does not support the video tag.
+                                                </video>
+                                            @else
+                                                <img src="{{asset('storage/news/'.$new->image_url)}}">
+                                            @endif
+                                        </div>
+                                        <div class="news-desc">
+                                            <p>{{($new->published_date)->format('jS F Y')}}</p>
+                                            <h3>
+                                                <b>{{ ucfirst($new->title)}}</b>
+                                            </h3>
+                                            <p class="news-sub-desc">
+                                                <b>
+                                                    {!! $new->category!!}
+                                                </b>
+                                            </p>
+                                            <p class="desc"> 
+                                                {!! substr($new->details, 0, 500) !!}
+                                            </p>
+                                            <a class="btn checkout-news" href="{{route('affiliate.news.brief', $new->id)}}"><b>Check out the story</b></a>
+                                        </div>
+                                        <div class="news-desc-hr"></div>
                                     </div>
-                                    <div class="news-desc">
-                                        <p>{{($new->published_date)->format('jS F Y')}}</p>
-                                        <h3>
-                                            <b>{{ ucfirst($new->title)}}</b>
-                                        </h3>
-                                        <p class="news-sub-desc">
-                                            <b>
-                                                {!! $new->category!!}
-                                            </b>
-                                        </p>
-                                        <p class="desc"> 
-                                            {!! substr($new->details, 0, 500) !!}
-                                        </p>
-                                        <a class="btn checkout-news" href="{{route('affiliate.news.brief', $new->id)}}"><b>Check out the story</b></a>
-                                    </div>
-                                    <div class="news-desc-hr"></div>
+                                @endforeach
+                            @else
+                                <div class="no-news-left-section">
+                                    <p><b>No news found !</b></p>
                                 </div>
-                            @endforeach
+                            @endif
                         </div>
                         <div class="col-12 col-md-12 col-lg-6">
                             <div class="news-right-section">
