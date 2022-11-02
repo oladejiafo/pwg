@@ -7,6 +7,12 @@ class Constant {
     const WhiteJob = 2;
     const FamilyPackage = 3;
 
+    const Poland = 1;
+    const Canada = 2;
+    const Germany = 3;
+    const CZech = 4;
+    const Malta = 5;
+
     const countries = [
         'Afghanistan'=>"Afghanistan",
         'Albania' =>"Albania"   ,

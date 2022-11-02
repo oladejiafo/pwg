@@ -19,7 +19,9 @@ use App\Models\notifications;
 use App\Models\cardDetail;
 use App\Helpers\Quickbook;
 use App\Models\Quickbook as QuickModel;
-
+use App\Constant;
+use App\Helpers\pdfBlock;
+use App\Helpers\users as UserHelper;
 use Illuminate\Support\Facades\Mail;
 use QuickBooksOnline\API\DataService\DataService;
 use App\Mail\NotifyMail;
@@ -223,18 +225,20 @@ class HomeController extends Controller
                 ->where('destination_id', $pid)
                 ->where('work_permit_category', (Session::get('packageType')) ?? 'BLUE COLLAR')
                 ->first();
+            $appliedCountry = Product::find($pid);
             if ($datas === null) {
                 $data = new applicant();
                 $data->client_id = Auth::id();
                 $data->destination_id = $pid;
                 $data->work_permit_category = (Session::get('packageType')) ?? 'BLUE COLLAR';
                 $data->application_stage_status = 1;
-                $data->destination_id = $pid;
+                $data->applied_country = $appliedCountry->name;
                 $res = $data->save();
             } else {
                 $datas->work_permit_category =  (Session::get('packageType')) ?? 'BLUE COLLAR';
                 $datas->application_stage_status = 1;
                 $datas->destination_id = $pid;
+                $datas->applied_country = $appliedCountry->name;
                 $res = $datas->save();
             }
 
@@ -1042,7 +1046,7 @@ class HomeController extends Controller
                     $payment = $this->getPaymentName();
 
                     //Quickbook::updateTokenAccess();
-                    Quickbook::createInvoice($payment);
+                    // Quickbook::createInvoice($payment);
 
                     $msg = "Awesome! Payment Successful!";
                     Session::forget('paymentCreds');
@@ -1242,8 +1246,14 @@ class HomeController extends Controller
     public function contract($productId)
     {
         if (Auth::id()) {
-
-            return view('user.contract', compact('productId'));
+            if(Session::get('myproduct_id') == Constant::Poland){
+                $destinationPath = "pdf/poland.pdf";
+                $rand = UserHelper::getRandomString();
+                $newFileName = Auth::id().'-'.$rand.'-'.'poland.pdf';
+                $originathpath = "pdf/".$newFileName;
+                // pdfBlock::mapDetails($destinationPath, $originathpath);
+                return view('user.contract', compact('productId'));
+            }
         } else {
             return redirect('home');
         }
@@ -1354,7 +1364,7 @@ class HomeController extends Controller
     public function getInvoice($ptype = null)
     {
         // QuickcheckRefreshTokenbook::updateTokenAccess();
-        $dataService = Quickbook::connectQucikBook();
+        // $dataService = Quickbook::connectQucikBook();
 
         //$payment = $dataService->Query("select * from Payment");
         $paymentDetails = Payment::where('id', Session::get('paymentId'))
@@ -1378,12 +1388,12 @@ class HomeController extends Controller
         }
         if ($paymentDetails->payment_type == 'Full-Outstanding Payment') {
             $filename = Auth::user()->name . '-' . $paymentDetails->payment_type . '-' . "Invoice.pdf";
-            $invoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
-            if ($invoice) {
-                $pdfData = $dataService->DownloadPDF($invoice, null, true);
-            } else {
+            // $invoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
+            // if ($invoice) {
+                // $pdfData = $dataService->DownloadPDF($invoice, null, true);
+            // } else {
                 return self::getInvoiceDevelop($paymentDetails->payment_type);
-            }
+            // }
         } else {
             if ($paymentDetails->payment_type == 'First Payment') {
                 $firstPaymentDue = Payment::where('application_id', $paymentDetails->application_id)
@@ -1395,47 +1405,47 @@ class HomeController extends Controller
                             ->where('payment_type', $ptype)
                             ->first();
                         $filename = Auth::user()->name . '-' . $paymentDetails->payment_type . '-' . "Invoice.pdf";
-                        $invoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
-                        if ($invoice) {
-                            $pdfData = $dataService->DownloadPDF($invoice, null, true);
-                        } else {
+                        // $invoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
+                        // if ($invoice) {
+                        //     $pdfData = $dataService->DownloadPDF($invoice, null, true);
+                        // } else {
                             return self::getInvoiceDevelop($paymentDetails->payment_type);
-                        }
+                        // }
                     } else {
                         $filename = Auth::user()->name . '-' . $paymentDetails->payment_type . '-' . "Receipt.pdf";
-                        $reciept = $dataService->FindById("Payment", $paymentDetails->invoice_id);
-                        $pdfData = $dataService->DownloadPDF($reciept, null, true);
+                        // $reciept = $dataService->FindById("Payment", $paymentDetails->invoice_id);
+                        // $pdfData = $dataService->DownloadPDF($reciept, null, true);
                     }
                 } else {
                     $filename = Auth::user()->name . '-' . $paymentDetails->payment_type . '-' . "Invoice.pdf";
-                    $invoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
-                    if ($invoice) {
-                        $pdfData = $dataService->DownloadPDF($invoice, null, true);
-                    } else {
+                    // $invoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
+                    // if ($invoice) {
+                    //     $pdfData = $dataService->DownloadPDF($invoice, null, true);
+                    // } else {
                         return self::getInvoiceDevelop($paymentDetails->payment_type);
-                    }
+                    // }
                 }
             } else {
                 $filename = Auth::user()->name . '-' . $paymentDetails->payment_type . '-' . "Invoice.pdf";
-                $invoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
-                if ($invoice) {
-                    $pdfData = $dataService->DownloadPDF($invoice, null, true);
-                } else {
+                // $invoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
+                // if ($invoice) {
+                //     $pdfData = $dataService->DownloadPDF($invoice, null, true);
+                // } else {
                     return self::getInvoiceDevelop($paymentDetails->payment_type);
-                }
+                // }
             }
         }
-        header('Content-Description: File Transfer');
-        header('Content-Type: application/pdf');
-        header('Content-Disposition: attachment; filename=' . $filename);
-        header('Content-Transfer-Encoding: binary');
-        header('Expires: 0');
-        header('Cache-Control: must-revalidate');
-        header('Pragma: public');
-        header('Content-Length: ' . strlen($pdfData));
-        ob_clean();
-        flush();
-        return $pdfData;
+        // header('Content-Description: File Transfer');
+        // header('Content-Type: application/pdf');
+        // header('Content-Disposition: attachment; filename=' . $filename);
+        // header('Content-Transfer-Encoding: binary');
+        // header('Expires: 0');
+        // header('Cache-Control: must-revalidate');
+        // header('Pragma: public');
+        // header('Content-Length: ' . strlen($pdfData));
+        // ob_clean();
+        // flush();
+        // return $pdfData;
     }
 
     private function getPaymentName()

@@ -3,14 +3,16 @@
 namespace App\Http\Controllers\Affiliate;
 
 use App\Affiliate as AppAffiliate;
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Affiliate;
+use App\Models\Presentation;
 use App\Models\News;
+use App\Http\Controllers\Controller;
+use App\Mail\ResetPassword;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\ResetPassword;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 use Session;
 use DB;
 use Carbon\Carbon;
@@ -195,9 +197,9 @@ class AffiliatePartnerController extends Controller
 
     public function news()
     {
-        $news = News::where('active', 1)->latest()->take(3)->get();
+        $news = News::where('active', 1)->orderBy('id', 'DESC')->take(3)->get();
 
-        $oldNews = News::where('active', 1)->latest()->skip(3)->take(5)->get();
+        $oldNews = News::where('active', 1)->orderBy('id', 'DESC')->skip(3)->take(5)->get();
         return view('affiliate.news', compact('news', 'oldNews'));
     }
 
@@ -210,5 +212,27 @@ class AffiliatePartnerController extends Controller
     public function aboutUs()
     {
         return view('affiliate.about-us');
+    }
+
+    public function toolBox()
+    {
+        $presents = Presentation::where('active', 1)->orderBy('id', 'DESC')->take(3)->get();
+        return view('affiliate.toolbox', compact('presents'));
+    }
+
+    public function toolBoLoadxMore(Request $request)
+    {
+        $presents = Presentation::where('active', 1)
+                        ->where('id', '<', $request->lastid)
+                        ->orderBy('id', 'DESC')
+                        ->take(3)
+                        ->get()
+                        ->toArray();
+        foreach($presents as $present){
+            // dd(storage_path('presentation/' . $present['image_url']));
+            $present['image_url'] =  Storage::path('presentation/' . $present['image_url']);
+            dd($present);
+        }
+        return $presents;
     }
 }

@@ -54,7 +54,7 @@
             <button type="submit" class="btn btn-primary submitBtn">Login</button>
             <div class="bottom-sec">
                 <div class="signuplink"><a href="{{route('affiliate.register')}}">Signup</a></div>
-                <div class="forgot"><a href="{{route('affiliate.forgot-password')}}">forgot your password ?</a></div>
+                <div class="forgot"><a href="{{route('affiliate.forgot-password')}}">forgot your password?</a></div>
             </div>
           </form>
         </div>

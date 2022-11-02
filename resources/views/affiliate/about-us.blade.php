@@ -87,7 +87,7 @@
                         <div class="col-sm-12 col-md-12 col-lg-6 nopadding">
                             <div class="aboutright">
                                 <h3>
-                                    <b>What makes us unique ?</b>
+                                    <b>What makes us unique?</b>
                                 </h3>
                                 <h6>
                                     Unleashing Opportunities

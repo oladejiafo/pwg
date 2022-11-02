@@ -152,4 +152,6 @@ Route::group(['namespace' => 'Affiliate', 'prefix' => '/affiliate','as' => 'affi
         Route::get('news/{id}', [AffiliatePartnerController::class, 'newsBrief'])->name('news.brief');
 
         Route::get('about-us', [AffiliatePartnerController::class, 'aboutUs'])->name('about');
+        Route::get('toolbox', [AffiliatePartnerController::class, 'toolBox'])->name('toolbox');
+        Route::post('toolbox/loadmore', [AffiliatePartnerController::class, 'toolBoLoadxMore'])->name('loadmore.load_data');
 });

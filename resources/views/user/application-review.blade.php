@@ -1965,12 +1965,12 @@
 
         $sheng = ($client['schengenVisaUrl1']) ?? null;
         $phold = "Image of Schengen Or National Visa Issued During Last 5 Years";
-        $vall1_dep = $dependent['schengenVisaName1_dep'];
-        $vall2_dep = $dependent['schengenVisaName2_dep'];
-        $vall3_dep = $dependent['schengenVisaName3_dep'];
-        $vall4_dep = $dependent['schengenVisaName4_dep'];
+        $vall1_dep = ($dependent['schengenVisaName1_dep']) ?? null;
+        $vall2_dep = ($dependent['schengenVisaName2_dep']) ?? null;
+        $vall3_dep = ($dependent['schengenVisaName3_dep']) ?? null;
+        $vall4_dep = ($dependent['schengenVisaName4_dep']) ?? null;
 
-        $sheng_dep = $dependent['schengenVisaUrl1_dep'];
+        $sheng_dep = ($dependent['schengenVisaUrl1_dep']) ?? null;
         $phold_dep = "Image of Schengen Or National Visa Issued During Last 5 Years";
     @endphp
 @endSection  

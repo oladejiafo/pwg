@@ -331,7 +331,7 @@ li {
 }
 
 .product-section .btn {
-  height: 60px;
+  height: 100%;
   width: 45%;
   max-width: 100%;
   margin-left: 5px;

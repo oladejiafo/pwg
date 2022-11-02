@@ -144,20 +144,19 @@
 @endsection
 
 <script>
-function copyToClipboard(element) {
-  var $temp = $("<input>");
-  $("body").append($temp);
-  $temp.val($(element).text()).select();
-  document.execCommand("copy");
-  $temp.remove();
+    function copyToClipboard(element) {
+        var $temp = $("<input>");
+        $("body").append($temp);
+        $temp.val($(element).text()).select();
+        document.execCommand("copy");
+        $temp.remove();
 
-  toastr.options =
-    {
-        "closeButton" : true,
-        "progressBar" : true,
-        'positionClass': 'toast-bottom-right',
+        toastr.options =
+            {
+                "closeButton" : true,
+                "progressBar" : true,
+                'positionClass': 'toast-bottom-right',
+            }
+        toastr.info("Code copied!");
     }
-  toastr.info("Code copied!");
-}
-
 </script>

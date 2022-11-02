@@ -104,7 +104,7 @@
                                             <p>{{$offer->description}}</p>
                                         </div>
                                         <span class="bottom">
-                                            <h3 class="product-title intro-excerpt" style="font-size: 35px; color:aliceblue">{{$offer->name}}</h3>
+                                            <h3 class="product-title intro-excerpt" style="font-size: 35px; color:aliceblue">{{ucfirst($offer->name)}}</h3>
                                             <p style="font-size:20px">{{$offer->slogan}}</p>
                                         </span>
                                         <p style="font-size:12px">Starting from </p>
@@ -185,7 +185,7 @@
                               <p>{{$offer->description}}</p>
                             </div>
                             <span class="bottom">
-                                <h3 class="product-title intro-excerpt" style="font-size: 35px; color:aliceblue">{{$offer->name}}</h3>
+                                <h3 class="product-title intro-excerpt" style="font-size: 35px; color:aliceblue">{{ucfirst($offer->name)}}</h3>
                                 <p style="font-size:20px">{{$offer->slogan}}</p>
                             </span>
                             <p style="font-size:12px">Starting from </p>

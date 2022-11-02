@@ -1,3 +1,15 @@
+@font-face {
+    font-family: 'TT Norms Pro';
+    src: url('TTNormsPro-Regular.eot');
+    src: local('TT Norms Pro Regular'), local('TTNormsPro-Regular'),
+        url('TTNormsPro-Regular.eot?#iefix') format('embedded-opentype'),
+        url('TTNormsPro-Regular.woff2') format('woff2'),
+        url('TTNormsPro-Regular.woff') format('woff'),
+        url('TTNormsPro-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+
 .logoImg {
     padding-left: 70px;
     padding-top: 12px;
@@ -29,7 +41,7 @@
 
 body {
     background-color: #f0f3f4;
-    font-family: TT Norms Pro;
+    font-family: 'TT Norms Pro';
 }
 
 h1,
@@ -40,7 +52,7 @@ h5,
 h6,
 p,
 span {
-    font-family: TT Norms Pro;
+    font-family: 'TT Norms Pro';
 }
 
 .nav-link,
@@ -71,7 +83,7 @@ span {
 }
 
 .land-font {
-    font-family: TT Norms Pro;
+    font-family: 'TT Norms Pro';
     font-style: normal;
     font-weight: 700;
     font-size: 68.5501px;
@@ -81,7 +93,7 @@ span {
 }
 
 .left-sub {
-    font-family: TT Norms Pro;
+    font-family: 'TT Norms Pro';
     float: right;
     font-style: normal;
     font-weight: 400;
@@ -141,7 +153,7 @@ span {
 .step-1-desc p,
 .step-2-desc p,
 .step-3-desc p {
-    font-family: TT Norms Pro;
+    font-family: 'TT Norms Pro';
     font-weight: 400;
     font-size: 16.1914px;
     line-height: 19px;
@@ -150,7 +162,7 @@ span {
 .step-1-desc h5,
 .step-2-desc h5,
 .step-3-desc h5 {
-    font-family: TT Norms Pro;
+    font-family: 'TT Norms Pro';
     font-style: normal;
     font-weight: 400;
     font-size: 24.4732px;
@@ -206,7 +218,7 @@ span {
 }
 
 .left-sub-dashboard {
-    font-family: TT Norms Pro;
+    font-family: 'TT Norms Pro';
     float: right;
     font-style: normal;
     font-weight: 400;
@@ -237,7 +249,7 @@ span {
 }
 
 .card {
-    font-family: TT Norms Pro;
+    font-family: 'TT Norms Pro';
     height: 258px;
 }
 
@@ -274,7 +286,7 @@ span {
 
 .transfer {
     border: 0.5px solid #333333;
-    font-family: TT Norms Pro;
+    font-family: 'TT Norms Pro';
     border-radius: 5px;
     height: 39px;
     width: 165px;
@@ -345,7 +357,7 @@ span {
 
 .news1 p,
 .news5 p {
-    font-family: TT Norms Pro;
+    font-family: 'TT Norms Pro';
     color: #4F5E66;
     font-weight: 100;
     font-size: 12px;
@@ -363,7 +375,7 @@ span {
 .navItems ul li div a,
 .navItems ul li a {
     margin-right: 10px;
-    font-family: TT Norms Pro;
+    font-family: 'TT Norms Pro';
     font-weight: bolder;
     font-size: 20px;
     color: #2C3144 !important;
@@ -415,7 +427,7 @@ News
     background: #FFFFFF;
     border-radius: 30px 30px 30px 30px;
     height: 34%;
-    margin-top: 40px;
+    margin-top: 60px;
 }
 
 .news-banner {
@@ -472,7 +484,7 @@ News
     background-color: #fff;
     height: 50%;
     border-radius: 30px 30px 30px 30px;
-    margin: 40px 0px 40px 40px;
+    margin: 60px 0px 40px 40px;
     float: right;
 }
 
@@ -627,6 +639,69 @@ About
     font-weight: 300;
     font-size: 17.8691px;
     line-height: 21px;
+}
+
+/* 
+    ToolBox
+*/
+
+.toolbox {
+    padding: 0px 200px 80px 200px;
+}
+
+.toolbox-sec {
+    height: 40%;
+    background-color: #fff;
+    margin-top: 60px;
+}
+
+.toolbox-right-sec {
+    padding: 20px 20px 20px 60px;
+    height: 100%;
+}
+
+.toolbox-right-desc {
+    margin: 30px 0px 30px 0px;
+    color: #383838;
+    font-family: TT Norms;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 147%;
+    letter-spacing: 0em;
+}
+
+.startCopy {
+    background: #FACB08;
+    height: 10%;
+    width: 50%;
+    border-radius: 0px;
+    margin-top: 10px;
+}
+
+.toolbox-right-sub-head {
+    font-family: 'TT Norms';
+    font-style: normal;
+    font-weight: lighter;
+    font-size: 24px;
+    line-height: 28px;
+    color: #515154;
+}
+
+.toolbox-left-sec {
+    height: 100%;
+}
+
+.load {
+    border: 0.5px black;
+    background-color: #fff;
+    width: 20%;
+    text-align: center;
+    margin-top: 40px;
+}
+
+.loadImg img {
+    width: 7%;
+    margin-left: 14px;
 }
 
 /* Responsive */
@@ -943,6 +1018,14 @@ About
         margin-bottom: 40px;
     }
 
+    .toolbox {
+        padding: 0px 40px 40px 40px;
+    }
+
+    .toolbox-right-sec {
+        padding: 20px 20px 20px 20px;
+    }
+
 }
 
 @media only screen and (max-width: 736px) and (min-width: 414px) {
@@ -1243,6 +1326,10 @@ About
         margin-top: 10px;
         margin-bottom: 10px;
     }
+
+    .toolbox {
+        padding: 0px 100px 80px 100px;
+    }
 }
 
 @media only screen and (max-width: 995px) and (min-width: 769px) {
@@ -1536,8 +1623,31 @@ About
         font-size: 14px;
     }
 
+    .toolbox-right-sec {
+        padding: 20px 20px 20px 20px;
+        height: 100%;
+    }
 
+    .toolbox-right-desc {
+        font-size: 12px;
+        margin: 20px 0px 20px 0px;
+    }
 
+    .toolbox-right-sub-head {
+        font-size: 17px;
+    }
+
+    .toolbox-right-sec h1 {
+        font-size: 26px;
+    }
+
+    .toolbox-left-sec {
+        height: 100%;
+    }
+
+    .toolbox-left-sec img{
+        object-fit: cover;
+    }
 }
 
 @media only screen and (max-width: 1453px) and (min-width: 1025px) {
@@ -1655,5 +1765,9 @@ About
     .aboutright p {
         font-size: 14px;
     }
+
+    .toolbox-left-sec {
+        height: 100%;
+    } 
 
 }
