@@ -43,30 +43,65 @@ class pdfBlock
     public static function mapDetails($destinationPath, $originathpath)
     {
         $pdf = new \setasign\Fpdi\Fpdi();
-        $pdf->AddPage();
+    
+        // $pdf->AddPage();
         $pagecount = $pdf->setSourceFile('pdf/poland-low.pdf');
         // $template = $pdf->importPage(1);
 
-        for ($pageNo = 1; $pageNo <= 6; $pageNo++) {
+        for ($pageNo = 1; $pageNo <= $pagecount; $pageNo++) {
+       
+            $pdf->AddPage();
             $template = $pdf->importPage($pageNo);
             $client = User::find(Auth::id());
             // use the imported page and place it at point 20,30 with a width of 170 mm
-            $pdf->useTemplate($template);
-            if($pageNo < $pagecount){
-                $pdf->AddPage();
+            $pdf->useTemplate($template, 10,10,200);
+            // if($pageNo < $pagecount){
+            //     $pdf->AddPage();
 
-            }
+            // }
             //Select Arial italic 8
-            $pdf->SetFont('Arial','',8);
+            $pdf->SetFont('Arial', 'B','9');
             $pdf->SetTextColor(0,0,0);
-            $pdf->SetAutoPageBreak(0);
+            // $pdf->SetFontSize(9);
+            // $pdf->SetAutoPageBreak(0);
             if ($pageNo == 1){
-                $pdf->SetXY(50, 10 );
+                //Date
+                $pdf->SetXY(28, 40 );
+                $pdf->Write(2, date('d-m-yy'));
 
-                $pdf->Write(0, 'CXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
-            // } else {
-            //     $pdf->Write(1, 'QQQQQQQQQQQQQQQQQQQQQQQQQQQ');
+                //Place
+                $pdf->SetXY(28, 54.5 );
+                $pdf->Write(2, 'DUBAI, UAE');
 
+                //Representative
+                // $pdf->SetXY(27, 56 );
+                // $pdf->Write(2, 'UAE');
+
+                //Name
+                $pdf->SetXY(70, 116.5);
+                $pdf->Write(2, $client->name . ' ' . $client->sur_name);
+
+                // //Nationality
+                // $pdf->SetXY(70, 129);
+                // $pdf->Write(2, '[Nationality]');                
+
+                // //Passport
+                // $pdf->SetXY(70, 143 );
+                // $pdf->Write(2, "[PASSPORT]");                                
+
+                //Phone
+                $pdf->SetXY(70, 156 );
+                $pdf->Write(2, $client->phone_number);                
+
+                //email
+                $pdf->SetXY(70, 170 );
+                $pdf->Write(2, $client->email);                
+            }
+
+            if ($pageNo == 4){
+                //Sign
+                // $pdf->SetXY(30, 235 );
+                // $pdf->Write(2, "[SIGN HERE]");   
             }
         }
         $pdf->Output($originathpath, "F");
