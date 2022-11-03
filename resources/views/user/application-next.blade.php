@@ -41,7 +41,8 @@
                     <div class="tabs-detail d-flex justify-content-center">
                         <div class="wrapper">
                               @if ($levels == '2' || $levels == '5' || $levels == '4' || $levels == '3')
-                                <a href="#" class="wrapper-link" onclick="return alert('Payment Concluded Already!');"><div class="round-completed round2 m-2">1</div></a>
+
+                                <a href="#" class="wrapper-link toastrDefaultError" onclick="toastr.error('Payment Concluded Already!');"><div class="round-completed round2 m-2">1</div></a>
                               @else 
                                 <a href="{{ url('payment_form', $productId) }}" class="wrapper-link">
                                     <div class="round-completed round2  m-2">1</div>
@@ -74,7 +75,8 @@
                               } else {
                             @endphp
                             <div class="wrapper">
-                                <a href="#" onclick="return alert('You have to complete Applicants Details first');" class="wrapper-link"><div class="round5 m-2">3</div></a>
+
+                                <a href="#" onclick="toastr.error('You have to complete Applicants Details first');" class="wrapper-link toastrDefaultError"><div class="round5 m-2">3</div></a>
                                 <div class="col-2 round-title">Applicant <br> Reviews</div>
                                 
                             </div>
