@@ -89,6 +89,7 @@
       /* width:75%; */
       text-align: left;
       float: right;
+      margin-right: 7px;
     }
         .nav-item {
             color: #fff;
