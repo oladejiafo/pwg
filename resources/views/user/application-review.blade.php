@@ -33,7 +33,7 @@
                                 if ($levels == '2' || $levels == '5' || $levels == '4' || $levels == '3') 
                                 {
                               @endphp    
-                                <a href="#" onclick="return alert('Payment Concluded Already!');" class="wrapper-link">
+                                <a href="#" onclick="toastr.error('Payment Concluded Already!');" class="wrapper-link toastrDefaultError">
                                     <div class="round-completed round2 m-2">1</div>
                                 </a>
                               @php
@@ -59,7 +59,7 @@
                             <div class="linear"></div> -->
 
                             <div class="wrapper">
-                                <a href="#" onclick="return alert('Section completed already');" class="wrapper-link"><div class="round-completed round4 m-2">2</div></a>
+                                <a href="#" onclick="toastr.error('Section completed already');" class="wrapper-link"><div class="toastrDefaultError round-completed round4 m-2">2</div></a>
                                 <div class="col-2 round-title">Applicant <br> Details</div>
                             </div>
                             <div class="linear"></div>

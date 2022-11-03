@@ -139,15 +139,16 @@ $vals=array(0,1,2);
 	                            <div class="col-2 round-title">Application <br> Details</div>
 	                        </div>
 	                        <div class="linear"></div> -->
+
 	                        <div class="wrapper">
-	                            <a href="#" onclick="return alert('You have to complete Payment first');" class="wrapper-link">
+	                            <a href="#" onclick="toastr.error('You have to complete Payment first');" class="wrapper-link toastrDefaultError">
 	                                <div class="round4 m-2">2</div>
 	                            </a>
 	                            <div class="col-2 round-title">Applicant <br> Details</div>
 	                        </div>
 	                        <div class="linear"></div>
 	                        <div class="wrapper">
-	                            <a href="#" onclick="return alert('You have to complete Payment first');"  class="wrapper-link">
+	                            <a href="#" onclick="toastr.error('You have to complete Payment first');"  class="wrapper-link toastrDefaultError">
 	                                <div class="round5 m-2">3</div>
 	                            </a>
 	                            <div class="col-2 round-title">Application <br> Review</div>
