@@ -1868,7 +1868,7 @@ iframe img {
   pointer-events: none;
 }
 
-.hint img:hover {
+.hint:hover img{
   filter: blur(1px);
 }
 
