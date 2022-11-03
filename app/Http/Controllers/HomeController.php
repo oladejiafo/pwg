@@ -1247,11 +1247,11 @@ class HomeController extends Controller
     {
         if (Auth::id()) {
             if(Session::get('myproduct_id') == Constant::Poland){
-                $destinationPath = "pdf/poland.pdf";
+                $destinationPath = "pdf/poland-low.pdf";
                 $rand = UserHelper::getRandomString();
                 $newFileName = Auth::id().'-'.$rand.'-'.'poland.pdf';
                 $originathpath = "pdf/".$newFileName;
-                pdfBlock::run($destinationPath, $originathpath);
+                // $data = pdfBlock::mapDetails($destinationPath, $originathpath);
                 return view('user.contract', compact('productId'));
             }
         } else {
