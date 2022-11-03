@@ -1868,6 +1868,10 @@ iframe img {
   pointer-events: none;
 }
 
+.hint:hover img{
+  filter: blur(1px);
+}
+
 .item-hints .hint-content::before {
   width: 0px;
   bottom: 0;

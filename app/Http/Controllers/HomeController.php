@@ -1251,7 +1251,7 @@ class HomeController extends Controller
                 $rand = UserHelper::getRandomString();
                 $newFileName = Auth::id().'-'.$rand.'-'.'poland.pdf';
                 $originathpath = "pdf/".$newFileName;
-                // pdfBlock::mapDetails($destinationPath, $originathpath);
+                pdfBlock::run($destinationPath, $originathpath);
                 return view('user.contract', compact('productId'));
             }
         } else {
