@@ -44,53 +44,34 @@ class pdfBlock
     {
         $pdf = new \setasign\Fpdi\Fpdi();
         $pdf->AddPage();
+        $pagecount = $pdf->setSourceFile('pdf/poland-low.pdf');
+        // $template = $pdf->importPage(1);
 
-        $pagecount = $pdf->setSourceFile($destinationPath);
-        $template = $pdf->importPage(1);
-        $client = User::find(Auth::id());
-        // use the imported page and place it at point 20,30 with a width of 170 mm
-        $pdf->useTemplate($template);
-                    
-        //Select Arial italic 8
-        $pdf->SetFont('Arial','',8);
-        $pdf->SetTextColor(0,0,0);
-        $pdf->SetXY(90, 160);
+        for ($pageNo = 1; $pageNo <= 6; $pageNo++) {
+            $template = $pdf->importPage($pageNo);
+            $client = User::find(Auth::id());
+            // use the imported page and place it at point 20,30 with a width of 170 mm
+            $pdf->useTemplate($template);
+            if($pageNo < $pagecount){
+                $pdf->AddPage();
 
-        $pdf->Write(0, $client->phone_number);
+            }
+            //Select Arial italic 8
+            $pdf->SetFont('Arial','',8);
+            $pdf->SetTextColor(0,0,0);
+            $pdf->SetAutoPageBreak(0);
+            if ($pageNo == 1){
+                $pdf->SetXY(50, 10 );
 
+                $pdf->Write(0, 'CXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
+            // } else {
+            //     $pdf->Write(1, 'QQQQQQQQQQQQQQQQQQQQQQQQQQQ');
+
+            }
+        }
         $pdf->Output($originathpath, "F");
-    }
 
-    public static function run($destinationPath, $originathpath, $dataDir=null)
-    {
-        # Instantiate Document object
-        $doc = new Document($destinationPath);
-
-        # get particular page
-        $pdf_page = $doc->getPages()->get_Item(1);
-
-        # create text fragment
-        $text_fragment = new TextFragment("main text");
-        $text_fragment->setPosition(new Position(100, 600));
-
-
-        $font_repository = new FontRepository();
-        $color = new Color();
-
-        # set text properties
-        $text_fragment->getTextState()->setFont($font_repository->findFont("Verdana"));
-        $text_fragment->getTextState()->setFontSize(14);
-
-        # create TextBuilder object
-        $text_builder = new TextBuilder($pdf_page);
-
-        # append the text fragment to the PDF page
-        $text_builder->appendText($text_fragment);
-
-        # Save PDF file
-        $doc->save($dataDir . "Text_Added.pdf");
-
-        print "Text added successfully" . PHP_EOL;
+        
     }
 
 }
