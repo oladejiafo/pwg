@@ -6,14 +6,8 @@ use setasign\Fpdi\Fpdi;
 use setasign\Fpdi\PdfReader;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-
-use com\aspose\pdf\Document as Document;
-use com\aspose\pdf\TextFragment as TextFragment;
-use com\aspose\pdf\Position as Position;
-use com\aspose\pdf\FontRepository as FontRepository;
-use com\aspose\pdf\Color as Color;
-use com\aspose\pdf\TextBuilder as TextBuilder;
-
+use Illuminate\Support\Facades\Storage;
+use App\Constant;
 
 class pdfBlock
 {
@@ -40,12 +34,12 @@ class pdfBlock
     } 
 
 
-    public static function mapDetails($destinationPath, $originathpath)
+    public static function mapDetails($destinationPath, $originathpath, $product, $package)
     {
         $pdf = new \setasign\Fpdi\Fpdi();
     
         // $pdf->AddPage();
-        $pagecount = $pdf->setSourceFile('pdf/poland-low.pdf');
+        $pagecount = $pdf->setSourceFile($destinationPath);
         // $template = $pdf->importPage(1);
 
         for ($pageNo = 1; $pageNo <= $pagecount; $pageNo++) {
@@ -64,7 +58,7 @@ class pdfBlock
             $pdf->SetTextColor(0,0,0);
             // $pdf->SetFontSize(9);
             // $pdf->SetAutoPageBreak(0);
-            if ($pageNo == 1){
+            if ($pageNo == 1 && ($product == Constant::Poland || $product == Constant::Germany)){
                 //Date
                 $pdf->SetXY(28, 40 );
                 $pdf->Write(2, date('d-m-yy'));
@@ -96,6 +90,109 @@ class pdfBlock
                 //email
                 $pdf->SetXY(70, 170 );
                 $pdf->Write(2, $client->email);                
+            } else if ($pageNo == 1 && $product == Constant::Czech){
+                 //Date
+                 $pdf->SetXY(28, 45 );
+                 $pdf->Write(2, date('d-m-yy'));
+ 
+                 //Place
+                 $pdf->SetXY(28, 61 );
+                 $pdf->Write(2, 'DUBAI, UAE');
+ 
+                 //Name
+                 $pdf->SetXY(70, 103);
+                 $pdf->Write(2, $client->name . ' ' . $client->sur_name);                               
+ 
+                 //Phone
+                 $pdf->SetXY(25, 138 );
+                 $pdf->Write(2, $client->phone_number);                
+ 
+                 //email
+                 $pdf->SetXY(70, 138 );
+                 $pdf->Write(2, $client->email);   
+            } else if ($pageNo == 1 && $product == Constant::Malta){
+                //Date
+                $pdf->SetXY(28, 22 );
+                $pdf->Write(2, date('d-m-yy'));
+
+                //Place
+                $pdf->SetXY(67, 22 );
+                $pdf->Write(2, 'DUBAI, UAE');
+
+                //Name
+                $pdf->SetXY(65, 69);
+                $pdf->Write(2, $client->name . ' ' . $client->sur_name);                               
+
+                //Phone
+                $pdf->SetXY(45, 93 );
+                $pdf->Write(2, $client->phone_number);                
+
+                //email
+                $pdf->SetXY(50, 100 );
+                $pdf->Write(2, $client->email);   
+            } else if($pageNo == 1 && $product == Constant::Canada){
+                if($package == Constant::CanadaExpressEntry){
+                     //Date
+                     $pdf->SetXY(30, 40 );
+                     $pdf->Write(2, date('d-m-yy'));
+ 
+                     //Place
+                     $pdf->SetXY(30, 54 );
+                     $pdf->Write(2, 'DUBAI, UAE');
+ 
+                     //Name
+                     $pdf->SetXY(65, 116);
+                     $pdf->Write(2, $client->name . ' ' . $client->sur_name);                               
+ 
+                     //Phone
+                     $pdf->SetXY(65, 155 );
+                     $pdf->Write(2, $client->phone_number);                
+ 
+                     //email
+                     $pdf->SetXY(65, 169 );
+                     $pdf->Write(2, $client->email);   
+                } else if($package == Constant::CanadaStudyPermit) {
+                     //Date
+                    $pdf->SetXY(30, 40 );
+                    $pdf->Write(2, date('d-m-yy'));
+
+                    //Place
+                    $pdf->SetXY(30, 54 );
+                    $pdf->Write(2, 'DUBAI, UAE');
+
+                    //Name
+                    $pdf->SetXY(65, 113);
+                    $pdf->Write(2, $client->name . ' ' . $client->sur_name);                               
+
+                    //Phone
+                    $pdf->SetXY(65, 152 );
+                    $pdf->Write(2, $client->phone_number);                
+
+                    //email
+                    $pdf->SetXY(65, 166 );
+                    $pdf->Write(2, $client->email);  
+                } else if($package == Constant::BlueCollar) {
+                    //Date
+                    $pdf->SetXY(30, 40 );
+                    $pdf->Write(2, date('d-m-yy'));
+
+                    //Place
+                    $pdf->SetXY(30, 54 );
+                    $pdf->Write(2, 'DUBAI, UAE');
+
+                    //Name
+                    $pdf->SetXY(65, 116);
+                    $pdf->Write(2, $client->name . ' ' . $client->sur_name);                               
+
+                    //Phone
+                    $pdf->SetXY(65, 156 );
+                    $pdf->Write(2, $client->phone_number);                
+
+                    //email
+                    $pdf->SetXY(65, 170 );
+                    $pdf->Write(2, $client->email);   
+                }
+
             }
 
             if ($pageNo == 4){
@@ -104,9 +201,9 @@ class pdfBlock
                 // $pdf->Write(2, "[SIGN HERE]");   
             }
         }
-        $pdf->Output($originathpath, "F");
-
         
+
+        $pdf->Output($originathpath, "F");  
     }
 
 }

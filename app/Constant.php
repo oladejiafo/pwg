@@ -10,8 +10,13 @@ class Constant {
     const Poland = 1;
     const Canada = 2;
     const Germany = 3;
-    const CZech = 4;
+    const Czech = 4;
     const Malta = 5;
+
+    const PolandFamilyPackage = 'FAMILY PACKAGE';
+    const CanadaExpressEntry = 'Express Entry';
+    const CanadaStudyPermit = 'Study Permit';
+    const BlueCollar = 'Blue Collar Jobs';
 
     const countries = [
         'Afghanistan'=>"Afghanistan",

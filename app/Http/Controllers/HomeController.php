@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Mail;
 use QuickBooksOnline\API\DataService\DataService;
 use App\Mail\NotifyMail;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\File;
 use Config;
 use PDF;
 use DB;
@@ -1246,14 +1247,51 @@ class HomeController extends Controller
     public function contract($productId)
     {
         if (Auth::id()) {
-            if(Session::get('myproduct_id') == Constant::Poland){
-                $destinationPath = "pdf/poland-low.pdf";
+            $originathpath = null;
+            $destinationPath = null;
+            $newFileName = null;
+            if($productId == Constant::Poland){
+                $destinationPath = "pdf/poland.pdf";
                 $rand = UserHelper::getRandomString();
                 $newFileName = Auth::id().'-'.$rand.'-'.'poland.pdf';
                 $originathpath = "pdf/".$newFileName;
-                $data = pdfBlock::mapDetails($destinationPath, $originathpath);
-                return view('user.contract', compact('productId'));
+            } else if($productId == Constant::Czech){
+                $destinationPath = "pdf/czech.pdf";
+                $rand = UserHelper::getRandomString();
+                $newFileName = Auth::id().'-'.$rand.'-'.'czech.pdf';
+                $originathpath = "pdf/".$newFileName;
+            } else if($productId == Constant::Malta){
+                $destinationPath = "pdf/malta.pdf";
+                $rand = UserHelper::getRandomString();
+                $newFileName = Auth::id().'-'.$rand.'-'.'malta.pdf';
+                $originathpath = "pdf/".$newFileName;
+            } else if($productId == Constant::Canada){
+                if(Session::get('packageType') == Constant::CanadaExpressEntry){
+                    $destinationPath = "pdf/canada_express_entry.pdf";
+                    $rand = UserHelper::getRandomString();
+                    $newFileName = Auth::id().'-'.$rand.'-'.'canada_express_entry.pdf';
+                    $originathpath = "pdf/".$newFileName;
+                } else if(Session::get('packageType') == Constant::CanadaStudyPermit) {
+                    $destinationPath = "pdf/canada_study.pdf";
+                    $rand = UserHelper::getRandomString();
+                    $newFileName = Auth::id().'-'.$rand.'-'.'canada_study.pdf';
+                    $originathpath = "pdf/".$newFileName;
+                } else if(Session::get('packageType') == Constant::BlueCollar) {
+                    $destinationPath = "pdf/canada.pdf";
+                    $rand = UserHelper::getRandomString();
+                    $newFileName = Auth::id().'-'.$rand.'-'.'canada.pdf';
+                    $originathpath = "pdf/".$newFileName;
+                }
+            } else if ($productId == Constant::Germany){
+                $destinationPath = "pdf/poland.pdf";
+                $rand = UserHelper::getRandomString();
+                $newFileName = Auth::id().'-'.$rand.'-'.'germany.pdf';
+                $originathpath = "pdf/".$newFileName;
             }
+            if($originathpath && $destinationPath){
+                $data = pdfBlock::mapDetails($destinationPath, $originathpath, $productId, Session::get('packageType'));
+            }
+            return view('user.contract', compact('productId', 'originathpath'));
         } else {
             return redirect('home');
         }

@@ -57,12 +57,12 @@
                                     class="zoomOut" alt="pwg">
                             </div>
                             <div class="contractPdf">
-                                <embed src="{{ asset('pdf/' . $contract_name) }}#toolbar=0" type="application/pdf"
+                                <embed src="{{ asset($originathpath) }}#toolbar=0" type="application/pdf"
                                     frameBorder="0" alt="pdf" borders="false" style="border: none" />
                             </div>
                         </div>
                         <div class="contractPreview">
-                            <embed src="{{ asset('pdf/' . $contract_name) }}#toolbar=0" type="application/pdf" frameBorder="0"
+                            <embed src="{{ asset($originathpath) }}#toolbar=0" type="application/pdf" frameBorder="0"
                                 alt="pdf" borders="false" style="border: none" />
                         </div>
                         <div class="col-12 col-md-8 col-lg-8 offset-md-2 offset-lg-2">
