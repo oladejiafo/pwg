@@ -586,7 +586,7 @@ a.more {
 }
 
 .product-section .product-item .product-title {
-  /* text-transform: uppercase; */
+  text-transform: uppercase;
 }
 
 .product-section .product-item h3 {

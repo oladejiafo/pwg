@@ -201,8 +201,6 @@ class pdfBlock
                 // $pdf->Write(2, "[SIGN HERE]");   
             }
         }
-        
-
         $pdf->Output($originathpath, "F");  
     }
 
