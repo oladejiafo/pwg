@@ -64,7 +64,6 @@
                             <div class="step-3-desc">
                                 <h5>Withdraw your Earnings</h5>
                                 <p>Transfer your earnings to your prefered bank account.</p>
-
                             </div>
                         </div>
                     </div>

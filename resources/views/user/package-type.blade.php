@@ -94,7 +94,7 @@ $cXamount=0;
                         <div class="package-type blue-collar">
                             <div class="content">
                             <div class="dataCompletedx" id="blueSelect">
-                                <img class="selected" style="width:30px" src="{{asset('images/Affiliate_Program_Section_Completed.svg')}}" alt="PWG Group approved">
+                                <img class="selected" style="width:30px" src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="PWG Group approved">
                             </div>
                                 <img src="{{asset('images/yellowWhiteCollar.svg')}}" alt="PWG Group">
                                 <h6>Blue Collar Package</h6>
@@ -108,7 +108,7 @@ $cXamount=0;
                         <div class="package-type  study-permit">                            
                             <div class="content">
                              <div class="dataCompletedx" id="studySelect">
-                                <img class="selected" style="width:30px" src="{{asset('images/Affiliate_Program_Section_Completed.svg')}}" alt="PWG Group approved">
+                                <img class="selected" style="width:30px" src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="PWG Group approved">
                              </div>
                                 <img src="{{asset('images/yellowBlueCollar.svg')}}" alt="PWG Group">
 
@@ -121,7 +121,7 @@ $cXamount=0;
                         <div class="package-type  express-entry">                            
                             <div class="content">
                              <div class="dataCompletedx" id="expressSelect">
-                                <img class="selected" style="width:30px" src="{{asset('images/Affiliate_Program_Section_Completed.svg')}}" alt="PWG Group approved">
+                                <img class="selected" style="width:30px" src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="PWG Group approved">
                              </div>
                                 <img src="{{asset('images/yellowFamily.svg')}}" alt="PWG Group">
 
@@ -155,7 +155,7 @@ $cXamount=0;
                         <div class="package-type  white-collar">                            
                             <div class="content">
                              <div class="dataCompletedx" id="whiteSelect">
-                                <img class="selected" style="width:30px" src="{{asset('images/Affiliate_Program_Section_Completed.svg')}}" alt="PWG Group approved">
+                                <img class="selected" style="width:30px" src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="PWG Group approved">
                              </div>
                                 <img src="{{asset('images/yellowBlueCollar.svg')}}" alt="PWG Group">
 
@@ -189,7 +189,7 @@ $cXamount=0;
                         <div class="package-type family-package">
                             <div class="content">
                             <div class="dataCompletedx" id="familySelect">
-                                <img class="selected" style="width:30px" src="{{asset('images/Affiliate_Program_Section_Completed.svg')}}"  alt="PWG Group approved">
+                                <img class="selected" style="width:30px" src="{{asset('images/Affiliate_Program_Section_completed.svg')}}"  alt="PWG Group approved">
                             </div>
                                 <img src="{{asset('images/yellowFamily.svg')}}" alt="PWG Group">
                                 <h6>Family Package</h6>

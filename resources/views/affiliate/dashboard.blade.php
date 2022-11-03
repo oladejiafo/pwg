@@ -73,7 +73,7 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <div class="header-group">
-                                            <a href="#">
+                                            <a href="{{route('affiliate.reffered_client',Session::get('loginId'))}}">
                                                 <span class="head">Total Refferals</span>
                                                 <span class="dot"></span>
                                                 <span class="dot"></span>

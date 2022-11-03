@@ -40,7 +40,7 @@
                 <div align="center" class="col-md-4 col-sm-12 img-fluid cellContainer">
                   <span class="paid-item " href="#">
                     <span class="positionAnchor  @if($paid->first_payment_status =='Paid')) watermarked @endif paid-thumbnail">
-                      <img src="../user/images/First Payment.svg" height="500px" class="img-fluid" alt="PWG Group">
+                      <img src="../user/images/first_payment.svg" height="500px" class="img-fluid" alt="PWG Group">
                       <span class="title" style="align: center;">
                         <h3 class="paid-title" style="font-size: 22px; color:aliceblue">First Payment</h3>
                       </span>
@@ -131,7 +131,7 @@
                 <div align="center" class="col-md-4 col-sm-12 img-fluid cellContainer">
                   <span class="paid-item " href="#">
                     <span class="positionAnchor  @if($paid->second_payment_status =='Paid')) watermarked @endif paid-thumbnail">
-                      <img src="../user/images/Second Payment.svg" height="500px" class="img-fluid" alt="PWG Group">
+                      <img src="../user/images/second_payment.svg" height="500px" class="img-fluid" alt="PWG Group">
                       <span class="title" style="align: center;">
                         <h3 class="paid-title" style="font-size: 22px; color:aliceblue">Second Payment</h3>
                       
@@ -190,7 +190,7 @@
                 @if($pays->third_payment_price >0 )
                   <span class="paid-item " href="#">
                     <span class="positionAnchor  @if($paid->third_payment_status =='Paid')) watermarked @endif paid-thumbnail">
-                      <img src="../user/images/Final Payment.svg" height="500px" class="img-fluid" alt="PWG Group">
+                      <img src="../user/images/final_payment.svg" height="500px" class="img-fluid" alt="PWG Group">
                       <span class="title" style="align: center;">
                         <h3 class="paid-title" style="font-size: 22px; color:aliceblue">Third Payment</h3>
                       </span>
@@ -223,7 +223,7 @@
                   @else
                   <span class="paid-item " href="#">
                     <span class="positionAnchor  @if($paid->third_payment_status =='Paid')) watermarked @endif paid-thumbnail">
-                      <img src="../user/images/Final Payment.svg" height="500px" class="img-fluid" alt="PWG Group">
+                      <img src="../user/images/final_payment.svg" height="500px" class="img-fluid" alt="PWG Group">
                     </span>
                   </span>
                   @endif

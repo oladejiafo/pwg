@@ -55,6 +55,65 @@ span {
     font-family: 'TT Norms Pro';
 }
 
+.ref-tab {
+    font-family: TT Norms Pro;
+    font-weight: lighter;
+    width: -moz-fit-content;
+    width: fit-content;
+    width: 100%;
+    height: 100px;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    margin: 0 auto;
+    background-color: #ffffff;
+    color: #636466;
+    padding: 0px;
+    border-radius: 3px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    box-shadow: 0px 6px 20px rgb(0 0 0 / 5%);
+    line-height: 0px;
+    text-align: center;
+    text-decoration: none;
+  }
+
+  .ref-tab h4 {
+    text-align: center;
+    padding: 9px;
+    margin-bottom: 0px;
+  }
+    
+  .ref-tab .active {
+    background: #FACB08;
+  }
+  .clientTab {
+    border-radius: 5px 45px 45px 5px;
+    height: 100px;
+    padding-block: 20px;
+
+  }
+  .clientTab a{
+    text-decoration: none;
+    color: #636466;
+    font-family: TT Norms Pro;
+    font-size: 15px;
+    font-weight: lighter;
+  }
+  .affiliateTab {
+    border-radius: 45px 5px 5px 45px;
+    height: 100px;
+    padding-block: 20px;
+    
+  }
+  .affiliateTab a{
+    text-decoration: none;
+    color: #636466;
+    font-family: TT Norms Pro;
+    font-size: 15px;
+    font-weight: lighter;
+  }
+
 .nav-link,
 .nav-link:hover {
     color: black;
