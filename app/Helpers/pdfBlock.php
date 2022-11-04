@@ -34,13 +34,10 @@ class pdfBlock
     } 
 
 
-    public static function mapDetails($destinationPath, $originathpath, $product, $package)
+    public static function mapDetails($originalPdf, $destination_file, $product, $package)
     {
         $pdf = new \setasign\Fpdi\Fpdi();
-    
-        // $pdf->AddPage();
-        $pagecount = $pdf->setSourceFile($destinationPath);
-        // $template = $pdf->importPage(1);
+        $pagecount = $pdf->setSourceFile($originalPdf);
 
         for ($pageNo = 1; $pageNo <= $pagecount; $pageNo++) {
        
@@ -49,15 +46,10 @@ class pdfBlock
             $client = User::find(Auth::id());
             // use the imported page and place it at point 20,30 with a width of 170 mm
             $pdf->useTemplate($template, 10,10,200);
-            // if($pageNo < $pagecount){
-            //     $pdf->AddPage();
-
-            // }
             //Select Arial italic 8
             $pdf->SetFont('Arial', 'B','9');
             $pdf->SetTextColor(0,0,0);
-            // $pdf->SetFontSize(9);
-            // $pdf->SetAutoPageBreak(0);
+            
             if ($pageNo == 1 && ($product == Constant::Poland || $product == Constant::Germany)){
                 //Date
                 $pdf->SetXY(28, 40 );
@@ -201,7 +193,7 @@ class pdfBlock
                 // $pdf->Write(2, "[SIGN HERE]");   
             }
         }
-        $pdf->Output($originathpath, "F");  
+        $pdf->Output($destination_file, "F");  
     }
 
 }

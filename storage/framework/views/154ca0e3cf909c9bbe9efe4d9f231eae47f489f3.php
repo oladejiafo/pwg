@@ -1,48 +1,48 @@
-@extends('layouts.master')
-<link href="{{ asset('user/css/bootstrap.min.css') }}" rel="stylesheet">
-@section('content')
-    @php
+
+<link href="<?php echo e(asset('user/css/bootstrap.min.css')); ?>" rel="stylesheet">
+<?php $__env->startSection('content'); ?>
+    <?php
         $payall = $_REQUEST['payall'];
         
         $prodd = DB::table('destinations')
             ->where('id', '=', $productId)
             ->orderBy('id', 'desc')
             ->first();
-    @endphp
+    ?>
 
 
-    @if (Session::has('packageType'))
-        @php
+    <?php if(Session::has('packageType')): ?>
+        <?php
             $package = Session::get('packageType');
-        @endphp
-    @endif
+        ?>
+    <?php endif; ?>
 
-    @if (isset($prodd) && isset($package))
-        @if ($prodd->name == 'Czech')
-            @php $contract_name = "czech.pdf"; @endphp
-        @elseif($prodd->name == 'Malta')
-            @php $contract_name = "malta.pdf"; @endphp
-        @elseif($prodd->name == 'Canada')
-            @if ($package == 'Express Entry')
-                @php $contract_name = "canada_express_entry.pdf"; @endphp
-            @elseif($package == 'Study Permit')
-                @php $contract_name = "canada_study.pdf"; @endphp
-            @else
-                @php $contract_name = "canada.pdf"; @endphp
-            @endif
-        @else
-            @php $contract_name = "poland.pdf"; @endphp
-        @endif
-    @else
-        @php $contract_name = "poland.pdf"; @endphp
-    @endif
+    <?php if(isset($prodd) && isset($package)): ?>
+        <?php if($prodd->name == 'Czech'): ?>
+            <?php $contract_name = "czech.pdf"; ?>
+        <?php elseif($prodd->name == 'Malta'): ?>
+            <?php $contract_name = "malta.pdf"; ?>
+        <?php elseif($prodd->name == 'Canada'): ?>
+            <?php if($package == 'Express Entry'): ?>
+                <?php $contract_name = "canada_express_entry.pdf"; ?>
+            <?php elseif($package == 'Study Permit'): ?>
+                <?php $contract_name = "canada_study.pdf"; ?>
+            <?php else: ?>
+                <?php $contract_name = "canada.pdf"; ?>
+            <?php endif; ?>
+        <?php else: ?>
+            <?php $contract_name = "poland.pdf"; ?>
+        <?php endif; ?>
+    <?php else: ?>
+        <?php $contract_name = "poland.pdf"; ?>
+    <?php endif; ?>
 
     <div class="container">
         <div class="col-12">
             <div class="contract">
-                <form method="get" action="{{ route('signature', $productId) }}" id="sign">
+                <form method="get" action="<?php echo e(route('signature', $productId)); ?>" id="sign">
                     <div class="col-4 offset-4 contractLogo">
-                        <img src="{{ asset('images/contract.svg') }}" width="100%" height="100%" alt="pwg">
+                        <img src="<?php echo e(asset('images/contract.svg')); ?>" width="100%" height="100%" alt="pwg">
                     </div>
                     <div class="header">
                         <h3>Contract</h3>
@@ -53,28 +53,26 @@
                     <div class="contract-section">
                         <div class="col-12 col-md-8 col-lg-12 offset-md-2 offset-lg-2 contractZoomIn">
                             <div class="zoomIcon">
-                                <img src="{{ asset('images/Magnifying_Glass.svg') }}" width="124px" height="124px"
+                                <img src="<?php echo e(asset('images/Magnifying_Glass.svg')); ?>" width="124px" height="124px"
                                     class="zoomOut" alt="pwg">
                             </div>
                             <div class="contractPdf">
-                                <embed src="{{asset('storage/'.$newFileName)}}" type="application/pdf" />
+                                <embed src="<?php echo e(asset('storage/'.$newFileName)); ?>" type="application/pdf" />
                             </div>
                         </div>
                         <div class="contractPreview">
-                            <embed src="{{asset('storage/'.$newFileName)}}" type="application/pdf" />
+                            <embed src="<?php echo e(asset('storage/'.$newFileName)); ?>" type="application/pdf" />
                         </div>
                         <div class="col-12 col-md-8 col-lg-8 offset-md-2 offset-lg-2">
-                            {{-- <div class="agree">
-                                <p>&nbsp; <input type="checkbox" class="checkcolor" id="agree" style="font-size:25px;transform: scale(1.8); " checked required="" > &nbsp; By checking this box you accept our <a href="#" style="color:blue;margin:0">Terms & Conditions</a></p>
-                            </div> --}}
+                            
                             <button type="button" class="btn btn-secondary zoomOut" id="zoom"
-                                value="{{ $payall }}" name="payall" style="width:100%; font-size:1.6em">ZOOM TO
+                                value="<?php echo e($payall); ?>" name="payall" style="width:100%; font-size:1.6em">ZOOM TO
                                 REVIEW</button>
                             <button type="button" class="btn btn-secondary zoomIn" id="zoom"
-                                value="{{ $payall }}" name="payall" style="width:100%; font-size:1.6em">ZOOM TO
+                                value="<?php echo e($payall); ?>" name="payall" style="width:100%; font-size:1.6em">ZOOM TO
                                 REVIEW</button>
 
-                            <button type="submit" class="btn btn-secondary" id="signd" value="{{ $payall }}"
+                            <button type="submit" class="btn btn-secondary" id="signd" value="<?php echo e($payall); ?>"
                                 name="payall" style="width:100%; font-size:1.6em;margin-top: 18px;">SIGNATURE</button>
                         </div>
                     </div>
@@ -82,8 +80,8 @@
             </div>
         </div>
     </div>
-@endSection
-@push('custom-scripts')
+<?php $__env->stopSection(); ?>
+<?php $__env->startPush('custom-scripts'); ?>
     <script>
         $(document).ready(function() {
             $('.contractPreview').hide();
@@ -102,4 +100,6 @@
             });
         });
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views/user/contract.blade.php ENDPATH**/ ?>

@@ -1247,51 +1247,49 @@ class HomeController extends Controller
     public function contract($productId)
     {
         if (Auth::id()) {
-            $originathpath = null;
-            $destinationPath = null;
+            $originalPdf = null;
+            $destination_file = null;
             $newFileName = null;
             if($productId == Constant::Poland){
-                $destinationPath = "pdf/poland.pdf";
+                $originalPdf = "pdf/poland.pdf";
                 $rand = UserHelper::getRandomString();
-                $newFileName = Auth::id().'-'.$rand.'-'.'poland.pdf';
-                $originathpath = "pdf/".$newFileName;
+                $newFileName = 'contract'.Auth::id().'-'.$rand.'-'.'poland.pdf';
             } else if($productId == Constant::Czech){
-                $destinationPath = "pdf/czech.pdf";
+                $originalPdf = "pdf/czech.pdf";
                 $rand = UserHelper::getRandomString();
-                $newFileName = Auth::id().'-'.$rand.'-'.'czech.pdf';
-                $originathpath = "pdf/".$newFileName;
+                $newFileName = 'contract'.Auth::id().'-'.$rand.'-'.'czech.pdf';
             } else if($productId == Constant::Malta){
-                $destinationPath = "pdf/malta.pdf";
+                $originalPdf = "pdf/malta.pdf";
                 $rand = UserHelper::getRandomString();
-                $newFileName = Auth::id().'-'.$rand.'-'.'malta.pdf';
-                $originathpath = "pdf/".$newFileName;
+                $newFileName = 'contract'.Auth::id().'-'.$rand.'-'.'malta.pdf';
             } else if($productId == Constant::Canada){
                 if(Session::get('packageType') == Constant::CanadaExpressEntry){
-                    $destinationPath = "pdf/canada_express_entry.pdf";
+                    $originalPdf = "pdf/canada_express_entry.pdf";
                     $rand = UserHelper::getRandomString();
-                    $newFileName = Auth::id().'-'.$rand.'-'.'canada_express_entry.pdf';
-                    $originathpath = "pdf/".$newFileName;
+                    $newFileName = 'contract'.Auth::id().'-'.$rand.'-'.'canada_express_entry.pdf';
                 } else if(Session::get('packageType') == Constant::CanadaStudyPermit) {
-                    $destinationPath = "pdf/canada_study.pdf";
+                    $originalPdf = "pdf/canada_study.pdf";
                     $rand = UserHelper::getRandomString();
-                    $newFileName = Auth::id().'-'.$rand.'-'.'canada_study.pdf';
-                    $originathpath = "pdf/".$newFileName;
+                    $newFileName = 'contract'.Auth::id().'-'.$rand.'-'.'canada_study.pdf';
                 } else if(Session::get('packageType') == Constant::BlueCollar) {
-                    $destinationPath = "pdf/canada.pdf";
+                    $originalPdf = "pdf/canada.pdf";
                     $rand = UserHelper::getRandomString();
-                    $newFileName = Auth::id().'-'.$rand.'-'.'canada.pdf';
-                    $originathpath = "pdf/".$newFileName;
+                    $newFileName = 'contract'.Auth::id().'-'.$rand.'-'.'canada.pdf';
                 }
             } else if ($productId == Constant::Germany){
-                $destinationPath = "pdf/poland.pdf";
+                $originalPdf = "pdf/poland.pdf";
                 $rand = UserHelper::getRandomString();
-                $newFileName = Auth::id().'-'.$rand.'-'.'germany.pdf';
-                $originathpath = "pdf/".$newFileName;
+                $newFileName = 'contract'.Auth::id().'-'.$rand.'-'.'germany.pdf';
+            } else {
+                $originalPdf = "pdf/poland.pdf";
+                $rand = UserHelper::getRandomString();
+                $newFileName = 'contract'.Auth::id().'-'.$rand.'-'.'germany.pdf';
             }
-            if($originathpath && $destinationPath){
-                $data = pdfBlock::mapDetails($destinationPath, $originathpath, $productId, Session::get('packageType'));
+            if($newFileName && $originalPdf){
+                $destination_file = public_path('storage/'.$newFileName);
+                $data = pdfBlock::mapDetails($originalPdf, $destination_file, $productId, Session::get('packageType'));
+                return view('user.contract', compact('productId', 'newFileName'));
             }
-            return view('user.contract', compact('productId', 'originathpath'));
         } else {
             return redirect('home');
         }
