@@ -754,4 +754,4 @@ unset($__errorArgs, $__bag); ?>
             toastr.warning("<?php echo e(session('warning')); ?>");
     <?php endif; ?>
     </script>
-<?php echo $__env->make('layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views/user/payment-form.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views\user\payment-form.blade.php ENDPATH**/ ?>

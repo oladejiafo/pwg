@@ -429,4 +429,4 @@
     }, speed);
   }
 
-</script><?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views/user/paid.blade.php ENDPATH**/ ?>
+</script><?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views\user\paid.blade.php ENDPATH**/ ?>
