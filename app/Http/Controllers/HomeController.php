@@ -184,7 +184,36 @@ class HomeController extends Controller
         if (Auth::id()) {
             // Session::put('myproduct_id', $id);
             Session::put('mypay_option', $request->payall);
+            $pid  = Session::get('myproduct_id');
             $data = product::find($id);
+            $datas = Applicant::where('client_id', Auth::id())
+                ->where('destination_id', $pid)
+                ->where('work_permit_category', (Session::get('packageType')) ?? 'BLUE COLLAR')
+                ->first();
+            if (Session::has('myproduct_id')) {
+                $pid  = Session::get('myproduct_id');
+            } else {
+                $pid = 1;
+            }
+            $appliedCountry = Product::find($pid);
+            if ($datas === null) {
+                $data = new applicant();
+                $data->client_id = Auth::id();
+                $data->destination_id = $pid;
+                $data->work_permit_category = (Session::get('packageType')) ?? 'BLUE COLLAR';
+                $data->application_stage_status = 1;
+                $data->applied_country = $appliedCountry->name;
+                $data->contract = $request->contract;
+
+                $res = $data->save();
+            } else {
+                $datas->work_permit_category =  (Session::get('packageType')) ?? 'BLUE COLLAR';
+                $datas->application_stage_status = 1;
+                $datas->destination_id = $pid;
+                $datas->applied_country = $appliedCountry->name;
+                $datas->contract = $request->contract;
+                $res = $datas->save();
+            }
             return view('user.signature', compact('data'));
         } else {
             // return redirect()->back()->with('message', 'You are not authorized');
@@ -216,40 +245,13 @@ class HomeController extends Controller
                 $children = 0;
             }
 
-            if (Session::has('myproduct_id')) {
-                $pid  = Session::get('myproduct_id');
-            } else {
-                $pid = 1;
-            }
-
-            $datas = Applicant::where('client_id', Auth::id())
-                ->where('destination_id', $pid)
-                ->where('work_permit_category', (Session::get('packageType')) ?? 'BLUE COLLAR')
-                ->first();
-            $appliedCountry = Product::find($pid);
-            if ($datas === null) {
-                $data = new applicant();
-                $data->client_id = Auth::id();
-                $data->destination_id = $pid;
-                $data->work_permit_category = (Session::get('packageType')) ?? 'BLUE COLLAR';
-                $data->application_stage_status = 1;
-                $data->applied_country = $appliedCountry->name;
-                $res = $data->save();
-            } else {
-                $datas->work_permit_category =  (Session::get('packageType')) ?? 'BLUE COLLAR';
-                $datas->application_stage_status = 1;
-                $datas->destination_id = $pid;
-                $datas->applied_country = $appliedCountry->name;
-                $res = $datas->save();
-            }
-
             User::where('id', Auth::id())
                 ->update([
                     'is_spouse' => $is_spouse,
                     'children_count' => $children
                 ]);
 
-            if ($res) {
+            if ($signature) {
                 Session::put('payall', $request->payall);
                 Session::put('infox', 'Signature is Successful!');
                 Session::put('infox_sub', 'Proceed to application');
@@ -1286,8 +1288,15 @@ class HomeController extends Controller
                 $newFileName = 'contract'.Auth::id().'-'.$rand.'-'.'germany.pdf';
             }
             if($newFileName && $originalPdf){
-                $destination_file = public_path('storage/'.$newFileName);
+                $destination_file = 'contract/'.$newFileName;
+                // public_path('storage/Applications/Contracts/client_contracts/'.$newFileName);
                 $data = pdfBlock::mapDetails($originalPdf, $destination_file, $productId, Session::get('packageType'));
+                Applicant::where('client_id', Auth::id())
+                    ->where('destination_id', $productId)
+                    ->where('work_permit_category', (Session::get('packageType')) ?? 'BLUE COLLAR')
+                    ->update([
+                        'contract' => $newFileName
+                    ]);
                 return view('user.contract', compact('productId', 'newFileName'));
             }
         } else {

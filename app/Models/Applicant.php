@@ -15,6 +15,10 @@ class Applicant extends Model implements HasMedia
     protected $table = 'applications';
     
     public static $media_collection_main_signture = 'client_collection_signature';
-
+    public static $media_collection_main_contract = 'contract_collection_pdf';
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('contract_collection_pdf');
+    }
 
 }

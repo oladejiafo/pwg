@@ -41,6 +41,7 @@
         <div class="col-12">
             <div class="contract">
                 <form method="get" action="{{ route('signature', $productId) }}" id="sign">
+                    <input type="hidden" name="contract" value="{{$newFileName}}">
                     <div class="col-4 offset-4 contractLogo">
                         <img src="{{ asset('images/contract.svg') }}" width="100%" height="100%" alt="pwg">
                     </div>
@@ -57,11 +58,11 @@
                                     class="zoomOut" alt="pwg">
                             </div>
                             <div class="contractPdf">
-                                <embed src="{{asset('storage/'.$newFileName)}}" type="application/pdf" />
+                                <embed src="{{asset('contract/'.$newFileName)}}" type="application/pdf" />
                             </div>
                         </div>
                         <div class="contractPreview">
-                            <embed src="{{asset('storage/'.$newFileName)}}" type="application/pdf" />
+                            <embed src="{{asset('contract/'.$newFileName)}}" type="application/pdf" />
                         </div>
                         <div class="col-12 col-md-8 col-lg-8 offset-md-2 offset-lg-2">
                             {{-- <div class="agree">

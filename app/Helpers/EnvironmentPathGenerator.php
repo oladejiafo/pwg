@@ -159,6 +159,8 @@ class EnvironmentPathGenerator extends DefaultPathGenerator
             case 'client_collection_signature':
                 $path = 'Clients/signature/';
                     break;
+            case 'contract_collection_pdf': 
+                $path = 'Applications/Contracts/client_contracts'; 
             default:
                 $path = 'default/';
                 break;
