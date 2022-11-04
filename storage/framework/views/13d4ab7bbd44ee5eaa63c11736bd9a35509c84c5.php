@@ -69,4 +69,4 @@
 </html>
 
 
-<?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views/user/myapplication.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views\user\myapplication.blade.php ENDPATH**/ ?>

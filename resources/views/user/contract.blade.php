@@ -58,11 +58,11 @@
                                     class="zoomOut" alt="pwg">
                             </div>
                             <div class="contractPdf">
-                                <embed src="{{asset('contract/'.$newFileName)}}" type="application/pdf" />
+                                <embed src="{{asset('pdf/'.$newFileName)}}" type="application/pdf" />
                             </div>
                         </div>
                         <div class="contractPreview">
-                            <embed src="{{asset('contract/'.$newFileName)}}" type="application/pdf" />
+                            <embed src="{{asset('pdf/'.$newFileName)}}" type="application/pdf" />
                         </div>
                         <div class="col-12 col-md-8 col-lg-8 offset-md-2 offset-lg-2">
                             {{-- <div class="agree">

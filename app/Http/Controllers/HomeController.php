@@ -1252,6 +1252,7 @@ class HomeController extends Controller
             $originalPdf = null;
             $destination_file = null;
             $newFileName = null;
+            
             if($productId == Constant::Poland){
                 $originalPdf = "pdf/poland.pdf";
                 $rand = UserHelper::getRandomString();
@@ -1288,7 +1289,7 @@ class HomeController extends Controller
                 $newFileName = 'contract'.Auth::id().'-'.$rand.'-'.'germany.pdf';
             }
             if($newFileName && $originalPdf){
-                $destination_file = 'contract/'.$newFileName;
+                $destination_file = 'pdf/'.$newFileName;
                 // public_path('storage/Applications/Contracts/client_contracts/'.$newFileName);
                 $data = pdfBlock::mapDetails($originalPdf, $destination_file, $productId, Session::get('packageType'));
                 Applicant::where('client_id', Auth::id())

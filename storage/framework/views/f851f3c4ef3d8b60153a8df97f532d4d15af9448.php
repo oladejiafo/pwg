@@ -208,4 +208,4 @@
 
 </body>
 
-</html><?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views/user/paid_details.blade.php ENDPATH**/ ?>
+</html><?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views\user\paid_details.blade.php ENDPATH**/ ?>
