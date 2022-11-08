@@ -1,11 +1,11 @@
-@extends('affiliate.layout.master')
+
 <style>
     #text {
         text-decoration: none;
         color: #02c3fa;
     }
 </style>
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="container-fluid">
         <div class="row justify-content-md-center">
             <div class="bannerImageDashboard">
@@ -29,11 +29,11 @@
                         </div>
                         <div class="col-sm-12 col-md-6 col-lg-6 land-right-sec">
                             <div class="landingpageicondashboard">
-                                <img src="{{asset('/images/affiliate/Landingpageicon.svg')}}" width="100%" height="100%">
+                                <img src="<?php echo e(asset('/images/affiliate/Landingpageicon.svg')); ?>" width="100%" height="100%">
                             </div>
                         </div>
                     </div>
-                    <div class="pull-right">My Refferal Code: <a href="javascript:void(0);" id="text" onclick="copyToClipboard('#text')" title="Click to copy code">{{Session::get('ref_code')}}</a></div>
+                    <div class="pull-right">My Refferal Code: <a href="javascript:void(0);" id="text" onclick="copyToClipboard('#text')" title="Click to copy code"><?php echo e(Session::get('ref_code')); ?></a></div>
                 </div>
             </div>
         </div>
@@ -52,12 +52,12 @@
                                         <div class="header-group">
                                             <a href="#">
                                                 <span class="head">Available Earning</span>
-                                                <img src="{{asset('images/affiliate/Bargraph.svg')}}" class="bargraph">
+                                                <img src="<?php echo e(asset('images/affiliate/Bargraph.svg')); ?>" class="bargraph">
                                             </a>
                                         </div>
                                     </div>
                                     <div class="card-body align-items-center justify-content-center">
-                                        <h5 class="card-title">${{number_format($tot_comm,2)}}</h5>
+                                        <h5 class="card-title">$<?php echo e(number_format($tot_comm,2)); ?></h5>
                                         <p class="card-text"> 
                                             <br>
                                             <!-- <i class="fa fa-plus-circle"></i>
@@ -75,7 +75,7 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <div class="header-group">
-                                            <a href="{{route('affiliate.reffered_client',Session::get('loginId'))}}">
+                                            <a href="<?php echo e(route('affiliate.reffered_client',Session::get('loginId'))); ?>">
                                                 <span class="head">Total Refferals</span>
                                                 <span class="dot"></span>
                                                 <span class="dot"></span>
@@ -84,7 +84,7 @@
                                         </div>
                                     </div>
                                     <div class="card-body align-items-center justify-content-center">
-                                        <h5 class="card-title">{{number_format($tot_reff,0)}}</h5>
+                                        <h5 class="card-title"><?php echo e(number_format($tot_reff,0)); ?></h5>
                                         <p class="card-text"> 
                                             <i class="fa fa-plus-circle"></i>
                                             9% higher than last month</p>
@@ -106,7 +106,7 @@
                                         </div>
                                     </div>
                                     <div class="card-body align-items-center justify-content-center">
-                                        <h5 class="card-title">${{number_format($tot_comm,2)}}</h5>
+                                        <h5 class="card-title">$<?php echo e(number_format($tot_comm,2)); ?></h5>
                                         <p class="card-text"> 
                                             <i class="fa fa-plus-circle"></i>
                                             3% lower than last month</p>
@@ -123,27 +123,27 @@
                 <h6>Recommended for you</h6>
                 <div class="row">
                     <div class="col news1">
-                        <img src="{{asset('images/affiliate/news1.png')}}">
+                        <img src="<?php echo e(asset('images/affiliate/news1.png')); ?>">
                         <p class="sub-cont">Learn Polish in 6 weeks</p>
                     </div>
                     <div class="col news2">
-                        <img src="{{asset('images/affiliate/news2.png')}}">
+                        <img src="<?php echo e(asset('images/affiliate/news2.png')); ?>">
                     </div>
                     <div class="col news3">
-                        <img src="{{asset('images/affiliate/news3.png')}}">
+                        <img src="<?php echo e(asset('images/affiliate/news3.png')); ?>">
                     </div>
                     <div class="col news4">
-                        <img src="{{asset('images/affiliate/news4.png')}}">
+                        <img src="<?php echo e(asset('images/affiliate/news4.png')); ?>">
                     </div>
                     <div class="col news5">
-                        <img src="{{asset('images/affiliate/news5.png')}}">
+                        <img src="<?php echo e(asset('images/affiliate/news5.png')); ?>">
                         <p>Learn Polish in 6 weeks</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
 <script>
     function copyToClipboard(element) {
@@ -162,3 +162,4 @@
         toastr.info("Code copied!");
     }
 </script>
+<?php echo $__env->make('affiliate.layout.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\shakun\Desktop\myGit\PWG\resources\views/affiliate/dashboard.blade.php ENDPATH**/ ?>

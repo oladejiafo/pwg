@@ -172,7 +172,7 @@
                     ?>
                 <?php endif; ?>
                 <!-- Start Column  -->
-                <div class="col-sm-12 col-lg-4 cellContainer" style="margin-top:50px">
+                <div class="col-sm-12 col-xs-12 col-lg-4 cellContainer" style="margin-top:50px">
                     <span class="product-item item-hints" href="#">
                         <span class="positionAnchor hint"  data-position="1">
 

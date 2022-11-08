@@ -268,7 +268,7 @@
                       <p class="preview-subject mb-1">
                       <form method="POST" action="<?php echo e(route('logout')); ?>" x-data>
                             <?php echo csrf_field(); ?>  
-                      <button style="border-color: #fff; padding:3px; margin:0; width:100px; background-color:#fff; shadow:none;font-weight: normal !important; font-size: inherit !important">Log out</button>
+                      <button style="border-color: #fff; padding:3px; margin:0; width:100px; background-color:#fff; shadow:none;font-weight: normal !important; font-size: inherit !important">Logout</button>
                       </form>
                     </p>
                     </div>

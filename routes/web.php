@@ -148,9 +148,11 @@ Route::group(['namespace' => 'Affiliate', 'prefix' => '/affiliate','as' => 'affi
         Route::post('affiliate-register', [AffiliatePartnerController::class,'affiliate_register'])->name('affiliate-register');
         Route::get('affiliateRegister', [AffiliatePartnerController::class,'affiliateRegister'])->name('register');
   
+        //referral
+        Route::get('reffered-client/{id}', [AffiliatePartnerController::class,'reffered_client'])->name('reffered_client');
+
         Route::get('news', [AffiliatePartnerController::class, 'news'])->name('news');
         Route::get('news/{id}', [AffiliatePartnerController::class, 'newsBrief'])->name('news.brief');
-
         Route::get('about-us', [AffiliatePartnerController::class, 'aboutUs'])->name('about');
         Route::get('toolbox', [AffiliatePartnerController::class, 'toolBox'])->name('toolbox');
         Route::post('toolbox/loadmore', [AffiliatePartnerController::class, 'toolBoLoadxMore'])->name('loadmore.load_data');
