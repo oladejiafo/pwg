@@ -196,6 +196,33 @@ class HomeController extends Controller
                 $pid = 1;
             }
             $appliedCountry = Product::find($pid);
+            $pdet = null;
+            if(Session::get('packageType') =="FAMILY PACKAGE")
+                {
+                    if (Session::get('mySpouse') == "yes") {
+                        $mySpouse = 2;
+                    } else {
+                        $mySpouse = 1;
+                    }
+        
+                    if (Session::get('myKids') == 0 || Session::get('myKids') == "none" || Session::get('myKids') == 5 || Session::get('myKids') == null) {
+        
+                        $children = 1;
+                    } else {
+                        $children = Session::get('myKids');
+                    }
+                    $pdet = DB::table('pricing_plans')
+                    ->where('destination_id', '=', Session::get('myproduct_id'))
+                    ->where('pricing_plan_type', '=', Session::get('packageType'))
+                    ->where('no_of_parent', '=', $mySpouse)
+                    ->where('no_of_children', '=', $children)
+                    ->first();
+            } else {
+                $pdet = DB::table('pricing_plans')
+                    ->where('destination_id', '=', Session::get('myproduct_id'))
+                    ->where('pricing_plan_type', '=', Session::get('packageType'))
+                    ->first();
+            }
             if ($datas === null) {
                 $data = new applicant();
                 $data->client_id = Auth::id();
@@ -203,6 +230,7 @@ class HomeController extends Controller
                 $data->work_permit_category = (Session::get('packageType')) ?? 'BLUE COLLAR';
                 $data->application_stage_status = 1;
                 $data->applied_country = $appliedCountry->name;
+                $data->pricing_plan_id = $pdet->id;
                 $data->contract = $request->contract;
 
                 $res = $data->save();
@@ -212,6 +240,7 @@ class HomeController extends Controller
                 $datas->destination_id = $pid;
                 $datas->applied_country = $appliedCountry->name;
                 $datas->contract = $request->contract;
+                $datas->pricing_plan_id = $pdet->id;
                 $res = $datas->save();
             }
             return view('user.signature', compact('data'));
@@ -503,7 +532,6 @@ class HomeController extends Controller
                     ->where('pricing_plan_type', '=', $packageType)
                     ->first();
             }
-
             return view('user.payment-form', compact('data', 'pdet', 'pays', 'payall'));
         } else {
             // return redirect()->back()->with('message', 'You are not authorized');
