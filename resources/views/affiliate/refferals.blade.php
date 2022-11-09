@@ -13,7 +13,7 @@
   }
   .mainsec{
     width: 80% !important;
-    background-color: #fff;
+    /* background-color: #fff; */
     margin-top: 3% !important;
 
   }
@@ -42,27 +42,26 @@
   <div class="row">
     <div class="col-12">
 
-      <h2 style="text-align: center;color:#2c3144">My Refferals</h2>
+      <h2 style="text-align: center;color:#2c3144">My Referrals</h2>
       <div class="ref-tab">
         <div class="row">
           <div class="col-6">
             <div class="clientTab active" data-toggle="tab" role="tab" aria-selected="true">
               <a href="#clientTab">
-                <h4><i id="cl" class="fa fa-minus-circle"></i> Reffered Clients</h4>
+                <h4><i id="cl" class="fa fa-minus-circle"></i> Referred Clients</h4>
               </a>
             </div>
           </div>
           <div class="col-6">
-            <div class="affiliateTab">
-              <a href="#affiliateTab" data-toggle="tab" role="tab" aria-selected="false">
-                <h4><i id="af" class="fa fa-plus-circle"></i> Reffered Affiliates</h4>
+            <div class="affiliateTab" data-toggle="tab" role="tab" aria-selected="false">
+              <a href="#affiliateTab">
+                <h4><i id="af" class="fa fa-plus-circle"></i> Referred Affiliates</h4>
               </a>
             </div>
           </div>
         </div>
       </div>
       <div class="tab-content clearfix" style="margin: 0; padding: 0;">
-
         @include('affiliate.reffered-client')
         @include('affiliate.reffered-affiliates')
       </div>

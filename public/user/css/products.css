@@ -16,7 +16,8 @@ body {
 .home_img {
   height: 458px !important;
   /* width: auto;  */
-  width: 546px;
+  /* width: 546px; */
+  width: 100%;
   max-height: 458px;
   margin: 0;
 }
@@ -82,7 +83,7 @@ body {
 }
 
 #headerTitle {
-  font-family: 'TT Norms Pro Black';
+  font-family: 'TT Norms Pro';
   font-weight: 900;
   font-size: 60px;
   font-style: normal;
@@ -119,14 +120,14 @@ body {
 
 @media (max-width: 768px) and (min-width: 260px) {
   #headerTitle {
-    font-family: 'TT Norms Pro Black';
+    font-family: 'TT Norms Pro';
     font-weight: 900;
     font-size: 35px;
     font-style: normal;
   }
 
   #headerText {
-    font-family: 'TT Norms Pro Regular';
+    font-family: 'TT Norms Pro';
     font-weight: bold;
     font-size: 20px;
     font-style: normal;
@@ -149,7 +150,7 @@ body {
 .cellContainer {
   /* width: 546px; */
   /* width: 30%; */
-  margin: auto;
+  /* margin: auto; */
   padding: 10px;
   box-shadow: 5px 14px 22px #eceff0;
   margin-bottom: 30px;
@@ -166,18 +167,19 @@ body {
     width: 100%;
     height: 100%;
     padding-left: 3px;
+    margin: auto;
   }
 
   .container-fluid {
-    padding-left: 10px;
-    padding-right: 10px;
+      padding-left: 10px;
+      padding-right: 10px;
   }
 
   .positionAnchor .btn {
-    width: 21.5rem;
-    padding-top: 10px;
-    margin-left: 5px;
-    margin-right: 5px;
+      width: 21.5rem;
+      padding-top: 10px;
+      margin-left: 5px;
+      margin-right: 5px;
   }
 
 }
@@ -211,12 +213,12 @@ body {
   outline: none;
   overflow-y: hidden;
   padding-bottom: 15px;
-  -ms-overflow-style: scroll; // IE 10+
-  scrollbar-width: none; // Firefox
+  -ms-overflow-style: scroll; /* IE 10+*/
+  scrollbar-width: none; /* Firefox*/
 }
 
 .scoll-pane::-webkit-scrollbar {
-  display: none; // Safari and Chrome
+  display: none; /* Safari and Chrome */
 }
 
 .cardd {

@@ -263,6 +263,19 @@ class AffiliatePartnerController extends Controller
         }
     }
    
+    public function transfer($id){
+        if(Session::has('loginId')){
+           $mine = Affiliate::where('id', '=', $id)->first();
+           $acct = DB::Table('affiliate_transactions')
+                ->where('affiliate_id', '=', $mine->id)
+                ->orderBy('transaction_date','desc')
+                ->first();
+
+           return view('affiliate.transfer', compact('mine','acct'));
+        } else {
+            return back();
+        }
+    }
 
     public function news()
     {

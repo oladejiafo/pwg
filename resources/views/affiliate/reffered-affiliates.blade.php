@@ -2,7 +2,7 @@
       <div class="card tab-pane" id="affiliateTab"  role="tabpanel">
         <div class="card-header" style="text-align:center; background-color:#fff">
           <img src="{{asset('images/affiliate/head2.png')}}" alt=""><br>
-          <span style="color: #9d9e9f;padding:5px">Total Reffered Affiliates</span> <br>
+          <span style="color: #9d9e9f;padding:5px">Total Referred Affiliates</span> <br>
           {{$affiliates->count()}}
         </div>
       

@@ -23,7 +23,7 @@
                                 <p class="left-sub-dashboard">
                                     Recommend clients. Start earning immediately.
                                     <br>
-                                    We are for people !
+                                    We are for people!
                                 </p>
                             </div>
                         </div>
@@ -33,7 +33,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="pull-right">My Refferal Code: <a href="javascript:void(0);" id="text" onclick="copyToClipboard('#text')" title="Click to copy code">{{Session::get('ref_code')}}</a></div>
+                    <div class="pull-right">My Referral Code: <a href="javascript:void(0);" id="text" onclick="copyToClipboard('#text')" title="Click to copy code">{{Session::get('ref_code')}}</a></div>
                 </div>
             </div>
         </div>
@@ -51,7 +51,7 @@
                                     <div class="card-header">
                                         <div class="header-group">
                                             <a href="#">
-                                                <span class="head">Available Earning</span>
+                                                <span class="head">Available Balance</span>
                                                 <img src="{{asset('images/affiliate/Bargraph.svg')}}" class="bargraph">
                                             </a>
                                         </div>
@@ -64,7 +64,7 @@
                                             5% higher than last month -->
                                         </p>
                                         <div class="align-items-center justify-content-center" style="text-align: center;">
-                                            <a href="#" class="btn transfer">Transfer <i class="fa fa-exchange fa-2xs" aria-hidden="true"></i></a>
+                                            <a href="{{route('affiliate.transfer',Session::get('loginId'))}}" class="btn transfer">Transfer <i class="fa fa-exchange fa-2xs" aria-hidden="true"></i></a>
                                         </div>
                                     </div>
                                 </div>
@@ -76,7 +76,7 @@
                                     <div class="card-header">
                                         <div class="header-group">
                                             <a href="{{route('affiliate.reffered_client',Session::get('loginId'))}}">
-                                                <span class="head">Total Refferals</span>
+                                                <span class="head">Total Referrals</span>
                                                 <span class="dot"></span>
                                                 <span class="dot"></span>
                                                 <span class="dot"></span>

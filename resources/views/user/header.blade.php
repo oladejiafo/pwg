@@ -182,7 +182,7 @@
             <picture>
             <source media="(min-width:769px)" srcset="{{asset('images/logo.png')}}">
 
-              <source media="(min-width:375px)" srcset="{{asset('images/logo2.png')}}">
+              <source media="(min-width:260px)" srcset="{{asset('images/logo2.png')}}">
 
              <img class="logos" src="{{asset('images/logo.png')}}" alt="PWG logo">
              </picture>
@@ -211,14 +211,20 @@
           @endauth
           @endif
 
+          @if(Route::has('login'))
+          @auth
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <i class="lni-menu"></i>
           </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav mr-auto w-100 justify-content-end clearfix">
+          @else
+          <div class="collapsexx navbar-collapsexx" id="navbarCollapse">
+          @endauth 
+          @endif
+          <ul class="navbar-nav mr-auto w-100 justify-content-end clearfix">
 
             @if(Route::has('login'))
-            @auth
+             @auth
               <li class="nav-item d-lg-block">
                 <a class="nav-link" href="#">
                   <img src="{{asset('user/images/Search.svg')}}" width="30px" height="30px" alt="PWG icon3">
@@ -243,7 +249,6 @@
        
                 </div>
               </li>
-
               <li class="nav-item dropdown">
                 <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
                   <div class="navbar-profile">
@@ -280,18 +285,16 @@
                   <div class="dropdown-divider"></div>
                   <!-- <p class="p-3 mb-0 text-center">Advanced settings</p> -->
                 </div>
-              </li> </ul>
+              </li> 
              @else
-              <ul>
-                  <li class="nav-item">
-                    <a class="nav-link" href="{{route('login')}}">
-                      <div class="navbar-profile" style="font-family:'TT Norms Pro'; font-size: 18px; font-weight:500">
-                        <img class="img-xs rounded-circlex" src="{{asset('user/images/signin.svg')}}" style="width: 40px; height: 40px;" alt="PWG ">&nbsp; Login
-                      </div>
-                    </a>
-                  </li>
-              </ul>
-              @endauth
+              <li class="nav-item">
+                <a class="nav-link" href="{{route('login')}}">
+                  <div class="navbar-profile" style="font-family:'TT Norms Pro'; font-size: 18px; font-weight:500">
+                    <img class="img-xs rounded-circlex" src="{{asset('user/images/signin.svg')}}" style="width: 40px; height: 40px;" alt="PWG ">&nbsp; Login
+                  </div>
+                </a>
+              </li>
+             @endauth
             @endif
             </ul>
           </div>

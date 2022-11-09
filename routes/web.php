@@ -150,6 +150,8 @@ Route::group(['namespace' => 'Affiliate', 'prefix' => '/affiliate','as' => 'affi
   
         //referral
         Route::get('reffered-client/{id}', [AffiliatePartnerController::class,'reffered_client'])->name('reffered_client');
+        //Transfer
+        Route::get('transfer/{id}', [AffiliatePartnerController::class,'transfer'])->name('transfer');
 
         Route::get('news', [AffiliatePartnerController::class, 'news'])->name('news');
         Route::get('news/{id}', [AffiliatePartnerController::class, 'newsBrief'])->name('news.brief');
