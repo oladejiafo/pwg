@@ -1,18 +1,18 @@
-@extends('layouts.master')
-<link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
+
+<link href="<?php echo e(asset('user/css/bootstrap.min.css')); ?>" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
-<link href="{{asset('user/css/select2.min.css') }}" rel="stylesheet" />
-<link href="{{asset('css/alert.css')}}" rel="stylesheet">
-<meta name="csrf-token" content="{{ csrf_token() }}" />
+<link href="<?php echo e(asset('user/css/select2.min.css')); ?>" rel="stylesheet" />
+<link href="<?php echo e(asset('css/alert.css')); ?>" rel="stylesheet">
+<meta name="csrf-token" content="<?php echo e(csrf_token()); ?>" />
 <style>
     .form-control {
         height: calc(3.5rem + 2px) !important;
     }
     
 </style>
-@section('content')
+<?php $__env->startSection('content'); ?>
 
-@php 
+<?php 
  //Session::get('myproduct_id');
  if(isset($productId)){
 
@@ -27,69 +27,69 @@
                 ->first();
 
    $levels = $completed->application_stage_status;
-@endphp
+?>
 
-@if ($levels != '3' && $levels != '2'&& $levels != '4') 
+<?php if($levels != '3' && $levels != '2'&& $levels != '4'): ?> 
     <script>window.location = "/payment_form/<?php echo $productId; ?>";</script>
-@endif
+<?php endif; ?>
 
-<div class="container" id="app" data-applicantId="{{$client['id']}}" data-dependentid="{{$dependent}}">
+<div class="container" id="app" data-applicantId="<?php echo e($client['id']); ?>" data-dependentid="<?php echo e($dependent); ?>">
     <div class="col-12">
         <div class="row">
             <div class="wizard bg-white">
                 <div class="row">
                     <div class="tabs-detail d-flex justify-content-center">
                         <div class="wrapper">
-                              @if ($levels == '2' || $levels == '5' || $levels == '4' || $levels == '3')
+                              <?php if($levels == '2' || $levels == '5' || $levels == '4' || $levels == '3'): ?>
 
                                 <a href="#" class="wrapper-link toastrDefaultError" onclick="toastr.error('Payment Concluded Already!');"><div class="round-completed round2 m-2">1</div></a>
-                              @else 
-                                <a href="{{ url('payment_form', $productId) }}" class="wrapper-link">
+                              <?php else: ?> 
+                                <a href="<?php echo e(url('payment_form', $productId)); ?>" class="wrapper-link">
                                     <div class="round-completed round2  m-2">1</div>
                                 </a>
-                              @endif
+                              <?php endif; ?>
                               <div class="col-2 round-title">Payment <br> Details</div>
                             </div>
                             <!-- <div class="linear"></div>
                             <div class="wrapper">
-                                <a href="{{route('applicant', $productId)}}" ><div class="round-completed round3  m-2">2</div></a>
+                                <a href="<?php echo e(route('applicant', $productId)); ?>" ><div class="round-completed round3  m-2">2</div></a>
                                 <div class="col-2 round-title">Application <br> Details</div>
                             </div> -->
                             <div class="linear"></div>
                             <div class="wrapper">
-                                <a href="{{route('applicant.details',  $productId)}}" class="wrapper-link"><div class="round-active  round4 m-2">2</div></a>
+                                <a href="<?php echo e(route('applicant.details',  $productId)); ?>" class="wrapper-link"><div class="round-active  round4 m-2">2</div></a>
                                 <div class="col-2 round-title">Applicant <br> Details</div>
                             </div>
                             <div class="linear"></div>
 
 
-                            @php 
+                            <?php 
                               if ($levels == '5' || $levels == '4') {
-                            @endphp     
+                            ?>     
                             <div class="wrapper">
-                                <a href="{{url('applicant/review',  $productId)}}" class="wrapper-link" ><div class="round5 m-2">3</div></a>
+                                <a href="<?php echo e(url('applicant/review',  $productId)); ?>" class="wrapper-link" ><div class="round5 m-2">3</div></a>
                                 <div class="col-2 round-title">Applicant <br> Reviews</div>
                             </div>
                             
-                            @php  
+                            <?php  
                               } else {
-                            @endphp
+                            ?>
                             <div class="wrapper">
 
                                 <a href="#" onclick="toastr.error('You have to complete Applicants Details first');" class="wrapper-link toastrDefaultError"><div class="round5 m-2">3</div></a>
                                 <div class="col-2 round-title">Applicant <br> Reviews</div>
                                 
                             </div>
-                            @php  
+                            <?php  
                               }
-                            @endphp
+                            ?>
                            
                         </div>
                     </div>
                 </div>
                 <div class="applicant-tab-sec">
                     <div class="row">
-                        @if(($applicant['work_permit_category']) && ($client['is_spouse'] != null || $client['is_spouse'] != 0) && ($client['children_count'] != null || $client['children_count'] != 0))
+                        <?php if(($applicant['work_permit_category']) && ($client['is_spouse'] != null || $client['is_spouse'] != 0) && ($client['children_count'] != null || $client['children_count'] != 0)): ?>
                             <div class="col-4">
                                 <div class="mainApplicant active" data-toggle="tab" role="tab">
                                     <a  href="#mainApplicant">
@@ -111,7 +111,7 @@
                                     </a>
                                 </div>
                             </div>
-                        @elseif(($applicant['work_permit_category']) && ($client['is_spouse'] != null || $client['is_spouse'] != 0) &&  ($client['children_count'] == null || $client['children_count'] == 0))
+                        <?php elseif(($applicant['work_permit_category']) && ($client['is_spouse'] != null || $client['is_spouse'] != 0) &&  ($client['children_count'] == null || $client['children_count'] == 0)): ?>
                             <div class="col-6">
                                 <div class="mainApplicant active" data-toggle="tab" role="tab" >
                                     <a  href="#mainApplicant">
@@ -126,7 +126,7 @@
                                     </a>
                                 </div>
                             </div>
-                        @elseif(($applicant['work_permit_category']) && ($client['is_spouse'] == null || $client['is_spouse'] == 0) && ($client['children_count'] != null || $client['children_count'] != 0))
+                        <?php elseif(($applicant['work_permit_category']) && ($client['is_spouse'] == null || $client['is_spouse'] == 0) && ($client['children_count'] != null || $client['children_count'] != 0)): ?>
                             <div class="col-6">
                                 <div class="mainApplicant active" data-toggle="tab" role="tab">
                                     <a  href="#mainApplicant">
@@ -141,13 +141,13 @@
                                     </a>
                                 </div>
                             </div>
-                        @endif
+                        <?php endif; ?>
                     </div>
                 </div>
                 <div class="tab-content clearfix" style="margin: 0; padding: 0;">
-                    @include('user.main-applicant-detail')
-                    @include('user.main-applicant-dependent')
-                    @include('user.main-applicant-children')
+                    <?php echo $__env->make('user.main-applicant-detail', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+                    <?php echo $__env->make('user.main-applicant-dependent', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+                    <?php echo $__env->make('user.main-applicant-children', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                 </div>
             </div>
         </div>
@@ -156,7 +156,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-body">
-                    <img src="{{asset('images/Passport_Requirement.jpg')}}" width ="760px" height ="760px;" alt="PWG Group">
+                    <img src="<?php echo e(asset('images/Passport_Requirement.jpg')); ?>" width ="760px" height ="760px;" alt="PWG Group">
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" name="passport_upload" class="form-control" placeholder="Upload Passport Copy*" class="passportFormatModal"  autocomplete="off" readonly/>
@@ -175,7 +175,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-body">
-                    <img src="{{asset('images/ResidenceID.jpg')}}" width ="100%" height ="100%;" alt="PWG Group">
+                    <img src="<?php echo e(asset('images/ResidenceID.jpg')); ?>" width ="100%" height ="100%;" alt="PWG Group">
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" class="form-control" name="residence_upload" placeholder="Residence/Emirates ID*" readonly >
@@ -194,7 +194,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-body">
-                    <img src="{{asset('images/Visa.jpg')}}" width ="100%" height ="100%;" alt="PWG Group">
+                    <img src="<?php echo e(asset('images/Visa.jpg')); ?>" width ="100%" height ="100%;" alt="PWG Group">
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" class="form-control"  name="visa_upload" placeholder="Visa Copy" readonly autocomplete="off">
@@ -213,7 +213,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-body">
-                    <img src="{{asset('images/ShengenVisa.jpg')}}" width ="100%" height ="100%;" alt="PWG Group">
+                    <img src="<?php echo e(asset('images/ShengenVisa.jpg')); ?>" width ="100%" height ="100%;" alt="PWG Group">
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" class="form-control" name="schengen_upload" readonly >
@@ -232,7 +232,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-body">
-                    <img src="{{asset('images/Passport_Requirement.jpg')}}" width ="760px" height ="760px;" alt="PWG Group">
+                    <img src="<?php echo e(asset('images/Passport_Requirement.jpg')); ?>" width ="760px" height ="760px;" alt="PWG Group">
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" name="dependent_passport_upload" class="form-control " placeholder="Upload Passport Copy*"  autocomplete="off" readonly/>
@@ -251,7 +251,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-body">
-                    <img src="{{asset('images/ResidenceID.jpg')}}" width ="100%" height ="100%;">
+                    <img src="<?php echo e(asset('images/ResidenceID.jpg')); ?>" width ="100%" height ="100%;">
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" class="form-control" name="dependent_residence_upload" placeholder="Residence/Emirates ID*" readonly >
@@ -270,7 +270,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-body">
-                    <img src="{{asset('images/Visa.jpg')}}" width ="100%" height ="100%;" alt="PWG Group">
+                    <img src="<?php echo e(asset('images/Visa.jpg')); ?>" width ="100%" height ="100%;" alt="PWG Group">
                 </div>
                 <div class="modal-footer">
                     <div class="input-group-btn">
@@ -288,7 +288,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-body">
-                    <img src="{{asset('images/ShengenVisa.jpg')}}" width ="100%" height ="100%;" alt="PWG Group">
+                    <img src="<?php echo e(asset('images/ShengenVisa.jpg')); ?>" width ="100%" height ="100%;" alt="PWG Group">
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" class="form-control" name="dependent_schengen_upload"  >
@@ -304,7 +304,7 @@
         </div>
     </div>
 
-    @php  
+    <?php  
         $vall = $client['schengenVisaName'];
         $vall1 = $client['schengenVisaName1'];
         $vall2 = $client['schengenVisaName2'];
@@ -321,15 +321,15 @@
 
         $sheng_dep = $client['schengenVisaUrl1_dep'];
         $phold_dep = "Image of Schengen Or National Visa Issued During Last 5 Years";
-    @endphp
-@endSection
-@push('custom-scripts')
+    ?>
+<?php $__env->stopSection(); ?>
+<?php $__env->startPush('custom-scripts'); ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="https://unpkg.com/vue@next"></script>
-<script src="{{ asset('js/application-details.js') }}" type="application/javascript"></script>
+<script src="<?php echo e(asset('js/application-details.js')); ?>" type="application/javascript"></script>
 <script type="application/javascript"> 
     $(document).ready(function(){
         // $('.country_birth, .citizenship, .home_country, .current_country').select2();
@@ -556,17 +556,17 @@
                         if($('.schengenCompleted').val() == 1) {
                             $.ajax({
                                 type: 'POST',
-                                url: "{{ url('/submit/applicant/Details/') }}",
+                                url: "<?php echo e(url('/submit/applicant/Details/')); ?>",
                                 data: {
-                                    applicantId: '{{$applicant['id']}}',
+                                    applicantId: '<?php echo e($applicant['id']); ?>',
                                     user: 'applicant',
                                 },
                                 success: function (response) {
                                     if(response.status) {
-                                        checkdata = checkStatus('{{$productId}}');
+                                        checkdata = checkStatus('<?php echo e($productId); ?>');
                                         $('.applicantReviewSpin').hide();
                                         if(checkdata.status){
-                                            location.href = "{{url('applicant/review')}}/"+'{{$productId}}';
+                                            location.href = "<?php echo e(url('applicant/review')); ?>/"+'<?php echo e($productId); ?>';
                                         } else {
                                             toastr.error(checkdata.message);
                                         }
@@ -612,7 +612,7 @@
                 if($('.homeCountryCompleted').val() == 1) {
                     if($('.currentCountryCompleted').val() == 1) {
                         if($('.schengenCompleted').val() == 1) {
-                            if(('{{($applicant['work_permit_category'])}}' == 'FAMILY PACKAGE') && ('{{$client['is_spouse']}}' == null || '{{$client['is_spouse']}}' == 0)){
+                            if(('<?php echo e(($applicant['work_permit_category'])); ?>' == 'FAMILY PACKAGE') && ('<?php echo e($client['is_spouse']); ?>' == null || '<?php echo e($client['is_spouse']); ?>' == 0)){
                                 updateStatus('applicant'); 
                                 $('#children').show();
                                 $('#mainApplicant, #dependant').hide();
@@ -663,7 +663,7 @@
             var full_number = phoneInput.getNumber(intlTelInputUtils.numberFormat.E164);
             $.ajax({
                 type: 'POST',
-                url: "{{ route('store.applicant.details') }}",
+                url: "<?php echo e(route('store.applicant.details')); ?>",
                 data: new FormData(this),
                 processData: false,
                 contentType: false,
@@ -703,7 +703,7 @@
             }
             $.ajax({
                 type: 'POST',
-                url: "{{ url('store/home/country/details') }}",
+                url: "<?php echo e(url('store/home/country/details')); ?>",
                 data: formData,
                 processData: false,
                 contentType: false,
@@ -747,7 +747,7 @@
             }
             $.ajax({
                 type: 'POST',
-                url: "{{ url('store/current/details') }}",
+                url: "<?php echo e(url('store/current/details')); ?>",
                 data: formData,
                 processData: false,
                 contentType: false,
@@ -792,7 +792,7 @@
             console.log(formData);
             $.ajax({
                 type: 'POST',
-                url: "{{ url('store/schengen/details') }}",
+                url: "<?php echo e(url('store/schengen/details')); ?>",
                 data: formData,
                 processData: false,
                 contentType: false,
@@ -863,7 +863,7 @@
                             valle="<?php echo $vall4; ?>";                
                         }
 
-                        $('#schengen_visa').append('<div class="col-sm-12 mt-3" id="schengen_visa"><input type="text" class="form-control schengen_copy1_'+cnt+'" name="schengen_copy1[]" @if($sheng)  value="'+valle+ '" @else placeholder="{{$phold}}" @endif readonly ><div class="input-group-btn"><span class="fileUpload btn"><span class="upl" id="upload">Choose File</span><input style="position: absolute;top: 0; right: 0; margin: 0; padding: 0; font-size: 20px; cursor: pointer; opacity: 0; filter: alpha(opacity=0);" type="file" class="schengen_copy1_'+cnt+'" accept="image/png, image/gif, image/jpeg" name="schengen_copy1[]" /></span></div></div>');
+                        $('#schengen_visa').append('<div class="col-sm-12 mt-3" id="schengen_visa"><input type="text" class="form-control schengen_copy1_'+cnt+'" name="schengen_copy1[]" <?php if($sheng): ?>  value="'+valle+ '" <?php else: ?> placeholder="<?php echo e($phold); ?>" <?php endif; ?> readonly ><div class="input-group-btn"><span class="fileUpload btn"><span class="upl" id="upload">Choose File</span><input style="position: absolute;top: 0; right: 0; margin: 0; padding: 0; font-size: 20px; cursor: pointer; opacity: 0; filter: alpha(opacity=0);" type="file" class="schengen_copy1_'+cnt+'" accept="image/png, image/gif, image/jpeg" name="schengen_copy1[]" /></span></div></div>');
                     }
                 } else {
                     toastr.error('Please fill pevious field before adding field');
@@ -902,7 +902,7 @@
                             valle_dep="<?php echo $vall4_dep; ?>";                
                         }
 
-                        $('#dependent_schengen_visa').append('<div class="col-sm-12 mt-3" id="dependent_schengen_visa"><input type="text" class="form-control dependent_schengen_copy1_'+cnt_dep+'" name="dependent_schengen_copy1[]"  @if($sheng_dep)  value="'+valle_dep+ '" @else placeholder="{{$phold_dep}}" @endif readonly ><div class="input-group-btn"><span class="fileUpload btn"><span class="upl" id="upload">Choose File</span><input style="position: absolute;top: 0; right: 0; margin: 0; padding: 0; font-size: 20px; cursor: pointer; opacity: 0; filter: alpha(opacity=0);" type="file" class="dependent_schengen_copy1_'+cnt_dep+'" accept="image/png, image/gif, image/jpeg" name="dependent_schengen_copy1[]" /></span></div></div>');
+                        $('#dependent_schengen_visa').append('<div class="col-sm-12 mt-3" id="dependent_schengen_visa"><input type="text" class="form-control dependent_schengen_copy1_'+cnt_dep+'" name="dependent_schengen_copy1[]"  <?php if($sheng_dep): ?>  value="'+valle_dep+ '" <?php else: ?> placeholder="<?php echo e($phold_dep); ?>" <?php endif; ?> readonly ><div class="input-group-btn"><span class="fileUpload btn"><span class="upl" id="upload">Choose File</span><input style="position: absolute;top: 0; right: 0; margin: 0; padding: 0; font-size: 20px; cursor: pointer; opacity: 0; filter: alpha(opacity=0);" type="file" class="dependent_schengen_copy1_'+cnt_dep+'" accept="image/png, image/gif, image/jpeg" name="dependent_schengen_copy1[]" /></span></div></div>');
                     }
                 } else {
                     toastr.error('Please fill pevious field before adding field');
@@ -1023,7 +1023,7 @@
             $("input[id='dependent_phone'").val(full_number);
             $.ajax({
                 type: 'POST',
-                url: "{{ route('store.dependent.details') }}",
+                url: "<?php echo e(route('store.dependent.details')); ?>",
                 data: new FormData(this),
                 processData: false,
                 contentType: false,
@@ -1068,7 +1068,7 @@
             }
             $.ajax({
                 type: 'POST',
-                url: "{{ url('store/spouse/home/country/details') }}",
+                url: "<?php echo e(url('store/spouse/home/country/details')); ?>",
                 data: formData,
                 processData: false,
                 contentType: false,
@@ -1116,7 +1116,7 @@
             $("input[id='dependent_current_residance_mobile'").val(full_number);
             $.ajax({
                 type: 'POST',
-                url: "{{ url('store/spouse/current/details') }}",
+                url: "<?php echo e(url('store/spouse/current/details')); ?>",
                 data: formData,
                 processData: false,
                 contentType: false,
@@ -1164,7 +1164,7 @@
             }
             $.ajax({
                 type: 'POST',
-                url: "{{ url('store/spouse/schengen/details') }}",
+                url: "<?php echo e(url('store/spouse/schengen/details')); ?>",
                 data: formData,
                 processData: false,
                 contentType: false,
@@ -1334,7 +1334,7 @@
             }
         });
         // children
-        for(var i= 1 ; i<='{{$client['children_count']}}'; i++)
+        for(var i= 1 ; i<='<?php echo e($client['children_count']); ?>'; i++)
         {
             $('.childData'+i).hide();
         }
@@ -1351,16 +1351,16 @@
             });
             $.ajax({
                 type: 'POST',
-                url: "{{ route('store.children.details') }}",
+                url: "<?php echo e(route('store.children.details')); ?>",
                 data: new FormData(this),
                 processData: false,
                 contentType: false,
                 success: function (data) {
                     if(data.status) {
-                        checkdata = checkStatus('{{$productId}}');
+                        checkdata = checkStatus('<?php echo e($productId); ?>');
                         $('.childReviewSpin').hide();
                         if(checkdata.status){
-                            location.href = "{{url('applicant/review')}}/"+'{{$productId}}';
+                            location.href = "<?php echo e(url('applicant/review')); ?>/"+'<?php echo e($productId); ?>';
                         } else {
                             toastr.error(checkdata.message);
                         }
@@ -1387,17 +1387,17 @@
                         if($('.schengenSpouseCompleted').val() == 1) {
                             $.ajax({
                                 type: 'POST',
-                                url: "{{ url('/submit/applicant/Details/') }}",
+                                url: "<?php echo e(url('/submit/applicant/Details/')); ?>",
                                 data: {
-                                    applicantId: '{{$applicant['id']}}',
+                                    applicantId: '<?php echo e($applicant['id']); ?>',
                                     user: 'family',
                                 },
                                 success: function (response) {
                                     if(response.status) {
-                                        checkdata = checkStatus('{{$productId}}');
+                                        checkdata = checkStatus('<?php echo e($productId); ?>');
                                         $('.dependentReviewSpin').hide();
                                         if(checkdata.status){
-                                            location.href = "{{url('applicant/review')}}/"+'{{$productId}}';
+                                            location.href = "<?php echo e(url('applicant/review')); ?>/"+'<?php echo e($productId); ?>';
                                         } else {
                                             toastr.error(checkdata.message);
                                         }
@@ -1441,7 +1441,7 @@
                 if($('.spouseHomeCountryCompleted').val() == 1) {
                     if($('.spouseCurrentCountryCompleted').val() == 1) {
                         if($('.schengenSpouseCompleted').val() == 1) {
-                            if(('{{($applicant['work_permit_category'])}}' == 'FAMILY PACKAGE') && ('{{$client['children_count']}}' != null || '{{$client['children_count']}}' != 0)){
+                            if(('<?php echo e(($applicant['work_permit_category'])); ?>' == 'FAMILY PACKAGE') && ('<?php echo e($client['children_count']); ?>' != null || '<?php echo e($client['children_count']); ?>' != 0)){
                                 updateStatus('family'); 
                                 $('#children').show();
                                 $('#mainApplicant, #dependant').hide();
@@ -1449,7 +1449,7 @@
                                 $('.mainApplicant, .dependant').removeClass('active');
                                 $("body").scrollTop(0);
                             } else {
-                                location.href = "{{url('applicant/review')}}/"+'{{$productId}}'
+                                location.href = "<?php echo e(url('applicant/review')); ?>/"+'<?php echo e($productId); ?>'
                             }
                         } else {
                             toastr.error('Please provide all details');
@@ -1520,9 +1520,9 @@
         });
         $.ajax({
             type: 'POST',
-            url: "{{ url('update/applicant/status') }}",
+            url: "<?php echo e(url('update/applicant/status')); ?>",
             data: {
-                _token: "{{ csrf_token() }}",
+                _token: "<?php echo e(csrf_token()); ?>",
                 userType: userType,
             },
             success: function (response) {
@@ -1543,9 +1543,9 @@
         $.ajax({
             type: 'POST',
             async: false,
-            url: "{{ url('check/applicant/status') }}",
+            url: "<?php echo e(url('check/applicant/status')); ?>",
             data: {
-                "_token": "{{ csrf_token() }}",
+                "_token": "<?php echo e(csrf_token()); ?>",
                 product_id: productId
             },
             success: function (response) {
@@ -1555,7 +1555,8 @@
         return returnValue;
     }
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
 
 <script src="../user/extra/assets/js/jquery-min.js"></script>
-<script src="{{asset('js/alert.js')}}"></script>
+<script src="<?php echo e(asset('js/alert.js')); ?>"></script>
+<?php echo $__env->make('layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views/user/application-next.blade.php ENDPATH**/ ?>

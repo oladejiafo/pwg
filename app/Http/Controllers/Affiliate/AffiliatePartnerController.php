@@ -6,6 +6,8 @@ use App\Affiliate as AppAffiliate;
 use App\Models\Affiliate;
 use App\Models\Presentation;
 use App\Models\News;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use App\Http\Controllers\Controller;
 use App\Mail\ResetPassword;
 use Illuminate\Http\Request;
@@ -197,10 +199,11 @@ class AffiliatePartnerController extends Controller
 
     public function news()
     {
-        $news = News::where('active', 1)->orderBy('id', 'DESC')->take(3)->get();
-
-        $oldNews = News::where('active', 1)->orderBy('id', 'DESC')->skip(3)->take(5)->get();
-        return view('affiliate.news', compact('news', 'oldNews'));
+        $client = new Client();
+        $res = $client->request('POST', env('ADMIN_URL').'/api/get-news-media');
+        $getNews = $res->getBody()->getContents();
+        $news = json_decode($getNews);
+        return view('affiliate.news', compact('news'));
     }
 
     public function newsBrief($id)

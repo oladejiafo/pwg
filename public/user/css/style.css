@@ -583,6 +583,18 @@ a.more {
   .product-section .product-item .positionAnchor {
     display: block;
   }
+
+  .item-hints .hint[data-position="1"] .hint-content {
+    left: 0% !important;
+  }
+
+  .item-hints .hint-content {
+    width: 80% !important;
+  }
+
+  .product-section .container-fluid{
+    margin-bottom: 80px;
+  }
 }
 
 .product-section .product-item .product-title {
