@@ -36,7 +36,12 @@ body {
     padding: 0px;
     margin: 0px;
   }
-
+  .home_img {
+    height: auto !important;
+    /* width: auto;  */
+    margin: 0;
+  }
+  
   .banner_bg {
     background-repeat: no-repeat;
     -webkit-background-size: cover;
@@ -142,10 +147,10 @@ body {
 }
 
 .cellContainer {
-  width: 546px;
+  /* width: 546px; */
   /* width: 30%; */
   margin: auto;
-  padding: 0px;
+  padding: 10px;
   box-shadow: 5px 14px 22px #eceff0;
   margin-bottom: 30px;
   padding-top: 10px;

@@ -8,8 +8,11 @@ use App\Models\Presentation;
 use App\Models\News;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Mail\ResetPassword;
+use App\Models\Applicant;
+use App\Models\Referrer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -26,7 +29,59 @@ class AffiliatePartnerController extends Controller
 
         if (Session::has('loginId')) {
 
-            return view('affiliate.dashboard');
+            $my_id = Session::get('loginId');
+            $mine = Affiliate::where('id', '=', $my_id)->first();
+   
+            $affiliates = Affiliate::where('refferer_code', '=', $mine->affiliate_code)->get();
+            $clients = Applicant::where('refferer_code', '=', $mine->affiliate_code)->get();
+
+            $tot_reff = $clients->count() + $affiliates->count();
+            $cl_comm = 0;
+            $tot_rev = 0;
+            foreach($clients as $client)
+            {
+                $prod = DB::table('pricing_plans')
+                ->where('destination_id', '=', $client->destination_id)
+                ->first();
+
+                $tot_rev = $tot_rev + $prod->total_price;
+                
+                $comm = DB::table('commission')
+                ->where('product_id', '=', $client->destination_id)
+                ->first();
+
+                $cl_comm = $cl_comm + $comm->client_commission;
+            }
+
+            $aff_comm =0;
+            foreach ($affiliates as $affiliate) 
+            {
+                $reffered = DB::table('applications')
+                ->where('refferer_code', '=', $affiliate->affiliate_code)
+                ->get();
+
+                foreach($reffered as $reff)
+                {
+                    $comm_r = DB::table('commission')
+                    ->where('product_id', '=', $reff->destination_id)
+                    ->first();
+                }
+
+                if(isset($comm_r)){
+                    $comm_aff = ($comm_r->affiliate_commission/100) * $comm_r->client_commission;
+                    // $aff_rev = $comm_r->client_commission;
+                } else {
+                    $comm_aff = 0;
+                }
+
+                $cnt = $reffered->count();
+                $name = $affiliate->first_name . ' ' . $affiliate->surname;
+                $aff_comm = $aff_comm + ($cnt * $comm_aff);
+            }
+            $tot_comm = $cl_comm + $aff_comm;
+
+
+            return view('affiliate.dashboard', compact('tot_reff', 'tot_rev', 'tot_comm'));
         } else {
             return view('affiliate.home');
         }
@@ -196,6 +251,20 @@ class AffiliatePartnerController extends Controller
             return back()->with('failed', 'This record exists already');
         }
     }
+
+    public function reffered_client($aff_id){        
+        if(Session::has('loginId')){
+           $mine = Affiliate::where('id', '=', $aff_id)->first();
+   
+           $clients = Applicant::where('refferer_code', '=', $mine->affiliate_code)->get();
+           $affiliates = Affiliate::where('refferer_code', '=', $mine->affiliate_code)->get();
+           // dd($clients->count());
+           return view('affiliate.refferals', compact('affiliates','clients','mine'));
+        } else {
+           return back();
+        }
+    }
+   
 
     public function news()
     {

@@ -409,7 +409,20 @@ a.more {
   .product-section {
     padding: 0px 0px 0px 0px;
   }
+  .product-section {
+    padding: 0px 0px 0px 0px;
+  }
+  
+}
 
+@media only screen and (max-width: 369px) {
+  .product-section {
+    padding: 0px 0px 0px 0px;
+  }
+  .product-section {
+    padding: 0px 0px 0px 0px;
+  }
+  
 }
 
 @media (min-width:768px) and (max-width:1024px) {
@@ -423,7 +436,8 @@ a.more {
 .product-section .product-item {
   background-color: #fff;
   text-align: center;
-  height: 651px;
+  /* height: 651px; */
+  height: auto;
   text-decoration: none;
 
   display: block;
@@ -1842,8 +1856,8 @@ iframe img {
 /*************** ToolTip Styles for Home page ******************/
 
 .item-hints .hint[data-position="1"] .hint-content {
-  top: 95px;
-  left: 30%;
+  top: 105px;
+  left: 1%;
   margin-left: 56px;
   background: linear-gradient(to top, rgba(0.5, 0.5, 0.5, 0.65), transparent);
 }

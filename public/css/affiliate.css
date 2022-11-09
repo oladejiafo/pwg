@@ -270,6 +270,13 @@ span {
     margin-top: 30px;
 }
 
+.dash {
+    margin-bottom: 20px;
+}
+.dash .card {
+    height: 300px !important;
+
+}
 .land-font-dashboard {
     font-size: 55px;
     line-height: 60px;
@@ -309,7 +316,7 @@ span {
 
 .card {
     font-family: 'TT Norms Pro';
-    height: 258px;
+    /* height: 258px; */
 }
 
 .current-available .card-header .head,
@@ -324,7 +331,7 @@ span {
 }
 
 .card-body .card-title {
-    font-size: 45px;
+    font-size: 35px;
     text-align: center;
     margin-top: 14px;
     color: #4F5E66;
@@ -347,9 +354,10 @@ span {
     border: 0.5px solid #333333;
     font-family: 'TT Norms Pro';
     border-radius: 5px;
-    height: 39px;
+    height: 40px;
     width: 165px;
     font-weight: 800;
+    padding: 0.25rem 0.75rem !important;
 }
 
 .transfer:hover {

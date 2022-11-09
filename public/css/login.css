@@ -406,8 +406,8 @@ input {
 }
 
 .form-sec1 input[type="checkbox"] {
-    width: 30px;
-    height: 30px;
+    width: 20px;
+    height: 20px;
 }
 
 .form-sec1 .check-box {
@@ -416,7 +416,7 @@ input {
 
 .form-sec1 .check-box p {
     margin: 0px;
-    font-family: TT Norms Pro;
+    font-family: 'TT Norms Pro';
     font-size: 14px;
     font-weight: 500;
     line-height: 22px;
