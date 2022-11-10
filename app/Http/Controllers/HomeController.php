@@ -64,7 +64,7 @@ class HomeController extends Controller
 
             $promo = promo::where('active_until', '>=', date('Y-m-d'))->get();
 
-            return view('user.home', compact('package', 'promo'));
+            return view('user.home', compact('package', 'promo', 'started'));
         }
     }
 
