@@ -54,6 +54,11 @@ class HomeController extends Controller
             //   return \Redirect::route('product', $idd);
 
         } else {
+            $started = DB::table('applications')
+            ->select('pricing_plan_id', 'destination_id', 'client_id', 'first_payment_status','status')
+            ->where('applications.client_id', '=', Auth::user()->id)
+            ->orderBy('applications.id', 'desc')
+            ->first();
             // $ppay = product_payments::where('destination_id', '=', $id)->first();
             $package = DB::table('destinations')->orderBy(DB::raw('FIELD(name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
 

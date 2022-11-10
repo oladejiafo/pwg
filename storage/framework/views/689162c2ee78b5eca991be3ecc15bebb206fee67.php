@@ -252,20 +252,29 @@
               <li class="nav-item dropdown">
                 <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
                   <div class="navbar-profile">
-                    <img class="img-xs rounded-circle" src="<?php echo e(asset('user/images/signin.svg')); ?>" style="width: 40px; height: 40px;" alt="PWG ">
-                    <p class="mb-0 d-none d-sm-block navbar-profile-name"><?php echo e(Auth::user()->name); ?></p>
-                    <i class="mdi mdi-menu-down d-none d-sm-block"></i>
+                    <img class="img-xs rounded-circle" src="<?php echo e(asset('user/images/signin.svg')); ?>" style="width: 30px; height: 30px;" alt="PWG ">
+                    
+                    
+                    <i class="fa-solid fa-caret-down"></i>
                   </div>
                 </a>
                 
                 <div class="dropdown-menu dropdown-menu-left navbar-dropdown preview-list" style="left:-10px;  min-width: 150px;" aria-labelledby="profileDropdown">
                   
+                  
+                  <div class="userName">
+                    <a class="dropdown-item preview-item">
+                      <div class="preview-item-content">
+                        <p style="font-size:16px;"><b><?php echo e(Auth::user()->name); ?></b></p>
+                      </div>
+                    </a>
+                  </div>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item preview-item" href="#">
                     <div class="preview-item-content">
                     <form method="GET" action="<?php echo e(route('profile.show')); ?>" x-data>
                            
-                      <button style="border-color: #fff; padding:3px; margin:0; width:100px; background-color:#fff; shadow:none;font-weight: normal !important; font-size: inherit !important">Profile</button>
+                      <button>Profile</button>
                     </form>
                       <!-- <p class="preview-subject mb-1"><a href="<?php echo e(route('profile.show')); ?>">Profile</a></p> -->
                     </div>
@@ -277,7 +286,7 @@
                       <p class="preview-subject mb-1">
                       <form method="POST" action="<?php echo e(route('logout')); ?>" x-data>
                             <?php echo csrf_field(); ?>  
-                      <button style="border-color: #fff; padding:3px; margin:0; width:100px; background-color:#fff; shadow:none;font-weight: normal !important; font-size: inherit !important">Logout</button>
+                      <button>Logout</button>
                       </form>
                     </p>
                     </div>
