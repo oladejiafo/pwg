@@ -1555,6 +1555,15 @@
         return returnValue;
     }
 </script>
+
+<script>
+    function isNumberKey(evt){
+        var charCode = (evt.which) ? evt.which : evt.keyCode
+        if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode !=43)
+            return false;
+        return true;
+    }
+</script>
 <?php $__env->stopPush(); ?>
 
 <script src="../user/extra/assets/js/jquery-min.js"></script>
