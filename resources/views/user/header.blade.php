@@ -180,46 +180,46 @@
 
           <a class="navbar-brand" href="{{url('/')}}">
             <picture>
-            <source media="(min-width:769px)" srcset="{{asset('images/logo.png')}}">
+              <source media="(min-width:769px)" srcset="{{asset('images/logo.png')}}">
 
-              <source media="(min-width:260px)" srcset="{{asset('images/logo2.png')}}">
+                <source media="(min-width:260px)" srcset="{{asset('images/logo2.png')}}">
 
-             <img class="logos" src="{{asset('images/logo.png')}}" alt="PWG logo">
+              <img class="logos" src="{{asset('images/logo.png')}}" alt="PWG logo">
              </picture>
             <!-- <img class="logos" src="../images/logo.png" data-device-pixel-ratio-1="../images/logo2.png" alt="logo"> -->
           </a>
 
           @if(Route::has('login'))
 
-          @auth
-            <div class="d-flex align-items-center justify-content-center jobbers">
-              <a class="nav-link btn create-new-button"  aria-expanded="false" href="{{url('myapplication')}}">
-                <span style="display:inline-block"><img alt="PWG" src="{{asset('images/icon1.png')}}"></span><span class="title" style="padding-top:0px; display:inline-block">{{ __('My Application') }} </span>
-              </a>
-            </div>
-          @else
-            <!-- <div class="d-flex align-items-center justify-content-center jobber">
-              <a class="nav-link btn create-new-button"  aria-expanded="false" href="{{route('login')}}">
-              <span><img src="{{asset('images/icon1.png')}}"></span><span style="padding-top:5px">Applicants </span>
-              </a>
-            </div> -->
-            <!-- <div class="d-flex align-items-center justify-content-center jobbers">
-              <a class="nav-link btn create-new-button" aria-expanded="false" href="{{route('affiliate.home')}}">
-                <span style="display:inline-block"><img alt="PWG" src="{{asset('images/icon2.png')}}"></span><span class="title" style="padding-top:0px;display:inline-block">Affiliate Partner</span>
-              </a>
-            </div>  -->
-          @endauth
+            @auth
+              <div class="d-flex align-items-center justify-content-center jobbers">
+                <a class="nav-link btn create-new-button"  aria-expanded="false" href="{{url('myapplication')}}">
+                  <span style="display:inline-block"><img alt="PWG" src="{{asset('images/icon1.png')}}"></span><span class="title" style="padding-top:0px; display:inline-block">{{ __('My Application') }} </span>
+                </a>
+              </div>
+            @else
+              <!-- <div class="d-flex align-items-center justify-content-center jobber">
+                <a class="nav-link btn create-new-button"  aria-expanded="false" href="{{route('login')}}">
+                <span><img src="{{asset('images/icon1.png')}}"></span><span style="padding-top:5px">Applicants </span>
+                </a>
+              </div> -->
+              <!-- <div class="d-flex align-items-center justify-content-center jobbers">
+                <a class="nav-link btn create-new-button" aria-expanded="false" href="{{route('affiliate.home')}}">
+                  <span style="display:inline-block"><img alt="PWG" src="{{asset('images/icon2.png')}}"></span><span class="title" style="padding-top:0px;display:inline-block">Affiliate Partner</span>
+                </a>
+              </div>  -->
+            @endauth
           @endif
 
           @if(Route::has('login'))
-          @auth
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="lni-menu"></i>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarCollapse">
-          @else
-          <div class="collapsexx navbar-collapsexx" id="navbarCollapse">
-          @endauth 
+            @auth
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="lni-menu"></i>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarCollapse">
+                @else
+                  <div class="collapsexx navbar-collapsexx" id="navbarCollapse">
+            @endauth 
           @endif
           <ul class="navbar-nav mr-auto w-100 justify-content-end clearfix">
 
@@ -305,8 +305,7 @@
               </li>
              @endauth
             @endif
-            </ul>
-          </div>
+          </ul>
         </div>
       </nav><p style="margin-bottom:70px"></p>
       <!-- Navbar End -->

@@ -116,7 +116,7 @@
                                             <i class="{{$icon}}"></i> {{$offer_discount_msg}}
                                         </p>
                                         <p>
-                                            @if($offer->id == $started->destination_id)
+                                            @if(isset($started) && $offer->id == $started->destination_id)
                                             <a class="btn btn-secondary" href="#">Already Applied <i class="fa fa-check-circle" style="font-size:18px; color:green"></i></a>
                                             @else
                                             

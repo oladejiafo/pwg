@@ -36,9 +36,9 @@
     .invoice-image {
         border-radius: 10px;
         width: 45px;
-        height: 45px;
+        height: 35px;
         margin-left: 24px;
-        margin-top: 20px;
+        /* margin-top: 20px; */
         background-image: url("{{asset('images/invoice-download.svg')}}") !important;
         background-position: 47% 51% !important;
         background-repeat: no-repeat !important;
