@@ -19,10 +19,10 @@
             </tr>
 
             @foreach($clients as $client)
-            @php
-            $reffered = DB::table('clients')
-            ->where('id', '=', $client->client_id)
-            ->get();
+          @php
+          $reffered = DB::table('clients')
+          ->where('id', '=', $client->client_id)
+          ->get();
             $pays = DB::table('payments')
             ->where('application_id', '=', $client->id)
             ->where('payment_type', '=', 'First Payment')

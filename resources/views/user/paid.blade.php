@@ -61,7 +61,7 @@
 
                       <p>
                           @if($paid->first_payment_status =='Paid')
-                            <a class="btn btn-secondary" target="_blank" href="{{ route('getReceipt','First Payment')}}">Get Invoice</a>
+                            <a class="btn btn-secondary" target="_blank" href="{{ route('getInvoice','First Payment')}}">Get Invoice</a>
                           @else
                             <form action="{{ route('payment',$prod->id) }}" method="GET">
                               <button class="btn btn-secondary">Pay Now</button>
@@ -127,8 +127,10 @@
               </li>
 
               <!-- 2nd Payment Column  -->
+         
               <li>
                 <div align="center" class="col-md-4 col-sm-12 img-fluid cellContainer">
+                @if($pays->third_payment_price >0 )
                   <span class="paid-item " href="#">
                     <span class="positionAnchor  @if($paid->second_payment_status =='Paid')) watermarked @endif paid-thumbnail">
                       <img src="../user/images/second_payment.svg" height="500px" class="img-fluid" alt="PWG Group">
@@ -180,8 +182,26 @@
 
                   </div>
                 </div>
+                @else
 
+                <div class="cardc downlaod-item  d-flexx aligns-items-center justify-content-center text-center" style="font-weight: bold;font-family:'TT Norms Pro'; display:inline-block; align-items: center; margin-top:100%">
+                  <div class="cardc-body">
+                    
+                    <div style="display:inline" id="dd" class="block download-thumbnail img-fluid">
+                      <svg style="margin:auto;margin-top:20px" width="39" height="30" class="dd" viewBox="0 0 39 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8.78768 24.0116C10.8127 27.5821 14.6843 30 19.1291 30C23.5739 30 27.4456 27.5821 29.4706 24.0116C34.3102 23.9865 38.2328 20.1154 38.2328 15.3547C38.2328 10.5815 34.2847 6.68531 29.4196 6.68531H29.3687L26.2612 9.74216H29.4196C32.5654 9.74216 35.1253 12.2603 35.1253 15.3547C35.1253 18.0107 33.2276 20.2407 30.7059 20.8169C30.2984 20.9046 29.8654 20.9673 29.4196 20.9673C28.7574 20.9673 28.1333 20.8545 27.5475 20.6541C27.2673 21.6563 26.7961 22.5959 26.1847 23.4103C24.5928 25.5525 22.0201 26.9432 19.1164 26.9432C16.2126 26.9432 13.64 25.5525 12.048 23.4103C11.4367 22.5834 10.9655 21.6563 10.6853 20.6541C10.0995 20.8545 9.47541 20.9673 8.81315 20.9673C8.3674 20.9673 7.94712 20.9172 7.52684 20.8169C4.99242 20.2407 3.10753 18.0107 3.10753 15.3547C3.10753 12.2603 5.66742 9.74216 8.81315 9.74216H11.9716L8.8641 6.68531H8.81315C3.96082 6.68531 4.25317e-07 10.569 0 15.3547C0.0254711 20.1154 3.94809 23.9865 8.78768 24.0116Z" fill="#1C7E14" />
+                        <path d="M19.1164 12.8037L27.1781 4.87341L22.4532 4.87341V5.73904e-07L15.7796 0V4.87341L11.0547 4.87341L19.1164 12.8037Z" fill="#1C7E14" />
+                      </svg>
+                    </div>
+                    <div class="dg aligns-items-center justify-content-center text-center" style="display:inline; justify-content: center;  align-items: center;">
+                      <p style="padding-top: 27px;padding-bottom:0px; font-size:14px;font-weight:800">Work Permit</p>
+                      <span style="font-size:11px; color:grey;padding-left:1px; padding-right:1px">Work Permit not available yet.</span>
+                    </div>
+                  </div>
+                </div>
+                @endif
               </li>
+
 
               <!-- 3rd Payment Column  -->
 
@@ -220,13 +240,42 @@
                       </p>
                     </span>
                   </span>
-                  @else
-                  <span class="paid-item " href="#">
-                    <span class="positionAnchor  @if($paid->third_payment_status =='Paid')) watermarked @endif paid-thumbnail">
-                      <img src="../user/images/final_payment.svg" height="500px" class="img-fluid" alt="PWG Group">
+                  
+                @else
+                <span class="paid-item " href="#">
+                    <span class="positionAnchor  @if($paid->second_payment_status =='Paid')) watermarked @endif paid-thumbnail">
+                      <img src="../user/images/second_payment.svg" height="500px" class="img-fluid" alt="PWG Group">
+                      <span class="title" style="align: center;">
+                        <h3 class="paid-title" style="font-size: 22px; color:aliceblue">Second Payment</h3>
+                      
+                      </span>
+                      <strong style="line-height:25px;margin-top:20px" class="paid-price">
+                        {{number_format($pays->second_payment_price)}} | 
+                        <br><span style="font-size: 12px;float:left;display:inline">AED</span>
+                        <span style="font-size: 12px;display:inline; float:right;margin-right:20px;"> + 5% VAT</span>
+                      </strong>&nbsp;
+                      <amp style="margin-left:18px">
+                         {{$prod->name}}
+                         <br>Package
+                      </amp>
+
+                      <p>
+                          @if($paid->second_payment_status =='Paid')
+                            <!-- <a class="btn btn-secondary" target="_blank" href="{{ route('getReceipt','Second Payment')}}">Get Reciept</a> -->
+                            <a class="btn btn-secondary" target="_blank" href="{{ route('getInvoice','Second Payment')}}">Get Invoice</a>
+                          @else
+                            @if($paid->application_stage_status != 5)
+                              <button class="btn btn-secondary toastrDefaultError" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           
+                            @else
+                              <form action="{{ route('payment',$prod->id) }}" method="GET">
+                                <button class="btn btn-secondary">Pay Now</button>
+                              </form>
+                            @endif
+                          @endif
+                      </p>
                     </span>
                   </span>
-                  @endif
+                @endif
                 </div>
                 @if($pays->third_payment_price >0 )
 
@@ -254,7 +303,7 @@
                     </div>
                   </div>
                 @else
-                  <div class="cardc downlaod-item  d-flexx aligns-items-center justify-content-center text-center" style="font-weight: bold;font-family:'TT Norms Pro'; display:inline-block; margin-top:584px">
+                  <div class="cardc downlaod-item  d-flexx aligns-items-center justify-content-center text-center" style="font-weight: bold;font-family:'TT Norms Pro'; display:inline-block;">
                     <div class="cardc-body">
                       
                     <div style="display:inline" id="de" class="block2 download-thumbnail img-fluid">

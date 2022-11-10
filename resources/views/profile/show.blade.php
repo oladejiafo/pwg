@@ -263,7 +263,8 @@
                             </div>
                         </div>
                         <p style="margin-top: 5px;"> &nbsp; </p>
-
+                        
+{{--
                         <!-- Tab Three -->
                         <div class="panel panel-default card" style="border-radius: 10px;margin-top:1px">
                             <div class="ppanel-heading" role="tab" id="headingThree">
@@ -323,7 +324,9 @@
                                 </div>
                             </div>
                         </div>
+
                         <p style="margin-top: 5px;"> &nbsp; </p>
+                        --}}
 
                         <!-- Tab Four -->
                         <!-- <div class="panel panel-default card" style="border-radius: 10px;margin-top:1px">

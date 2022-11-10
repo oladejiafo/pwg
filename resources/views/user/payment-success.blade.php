@@ -39,7 +39,7 @@
         height: 45px;
         margin-left: 24px;
         margin-top: 20px;
-        background-image: url(http://127.0.0.1:8000/images/invoice-download.svg) !important;
+        background-image: url("{{asset('images/invoice-download.svg')}}") !important;
         background-position: 47% 51% !important;
         background-repeat: no-repeat !important;
     }
@@ -64,21 +64,22 @@
                     <div class="reset-heading">
                         Payment successful !
                     </div>
-                    <div class="subConfirm"> Your journey to Poland just began!</div>
+                    <div class="subConfirm"> Your journey just began!</div>
                     <div class="sig">
                         <div class="invoice-now">
                             <div class="invoice">
+                            <a href="{{url('/get/invoice')}}" target="_blank">
                                 <div class="invoice-image">
                                 </div>
                                     <p><a href="{{url('/get/invoice')}}" target="_blank"> Get the invoice now </a></p>
-                            </div>
+                            </div></a>
                         </div>
                         <div class="invoice-later">
                             <label class="switch">
                                 <input type="checkbox" name="invoicelater" value="1">
                                 <span class="slider round"></span>
                             </label>
-                            <p> Get the invoice reciept Later </p>
+                            <p> Get the invoice later </p>
                         </div>
                         @if($applicant->application_stage_status == 5)
                           <form action="{{ url('myapplication') }}" method="GET">

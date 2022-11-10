@@ -66,21 +66,42 @@ class HomeController extends Controller
     public function index()
     {
 
-        // $package = DB::table('destinations')->orderBy(DB::raw('FIELD(name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
-        // $promo = promo::where('active_until', '>=', date('Y-m-d'))->get();
+        if (Auth::id()) {
 
-        // return view('user.home', compact('package', 'promo'));
-
-        try {
+            $started = DB::table('applications')
+            ->select('pricing_plan_id', 'destination_id', 'client_id', 'first_payment_status','status')
+            ->where('applications.client_id', '=', Auth::user()->id)
+            ->orderBy('applications.id', 'desc')
+            ->first();
+            // dd($started);
+    
+    
+            $package = DB::table('destinations')->orderBy(DB::raw('FIELD(name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
+            $promo = promo::where('active_until', '>=', date('Y-m-d'))->get();
+                //Quickbook
+                //Quickbook::checkRefreshToken();
+    
+            return view('user.home', compact('package', 'promo','started'));
+    
+        } else {
             $package = DB::table('destinations')->orderBy(DB::raw('FIELD(name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
             $promo = promo::where('active_until', '>=', date('Y-m-d'))->get();
             //Quickbook
             //Quickbook::checkRefreshToken();
+
             return view('user.home', compact('package', 'promo'));
-        } catch (Exception $e){
-            Session::put('error', $e->getMessage());
-            return view('user.home', compact('package', 'promo'));
-        }      
+        }
+
+        // try {
+        //     $package = DB::table('destinations')->orderBy(DB::raw('FIELD(name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
+        //     $promo = promo::where('active_until', '>=', date('Y-m-d'))->get();
+        //     //Quickbook
+        //     //Quickbook::checkRefreshToken();
+        //     return view('user.home', compact('package', 'promo'));
+        // } catch (Exception $e){
+        //     Session::put('error', $e->getMessage());
+        //     return view('user.home', compact('package', 'promo'));
+        // }      
 
     }
 
@@ -253,9 +274,11 @@ class HomeController extends Controller
     public function upload(Request $request)
     {
         if (Auth::id()) {
+
             list($part_a, $image_parts) = explode(";base64,", $request->signed);
             $image_type_aux = explode("image/", $part_a);
             $image_type = $image_type_aux[1];
+            dd($part_a);
             $signate = Auth::user()->id . '_' . time() . '.' . $image_type;
             $signature = user::find(Auth::user()->id);
             $signature->addMediaFromBase64($request->signed)->usingFileName($signate)->toMediaCollection(User::$media_collection_main_signture);
@@ -379,31 +402,16 @@ class HomeController extends Controller
                 }
             }
 
-            // $pays = DB::table('pricing_plans')
-            //     ->join('applications', 'applications.destination_id', '=', 'pricing_plans.destination_id')
-            //     ->select('applications.destination_id', 'pricing_plans.id', 'pricing_plans.pricing_plan_type', 'pricing_plans.total_price', 'pricing_plans.destination_id', 'pricing_plans.first_payment_price', 'pricing_plans.second_payment_price', 'pricing_plans.third_payment_price')
-            //     ->where('pricing_plans.pricing_plan_type', '=', $packageType)
-            //     ->where('applications.destination_id', '=', $p_id)
-            //     ->where('applications.client_id', '=', $id)
-            //     ->orderBy('pricing_plans.id')
-            //     ->first();
             $pays = DB::table('pricing_plans')
-
-                // ->join('applications', 'applications.destination_id', '=', 'pricing_plans.destination_id')
-                // ->select('applications.destination_id', 'pricing_plans.id', 'pricing_plans.pricing_plan_type', 'pricing_plans.total_price', 'pricing_plans.destination_id', 'pricing_plans.first_payment_price', 'pricing_plans.second_payment_price', 'pricing_plans.third_payment_price')
-                // ->where('pricing_plans.pricing_plan_type', '=', $packageType)
-                // ->where('applications.destination_id', '=', $p_id)
-                // ->where('applications.client_id', '=', $id)
-                // ->orderBy('pricing_plans.id')
-                // ->first();
-
                     ->join('applications', 'applications.pricing_plan_id', '=', 'pricing_plans.id')
-                    ->select('applications.pricing_plan_id', 'applications.destination_id', 'pricing_plans.id', 'pricing_plans.pricing_plan_type', 'pricing_plans.total_price', 'pricing_plans.destination_id', 'pricing_plans.first_payment_price', 'pricing_plans.second_payment_price', 'pricing_plans.third_payment_price')
+                    ->select('applications.pricing_plan_id', 'applications.destination_id', 'pricing_plans.id', 'pricing_plans.pricing_plan_type', 'pricing_plans.total_price', 'pricing_plans.destination_id', 'pricing_plans.first_payment_price', 'pricing_plans.second_payment_price', 'pricing_plans.third_payment_price','pricing_plans.total_price')
                     ->where('pricing_plans.pricing_plan_type', '=', $packageType)
                     ->where('applications.destination_id', '=', $p_id)
                     ->where('applications.client_id', '=', $id)
                     ->orderBy('pricing_plans.id')
                     ->first();
+
+                    // dd($pays);
             // $paid = DB::table('payments')
             //     ->join('applications', 'payments.application_id', '=', 'applications.id')
             //     ->selectRaw('payments.*, applications.*, COUNT(payments.id) as count')
@@ -417,11 +425,13 @@ class HomeController extends Controller
 
 
             $paid = DB::table('applications')
+                // ->select('pricing_plan_id', 'destination_id', 'client_id', 'first_payment_status','status')
                 ->where('applications.destination_id', '=', $p_id)
                 ->where('applications.client_id', '=', $id)
                 // ->groupBy('payments.id')
                 ->orderBy('applications.id', 'desc')
                 ->first();
+                // dd($paid);
 
             $prod = DB::table('destinations')
                 ->join('applications', 'destinations.id', '=', 'applications.destination_id')
@@ -771,6 +781,7 @@ class HomeController extends Controller
                         $res = $data->save();
                     } else {
 
+                        // $data->third_payment_status = 'Paid';
                         $data->total_price = $thisPayment;
                         $data->total_vat = $thisVat;
                         $data->total_discount = $thisDiscount;
@@ -887,6 +898,7 @@ class HomeController extends Controller
                             $datas->third_payment_vat = $thirdVat;
                             $datas->third_payment_discount = $thisDiscount;
                             $paymentCreds['thirdVat'] = $thirdVat;
+                        
                         }
                     }
                     $datas->coupon_code = $thisCode;
@@ -935,7 +947,7 @@ class HomeController extends Controller
         $idServiceURL    = "https://identity.sandbox.ngenius-payments.com/auth/realms/ni/protocol/openid-connect/token";           // set the identity service URL (example only)
         $residServiceURL = "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders/" . $orderReference;
 
-
+   
         $tokenHeaders    = array("Authorization: Basic " . $apikey, "Content-Type: application/x-www-form-urlencoded");
         $tokenResponse   = $this->invokeCurlRequest("POST", $idServiceURL, $tokenHeaders, http_build_query(array('grant_type' => 'client_credentials')));
         $tokenResponse   = json_decode($tokenResponse);
@@ -950,12 +962,18 @@ class HomeController extends Controller
             if ($paymentResponse->authResponse->success == true && $paymentResponse->authResponse->resultCode == "00") {
                 $paymentDetails = Payment::where('id', Session::get('paymentId'))->first();
                 $paymentCreds = Session::get('paymentCreds');
+                // dd($paymentCreds);
+                if(!isset($paymentCreds))
+                {
+                    return \Redirect::route('myapplication');
+                }
                 $data = applicant::where([
                     ['client_id', '=', Auth::user()->id],
                     ['destination_id', '=', $id],
                 ])
                     ->orderBy('id', 'DESC')
                     ->first();
+              
                 if ($paymentCreds['whichpayment'] == 'First Payment') {
                     $data->first_payment_status = $paymentCreds['whatsPaid'];
                     if ($paymentCreds['whatsPaid'] == 'Partial') { // add in payment success
@@ -1000,6 +1018,7 @@ class HomeController extends Controller
                         $data->second_payment_status = 'Paid'; // add in payment success
                         $data->third_payment_paid = $paymentCreds['paysplit']->third_payment_price + $paymentCreds['thirdVat']; // add in payment success
                         $data->third_payment_status = 'Paid'; // add in payment success
+                        // $data->total_paid = 'Paid';
                     }
                 }
                 $data->save();
@@ -1429,6 +1448,7 @@ class HomeController extends Controller
             $pdf = PDF::loadView('user.receipt', compact('user', 'apply', 'pricing'));
 
             return $pdf->stream("", array("Attachment" => false));
+            // exit(0);
             // return $pdf->download('receipt.pdf');
         } else {
             return redirect('home');

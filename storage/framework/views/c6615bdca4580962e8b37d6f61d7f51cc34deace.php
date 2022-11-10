@@ -65,7 +65,6 @@
 
           <div class="outer  scroll-pane" id="container">
             <div class="container-fluid text-center">
-
                 <div class="row" >
 
                     <ul>
@@ -90,6 +89,7 @@
                                     $offer_discount_msg = '-'; 
                                 ?>
                             <?php endif; ?>
+
                         <!-- Start Column  -->
                         <li>
                             <div class="col-4 cellContainer" style="margin-top:50px">
@@ -117,7 +117,12 @@
 
                                         </p>
                                         <p>
-                                            <a class="btn btn-secondary" href="<?php echo e(url('package/type', $offer->id)); ?>">Apply Now</a>
+                                            <?php if($offer->id == $started->destination_id): ?>
+                                            <a class="btn btn-secondary" href="#">Already Applied <i class="fa fa-check-circle" style="font-size:18px; color:green"></i></a>
+                                            <?php else: ?>
+                                            
+                                            <a class="btn btn-secondary" <?php if(isset($started->destination_id)): ?> onclick="return confirm('You have an active application already. Still want to proceed?');" <?php endif; ?> href="<?php echo e(url('package/type', $offer->id)); ?>">Apply Now</a>
+                                            <?php endif; ?>
                                         </p>
                                     </span>
                                 </span>

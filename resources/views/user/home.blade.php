@@ -65,7 +65,6 @@
 
           <div class="outer  scroll-pane" id="container">
             <div class="container-fluid text-center">
-
                 <div class="row" >
 
                     <ul>
@@ -90,6 +89,7 @@
                                     $offer_discount_msg = '-'; 
                                 @endphp
                             @endif
+
                         <!-- Start Column  -->
                         <li>
                             <div class="col-4 cellContainer" style="margin-top:50px">
@@ -116,7 +116,12 @@
                                             <i class="{{$icon}}"></i> {{$offer_discount_msg}}
                                         </p>
                                         <p>
-                                            <a class="btn btn-secondary" href="{{ url('package/type', $offer->id) }}">Apply Now</a>
+                                            @if($offer->id == $started->destination_id)
+                                            <a class="btn btn-secondary" href="#">Already Applied <i class="fa fa-check-circle" style="font-size:18px; color:green"></i></a>
+                                            @else
+                                            
+                                            <a class="btn btn-secondary" @if(isset($started->destination_id)) onclick="return confirm('You have an active application already. Still want to proceed?');" @endif href="{{ url('package/type', $offer->id) }}">Apply Now</a>
+                                            @endif
                                         </p>
                                     </span>
                                 </span>
