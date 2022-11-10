@@ -114,6 +114,33 @@ span {
     font-weight: lighter;
   }
 
+  .transferTab {
+    border-radius: 5px 45px 45px 5px;
+    height: 100px;
+    padding-block: 20px;
+
+  }
+  .transferTab a{
+    text-decoration: none;
+    color: #636466;
+    font-family: TT Norms Pro;
+    font-size: 15px;
+    font-weight: lighter;
+  }
+  .historyTab {
+    border-radius: 45px 5px 5px 45px;
+    height: 100px;
+    padding-block: 20px;
+    
+  }
+  .historyTab a{
+    text-decoration: none;
+    color: #636466;
+    font-family: TT Norms Pro;
+    font-size: 15px;
+    font-weight: lighter;
+  }
+
 .nav-link,
 .nav-link:hover {
     color: black;

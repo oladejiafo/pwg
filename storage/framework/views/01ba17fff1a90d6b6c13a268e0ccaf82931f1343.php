@@ -46,23 +46,24 @@
       <div class="ref-tab">
         <div class="row">
           <div class="col-6">
-            <div class="clientTab active" data-toggle="tab" role="tab" aria-selected="true">
-              <a href="#clientTab">
-                <h4><i id="cl" class="fa fa-minus-circle"></i> New Transfer</h4>
+            <div class="transferTab active" data-toggle="tab" role="tab" aria-selected="true">
+              <a href="#transferTab">
+                <h4><i id="transfer" class="fa fa-minus-circle"></i> New Transfer</h4>
               </a>
             </div>
           </div>
           <div class="col-6">
-            <div class="affiliateTab" data-toggle="tab" role="tab" aria-selected="false">
-              <a href="#affiliateTab">
-                <h4><i id="af" class="fa fa-plus-circle"></i> Transaction History</h4>
+            <div class="historyTab" data-toggle="tab" role="tab" aria-selected="false">
+              <a href="#historyTab">
+                <h4><i id="history" class="fa fa-plus-circle"></i> Transaction History</h4>
               </a>
             </div>
           </div>
         </div>
       </div>
       <div class="tab-content clearfix" style="margin: 0; padding: 0;">
-ghfg
+         <?php echo $__env->make('affiliate.new-transfer', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+         <?php echo $__env->make('affiliate.transfer-history', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
       </div>
       </div>
   </div>
@@ -72,28 +73,28 @@ ghfg
 <?php $__env->startPush('affiliate-scripts'); ?>
 <script>
 $(document).ready(function(){
-    $('#clientTab').show();
-    $('#affiliateTab').hide();
-    $('.clientTab').addClass('active');
-    $('.affiliateTab').removeClass('active');
+    $('#transferTab').show();
+    $('#historyTab').hide();
+    $('.transferTab').addClass('active');
+    $('.historyTab').removeClass('active');
 })
-$('.clientTab').click(function(){
-    $('#clientTab').show();
-    $('#affiliateTab').hide();
-    $('.clientTab').addClass('active');
-    $('.affiliateTab').removeClass('active');
+$('.transferTab').click(function(){
+    $('#transferTab').show();
+    $('#historyTab').hide();
+    $('.transferTab').addClass('active');
+    $('.historyTab').removeClass('active');
 
-    $('#cl').toggleClass('fa-minus-circle fa-plus-circle');
-    $('#af').toggleClass('fa-plus-circle fa-minus-circle');
+    $('#transfer').toggleClass('fa-minus-circle fa-plus-circle');
+    $('#history').toggleClass('fa-plus-circle fa-minus-circle');
 });
-$('.affiliateTab').click(function(){
-    $('#affiliateTab').show();
-    $('#clientTab').hide();
-    $('.affiliateTab').addClass('active');
-    $('.clientTab').removeClass('active');
+$('.historyTab').click(function(){
+    $('#historyTab').show();
+    $('#transferTab').hide();
+    $('.historyTab').addClass('active');
+    $('.transferTab').removeClass('active');
 
-    $('#cl').toggleClass('fa-minus-circle fa-plus-circle');
-    $('#af').toggleClass('fa-plus-circle fa-minus-circle');
+    $('#transfer').toggleClass('fa-minus-circle fa-plus-circle');
+    $('#history').toggleClass('fa-plus-circle fa-minus-circle');
 });
 </script>
 <?php $__env->stopPush(); ?>

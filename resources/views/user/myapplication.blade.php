@@ -15,18 +15,14 @@
     <div class="paid-section">
      @if(Route::has('login'))
 
-      @if($paid)
+      @if(isset($pays) && isset($paid))
 
             @if( $paid->destination_id > 0 && $paid->destination_id != null)
-
               @include('user.paid')
               @include('user.paid_details') 
-
             @else
               @include('user.noapplication')
             @endif
-
-        
       @else 
        @include('user.noapplication')
       @endif

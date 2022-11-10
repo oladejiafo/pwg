@@ -15,18 +15,14 @@
     <div class="paid-section">
      <?php if(Route::has('login')): ?>
 
-      <?php if($paid): ?>
+      <?php if(isset($pays) && isset($paid)): ?>
 
             <?php if( $paid->destination_id > 0 && $paid->destination_id != null): ?>
-
               <?php echo $__env->make('user.paid', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
               <?php echo $__env->make('user.paid_details', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?> 
-
             <?php else: ?>
               <?php echo $__env->make('user.noapplication', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
             <?php endif; ?>
-
-        
       <?php else: ?> 
        <?php echo $__env->make('user.noapplication', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
       <?php endif; ?>

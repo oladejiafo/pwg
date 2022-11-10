@@ -57,7 +57,7 @@
                                         </div>
                                     </div>
                                     <div class="card-body align-items-center justify-content-center">
-                                        <h5 class="card-title">${{number_format($tot_comm,2)}}</h5>
+                                        <h5 class="card-title">${{number_format($mine->balance,2)}}</h5>
                                         <p class="card-text"> 
                                             <br>
                                             <!-- <i class="fa fa-plus-circle"></i>

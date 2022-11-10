@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
     <meta name="description" content="This is PWG Group client portal. PWG Group is an immigration company that helps students and professionals migrate abroad to either pursue their studies or careers.">
     <title>PWG Client Portal</title>
-    <link rel="icon" type="image/png" href="<?php echo e(asset('/images/logo2.png')); ?>">
+    <link rel="icon" type="image/png" href="<?php echo e(asset('/images/pwglogo.svg')); ?>">
     <meta name="keywords" content="Immigration, visa, travel,,abroad work visa consultants, affordable immigration,work permit, 188 visa,canadian immigration, UAE, POLAND, Malta, Czech, Canada, Germany">
         <!-- Icon -->
     <link rel="stylesheet" href="<?php echo e(asset('user/extra/assets/fonts/line-icons.css')); ?>">
@@ -203,7 +203,11 @@
               <span><img src="<?php echo e(asset('images/icon1.png')); ?>"></span><span style="padding-top:5px">Applicants </span>
               </a>
             </div> -->
-            
+            <!-- <div class="d-flex align-items-center justify-content-center jobbers">
+              <a class="nav-link btn create-new-button" aria-expanded="false" href="<?php echo e(route('affiliate.home')); ?>">
+                <span style="display:inline-block"><img alt="PWG" src="<?php echo e(asset('images/icon2.png')); ?>"></span><span class="title" style="padding-top:0px;display:inline-block">Affiliate Partner</span>
+              </a>
+            </div>  -->
           <?php endif; ?>
           <?php endif; ?>
 

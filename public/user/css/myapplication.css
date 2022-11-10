@@ -277,6 +277,14 @@ body {
   background-color: #1c7e14;
 }
 
+.block:hover .dd path{
+  fill: white;
+}
+
+.dd:hover path {
+  fill: #fff;
+  /* background-color: #1c7e14; */
+}
 .block2 {
   margin: auto;
   float: left;
@@ -302,10 +310,10 @@ body {
   height: 500px;
 }
 
-.dd:hover path {
+/* .dd:hover path {
   fill: #fff;
   background-color: #1c7e14;
-}
+} */
 
 .de:hover path {
   fill: #000;

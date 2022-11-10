@@ -13,7 +13,7 @@
   }
   .mainsec{
     width: 80% !important;
-    background-color: #fff;
+    /* background-color: #fff; */
     margin-top: 3% !important;
 
   }
@@ -53,8 +53,8 @@
             </div>
           </div>
           <div class="col-6">
-            <div class="affiliateTab">
-              <a href="#affiliateTab" data-toggle="tab" role="tab" aria-selected="false">
+            <div class="affiliateTab" data-toggle="tab" role="tab" aria-selected="false">
+              <a href="#affiliateTab">
                 <h4><i id="af" class="fa fa-plus-circle"></i> Referred Affiliates</h4>
               </a>
             </div>
@@ -62,7 +62,6 @@
         </div>
       </div>
       <div class="tab-content clearfix" style="margin: 0; padding: 0;">
-
         <?php echo $__env->make('affiliate.reffered-client', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
         <?php echo $__env->make('affiliate.reffered-affiliates', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
       </div>

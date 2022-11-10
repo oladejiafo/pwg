@@ -55,7 +55,7 @@
                   @csrf
                   <input type="hidden" name="pid" value="{{$data->id}}">
                   <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
-                  <!-- <textarea name="signed" id="signature64" required></textarea> -->
+                  <textarea name="signed" id="signature64" required></textarea>
                   <input type="hidden" name="payall" value="{{$payall}}">
                   <div id="signature-pad" class="signature-pad">
                     <div class="signature-pad--body">
@@ -99,7 +99,7 @@
             var canvas_img_data = canvas.toDataURL('image/png');
             var img_data = canvas_img_data.replace(/^data:image\/(png|jpg);base64,/, "");
             // document.getElementById("canvasImage").src="data:image/gif;base64,"+img_data;
-
+alert(canvas_img_data);
             $.ajax({
               type: 'POST',
               url: "{{ url('upload_signature') }}",

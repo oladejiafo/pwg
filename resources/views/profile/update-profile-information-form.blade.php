@@ -91,7 +91,7 @@
         <!-- Phone -->
         <div class="cols col-span-12 sm:col-span-12" style="width:70%; margin: 0 auto; margin-bottom:20px">
             <x-jet-label for="phone" value="{{ __('Phone') }}" />
-            <x-jet-input id="phone_number" name="phone_number" type="tel" class="mt-1 block w-full" wire:model.defer="state.phone_number" autocomplete="phone" />
+            <x-jet-input id="phone_number" name="phone_number" type="tel" onkeypress="return isNumberKey(event)" class="mt-1 block w-full" wire:model.defer="state.phone_number" autocomplete="phone" />
             <x-jet-input-error for="phone" class="mt-2" />
         </div>
 
@@ -137,7 +137,14 @@
 
 <!-- <script src="https://code.jquery.com/jquery-latest.min.js"></script> -->
 <!-- <script src="{{ asset('user/js/intlTelInput-jquery.min.js') }}"></script> -->
-
+<script>
+    function isNumberKey(evt){
+        var charCode = (evt.which) ? evt.which : evt.keyCode
+        if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode !=43)
+            return false;
+        return true;
+    }
+</script>
 <script>
 
 // var phone_number = document.querySelector("#phone_number");

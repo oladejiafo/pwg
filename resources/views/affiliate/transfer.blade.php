@@ -63,6 +63,7 @@
       </div>
       <div class="tab-content clearfix" style="margin: 0; padding: 0;">
          @include('affiliate.new-transfer')
+         @include('affiliate.transfer-history')
       </div>
       </div>
   </div>

@@ -182,7 +182,11 @@ $vals=array(0,1,2);
                             <div class="col-lg-6 col-sm-12 mb-3">
                                 <div class="inputs">
                                     <select title="Current Location" class="form-control  current_location form-select" id="current_location" name="current_location" required>
+                                        @if(old('current_location'))
+                                        <option selected>{{old('current_location')}}</option>
+                                        @else
                                         <option selected disabled>--Current Location--</option>
+                                        @endif
                                         <option value="United Arab Emirates">United Arab Emirates</option>
                                         @foreach (Constant::countries as $key => $item)
                                             <option value="{{$key}}">{{$item}}</option>
@@ -196,7 +200,11 @@ $vals=array(0,1,2);
                             <div class="col-lg-6 col-sm-12 mb-3">    
                                 <div class="inputs">
                                     <select title="Embassy Appearance Country" class="form-control  embassy_appearance form-select" id="embassy_appearance" name="embassy_appearance" required="">
+                                        @if(old('embassy_appearance'))
+                                        <option selected>{{old('embassy_appearance')}}</option>
+                                        @else
                                         <option selected disabled>--Country of Embassy Appearance--</option>
+                                        @endif
                                         <option value="United Arab Emirates">United Arab Emirates</option>
                                         @foreach (Constant::countries as $key => $item)
                                             <option value="{{$key}}">{{$item}}</option>

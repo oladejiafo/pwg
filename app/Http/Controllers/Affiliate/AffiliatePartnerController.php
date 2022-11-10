@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Affiliate;
 
 use App\Affiliate as AppAffiliate;
+use App\Models\AffiliateBankAccount;
+use App\Models\AffiliateTransaction;
 use App\Models\Affiliate;
 use App\Models\Presentation;
 use App\Models\News;
@@ -81,7 +83,7 @@ class AffiliatePartnerController extends Controller
             $tot_comm = $cl_comm + $aff_comm;
 
 
-            return view('affiliate.dashboard', compact('tot_reff', 'tot_rev', 'tot_comm'));
+            return view('affiliate.dashboard', compact('tot_reff', 'tot_rev', 'tot_comm','mine'));
         } else {
             return view('affiliate.home');
         }
@@ -268,9 +270,8 @@ class AffiliatePartnerController extends Controller
     public function transfer($id){
         if(Session::has('loginId')){
            $mine = Affiliate::where('id', '=', $id)->first();
-           $acct = DB::Table('affiliate_transactions')
+           $acct = DB::Table('affiliate_bank_account')
                 ->where('affiliate_id', '=', $mine->id)
-                ->orderBy('transaction_date','desc')
                 ->first();
 
            return view('affiliate.transfer', compact('mine','acct'));
@@ -279,6 +280,90 @@ class AffiliatePartnerController extends Controller
         }
     }
 
+    public function process_transfer( Request $request){
+
+        if(Session::has('loginId')){
+            $mine = Affiliate::where('id', '=', $request->myid)->first();
+
+            $request->validate([
+                'name' => 'required',
+                'amount' => 'required|numeric|lte:' .$mine->balance,
+                'bank' => 'required',
+                'accountNumber' => 'required'
+            ]);
+
+
+            if($mine->balance < $request->amount)
+            {
+                return back()->with('error');
+            } else {
+
+                $newBalance = $mine->balance - $request->amount;
+                $bank = AffiliateBankAccount::where('affiliate_id', '=', $request->myid)->first();
+                if ($bank === null) {
+                    $bnk = new AffiliateBankAccount();
+
+                    $bnk->affiliate_id = $request->myid;
+                    $bnk->account_name = $request->name;
+                    $bnk->account_number_iban = $request->accountNumber;
+                    $bnk->bank_name = $request->bank;
+                    $bnk->bank_address = $request->bankAddress;
+                    $bnk->bank_country = $request->bankCountry;
+
+                    $bnk->swift_code = $request->swiftCode;
+                    $bnk->save();
+
+                    $bankNow = AffiliateBankAccount::where('affiliate_id', '=', $request->myid)->first();
+                    $bank_id = $bankNow->id;
+                } else {
+                    $bank_id = $bank->id;
+                }
+
+                //Check for double entry
+                $check = AffiliateTransaction::where([
+                    ['affiliate_id', '=', $request->myid],
+                    ['amount', $request->amount],
+                    ['transaction_date', date('Y-m-d')]
+                ])->first();
+
+                if ($check === null) {
+                    $dat = new AffiliateTransaction();
+
+                    $dat->affiliate_id = $request->myid;
+                    $dat->bank_account_id = $bank_id;
+                    $dat->transaction_date = date('Y-m-d');
+                    $dat->amount = $request->amount;
+                    $dat->transaction_type = 'Withdrawal';
+                    $dat->balance =$newBalance;
+                    $dat->account_number = $request->accountNumber;
+                    $dat->bank_name = $request->bank;
+                    $dat->swift_code = $request->swiftCode;
+                    $dat->save();
+                } else {
+                    $check->affiliate_id = $request->myid;
+                    $check->bank_account_id = 1;
+                    $check->transaction_date = date('Y-m-d');
+                    $check->amount = $request->amount;
+                    $check->transaction_type = 'Withdrawal';
+                    $check->balance =$newBalance;
+                    $check->account_number = $request->accountNumber;
+                    $check->bank_name = $request->bank;
+                    $check->swift_code = $request->swiftCode;
+                    $check->save();
+                }
+                DB::table('affiliate')
+                ->where('id', $request->myid)
+                ->update(
+                    [
+                        'balance' => $newBalance
+                    ]
+                );
+                return back()->with('info','Success');
+            }
+        } else {
+            return back();
+        }
+    }
     public function news()
     {
         $client = new Client();

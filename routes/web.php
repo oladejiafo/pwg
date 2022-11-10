@@ -70,7 +70,7 @@ Route::get('/referal_details/{id}',[HomeController::class,'referal'])->name('ref
 
 Route::post('/add_referal', [HomeController::class,'addreferal']);
 
-Route::get('/myapplication',[HomeController::class,'myapplication']);
+Route::get('/myapplication',[HomeController::class,'myapplication'])->name('myapplication');
 Route::get('/affiliate', [HomeController::class,'affiliate'])->name('affiliate');
 
 Route::post('/add-referrer', [HomeController::class,'addReferrer'])->name('add-referer');
@@ -152,6 +152,7 @@ Route::group(['namespace' => 'Affiliate', 'prefix' => '/affiliate','as' => 'affi
         Route::get('reffered-client/{id}', [AffiliatePartnerController::class,'reffered_client'])->name('reffered_client');
         //Transfer
         Route::get('transfer/{id}', [AffiliatePartnerController::class,'transfer'])->name('transfer');
+        Route::post('process_transfer', [AffiliatePartnerController::class,'process_transfer'])->name('process_transfer');
 
         Route::get('news', [AffiliatePartnerController::class, 'news'])->name('news');
         Route::get('news/{id}', [AffiliatePartnerController::class, 'newsBrief'])->name('news.brief');

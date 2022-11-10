@@ -20,10 +20,10 @@
             </tr>
 
             <?php $__currentLoopData = $clients; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $client): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <?php
-            $reffered = DB::table('clients')
-            ->where('id', '=', $client->client_id)
-            ->get();
+          <?php
+          $reffered = DB::table('clients')
+          ->where('id', '=', $client->client_id)
+          ->get();
             $pays = DB::table('payments')
             ->where('application_id', '=', $client->id)
             ->where('payment_type', '=', 'First Payment')

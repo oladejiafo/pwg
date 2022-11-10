@@ -64,11 +64,12 @@
                             </div>
                             <div class="form-floating col-sm-6 mt-3">
                                 <input type="hidden" name="phone_number_label" class="form-control phone_number_label" id="phone_number_label" placeholder="Phone Number*" autocomplete="off"/>
-                                <input type="tel" name="phone_number" class="form-control phone_number phone"   placeholder="Phone Number*" value="{{$client['phone_number']}}" autocomplete="off"  />
+                                <input type="tel" onkeypress="return isNumberKey(event)" name="phone_number" class="form-control phone_number phone" placeholder="Phone Number*" value="{{$client['phone_number']}}" autocomplete="off"  />
                                 <span class="phone_number_errorClass"></span>
                                 <label for="phone_number_label" style="margin-top: -5px !important; margin-left: -5px !important;">Phone Number*</label>
                             </div>
                         </div>
+
                         <div class="form-group row mt-4">
                             <div class="form-floating col-sm-4 mt-3 dob">
                                 <input type="text" name="dob" class="form-control datepicker" placeholder="Date of Birth*" value="{{old('dob')}}" id="datepicker" autocomplete="off"  readonly="readonly" />
@@ -231,7 +232,7 @@
                                 <span class="passport_copy_errorClass"></span>
                             </div>
                             {{-- <div class="col-sm-6 mt-3">
-                                <input type="tel" name="home_phone_number" id="home_phone_number" class="form-control home_phone_number" placeholder="Phone Number" value="{{old('home_phone_number')}}" autocomplete="off" />
+                                <input type="tel" onkeypress="return isNumberKey(event)" name="home_phone_number" id="home_phone_number" class="form-control home_phone_number" placeholder="Phone Number" value="{{old('home_phone_number')}}" autocomplete="off" />
                             </div> --}}
                         </div>
                         <div class="form-group row mt-4">
@@ -336,7 +337,7 @@
                         <div class="form-group row mt-4">
                             <div class="form-floating col-sm-4 mt-3">
                                 <input type="hidden" name="current_residence_phone_number_label" class="form-control current_residence_phone_number_label" id="current_residence_phone_number_label" placeholder="Phone Number*" autocomplete="off"/>
-                                <input type="tel" class="form-control" id="current_residance_mobile" name='current_residance_mobile' value="{{old('current_residance_mobile')}}" placeholder="Current Residence Mobile Number" autocomplete="off">
+                                <input type="tel" class="form-control" onkeypress="return isNumberKey(event)" id="current_residance_mobile" name='current_residance_mobile' value="{{old('current_residance_mobile')}}" placeholder="Current Residence Mobile Number" autocomplete="off">
                                 <span class="current_residance_mobile_errorClass"></span>
                                 <label for="current_residence_phone_number_label" style="margin-top: -5px !important; margin-left: -5px !important;">Phone Number*</label>
                             </div>
@@ -408,7 +409,7 @@
                                 <label for="company_name">Name of Company</label>
                             </div>
                             <div class="form-floating col-sm-4 mt-3">
-                                <input type="text" class="form-control" name="employer_phone" id="employer_phone" placeholder="Employer Phone Number" autocomplete="off">
+                                <input type="text" class="form-control" onkeypress="return isNumberKey(event)" name="employer_phone" id="employer_phone" placeholder="Employer Phone Number" autocomplete="off">
                                 <label for="employer_phone">Employer Phone Number</label>
                             </div>
                         </div>

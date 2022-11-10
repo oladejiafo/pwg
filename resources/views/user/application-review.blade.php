@@ -181,7 +181,7 @@
                                             <input type="hidden" name="product_id" value="{{$productId}}">
                                             <div class="form-group row mt-4">
                                                 <div class="col-sm-4 mt-3 form-floating">
-                                                    <input type="tel" id="first_name" name="first_name" class="form-control" placeholder="First Name*" value="{{$client['name']}}" autocomplete="off" required/>
+                                                    <input type="text" id="first_name" name="first_name" class="form-control" placeholder="First Name*" value="{{$client['name']}}" autocomplete="off" required/>
                                                     <span class="first_name_errorClass"></span>
                                                     <label for="first_name">First Name*</label>
                                                 </div>
@@ -203,7 +203,7 @@
                                                 </div>
                                                 <div class="col-sm-6 mt-3 form-floating">
                                                     <input type="hidden" name="phone_number1" class="form-control" id="phone_no" placeholder="Phone Number*" value="{{$client['phone_number']}}" autocomplete="off"/>
-                                                    <input type="tel" style="margin-left: -10px !important;" name="phone_number" class="form-control" id="phone" placeholder="Phone Number*" value="{{$client['phone_number']}}" autocomplete="off"  required/>
+                                                    <input type="tel" onkeypress="return isNumberKey(event)" style="margin-left: -10px !important;" name="phone_number" class="form-control" id="phone" placeholder="Phone Number*" value="{{$client['phone_number']}}" autocomplete="off"  required/>
                                                     <span class="phone_number_errorClass"></span>
                                                     <label for="phone_no" style="margin-top: -5px !important; margin-left: -5px !important;">Phone Number*</label>
                                                 </div>
@@ -366,7 +366,7 @@
                                                     <label for="passport_copy">Passport Copy Upload*</label>
                                                 </div>
                                                 {{-- <div class="col-sm-6 mt-3">
-                                                    <input type="tel" name="home_phone_number" id="home_phone_number" class="form-control" placeholder="Phone Number" value="{{$client['residence_mobile_number']}}" autocomplete="off" />
+                                                    <input type="tel" onkeypress="return isNumberKey(event)" name="home_phone_number" id="home_phone_number" class="form-control" placeholder="Phone Number" value="{{$client['residence_mobile_number']}}" autocomplete="off" />
                                                 </div> --}}
                                             </div>
                                             <div class="form-group row mt-4">
@@ -463,7 +463,7 @@
                                                     <label for="current_country">Current Country*</label>
                                                 </div>
                                                 <div class="col-sm-6 mt-3 form-floating">
-                                                    <input type="tel" style="margin-left: -10px !important;" class="form-control" id="current_residance_mobile" name='current_residance_mobile' value="{{$client['residence_mobile_number']}}" placeholder="Current Residence Mobile Number" autocomplete="off">
+                                                    <input type="tel" onkeypress="return isNumberKey(event)" style="margin-left: -10px !important;" class="form-control" id="current_residance_mobile" name='current_residance_mobile' value="{{$client['residence_mobile_number']}}" placeholder="Current Residence Mobile Number" autocomplete="off">
                                                     <input type="hidden" class="form-control" id="current_mobile" name='current_residance_mobile1' value="{{$client['residence_mobile_number']}}" placeholder="Current Residence Mobile Number" autocomplete="off">
                                                     <span class="current_residance_mobile_errorClass"></span>
                                                     <label for="current_mobile" style="margin-top: -5px !important; margin-left: -5px !important">Current Residence Mobile Number*</label>
@@ -928,7 +928,7 @@
                                                 </div>
                                                 <div class="col-sm-6 mt-3 form-floating">
                                                     <input type="hidden" name="phone_no_label" class="form-control" id="phone_no_label" placeholder="Phone Number*" value="{{$client['phone_number']}}" autocomplete="off"/>
-                                                    <input type="tel" name="dependent_phone_number" class="form-control dependent_phone_number" id="dependent_phone" placeholder="Phone Number*" value="{{$dependent['phone_number']}}" autocomplete="off"  />
+                                                    <input type="tel" onkeypress="return isNumberKey(event)" name="dependent_phone_number" class="form-control dependent_phone_number" id="dependent_phone" placeholder="Phone Number*" value="{{$dependent['phone_number']}}" autocomplete="off"  />
                                                     <span class="dependent_phone_number_errorClass"></span>
                                                     <label for="phone_no_label" style="margin-top: -5px !important; margin-left: -5px !important;">Phone Number*</label>
                                                 </div>
@@ -1089,7 +1089,7 @@
                                                     <span class="dependent_passport_copy_errorClass"></span>
                                                 </div>
                                                 {{-- <div class="col-sm-6 mt-3">
-                                                    <input type="tel" name="dependent_home_phone_number" id="dependent_home_phone_number" class="form-control dependent_home_phone_number" placeholder="Phone Number" value="{{$dependent['phone_number']}}" autocomplete="off" />
+                                                    <input type="tel" onkeypress="return isNumberKey(event)" name="dependent_home_phone_number" id="dependent_home_phone_number" class="form-control dependent_home_phone_number" placeholder="Phone Number" value="{{$dependent['phone_number']}}" autocomplete="off" />
                                                 </div> --}}
                                             </div>
                                             <div class="form-group row mt-4">
@@ -1188,7 +1188,7 @@
                                                 </div>
                                                 <div class="col-sm-6 mt-3 form-floating">
                                                     <input type="hidden" name="dependent_current_residance_mobile_label" class="form-control" id="dependent_current_residance_mobile_label" placeholder="Current Residence Mobile Number" value="{{$client['residence_mobile_number']}}" autocomplete="off"/>
-                                                    <input type="tel" class="form-control" id="dependent_current_residance_mobile" name='dependent_current_residance_mobile' value="{{$dependent['residence_mobile_number']}}" placeholder="Current Residence Mobile Number" autocomplete="off">
+                                                    <input type="tel" onkeypress="return isNumberKey(event)" class="form-control" id="dependent_current_residance_mobile" name='dependent_current_residance_mobile' value="{{$dependent['residence_mobile_number']}}" placeholder="Current Residence Mobile Number" autocomplete="off">
                                                     <span class="dependent_current_residance_mobile_errorClass"></span>
                                                     <label for="dependent_current_residance_mobile_label" style="margin-top: -5px !important; margin-left: -5px !important;">Current Residence Mobile Number</label>
                                                 </div>
@@ -3097,6 +3097,15 @@
         } else if(type == 'dependent') {
             $("#schengenVisaDependentFormatModal").modal('show');
         }
+    }
+</script>
+
+<script>
+    function isNumberKey(evt){
+        var charCode = (evt.which) ? evt.which : evt.keyCode
+        if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode !=43)
+            return false;
+        return true;
     }
 </script>
 <script src="https://unpkg.com/vue@next"></script>
