@@ -106,14 +106,14 @@
                             <a class="nav-link" href="<?php echo e(route('affiliate.logout')); ?>">
                                 <div class="navbar-profile" style="font-family:'TT Norms Pro'; font-size: 18px; font-weight:500">
                                     <img class="img-xs rounded-circlex" src="<?php echo e(asset('user/images/signin.svg')); ?>" style="width: 40px; height: 40px;" alt="PWG ">
-                                    &nbsp; Sign Out
+                                    &nbsp; Logout
                                 </div>
                             </a>
                             <?php else: ?>
                             <a class="nav-link" href="<?php echo e(route('affiliate.login')); ?>">
                                 <div class="navbar-profile" style="font-family:'TT Norms Pro'; font-size: 18px; font-weight:500">
                                     <img class="img-xs rounded-circlex" src="<?php echo e(asset('user/images/signin.svg')); ?>" style="width: 40px; height: 40px;" alt="PWG ">
-                                    &nbsp; Affiliate Sign In
+                                    &nbsp; Affiliate Login
                                 </div>
                             </a>
                         </li>

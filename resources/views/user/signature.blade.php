@@ -93,7 +93,6 @@
     $(document).ready(function() {
       $("#signatureSubmit").submit(function(e) {
         e.preventDefault();
-
         html2canvas([document.getElementById('sig')], {
           onrendered: function(canvas) {
             var canvas_img_data = canvas.toDataURL('image/png');

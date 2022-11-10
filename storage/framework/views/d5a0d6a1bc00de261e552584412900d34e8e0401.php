@@ -136,10 +136,10 @@
                                 <div class="input-group-btn">
                                     <span class="fileUpload btn">
                                         <span class="upl" id="upload">Choose File</span>
-                                        <input type="file" class="upload cvupload" id="up"  name="cv" accept="application/pdf" onchange="readURL(this);" />
+                                        <input type="file" class="upload cvupload" id="up"  name="cv" accept=".pdf, .doc" onchange="readURL(this);" />
                                         </span><!-- btn-orange -->
                                 </div><!-- btn -->
-                                <label for="cvupload">Upload your cv (PDF only)*</label>
+                                <label for="cvupload">Upload your cv (PDF & DOC only)*</label>
                                 <span class="cv_errorClass"></span>
                             </div>
                         </div>

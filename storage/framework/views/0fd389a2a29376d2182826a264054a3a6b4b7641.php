@@ -21,7 +21,7 @@
               </h3>
           </div>
           <div class="bottoom-title">
-            <p>Please login with your affiliate account</p>
+            <p>Please login to your affiliate account</p>
           </div>
         </div>
         <div class="tab-sec">
@@ -68,7 +68,7 @@ unset($__errorArgs, $__bag); ?>
             <button type="submit" class="btn btn-primary submitBtn">Login</button>
             <div class="bottom-sec">
                 <div class="signuplink"><a href="<?php echo e(route('affiliate.register')); ?>">Signup</a></div>
-                <div class="forgot"><a href="<?php echo e(route('affiliate.forgot-password')); ?>">forgot your password?</a></div>
+                <div class="forgot"><a href="<?php echo e(route('affiliate.forgot-password')); ?>">Forgot your password?</a></div>
             </div>
           </form>
         </div>

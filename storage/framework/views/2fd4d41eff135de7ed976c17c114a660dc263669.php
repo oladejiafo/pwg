@@ -23,7 +23,7 @@
                                 <p class="left-sub-dashboard">
                                     Recommend clients. Start earning immediately.
                                     <br>
-                                    We are for people !
+                                    We are for people!
                                 </p>
                             </div>
                         </div>
@@ -33,7 +33,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="pull-right">My Refferal Code: <a href="javascript:void(0);" id="text" onclick="copyToClipboard('#text')" title="Click to copy code"><?php echo e(Session::get('ref_code')); ?></a></div>
+                    <div class="pull-right">My Referral Code: <a href="javascript:void(0);" id="text" onclick="copyToClipboard('#text')" title="Click to copy code"><?php echo e(Session::get('ref_code')); ?></a></div>
                 </div>
             </div>
         </div>
@@ -45,37 +45,40 @@
             <div class="steps-dashboard">
                 <div class="col-12">
                     <div class="row">
-                        <div class="col-sm-12 col-md-4 col-lg-4">
+                        <div class="col-sm-12 col-md-4 col-lg-4 dash">
                             <div class="current-available">
                                 <div class="card">
                                     <div class="card-header">
                                         <div class="header-group">
                                             <a href="#">
-                                                <span class="head">Current Available Revenue</span>
+                                                <span class="head">Available Balance</span>
                                                 <img src="<?php echo e(asset('images/affiliate/Bargraph.svg')); ?>" class="bargraph">
                                             </a>
                                         </div>
                                     </div>
                                     <div class="card-body align-items-center justify-content-center">
-                                        <h5 class="card-title">$1,456</h5>
+                                        <h5 class="card-title">$<?php echo e(number_format($tot_comm,2)); ?></h5>
                                         <p class="card-text"> 
-                                            <i class="fa fa-plus-circle"></i>
-                                            5% higher than last month</p>
+                                            <br>
+                                            <!-- <i class="fa fa-plus-circle"></i>
+                                            5% higher than last month -->
+                                        </p>
                                         <div class="align-items-center justify-content-center" style="text-align: center;">
+                                            
                                             <a href="#" class="btn transfer">Transfer <i class="fa fa-exchange fa-2xs" aria-hidden="true"></i></a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-12 col-md-4 col-lg-4">
+                        <div class="col-sm-12 col-md-4 col-lg-4 dash">
                             <div class="total-refferals">
                                 <div class="card">
                                     <div class="card-header">
                                         <div class="header-group">
-                                            <a href="#">
                                             
-                                                <span class="head">Total Refferals</span>
+                                            <a href="#">
+                                                <span class="head">Total Referrals</span>
                                                 <span class="dot"></span>
                                                 <span class="dot"></span>
                                                 <span class="dot"></span>
@@ -83,7 +86,7 @@
                                         </div>
                                     </div>
                                     <div class="card-body align-items-center justify-content-center">
-                                        <h5 class="card-title">109</h5>
+                                        <h5 class="card-title"><?php echo e(number_format($tot_reff,0)); ?></h5>
                                         <p class="card-text"> 
                                             <i class="fa fa-plus-circle"></i>
                                             9% higher than last month</p>
@@ -91,7 +94,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-12 col-md-4 col-lg-4">
+                        <div class="col-sm-12 col-md-4 col-lg-4 dash">
                             <div class="total-earn">
                                 <div class="card">
                                     <div class="card-header">
@@ -105,7 +108,7 @@
                                         </div>
                                     </div>
                                     <div class="card-body align-items-center justify-content-center">
-                                        <h5 class="card-title">$3,456</h5>
+                                        <h5 class="card-title">$<?php echo e(number_format($tot_comm,2)); ?></h5>
                                         <p class="card-text"> 
                                             <i class="fa fa-plus-circle"></i>
                                             3% lower than last month</p>

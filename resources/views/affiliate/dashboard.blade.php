@@ -64,7 +64,8 @@
                                             5% higher than last month -->
                                         </p>
                                         <div class="align-items-center justify-content-center" style="text-align: center;">
-                                            <a href="{{route('affiliate.transfer',Session::get('loginId'))}}" class="btn transfer">Transfer <i class="fa fa-exchange fa-2xs" aria-hidden="true"></i></a>
+                                            {{-- {{route('affiliate.transfer',Session::get('loginId'))}} --}}
+                                            <a href="#" class="btn transfer">Transfer <i class="fa fa-exchange fa-2xs" aria-hidden="true"></i></a>
                                         </div>
                                     </div>
                                 </div>
@@ -75,7 +76,8 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <div class="header-group">
-                                            <a href="{{route('affiliate.reffered_client',Session::get('loginId'))}}">
+                                            {{-- {{route('affiliate.reffered_client',Session::get('loginId'))}} --}}
+                                            <a href="#">
                                                 <span class="head">Total Referrals</span>
                                                 <span class="dot"></span>
                                                 <span class="dot"></span>

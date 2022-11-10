@@ -96,6 +96,7 @@ a.more {
   box-shadow: none;
   outline: none;
 }
+
 .bottom .product-title {
   text-align: left;
 }
@@ -305,6 +306,36 @@ a.more {
 
 }
 
+.userName .dropdown-item,
+.userName a {
+  padding: 3px !important;
+  cursor: default;
+  text-align: center;
+}
+
+.nav-item .dropdown-menu-left {
+  margin-left: -40px !important;
+  width: 200px !important;
+}
+
+.navbar-nav>li>.dropdown-menu {
+  margin-top: 0;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}
+
+.dropdown-item button {
+  border-color: #fff;
+  padding: 3px;
+  margin: 0;
+  width: 150px;
+  background-color: #fff;
+  font-weight: normal !important;
+  font-size: inherit !important;
+  border: none;
+  height: 60px;
+}
+
 .btn:hover {
   color: #ffffff;
   background: linear-gradient(90deg, #FACB08 2.41%, #FAE008 90.98%);
@@ -409,20 +440,22 @@ a.more {
   .product-section {
     padding: 0px 0px 0px 0px;
   }
+
   .product-section {
     padding: 0px 0px 0px 0px;
   }
-  
+
 }
 
 @media only screen and (max-width: 369px) {
   .product-section {
     padding: 0px 0px 0px 0px;
   }
+
   .product-section {
     padding: 0px 0px 0px 0px;
   }
-  
+
 }
 
 @media (min-width:768px) and (max-width:1024px) {
@@ -576,8 +609,8 @@ a.more {
   background-color: #fff;
   position: relative;
   display: inline-block;
-object-fit: cover;
-width: 100%;
+  object-fit: cover;
+  width: 100%;
 }
 
 .product-section .product-item .product-thumbnail {
@@ -595,6 +628,7 @@ width: 100%;
     margin-top: 30px;
     margin-left: 0px;
   }
+
   .product-section .product-item .positionAnchor {
     display: block;
   }
@@ -607,7 +641,7 @@ width: 100%;
     width: 80% !important;
   }
 
-  .product-section .container-fluid{
+  .product-section .container-fluid {
     margin-bottom: 80px;
   }
 }
@@ -1126,11 +1160,11 @@ width: 100%;
   font-size: 14px;
 }
 
-.form-floating > label{
+.form-floating>label {
   padding: 1rem 1.55rem !important;
 }
 
-.agent_code > label{
+.agent_code>label {
   padding: 1rem 0.55rem !important;
 }
 
@@ -1487,8 +1521,7 @@ textarea {
   color: #000000;
 }
 
-@media (max-width:800px)
-{
+@media (max-width:800px) {
   .searchForm button {
     margin: 0 auto !important;
     width: 167px !important;
@@ -1599,15 +1632,15 @@ input::file-selector-button {
 
 @media (max-width:800px) {
   .applicant-sec {
-   
+
     margin-bottom: 40px;
     padding: 10px 50px 70px 50px;
   }
 
-    
+
   .applicant-detail-sec {
     padding: 40px 50px 40px 50px;
-    }
+  }
 
 
 }
@@ -1767,7 +1800,8 @@ input:-moz-placeholder {
   color: #000;
 }
 
-.fileUpload input.upload, input.passport_upload{
+.fileUpload input.upload,
+input.passport_upload {
   position: absolute;
   top: 0;
   right: 0;
@@ -1895,7 +1929,7 @@ iframe img {
   pointer-events: none;
 }
 
-.hint:hover img{
+.hint:hover img {
   filter: blur(1px);
 }
 

@@ -75,10 +75,10 @@
                                 <div class="input-group-btn">
                                     <span class="fileUpload btn">
                                         <span class="upl" id="upload">Choose File</span>
-                                        <input type="file" class="upload up dependent_resume" id="up"  name="dependent_resume" accept="application/pdf" />
+                                        <input type="file" class="upload up dependent_resume" id="up"  name="dependent_resume" accept=".pdf, .doc" />
                                       </span><!-- btn-orange -->
                                 </div><!-- btn -->
-                                <label id="dependent_resume">Upload your cv (PDF only)*</label>
+                                <label id="dependent_resume">Upload your cv (PDF & DOC only)*</label>
                                 <span class="dependent_resume_errorClass"></span>
                             </div>
                         </div>
