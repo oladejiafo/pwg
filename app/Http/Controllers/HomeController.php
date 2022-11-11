@@ -155,7 +155,6 @@ class HomeController extends Controller
             if ($request->response == 1) {
                 return $famdet;
             }
-            // dd($famdet);
         } else {
             $famdet = family_breakdown::where('destination_id', '=', $productId)->where('pricing_plan_type', 'FAMILY PACKAGE')->first();
         }
@@ -287,7 +286,6 @@ class HomeController extends Controller
     public function upload(Request $request)
     {
         if (Auth::id()) {
-            dd($request->signed);
             list($part_a, $image_parts) = explode(";base64,", $request->signed);
             $image_type_aux = explode("image/", $part_a);
             $image_type = $image_type_aux[1];
