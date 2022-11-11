@@ -1,5 +1,5 @@
-@include('user/header')
-<link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
+<?php echo $__env->make('user/header', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<link href="<?php echo e(asset('user/css/bootstrap.min.css')); ?>" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
 
@@ -28,35 +28,35 @@
 </head>
 
 <body>
-  @if(session()->has('failed'))
+  <?php if(session()->has('failed')): ?>
   <div class="alert alert-danger" style="margin-left:auto;margin-right:auto; width:40%; text-align:center;margin-bottom:20px">
     <button type="button" class="close" data-dismiss="alert" style="float:right;border-style:none;background-color: transparent"><i class="fa fa-times-circle" aria-hidden="true" style="color:#000; font-size:25px" ;></i>
 
     </button>
-    <strong>{{ session()->get('failed') }}</strong>
+    <strong><?php echo e(session()->get('failed')); ?></strong>
   </div>
-  @endif
+  <?php endif; ?>
   <div class="login">
-  @php
+  <?php
   $payall = $_REQUEST['payall'];
-@endphp
+?>
     <div class="container">
       <div class="col-12">
         <div class="signature tt">
           <div class="append">
             <div class="append-title">
               <div class="col-4 offset-4 signatureLogo">
-                <img src="{{asset('images/signature.svg')}}" width="100%" height="100%">
+                <img src="<?php echo e(asset('images/signature.svg')); ?>" width="100%" height="100%">
               </div>
               <h1>Append Your Signature</h1>
               <p>To proceed to payment, please upload your signature</p>
               <div class="col-12 col-md-8 col-lg-8 offset-md-2 offset-lg-2">
                 <form enctype="multipart/form-data" id="signatureSubmit">
-                  @csrf
-                  <input type="hidden" name="pid" value="{{$data->id}}">
-                  <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
+                  <?php echo csrf_field(); ?>
+                  <input type="hidden" name="pid" value="<?php echo e($data->id); ?>">
+                  <input type="hidden" name="user_id" value="<?php echo e(Auth::user()->id); ?>">
                   <!-- <textarea name="signed" id="signature64" required></textarea> -->
-                  <input type="hidden" name="payall" value="{{$payall}}">
+                  <input type="hidden" name="payall" value="<?php echo e($payall); ?>">
                   <div id="signature-pad" class="signature-pad">
                     <div class="signature-pad--body">
                       <canvas id="sig"></canvas>
@@ -89,7 +89,7 @@
   <script src="../user/extra/js/signature_pad.umd.js"></script>
   <script src="../user/extra/js/app.js"></script>
   <script type='text/javascript' src="https://github.com/niklasvh/html2canvas/releases/download/0.4.1/html2canvas.js"></script>
-  <script src="{{asset('js/alert.js')}}"></script>
+  <script src="<?php echo e(asset('js/alert.js')); ?>"></script>
 
   <script type="text/javascript">
 
@@ -106,16 +106,16 @@
 
     $.ajax({
       type: 'POST',
-      url: "{{ url('upload_signature') }}",
+      url: "<?php echo e(url('upload_signature')); ?>",
       data: {
-        "_token": "{{ csrf_token() }}",
+        "_token": "<?php echo e(csrf_token()); ?>",
         signed: dataURL,
-        payall: '{{$payall}}',
+        payall: '<?php echo e($payall); ?>',
         response: 1
       },
       success: function(data) {
         if (data) {
-          location.href = "{{url('payment_form')}}/" + '{{$data->id}}';
+          location.href = "<?php echo e(url('payment_form')); ?>/" + '<?php echo e($data->id); ?>';
 
         } else {
           alert('Something went wrong');
@@ -140,16 +140,16 @@
      
       //       $.ajax({
       //         type: 'POST',
-      //         url: "{{ url('upload_signature') }}",
+      //         url: "<?php echo e(url('upload_signature')); ?>",
       //         data: {
-      //           "_token": "{{ csrf_token() }}",
+      //           "_token": "<?php echo e(csrf_token()); ?>",
       //           signed: canvas_img_data,
-      //           payall: '{{$payall}}',
+      //           payall: '<?php echo e($payall); ?>',
       //           response: 1
       //         },
       //         success: function(data) {
       //           if (data) {
-      //             location.href = "{{url('payment_form')}}/" + '{{$data->id}}';
+      //             location.href = "<?php echo e(url('payment_form')); ?>/" + '<?php echo e($data->id); ?>';
 
       //           } else {
       //             alert('Something went wrong');
@@ -183,4 +183,4 @@
   </script>
 </body>
 
-</html>
+</html><?php /**PATH C:\Users\shakun\Desktop\myGit\PWG\resources\views/user/signature.blade.php ENDPATH**/ ?>
