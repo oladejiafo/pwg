@@ -277,7 +277,7 @@
                                                             <input type="file" class="upload up cv_upload" id="up"  name="cv"  value="{{$client['resumeName']}}"/>
                                                             </span><!-- btn-orange -->
                                                     </div><!-- btn -->
-                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#cvModal" onclick="showCV()">click to view uploaded CV copy</a>
+                                                    <a href="javascript:void(0)" onclick="showCV()">click to view uploaded CV copy</a>
                                                     <span class="cv_errorClass"></span>
                                                     <label for="cv">CV</label>
                                                 </div>
@@ -361,7 +361,7 @@
                                                             <input type="file" class="upload up passport_copy" id="up" value="{{$client['passport']}}"  name="passport_copy" />
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
-                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#passportModal" onclick="showPassport()">click to view uploaded passport copy</a>
+                                                    <a href="javascript:void(0)"  onclick="showPassport()">click to view uploaded passport copy</a>
                                                     <span class="passport_copy_errorClass"></span>
                                                     <label for="passport_copy">Passport Copy Upload*</label>
                                                 </div>
@@ -490,7 +490,7 @@
                                                             <input type="file" class="upload residence_id" id="up"  name="residence_copy" />
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
-                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#residenceCopyModal" onclick="residenceCopyModal()">click to view uploaded residence id copy</a>
+                                                    <a href="javascript:void(0)" onclick="residenceCopyModal()">click to view uploaded residence id copy</a>
                                                     <span class="residence_copy_errorClass"></span>
                                                     <label for="residence_copy">Residence ID Copy*</label>
                                                 </div>
@@ -504,7 +504,7 @@
                                                     </div><!-- btn -->
                                                     <label for="visa_copy">Visa Copy*</label>
                                                     @if($client['visaCopyUrl'])
-                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#visaCopyModal" onclick="visaCopyModal()">click to view uploaded visa copy</a>
+                                                        <a href="javascript:void(0)" onclick="visaCopyModal()">click to view uploaded visa copy</a>
                                                     @endif
                                                 </div>
                                             </div>
@@ -627,7 +627,7 @@
                                                     <label for="schengen_copy">Image of Schengen Or National Visa Issued During Last 5 Years*</label>
                                                    
                                                     @if($client['schengenVisaUrl'])
-                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#schengenVisatModal" onclick="schengenVisatModal()">click to view uploaded schengen visa copy</a>
+                                                        <a href="javascript:void(0)" onclick="schengenVisatModal()">click to view uploaded schengen visa copy</a>
                                                     @endif
                                                 </div>
                                                 <div style="display: block;color:blue"><a href="#" class="pl" title="click here to add another row for upload" style="display:inline"><i class="fa fa-plus-circle"></i></a> Add another Visa <a href="#" class="mi" id="mi" title="click here to remove the last added row for upload" style="display:inline"><i class="fa fa-minus-circle"></i></a></div>
@@ -942,7 +942,7 @@
                                                             <input type="file" class="upload up dependent_resume" id="up"  name="dependent_resume" accept="application/pdf" value="{{$dependent['resumeName']}}"/>
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
-                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#resumeModal" onclick="showResume()">click to view uploaded resume</a>
+                                                    <a href="javascript:void(0)" onclick="showResume()">click to view uploaded resume</a>
                                                     <label for="dependent_resume">Upload your cv (PDF only)*</label>
                                                     <span class="dependent_resume_errorClass"></span>
                                                 </div>
@@ -1084,7 +1084,7 @@
                                                             <input type="file" class="upload up dependent_passport_copy" id="up"  name="dependent_passport_copy" />
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
-                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#dependentPassword" onclick="dependentPassword()">click to view uploaded passport copy</a>
+                                                    <a href="javascript:void(0)" onclick="dependentPassword()">click to view uploaded passport copy</a>
                                                     <label for="dependent_passport_copy">Upload Passport Copy*</label>
                                                     <span class="dependent_passport_copy_errorClass"></span>
                                                 </div>
@@ -1214,7 +1214,7 @@
                                                             <input type="file" class="upload dependent_residence_copy" id="up"  name="dependent_residence_copy" />
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
-                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#dependentResidence" onclick="dependentResidence()">click to view uploaded residence copy</a>
+                                                    <a href="javascript:void(0)" onclick="dependentResidence()">click to view uploaded residence copy</a>
                                                     <label for="dependent_residence_copy">Residence/Emirates ID*</label>
                                                     <span class="dependent_residence_copy_errorClass"></span>
                                                 </div>
@@ -1228,7 +1228,7 @@
                                                     </div><!-- btn -->
                                                     <label for="dependent_visa_copy">Visa Copy</label>
                                                     @if($dependent['visaCopyUrl'] != null)
-                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#dependentVisa" onclick="dependentVisa()">click to view uploaded visa copy</a>
+                                                        <a href="javascript:void(0)" onclick="dependentVisa()">click to view uploaded visa copy</a>
                                                     @endif
                                                 </div>
                                             </div>
@@ -1343,7 +1343,7 @@
                                                     </div><!-- btn -->
                                                     <label for="dependent_schengen_copy">Image of Schengen Or National Visa Issued During Last 5 Years</label>
                                                     @if($dependent['schengenVisaUrl'] != null)
-                                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#dependentSchengenVisatModal" onclick="dependentSchengenVisatModal()">click to view uploaded schengen visa copy</a>
+                                                        <a href="javascript:void(0)" onclick="dependentSchengenVisatModal()">click to view uploaded schengen visa copy</a>
                                                     @endif                                                    
                                                 </div>
                                                 <div style="display: block;color:blue"><a href="#" class="plus" title="click here to add another row for upload" style="display:inline"><i class="fa fa-plus-circle"></i></a> Add another Visa <a href="#" class="minus" id="minus" title="click here to remove the last added row for upload" style="display:inline"><i class="fa fa-minus-circle"></i></a></div>

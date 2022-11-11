@@ -6,7 +6,7 @@
     'debug' => true,
     'url' => 'http://localhost:8000',
     'asset_url' => NULL,
-    'timezone' => 'Asia/Dubai',
+    'timezone' => 'UTC',
     'locale' => 'en',
     'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
@@ -371,7 +371,7 @@
       array (
         'driver' => 'local',
         'root' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\storage\\app/public',
-        'url' => 'http://localhost:8000/storage',
+        'url' => 'http://localhost:8000/storage/app/public',
         'visibility' => 'public',
       ),
       's3' => 
@@ -389,12 +389,6 @@
           'expire' => 600,
           'prefix' => 'cache-prefix',
         ),
-      ),
-      'media' => 
-      array (
-        'driver' => 'local',
-        'root' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\public\\storage',
-        'url' => 'http://localhost:8000/storage',
       ),
     ),
     'links' => 
