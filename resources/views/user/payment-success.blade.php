@@ -44,6 +44,17 @@
         background-repeat: no-repeat !important;
     }
 
+    .ose {
+        font-size: 18px
+    }
+
+    @media only screen and (max-width: 768px) and (min-width: 230px)
+    {
+        .ose {
+            font-size: 14px
+        }
+    }
+
 </style>
 </head>
 <?php
@@ -87,7 +98,7 @@
                             <form action="{{ url('applicant/details',$id) }}" method="GET">
                         @endif
                             <input type="hidden" name="pid" value="{{$id}}">
-                            <button  style="font-size:18px" class="btn btn-primary ose">APPLICATION DETAILS</button>
+                            <button class="btn btn-primary ose">APPLICATION DETAILS</button>
                         </form>
                     </div>
                 </div>

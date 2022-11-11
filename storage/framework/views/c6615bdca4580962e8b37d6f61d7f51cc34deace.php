@@ -19,7 +19,7 @@
         float: left;
         background-image: url(../user/images/v1_17125.png) !important;
         background-color: rgba(6, 45, 83, 0.7);
-        height: 480px;
+        /* height: 480px;    */
         padding-top: 30px;
         background-size: 100%;
         background-repeat: no-repeat;
@@ -179,7 +179,7 @@
                     ?>
                 <?php endif; ?>
                 <!-- Start Column  -->
-                <div class="col-sm-12 col-xs-12 col-lg-4 cellContainer" style="margin-top:50px">
+                <div class="col-sm-12 col-xs-12 col-lg-4 cellContainer destinationView">
                     <span class="product-item item-hints" href="#">
                         <span class="positionAnchor hint"  data-position="1">
 

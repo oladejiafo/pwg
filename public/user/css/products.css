@@ -32,25 +32,40 @@ body {
   padding-top: 60px;
 }
 
+.destinationView {
+  margin-top: 3%;
+}
+
+@media (min-width:260px) and (max-width: 414px) {
+  .banner_bg {
+    background-size: 345% !important;
+  }
+}
+
+@media (min-width:400px) and (max-width: 768px) {
+  .banner_bg {
+    background-size: 270% !important;
+    background-position: inherit !important;
+  }
+}
+
 @media (min-width:260px) and (max-width: 768px) {
   .hero {
     padding: 0px;
     margin: 0px;
   }
+
   .home_img {
     height: auto !important;
     /* width: auto;  */
     margin: 0;
   }
-  
+
   .banner_bg {
     background-repeat: no-repeat;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
-    background-size: cover;
-    background-position: center;
-    background-size: 200% !important;
   }
 
   .home_img {
@@ -58,6 +73,19 @@ body {
   }
 
 }
+
+@media (min-width: 990px) {
+  .destinationView {
+    margin-top: 3% !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 990px) {
+  .destinationView {
+    margin-top: 15% !important;
+  }
+}
+
 
 @media (min-width: 768px) and (max-width: 1024px) {
   .hero {
@@ -72,7 +100,8 @@ body {
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-    background-position: center;
+    background-position: inherit;
+    background-size: 153% !important;
   }
 
   .home_img {
@@ -171,15 +200,15 @@ body {
   }
 
   .container-fluid {
-      padding-left: 10px;
-      padding-right: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 
   .positionAnchor .btn {
-      width: 21.5rem;
-      padding-top: 10px;
-      margin-left: 5px;
-      margin-right: 5px;
+    width: 21.5rem;
+    padding-top: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
   }
 
 }
@@ -213,12 +242,15 @@ body {
   outline: none;
   overflow-y: hidden;
   padding-bottom: 15px;
-  -ms-overflow-style: scroll; /* IE 10+*/
-  scrollbar-width: none; /* Firefox*/
+  -ms-overflow-style: scroll;
+  /* IE 10+*/
+  scrollbar-width: none;
+  /* Firefox*/
 }
 
 .scoll-pane::-webkit-scrollbar {
-  display: none; /* Safari and Chrome */
+  display: none;
+  /* Safari and Chrome */
 }
 
 .cardd {

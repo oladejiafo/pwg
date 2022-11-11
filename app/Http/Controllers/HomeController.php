@@ -155,7 +155,6 @@ class HomeController extends Controller
             if ($request->response == 1) {
                 return $famdet;
             }
-            // dd($famdet);
         } else {
             $famdet = family_breakdown::where('destination_id', '=', $productId)->where('pricing_plan_type', 'FAMILY PACKAGE')->first();
         }
@@ -287,15 +286,12 @@ class HomeController extends Controller
     public function upload(Request $request)
     {
         if (Auth::id()) {
-
             list($part_a, $image_parts) = explode(";base64,", $request->signed);
             $image_type_aux = explode("image/", $part_a);
             $image_type = $image_type_aux[1];
-            // dd($image_parts);
             $signate = Auth::user()->id . '_' . time() . '.' . $image_type;
             $signature = user::find(Auth::user()->id);
             $signature->addMediaFromBase64($request->signed)->usingFileName($signate)->toMediaCollection(User::$media_collection_main_signture);
-
             $signature->save();
 
             if (Session::get('mySpouse') == "yes") {
