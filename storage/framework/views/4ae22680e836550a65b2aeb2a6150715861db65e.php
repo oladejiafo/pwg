@@ -59,9 +59,10 @@ $notifications = DB::table('notifications')
             <div class="dropdown-divider"></div>
         <?php endif; ?>
     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-    <?php endif; ?>
         </div>
 </div>
+<?php endif; ?>
+
 <!-- <p class="p-3 mb-0 text-center">See all notifications</p> -->
 <script src="<?php echo e(asset('user/extra/assets/js/jquery-min.js')); ?>"></script>
 

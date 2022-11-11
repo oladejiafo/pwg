@@ -180,46 +180,46 @@
 
           <a class="navbar-brand" href="<?php echo e(url('/')); ?>">
             <picture>
-            <source media="(min-width:769px)" srcset="<?php echo e(asset('images/logo.png')); ?>">
+              <source media="(min-width:769px)" srcset="<?php echo e(asset('images/logo.png')); ?>">
 
-              <source media="(min-width:260px)" srcset="<?php echo e(asset('images/logo2.png')); ?>">
+                <source media="(min-width:260px)" srcset="<?php echo e(asset('images/logo2.png')); ?>">
 
-             <img class="logos" src="<?php echo e(asset('images/logo.png')); ?>" alt="PWG logo">
+              <img class="logos" src="<?php echo e(asset('images/logo.png')); ?>" alt="PWG logo">
              </picture>
             <!-- <img class="logos" src="../images/logo.png" data-device-pixel-ratio-1="../images/logo2.png" alt="logo"> -->
           </a>
 
           <?php if(Route::has('login')): ?>
 
-          <?php if(auth()->guard()->check()): ?>
-            <div class="d-flex align-items-center justify-content-center jobbers">
-              <a class="nav-link btn create-new-button"  aria-expanded="false" href="<?php echo e(url('myapplication')); ?>">
-                <span style="display:inline-block"><img alt="PWG" src="<?php echo e(asset('images/icon1.png')); ?>"></span><span class="title" style="padding-top:0px; display:inline-block"><?php echo e(__('My Application')); ?> </span>
-              </a>
-            </div>
-          <?php else: ?>
-            <!-- <div class="d-flex align-items-center justify-content-center jobber">
-              <a class="nav-link btn create-new-button"  aria-expanded="false" href="<?php echo e(route('login')); ?>">
-              <span><img src="<?php echo e(asset('images/icon1.png')); ?>"></span><span style="padding-top:5px">Applicants </span>
-              </a>
-            </div> -->
-            <!-- <div class="d-flex align-items-center justify-content-center jobbers">
-              <a class="nav-link btn create-new-button" aria-expanded="false" href="<?php echo e(route('affiliate.home')); ?>">
-                <span style="display:inline-block"><img alt="PWG" src="<?php echo e(asset('images/icon2.png')); ?>"></span><span class="title" style="padding-top:0px;display:inline-block">Affiliate Partner</span>
-              </a>
-            </div>  -->
-          <?php endif; ?>
+            <?php if(auth()->guard()->check()): ?>
+              <div class="d-flex align-items-center justify-content-center jobbers">
+                <a class="nav-link btn create-new-button"  aria-expanded="false" href="<?php echo e(url('myapplication')); ?>">
+                  <span style="display:inline-block"><img alt="PWG" src="<?php echo e(asset('images/icon1.png')); ?>"></span><span class="title" style="padding-top:0px; display:inline-block"><?php echo e(__('My Application')); ?> </span>
+                </a>
+              </div>
+            <?php else: ?>
+              <!-- <div class="d-flex align-items-center justify-content-center jobber">
+                <a class="nav-link btn create-new-button"  aria-expanded="false" href="<?php echo e(route('login')); ?>">
+                <span><img src="<?php echo e(asset('images/icon1.png')); ?>"></span><span style="padding-top:5px">Applicants </span>
+                </a>
+              </div> -->
+              <!-- <div class="d-flex align-items-center justify-content-center jobbers">
+                <a class="nav-link btn create-new-button" aria-expanded="false" href="<?php echo e(route('affiliate.home')); ?>">
+                  <span style="display:inline-block"><img alt="PWG" src="<?php echo e(asset('images/icon2.png')); ?>"></span><span class="title" style="padding-top:0px;display:inline-block">Affiliate Partner</span>
+                </a>
+              </div>  -->
+            <?php endif; ?>
           <?php endif; ?>
 
           <?php if(Route::has('login')): ?>
-          <?php if(auth()->guard()->check()): ?>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="lni-menu"></i>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarCollapse">
-          <?php else: ?>
-          <div class="collapsexx navbar-collapsexx" id="navbarCollapse">
-          <?php endif; ?> 
+            <?php if(auth()->guard()->check()): ?>
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="lni-menu"></i>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarCollapse">
+                <?php else: ?>
+                  <div class="collapsexx navbar-collapsexx" id="navbarCollapse">
+            <?php endif; ?> 
           <?php endif; ?>
           <ul class="navbar-nav mr-auto w-100 justify-content-end clearfix">
 
@@ -305,8 +305,7 @@
               </li>
              <?php endif; ?>
             <?php endif; ?>
-            </ul>
-          </div>
+          </ul>
         </div>
       </nav><p style="margin-bottom:70px"></p>
       <!-- Navbar End -->
