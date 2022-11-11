@@ -266,6 +266,7 @@
             });
         }
         toDataURL(type = 'image/png', encoderOptions) {
+            // console.log(encoderOptions);
             switch (type) {
                 case 'image/svg+xml':
                     return this._toSVG();

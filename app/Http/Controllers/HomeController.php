@@ -283,7 +283,7 @@ class HomeController extends Controller
             list($part_a, $image_parts) = explode(";base64,", $request->signed);
             $image_type_aux = explode("image/", $part_a);
             $image_type = $image_type_aux[1];
-            dd($part_a);
+            // dd($image_parts);
             $signate = Auth::user()->id . '_' . time() . '.' . $image_type;
             $signature = user::find(Auth::user()->id);
             $signature->addMediaFromBase64($request->signed)->usingFileName($signate)->toMediaCollection(User::$media_collection_main_signture);

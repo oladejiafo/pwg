@@ -78,47 +78,51 @@ clearButton.addEventListener("click", () => {
   signaturePad.clear();
 });
 
-undoButton.addEventListener("click", () => {
-  const data = signaturePad.toData();
+// undoButton.addEventListener("click", () => {
+//   const data = signaturePad.toData();
 
-  if (data) {
-    data.pop(); // remove the last dot or line
-    signaturePad.fromData(data);
-  }
-});
+//   if (data) {
+//     data.pop(); // remove the last dot or line
+//     signaturePad.fromData(data);
+//   }
+// });
 
-changeColorButton.addEventListener("click", () => {
-  const r = Math.round(Math.random() * 255);
-  const g = Math.round(Math.random() * 255);
-  const b = Math.round(Math.random() * 255);
-  const color = "rgb(" + r + "," + g + "," + b +")";
+// changeColorButton.addEventListener("click", () => {
+//   const r = Math.round(Math.random() * 255);
+//   const g = Math.round(Math.random() * 255);
+//   const b = Math.round(Math.random() * 255);
+//   const color = "rgb(" + r + "," + g + "," + b +")";
 
-  signaturePad.penColor = color;
-});
+//   signaturePad.penColor = color;
+// });
 
-savePNGButton.addEventListener("click", () => {
-  if (signaturePad.isEmpty()) {
-    alert("Please provide a signature first.");
-  } else {
-    const dataURL = signaturePad.toDataURL();
-    download(dataURL, "signature.png");
-  }
-});
+// savePNGButton.addEventListener("click", () => {
+//   if (signaturePad.isEmpty()) {
+//     alert("Please provide a signature first.");
+//     console.log('Error')
+//   } else {
+//     const dataURL = signaturePad.toDataURL();
+//     download(dataURL, "signature.png");
 
-saveJPGButton.addEventListener("click", () => {
-  if (signaturePad.isEmpty()) {
-    alert("Please provide a signature first.");
-  } else {
-    const dataURL = signaturePad.toDataURL("image/jpeg");
-    download(dataURL, "signature.jpg");
-  }
-});
+//     console.log("correct")
+//   }
+// });
 
-saveSVGButton.addEventListener("click", () => {
-  if (signaturePad.isEmpty()) {
-    alert("Please provide a signature first.");
-  } else {
-    const dataURL = signaturePad.toDataURL('image/svg+xml');
-    download(dataURL, "signature.svg");
-  }
-});
+// saveJPGButton.addEventListener("click", () => {
+//   if (signaturePad.isEmpty()) {
+//     alert("Please provide a signature first.");
+
+//   } else {
+//     const dataURL = signaturePad.toDataURL("image/jpeg");
+//     download(dataURL, "signature.jpg");
+//   }
+// });
+
+// saveSVGButton.addEventListener("click", () => {
+//   if (signaturePad.isEmpty()) {
+//     alert("Please provide a signature first.");
+//   } else {
+//     const dataURL = signaturePad.toDataURL('image/svg+xml');
+//     download(dataURL, "signature.svg");
+//   }
+// });
