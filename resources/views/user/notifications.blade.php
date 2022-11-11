@@ -59,9 +59,10 @@ $notifications = DB::table('notifications')
             <div class="dropdown-divider"></div>
         @endif
     @endforeach
-    @endif
         </div>
 </div>
+@endif
+
 <!-- <p class="p-3 mb-0 text-center">See all notifications</p> -->
 <script src="{{asset('user/extra/assets/js/jquery-min.js')}}"></script>
 
