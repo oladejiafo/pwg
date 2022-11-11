@@ -672,8 +672,21 @@ body {
   font-size: 17px;
 }
 
-@media only screen and (max-width: 768px) and (min-width: 370px) {
+.nextprev {
+  margin-top: 3%
+}
 
+@media (min-width: 700px) {
+  .nextprev {
+    margin-top: 10%;
+  }
+}
+
+@media only screen and (max-width: 700px) and (min-width: 370px) {
+
+  .nextprev {
+    margin-top: 3%
+  }
 
   .product-section .product-item {
     margin-top: 30px;
@@ -759,7 +772,7 @@ body {
     top: 20% !important;
   }
 
-  .hint-content p{
+  .hint-content p {
     font-size: 15px;
   }
 
