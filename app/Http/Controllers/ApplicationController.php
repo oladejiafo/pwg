@@ -60,7 +60,7 @@ class ApplicationController extends Controller
             ]);
 
             $client = User::find(Auth::id());
-            $client->addMedia($request->file('cv'))->toMediaCollection(User::$media_collection_main_resume);
+            $client->addMedia($request->file('cv'))->toMediaCollection(User::$media_collection_main_resume, 's3');
 
             $applicant = Applicant::where('client_id', Auth::id())
                 ->where('destination_id', $request->product_id)
@@ -132,7 +132,7 @@ class ApplicationController extends Controller
         }
         $client = User::find(Auth::id());
         if($request->hasFile('cv')){
-            $client->addMedia($request->file('cv'))->toMediaCollection(User::$media_collection_main_resume);
+            $client->addMedia($request->file('cv'))->toMediaCollection(User::$media_collection_main_resume, 's3');
             $client->save();
         }
         User::where('id', Auth::id())

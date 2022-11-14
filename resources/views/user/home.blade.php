@@ -92,7 +92,7 @@
 
                         <!-- Start Column  -->
                         <li>
-                            <div class="col-4 cellContainer" style="margin-top:50px">
+                            <div class="col-4 cellContainer" style="margin-top:10%">
                                 <span class="product-item item-hints" href="#">
                                     <span class="positionAnchor hint"  data-position="1">
 

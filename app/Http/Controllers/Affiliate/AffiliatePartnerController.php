@@ -400,8 +400,7 @@ class AffiliatePartnerController extends Controller
                         ->toArray();
         foreach($presents as $present){
             // dd(storage_path('presentation/' . $present['image_url']));
-            $present['image_url'] =  Storage::path('presentation/' . $present['image_url']);
-            dd($present);
+            $present['image_url'] =  public_path('/images/affiliate/'.$present['image_url']);
         }
         return $presents;
     }

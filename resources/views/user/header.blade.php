@@ -29,17 +29,16 @@
     <nav class="navbar navbar-expand-md bg-inverse fixed-top scrolling-navbarx">
         <div class="container">
           <!-- Brand and toggle get grouped for better mobile display -->
+            <a class="navbar-brand" href="{{url('/')}}">
+              <picture>
+                <source media="(min-width:769px)" srcset="{{asset('images/logo.png')}}">
 
-          <a class="navbar-brand" href="{{url('/')}}">
-            <picture>
-              <source media="(min-width:769px)" srcset="{{asset('images/logo.png')}}">
+                  <source media="(min-width:260px)" srcset="{{asset('images/logo2.png')}}">
 
-                <source media="(min-width:260px)" srcset="{{asset('images/logo2.png')}}">
-
-              <img class="logos" src="{{asset('images/logo.png')}}" alt="PWG logo">
-             </picture>
-            <!-- <img class="logos" src="../images/logo.png" data-device-pixel-ratio-1="../images/logo2.png" alt="logo"> -->
-          </a>
+                <img class="logos" src="{{asset('images/logo.png')}}" alt="PWG logo">
+              </picture>
+              <!-- <img class="logos" src="../images/logo.png" data-device-pixel-ratio-1="../images/logo2.png" alt="logo"> -->
+            </a>
 
           @if(Route::has('login'))
 

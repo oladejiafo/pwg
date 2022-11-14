@@ -59,6 +59,14 @@ $notifications = DB::table('notifications')
             <div class="dropdown-divider"></div>
         @endif
     @endforeach
+    @else
+    <div class="row">
+        <div class="col px-3 m-2"><b>NOTIFICATIONS</b></div>
+    </div>
+    <div class="dropdown-divider"></div>
+    <div style="overflow-y: scroll; height:50px; text-align:center">
+        No notifications found!
+    </div>
     @endif
         </div>
 </div>

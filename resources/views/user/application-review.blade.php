@@ -147,7 +147,7 @@
 
                 <div class="tab-content clearfix" style="margin: 0; padding: 0;">
                     <div class="tab-pane active" id="mainApplicant">
-                        <div class="applicant-detail-sec">
+                        <div class="applicant-detail-sec" data-bs-toggle="collapse" data-bs-target="#collapseapplicant" aria-expanded="true" aria-controls="collapseapplicant">
                             <div class="heading">
                                 <div class="row">
                                     <div class="col-2">
@@ -167,7 +167,7 @@
                                     </div>
                                     <div class="col-1"></div>
                                     <div class="col-2 mx-auto my-auto">
-                                        <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseapplicant" aria-expanded="true" aria-controls="collapseapplicant">
+                                        <div class="down-arrow">
                                             <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
                                         </div>
                                     </div>
@@ -294,7 +294,7 @@
                             </div>
                         </div>
         
-                        <div class="applicant-detail-sec">
+                        <div class="applicant-detail-sec" data-bs-toggle="collapse" data-bs-target="#collapseHome" aria-expanded="true" aria-controls="collapseHome">
                             <div class="heading">
                                 <div class="row">
                                     <div class="col-2 my-auto">
@@ -314,7 +314,7 @@
                                     </div>
                                     <div class="col-1"></div>
                                     <div class="col-2 mx-auto my-auto">
-                                        <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseHome" aria-expanded="true" aria-controls="collapseHome">
+                                        <div class="down-arrow">
                                             <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
                                         </div>
                                     </div>
@@ -419,7 +419,7 @@
                             </div>
                         </div>
         
-                        <div class="applicant-detail-sec">
+                        <div class="applicant-detail-sec" data-bs-toggle="collapse" data-bs-target="#collapseCurrent" aria-expanded="true" aria-controls="collapseCurrent">
                             <div class="heading">
                                 <div class="row">
                                     <div class="col-2 my-auto">
@@ -439,7 +439,7 @@
                                     </div>
                                     <div class="col-1"></div>
                                     <div class="col-2 mx-auto my-auto">
-                                        <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseCurrent" aria-expanded="true" aria-controls="collapseCurrent">
+                                        <div class="down-arrow">
                                             <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
                                         </div>
                                     </div>
@@ -564,7 +564,7 @@
                             </div>
                         </div>
         
-                        <div class="applicant-detail-sec">
+                        <div class="applicant-detail-sec" data-bs-toggle="collapse" data-bs-target="#collapseSchengen" aria-expanded="true" aria-controls="collapseSchengen">
                             <div class="heading">
                                 <div class="row">
                                     <div class="col-2 my-auto">
@@ -584,7 +584,7 @@
                                     </div>
                                     <div class="col-1"></div>
                                     <div class="col-2 mx-auto my-auto">
-                                        <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseSchengen" aria-expanded="true" aria-controls="collapseSchengen">
+                                        <div class="down-arrow">
                                             <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
                                         </div>
                                     </div>
@@ -656,7 +656,7 @@
                             </div>
                         </div>
         
-                        <div class="applicant-detail-sec" style="margin-bottom: 70px">
+                        <div class="applicant-detail-sec" style="margin-bottom: 70px" data-bs-toggle="collapse" data-bs-target="#collapseExperience" aria-expanded="true" aria-controls="collapseExperience">
                             <div class="heading">
                                 <div class="row">
                                     <div class="col-2 my-auto">
@@ -676,7 +676,7 @@
                                     </div>
                                     <div class="col-1"></div>
                                     <div class="col-2 mx-auto my-auto">
-                                        <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseExperience" aria-expanded="true" aria-controls="collapseExperience">
+                                        <div class="down-arrow">
                                             <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
                                         </div>
                                     </div>
@@ -867,7 +867,7 @@
 
                 @if($dependent)
                     <div class="tab-pane active" id="dependant" style="margin: 0; padding: 0;">
-                        <div class="applicant-detail-sec">
+                        <div class="applicant-detail-sec" data-bs-toggle="collapse" data-bs-target="#collapsespouseapplicant" aria-expanded="true" aria-controls="collapsespouseapplicant">
                             <div class="heading">
                                 <div class="row">
                                     <div class="col-2">
@@ -887,7 +887,7 @@
                                     </div>
                                     <div class="col-1"></div>
                                     <div class="col-2 mx-auto my-auto">
-                                        <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapsespouseapplicant" aria-expanded="true" aria-controls="collapsespouseapplicant">
+                                        <div class="down-arrow">
                                             <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
                                         </div>
                                     </div>
@@ -1014,7 +1014,7 @@
                             </div>
                         </div>
 
-                        <div class="applicant-detail-sec dependent_home_country_details">
+                        <div class="applicant-detail-sec dependent_home_country_details"  data-bs-toggle="collapse" data-bs-target="#collapsespouseHome" aria-expanded="true" aria-controls="collapsespouseHome">
                             <div class="heading">
                                 <div class="row">
                                     <div class="col-2 my-auto">
@@ -1034,7 +1034,7 @@
                                     </div>
                                     <div class="col-1"></div>
                                     <div class="col-2 mx-auto my-auto">
-                                        <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapsespouseHome" aria-expanded="true" aria-controls="collapsespouseHome">
+                                        <div class="down-arrow">
                                             <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
                                         </div>
                                     </div>
@@ -1141,7 +1141,7 @@
                             </div>
                         </div>
 
-                        <div class="applicant-detail-sec">
+                        <div class="applicant-detail-sec" data-bs-toggle="collapse" data-bs-target="#collapseSpouseCurrent" aria-expanded="true" aria-controls="collapseSpouseCurrent">
                             <div class="heading">
                                 <div class="row">
                                     <div class="col-2 my-auto">
@@ -1161,7 +1161,7 @@
                                     </div>
                                     <div class="col-1"></div>
                                     <div class="col-2 mx-auto my-auto">
-                                        <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseSpouseCurrent" aria-expanded="true" aria-controls="collapseSpouseCurrent">
+                                        <div class="down-arrow" >
                                             <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
                                         </div>
                                     </div>
@@ -1287,7 +1287,7 @@
                             </div>
                         </div>
 
-                        <div class="applicant-detail-sec">
+                        <div class="applicant-detail-sec" data-bs-toggle="collapse" data-bs-target="#collapseSpouseSchengen" aria-expanded="true" aria-controls="collapseSpouseSchengen">
                             <div class="heading">
                                 <div class="row">
                                     <div class="col-2 my-auto">
@@ -1307,7 +1307,7 @@
                                     </div>
                                     <div class="col-1"></div>
                                     <div class="col-2 mx-auto my-auto">
-                                        <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseSpouseSchengen" aria-expanded="true" aria-controls="collapseSpouseSchengen">
+                                        <div class="down-arrow">
                                             <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
                                         </div>
                                     </div>
@@ -1371,7 +1371,7 @@
                             </div>
                         </div>
 
-                        <div class="applicant-detail-sec" style="margin-bottom: 70px">
+                        <div class="applicant-detail-sec" style="margin-bottom: 70px"  data-bs-toggle="collapse" data-bs-target="#collapseSpouseExperience" aria-expanded="true" aria-controls="collapseSpouseExperience">
                             <div class="heading">
                                 <div class="row">
                                     <div class="col-2 my-auto">
@@ -1391,7 +1391,7 @@
                                     </div>
                                     <div class="col-1"></div>
                                     <div class="col-2 mx-auto my-auto">
-                                        <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseSpouseExperience" aria-expanded="true" aria-controls="collapseSpouseExperience">
+                                        <div class="down-arrow">
                                             <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
                                         </div>
                                     </div>
@@ -1588,7 +1588,7 @@
                         <form method="POST" id="child_details">
                             @csrf
                             @foreach($children as $key => $child)
-                                <div class="applicant-detail-sec" @if($key+1 ==  $client['children_count']) style="margin-bottom:70px" @endif>
+                                <div class="applicant-detail-sec" @if($key+1 ==  $client['children_count']) style="margin-bottom:70px" @endif  data-bs-toggle="collapse" data-bs-target="#collapsechild{{$key+1}}" aria-expanded="true" aria-controls="collapsechild{{$key+1}}">
                                     <div class="heading">
                                         <div class="row">
                                             <div class="col-2 my-auto">
@@ -1612,7 +1612,7 @@
                                                 </div> --}}
                                             </div>
                                             <div class="col-2 mx-auto my-auto">
-                                                <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapsechild{{$key+1}}" aria-expanded="true" aria-controls="collapsechild{{$key+1}}">
+                                                <div class="down-arrow">
                                                     <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
                                                 </div>
                                             </div>
