@@ -24,9 +24,9 @@
         background-size: 100%;
         background-repeat: no-repeat;
         }
-.col-4 {
-    width: 100% !important;
-}
+        .col-4 {
+            width: 100% !important;
+        }
     </style>
 
 <body>
@@ -135,13 +135,13 @@
 
                 </div>
             </div>
-            <div  style="margin-top:20px">
-            <a class="carousel-control-prev" alt="PWG" id="slideBack" href="#carouselThree" style="text-decoration:none;" role="button" data-slide="prev" aria-label="Navigate Back">
-                <i class="lni lni-arrow-left"></i>
-            </a>
-            <a class="carousel-control-next" alt="PWG" id="slide" href="#carouselThree" style="text-decoration:none;" role="button" data-slide="next" aria-label="Navigate forward">
-                <i class="lni lni-arrow-right"></i>
-            </a>
+            <div class="nextprev">
+                <a class="carousel-control-prev" alt="PWG" id="slideBack" href="#carouselThree" style="text-decoration:none;" role="button" data-slide="prev" aria-label="Navigate Back">
+                    <i class="lni lni-arrow-left"></i>
+                </a>
+                <a class="carousel-control-next" alt="PWG" id="slide" href="#carouselThree" style="text-decoration:none;" role="button" data-slide="next" aria-label="Navigate forward">
+                    <i class="lni lni-arrow-right"></i>
+                </a>
             </div>
  
         </div>

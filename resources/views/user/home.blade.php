@@ -24,9 +24,9 @@
         background-size: 100%;
         background-repeat: no-repeat;
         }
-.col-4 {
-    width: 100% !important;
-}
+        .col-4 {
+            width: 100% !important;
+        }
     </style>
 
 <body>
