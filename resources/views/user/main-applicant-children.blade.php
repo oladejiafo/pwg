@@ -2,8 +2,8 @@
     <form method="POST" id="child_details">
         @csrf
         @for($i = 1; $i <= $client['children_count']; $i++)
-            <div class="applicant-detail-sec" @if($i ==  $client['children_count']) style="margin-bottom:70px" @endif data-bs-toggle="collapse" data-bs-target="#collapsechild{{$i}}" aria-expanded="false" aria-controls="collapsechild{{$i}}">
-                <div class="heading">
+            <div class="applicant-detail-sec" @if($i ==  $client['children_count']) style="margin-bottom:70px" @endif >
+                <div class="heading" data-bs-toggle="collapse" data-bs-target="#collapsechild{{$i}}" aria-expanded="false" aria-controls="collapsechild{{$i}}">
                     <div class="row">
                         <div class="col-2 my-auto">
                             <div class="image">

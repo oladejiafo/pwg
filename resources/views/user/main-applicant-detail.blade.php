@@ -155,8 +155,8 @@
         </div>
     </div>
 
-    <div class="applicant-detail-sec home_country_details"  data-bs-toggle="collapse" data-bs-target="#collapseHome" aria-expanded="false" aria-controls="collapseHome">
-        <div class="heading">
+    <div class="applicant-detail-sec home_country_details">
+        <div class="heading"  data-bs-toggle="collapse" data-bs-target="#collapseHome" aria-expanded="false" aria-controls="collapseHome">
             <div class="row">
                 <div class="col-2 my-auto">
                     <div class="image">
@@ -285,8 +285,8 @@
         </div>
     </div>
 
-    <div class="applicant-detail-sec" data-bs-toggle="collapse" data-bs-target="#collapseCurrent" aria-expanded="false" aria-controls="collapseCurrent">
-        <div class="heading">
+    <div class="applicant-detail-sec">
+        <div class="heading" data-bs-toggle="collapse" data-bs-target="#collapseCurrent" aria-expanded="false" aria-controls="collapseCurrent">
             <div class="row">
                 <div class="col-2 my-auto">
                     <div class="image">
@@ -430,8 +430,8 @@
         </div>
     </div>
 
-    <div class="applicant-detail-sec" data-bs-toggle="collapse" data-bs-target="#collapseSchengen" aria-expanded="false" aria-controls="collapseSchengen">
-        <div class="heading">
+    <div class="applicant-detail-sec">
+        <div class="heading"  data-bs-toggle="collapse" data-bs-target="#collapseSchengen" aria-expanded="false" aria-controls="collapseSchengen">
             <div class="row">
                 <div class="col-2 my-auto">
                     <div class="image">
@@ -520,8 +520,8 @@
         </div>
     </div>
 
-    <div class="applicant-detail-sec" style="margin-bottom: 70px"  data-bs-toggle="collapse" data-bs-target="#collapseExperience" aria-expanded="false" aria-controls="collapseExperience">
-        <div class="heading">
+    <div class="applicant-detail-sec" style="margin-bottom: 70px">
+        <div class="heading"  data-bs-toggle="collapse" data-bs-target="#collapseExperience" aria-expanded="false" aria-controls="collapseExperience">
             <div class="row">
                 <div class="col-2 my-auto">
                     <div class="image">
