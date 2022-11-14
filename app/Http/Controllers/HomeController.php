@@ -291,7 +291,7 @@ class HomeController extends Controller
             $image_type = $image_type_aux[1];
             $signate = Auth::user()->id . '_' . time() . '.' . $image_type;
             $signature = user::find(Auth::user()->id);
-            $signature->addMediaFromBase64($request->signed)->usingFileName($signate)->toMediaCollection(User::$media_collection_main_signture);
+            $signature->addMediaFromBase64($request->signed)->usingFileName($signate)->toMediaCollection(User::$media_collection_main_signture, 's3');
             $signature->save();
 
             if (Session::get('mySpouse') == "yes") {
