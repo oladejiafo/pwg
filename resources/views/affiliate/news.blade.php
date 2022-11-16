@@ -10,9 +10,9 @@
                                 @foreach($news->news as $new)
                                     <div class="news-left-section">
                                         <div class="news-banner">
-                                            @if($new->video_link)
+                                            @if($new->videoUrl)
                                                 <video width="100" height="240" controls>
-                                                    <source src="{{$new->video_link}}" type="video/mp4">
+                                                    <source src="{{$new->videoUrl}}" type="video/mp4">
                                                     Your browser does not support the video tag.
                                                 </video>
                                             @else

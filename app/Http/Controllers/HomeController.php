@@ -214,72 +214,76 @@ class HomeController extends Controller
 
     public function signature(Request $request, $id)
     {
-        if (Auth::id()) {
-            // Session::put('myproduct_id', $id);
-            Session::put('mypay_option', $request->payall);
-            $pid  = Session::get('myproduct_id');
-            $data = product::find($id);
-            $datas = Applicant::where('client_id', Auth::id())
-                ->where('destination_id', $pid)
-                ->where('work_permit_category', (Session::get('packageType')) ?? 'BLUE COLLAR')
-                ->first();
-            if (Session::has('myproduct_id')) {
+        try {
+            if (Auth::id()) {
+                // Session::put('myproduct_id', $id);
+                Session::put('mypay_option', $request->payall);
                 $pid  = Session::get('myproduct_id');
-            } else {
-                $pid = 1;
-            }
-            $appliedCountry = Product::find($pid);
-            $pdet = null;
-            if(Session::get('packageType') =="FAMILY PACKAGE")
-                {
-                    if (Session::get('mySpouse') == "yes") {
-                        $mySpouse = 2;
-                    } else {
-                        $mySpouse = 1;
-                    }
-        
-                    if (Session::get('myKids') == 0 || Session::get('myKids') == "none" || Session::get('myKids') == 5 || Session::get('myKids') == null) {
-        
-                        $children = 1;
-                    } else {
-                        $children = Session::get('myKids');
-                    }
+                $data = product::find($id);
+                $datas = Applicant::where('client_id', Auth::id())
+                    ->where('destination_id', $pid)
+                    ->where('work_permit_category', (Session::get('packageType')) ?? 'BLUE COLLAR')
+                    ->first();
+                if (Session::has('myproduct_id')) {
+                    $pid  = Session::get('myproduct_id');
+                } else {
+                    $pid = 1;
+                }
+                $appliedCountry = Product::find($pid);
+                $pdet = null;
+                if(Session::get('packageType') =="FAMILY PACKAGE")
+                    {
+                        if (Session::get('mySpouse') == "yes") {
+                            $mySpouse = 2;
+                        } else {
+                            $mySpouse = 1;
+                        }
+            
+                        if (Session::get('myKids') == 0 || Session::get('myKids') == "none" || Session::get('myKids') == 5 || Session::get('myKids') == null) {
+            
+                            $children = 1;
+                        } else {
+                            $children = Session::get('myKids');
+                        }
+                        $pdet = DB::table('pricing_plans')
+                        ->where('destination_id', '=', Session::get('myproduct_id'))
+                        ->where('pricing_plan_type', '=', Session::get('packageType'))
+                        ->where('no_of_parent', '=', $mySpouse)
+                        ->where('no_of_children', '=', $children)
+                        ->first();
+                } else {
                     $pdet = DB::table('pricing_plans')
-                    ->where('destination_id', '=', Session::get('myproduct_id'))
-                    ->where('pricing_plan_type', '=', Session::get('packageType'))
-                    ->where('no_of_parent', '=', $mySpouse)
-                    ->where('no_of_children', '=', $children)
-                    ->first();
+                        ->where('destination_id', '=', Session::get('myproduct_id'))
+                        ->where('pricing_plan_type', '=', Session::get('packageType'))
+                        ->first();
+                }
+                if ($datas === null) {
+                    $data = new applicant();
+                    $data->client_id = Auth::id();
+                    $data->destination_id = $pid;
+                    $data->work_permit_category = (Session::get('packageType')) ?? 'BLUE COLLAR';
+                    $data->application_stage_status = 1;
+                    $data->applied_country = $appliedCountry->name;
+                    $data->pricing_plan_id = $pdet->id;
+                    $data->contract = $request->contract;
+    
+                    $res = $data->save();
+                } else {
+                    $datas->work_permit_category =  (Session::get('packageType')) ?? 'BLUE COLLAR';
+                    $datas->application_stage_status = 1;
+                    $datas->destination_id = $pid;
+                    $datas->applied_country = $appliedCountry->name;
+                    $datas->contract = $request->contract;
+                    $datas->pricing_plan_id = $pdet->id;
+                    $res = $datas->save();
+                }
+                return view('user.signature', compact('data'));
             } else {
-                $pdet = DB::table('pricing_plans')
-                    ->where('destination_id', '=', Session::get('myproduct_id'))
-                    ->where('pricing_plan_type', '=', Session::get('packageType'))
-                    ->first();
+                // return redirect()->back()->with('message', 'You are not authorized');
+                return redirect('home');
             }
-            if ($datas === null) {
-                $data = new applicant();
-                $data->client_id = Auth::id();
-                $data->destination_id = $pid;
-                $data->work_permit_category = (Session::get('packageType')) ?? 'BLUE COLLAR';
-                $data->application_stage_status = 1;
-                $data->applied_country = $appliedCountry->name;
-                $data->pricing_plan_id = $pdet->id;
-                $data->contract = $request->contract;
-
-                $res = $data->save();
-            } else {
-                $datas->work_permit_category =  (Session::get('packageType')) ?? 'BLUE COLLAR';
-                $datas->application_stage_status = 1;
-                $datas->destination_id = $pid;
-                $datas->applied_country = $appliedCountry->name;
-                $datas->contract = $request->contract;
-                $datas->pricing_plan_id = $pdet->id;
-                $res = $datas->save();
-            }
-            return view('user.signature', compact('data'));
-        } else {
-            // return redirect()->back()->with('message', 'You are not authorized');
-            return redirect('home');
+        } catch (Exception $e) {
+            return redirect('home')->with('info', $e->getMessage());
         }
     }
 
@@ -1126,88 +1130,92 @@ class HomeController extends Controller
 
     public function paymentFail()
     {
-        //Undo Application payment info
-        $pays = payment::where('id', Session::get('paymentId'))->first();
+        if(Session::get('paymentId')) {
+            //Undo Application payment info
+            $pays = payment::where('id', Session::get('paymentId'))->first();
 
-        $datas = applicant::where([
-            ['client_id', '=', Auth::user()->id],
-            ['id', '=', $pays->application_id],
-        ])
-            ->orderBy('id', 'DESC')
-            ->first();
+            $datas = applicant::where([
+                ['client_id', '=', Auth::user()->id],
+                ['id', '=', $pays->application_id],
+            ])
+                ->orderBy('id', 'DESC')
+                ->first();
 
-        if ($datas === null) {
-        } else {
-            if ($pays->payment_type == 'First Payment') {
-                $datas->first_payment_price = 0;
-                $datas->first_payment_paid = 0;
-                $datas->first_payment_vat = 0;
-                $datas->first_payment_discount = 0;
-                $datas->first_payment_status = 'PENDING';
-                $datas->first_payment_remaining =  0;
-                $datas->is_first_payment_partially_paid = 0;
-                $datas->status = 'PENDING';
-            } elseif ($pays->payment_type == 'Balance on First Payment') {
-                //    $datas->first_payment_price = 0;
-                $datas->first_payment_paid = $datas->first_payment_paid - $pays->paid_amount;
-                //    $datas->first_payment_vat = 0;
-                //    $datas->first_payment_discount = 0;
-                $datas->first_payment_status = 'Partial';
-                $datas->first_payment_remaining =  $datas->first_payment_remaining - $pays->paid_amount;
-                //    $datas->is_first_payment_partially_paid = 0;
-                //    $datas->status = 'PENDING';
-            } elseif ($pays->payment_type == 'Second Payment') {
-                $datas->second_payment_price = 0;
-                $datas->second_payment_paid = 0;
-                $datas->second_payment_vat = 0;
-                $datas->second_payment_discount = 0;
-                $datas->second_payment_status = 'PENDING';
-                $datas->status = 'PENDING';
-                $datas->is_second_payment_partially_paid = 0;
-            } elseif ($pays->payment_type == 'Third Payment') {
-                $datas->third_payment_price = 0;
-                $datas->third_payment_paid = 0;
-                $datas->third_payment_vat = 0;
-                $datas->third_payment_discount = 0;
-                $datas->third_payment_status = 'PENDING';
-                $datas->status = 'PENDING';
-                $datas->is_third_payment_partially_paid = 0;
-            } elseif ($pays->payment_type == 'Full-Outstanding Payment') {
-                $datas->first_payment_price = 0;
-                $datas->first_payment_paid = 0;
-                $datas->first_payment_vat = 0;
-                $datas->first_payment_discount = 0;
-                $datas->first_payment_status = 'PENDING';
-                $datas->first_payment_remaining =  0;
-                $datas->is_first_payment_partially_paid = 0;
-                $datas->status = 'PENDING';
-                $datas->second_payment_price = 0;
-                $datas->second_payment_paid = 0;
-                $datas->second_payment_vat = 0;
-                $datas->second_payment_discount = 0;
-                $datas->second_payment_status = 'PENDING';
-                $datas->status = 'PENDING';
-                $datas->is_second_payment_partially_paid = 0;
-                $datas->third_payment_price = 0;
-                $datas->third_payment_paid = 0;
-                $datas->third_payment_vat = 0;
-                $datas->third_payment_discount = 0;
-                $datas->third_payment_status = 'PENDING';
-                $datas->status = 'PENDING';
-                $datas->is_third_payment_partially_paid = 0;
-                $datas->total_price = 0;
-                $datas->total_paid = 0;
-                $datas->total_vat = 0;
-                $datas->total_discount = 0;
+            if ($datas === null) {
+            } else {
+                if ($pays->payment_type == 'First Payment') {
+                    $datas->first_payment_price = 0;
+                    $datas->first_payment_paid = 0;
+                    $datas->first_payment_vat = 0;
+                    $datas->first_payment_discount = 0;
+                    $datas->first_payment_status = 'PENDING';
+                    $datas->first_payment_remaining =  0;
+                    $datas->is_first_payment_partially_paid = 0;
+                    $datas->status = 'PENDING';
+                } elseif ($pays->payment_type == 'Balance on First Payment') {
+                    //    $datas->first_payment_price = 0;
+                    $datas->first_payment_paid = $datas->first_payment_paid - $pays->paid_amount;
+                    //    $datas->first_payment_vat = 0;
+                    //    $datas->first_payment_discount = 0;
+                    $datas->first_payment_status = 'Partial';
+                    $datas->first_payment_remaining =  $datas->first_payment_remaining - $pays->paid_amount;
+                    //    $datas->is_first_payment_partially_paid = 0;
+                    //    $datas->status = 'PENDING';
+                } elseif ($pays->payment_type == 'Second Payment') {
+                    $datas->second_payment_price = 0;
+                    $datas->second_payment_paid = 0;
+                    $datas->second_payment_vat = 0;
+                    $datas->second_payment_discount = 0;
+                    $datas->second_payment_status = 'PENDING';
+                    $datas->status = 'PENDING';
+                    $datas->is_second_payment_partially_paid = 0;
+                } elseif ($pays->payment_type == 'Third Payment') {
+                    $datas->third_payment_price = 0;
+                    $datas->third_payment_paid = 0;
+                    $datas->third_payment_vat = 0;
+                    $datas->third_payment_discount = 0;
+                    $datas->third_payment_status = 'PENDING';
+                    $datas->status = 'PENDING';
+                    $datas->is_third_payment_partially_paid = 0;
+                } elseif ($pays->payment_type == 'Full-Outstanding Payment') {
+                    $datas->first_payment_price = 0;
+                    $datas->first_payment_paid = 0;
+                    $datas->first_payment_vat = 0;
+                    $datas->first_payment_discount = 0;
+                    $datas->first_payment_status = 'PENDING';
+                    $datas->first_payment_remaining =  0;
+                    $datas->is_first_payment_partially_paid = 0;
+                    $datas->status = 'PENDING';
+                    $datas->second_payment_price = 0;
+                    $datas->second_payment_paid = 0;
+                    $datas->second_payment_vat = 0;
+                    $datas->second_payment_discount = 0;
+                    $datas->second_payment_status = 'PENDING';
+                    $datas->status = 'PENDING';
+                    $datas->is_second_payment_partially_paid = 0;
+                    $datas->third_payment_price = 0;
+                    $datas->third_payment_paid = 0;
+                    $datas->third_payment_vat = 0;
+                    $datas->third_payment_discount = 0;
+                    $datas->third_payment_status = 'PENDING';
+                    $datas->status = 'PENDING';
+                    $datas->is_third_payment_partially_paid = 0;
+                    $datas->total_price = 0;
+                    $datas->total_paid = 0;
+                    $datas->total_vat = 0;
+                    $datas->total_discount = 0;
+                }
+                $datas->save();
             }
-            $datas->save();
+
+            //Undo Payment update
+            Payment::where('id', Session::get('paymentId'))->delete();
+
+            $id = Session::get('myproduct_id');
+            return view('user.payment-fail', compact('id'));
+        } else {
+            return \Redirect::route('myapplication')->with('info','Payment Failed!');;
         }
-
-        //Undo Payment update
-        Payment::where('id', Session::get('paymentId'))->delete();
-
-        $id = Session::get('myproduct_id');
-        return view('user.payment-fail', compact('id'));
     }
 
 
