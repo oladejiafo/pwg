@@ -11,7 +11,7 @@
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
                                         <div class="toolbox-left-sec">
-                                            <img src="{{asset('storage/presentations/'.$present->image_url)}}"  width="100%" height="100%">
+                                            <img src="{{asset('images/affiliate/'.$present->image_url)}}"  width="100%" height="100%">
                                         </div>
                                     </div>
                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
@@ -53,7 +53,7 @@
                 success:function(response){  
                     console.log(response);
                     $.each(response, function( index, value ) {
-                        $('.presentation').append('<div class="toolbox-sec"><div class="row"><div class="col-xs-12 col-sm-12 col-md-12 col-lg-6"><div class="toolbox-left-sec"><img src="'+value.full_image_url+'"  width="100%" height="100%"></div></div><div class="col-xs-12 col-sm-12 col-md-12 col-lg-6"><div class="toolbox-right-sec"><h1>'+value.title+'</h1><p class="toolbox-right-sub-head">'+value.sub_title+'</p><p class="toolbox-right-desc">'+(value.details).substring(0,500)+'</p><input type="button" class="btn startCopy" value="Copy Link" onclick="Copy('+value.link_ur+');" /></div></div></div></div>');
+                        $('.presentation').append('<div class="toolbox-sec"><div class="row"><div class="col-xs-12 col-sm-12 col-md-12 col-lg-6"><div class="toolbox-left-sec"><img src="{{asset('images/affiliate')}}/'+value.image_url+'" width="100%" height="100%"></div></div><div class="col-xs-12 col-sm-12 col-md-12 col-lg-6"><div class="toolbox-right-sec"><h1>'+value.title+'</h1><p class="toolbox-right-sub-head">'+value.sub_title+'</p><p class="toolbox-right-desc">'+(value.details).substring(0,500)+'</p><input type="button" class="btn startCopy" value="Copy Link" onclick="Copy('+value.link_ur+');" /></div></div></div></div>');
                         lastid = value.id;
                     });
                 }

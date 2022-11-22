@@ -14,7 +14,7 @@
 </style>
 @Section('content')
     <div class="container">
-        <div class="forgot-password " style="padding-top:30px;margin-top:150px">
+        <div class="forgot-password">
             <div class="reset">
                 <div class="resetImage">
                     <img src="{{asset('images/forgot_password.svg')}}" alt="forgot password">

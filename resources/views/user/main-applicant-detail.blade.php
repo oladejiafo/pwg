@@ -1,6 +1,6 @@
 <div class="tab-pane active" id="mainApplicant">
     <div class="applicant-detail-sec">
-        <div class="heading applicantsec">
+        <div class="heading applicantsec" data-bs-toggle="collapse" data-bs-target="#collapseapplicant" aria-expanded="false" aria-controls="collapseapplicant">
             <div class="row">
                 <div class="col-2">
                     <div class="image my-auto">
@@ -23,7 +23,7 @@
                     </div>
                 </div>
                 <div class="col-2 mx-auto my-auto">
-                    <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseapplicant" aria-expanded="false" aria-controls="collapseapplicant">
+                    <div class="down-arrow">
                         <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%" alt="PWG Group">
                     </div>
                 </div>
@@ -156,7 +156,7 @@
     </div>
 
     <div class="applicant-detail-sec home_country_details">
-        <div class="heading">
+        <div class="heading"  data-bs-toggle="collapse" data-bs-target="#collapseHome" aria-expanded="false" aria-controls="collapseHome">
             <div class="row">
                 <div class="col-2 my-auto">
                     <div class="image">
@@ -179,7 +179,7 @@
                     </div>
                 </div>
                 <div class="col-2 mx-auto my-auto">
-                    <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseHome" aria-expanded="false" aria-controls="collapseHome">
+                    <div class="down-arrow">
                         <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%" alt="PWG Group">
                     </div>
                 </div>
@@ -286,7 +286,7 @@
     </div>
 
     <div class="applicant-detail-sec">
-        <div class="heading">
+        <div class="heading" data-bs-toggle="collapse" data-bs-target="#collapseCurrent" aria-expanded="false" aria-controls="collapseCurrent">
             <div class="row">
                 <div class="col-2 my-auto">
                     <div class="image">
@@ -309,7 +309,7 @@
                     </div>
                 </div>
                 <div class="col-2 mx-auto my-auto">
-                    <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseCurrent" aria-expanded="false" aria-controls="collapseCurrent">
+                    <div class="down-arrow">
                         <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
                     </div>
                 </div>
@@ -431,7 +431,7 @@
     </div>
 
     <div class="applicant-detail-sec">
-        <div class="heading">
+        <div class="heading"  data-bs-toggle="collapse" data-bs-target="#collapseSchengen" aria-expanded="false" aria-controls="collapseSchengen">
             <div class="row">
                 <div class="col-2 my-auto">
                     <div class="image">
@@ -454,7 +454,7 @@
                     </div>
                 </div>
                 <div class="col-2 mx-auto my-auto">
-                    <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseSchengen" aria-expanded="false" aria-controls="collapseSchengen">
+                    <div class="down-arrow">
                         <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%" alt="PWG Group">
                     </div>
                 </div>
@@ -521,7 +521,7 @@
     </div>
 
     <div class="applicant-detail-sec" style="margin-bottom: 70px">
-        <div class="heading">
+        <div class="heading"  data-bs-toggle="collapse" data-bs-target="#collapseExperience" aria-expanded="false" aria-controls="collapseExperience">
             <div class="row">
                 <div class="col-2 my-auto">
                     <div class="image">
@@ -543,7 +543,7 @@
                 </div>
                 <div class="col-1"></div>
                 <div class="col-2 mx-auto my-auto">
-                    <div class="down-arrow" data-bs-toggle="collapse" data-bs-target="#collapseExperience" aria-expanded="false" aria-controls="collapseExperience">
+                    <div class="down-arrow">
                         <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%" alt="PWG Group">
                     </div>
                 </div>

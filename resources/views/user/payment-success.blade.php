@@ -65,9 +65,9 @@
 ?>
 
 @section('content')
-    <div class="container" style="margin-top: 130px;">
+    <div class="container">
         <div class="col-12">
-            <div class="forgot-password" style="padding-top: 30px;">
+            <div class="forgot-password">
                 <div class="reset">
                     <div class="resetImage">
                         <img src="{{asset('images/CheckMark.svg')}}" alt="approved">

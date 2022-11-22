@@ -193,7 +193,9 @@ class pdfBlock
                 // $pdf->Write(2, "[SIGN HERE]");   
             }
         }
-        $pdf->Output($destination_file, "F");  
+        // $content = $pdf->Output($destination_file, "F");
+        $theString = $pdf->Output('S');
+        Storage::disk(env('MEDIA_DISK'))->put($destination_file, $theString, 'public');
     }
 
 }
