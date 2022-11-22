@@ -301,7 +301,7 @@ class HomeController extends Controller
             $image_type = $image_type_aux[1];
             $signate = Auth::user()->id . '_' . time() . '.' . $image_type;
             $signature = user::find(Auth::user()->id);
-            $signature->addMediaFromBase64($request->signed)->usingFileName($signate)->toMediaCollection(User::$media_collection_main_signture, 'local');
+            $signature->addMediaFromBase64($request->signed)->usingFileName($signate)->toMediaCollection(User::$media_collection_main_signture, env('MEDIA_DISK'));
             $signature->save();
 
             if (Session::get('mySpouse') == "yes") {
@@ -1364,7 +1364,7 @@ class HomeController extends Controller
             if($newFileName && $originalPdf){
                 // $destination_file = 'pdf/'.$newFileName;
                 // public_path('storage/Applications/Contracts/client_contracts/'.$newFileName);
-                $destination_file = Storage::disk('local')->path('Applications/Contracts/client_contracts/'.$newFileName);
+                $destination_file = 'Applications/Contracts/client_contracts/'.$newFileName;
                 $data = pdfBlock::mapDetails($originalPdf, $destination_file, $productId, Session::get('packageType'));
                 Applicant::where('client_id', Auth::id())
                     ->where('destination_id', $productId)
@@ -1372,7 +1372,7 @@ class HomeController extends Controller
                     ->update([
                         'contract' => $newFileName
                     ]);
-                $fileUrl = Storage::disk('local')->url('Applications/Contracts/client_contracts/'.$newFileName);
+                $fileUrl = Storage::disk(env('MEDIA_DISK'))->url('Applications/Contracts/client_contracts/'.$newFileName);
                 return view('user.contract', compact('productId', 'newFileName', 'fileUrl'));
             }
         } else {

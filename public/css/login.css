@@ -473,12 +473,11 @@ input [type="phone"] {
     padding: 70px 100px 70px 100px;
     background-color: #ffffff;
     margin-bottom: 70px;
-    margin-top: 70px;
+    margin-top: 150px;
     color: #636466;
     align-content: center;
     height: 760px;
     padding-top: 30px;
-    margin-top: 150px
 }
 
 .forgot-password .btn {
