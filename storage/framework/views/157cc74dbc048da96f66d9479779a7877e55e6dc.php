@@ -16,7 +16,7 @@
 									<div class="content-block">
 										<h1>Hi , </h1>
 																					
-										<p><strong> {{ $data['body'] }}</p>
+										<p><strong> <?php echo e($data['body']); ?></p>
 									</div>
 								</td>
 							</tr>
@@ -35,4 +35,4 @@
 		</tbody>
 	</table>
 </body>
-</html>
+</html><?php /**PATH C:\Users\shakun\Desktop\myGit\PWG\resources\views/emails/notify.blade.php ENDPATH**/ ?>
