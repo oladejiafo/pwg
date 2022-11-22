@@ -34,36 +34,38 @@ input {
     margin-bottom: 17px;
     padding-right: 30px;
 }
+
 .checkcolor {
     accent-color: #f9bf29;
-  }
-  
-  select,
-  textarea,
-  input [type="text"],
-  input [type="number"],
-  input [type="password"],
-  input [type="date"],
-  input [type="email"],
-  input [type="phone"]
-  {
+}
+
+select,
+textarea,
+input [type="text"],
+input [type="number"],
+input [type="password"],
+input [type="date"],
+input [type="email"],
+input [type="phone"] {
     padding: 10px;
-  }
+}
+
 #activity {
-    margin:20px;
+    margin: 20px;
     margin-top: 10px;
     margin-right: 100px;
     display: absolute;
-  }
-  
-  .divs {  
+}
+
+.divs {
     display: inline-block;
     float: left;
     margin-right: 15px;
     margin-top: 1px;
     width: 50px;
-  }
-  /* .divs img {
+}
+
+/* .divs img {
     width: 100%;
     height: auto;  
   } */
@@ -87,7 +89,8 @@ input {
     line-height: 26px;
     letter-spacing: 0em;
     text-align: left;
-    color: #313445;;
+    color: #313445;
+    ;
     display: flex;
     align-items: center;
 }
@@ -103,77 +106,81 @@ input {
     width: 150px;
     text-align: center;
     display: block;
-    
+
 }
+
 .applicant a:hover {
     background-color: hsl(51, 94%, 50%);
 }
+
 .applicant img {
     width: 100%;
     height: auto;
 }
-@media only screen and (max-width: 768px) and (min-width: 370px)
-{
- .login .left-sec a {
+
+@media only screen and (max-width: 768px) and (min-width: 370px) {
+    .login .left-sec a {
         font-size: 15px;
         font-weight: 400;
         line-height: 26px;
         letter-spacing: 0em;
-}
+    }
 
-.applicant a {
-    margin-left: 30px;
-    margin-right: 20px;
-    text-align:center;
-    width: 120px;
-    font-size: 12px;
-}
-.affiliate a {
-    margin-left: 20px;
-    text-align:center;
-    width: 100px;
-    font-size: 12px;
-    content: "Affiliate"; 
-}
+    .applicant a {
+        margin-left: 30px;
+        margin-right: 20px;
+        text-align: center;
+        width: 120px;
+        font-size: 12px;
+    }
+
+    .affiliate a {
+        margin-left: 20px;
+        text-align: center;
+        width: 100px;
+        font-size: 12px;
+        content: "Affiliate";
+    }
 
 }
 
 .myapplicant a {
-    width:240px;
+    width: 240px;
     height: 40px;
     padding-left: 30px;
     margin-top: 30px;
     margin-bottom: 17px;
     margin-left: 111px;
-    text-align:center;
+    text-align: center;
     text-decoration: none;
     border-radius: 10px;
     background-color: #e9ebf0;
     min-height: 60px;
 }
+
 .myapplicant img {
     width: 100%;
     height: auto;
 }
+
 .myapplicant a:hover {
     min-height: 60px;
     background-color: hsl(51, 94%, 50%);
 }
 
-@media only screen and (max-width: 768px) and (min-width: 370px)
-{
-.myapplicant a {
-    height: 60px;
-    padding-left: 15px;
+@media only screen and (max-width: 768px) and (min-width: 370px) {
+    .myapplicant a {
+        height: 60px;
+        padding-left: 15px;
 
-    margin-left: 20px;
-    text-align:center;
-    text-decoration: none;
-    border-radius: 10px;
-    background-color: #e9ebf0;
-    min-height: 40px;
-    width: 180px;
-}
+        margin-left: 20px;
+        text-align: center;
+        text-decoration: none;
+        border-radius: 10px;
+        background-color: #e9ebf0;
+        min-height: 40px;
+        width: 180px;
+    }
 }
 
 .affiliate a {
@@ -186,30 +193,33 @@ input {
     border-radius: 10px;
     content: 'Affiliate Partner';
 }
+
 .affiliate a:hover {
     background-color: hsl(51, 94%, 50%);
 }
+
 .affiliate img {
     width: 100%;
     height: auto;
 }
-@media only screen and (max-width: 768px) and (min-width: 370px)
-{
-.affiliate a {
-    margin-left: 20px;
-    text-align:center;
-    content: 'Affiliate';
+
+@media only screen and (max-width: 768px) and (min-width: 370px) {
+    .affiliate a {
+        margin-left: 20px;
+        text-align: center;
+        content: 'Affiliate';
+    }
+
+    .logg a {
+        margin-left: 5px;
+        font-size: 12px;
+        width: 120px;
+        text-align: center;
+        content: 'Affiliate';
+    }
+
 }
 
-.logg a {
-    margin-left: 5px;
-    font-size: 12px;
-    width: 120px;
-    text-align:center;
-    content: 'Affiliate';
-}
-
-}
 .login .signin-right a {
     display: flex;
     align-items: center;
@@ -251,6 +261,7 @@ input {
     font-style: normal;
     /* font-size: 60px; */
 }
+
 .logo img {
     width: 100%;
     height: auto;
@@ -260,24 +271,23 @@ input {
     margin-bottom: 17px;
     margin-left: 111px;
     /* height: 50px; */
-    
+
 }
 
 
-@media only screen and (max-width: 768px) and (min-width: 370px)
-{
+@media only screen and (max-width: 768px) and (min-width: 370px) {
     .logo img {
         width: 100%;
         height: auto;
-        content:url("../images/logo2.png");
-    
+        content: url("../images/logo2.png");
+
         margin-top: 17px;
         margin-bottom: 17px;
         margin-left: 111px;
         /* height: 50px; */
-        
+
     }
-    
+
 }
 
 
@@ -305,23 +315,23 @@ input {
     margin-bottom: 0px;
 }
 
-@media only screen and (max-width: 768px) and (min-width: 370px)
-{
+@media only screen and (max-width: 768px) and (min-width: 370px) {
     .form-sec1 {
         /* padding: 20px 203px 20px 203px; */
         /* margin-top: 50px; */
-        margin-top:40%;
+        margin-top: 40%;
     }
-    
-.form-sec1 h3 {
-    font-size: 30px;
+
+    .form-sec1 h3 {
+        font-size: 30px;
+    }
+
+    .form-sec1 p {
+        font-size: 12px;
+    }
+
 }
 
-.form-sec1 p {
-    font-size: 12px;
-}
-
-}
 .form-sec1 p {
     font-family: TT Norms Pro;
     font-size: 20px;
@@ -426,9 +436,9 @@ input {
 }
 
 @media (min-width:375px) and (max-width:768px) {
-.form-sec1 .check-box p {
-    font-size: 12px;
-}
+    .form-sec1 .check-box p {
+        font-size: 12px;
+    }
 }
 
 .form-sec1 .check-box p a {
@@ -467,7 +477,10 @@ input {
     color: #636466;
     align-content: center;
     height: 760px;
+    padding-top: 30px;
+    margin-top: 150px
 }
+
 .forgot-password .btn {
     font-size: 27px;
     margin: 0 auto;
@@ -482,7 +495,7 @@ input {
         margin: 0 auto;
         padding: 30px;
         margin-bottom: 30px;
-        margin-top: 30px;
+        margin-top: 150px;
         height: 500px;
     }
 
@@ -518,15 +531,15 @@ input {
 
 } */
 
-@media (min-width:375px) and (max-width:768px){
+@media (min-width:375px) and (max-width:768px) {
     .signature {
-        width:90%;
+        width: 90%;
         padding: 20px 10px 70px 10px;
         margin-bottom: 70px;
         height: auto;
     }
 
-    .signatureLogo{
+    .signatureLogo {
         width: 180px;
         height: 200px;
         height: 0px;
@@ -550,17 +563,17 @@ input {
     bottom: 5px;
     background-color: none;
     border-color: #606060 1px solid;
-    color:#000;
+    color: #000;
     font-family: "TT Norms Pro";
     font-size: 25px;
     font-weight: bold;
     box-shadow: 0 0 0 0.7px #ccc;
-} 
+}
 
-.signature button:hover{
+.signature button:hover {
     background-color: #f9bf29;
     border-color: #f9bf29;
-} 
+}
 
 .signature .bottom-title {
     text-align: center;
@@ -568,14 +581,16 @@ input {
 
 
 .kbw-signature {
-    width: 99%; 
+    width: 99%;
     height: 400px;
-    zoom:normal;
+    zoom: normal;
     align-content: center;
     padding: 0;
     border-radius: 10px;
     border-style: solid;
-    border-color: #ccc; /*#f0f3f4*/;
+    border-color: #ccc;
+    /*#f0f3f4*/
+    ;
     border-width: 1px;
 }
 
@@ -588,7 +603,7 @@ input {
     width: 100% !important;
     height: 345px;
     z-index: 9099;
-    zoom:100%
+    zoom: 100%
 }
 
 .invoice-now {
@@ -728,23 +743,25 @@ input {
         width: 100%;
         margin-top: 70px;
     }
+
     .reset .btn {
         font-size: 18px;
         height: 60px;
     }
-    
+
     .reset-heading {
         font-size: 25px;
         font-weight: 700;
         line-height: 43px;
     }
+
     .reset .input {
         padding: 10px;
         text-align: left;
     }
 }
 
-.append{
+.append {
     width: 100%;
     margin-top: 20px
 }
@@ -757,7 +774,8 @@ input {
     letter-spacing: 0em;
     text-align: center;
 }
-.append-title p{
+
+.append-title p {
     margin: 1px;
     font-family: "TT Norms Pro";
     font-weight: 100;
@@ -789,12 +807,14 @@ input {
     padding: 10px;
     font-size: 17px;
 }
+
 .forgot-password .btn {
     width: 100%;
     margin-top: 25px;
     /* margin-left: 20%; */
     /* margin-right: 20%; */
 }
+
 .forgot-password input::placeholder {
     font-size: 18px;
 }
@@ -807,7 +827,7 @@ input {
         margin-right: 10%;
         font-size: 18px;
     }
-    }
+}
 
 ::-webkit-input-placeholder {
     text-align: left;
@@ -962,7 +982,7 @@ input {
     padding: 12px 16px;
     text-decoration: none;
     display: block;
-    
+
 }
 
 .dropdown-content button {
@@ -1023,7 +1043,7 @@ input {
 
     .login .left-sec a {
         margin-bottom: 10px;
-        
+
     }
 
     .applicant,
@@ -1038,13 +1058,13 @@ input {
     .applicant a,
     .affiliate a {
         margin-left: 0px;
-        text-align:left;
+        text-align: left;
     }
 
     .login .signin-right {
         padding-left: 0px;
         padding-right: 0px;
-        margin:0px;
+        margin: 0px;
     }
 
     .header-sec {
@@ -1103,7 +1123,8 @@ input {
         width: 100%;
     }
 
-    .login .applicant a, .login .affiliate a {
+    .login .applicant a,
+    .login .affiliate a {
         padding: 0px;
         margin-left: 20px;
         margin-top: 28px;
@@ -1111,7 +1132,8 @@ input {
 
     }
 
-    .login .applicant, .login .affiliate {
+    .login .applicant,
+    .login .affiliate {
         width: 100%;
     }
 
@@ -1119,10 +1141,12 @@ input {
         margin-left: 5px;
     }
 
-    .form-sec1, .forgot-password {
+    .form-sec1,
+    .forgot-password {
         padding: 100px;
     }
-/* 
+
+    /* 
     .forgot-password {
         width: 90%;
     } */
@@ -1159,7 +1183,7 @@ input {
     .login .signin-right a {
         margin-top: 10px;
     }
-    
+
 }
 
 /*******************************************/
