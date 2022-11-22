@@ -57,14 +57,14 @@
                             </ul>
                         </li>
                         <li class="nav-item">
-                                <a class="nav-link btn create-new-button" aria-expanded="false" href="#">
-                                    <span class="title" >BONUS</span>
-                                </a>
+                            <a class="nav-link btn create-new-button" aria-expanded="false" href="#">
+                                <span class="title" >BONUS</span>
+                            </a>
                         </li>
                         <li class="nav-item">
-                                <a class="nav-link btn create-new-button" aria-expanded="false" href="<?php echo e(route('affiliate.reffered_client',Session::get('loginId'))); ?>">
-                                    <span class="title" >REFERRALS</span>
-                                </a>
+                            <a class="nav-link btn create-new-button" aria-expanded="false" href="<?php echo e(route('affiliate.reffered_client',Session::get('loginId'))); ?>">
+                                <span class="title" >REFERRALS</span>
+                            </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link btn create-new-button" aria-expanded="false" href="<?php echo e(url('/')); ?>">

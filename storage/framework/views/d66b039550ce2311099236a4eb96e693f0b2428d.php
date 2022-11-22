@@ -31,11 +31,11 @@
             <?php $__currentLoopData = $trans; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tran): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 
             <tr style="color: #9d9e9f;background-color: #fff;">
-              <td style="padding:5px; font-size:15px;">$<?php echo e($tran->balance); ?></td>
+              <td style="padding:5px; font-size:15px;"><?php echo e($tran->balance); ?> <span style="font-size:10px;">AED</span></td>
               <td style="padding:5px; font-size:15px;"><?php echo e($tran->bank_name); ?></td>
               <td style="padding:5px; font-size:15px;text-align:right"><?php echo e($tran->account_number); ?></td>
               <td style="padding:5px; font-size:15px;text-align:right"><?php echo e($tran->swift_code); ?></td>
-              <td style="padding:5px; font-size:15px;text-align:right">$<?php echo e(number_format($tran->amount,2)); ?></td>
+              <td style="padding:5px; font-size:15px;text-align:right"><?php echo e(number_format($tran->amount,2)); ?> <span style="font-size:10px;">AED</span></td>
               <td style="padding:5px; font-size:15px;text-align:center"><?php echo e(date('d-m-Y', strtotime($tran->transaction_date))); ?></td>
               <td style="padding:5px; font-size:15px;text-align:left">Paid</td>
             </tr>

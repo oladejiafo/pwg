@@ -49,7 +49,7 @@
               <td style="padding:5px; font-size:15px;"><?php echo e($name); ?></td>
               <td style="padding:5px; font-size:15px;"><?php echo e($affiliate->affiliate_code); ?></td>
               <td style="padding:5px; font-size:15px;text-align:right"><?php echo e($cnt); ?></td>
-              <td style="padding:5px; font-size:15px;text-align:right"><?php echo e(number_format($commision,2)); ?></td>
+              <td style="padding:5px; font-size:15px;text-align:right"><?php echo e(number_format($commision,2)); ?> <span style="font-size:10px;">AED</span></td>
               <td style="padding:5px; font-size:15px;text-align:right"><?php echo e(date('d-m-Y', strtotime($affiliate->created_at))); ?></td>
             </tr>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

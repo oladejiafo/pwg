@@ -47,9 +47,9 @@
             <tr style="color: #9d9e9f;background-color: #fff;">
               <td style="padding:5px; font-size:15px;"><?php echo e($name); ?></td>
               <td style="padding:5px; font-size:15px;"><?php echo e($product); ?></td>
-              <td style="padding:5px; font-size:15px;text-align:right"><?php echo e(number_format($prod->total_price,2)); ?></td>
+              <td style="padding:5px; font-size:15px;text-align:right"><?php echo e(number_format($prod->total_price,2)); ?> <span style="font-size:10px;">AED</span></td>
               <!-- <td style="padding:5px; font-size:15px;"></td> -->
-              <td style="padding:5px; font-size:15px;text-align:right"><?php echo e(number_format($comm->client_commission,2)); ?></td>
+              <td style="padding:5px; font-size:15px;text-align:right"><?php echo e(number_format($comm->client_commission,2)); ?> <span style="font-size:10px;">AED</span></td>
               <td style="padding:5px; font-size:15px;text-align:center"><?php echo e($pays->payment_date); ?></td>
 
               <td style="padding:5px; font-size:15px;text-align:center"><?php echo e($client->first_payment_status); ?></td>

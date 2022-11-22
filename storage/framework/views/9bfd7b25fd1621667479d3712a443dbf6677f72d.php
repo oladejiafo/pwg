@@ -57,7 +57,7 @@
                                         </div>
                                     </div>
                                     <div class="card-body align-items-center justify-content-center">
-                                        <h5 class="card-title">$<?php echo e(number_format($mine->balance,2)); ?></h5>
+                                        <h5 class="card-title"><?php echo e(number_format($mine->balance,2)); ?> <span style="font-size:10px;">AED</span></h5>
                                         <p class="card-text"> 
                                             <br>
                                             <!-- <i class="fa fa-plus-circle"></i>
@@ -99,7 +99,7 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <div class="header-group">
-                                            <a href="#">
+                                            <a href="<?php echo e(route('affiliate.total_earned',Session::get('loginId'))); ?>">
                                                 <span class="head">Total Amount Earned</span>
                                                 <span class="dot"></span>
                                                 <span class="dot"></span>
@@ -108,7 +108,7 @@
                                         </div>
                                     </div>
                                     <div class="card-body align-items-center justify-content-center">
-                                        <h5 class="card-title">$<?php echo e(number_format($tot_comm,2)); ?></h5>
+                                        <h5 class="card-title"><?php echo e(number_format($tot_comm,2)); ?> <span style="font-size:10px;">AED</span></h5>
                                         <p class="card-text"> 
                                             <i class="fa fa-plus-circle"></i>
                                             3% lower than last month</p>

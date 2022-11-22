@@ -31,11 +31,11 @@
             @foreach($trans as $tran)
 
             <tr style="color: #9d9e9f;background-color: #fff;">
-              <td style="padding:5px; font-size:15px;">${{$tran->balance}}</td>
+              <td style="padding:5px; font-size:15px;">{{$tran->balance}} <span style="font-size:10px;">AED</span></td>
               <td style="padding:5px; font-size:15px;">{{$tran->bank_name}}</td>
               <td style="padding:5px; font-size:15px;text-align:right">{{$tran->account_number}}</td>
               <td style="padding:5px; font-size:15px;text-align:right">{{$tran->swift_code}}</td>
-              <td style="padding:5px; font-size:15px;text-align:right">${{number_format($tran->amount,2)}}</td>
+              <td style="padding:5px; font-size:15px;text-align:right">{{number_format($tran->amount,2)}} <span style="font-size:10px;">AED</span></td>
               <td style="padding:5px; font-size:15px;text-align:center">{{date('d-m-Y', strtotime($tran->transaction_date))}}</td>
               <td style="padding:5px; font-size:15px;text-align:left">Paid</td>
             </tr>

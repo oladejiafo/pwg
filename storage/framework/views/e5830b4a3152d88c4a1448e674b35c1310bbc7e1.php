@@ -28,7 +28,7 @@
         <div class="card-header" style="text-align:center; background-color:#fff">
           <img src="<?php echo e(asset('images/affiliate/affiliate_withdraw.png')); ?>" alt=""><br>
           <h3><span style="color: #9d9e9f;padding:5px">Account Balance</span> </h3>
-          <h4>$<?php echo e(number_format($mine->balance,2)); ?></h4>
+          <h4><?php echo e(number_format($mine->balance,2)); ?><span style="font-size:10px;">AED</span></h4>
         </div>
         <div class="card-body">
           
