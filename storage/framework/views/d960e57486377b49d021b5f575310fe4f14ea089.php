@@ -123,23 +123,21 @@
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item preview-item" href="#">
                     <div class="preview-item-content">
-                    <form method="GET" action="<?php echo e(route('profile.show')); ?>" x-data>
-                           
-                      <button>Profile</button>
-                    </form>
+                      <form method="GET" action="<?php echo e(route('profile.show')); ?>" x-data>     
+                        <button>Profile</button>
+                      </form>
                       <!-- <p class="preview-subject mb-1"><a href="<?php echo e(route('profile.show')); ?>">Profile</a></p> -->
                     </div>
                   </a>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item preview-item" href="#">
-                  
                     <div class="preview-item-content">
-                      <p class="preview-subject mb-1">
+                      <px class="preview-subject mb-1">
                       <form method="POST" action="<?php echo e(route('logout')); ?>" x-data>
-                            <?php echo csrf_field(); ?>  
-                      <button>Logout</button>
+                        <?php echo csrf_field(); ?>  
+                        <button>Logout</button>
                       </form>
-                    </p>
+                    </px>
                     </div>
                   </a>
                   <div class="dropdown-divider"></div>
