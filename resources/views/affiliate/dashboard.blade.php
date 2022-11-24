@@ -89,7 +89,8 @@
                                         <h5 class="card-title">{{number_format($tot_reff,0)}}</h5>
                                         <p class="card-text"> 
                                             <i class="fa fa-plus-circle"></i>
-                                            9% higher than last month</p>
+                                            9% higher than last month
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -111,7 +112,8 @@
                                         <h5 class="card-title">{{number_format($tot_comm,2)}} <span style="font-size:10px;">AED</span></h5>
                                         <p class="card-text"> 
                                             <i class="fa fa-plus-circle"></i>
-                                            3% lower than last month</p>
+                                            3% lower than last month
+                                        </p>
                                     </div>
                                 </div>
                             </div>

@@ -380,7 +380,9 @@ class AffiliatePartnerController extends Controller
     public function news()
     {
         $client = new Client();
+       
         $res = $client->request('POST', env('ADMIN_URL').'/api/get-news-media');
+        // dd($res);
         $getNews = $res->getBody()->getContents();
         $news = json_decode($getNews);
         return view('affiliate.news', compact('news'));

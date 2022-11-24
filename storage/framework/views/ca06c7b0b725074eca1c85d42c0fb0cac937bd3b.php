@@ -57,7 +57,7 @@
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link btn create-new-button" aria-expanded="false" href="#">
+                            <a class="nav-link btn create-new-button" aria-expanded="false" href="<?php echo e(route('affiliate.total_earned',Session::get('loginId'))); ?>">
                                 <span class="title" >BONUS</span>
                             </a>
                         </li>

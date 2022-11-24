@@ -1,5 +1,5 @@
-@extends('affiliate.layout.master')
-@section('content')
+
+<?php $__env->startSection('content'); ?>
     <div class="container-fluid">
         <div class="row justify-content-md-center">
             <div class="about">
@@ -14,7 +14,7 @@
                             <p>
                                 With 8 years in the business, PWG Group continues to be determined in providing the easiest visa application processes for individuals seeking 
                                 to migrate to Europe and Canada;  providing them assistance, assurance and updates along their journey.  We have a high success rate 
-                                of over 4,000 VISAS (and counting) issued to our customers, a start of their dream to live and work in Europe and Canada.
+                                of over 4000 VISAS (and counting) issued to our customers, a start of their dream to live and work in Europe and Canada.
                                 We extend our services to applicants and clients from various sectors – from chefs and engineers to management of business processes or 
                                 specialized services to the industry. 
                             </p>
@@ -33,7 +33,7 @@
                                 <div class="row">
                                     <div class="col-sm-12 col-md-4 col-lg-4">
                                         <div class="aboutus-icon">
-                                            <img src="{{asset('images/affiliate/complex-support.png')}}">
+                                            <img src="<?php echo e(asset('images/affiliate/complex-support.png')); ?>">
                                             <p>
                                                 Complex support for acquiring citizenship
                                             </p>
@@ -41,7 +41,7 @@
                                     </div>
                                     <div class="col-sm-12 col-md-4 col-lg-4">
                                         <div class="aboutus-icon">
-                                            <img src="{{asset('images/affiliate/practical-info.png')}}">
+                                            <img src="<?php echo e(asset('images/affiliate/practical-info.png')); ?>">
                                             <p>
                                                 Practical Information on Amenities
                                             </p>
@@ -49,7 +49,7 @@
                                     </div>
                                     <div class="col-sm-12 col-md-4 col-lg-4">
                                         <div class="aboutus-icon">
-                                            <img src="{{asset('images/affiliate/child-social.png')}}">
+                                            <img src="<?php echo e(asset('images/affiliate/child-social.png')); ?>">
                                             <p>
                                                 Child & Social Welfare Schemes information 
                                             </p>
@@ -59,7 +59,7 @@
                                 <div class="row">
                                     <div class="col-sm-12 col-md-4 col-lg-4">
                                         <div class="aboutus-icon">
-                                            <img src="{{asset('images/affiliate/relative-support.png')}}">
+                                            <img src="<?php echo e(asset('images/affiliate/relative-support.png')); ?>">
                                             <p>
                                                 Relatives Support & Guarantee Their Permanent Residence
                                             </p>
@@ -67,7 +67,7 @@
                                     </div>
                                     <div class="col-sm-12 col-md-4 col-lg-4">
                                         <div class="aboutus-icon">
-                                            <img src="{{asset('images/affiliate/guidence.png')}}">
+                                            <img src="<?php echo e(asset('images/affiliate/guidence.png')); ?>">
                                             <p>
                                                 Guidance for renting your own property
                                             </p>
@@ -75,7 +75,7 @@
                                     </div>
                                     <div class="col-sm-12 col-md-4 col-lg-4">
                                         <div class="aboutus-icon">
-                                            <img src="{{asset('images/affiliate/assistance.png')}}">
+                                            <img src="<?php echo e(asset('images/affiliate/assistance.png')); ?>">
                                             <p>
                                                 Assistance & advice on opening a bank account
                                             </p>
@@ -97,11 +97,11 @@
                                     migrating and looking for work abroad. Working in Poland provides 
                                     several benefits not limited to:
                                     <ul>
-                                        <li>Being the sixth largest economy by GDP in the European Union.</li>
-                                        <li>No language barrier - Poland's job markets are attractive for multilinguals.</li>
-                                        <li>Ranks 8th as the best country for female workers.</li>
-                                        <li>Low cost of living in comparison to other European countries.</li>
-                                        <li>Great healthcare based on an all-inclusive insurance system.</li>
+                                    <li>Being the sixth largest economy by GDP in the European Union.</li>
+                                    <li>No language barrier - Poland's job markets are attractive for multilinguals.</li>
+                                    <li>Ranks 8th as the best country for female workers.</li>
+                                    <li>Low cost of living in comparison to other European countries.</li>
+                                    <li>Great healthcare based on an all-inclusive insurance system.</li>
                                     </ul>
                                 </p>
                             </div>
@@ -135,4 +135,5 @@
             </div>
         </div>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('affiliate.layout.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\shakun\Desktop\myGit\PWG\resources\views/affiliate/about-us.blade.php ENDPATH**/ ?>
