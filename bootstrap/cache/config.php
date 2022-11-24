@@ -4,13 +4,13 @@
     'name' => 'Laravel',
     'env' => 'local',
     'debug' => true,
-    'url' => 'http://localhost:8000',
+    'url' => 'http://localhost',
     'asset_url' => NULL,
     'timezone' => 'UTC',
     'locale' => 'en',
     'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
-    'key' => 'base64:RK4k8KXHyBXYhSqf8Qi0Iz+sZANzuIpPpE4hp58JLJc=',
+    'key' => 'base64:b9vNXIU8DWblkF2XoOrWR/jOnEAnTdlBO5zfrn/0OD0=',
     'cipher' => 'AES-256-CBC',
     'payment_api_key' => 'MmM2ODJiOGMtOGFmNS00NzUyLTg2MjUtM2Y5MTg3OWU5YjRlOjViMzhjM2I5LTUyMDItNDBmZi1hNzAyLTFlYTIwZDkwYjhiMQ==',
     'payment_reference' => '15d885ec-682a-4398-89d9-247254d71c18',
@@ -193,7 +193,7 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\storage\\framework/cache/data',
+        'path' => 'C:\\Users\\shakun\\Desktop\\myGit\\PWG\\storage\\framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -365,13 +365,13 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\storage\\app/public',
+        'root' => 'C:\\Users\\shakun\\Desktop\\myGit\\PWG\\storage\\app/public',
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\storage\\app/public',
-        'url' => 'http://localhost:8000/storage',
+        'root' => 'C:\\Users\\shakun\\Desktop\\myGit\\PWG\\storage\\app/public',
+        'url' => 'http://localhost/storage',
         'visibility' => 'public',
       ),
       's3' => 
@@ -387,14 +387,14 @@
       'media' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\public\\storage',
-        'url' => 'http://localhost:8000/storage',
+        'root' => 'C:\\Users\\shakun\\Desktop\\myGit\\PWG\\public\\storage',
+        'url' => 'http://localhost/storage',
         'visibility' => 'public',
       ),
     ),
     'links' => 
     array (
-      'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\public\\storage' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\storage\\app/public',
+      'C:\\Users\\shakun\\Desktop\\myGit\\PWG\\public\\storage' => 'C:\\Users\\shakun\\Desktop\\myGit\\PWG\\storage\\app/public',
     ),
   ),
   'fortify' => 
@@ -483,13 +483,13 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\storage\\logs/laravel.log',
+        'path' => 'C:\\Users\\shakun\\Desktop\\myGit\\PWG\\storage\\logs/laravel.log',
         'level' => 'debug',
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\storage\\logs/laravel.log',
+        'path' => 'C:\\Users\\shakun\\Desktop\\myGit\\PWG\\storage\\logs/laravel.log',
         'level' => 'debug',
         'days' => 14,
       ),
@@ -540,7 +540,7 @@
       ),
       'emergency' => 
       array (
-        'path' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\storage\\logs/laravel.log',
+        'path' => 'C:\\Users\\shakun\\Desktop\\myGit\\PWG\\storage\\logs/laravel.log',
       ),
     ),
   ),
@@ -552,11 +552,11 @@
       'smtp' => 
       array (
         'transport' => 'smtp',
-        'host' => 'smtp.mailtrap.io',
-        'port' => '587',
+        'host' => 'mail.pwggroup.ea',
+        'port' => '465',
         'encryption' => 'tls',
-        'username' => '6af0bfce937efa',
-        'password' => '83e143e1188669',
+        'username' => 'pwggroup@pwggroup.ae',
+        'password' => '3C%9Ahvg@,',
         'timeout' => NULL,
         'auth_mode' => NULL,
       ),
@@ -606,7 +606,7 @@
       'theme' => 'default',
       'paths' => 
       array (
-        0 => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\resources\\views/vendor/mail',
+        0 => 'C:\\Users\\shakun\\Desktop\\myGit\\PWG\\resources\\views/vendor/mail',
       ),
     ),
   ),
@@ -751,7 +751,7 @@
       2 => '127.0.0.1',
       3 => '127.0.0.1:8000',
       4 => '::1',
-      5 => 'localhost:8000',
+      5 => 'localhost',
     ),
     'guard' => 
     array (
@@ -799,7 +799,7 @@
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\storage\\framework/sessions',
+    'files' => 'C:\\Users\\shakun\\Desktop\\myGit\\PWG\\storage\\framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -819,9 +819,9 @@
   array (
     'paths' => 
     array (
-      0 => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\resources\\views',
+      0 => 'C:\\Users\\shakun\\Desktop\\myGit\\PWG\\resources\\views',
     ),
-    'compiled' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\storage\\framework\\views',
+    'compiled' => 'C:\\Users\\shakun\\Desktop\\myGit\\PWG\\storage\\framework\\views',
   ),
   'dompdf' => 
   array (
@@ -830,10 +830,10 @@
     'convert_entities' => true,
     'options' => 
     array (
-      'font_dir' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\storage\\fonts',
-      'font_cache' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\storage\\fonts',
-      'temp_dir' => 'C:\\Users\\SHAMSH~1\\AppData\\Local\\Temp',
-      'chroot' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal',
+      'font_dir' => 'C:\\Users\\shakun\\Desktop\\myGit\\PWG\\storage\\fonts',
+      'font_cache' => 'C:\\Users\\shakun\\Desktop\\myGit\\PWG\\storage\\fonts',
+      'temp_dir' => 'C:\\Users\\shakun\\AppData\\Local\\Temp',
+      'chroot' => 'C:\\Users\\shakun\\Desktop\\myGit\\PWG',
       'allowed_protocols' => 
       array (
         'file://' => 
@@ -925,7 +925,7 @@
   'livewire' => 
   array (
     'class_namespace' => 'App\\Http\\Livewire',
-    'view_path' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\resources\\views/livewire',
+    'view_path' => 'C:\\Users\\shakun\\Desktop\\myGit\\PWG\\resources\\views/livewire',
     'layout' => 'layouts.app',
     'asset_url' => NULL,
     'app_url' => NULL,

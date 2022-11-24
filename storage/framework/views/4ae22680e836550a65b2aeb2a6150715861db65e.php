@@ -13,7 +13,7 @@ $notifications = DB::table('notifications')
 
 ?>
 
-@if($notifications->first())
+<?php if($notifications->first()): ?>
 
     <div class="row">
         <div class="col px-3 m-2"><b>NOTIFICATIONS</b></div>
@@ -23,17 +23,17 @@ $notifications = DB::table('notifications')
     </div>
     <div class="dropdown-divider"></div>
     <div style="overflow-y: scroll; height:30vh">
-        @foreach($notifications as $notify)
-            @if($notify->status =="Unread")
+        <?php $__currentLoopData = $notifications; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $notify): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php if($notify->status =="Unread"): ?>
                 <style>
                     #notificationDropdown img {
-                    content: url("{{asset('user/images/Notification.svg')}}");
+                    content: url("<?php echo e(asset('user/images/Notification.svg')); ?>");
                     }
                 </style>
                 <a class="dropdown-item preview-item" href="#" style="background-color:#FAFDFE !important;color:#000 !important; font-weight:bold !important">
-            @else  
+            <?php else: ?>  
                 <a class="dropdown-item preview-item" href="#" style="background-color:transparent !important;">
-            @endif
+            <?php endif; ?>
 
             <div class="preview-thumbnail">
                 <div class="preview-icon bg-dark rounded-circle">
@@ -43,24 +43,24 @@ $notifications = DB::table('notifications')
             
             <div class="preview-item-content"  style="word-wrap: break-word;">
 
-                <p class="preview-subject mb-1"><b>{{ $notify->criteria }}</b></p>
+                <p class="preview-subject mb-1"><b><?php echo e($notify->criteria); ?></b></p>
                 
-                @if($notify->status =="Unread")
-                    <p class="text-muted ellipsis mb-0"  style="width:80%;word-wrap: break-word; color:#000 !important; font-weight:500 !important;font-size:70%;">{{ $notify->message }}</p>
-                @else
-                    <p class="text-muted ellipsis mb-0"  style="width:80%;word-wrap: break-word;font-size:70%;">{{ $notify->message }}</p>
-                @endif
-                    <p class="text-muted ellipsis mb-0">{{ $notify->link }}</p>
+                <?php if($notify->status =="Unread"): ?>
+                    <p class="text-muted ellipsis mb-0"  style="width:80%;word-wrap: break-word; color:#000 !important; font-weight:500 !important;font-size:70%;"><?php echo e($notify->message); ?></p>
+                <?php else: ?>
+                    <p class="text-muted ellipsis mb-0"  style="width:80%;word-wrap: break-word;font-size:70%;"><?php echo e($notify->message); ?></p>
+                <?php endif; ?>
+                    <p class="text-muted ellipsis mb-0"><?php echo e($notify->link); ?></p>
             </div>
         </a>
 
-        @if(!$loop->last)
+        <?php if(!$loop->last): ?>
             <div class="dropdown-divider"></div>
-        @endif
-    @endforeach
+        <?php endif; ?>
+    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </div>
 </div>
-@else
+<?php else: ?>
     <div class="row">
         <div class="col px-3 m-2"><b>NOTIFICATIONS</b></div>
     </div>
@@ -68,10 +68,10 @@ $notifications = DB::table('notifications')
     <div style="overflow-y: scroll; height:50px; text-align:center">
         No notifications found!
     </div>
-@endif
+<?php endif; ?>
 
 <!-- <p class="p-3 mb-0 text-center">See all notifications</p> -->
-<script src="{{asset('user/extra/assets/js/jquery-min.js')}}"></script>
+<script src="<?php echo e(asset('user/extra/assets/js/jquery-min.js')); ?>"></script>
 
 <script>
     $('#noty').on('click', function(e){
@@ -79,10 +79,10 @@ $notifications = DB::table('notifications')
 
         var $this = $(this); //alias form reference
         $.ajax({ //2
-            url: '{{ route("mark_read") }}',
+            url: '<?php echo e(route("mark_read")); ?>',
             method: 'POST',
             data: {
-                "_token": "{{ csrf_token() }}",
+                "_token": "<?php echo e(csrf_token()); ?>",
             }
         }).done( function (response) {  
             if (response) {
@@ -92,4 +92,4 @@ $notifications = DB::table('notifications')
         });
     });
 
-</script>
+</script><?php /**PATH C:\Users\shakun\Desktop\myGit\PWG\resources\views/user/notifications.blade.php ENDPATH**/ ?>

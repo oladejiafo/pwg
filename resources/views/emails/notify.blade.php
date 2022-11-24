@@ -14,7 +14,7 @@
 							<tr>
 								<td width="640">
 									<div class="content-block">
-										<h1>Hi , </h1>
+										<h1>Hi {{ Auth::user()->name }}, </h1>
 																					
 										<p><strong> {{ $data['body'] }}</p>
 									</div>

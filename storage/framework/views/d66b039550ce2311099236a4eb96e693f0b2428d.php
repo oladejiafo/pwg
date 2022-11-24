@@ -24,27 +24,28 @@
             </tr>
             </thead>
 
-            @php
+            <?php
                 $trans = DB::table('affiliate_transactions')
                 ->where('affiliate_id', '=', $mine->id)
                 ->orderBy('transaction_date', 'desc')
                 ->get();
-            @endphp  
+            ?>  
 
             <tbody>
-            @foreach($trans as $tran)
+            <?php $__currentLoopData = $trans; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tran): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <tr style="color: #9d9e9f;background-color: #fff;">
-              <td style="padding:5px;">{{$tran->balance}} <span style="font-size:10px;">AED</span></td>
-              <td style="padding:5px;">{{$tran->bank_name}}</td>
-              <td style="padding:5px;text-align:right">{{$tran->account_number}}</td>
-              <td style="padding:5px;text-align:right">{{$tran->swift_code}}</td>
-              <td style="padding:5px;text-align:right">{{number_format($tran->amount,2)}} <span style="font-size:10px;">AED</span></td>
-              <td style="padding:5px;text-align:center">{{date('d-m-Y', strtotime($tran->transaction_date))}}</td>
+              <td style="padding:5px;"><?php echo e($tran->balance); ?> <span style="font-size:10px;">AED</span></td>
+              <td style="padding:5px;"><?php echo e($tran->bank_name); ?></td>
+              <td style="padding:5px;text-align:right"><?php echo e($tran->account_number); ?></td>
+              <td style="padding:5px;text-align:right"><?php echo e($tran->swift_code); ?></td>
+              <td style="padding:5px;text-align:right"><?php echo e(number_format($tran->amount,2)); ?> <span style="font-size:10px;">AED</span></td>
+              <td style="padding:5px;text-align:center"><?php echo e(date('d-m-Y', strtotime($tran->transaction_date))); ?></td>
               <td style="padding:5px;text-align:left">Paid</td>
             </tr>
-            @endforeach
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </tbody>
           
           </table>
         </div>
       </div>
+<?php /**PATH C:\Users\shakun\Desktop\myGit\PWG\resources\views/affiliate/transfer-history.blade.php ENDPATH**/ ?>

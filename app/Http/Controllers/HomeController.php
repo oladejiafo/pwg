@@ -103,24 +103,7 @@ class HomeController extends Controller
             return view('user.home', compact('package', 'promo','started'));
     
         } else {
-                            // Send Notifications on This Payment ##############
-                            $email = "dejigegs@gmail.com";
-                            $ems = " - deji";
-        
-                            $criteria = "Testing Completed!";
-                            $message = "Kindly login to the PWG Client portal and check your receipt on 'My Application' " . $ems;
-        
-                            $link = "oladeji.g8brooks.com";
-        
-                            $dataArray = [
-                                'title' => $criteria . ' Mail from PWG Group',
-                                'body' => $message,
-                                'link' => $link
-                            ];
-    
-                                Mail::to($email)->send(new NotifyMail($dataArray));
-                            
-                            // end
+
             $package = DB::table('destinations')->orderBy(DB::raw('FIELD(name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
             $promo = promo::where('active_until', '>=', date('Y-m-d'))->get();
             //Quickbook
