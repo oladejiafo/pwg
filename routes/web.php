@@ -150,6 +150,7 @@ Route::group(['namespace' => 'Affiliate', 'prefix' => '/affiliate','as' => 'affi
   
         //referral
         Route::get('reffered-client/{id}', [AffiliatePartnerController::class,'reffered_client'])->name('reffered_client');
+        Route::get('total_earned/{id}', [AffiliatePartnerController::class, 'total_earned'])->name('total_earned');
         //Transfer
         Route::get('transfer/{id}', [AffiliatePartnerController::class,'transfer'])->name('transfer');
         Route::post('process_transfer', [AffiliatePartnerController::class,'process_transfer'])->name('process_transfer');

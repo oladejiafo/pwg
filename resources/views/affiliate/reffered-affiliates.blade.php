@@ -48,7 +48,7 @@
               <td style="padding:5px; font-size:15px;">{{$name}}</td>
               <td style="padding:5px; font-size:15px;">{{$affiliate->affiliate_code}}</td>
               <td style="padding:5px; font-size:15px;text-align:right">{{$cnt}}</td>
-              <td style="padding:5px; font-size:15px;text-align:right">{{number_format($commision,2)}}</td>
+              <td style="padding:5px; font-size:15px;text-align:right">{{number_format($commision,2)}} <span style="font-size:10px;">AED</span></td>
               <td style="padding:5px; font-size:15px;text-align:right">{{date('d-m-Y', strtotime($affiliate->created_at))}}</td>
             </tr>
             @endforeach

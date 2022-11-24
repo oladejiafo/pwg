@@ -266,6 +266,19 @@ class AffiliatePartnerController extends Controller
            return back();
         }
     }
+
+    public function total_earned($aff_id){        
+        if(Session::has('loginId')){
+           $mine = Affiliate::where('id', '=', $aff_id)->first();
+   
+           $clients = Applicant::where('refferer_code', '=', $mine->affiliate_code)->get();
+           $affiliates = Affiliate::where('refferer_code', '=', $mine->affiliate_code)->get();
+           // dd($clients->count());
+           return view('affiliate.earned', compact('affiliates','clients','mine'));
+        } else {
+           return back();
+        }
+    }
    
     public function transfer($id){
         if(Session::has('loginId')){

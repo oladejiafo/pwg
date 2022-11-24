@@ -46,9 +46,9 @@
             <tr style="color: #9d9e9f;background-color: #fff;">
               <td style="padding:5px; font-size:15px;">{{$name}}</td>
               <td style="padding:5px; font-size:15px;">{{$product}}</td>
-              <td style="padding:5px; font-size:15px;text-align:right">{{number_format($prod->total_price,2)}}</td>
+              <td style="padding:5px; font-size:15px;text-align:right">{{number_format($prod->total_price,2)}} <span style="font-size:10px;">AED</span></td>
               <!-- <td style="padding:5px; font-size:15px;">{{--$client->destination_id--}}</td> -->
-              <td style="padding:5px; font-size:15px;text-align:right">{{number_format($comm->client_commission,2)}}</td>
+              <td style="padding:5px; font-size:15px;text-align:right">{{number_format($comm->client_commission,2)}} <span style="font-size:10px;">AED</span></td>
               <td style="padding:5px; font-size:15px;text-align:center">{{$pays->payment_date}}</td>
 
               <td style="padding:5px; font-size:15px;text-align:center">{{$client->first_payment_status}}</td>
