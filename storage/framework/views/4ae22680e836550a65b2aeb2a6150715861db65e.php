@@ -22,7 +22,7 @@ $notifications = DB::table('notifications')
         </div>
     </div>
     <div class="dropdown-divider"></div>
-    <div style="overflow-y: scroll; height:500px">
+    <div style="overflow-y: scroll; height:30vh">
         <?php $__currentLoopData = $notifications; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $notify): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <?php if($notify->status =="Unread"): ?>
                 <style>
@@ -46,9 +46,9 @@ $notifications = DB::table('notifications')
                 <p class="preview-subject mb-1"><b><?php echo e($notify->criteria); ?></b></p>
                 
                 <?php if($notify->status =="Unread"): ?>
-                    <p class="text-muted ellipsis mb-0"  style="width:80%;word-wrap: break-word; color:#000 !important; font-weight:500 !important"><?php echo e($notify->message); ?></p>
+                    <p class="text-muted ellipsis mb-0"  style="width:80%;word-wrap: break-word; color:#000 !important; font-weight:500 !important;font-size:70%;"><?php echo e($notify->message); ?></p>
                 <?php else: ?>
-                    <p class="text-muted ellipsis mb-0"  style="width:80%;word-wrap: break-word;"><?php echo e($notify->message); ?></p>
+                    <p class="text-muted ellipsis mb-0"  style="width:80%;word-wrap: break-word;font-size:70%;"><?php echo e($notify->message); ?></p>
                 <?php endif; ?>
                     <p class="text-muted ellipsis mb-0"><?php echo e($notify->link); ?></p>
             </div>

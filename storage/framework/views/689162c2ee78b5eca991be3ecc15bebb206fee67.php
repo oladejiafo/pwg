@@ -94,7 +94,7 @@
                   <img src="<?php echo e(asset('user/images/NotificationNo.svg')); ?>" width="30px" height="30px" alt="icon3">
                   <span class="count bg-danger"></span>
                 </a>
-                <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown" >
+                <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list notificationSec" aria-labelledby="notificationDropdown" >
                   
                    <?php echo $__env->make('user.notifications', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
        

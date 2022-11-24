@@ -22,7 +22,7 @@ $notifications = DB::table('notifications')
         </div>
     </div>
     <div class="dropdown-divider"></div>
-    <div style="overflow-y: scroll; height:20vh">
+    <div style="overflow-y: scroll; height:30vh">
         @foreach($notifications as $notify)
             @if($notify->status =="Unread")
                 <style>
