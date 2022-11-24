@@ -1,6 +1,6 @@
-@extends('affiliate.layout.master')
-<link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
-@section('content')
+
+<link href="<?php echo e(asset('user/css/bootstrap.min.css')); ?>" rel="stylesheet">
+<?php $__env->startSection('content'); ?>
 <style>
   body {
     font-family: 'TT Norms Pro';
@@ -87,15 +87,15 @@
         </div>
       </div>
       <div class="tab-content clearfix" style="margin: 0; padding: 0;">
-         @include('affiliate.new-transfer')
-         @include('affiliate.transfer-history')
+         <?php echo $__env->make('affiliate.new-transfer', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+         <?php echo $__env->make('affiliate.transfer-history', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
       </div>
       </div>
   </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('affiliate-scripts')
+<?php $__env->startPush('affiliate-scripts'); ?>
 <script>
 $(document).ready(function(){
     $('#transferTab').show();
@@ -122,4 +122,5 @@ $('.historyTab').click(function(){
     $('#history').toggleClass('fa-plus-circle fa-minus-circle');
 });
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+<?php echo $__env->make('affiliate.layout.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\shakun\Desktop\myGit\PWG\resources\views/affiliate/transfer.blade.php ENDPATH**/ ?>

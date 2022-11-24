@@ -1,5 +1,5 @@
-@extends('affiliate.layout.master')
-<link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
+
+<link href="<?php echo e(asset('user/css/bootstrap.min.css')); ?>" rel="stylesheet">
 
 <style>
   body {
@@ -53,7 +53,7 @@
     }
   }
 </style>
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="container-fluid page-body-wrapper mainSec">
   <div class="row">
     <div class="col-12">
@@ -74,12 +74,12 @@
                 <th scope="col" style="padding:5px; text-align:center">Status</th>
               </tr>
               </thead>
-              @php 
+              <?php 
                 $sn=0;
                 $tcomm=0;
-              @endphp
-              @foreach($clients as $client)
-                @php
+              ?>
+              <?php $__currentLoopData = $clients; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $client): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <?php
                   $reffered = DB::table('clients')
                     ->where('id', '=', $client->client_id)
                     ->get();
@@ -98,41 +98,41 @@
                     ->first();
 
                   list($product, $ot) = explode(' ', $prod->plan_name);
-                @endphp
-                @foreach($reffered as $reffer)
-                  @php
+                ?>
+                <?php $__currentLoopData = $reffered; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $reffer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                  <?php
                   $name = $reffer->name . ' ' . $reffer->sur_name;
                   $tcomm = $tcomm + $comm->client_commission;
-                  @endphp
-                @endforeach
+                  ?>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 <tbody>
                 <tr style="color: #9d9e9f;background-color: #fff;">
-                  <td style="padding:5px;">{{$name}}</td>
+                  <td style="padding:5px;"><?php echo e($name); ?></td>
                   <td style="padding:5px;">Client</td>
-                  <td style="padding:5px;text-align:right">{{number_format($comm->client_commission,2)}} <span style="font-size:10px;">AED</span> </td>
-                  <td style="padding:5px;text-align:center">{{$pays->payment_date}}</td>
-                  <td style="padding:5px;text-align:center">{{$client->first_payment_status}}</td>
+                  <td style="padding:5px;text-align:right"><?php echo e(number_format($comm->client_commission,2)); ?> <span style="font-size:10px;">AED</span> </td>
+                  <td style="padding:5px;text-align:center"><?php echo e($pays->payment_date); ?></td>
+                  <td style="padding:5px;text-align:center"><?php echo e($client->first_payment_status); ?></td>
                 </tr>
               
-              @endforeach
+              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
               <!-- Affiliates -->
-              @foreach($affiliates as $affiliate)
-                @php
+              <?php $__currentLoopData = $affiliates; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $affiliate): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <?php
                   $reffered = DB::table('applications')
                   ->where('refferer_code', '=', $affiliate->affiliate_code)
                   ->get();
-                @endphp 
+                ?> 
               
-                @foreach($reffered as $reff)
-                  @php
+                <?php $__currentLoopData = $reffered; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $reff): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                  <?php
                     $comm = DB::table('commission')
                     ->where('product_id', '=', $reff->destination_id)
                     ->first();
-                  @endphp  
-                @endforeach
+                  ?>  
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
-                @php
+                <?php
                   if(isset($comm))
                   {
                       $comm_aff = ($comm->affiliate_commission/100) * $comm->client_commission;
@@ -143,19 +143,19 @@
                   $name = $affiliate->first_name . ' ' . $affiliate->surname;
                   $commision = $cnt * $comm_aff;
                   $tcomm = $tcomm + $commision;
-                @endphp
+                ?>
 
                 <tr style="color: #9d9e9f;background-color: #fff;">
-                  <td style="padding:5px;">{{$name}}</td>
+                  <td style="padding:5px;"><?php echo e($name); ?></td>
                   <td style="padding:5px;">Affiliate</td>
-                  <td style="padding:5px;text-align:right">{{number_format($commision,2)}} <span style="font-size:10px;">AED</span></td>
-                  <td style="padding:5px;text-align:center">{{date('Y-m-d', strtotime($affiliate->created_at))}}</td>
-                  <td style="padding:5px;text-align:center">{{$client->first_payment_status}}</td>
+                  <td style="padding:5px;text-align:right"><?php echo e(number_format($commision,2)); ?> <span style="font-size:10px;">AED</span></td>
+                  <td style="padding:5px;text-align:center"><?php echo e(date('Y-m-d', strtotime($affiliate->created_at))); ?></td>
+                  <td style="padding:5px;text-align:center"><?php echo e($client->first_payment_status); ?></td>
                 </tr>
-              @endforeach
+              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
               <tr style="color:#9d9e9f;background-color: #fff; padding-block:10px; border-block: 1px solid #cccccc;font-weight:bold">
                 <td style="padding:5px; font-size:17px;" colspan=2>Total:</td>
-                <td style="padding:5px; font-size:17px;text-align:right">{{number_format($tcomm,2)}} <span style="font-size:10px;">AED</span></td>
+                <td style="padding:5px; font-size:17px;text-align:right"><?php echo e(number_format($tcomm,2)); ?> <span style="font-size:10px;">AED</span></td>
                 <td style="padding:5px; font-size:17px;text-align:center"></td>
                 <td style="padding:5px; font-size:17px;text-align:center"></td>
               </tr>
@@ -168,10 +168,11 @@
     </div>
   </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('affiliate-scripts')
+<?php $__env->startPush('affiliate-scripts'); ?>
   <script>
 
   </script>
-@endpush
+<?php $__env->stopPush(); ?>
+<?php echo $__env->make('affiliate.layout.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\shakun\Desktop\myGit\PWG\resources\views/affiliate/earned.blade.php ENDPATH**/ ?>

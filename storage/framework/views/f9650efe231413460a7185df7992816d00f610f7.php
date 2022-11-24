@@ -1,9 +1,10 @@
 
       <div class="card tab-pane" id="clientTab" role="tabpanel">
         <div class="card-header" style="text-align:center; background-color:#fff">
-          <img src="{{asset('images/affiliate/head.png')}}" alt=""><br>
+          <img src="<?php echo e(asset('images/affiliate/head.png')); ?>" alt=""><br>
           <span style="color: #9d9e9f;padding:5px">Total Referred Clients</span> <br>
-          {{$clients->count()}}
+          <?php echo e($clients->count()); ?>
+
         </div>
         <div class="card-body table-responsive">
           <table class="table table-hover" width="100%">
@@ -20,8 +21,8 @@
             </tr>
             </thead>
 
-            @foreach($clients as $client)
-          @php
+            <?php $__currentLoopData = $clients; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $client): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+          <?php
           $reffered = DB::table('clients')
           ->where('id', '=', $client->client_id)
           ->get();
@@ -39,25 +40,26 @@
             ->first();
 
             list($product, $ot) = explode(' ', $prod->plan_name);
-            @endphp
-            @foreach($reffered as $reffer)
-            @php
+            ?>
+            <?php $__currentLoopData = $reffered; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $reffer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <?php
             $name = $reffer->name . ' ' . $reffer->sur_name;
-            @endphp
-            @endforeach
+            ?>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             <tbody>
             <tr style="color: #9d9e9f;background-color: #fff;">
-              <td style="padding:5px; font-size:15px;">{{$name}}</td>
-              <td style="padding:5px; font-size:15px;">{{$product}}</td>
-              <td style="padding:5px; font-size:15px;text-align:right">{{number_format($prod->total_price,2)}} <span style="font-size:10px;">AED</span></td>
-              <!-- <td style="padding:5px; font-size:15px;">{{--$client->destination_id--}}</td> -->
-              <td style="padding:5px; font-size:15px;text-align:right">{{number_format($comm->client_commission,2)}} <span style="font-size:10px;">AED</span></td>
-              <td style="padding:5px; font-size:15px;text-align:center">{{$pays->payment_date}}</td>
+              <td style="padding:5px; font-size:15px;"><?php echo e($name); ?></td>
+              <td style="padding:5px; font-size:15px;"><?php echo e($product); ?></td>
+              <td style="padding:5px; font-size:15px;text-align:right"><?php echo e(number_format($prod->total_price,2)); ?> <span style="font-size:10px;">AED</span></td>
+              <!-- <td style="padding:5px; font-size:15px;"></td> -->
+              <td style="padding:5px; font-size:15px;text-align:right"><?php echo e(number_format($comm->client_commission,2)); ?> <span style="font-size:10px;">AED</span></td>
+              <td style="padding:5px; font-size:15px;text-align:center"><?php echo e($pays->payment_date); ?></td>
 
-              <td style="padding:5px; font-size:15px;text-align:center">{{$client->first_payment_status}}</td>
+              <td style="padding:5px; font-size:15px;text-align:center"><?php echo e($client->first_payment_status); ?></td>
             </tr>
             </tbody>
-            @endforeach
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
           </table>
         </div>
       </div>
+<?php /**PATH C:\Users\shakun\Desktop\myGit\PWG\resources\views/affiliate/reffered-client.blade.php ENDPATH**/ ?>
