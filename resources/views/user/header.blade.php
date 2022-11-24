@@ -94,7 +94,7 @@
                   <img src="{{asset('user/images/NotificationNo.svg')}}" width="30px" height="30px" alt="icon3">
                   <span class="count bg-danger"></span>
                 </a>
-                <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown" >
+                <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list notificationSec" aria-labelledby="notificationDropdown" >
                   
                    @include('user.notifications')
        

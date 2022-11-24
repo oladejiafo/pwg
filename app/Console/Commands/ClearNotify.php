@@ -39,8 +39,9 @@ class ClearNotify extends Command
      */
     public function handle()
     {
-        notifications::where('created_at', '<', Carbon::now()->subDays(10))->delete();
-       
+        notifications::where('created_at', '<', Carbon::now())->delete();
+        // notifications::where('created_at', '<', Carbon::now()->subDays(10))->delete();
+
         //return 0;
     }
 }

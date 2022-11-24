@@ -156,7 +156,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-body">
-                    <img src="{{asset('images/Passport_Requirement.jpg')}}" width ="760px" height ="760px;" alt="PWG Group">
+                    <img src="{{asset('images/Passport_Requirement.jpg')}}" width="100%" height ="100%" alt="PWG Group">
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" name="passport_upload" class="form-control" placeholder="Upload Passport Copy*" class="passportFormatModal"  autocomplete="off" readonly/>

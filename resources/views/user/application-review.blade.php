@@ -1685,7 +1685,7 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-body">
-                        <img src="{{asset('images/Passport_Requirement.jpg')}}" width ="760px" height ="760px;">
+                        <img src="{{asset('images/Passport_Requirement.jpg')}}" width="100%" height ="100%">
                     </div>
                     <div class="modal-footer">
                         <input type="hidden" name="passport_upload" class="form-control" placeholder="Upload Passport Copy*"  autocomplete="off" readonly/>
