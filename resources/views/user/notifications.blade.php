@@ -22,7 +22,7 @@ $notifications = DB::table('notifications')
         </div>
     </div>
     <div class="dropdown-divider"></div>
-    <div style="overflow-y: scroll; height:500px">
+    <div style="overflow-y: scroll; height:20vh">
         @foreach($notifications as $notify)
             @if($notify->status =="Unread")
                 <style>
@@ -46,9 +46,9 @@ $notifications = DB::table('notifications')
                 <p class="preview-subject mb-1"><b>{{ $notify->criteria }}</b></p>
                 
                 @if($notify->status =="Unread")
-                    <p class="text-muted ellipsis mb-0"  style="width:80%;word-wrap: break-word; color:#000 !important; font-weight:500 !important">{{ $notify->message }}</p>
+                    <p class="text-muted ellipsis mb-0"  style="width:80%;word-wrap: break-word; color:#000 !important; font-weight:500 !important;font-size:70%;">{{ $notify->message }}</p>
                 @else
-                    <p class="text-muted ellipsis mb-0"  style="width:80%;word-wrap: break-word;">{{ $notify->message }}</p>
+                    <p class="text-muted ellipsis mb-0"  style="width:80%;word-wrap: break-word;font-size:70%;">{{ $notify->message }}</p>
                 @endif
                     <p class="text-muted ellipsis mb-0">{{ $notify->link }}</p>
             </div>

@@ -10,7 +10,7 @@
         margin-left: auto !important;
         margin-right: auto !important;
         display: block;
-        width: 68% !important;
+        width: 100% !important;
     }
 
     .invoice p {
@@ -26,7 +26,10 @@
 
     .invoice {
         transition: transform 0.9s ease;
+        margin-top: 8%;
     }
+
+
 
     .invoice-image:hover {
         background-image: url("{{asset('images/invoice-download-White.svg')}}") !important;

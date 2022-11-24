@@ -190,6 +190,12 @@ a.more {
     margin-bottom: 20px;
     padding: calc(4rem - 30px) 0 4rem 0;
   }
+  .notificationSec {
+    left: 0;
+    width: 100%;
+    overflow-y: scroll;
+    height: 57vh;
+  }
 }
 
 @media (min-width: 768px) {
@@ -1377,7 +1383,7 @@ body {
 }
 
 .expSearch {
-  padding: 28px !important;
+  padding: 25px !important;
 }
 
 .form-control {
@@ -2611,14 +2617,14 @@ iframe img {
   }
 
   .dataCompleted {
-    margin-top: -31px !important;
+    /* margin-top: -31px !important; */
     margin-left: 71% !important;
     width: 17px;
   }
 
 
   .searchForm button {
-    width: 130px !important;
+    width: 40% !important;
   }
 
   .table,

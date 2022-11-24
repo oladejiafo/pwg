@@ -4,13 +4,13 @@
     'name' => 'Laravel',
     'env' => 'local',
     'debug' => true,
-    'url' => 'http://localhost',
+    'url' => 'http://localhost:8000',
     'asset_url' => NULL,
     'timezone' => 'UTC',
     'locale' => 'en',
     'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
-    'key' => 'base64:b9vNXIU8DWblkF2XoOrWR/jOnEAnTdlBO5zfrn/0OD0=',
+    'key' => 'base64:RK4k8KXHyBXYhSqf8Qi0Iz+sZANzuIpPpE4hp58JLJc=',
     'cipher' => 'AES-256-CBC',
     'payment_api_key' => 'MmM2ODJiOGMtOGFmNS00NzUyLTg2MjUtM2Y5MTg3OWU5YjRlOjViMzhjM2I5LTUyMDItNDBmZi1hNzAyLTFlYTIwZDkwYjhiMQ==',
     'payment_reference' => '15d885ec-682a-4398-89d9-247254d71c18',
@@ -193,7 +193,7 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => 'C:\\Users\\shakun\\Desktop\\myGit\\PWG\\storage\\framework/cache/data',
+        'path' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\storage\\framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -365,13 +365,13 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\Users\\shakun\\Desktop\\myGit\\PWG\\storage\\app/public',
+        'root' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\storage\\app/public',
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\Users\\shakun\\Desktop\\myGit\\PWG\\storage\\app/public',
-        'url' => 'http://localhost/storage',
+        'root' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\storage\\app/public',
+        'url' => 'http://localhost:8000/storage',
         'visibility' => 'public',
       ),
       's3' => 
@@ -387,14 +387,14 @@
       'media' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\Users\\shakun\\Desktop\\myGit\\PWG\\public\\storage',
-        'url' => 'http://localhost/storage',
+        'root' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\public\\storage',
+        'url' => 'http://localhost:8000/storage',
         'visibility' => 'public',
       ),
     ),
     'links' => 
     array (
-      'C:\\Users\\shakun\\Desktop\\myGit\\PWG\\public\\storage' => 'C:\\Users\\shakun\\Desktop\\myGit\\PWG\\storage\\app/public',
+      'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\public\\storage' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\storage\\app/public',
     ),
   ),
   'fortify' => 
@@ -483,13 +483,13 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => 'C:\\Users\\shakun\\Desktop\\myGit\\PWG\\storage\\logs/laravel.log',
+        'path' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\storage\\logs/laravel.log',
         'level' => 'debug',
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => 'C:\\Users\\shakun\\Desktop\\myGit\\PWG\\storage\\logs/laravel.log',
+        'path' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\storage\\logs/laravel.log',
         'level' => 'debug',
         'days' => 14,
       ),
@@ -540,7 +540,7 @@
       ),
       'emergency' => 
       array (
-        'path' => 'C:\\Users\\shakun\\Desktop\\myGit\\PWG\\storage\\logs/laravel.log',
+        'path' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\storage\\logs/laravel.log',
       ),
     ),
   ),
@@ -552,11 +552,11 @@
       'smtp' => 
       array (
         'transport' => 'smtp',
-        'host' => 'smtp.gmail.com',
+        'host' => 'smtp.mailtrap.io',
         'port' => '587',
         'encryption' => 'tls',
-        'username' => 'dejigegs@gmail.com',
-        'password' => '0lagegS#1',
+        'username' => '6af0bfce937efa',
+        'password' => '83e143e1188669',
         'timeout' => NULL,
         'auth_mode' => NULL,
       ),
@@ -598,15 +598,15 @@
     ),
     'from' => 
     array (
-      'address' => 'shamsi253@gmail.com',
-      'name' => 'Example',
+      'address' => 'no-reply@pwggroup.ae',
+      'name' => 'PWG GROUP',
     ),
     'markdown' => 
     array (
       'theme' => 'default',
       'paths' => 
       array (
-        0 => 'C:\\Users\\shakun\\Desktop\\myGit\\PWG\\resources\\views/vendor/mail',
+        0 => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\resources\\views/vendor/mail',
       ),
     ),
   ),
@@ -751,7 +751,7 @@
       2 => '127.0.0.1',
       3 => '127.0.0.1:8000',
       4 => '::1',
-      5 => 'localhost',
+      5 => 'localhost:8000',
     ),
     'guard' => 
     array (
@@ -799,7 +799,7 @@
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => 'C:\\Users\\shakun\\Desktop\\myGit\\PWG\\storage\\framework/sessions',
+    'files' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\storage\\framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -819,9 +819,9 @@
   array (
     'paths' => 
     array (
-      0 => 'C:\\Users\\shakun\\Desktop\\myGit\\PWG\\resources\\views',
+      0 => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\resources\\views',
     ),
-    'compiled' => 'C:\\Users\\shakun\\Desktop\\myGit\\PWG\\storage\\framework\\views',
+    'compiled' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\storage\\framework\\views',
   ),
   'dompdf' => 
   array (
@@ -830,10 +830,10 @@
     'convert_entities' => true,
     'options' => 
     array (
-      'font_dir' => 'C:\\Users\\shakun\\Desktop\\myGit\\PWG\\storage\\fonts',
-      'font_cache' => 'C:\\Users\\shakun\\Desktop\\myGit\\PWG\\storage\\fonts',
-      'temp_dir' => 'C:\\Users\\shakun\\AppData\\Local\\Temp',
-      'chroot' => 'C:\\Users\\shakun\\Desktop\\myGit\\PWG',
+      'font_dir' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\storage\\fonts',
+      'font_cache' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\storage\\fonts',
+      'temp_dir' => 'C:\\Users\\SHAMSH~1\\AppData\\Local\\Temp',
+      'chroot' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal',
       'allowed_protocols' => 
       array (
         'file://' => 
@@ -925,7 +925,7 @@
   'livewire' => 
   array (
     'class_namespace' => 'App\\Http\\Livewire',
-    'view_path' => 'C:\\Users\\shakun\\Desktop\\myGit\\PWG\\resources\\views/livewire',
+    'view_path' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\resources\\views/livewire',
     'layout' => 'layouts.app',
     'asset_url' => NULL,
     'app_url' => NULL,
