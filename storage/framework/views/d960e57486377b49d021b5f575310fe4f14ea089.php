@@ -76,11 +76,7 @@
 
             <?php if(Route::has('login')): ?>
              <?php if(auth()->guard()->check()): ?>
-              <li class="nav-item d-lg-block">
-                <a class="nav-link" href="#">
-                  <img src="<?php echo e(asset('user/images/Search.svg')); ?>" width="30px" height="30px" alt="PWG icon3">
-                </a>
-              </li>
+              
               <li class="nav-item">
                 <a target="_blank" class="nav-link" href="https://wa.link/iz7ait" title="Click Here To Chat on WhatsAPP">
                   <!-- <i class="mdi mdi-email" style="width: 30px; height: 30px;"></i> -->

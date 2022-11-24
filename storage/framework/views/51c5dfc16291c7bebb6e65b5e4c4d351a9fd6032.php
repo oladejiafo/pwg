@@ -22,7 +22,7 @@ $notifications = DB::table('notifications')
         </div>
     </div>
     <div class="dropdown-divider"></div>
-    <div style="overflow-y: scroll; height:20vh">
+    <div style="overflow-y: scroll; height:30vh">
         <?php $__currentLoopData = $notifications; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $notify): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <?php if($notify->status =="Unread"): ?>
                 <style>

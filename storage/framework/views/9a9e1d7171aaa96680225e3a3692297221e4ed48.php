@@ -45,4 +45,4 @@
         </p>
     </div>
 </div>
-<?php /**PATH C:\Users\shakun\Desktop\myGit\PWG\resources\views/user/earning.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views/user/earning.blade.php ENDPATH**/ ?>

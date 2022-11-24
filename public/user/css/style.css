@@ -23,6 +23,7 @@ body {
 
 .jobSelected .remove {
   line-height: 0.5px !important;
+  padding: 0;
 }
 
 .selected {
@@ -299,6 +300,11 @@ a.more {
   right: -100px;
   top: -0px;
 }
+
+.nav-item #profileDropdown img {
+  display: initial;
+}
+
 
 @media (min-width: 1200px) {
   .hero .hero-img-wrap:after {

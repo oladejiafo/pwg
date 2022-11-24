@@ -73,11 +73,11 @@
                         </li>
                     </ul>
                     <ul class="navbar-nav me-autox mb-2 mb-lg-0 navbar-right-section">
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a class="nav-link btn create-new-button" aria-expanded="false" href="#">
                                 <img src="{{asset('user/images/Search.svg')}}" width="30px" height="30px" alt="PWG icon3">
                             </a>
-                        </li>
+                        </li> --}}
 
 
                         <li class="nav-item">

@@ -76,11 +76,11 @@
 
             @if(Route::has('login'))
              @auth
-              <li class="nav-item d-lg-block">
+              {{-- <li class="nav-item d-lg-block">
                 <a class="nav-link" href="#">
                   <img src="{{asset('user/images/Search.svg')}}" width="30px" height="30px" alt="PWG icon3">
                 </a>
-              </li>
+              </li> --}}
               <li class="nav-item">
                 <a target="_blank" class="nav-link" href="https://wa.link/iz7ait" title="Click Here To Chat on WhatsAPP">
                   <!-- <i class="mdi mdi-email" style="width: 30px; height: 30px;"></i> -->
