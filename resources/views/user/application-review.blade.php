@@ -361,7 +361,7 @@
                                                             <input type="file" class="upload up passport_copy" id="up" value="{{$client['passport']}}"  name="passport_copy" />
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
-                                                    <a href="javascript:void(0)"  onclick="showPassport()">click to view uploaded passport copy</a>
+                                                    {{-- <a href="javascript:void(0)"  onclick="showPassport()">click to view uploaded passport copy</a> --}}
                                                     <span class="passport_copy_errorClass"></span>
                                                     <label for="passport_copy">Passport Copy Upload*</label>
                                                 </div>
@@ -490,7 +490,7 @@
                                                             <input type="file" class="upload residence_id" id="up"  name="residence_copy" />
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
-                                                    <a href="javascript:void(0)" onclick="residenceCopyModal()">click to view uploaded residence id copy</a>
+                                                    {{-- <a href="javascript:void(0)" onclick="residenceCopyModal()">click to view uploaded residence id copy</a> --}}
                                                     <span class="residence_copy_errorClass"></span>
                                                     <label for="residence_copy">Residence ID Copy*</label>
                                                 </div>
@@ -503,9 +503,9 @@
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
                                                     <label for="visa_copy">Visa Copy*</label>
-                                                    @if($client['visaCopyUrl'])
+                                                    {{-- @if($client['visaCopyUrl'])
                                                         <a href="javascript:void(0)" onclick="visaCopyModal()">click to view uploaded visa copy</a>
-                                                    @endif
+                                                    @endif --}}
                                                 </div>
                                             </div>
                                             {{-- <div class="form-group row mt-4">
@@ -610,7 +610,6 @@
                                             </div>
                                             @php  
                                              $vall = $client['schengenVisaName'];
-                                             $sheng = $client['schengenVisaUrl'];
                                              $phold = "Image of Schengen Or National Visa Issued During Last 5 Years";
                                              @endphp
                                             <div class="form-group row mt-4 schengen_visa">
@@ -626,9 +625,29 @@
                                                     </div><!-- btn -->
                                                     <label for="schengen_copy">Image of Schengen Or National Visa Issued During Last 5 Years*</label>
                                                    
-                                                    @if($client['schengenVisaUrl'])
+                                                    {{-- @if($client['schengenVisaUrl'])
                                                         <a href="javascript:void(0)" onclick="schengenVisatModal()">click to view uploaded schengen visa copy</a>
-                                                    @endif
+                                                    @endif --}}
+                                                    @php 
+                                                        $cnt = 0; 
+                                                        for($i = 1; $i <= 4; $i++)
+                                                            {
+                                                                if($client['schengenVisaUrl'.$i] != null){
+                                                                    $cnt++;
+                                                    @endphp
+                                                                <div class="col-sm-12 mt-3" id="schengen_visa">
+                                                                    <input type="text" class="form-control schengen_copy1_{{$cnt}}" placeholder="Image of Schengen Or National Visa Issued During Last 5 Years" name="schengen_copy1[]"  value="{{$client['schengenVisaName'.$i]}}" readonly >
+                                                                    <div class="input-group-btn">
+                                                                        <span class="fileUpload btn">
+                                                                            <span class="upl" id="upload">Choose File</span>
+                                                                            <input style="position: absolute;top: 0; right: 0; margin: 0; padding: 0; font-size: 20px; cursor: pointer; opacity: 0; filter: alpha(opacity=0);" type="file" class="schengen_copy1_{{$cnt}}" accept="image/png, image/gif, image/jpeg" name="schengen_copy1[]" />
+                                                                        </span>
+                                                                    </div>
+                                                                </div>   
+                                                    @php 
+                                                                }
+                                                            }
+                                                    @endphp
                                                 </div>
                                                 <div style="display: block;color:blue"><a href="#" class="pl" title="click here to add another row for upload" style="display:inline"><i class="fa fa-plus-circle"></i></a> Add another Visa <a href="#" class="mi" id="mi" title="click here to remove the last added row for upload" style="display:inline"><i class="fa fa-minus-circle"></i></a></div>
                                             </div>
@@ -1214,7 +1233,7 @@
                                                             <input type="file" class="upload dependent_residence_copy" id="up"  name="dependent_residence_copy" />
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
-                                                    <a href="javascript:void(0)" onclick="dependentResidence()">click to view uploaded residence copy</a>
+                                                    {{-- <a href="javascript:void(0)" onclick="dependentResidence()">click to view uploaded residence copy</a> --}}
                                                     <label for="dependent_residence_copy">Residence/Emirates ID*</label>
                                                     <span class="dependent_residence_copy_errorClass"></span>
                                                 </div>
@@ -1227,9 +1246,9 @@
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
                                                     <label for="dependent_visa_copy">Visa Copy</label>
-                                                    @if($dependent['visaCopyUrl'] != null)
+                                                    {{-- @if($dependent['visaCopyUrl'] != null)
                                                         <a href="javascript:void(0)" onclick="dependentVisa()">click to view uploaded visa copy</a>
-                                                    @endif
+                                                    @endif --}}
                                                 </div>
                                             </div>
                                             {{-- <div class="form-group row mt-4">
@@ -1344,7 +1363,27 @@
                                                     <label for="dependent_schengen_copy">Image of Schengen Or National Visa Issued During Last 5 Years</label>
                                                     @if($dependent['schengenVisaUrl'] != null)
                                                         <a href="javascript:void(0)" onclick="dependentSchengenVisatModal()">click to view uploaded schengen visa copy</a>
-                                                    @endif                                                    
+                                                    @endif    
+                                                    @php 
+                                                        $cnt = 0; 
+                                                        for($i = 1; $i <= 4; $i++)
+                                                            {
+                                                                if($client['schengenVisaUrl'.$i] != null){
+                                                                    $cnt++;
+                                                    @endphp
+                                                                <div class="col-sm-12 mt-3" id="schengen_visa">
+                                                                    <input type="text" class="form-control schengen_copy1_{{$cnt}}" placeholder="Image of Schengen Or National Visa Issued During Last 5 Years" name="schengen_copy1[]"  value="{{$client['schengenVisaName'.$i]}}" readonly >
+                                                                    <div class="input-group-btn">
+                                                                        <span class="fileUpload btn">
+                                                                            <span class="upl" id="upload">Choose File</span>
+                                                                            <input style="position: absolute;top: 0; right: 0; margin: 0; padding: 0; font-size: 20px; cursor: pointer; opacity: 0; filter: alpha(opacity=0);" type="file" class="schengen_copy1_{{$cnt}}" accept="image/png, image/gif, image/jpeg" name="schengen_copy1[]" />
+                                                                        </span>
+                                                                    </div>
+                                                                </div>   
+                                                    @php 
+                                                                }
+                                                            }
+                                                    @endphp                                                
                                                 </div>
                                                 <div style="display: block;color:blue"><a href="#" class="plus" title="click here to add another row for upload" style="display:inline"><i class="fa fa-plus-circle"></i></a> Add another Visa <a href="#" class="minus" id="minus" title="click here to remove the last added row for upload" style="display:inline"><i class="fa fa-minus-circle"></i></a></div>
 
@@ -1963,7 +2002,6 @@
         $vall3 = ($client['schengenVisaName3']) ?? null;
         $vall4 = ($client['schengenVisaName4']) ?? null;
 
-        $sheng = ($client['schengenVisaUrl1']) ?? null;
         $phold = "Image of Schengen Or National Visa Issued During Last 5 Years";
         $vall1_dep = ($dependent['schengenVisaName1_dep']) ?? null;
         $vall2_dep = ($dependent['schengenVisaName2_dep']) ?? null;
@@ -1980,7 +2018,7 @@
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 
 <script>
-    var cnt=0;
+    var cnt= {{$cnt}};
     var cnt_dep = 0; 
     var valle=null;
     $(function() {
@@ -2019,6 +2057,7 @@
         //Remove the extra file input box for schengen visa upload
         $('a.mi').click(function (e) {
             e.preventDefault();
+            console.log(this);
             if ($('#schengen_visa div').length > 1) {
                 cnt = cnt-1;
                 $('#schengen_visa').children().last().remove();

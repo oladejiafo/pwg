@@ -31,7 +31,7 @@
                             @php $lastId = $present->id; @endphp
                         @endforeach
                     </div>
-                    <div class="row justify-content-md-center">
+                    <div class="row justify-content-md-center LoadMore">
                         <button type="button" class="btn btn-default load">Load More <span class="loadImg"><img src="{{asset('images/down_arrow.png')}}"></span></button>
                     </div>
                 </div>

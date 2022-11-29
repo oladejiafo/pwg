@@ -83,6 +83,10 @@ a.more {
   font-weight: 600;
 }
 
+.navbar-nav li {
+  list-style-type: none;
+}
+
 .custom-navbar .navbar-brand>span {
   opacity: .4;
 }
@@ -302,7 +306,7 @@ a.more {
 }
 
 .nav-item #profileDropdown img {
-  display: initial;
+  display: initial !important;
 }
 
 

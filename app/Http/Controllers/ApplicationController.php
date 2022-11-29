@@ -228,6 +228,9 @@ class ApplicationController extends Controller
                 ->first();
             $dependent = User::where('family_member_id', Auth::id())->where('is_dependent', 1)->first();
             $children = User::where('family_member_id', Auth::id())->where('is_dependent', 2)->get();
+            if ($applicant->application_stage_status != '5' && $applicant->application_stage_status != '4') {
+                return Redirect::route('applicant.details', $productId)->with('error', 'You have to complete applicant details first!');
+            }
 
             $client->passportName = (isset($client->getMedia(User::$media_collection_main)[0])) ? $client->getMedia(User::$media_collection_main)[0]['name'] : null;
             $client->passporUrl = (isset($client->getMedia(User::$media_collection_main)[0])) ? $client->getMedia(User::$media_collection_main)[0]->getFullUrl() : null;
@@ -407,6 +410,7 @@ class ApplicationController extends Controller
 
             }
         }
+
         $client->is_schengen_visa_issued_last_five_year  = $request->is_schengen_visa_issued_last_five_year;
         $client->is_finger_print_collected_for_Schengen_visa = $request->is_finger_print_collected_for_Schengen_visa;
         $client->save();

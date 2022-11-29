@@ -13,7 +13,7 @@ use App\Notifications\CustomResetPasswordNotification;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-class User extends Authenticatable implements MustVerifyEmail, HasMedia
+class User extends Authenticatable implements HasMedia
 {
     use HasApiTokens;
     use HasFactory;
