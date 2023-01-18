@@ -53,7 +53,7 @@ class pdfBlock
             if ($pageNo == 1 && ($product == Constant::Poland || $product == Constant::Germany)){
                 //Date
                 $pdf->SetXY(28, 40 );
-                $pdf->Write(2, date('d-m-yy'));
+                $pdf->Write(2, date('d/m/Y'));
 
                 //Place
                 $pdf->SetXY(28, 54.5 );
@@ -85,7 +85,7 @@ class pdfBlock
             } else if ($pageNo == 1 && $product == Constant::Czech){
                  //Date
                  $pdf->SetXY(28, 45 );
-                 $pdf->Write(2, date('d-m-yy'));
+                 $pdf->Write(2, date('d/m/Y'));
  
                  //Place
                  $pdf->SetXY(28, 61 );
@@ -105,7 +105,7 @@ class pdfBlock
             } else if ($pageNo == 1 && $product == Constant::Malta){
                 //Date
                 $pdf->SetXY(28, 22 );
-                $pdf->Write(2, date('d-m-yy'));
+                $pdf->Write(2, date('d/m/Y'));
 
                 //Place
                 $pdf->SetXY(67, 22 );
@@ -126,7 +126,7 @@ class pdfBlock
                 if($package == Constant::CanadaExpressEntry){
                      //Date
                      $pdf->SetXY(30, 40 );
-                     $pdf->Write(2, date('d-m-yy'));
+                     $pdf->Write(2, date('d/m/Y'));
  
                      //Place
                      $pdf->SetXY(30, 54 );
@@ -146,7 +146,7 @@ class pdfBlock
                 } else if($package == Constant::CanadaStudyPermit) {
                      //Date
                     $pdf->SetXY(30, 40 );
-                    $pdf->Write(2, date('d-m-yy'));
+                    $pdf->Write(2, date('d/m/Y'));
 
                     //Place
                     $pdf->SetXY(30, 54 );
@@ -166,7 +166,7 @@ class pdfBlock
                 } else if($package == Constant::BlueCollar) {
                     //Date
                     $pdf->SetXY(30, 40 );
-                    $pdf->Write(2, date('d-m-yy'));
+                    $pdf->Write(2, date('d/m/Y'));
 
                     //Place
                     $pdf->SetXY(30, 54 );
@@ -198,6 +198,82 @@ class pdfBlock
         Storage::disk(env('MEDIA_DISK'))->put($destination_file, $theString, 'public');
     }
 
+    public static function attachSignature($originalPdf, $signature, $product, $paymentType, $applicant)
+    {
+        $pdf = new \setasign\Fpdi\Fpdi();
+        $fileContent = file_get_contents($originalPdf,'rb');
+        $pagecount = $pdf->setSourceFile(StreamReader::createByString($fileContent));
+        // return $originalPdf;
+        for ($pageNo = 1; $pageNo <= $pagecount; $pageNo++) {
+            $pdf->AddPage();
+            $template = $pdf->importPage($pageNo);
+            // use the imported page and place it at point 20,30 with a width of 170 mm
+            $pdf->useTemplate($template, 10, 10, 200);
+            //Select Arial italic 8
+            $pdf->SetFont('Arial', 'B', '9');
+            $pdf->SetTextColor(0, 0, 0);
+            $client = User::find(Auth::id());
+
+            if ($product->name == 'Poland') {
+                if ($pageNo == 4) {
+                    if ($paymentType == 'First Payment' || $paymentType == 'Full-Outstanding Payment') {
+                        //signature
+                        $pdf->Image($signature, 45, 114, 25, 20, 'PNG');
+                        $pdf->Image($signature, 123, 179, 25, 20, 'PNG');
+                        $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_first_payment_contract.pdf';
+                    }
+                }
+                if ($pageNo == 5) {
+                    if ($paymentType == 'Second Payment' || $paymentType == 'Full-Outstanding Payment') {
+                        $pdf->Image($signature, 125, 70, 25, 20, 'PNG');
+                        $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_second_payment_contract.pdf';
+                    }
+                    if ($paymentType == 'Third Payment' || $paymentType == 'Full-Outstanding Payment') {
+                        $pdf->Image($signature, 122, 158.5, 25, 20, 'PNG');
+                        $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_third_payment_contract.pdf';
+                    }
+                }
+            }
+        }
+        if ($paymentType == 'First Payment') {
+            $theString = $pdf->Output('S');
+            if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_1st_signature, env('MEDIA_DISK'));
+            } else {
+                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_1st_signature, 'local');
+            }
+        }
+        if ($paymentType == 'Second Payment') {
+            $theString = $pdf->Output('S');
+            if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_2nd_signature, env('MEDIA_DISK'));
+            } else {
+                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_2nd_signature, 'local');
+            }
+        }
+        if ($paymentType == 'Third Payment') {
+            $theString = $pdf->Output('S');
+            if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_3rd_signature, env('MEDIA_DISK'));
+            } else {
+
+                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_3rd_signature, env('MEDIA_DISK'));
+            }
+        }
+        if ($paymentType == 'Full-Outstanding Payment') {
+            $theString = $pdf->Output('S');
+            if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_1st_signature, env('MEDIA_DISK'));
+                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_2nd_signature, env('MEDIA_DISK'));
+                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_3rd_signature, env('MEDIA_DISK'));
+            } else {
+
+                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_1st_signature, 'local');
+                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_2nd_signature, 'local');
+                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_3rd_signature, 'local');
+            }
+        }
+    }
 }
 
 

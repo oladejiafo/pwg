@@ -1426,3 +1426,10 @@ textarea {
 .social-icon .google:hover {
   background: #CE332A;
 } */
+
+
+@media (max-width:990px) and (min-width:800px) {
+.navbar-expand-md .navbar-nav .nav-item {
+  padding-left: 8px;
+}
+}

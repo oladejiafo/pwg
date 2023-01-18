@@ -58,13 +58,13 @@
                                     class="zoomOut" alt="pwg">
                             </div>
                             <div class="contractPdf">
-                                <embed src="{{$fileUrl}}" type="application/pdf" />
+                                <embed src="{{$fileUrl}}#toolbar=0&navpanes=0&pagemode=none" width="auto" view="fit" type="application/pdf" />
 
                                 {{-- <embed src="{{asset('pdf/'.$newFileName)}}" type="application/pdf" /> --}}
                             </div>
                         </div>
                         <div class="contractPreview">
-                            <embed src="{{$fileUrl}}" type="application/pdf" />
+                            <embed src="{{$fileUrl}}#toolbar=0&navpanes=0&pagemode=none" width="auto" view="fit" type="application/pdf" />
 
                             {{-- <embed src="{{asset('pdf/'.$newFileName)}}" type="application/pdf" /> --}}
                         </div>
@@ -72,12 +72,14 @@
                             {{-- <div class="agree">
                                 <p>&nbsp; <input type="checkbox" class="checkcolor" id="agree" style="font-size:25px;transform: scale(1.8); " checked required="" > &nbsp; By checking this box you accept our <a href="#" style="color:blue;margin:0">Terms & Conditions</a></p>
                             </div> --}}
+                   
+
                             <button type="button" class="btn btn-secondary zoomOut" id="zoom"
-                                value="{{ $payall }}" name="payall" style="width:100%; font-size:1.6em">ZOOM TO
+                                value="{{ $payall }}" name="payall" style="width:100%; font-size:1.6em"><i class="fa fa-magnifying-glass-plus"></i> ZOOM TO
                                 REVIEW</button>
                             <button type="button" class="btn btn-secondary zoomIn" id="zoom"
-                                value="{{ $payall }}" name="payall" style="width:100%; font-size:1.6em">ZOOM TO
-                                REVIEW</button>
+                                value="{{ $payall }}" name="payall" style="width:100%; font-size:1.6em"><i class="fa-solid fa-magnifying-glass-minus"></i> ZOOM TO
+                                REVIEW</button>    
 
                             <button type="submit" class="btn btn-secondary" id="signd" value="{{ $payall }}"
                                 name="payall" style="width:100%; font-size:1.6em;margin-top: 18px;">SIGNATURE</button>

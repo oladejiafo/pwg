@@ -86,12 +86,14 @@
 }
 .lni-arrow-left:before {
   content: "\e912";
+  font-size: 45px;
 }
 .lni-arrow-right-circle:before {
   content: "\e913";
 }
 .lni-arrow-right:before {
   content: "\e914";
+  font-size: 45px;
 }
 .lni-arrow-top-left:before {
   content: "\e915";

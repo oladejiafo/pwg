@@ -7,16 +7,36 @@ class Constant {
     const WhiteJob = 2;
     const FamilyPackage = 3;
 
-    const Poland = 1;
-    const Canada = 2;
-    const Germany = 3;
-    const Czech = 4;
-    const Malta = 5;
+    const Poland = 'poland';
+    const Canada = 'canada';
+    const Germany = 'germany';
+    const Czech = 'czech';
+    const Malta = 'malta';
+
+
+    
+    const polandFirstPayment = 'Poland - First Payment';
+    const polandSecondPayment = 'Poland - Second Payment';
+    const polandThirdPayment = 'Poland - Third Payment';
+
+    const czechFirstPayment = 'Czech Republic - First Payment';
+    const czechSecondPayment = 'Czech Republic - Second Payment';
+    const czechThirdPayment = 'Czech Republic - third Payment';
+
+    const maltaFirstPayment = 'Malta - First Payment';
+    const maltaSecondPayment = 'Malta - Second Payment';
+    const maltaThirdPayment = 'Malta - third Payment';
+
 
     const PolandFamilyPackage = 'FAMILY PACKAGE';
     const CanadaExpressEntry = 'Express Entry';
     const CanadaStudyPermit = 'Study Permit';
     const BlueCollar = 'Blue Collar Jobs';
+
+    const is_local = [
+        '127.0.0.1',
+        '::1',
+    ];
 
     const countries = [
         'Afghanistan'=>"Afghanistan",
