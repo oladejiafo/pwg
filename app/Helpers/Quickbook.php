@@ -408,13 +408,13 @@ class Quickbook
                     ]
                 ],
                 "Deposit" => $paidAmount,
-                "TxnTaxDetail" => [
-                    "TxnTaxCodeRef" => [
-                        "value" => "5",  // tax rate
-                        "name" => "VAT" // tax rate name
+                    "TxnTaxDetail" => [
+                        "TxnTaxCodeRef" => [
+                            "value" => "5",  // tax rate
+                            "name" => "VAT" // tax rate name
+                        ],
+                        "TotalTax" => $tax,
                     ],
-                    "TotalTax" => $tax,
-                ],
                 "PaymentRefNum" => $paymentDetails->bank_reference_no,
 
                 "CustomerRef" => [

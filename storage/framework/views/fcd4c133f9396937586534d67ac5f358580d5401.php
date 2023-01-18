@@ -37,11 +37,11 @@
     }
     }
 </style>
-<form name="form" id="updatePassword" method="POST" action="{{ route('update.current.password') }}" style="width:100%; border-color:#fff;border-style:hidden">
-    @csrf
+<form name="form" id="updatePassword" method="POST" action="<?php echo e(route('update.current.password')); ?>" style="width:100%; border-color:#fff;border-style:hidden">
+    <?php echo csrf_field(); ?>
     <div class="row mb-3" style="width:70%; margin: 0 auto; margin-bottom:20px">
         <div class="col">
-            <input type="hidden" name="email" value="{{Auth::user()->email}}">
+            <input type="hidden" name="email" value="<?php echo e(Auth::user()->email); ?>">
             <label for="current_password" class="form-label">Current Password</label>
             <input type="text" class="form-control" name="current_password" id="current_password">
             <span class="current_password_errorClass"></span>
@@ -73,7 +73,7 @@
 </form>
 
 
-<script src="{{asset('user/extra/js/jquery.min.js')}}"></script>
+<script src="<?php echo e(asset('user/extra/js/jquery.min.js')); ?>"></script>
 <script>
     $(document).ready(function(){
         $('.updateSpin').hide();
@@ -92,7 +92,7 @@
             var formData = new FormData(this);
             $.ajax({
                 type: 'POST',
-                url: "{{ url('update/password') }}",
+                url: "<?php echo e(url('update/password')); ?>",
                 data: formData,
                 processData: false,
                 contentType: false,
@@ -106,7 +106,11 @@
                         }
                         $('.my-button').prop('disabled', false)
                         $('.updateSpin').hide();
+                        alert(5);
+
                     } else {
+                        alert(2);
+
                         if(data.message){
                             toastr.error(data.message);
                         }
@@ -119,6 +123,7 @@
                     }
                 },
                 errror: function (error) {
+                    alert(1);
                     $('.updateSpin').hide();
                     $('.my-button').prop('disabled', false)
                     toastr.error('error');
@@ -127,3 +132,4 @@
         });
     });
 </script>
+<?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views/profile/update-password-form.blade.php ENDPATH**/ ?>

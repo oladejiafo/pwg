@@ -5,74 +5,76 @@
         <meta http-equiv='X-UA-Compatible' content='IE=edge'>
         <title>PWG Group</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel='stylesheet' type='text/css' media='screen' href='{{asset('css/login.css')}}'>
+        <link rel='stylesheet' type='text/css' media='screen' href='<?php echo e(asset('css/login.css')); ?>'>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
         <!-- bootstrap core css -->
-<link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
+<link href="<?php echo e(asset('user/css/bootstrap.min.css')); ?>" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
     </head>
     <body>
         <div class="login">
-            @include('user/header')
-            @if(session()->has('success'))
+            <?php echo $__env->make('user/header', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+            <?php if(session()->has('success')): ?>
             <div class="alert alert-success">
                 <button type="button" class="close" data-dismiss="alert" style="float:right">
                     
                 </button>
-                {{ session()->get('success') }}
-            </div>
-        @endif
+                <?php echo e(session()->get('success')); ?>
 
-        @if(session()->has('failed'))
+            </div>
+        <?php endif; ?>
+
+        <?php if(session()->has('failed')): ?>
             <div class="alert alert-danger">
                 <button type="button" class="close" data-dismiss="alert" style="float:right">
                     
                 </button>
-                {{ session()->get('failed') }}
+                <?php echo e(session()->get('failed')); ?>
+
             </div>
-        @endif
-            @yield('content')
+        <?php endif; ?>
+            <?php echo $__env->yieldContent('content'); ?>
         </div>
         <script>
-            @if(Session::has('message'))
+            <?php if(Session::has('message')): ?>
               toastr.options =
               {
                   "closeButton" : true,
                   "progressBar" : true
               }
-              toastr.success("{{ session('message') }}");
-          @endif
+              toastr.success("<?php echo e(session('message')); ?>");
+          <?php endif; ?>
   
-          @if(Session::has('error'))
+          <?php if(Session::has('error')): ?>
             toastr.options =
             {
                 "closeButton" : true,
                 "progressBar" : true
             }
-            toastr.error("{{ session('error') }}");
-          @endif
+            toastr.error("<?php echo e(session('error')); ?>");
+          <?php endif; ?>
   
-          @if(Session::has('info'))
+          <?php if(Session::has('info')): ?>
             toastr.options =
             {
                 "closeButton" : true,
                 "progressBar" : true
             }
-            toastr.info("{{ session('info') }}");
-          @endif
+            toastr.info("<?php echo e(session('info')); ?>");
+          <?php endif; ?>
   
-          @if(Session::has('warning'))
+          <?php if(Session::has('warning')): ?>
             toastr.options =
             {
                 "closeButton" : true,
                 "progressBar" : true
             }
-            toastr.warning("{{ session('warning') }}");
-          @endif
+            toastr.warning("<?php echo e(session('warning')); ?>");
+          <?php endif; ?>
           </script>
-          @stack('custom-scripts')
+          <?php echo $__env->yieldPushContent('custom-scripts'); ?>
     </body>
-</html>
+</html><?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views/layouts/auth.blade.php ENDPATH**/ ?>
