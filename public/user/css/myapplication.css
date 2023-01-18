@@ -270,6 +270,7 @@ body {
   background-color: #fff;
   border: 1px solid #1c7e14;
   border-radius: 10px;
+  cursor: pointer;
 }
 
 
@@ -298,6 +299,7 @@ body {
   background-color: #fff;
   border: 1px solid #000;
   border-radius: 10px;
+  cursor: pointer;
 }
 
 
@@ -655,6 +657,11 @@ p {
   font-size: 30px;
 }
 
+@media (max-width:1024px) {
+  .card .panel-body .btn {
+  font-size: 25px;
+  }
+}
 @media (min-width:375px) and (max-width:768px) {
   .btn {
     height: 60px;
@@ -662,4 +669,41 @@ p {
     padding-bottom: 8px;
     font-size: 20px;
   }
+}
+
+
+@media (max-width:360px) {
+  .paid-section {
+    padding: 0px;
+  }
+  .card {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.card .card-body {
+  padding: 10px 10px 10px 10px;
+  height: auto;
+  font-size: 20px;
+}
+.btn.btn-secondary {
+  width: 90%;
+  font-size: 20px;
+
+}
+
+.card .panel-body .btn {
+  height: 45px;
+  font-size: 20px;
+  padding: 0px;
+}
+
+.panel-heading a {
+  font-weight: 700;
+  font-size: 17px;
+}
+
+.carousel .carousel-control-prev {
+    left: 20px !important;
+    right: 200px !important;
+}
 }

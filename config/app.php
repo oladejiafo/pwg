@@ -67,7 +67,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Dubai',
 
     /*
     |--------------------------------------------------------------------------
@@ -133,9 +133,13 @@ return [
     |
     */
 
-    'payment_api_key' => 'MmM2ODJiOGMtOGFmNS00NzUyLTg2MjUtM2Y5MTg3OWU5YjRlOjViMzhjM2I5LTUyMDItNDBmZi1hNzAyLTFlYTIwZDkwYjhiMQ==',
-    'payment_reference' => '15d885ec-682a-4398-89d9-247254d71c18', 
+    // local
+    'payment_api_key_local' => 'MmM2ODJiOGMtOGFmNS00NzUyLTg2MjUtM2Y5MTg3OWU5YjRlOjViMzhjM2I5LTUyMDItNDBmZi1hNzAyLTFlYTIwZDkwYjhiMQ==',
+    'payment_reference_local' => '15d885ec-682a-4398-89d9-247254d71c18',
 
+    //production
+    'payment_api_key' => 'MTUxOTZkYjItMmI5YS00YmI0LWFiOGUtMWJhMWEwYzA1MjNiOjE5ODQ3NDYwLTFiM2MtNDY3Mi04MjIxLWUxN2EwOWY3Y2FjZA==',
+    'payment_reference' => '2b3918f9-3bf6-440b-88cc-c9a27cd79f53',
 
     /*
     |--------------------------------------------------------------------------

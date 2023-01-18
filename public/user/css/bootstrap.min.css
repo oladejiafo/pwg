@@ -577,14 +577,16 @@ progress {
 @media (min-width: 576px) {
     .container,
     .container-sm {
-        max-width: 540px;
+        /* max-width: 540px; */
+        max-width: 100%;
     }
 }
 @media (min-width: 768px) {
     .container,
     .container-md,
     .container-sm {
-        max-width: 720px;
+        /* max-width: 720px; */
+        max-width: 100%;
     }
 }
 @media (min-width: 992px) {
@@ -3988,6 +3990,7 @@ fieldset:disabled .btn {
     .navbar-expand-md .offcanvas-header {
         display: none;
     }
+    
     .navbar-expand-md .offcanvas {
         position: inherit;
         bottom: 0;
@@ -4013,6 +4016,24 @@ fieldset:disabled .btn {
         overflow-y: visible;
     }
 }
+@media (max-width:900px) {
+    .titled {
+     font-size: 9px;
+    }
+    .navbar-expand-md .navbar-nav .nav-link {
+        padding-right: 10px !important;
+        padding-left: 10px !important;
+    }
+  }
+  @media (min-width:768px) AND (max-width:780px) {
+    .titled {
+     font-size: 9px;
+    }
+    .navbar-expand-md .navbar-nav .nav-link {
+        padding-right: 8px !important;
+        padding-left: 8px !important;
+    }
+  }
 @media (min-width: 992px) {
     .navbar-expand-lg {
         flex-wrap: nowrap;

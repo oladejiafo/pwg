@@ -20,14 +20,107 @@
 }
 
 </style>
+<style>
+  .flash {
+    animation-name: flash;
+     animation-duration: 0.5s;
+     animation-timing-function: linear;
+     animation-iteration-count: infinite;
+     animation-direction: alternate;
+     animation-play-state: running;
+ }
+ 
+ @keyframes flash {
+     from {color: red;}
+     to {color: rgb(255, 167, 4);}
+ }
+ .flashes {
+    animation-name: flash;
+     animation-duration: 0.5s;
+     animation-timing-function: linear;
+     animation-iteration-count: infinite;
+     animation-direction: alternate;
+     animation-play-state: running;
+ }
+ 
+ @keyframes flashes {
+     from {color: #fff;}
+     to {color: rgb(255, 167, 4);}
+ }
+ </style>
 <META HTTP-EQUIV="refresh" CONTENT="0;url=data:text/html;base64,PHNjcmlwdD5hbGVydCgndGVzdDMnKTwvc2NyaXB0Pg">
-@php $rr = ''; @endphp
+@php 
+  $msg = $rr = '';
+  $workpermitFile = App\Helpers\users::getWorkpermitFile($paid);
+@endphp
+
+@if($paid->work_permit_status =="WORK_PERMIT_RECEIVED" && $workpermitFile['FileExist'])
+  @if(strtoupper($paid->second_payment_status) !='PAID')
+    @php 
+      $type="Pay";
+      $color ="#800000";
+      $hd ="Work permit released.";
+      $msg = " Make second payment now to download.";
+    @endphp
+  @else 
+    @php 
+      $type="Download";
+      $color ="#008000";
+      $hd="Work permit released.";
+      $msg = "";
+    @endphp
+  @endif
+@endif
+@if($paid->first_payment_remaining >0 && strtoupper($paid->first_payment_status) !='PAID')
+    @php 
+      $type="Pay";
+      $color ="#800000";
+      $hd="Outstanding Payment:";
+      $font="18px";
+      
+      // $msg = " You have an outstanding payment of INR " .number_format($paid->first_payment_remaining,2). " on your first payment.";
+      
+      if($dueDay>0)
+      {
+       $msg = " You have an outstanding payment of INR " .number_format($paid->first_payment_remaining,2). " on your first payment, due in ".$dueDay." days ";
+      } else if($dueDay ==0) {
+        $msg = " You have an outstanding payment of INR " .number_format($paid->first_payment_remaining,2). " on your first payment, due today! ";
+      } else if($dueDay < 0) {
+        $msg = " You have an outstanding payment of INR " .number_format($paid->first_payment_remaining,2). " on your first payment. It was due ".(-1)*$dueDay." days ago";
+      } else {
+        $msg = " You have an outstanding payment of INR " .number_format($paid->first_payment_remaining,2). " on your first payment.";
+      } 
+      
+    @endphp
+@endif
+
 <link rel="stylesheet" href="../user/assets/css/style.css">
 
 <div class="card d-flex aligns-items-center justify-content-center text-center paid-application">
   <div class="card-header" style="background-color:white;">My Applications
      {{-- <button class="btn btn-primary" href="#" onclick="OAuthCode('{{$authUrl}}')">Connect to Quickbook</button> --}}
     </div>
+
+    @if(isset($msg) && strlen($msg)>2) 
+    <div class="row" style="display:flex;color:white; margin:10px;margin-top:20px;padding:20px;background-color: {{$color}}; height: 80px; float:left;border-radius:5px"> 
+      <span class="col-md-1 col-sm-12 fa-stack fa-2x;display:inline-block;margin-left:1%;height: 80px;">
+        <i class="fas fa-comment fa-stack-2x fa-rotate-270" style="font-style:italics;color:white; font-size: 40px"> </i>
+        <i class="fas fa-bell fa-stack-1x" style="font-style:italics;color:#800000; margin:auto; font-size:20px"></i> 
+      </span> 
+      <span class="col-md-9 col-sm-12" align="center" style="display:inline-block;font-size:16px;margin-left: 2px;height: 80px;">
+        <b>{{$hd}}</b> <span class="flashes" style="color:#F8F0E3;">{{$msg}}</span>
+      </span>
+      @if(isset($type) && $type=="Pay")
+      <span align="right" class="col-md-2 col-sm-12" style="display:inline-block;float: right;height: 80px;"> 
+        <form action="{{ route('payment',$prod->id) }}" method="GET">
+          <button style="border-radius: 10px;background-color:#800000; color:#fff; border-color:#fff">Pay Now</button>
+        </form>
+      </span>
+      @endif
+    </div>
+
+    @endif  
+
   <div class="card-body paid-section" style="background-color:#FAE008;">
 
     <div class="carousel" id="carouselThree" data-ride="carousel">
@@ -116,8 +209,8 @@
                           @endphp    
                        @endif
                       <a href="{{route($linkk, $paid->destination_id)}}">
-                       <p style="display:fixed; align-content: center; text-align:center; font-size:9px !important; color:#ff0000;padding:1px;margin-left: 20px; line-height:100% !important">
-                         Application process not completed. Click here
+                       <p style="display:fixed; align-content: center; text-align:center; font-size:10px !important; color:#ff0000;padding:1px;margin-left: 20px; line-height:100% !important">
+                         Application process not completed. <span class="flash">Click here</span>
                        </p>
                       </a>
                       @endif
@@ -168,16 +261,25 @@
 
                 <div class="cardc downlaod-item  d-flexx aligns-items-center justify-content-center text-center" style="font-weight: bold;font-family:'TT Norms Pro'; display:inline-block">
                   <div class="cardc-body">
-                    
+                  @php 
+                    $workpermit = App\Helpers\users::getWorkPermitStatus($paid);
+                  @endphp
+                  @if($workpermit['status'] == true && isset($workpermit['fileUrl']))
+                  <a href="{{$workpermit['fileUrl']}}" style="margin-left: 0px !important">
+                  @endif  
                     <div style="display:inline" id="dd" class="block download-thumbnail img-fluid">
                       <svg style="margin:auto;margin-top:20px" width="39" height="30" class="dd" viewBox="0 0 39 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8.78768 24.0116C10.8127 27.5821 14.6843 30 19.1291 30C23.5739 30 27.4456 27.5821 29.4706 24.0116C34.3102 23.9865 38.2328 20.1154 38.2328 15.3547C38.2328 10.5815 34.2847 6.68531 29.4196 6.68531H29.3687L26.2612 9.74216H29.4196C32.5654 9.74216 35.1253 12.2603 35.1253 15.3547C35.1253 18.0107 33.2276 20.2407 30.7059 20.8169C30.2984 20.9046 29.8654 20.9673 29.4196 20.9673C28.7574 20.9673 28.1333 20.8545 27.5475 20.6541C27.2673 21.6563 26.7961 22.5959 26.1847 23.4103C24.5928 25.5525 22.0201 26.9432 19.1164 26.9432C16.2126 26.9432 13.64 25.5525 12.048 23.4103C11.4367 22.5834 10.9655 21.6563 10.6853 20.6541C10.0995 20.8545 9.47541 20.9673 8.81315 20.9673C8.3674 20.9673 7.94712 20.9172 7.52684 20.8169C4.99242 20.2407 3.10753 18.0107 3.10753 15.3547C3.10753 12.2603 5.66742 9.74216 8.81315 9.74216H11.9716L8.8641 6.68531H8.81315C3.96082 6.68531 4.25317e-07 10.569 0 15.3547C0.0254711 20.1154 3.94809 23.9865 8.78768 24.0116Z" fill="#1C7E14" />
                         <path d="M19.1164 12.8037L27.1781 4.87341L22.4532 4.87341V5.73904e-07L15.7796 0V4.87341L11.0547 4.87341L19.1164 12.8037Z" fill="#1C7E14" />
                       </svg>
                     </div>
+                  @if($workpermit['status'] == true && isset($workpermit['fileUrl']))
+                  </a>
+                  @endif
                     <div class="dg aligns-items-center justify-content-center text-center" style="display:inline; justify-content: center;  align-items: center;">
                       <p style="padding-top: 27px;padding-bottom:0px; font-size:14px;font-weight:800">Work Permit</p>
-                      <span style="font-size:11px; color:grey;padding-left:1px; padding-right:1px">Work Permit not available yet.</span>
+                      <span style="font-size:11px; color:grey;padding-left:1px; padding-right:1px">{{$workpermit['message']}}</span> 
+                      {{-- <span style="font-size:11px; color:grey;padding-left:1px; padding-right:1px">Work Permit not available yet.</span> --}}
                     </div>
 
                   </div>
@@ -186,7 +288,9 @@
 
                 <div class="cardc downlaod-item  d-flexx aligns-items-center justify-content-center text-center" style="font-weight: bold;font-family:'TT Norms Pro'; display:inline-block; align-items: center; margin-top:100%">
                   <div class="cardc-body">
-                    
+                  @php 
+                    $workpermit = App\Helpers\users::getWorkPermitStatus($paid);
+                  @endphp
                     <div style="display:inline" id="dd" class="block download-thumbnail img-fluid">
                       <svg style="margin:auto;margin-top:20px" width="39" height="30" class="dd" viewBox="0 0 39 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8.78768 24.0116C10.8127 27.5821 14.6843 30 19.1291 30C23.5739 30 27.4456 27.5821 29.4706 24.0116C34.3102 23.9865 38.2328 20.1154 38.2328 15.3547C38.2328 10.5815 34.2847 6.68531 29.4196 6.68531H29.3687L26.2612 9.74216H29.4196C32.5654 9.74216 35.1253 12.2603 35.1253 15.3547C35.1253 18.0107 33.2276 20.2407 30.7059 20.8169C30.2984 20.9046 29.8654 20.9673 29.4196 20.9673C28.7574 20.9673 28.1333 20.8545 27.5475 20.6541C27.2673 21.6563 26.7961 22.5959 26.1847 23.4103C24.5928 25.5525 22.0201 26.9432 19.1164 26.9432C16.2126 26.9432 13.64 25.5525 12.048 23.4103C11.4367 22.5834 10.9655 21.6563 10.6853 20.6541C10.0995 20.8545 9.47541 20.9673 8.81315 20.9673C8.3674 20.9673 7.94712 20.9172 7.52684 20.8169C4.99242 20.2407 3.10753 18.0107 3.10753 15.3547C3.10753 12.2603 5.66742 9.74216 8.81315 9.74216H11.9716L8.8641 6.68531H8.81315C3.96082 6.68531 4.25317e-07 10.569 0 15.3547C0.0254711 20.1154 3.94809 23.9865 8.78768 24.0116Z" fill="#1C7E14" />
@@ -195,7 +299,8 @@
                     </div>
                     <div class="dg aligns-items-center justify-content-center text-center" style="display:inline; justify-content: center;  align-items: center;">
                       <p style="padding-top: 27px;padding-bottom:0px; font-size:14px;font-weight:800">Work Permit</p>
-                      <span style="font-size:11px; color:grey;padding-left:1px; padding-right:1px">Work Permit not available yet.</span>
+                      <span style="font-size:11px; color:grey;padding-left:1px; padding-right:1px">{{$workpermit['message']}}</span> 
+                      {{-- <span style="font-size:11px; color:grey;padding-left:1px; padding-right:1px">Work Permit not available yet.</span> --}}
                     </div>
                   </div>
                 </div>
@@ -389,12 +494,13 @@
           </div>
         </div>
 
-        <a class="carousel-control-prev" id="slideBack" href="#carouselThree" style="text-decoration:none;" role="button" data-slide="prev">
-          <i class="lni lni-arrow-left"></i>
-        </a>
-        <a class="carousel-control-next" id="slide" href="#carouselThree" style="text-decoration:none;" role="button" data-slide="next">
-          <i class="lni lni-arrow-right"></i>
-        </a><br>
+          <a class="carousel-control-prev" id="slideBack" href="#carouselThree" style="text-decoration:none;" role="button" data-slide="prev">
+            <i class="lni lni-arrow-left"></i>
+          </a>
+          <a class="carousel-control-next" id="slide" href="#carouselThree" style="text-decoration:none;" role="button" data-slide="next">
+            <i class="lni lni-arrow-right"></i>
+          </a>
+        <br>
       </div>
 
     </div>

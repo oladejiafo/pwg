@@ -119,6 +119,7 @@
         response: 1
       },
       success: function(data) {
+        console.log(data);
         if (data) {
           location.href = "{{url('payment_form')}}/" + '{{$data->id}}';
 

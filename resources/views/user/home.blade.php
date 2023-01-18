@@ -27,6 +27,27 @@
         .col-4 {
             width: 100% !important;
         }
+
+        @media (min-width:601px) and (max-width:768px) {
+            .banner_bg {
+                width: 100%;
+                float: left;
+                background-size: 100%;
+                background-repeat: no-repeat !important;
+                background-position: center left !important;
+                object-fit: contain;
+            }
+        }
+        @media (min-width:280px) and (max-width:600px) {
+            .banner_bg {
+                width: 100%;
+                float: left;
+                background-size: 100%;
+                background-repeat: no-repeat !important;
+                background-position: center top !important;
+                object-fit: contain;
+            }
+        }
     </style>
 
 <body>
@@ -116,8 +137,10 @@
                                             <i class="{{$icon}}"></i> {{$offer_discount_msg}}
                                         </p>
                                         <p>
+                                            
                                             @if(isset($started) && $offer->id == $started->destination_id)
-                                            <a class="btn btn-secondary" href="#">Already Applied <i class="fa fa-check-circle" style="font-size:18px; color:green"></i></a>
+                                            <a class="btn btn-secondary" href="#"><span class="done">Already Applied</span><span class="doned">Applied</span> <i class="fa fa-check-circle" style="font-size:18px; color:green"></i></a>
+                                            {{-- <a class="btn btn-secondary" href="#">Already Applied <i class="fa fa-check-circle" style="font-size:18px; color:green"></i></a> --}}
                                             @else
                                             
                                             <a class="btn btn-secondary" @if(isset($started->destination_id)) onclick="return confirm('You have an active application already. Still want to proceed?');" @endif href="{{ url('package/type', $offer->id) }}">Apply Now</a>

@@ -145,6 +145,10 @@
                     </div>
                 </div>
 
+                <div style="display:flex;color:white; padding:2%;background-color: #05378E; height: 80px; float:left;border-radius:3px"> 
+                    <span><i class="fas fa-exclamation-triangle" style="display:inline-block;font-size:40px;font-style:italics;color:white; margin-left:5px; margin-right:25px;"></i></span> 
+                    <span style="display:inline-block;font-size:25px;"><b>Application Review:</b> Please confirm your entered details are accurate and submit.<span>
+                </div>
                 <div class="tab-content clearfix" style="margin: 0; padding: 0;">
                     <div class="tab-pane active" id="mainApplicant">
                         <div class="applicant-detail-sec">

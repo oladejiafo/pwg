@@ -543,7 +543,7 @@ a .hoveer {
     height: 50px;
     margin-left: 5px;
     font-weight: bold;
-    font-size: 65%;
+    font-size: 20px;
   }
 
 }
@@ -560,16 +560,40 @@ a .hoveer {
     height: 300px;
   }
 }
+@media (min-width: 1023px) AND (max-width: 1200px) {
+  .product-section .btn {
+    height: 100%;
+    width: 65%;
+    max-width: 100%;
+    margin-left: 5px;
+    font-weight: bold;
+    font-size: 24px;
+  }
+}
 
 @media (min-width: 768px) AND (max-width: 991px) {
   .product-section .btn {
     height: 50px;
     margin-left: 5px;
     font-weight: bold;
-    font-size: 65%;
+    font-size: 25x;
   }
 }
 
+.product-section .product-item .doned {
+  display: none;
+}
+
+@media (max-width:360px) and (min-width: 261px) {
+  .product-section .product-item .doned {
+    display: inline;
+  }
+
+  .product-section .product-item .done {
+    display: none;
+  }
+
+}
 /* @media (max-width:375) {
     img {
     width: 100%;
@@ -604,3 +628,46 @@ a .hoveer {
 /* Mobile styles */
 @media only screen and (max-device-width: 480px),
 only screen and (max-width: 480px) {}
+
+@media only screen and (max-device-width: 360px){
+  .product-section .btn {
+    height: 100%;
+
+    max-width: 100%;
+    margin-left: 5px;
+    font-weight: bold;
+    font-size: 20px;
+}
+.text p {
+  font-size: 14px;
+}
+.text a {
+  font-size: 14px;
+}
+.cellContainer {
+  padding-left: 16px;
+  margin-top: 18%;
+}
+}
+@media only screen and (max-device-width: 280px){
+  .text {
+    /* width: 90%; */
+    margin-top: 0;
+    padding: 0 10%;
+    /* padding-left: 40px; */
+    /* padding-right: 70px; */
+    justify-content: left;
+    /* width: calc(100% - 250px); */
+  }
+  .text p {
+    font-size: 12px;
+} 
+.text a {
+  font-size: 14px;
+}
+
+.cellContainer {
+  padding-left: 16px;
+}
+
+}

@@ -20,6 +20,7 @@ use Laravel\Jetstream\Rules\Role;
 |
 */
 
+
 Route::get('payment/success',[HomeController::class,'paymentSuccess'])->name('payment-success');
 Route::get('payment/fail',[HomeController::class,'paymentFail'])->name('payment-fail');
 Route::get('/get/receipt/{ptype}',[HomeController::class, 'getReceipt'])->name('getReceipt');
@@ -127,6 +128,9 @@ Route::post('/get/job/category/four/list', [ApplicationController::class, 'getJo
 Route::get('quickbook/token', [HomeController::class, 'getQuickbookToken']);
 Route::get('refresh/token', [HomeController::class, 'refreshToken']);
 
+//Terms
+Route::get('/terms',[HomeController::class, 'terms'])->name('terms');
+
 // Affiliate
 
 Route::group(['namespace' => 'Affiliate', 'prefix' => '/affiliate','as' => 'affiliate.',
@@ -160,4 +164,7 @@ Route::group(['namespace' => 'Affiliate', 'prefix' => '/affiliate','as' => 'affi
         Route::get('about-us', [AffiliatePartnerController::class, 'aboutUs'])->name('about');
         Route::get('toolbox', [AffiliatePartnerController::class, 'toolBox'])->name('toolbox');
         Route::post('toolbox/loadmore', [AffiliatePartnerController::class, 'toolBoLoadxMore'])->name('loadmore.load_data');
+
+        
+
 });

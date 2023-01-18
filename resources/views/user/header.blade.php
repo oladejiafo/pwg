@@ -3,13 +3,15 @@
 
 <head>
     <!-- <meta http-equiv="Content-Security-Policy" content="script-src 'self'"> -->
+    <meta http-equiv="Content-Security-Policy: default-src data: 'self' https://*.bootstrap.com https://*.jsdelivr.net https://*.fontawesome.com https://fonts.googleapis.com https://fonts.gstatic.com https://code.jquery.com; form-action 'self'; style-src 'self' 'unsafe-inline' 'unsafe-eval'; upgrade-insecure-requests"> 
+    
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
     <meta name="description" content="This is PWG Group client portal. PWG Group is an immigration company that helps students and professionals migrate abroad to either pursue their studies or careers.">
     <title>PWG Client Portal</title>
-    <link rel="icon" type="image/png" href="{{asset('/images/pwglogo.svg')}}">
-    <meta name="keywords" content="Immigration, visa, travel,,abroad work visa consultants, affordable immigration,work permit, 188 visa,canadian immigration, UAE, POLAND, Malta, Czech, Canada, Germany">
+    <link rel="icon" type="image/png" href="{{asset('images/pwglogo.svg')}}">
+    <meta name="keywords" content="Immigration, visa, travel,abroad work visa consultants, affordable immigration,work permit, 188 visa,canadian immigration, UAE, POLAND, Malta, Czech, Canada, Germany">
         <!-- Icon -->
     <link rel="stylesheet" href="{{asset('user/extra/assets/fonts/line-icons.css')}}">
     <!-- Main Style -->
@@ -23,6 +25,27 @@
     <link rel='stylesheet' type='text/css' media='screen' href='{{asset('fonts/stylesheet.css')}}'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">		
+
+    <style>
+       .titled {
+          font-size: 11px;
+        }
+        @media (max-width:1024px) {
+          .titled {
+          font-size: 9px;
+         }
+        }
+        @media (max-width:850px) {
+          .titled {
+           font-size: 9px;
+          }
+          .navbar-expand-md .navbar-nav .nav-link {
+              padding-right: 10px !important;
+              padding-left: 10px !important;
+          }
+        }
+
+    </style>
 </head>
 
 <header>
@@ -31,10 +54,8 @@
           <!-- Brand and toggle get grouped for better mobile display -->
             <a class="navbar-brand" href="{{url('/')}}">
               <picture>
-                <source media="(min-width:769px)" srcset="{{asset('images/logo.png')}}">
-
-                  <source media="(min-width:260px)" srcset="{{asset('images/logo2.png')}}">
-
+                <source media="(min-width:1025px)" srcset="{{asset('images/logo.png')}}">
+                <source media="(min-width:260px)" srcset="{{asset('images/logo2.png')}}">
                 <img class="logos" src="{{asset('images/logo.png')}}" alt="PWG logo">
               </picture>
               <!-- <img class="logos" src="../images/logo.png" data-device-pixel-ratio-1="../images/logo2.png" alt="logo"> -->
@@ -84,14 +105,14 @@
               <li class="nav-item">
                 <a target="_blank" class="nav-link" href="https://wa.link/iz7ait" title="Click Here To Chat on WhatsAPP">
                   <!-- <i class="mdi mdi-email" style="width: 30px; height: 30px;"></i> -->
-                  <img src="{{asset('user/images/Chat.svg')}}" width="30px" height="30px" alt="PWG icon3">
+                  <img src="{{asset('user/images/chat_new.svg')}}" width="35px" height="35px" alt="PWG icon3"> <span class="titled"> Chat</span>
                   <span class="count bg-success"></span>
                 </a>
               </li>
               <li class="nav-item dropdown border-left">
                 <a class="nav-link"  id="notificationDropdown" href="#" data-toggle="dropdown">
                   <!-- <i class="mdi mdi-bell" style="width: 30px; height: 30px;"></i> -->
-                  <img src="{{asset('user/images/NotificationNo.svg')}}" width="30px" height="30px" alt="icon3" style="margin-top: 5px">
+                  <img src="{{asset('user/images/notification_new.svg')}}" width="35px" height="35px" alt="icon3"> <span class="titled"> Notifications</span>
                   <span class="count bg-danger"></span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list notificationSec" aria-labelledby="notificationDropdown" >
@@ -103,7 +124,7 @@
               <li class="nav-item dropdown">
                 <a class="nav-link" id="profileDropdown" href="#" data-toggle="dropdown">
                   <div class="navbar-profile">
-                    <img class="img-xs rounded-circle" src="{{asset('user/images/signin.svg')}}" style="width: 30px; height: 30px;" alt="PWG ">
+                    <img class="img-xs rounded-circle" src="{{asset('user/images/profile_new.svg')}}" style="width: 35px; height: 35px;" alt="PWG "> <span class="titled"> My Profile</span>
                     {{-- <img src="{{asset('images/dropdown.png')}}" width="3%"> --}}
                     {{-- <p class="mb-0 d-none d-sm-block navbar-profile-name">{{ Auth::user()->name }}</p> --}}
                     <i class="fa-solid fa-caret-down"></i>
