@@ -5,9 +5,12 @@ use Codedge\Fpdf\Fpdf\Fpdf;
 use setasign\Fpdi\Fpdi;
 use setasign\Fpdi\PdfReader;
 use App\Models\User;
+use App\Models\Applicant;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Constant;
+use \setasign\Fpdi\PdfParser\StreamReader;
+
 
 class pdfBlock
 {
@@ -215,12 +218,12 @@ class pdfBlock
             $pdf->SetTextColor(0, 0, 0);
             $client = User::find(Auth::id());
 
-            if ($product->name == 'Poland') {
+            if (strtolower($product->name) == Constant::poland) {
                 if ($pageNo == 4) {
                     if ($paymentType == 'First Payment' || $paymentType == 'Full-Outstanding Payment') {
                         //signature
                         $pdf->Image($signature, 45, 114, 25, 20, 'PNG');
-                        $pdf->Image($signature, 123, 179, 25, 20, 'PNG');
+                        $pdf->Image($signature, 123, 111, 25, 20, 'PNG');
                         $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_first_payment_contract.pdf';
                     }
                 }

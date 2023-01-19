@@ -24,7 +24,7 @@
                         <div class="reset-title">
                             <p>You are receiving this email because we received a password reset request for your account.</p>
                             <p>Here is your OTP {{$token}}</p>
-                            <p>This password reset will expire in 60 minutes.</p>
+                            <p>This password reset will expire in 15 minutes.</p>
                         </div>
                     </div>
                 </div>

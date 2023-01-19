@@ -64,6 +64,9 @@ class HomeController extends Controller
                     ->orderBy('applications.id', 'desc')
                     ->first();
 
+                    //Quickbook
+                    Quickbook::updateTokenAccess();
+
                     // $ppay = product_payments::where('destination_id', '=', $id)->first();
                     $package = DB::table('destinations')->orderBy(DB::raw('FIELD(name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
 
@@ -85,21 +88,16 @@ class HomeController extends Controller
 
     public function index()
     {
-
         if (Auth::id()) {
 
             $started = DB::table('applications')
             ->select('pricing_plan_id', 'destination_id', 'client_id', 'first_payment_status','status')
             ->where('applications.client_id', '=', Auth::user()->id)
             ->orderBy('applications.id', 'desc')
-            ->first();
-            // dd($started);
-    
+            ->first();    
     
             $package = DB::table('destinations')->orderBy(DB::raw('FIELD(name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
             $promo = promo::where('active_until', '>=', date('Y-m-d'))->get();
-                //Quickbook
-                //Quickbook::checkRefreshToken();
     
             return view('user.home', compact('package', 'promo','started'));
     
@@ -107,8 +105,6 @@ class HomeController extends Controller
 
             $package = DB::table('destinations')->orderBy(DB::raw('FIELD(name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
             $promo = promo::where('active_until', '>=', date('Y-m-d'))->get();
-            //Quickbook
-            //Quickbook::checkRefreshToken();
 
             return view('user.home', compact('package', 'promo'));
         }
@@ -116,8 +112,6 @@ class HomeController extends Controller
         // try {
         //     $package = DB::table('destinations')->orderBy(DB::raw('FIELD(name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
         //     $promo = promo::where('active_until', '>=', date('Y-m-d'))->get();
-        //     //Quickbook
-        //     //Quickbook::checkRefreshToken();
         //     return view('user.home', compact('package', 'promo'));
         // } catch (Exception $e){
         //     Session::put('error', $e->getMessage());
@@ -684,14 +678,14 @@ class HomeController extends Controller
                     $paymentType = 'Full-Outstanding Payment ';
                 }
                 $user = User::find(Auth::id());
-                // $signatureUrl = (isset($user->getMedia(User::$media_collection_main_signture)[0])) ? $user->getMedia(User::$media_collection_main_signture)[0]->getUrl() : null;
-                // // if (File::exists($user->getMedia(User::$media_collection_main_signture)[0]->getPath())) {
-                //     if (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
-                //         $signatureUrl = ltrim($signatureUrl, $signatureUrl[0]);
-                //     }
-                //     $result = pdfBlock::attachSignature($originalPdf, $signatureUrl, $data, $paymentType, $applicant);
-                // }
-                /* Newly added endss here*/
+                $signatureUrl = (isset($user->getMedia(User::$media_collection_main_signture)[0])) ? $user->getMedia(User::$media_collection_main_signture)[0]->getUrl() : null;
+                // if (File::exists($user->getMedia(User::$media_collection_main_signture)[0]->getPath())) {
+                        if (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+                                $signatureUrl = ltrim($signatureUrl, $signatureUrl[0]);
+                            }
+                            $result = pdfBlock::attachSignature($originalPdf, $signatureUrl, $data, $paymentType, $applicant);
+                        // }
+                        /* Newly added endss here*/
                 return view('user.payment-form', compact('data', 'pdet', 'pays', 'payall'));
             } else {
                 // return redirect()->back()->with('message', 'You are not authorized');
@@ -733,7 +727,7 @@ class HomeController extends Controller
 
     public function addpayment(Request $request)
     {
-        try {
+        // try {
             if (Auth::id()) {
                 session()->forget('info');
                 $amount = $request->totalpay;
@@ -762,7 +756,7 @@ class HomeController extends Controller
                 $vals = array(0, 1, 2);
 
                 if (in_array($apply->application_stage_status, $vals) && (empty($apply->embassy_country) || $apply->embassy_country == null)) {
-                    $request->validate([
+                    $validator = Validator::make($request->all(), [
                         'totaldue' => 'required',
                         'totalpay' => 'numeric|gte:1000|lte:'.$request->totaldue,
                         'current_location' => 'required',
@@ -1209,10 +1203,9 @@ class HomeController extends Controller
                 return redirect('home');
             }
 
-        } catch (Exception $e) {
-            UserHelper::sendErrorMail($e);
-            return redirect('myapplication')->with($e->getMessage());
-        }
+        // } catch (Exception $e) {
+        //     return redirect('myapplication')->with($e->getMessage());
+        // }
     }
 
 
@@ -1222,7 +1215,8 @@ class HomeController extends Controller
 
             session_start();
             $id = Session::get('myproduct_id');
-            $outletRef           = config('app.payment_reference');
+            $orderReference  = $_GET['ref'];
+
             if (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                 // local
                 $outletRef           = config('app.payment_reference_local');
@@ -1320,7 +1314,7 @@ class HomeController extends Controller
                     $paymentDetails->update([
                         'paid_amount' => $paymentCreds['totalpay'],
                         'currency' => $paymentResponse->amount->currencyCode,
-                        'bank_reference_no' => $paymentResponse->authResponse->authorizationCode,
+                        'bank_reference_no' => $paymentResponse->merchantOrderReference,
                         'transaction_id' => $paymentResponse->_id,
                     ]);
                     $monthYear = explode('-', $paymentResponse->paymentMethod->expiry);
@@ -1409,7 +1403,6 @@ class HomeController extends Controller
                 return \Redirect::route('payment-fail', $id);
             }
         } catch (Exception $e) {
-            UserHelper::sendErrorMail($e);
             return \Redirect::route('myapplication')->with('error', $e->getMessage());
         }
     }
@@ -1794,8 +1787,8 @@ class HomeController extends Controller
 
     public function getInvoice($ptype = null)
     {
-        // QuickcheckRefreshTokenbook::updateTokenAccess();
-        // $dataService = Quickbook::connectQucikBook();
+        Quickbook::updateTokenAccess();
+        $dataService = Quickbook::connectQucikBook();
 
         //$payment = $dataService->Query("select * from Payment");
         $paymentDetails = Payment::where('id', Session::get('paymentId'))
@@ -1955,6 +1948,21 @@ class HomeController extends Controller
             'code' => $qsArray['code'],
             'realmId' => $qsArray['realmId']
         );
+    }
+
+    public static function checkQuickbook()
+    {
+        $data = QuickModel::first();
+        if ($data) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function disconnectQuickbook()
+    {
+        return view('disconnect-quickbook');
     }
 
     public function terms()

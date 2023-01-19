@@ -107,20 +107,20 @@
                         $('.my-button').prop('disabled', false)
                         $('.updateSpin').hide();
                     } else {
-
                         if(data.message){
                             toastr.error(data.message);
                         }
+                        $('.my-button').prop('disabled', false)
+                        $('.updateSpin').hide();
                         var validationError = data.errors;
                         $.each(validationError, function(index, value) {
                             $("."+index+"_errorClass").append('<span class="error">'+value+'</span>');
                         });
-                        $('.my-button').prop('disabled', false)
-                        $('.updateSpin').hide();
                     }
                 },
                 errror: function (error) {
                     $('.updateSpin').hide();
+                    $('.my-button').prop('disabled', false)
                     toastr.error('error');
                 }
             });

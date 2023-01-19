@@ -113,7 +113,7 @@ class ApplicationController extends Controller
             'first_name' => 'required',
             'surname' => 'required',
             'dob' => 'required',
-            'email' => 'required',
+            'email' => 'required | email:rfc,dns',
             'phone_number' => 'required',
             'place_birth' => 'required',
             'country_birth' => 'required',
@@ -610,7 +610,7 @@ class ApplicationController extends Controller
             $validator = \Validator::make($request->all(), [
                 'dependent_first_name' => 'required',
                 'dependent_surname' => 'required',
-                'email' => 'required',
+                'email' => 'required | email:rfc,dns',
                 'dependent_phone_number' => 'required',
                 'dependent_resume' => 'required',
                 'dependent_dob' => 'required',

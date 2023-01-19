@@ -49,10 +49,30 @@ class Applicant extends Model implements HasMedia
 
 
     public static $media_collection_main_signture = 'client_collection_signature';
-    public static $media_collection_main_contract = 'contract_collection_pdf';
+    public static $media_collection_main_work_permit = 'work_permit_collection_pdf';
+    public static $media_client_collection_contracts = 'client_collection_contracts';
+
+    public static $media_collection_main_1st_signature = 'contract_1st_signature_collection_pdf';
+    public static $media_collection_main_submission_signature = 'contract_submission_signature_collection_pdf';
+    public static $media_collection_main_2nd_signature = 'contract_2nd_signature_collection_pdf';
+    public static $media_collection_main_3rd_signature = 'contract_3rd_signature_collection_pdf';
+
+    public static $media_collection_main_1st_payment = 'contract_1st_payment_collection_pdf';
+    public static $media_collection_main_2nd_payment = 'contract_2nd_payment_collection_pdf';
+    public static $media_collection_main_3rd_payment = 'contract_3rd_payment_collection_pdf';
+    
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('contract_collection_pdf');
+        $this->addMediaCollection('work_permit_collection_pdf')->singleFile();
+        $this->addMediaCollection('contract_1st_payment_collection_pdf');
+        $this->addMediaCollection('contract_2nd_payment_collection_pdf');
+        $this->addMediaCollection('contract_3rd_payment_collection_pdf');
+        $this->addMediaCollection('client_collection_contracts');
+        $this->addMediaCollection('contract_1st_signature_collection_pdf')->singleFile();
+        $this->addMediaCollection('contract_submission_signature_collection_pdf');
+        $this->addMediaCollection('contract_2nd_signature_collection_pdf')->singleFile();
+        $this->addMediaCollection('contract_3rd_signature_collection_pdf')->singleFile();
+
     }
 
 }

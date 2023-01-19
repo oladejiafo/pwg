@@ -51,7 +51,7 @@ Route::middleware([
 
 Route::get('/',[HomeController::class, 'index']);
 
-Route::get('/home', [HomeController::class, 'redirect'] );
+Route::get('/home', [HomeController::class, 'redirect'] )->name('redirect');
 
 // Route::get('/signup', [HomeController::class, 'signup'] );
 
@@ -127,6 +127,7 @@ Route::post('/get/job/category/four/list', [ApplicationController::class, 'getJo
 //Quickbook
 Route::get('quickbook/token', [HomeController::class, 'getQuickbookToken']);
 Route::get('refresh/token', [HomeController::class, 'refreshToken']);
+Route::get('disconnect/quickbook', [HomeController::class, 'disconnectQuickbook']);
 
 //Terms
 Route::get('/terms',[HomeController::class, 'terms'])->name('terms');
