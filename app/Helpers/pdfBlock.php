@@ -36,6 +36,7 @@ class pdfBlock
 
     public static function mapDetails($originalPdf, $destination_file, $product, $package)
     {
+       
         $pdf = new \setasign\Fpdi\Fpdi();
         $pagecount = $pdf->setSourceFile($originalPdf);
 
@@ -50,7 +51,7 @@ class pdfBlock
             $pdf->SetFont('Arial', 'B','9');
             $pdf->SetTextColor(0,0,0);
             
-            if ($pageNo == 1 && ($product == Constant::Poland || $product == Constant::Germany)){
+            if ($pageNo == 1 && ($product == Constant::poland || $product == Constant::germany)){
                 //Date
                 $pdf->SetXY(28, 40 );
                 $pdf->Write(2, date('d/m/Y'));
@@ -82,7 +83,7 @@ class pdfBlock
                 //email
                 $pdf->SetXY(70, 170 );
                 $pdf->Write(2, $client->email);                
-            } else if ($pageNo == 1 && $product == Constant::Czech){
+            } else if ($pageNo == 1 && $product == Constant::czech){
                  //Date
                  $pdf->SetXY(28, 45 );
                  $pdf->Write(2, date('d/m/Y'));
@@ -102,7 +103,7 @@ class pdfBlock
                  //email
                  $pdf->SetXY(70, 138 );
                  $pdf->Write(2, $client->email);   
-            } else if ($pageNo == 1 && $product == Constant::Malta){
+            } else if ($pageNo == 1 && $product == Constant::malta){
                 //Date
                 $pdf->SetXY(28, 22 );
                 $pdf->Write(2, date('d/m/Y'));
@@ -122,7 +123,7 @@ class pdfBlock
                 //email
                 $pdf->SetXY(50, 100 );
                 $pdf->Write(2, $client->email);   
-            } else if($pageNo == 1 && $product == Constant::Canada){
+            } else if($pageNo == 1 && $product == Constant::canada){
                 if($package == Constant::CanadaExpressEntry){
                      //Date
                      $pdf->SetXY(30, 40 );

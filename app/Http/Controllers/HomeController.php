@@ -801,7 +801,7 @@ class HomeController extends Controller
 
                 // if ($request->totaldue == $request->totalpay) {
                 if ($request->totaldue == ($request->totalpay + $request->discount)) {
-                    $whatsPaid = "Paid";
+                    $whatsPaid = "PAID";
                 } elseif ($request->totaldue > ($request->totalpay + $request->discount) && ($request->totalpay + $request->discount) >= 1000) {
                     if ($request->totalremaining == ($request->totalpay + $request->discount)) {
                         $whatsPaid = "PAID";
@@ -1668,7 +1668,7 @@ class HomeController extends Controller
                 // $destination_file = 'pdf/'.$newFileName;
                 // public_path('storage/Applications/Contracts/client_contracts/'.$newFileName);
                 $destination_file = 'Applications/Contracts/client_contracts/'.$newFileName;
-                $data = pdfBlock::mapDetails($originalPdf, $destination_file, $productId, Session::get('packageType'));
+                $data = pdfBlock::mapDetails($originalPdf, $destination_file, $productName, Session::get('packageType'));
                 Session::put('contract', $newFileName);
                 Applicant::where('client_id', Auth::id())
                     ->where('destination_id', $productId)

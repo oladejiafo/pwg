@@ -139,11 +139,13 @@
                 <span class="prices" style="font-size:30px;font-weight:bold;"><?php echo e(number_format($ppay->first_payment_price)); ?> </span><br>
                 <span class="pays" style="margin-left:0px;font-size:10px;font-weight:bold;">First Payment</span>
               </td>
+              <?php if($ppay->second_payment_price > 0): ?>
               <td align="left" style="border-color:#fff;width:60px"> </td>
               <td align="center" style="border-color:#fff;">
                 <span class="prices" style="font-size:30px;font-weight:bold;"><?php echo e(number_format($ppay->second_payment_price)); ?> </span><br>
                 <span class="pays" style="margin-left:0px;font-size:10px;font-weight:bold;">Second Payment</span>
               </td>
+              <?php endif; ?>
               <?php if($ppay->third_payment_price > 0): ?>
               <td align="left" style="border-color:#fff;width:60px"> </td>
               <td align="center" style="border-color:#fff;">
