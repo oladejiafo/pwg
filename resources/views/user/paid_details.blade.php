@@ -43,9 +43,9 @@
                                     </div>
                                     <div class="col-md-3" align="left">
                                         <p>
-                                         @if($paid->first_payment_status =='Paid')
+                                         @if($paid->first_payment_status =='PAID')
                                             Status PAID
-                                         @elseif($paid->first_payment_status =='Partial')
+                                         @elseif($paid->first_payment_status =='PARTIAL')
                                             Status PAID PARTIAL   
                                          @else
                                             Status PENDING
@@ -55,7 +55,7 @@
                                     </div>
                                     <div class="col-md-6" align="right">
                                         <p>
-                                        @if($paid->first_payment_status =='Paid')
+                                        @if($paid->first_payment_status =='PAID')
 
                                             <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="{{ url('/get/invoice/First Payment')}}">Get Invoice</a>
                                        @else
@@ -85,7 +85,7 @@
                                     </div>
                                     <div class="col-md-3" align="left">
                                         <p>
-                                         @if($paid->second_payment_status =='Paid')
+                                         @if($paid->second_payment_status =='PAID')
                                             Status PAID
                                          @else
                                             Status PENDING
@@ -97,7 +97,7 @@
                                         <p>
 
                                            
-                                        @if($paid->second_payment_status =='Paid')
+                                        @if($paid->second_payment_status =='PAID')
 
                                             <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="{{ url('/get/invoice/Second Payment')}}">Get Invoice</a>
                                        @else
@@ -127,7 +127,7 @@
                                     </div>
                                     <div class="col-md-3" align="left">
                                         <p>
-                                         @if($paid->third_payment_status =='Paid')
+                                         @if($paid->third_payment_status =='PAID')
                                             Status PAID
                                          @else
                                             Status PENDING
@@ -139,7 +139,7 @@
                                         <p>
 
                                            
-                                        @if($paid->third_payment_status =='Paid')
+                                        @if($paid->third_payment_status =='PAID')
 
                                             <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="{{ url('/get/invoice/Third Payment')}}">Get Invoice</a>
                                        @else
@@ -164,19 +164,19 @@
                     </div>  
 
 
-                    @if($paid->third_payment_status != 'Paid')
+                    @if($paid->third_payment_status != 'PAID')
                     <div class="row" style="font-size:18px">
                         <div style="align-items: left; align:left; float: left; padding-left:40px;padding-right:40px" class="col-12">Your next payment is <b>
 
-                          @if($paid->second_payment_status =='Paid')                    
+                          @if($paid->second_payment_status =='PAID')                    
                             {{ $pays->third_payment_price }} AED
                             </b>, to be charged for Third Payment.
-                          @elseif($paid->first_payment_status =='Paid')
+                          @elseif($paid->first_payment_status =='PAID')
                             {{ $pays->second_payment_price }} AED
                             </b>, to be charged for Second Payment.
-                          @elseif($paid->first_payment_status !='Paid' && $paid->second_payment_status !='Paid')
+                          @elseif($paid->first_payment_status !='PAID' && $paid->second_payment_status !='PAID')
 
-                           @if($paid->first_payment_remaining >0 && $paid->first_payment_status !='Paid')
+                           @if($paid->first_payment_remaining >0 && $paid->first_payment_status !='PAID')
                                {{ $paid->first_payment_remaining }} AED
                                 </b>, outstanding on First Payment.
                            @else

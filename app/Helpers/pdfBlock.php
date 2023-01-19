@@ -260,7 +260,7 @@ class pdfBlock
                 $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_3rd_signature, env('MEDIA_DISK'));
             } else {
 
-                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_3rd_signature, env('MEDIA_DISK'));
+                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_3rd_signature, 'local');
             }
         }
         if ($paymentType == 'Full-Outstanding Payment') {

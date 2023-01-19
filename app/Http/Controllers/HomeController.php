@@ -790,12 +790,11 @@ class HomeController extends Controller
                 } else {
                     $totalpay = $request->totalpay;
                 }
-                // dd($request->vats);
                 $outstand = $request->totalpay + $thisVat;
 
                 // if ($request->totaldue == $request->totalpay) {
                 if ($request->totaldue == ($request->totalpay + $request->discount)) {
-                    $whatsPaid = "Paid";
+                    $whatsPaid = "PAID";
                 } elseif ($request->totaldue > ($request->totalpay + $request->discount) && ($request->totalpay + $request->discount) >= 1000) {
                     if ($request->totalremaining == ($request->totalpay + $request->discount)) {
                         $whatsPaid = "PAID";
@@ -854,7 +853,6 @@ class HomeController extends Controller
                 $tokenHeaders  = array("Authorization: Basic " . $apikey, "Content-Type: application/x-www-form-urlencoded");
                 $tokenResponse = $this->invokeCurlRequest("POST", $idServiceURL, $tokenHeaders, http_build_query(array('grant_type' => 'client_credentials')));
                 $tokenResponse = json_decode($tokenResponse);
-                // dd($tokenResponse);
                 $access_token  = $tokenResponse->access_token;
 
                 $order = array();
@@ -966,7 +964,7 @@ class HomeController extends Controller
                             $res = $data->save();
                         } else {
 
-                            // $data->third_payment_status = 'Paid';
+                            // $data->third_payment_status = 'PAID';
                             $data->total_price = $thisPayment;
                             $data->total_vat = $thisVat;
                             $data->total_discount = $thisDiscount;
@@ -1735,7 +1733,6 @@ class HomeController extends Controller
 
                 $datas->save();
             }
-            // dd($datas);
         }
         return response()->json(['status' => 'Saved']);
     }
@@ -1812,12 +1809,12 @@ class HomeController extends Controller
         }
         if ($paymentDetails->payment_type == 'Full-Outstanding Payment') {
             $filename = Auth::user()->name . '-' . $paymentDetails->payment_type . '-' . "Invoice.pdf";
-            // $invoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
-            // if ($invoice) {
-                // $pdfData = $dataService->DownloadPDF($invoice, null, true);
-            // } else {
+            $invoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
+            if ($invoice) {
+                $pdfData = $dataService->DownloadPDF($invoice, null, true);
+            } else {
                 return self::getInvoiceDevelop($paymentDetails->payment_type);
-            // }
+            }
         } else {
             if ($paymentDetails->payment_type == 'First Payment') {
                 $firstPaymentDue = Payment::where('application_id', $paymentDetails->application_id)
@@ -1829,47 +1826,47 @@ class HomeController extends Controller
                             ->where('payment_type', $ptype)
                             ->first();
                         $filename = Auth::user()->name . '-' . $paymentDetails->payment_type . '-' . "Invoice.pdf";
-                        // $invoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
-                        // if ($invoice) {
-                        //     $pdfData = $dataService->DownloadPDF($invoice, null, true);
-                        // } else {
+                        $invoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
+                        if ($invoice) {
+                            $pdfData = $dataService->DownloadPDF($invoice, null, true);
+                        } else {
                             return self::getInvoiceDevelop($paymentDetails->payment_type);
-                        // }
+                        }
                     } else {
                         $filename = Auth::user()->name . '-' . $paymentDetails->payment_type . '-' . "Receipt.pdf";
-                        // $reciept = $dataService->FindById("Payment", $paymentDetails->invoice_id);
-                        // $pdfData = $dataService->DownloadPDF($reciept, null, true);
+                        $reciept = $dataService->FindById("Payment", $paymentDetails->invoice_id);
+                        $pdfData = $dataService->DownloadPDF($reciept, null, true);
                     }
                 } else {
                     $filename = Auth::user()->name . '-' . $paymentDetails->payment_type . '-' . "Invoice.pdf";
-                    // $invoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
-                    // if ($invoice) {
-                    //     $pdfData = $dataService->DownloadPDF($invoice, null, true);
-                    // } else {
+                    $invoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
+                    if ($invoice) {
+                        $pdfData = $dataService->DownloadPDF($invoice, null, true);
+                    } else {
                         return self::getInvoiceDevelop($paymentDetails->payment_type);
-                    // }
+                    }
                 }
             } else {
                 $filename = Auth::user()->name . '-' . $paymentDetails->payment_type . '-' . "Invoice.pdf";
-                // $invoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
-                // if ($invoice) {
-                //     $pdfData = $dataService->DownloadPDF($invoice, null, true);
-                // } else {
+                $invoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
+                if ($invoice) {
+                    $pdfData = $dataService->DownloadPDF($invoice, null, true);
+                } else {
                     return self::getInvoiceDevelop($paymentDetails->payment_type);
-                // }
+                }
             }
         }
-        // header('Content-Description: File Transfer');
-        // header('Content-Type: application/pdf');
-        // header('Content-Disposition: attachment; filename=' . $filename);
-        // header('Content-Transfer-Encoding: binary');
-        // header('Expires: 0');
-        // header('Cache-Control: must-revalidate');
-        // header('Pragma: public');
-        // header('Content-Length: ' . strlen($pdfData));
-        // ob_clean();
-        // flush();
-        // return $pdfData;
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/pdf');
+        header('Content-Disposition: attachment; filename=' . $filename);
+        header('Content-Transfer-Encoding: binary');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . strlen($pdfData));
+        ob_clean();
+        flush();
+        echo $pdfData;
     }
 
     private function getPaymentName()
