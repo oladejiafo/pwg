@@ -1238,11 +1238,20 @@ input [type="phone"] {
         text-align: center;
         font-size: 20px;
     }
+    .login .container {
+        width: 90% !important;
+        margin: 0 auto;
+    }
 }
 
 @media only screen and (max-width: 280px) {
     .container {
         width: 100%;
+        margin: 0 auto;
+    }
+
+    .login .container {
+        width: 90% !important;
         margin: 0 auto;
     }
 

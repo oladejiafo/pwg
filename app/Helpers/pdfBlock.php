@@ -39,6 +39,7 @@ class pdfBlock
 
     public static function mapDetails($originalPdf, $destination_file, $product, $package)
     {
+       
         $pdf = new \setasign\Fpdi\Fpdi();
         $pagecount = $pdf->setSourceFile($originalPdf);
 
@@ -52,7 +53,7 @@ class pdfBlock
             //Select Arial italic 8
             $pdf->SetFont('Arial', 'B','9');
             $pdf->SetTextColor(0,0,0);
-
+            
             if ($pageNo == 1 && ($product == Constant::poland || $product == Constant::germany)){
                 //Date
                 $pdf->SetXY(28, 40 );

@@ -670,8 +670,51 @@ p {
     font-size: 20px;
   }
 }
+.pay-info {
+  display: flex;
+  color: white;
+  margin: 10px;
+  margin-top: 20px;
+  padding: 20px;
+  height: 80px;
+}
 
 
+.pay-info-icon{
+  font-style: italics;
+  color: white;
+  font-size: 50px;
+}
+
+@media (max-width: 1200px) {
+  .pay-info {
+    padding: 15px;
+  }
+  .fa-stack {
+     width: 1.5em;
+}
+.col-md-9 {
+  width: 74% !important;
+}
+}
+@media (max-width: 767px) {
+  .pay-info {
+    display: flex;
+    color: white;
+    margin: 10px;
+    margin-top: 20px;
+    padding: 10px;
+    min-height: 130px;
+    max-height: 210px;
+  }
+}
+@media (max-width: 414px) {
+.pay-info {
+
+  min-height: 200px;
+  max-height: 210px;
+}
+}
 @media (max-width:360px) {
   .paid-section {
     padding: 0px;
@@ -679,31 +722,51 @@ p {
   .card {
     margin-left: 10px;
     margin-right: 10px;
-}
-.card .card-body {
-  padding: 10px 10px 10px 10px;
-  height: auto;
-  font-size: 20px;
-}
-.btn.btn-secondary {
-  width: 90%;
-  font-size: 20px;
+  }
+  .card .card-body {
+    padding: 10px 10px 10px 10px;
+    height: auto;
+    font-size: 20px;
+  }
+  .btn.btn-secondary {
+    width: 90%;
+    font-size: 20px;
+  }
 
+  .card .panel-body .btn {
+    height: 45px;
+    font-size: 20px;
+    padding: 5px;
+  }
+
+  .panel-heading a {
+    font-weight: 700 !important;
+    font-size: 17px !important;
+  }
+
+  .carousel .carousel-control-prev {
+      left: 20px !important;
+      right: 200px !important;
+  }
+
+  .paid-section .cardc .cardc-body {
+    margin-bottom: 15px;
+  }
 }
 
-.card .panel-body .btn {
-  height: 45px;
-  font-size: 20px;
-  padding: 0px;
-}
+@media (max-width:280px) {
+  .paid-section .outer li {
+    margin: 0px;
+  }
 
-.panel-heading a {
-  font-weight: 700;
-  font-size: 17px;
-}
+  .paid-section .paid-item {
+    margin: 0px;
+    padding: 0px; 
+  }
 
-.carousel .carousel-control-prev {
-    left: 20px !important;
-    right: 200px !important;
-}
+  .about-desc {
+    padding: 0.3em 0.3em 0.2em 0.3em !important;
+    align-content: left;
+  }
+
 }

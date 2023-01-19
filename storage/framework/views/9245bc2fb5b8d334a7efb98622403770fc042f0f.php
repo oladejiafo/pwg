@@ -72,6 +72,7 @@ $cXamount=0;
                         <p>We’ve got you covered</p>
                     </div>
                 </div>
+                
                 <div class="row" style="margin-left:auto; margin-right:auto; text-align:center;justify-content: center; display: flex;">
                 
                       <?php if($proddet->first()): ?>
@@ -103,7 +104,7 @@ $cXamount=0;
                         </div>
                     </div>
                     
-                    <?php if($data->name == "Canada"): ?>
+                    <?php if($data->name == "Canada" && $canada->is_active==1): ?>
                     <div class="col-xs-12 col-md-4" style="display:inline-block;">
                         <div class="package-type  study-permit">                            
                             <div class="content">
@@ -225,7 +226,7 @@ $cXamount=0;
                             </div>
                         </div>
                      
-                       <?php if($data->name == "Canada"): ?>
+                       <?php if($data->name == "Canada" && $canada->is_active==1): ?>
                         <div class="study-desc">
                         
                             <div class="form-group row" style="margin-top: -120px"> 

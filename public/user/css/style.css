@@ -2114,6 +2114,18 @@ iframe img {
   margin-top: 97px !important;
 }
 
+.review-info {
+  font-size:25px !important;
+}
+
+.review-info-icon {
+  display: inline-block;
+  font-size: 40px;
+  color: white;
+  margin-left: 5px;
+  margin-right: 25px;
+  margin-top: 0px;
+  }
 /*************** ToolTip Styles for Home page ******************/
 
 .item-hints .hint[data-position="1"] .hint-content {
@@ -2880,8 +2892,21 @@ iframe img {
   .product-section {
     padding: 10px 0px 0px 0px;
 }
-
+.review-info {
+  font-size:18px !important;
+  padding: 5px;
 }
+}
+
+@media (max-width:400px) {
+
+.review-info {
+  font-size:16px !important;
+  padding: 2px;
+}
+}
+
+
 @media only screen and (max-width: 360px) {
 
   .family-desc .children li {
@@ -2891,6 +2916,27 @@ iframe img {
     height: 32px;
     font-size: 16px !important;
   }
+
+  .tabs-detail {
+    align-items: center;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+.review-info {
+  font-size:14px !important;
+  padding: 2px;
+}
+
+.review-info-icon {
+display: inline-block;
+font-size: 40px;
+color: white;
+margin-left: 5px;
+margin-right: 10px;
+margin-top: 9px;
+/* line-height: 20px; */
+}
+
 }
 
 @media only screen and (max-width: 280px) {
@@ -3016,4 +3062,48 @@ iframe img {
 
 }
 
+.wizard {
+    width: 90%;
+    margin: 0 auto;
+    margin-top: 70px;
+}
+.applicant-tab-sec {
+  width: 90%;
+}
+.first-heading {
+  margin-top: 11px;
+}
+.applicant-detail-sec h3 {
+  font-size: 12px;
+  line-height: 15px;
+}
+
+.applicant-detail-sec {
+  padding: 20px 10px 20px 10px;
+}
+
+.applicant-detail-sec .col-2 {
+  flex: 0 0 auto;
+  width: 15.67% !important;
+}
+.applicant-detail-sec .heading .image {
+
+  margin-left: 5px;
+}
+
+.review-info {
+  font-size:14px !important;
+  padding: 2px;
+  line-height: 20px;
+}
+
+.review-info-icon {
+display: inline-block;
+font-size: 40px;
+color: white;
+margin-left: 5px;
+margin-right: 10px;
+margin-top: 9px;
+
+}
 }
