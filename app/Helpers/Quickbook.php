@@ -750,6 +750,7 @@ class Quickbook
                 ]
             ]);
         }
+        // dd($theResourceObj);
         $invoiceData = $dataService->Add($theResourceObj);
         $paymentDetails->invoice_no = $invoiceData->DocNumber;
         $paymentDetails->invoice_id = $invoiceData->Id;
