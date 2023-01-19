@@ -112,7 +112,7 @@ unset($__errorArgs, $__bag); ?>
           <div class="mb-3">
             <div class="inputs check-box">
               <input type="checkbox" class="checkcolor agree" name="terms" required>
-                <p  style="padding-top: 5px;padding-left:10px"> I agree to the <a href="Terms of Service and Privacy Policy">Terms of Service and Privacy Policy"</a>
+                <p  style="padding-top: 10px;padding-left:10px"> I agree to the <a target="_blank" href="<?php echo e(route('terms')); ?>" >Terms and Policy"</a>
               </p>
             </div>
           </div>

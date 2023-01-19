@@ -106,11 +106,7 @@
                         }
                         $('.my-button').prop('disabled', false)
                         $('.updateSpin').hide();
-                        alert(5);
-
                     } else {
-                        alert(2);
-
                         if(data.message){
                             toastr.error(data.message);
                         }
@@ -123,7 +119,6 @@
                     }
                 },
                 errror: function (error) {
-                    alert(1);
                     $('.updateSpin').hide();
                     $('.my-button').prop('disabled', false)
                     toastr.error('error');

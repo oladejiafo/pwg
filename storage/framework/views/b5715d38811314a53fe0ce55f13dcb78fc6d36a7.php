@@ -528,7 +528,7 @@ unset($__errorArgs, $__bag); ?>
                                             <?php if($payall==1 && isset($discount) && $discount>0): ?>
                                             <div class="total-sec row mt-3 showDiscount">
                                                 <div class="left-section col-6">
-                                                     Full Payment Discount (-<?php echo e(($discountPercent) ? $discountPercent : ''); ?>)
+                                                     Full Payment Discount (<span id="discountPercent">-<?php echo e(($discountPercent) ? $discountPercent : ''); ?></span>)
                                                 </div>
                                                 <div class="right-section col-6" align="right">
                                               
@@ -544,7 +544,7 @@ unset($__errorArgs, $__bag); ?>
                                             <div class="total-sec row mt-3 showDiscount" id ="showDiscount">
                                                 <div class="left-section col-6">
                                                
-                                                      Discount (<span id="discountPercent">{({$discountPercent) ? $discountPercent : ''}} </span>)
+                                                      Discount (<span id="discountPercent"><?php echo e((isset($discountPercent)) ? $discountPercent : ''); ?> </span>)
                                                     
                                                 </div>
                                                 <div class="right-section col-6" align="right">
@@ -587,13 +587,32 @@ unset($__errorArgs, $__bag); ?>
                                     <div class="partial-total-sec">
 
                                         <?php if($diff > 0 && $payall ==0): ?> 
-                                            <h2 style="font-size: 1em;">Now you will pay the balance on first installment only <b><?php echo e(number_format((round($pends,2)),2)); ?></b> AED <span style="font-size:11px;opacity:0.6" id="amountText"><?php if($vat>0): ?> (VAT inclusive <?php if($discount>0): ?> ,less Discount  <?php endif; ?>) <?php endif; ?></span></h2>
+                                            <h2 style="font-size: 1em;">Now you will pay the balance on first installment only 
+                                                <b><?php echo e(number_format((floor($pends * 100)/100),2)); ?></b> AED 
+                                                <span style="font-size:11px;opacity:0.6" id="amountText">
+                                                    <?php if($vat>0): ?> (VAT inclusive <?php if($discount>0): ?> ,less Discount  <?php endif; ?>) <?php endif; ?>
+                                                </span>
+                                            </h2>
                                             <input type="hidden" id="amountLink2" name="totalpay" value="<?php echo e(round($payNoww, 2)); ?>">
                                             <input type="hidden" id="totaldue" name="totaldue" value="<?php echo e(round(($payNow + $vat),2)); ?>">
                                             <input type="hidden" name="totalremaining" value="<?php echo e(round($pends,2)); ?>">
                                         <?php else: ?>
-                                            <h2 style="font-size: 1em;">Now you will pay <?php echo e(strtolower($which)); ?> installment only <span id="amountLink"><b><?php echo e(number_format((round((($payNoww - $discount)+ $vat),2)),2)); ?></b></span> AED <span style="font-size:11px;opacity:0.6"  id="amountText"><?php if($vat>0): ?> (<span id="vt">VAT inclusive</span> <?php if($discount>0): ?> ,less Discount  <?php endif; ?>) <?php else: ?> <?php if($discount>0): ?> (less Discount)  <?php endif; ?> <?php endif; ?></span></h2>
-                                            <input type="hidden" id="amountLink2" name="totalpay" value="<?php echo e(round((($payNoww - $discount)+ $vat),2)); ?>">
+                                            <h2 style="font-size: 1em;">Now you will pay <?php echo e(strtolower($which)); ?> installment only 
+                                                <span id="amountLink">
+                                                    <b><?php echo e((($pays->first_payment_status !="PAID") ? (($diff > 0) ? number_format((floor(((($payNoww - $discount)+ $vat)+$pays->first_payment_remaining)*100)/100),2) : (number_format((floor((($payNoww - $discount)+ $vat)*100)/100),2))):number_format((floor((($payNoww - $discount)+ $vat)*100)/100),2))); ?></b>
+                                                </span> AED 
+                                                <span style="font-size:11px;opacity:0.6"  id="amountText">
+                                                    <?php if($vat>0): ?> 
+                                                     (<span id="vt">VAT inclusive</span> <?php if($discount>0): ?> ,less Discount  <?php endif; ?>) 
+                                                    <?php else: ?> 
+                                                     <?php if($discount>0): ?> 
+                                                      (less Discount)  
+                                                     <?php endif; ?> 
+                                                    <?php endif; ?>
+                                                </span>
+                                            </h2>
+                                            
+                                            <input type="hidden" id="amountLink2" name="totalpay" value="<?php echo e((($pays->first_payment_status !="PAID") ? (($diff > 0) ? (round(((($payNoww - $discount)+ $vat)+$pays->first_payment_remaining),2)) : round((($payNoww - $discount)+ $vat),2)):round((($payNoww - $discount)+ $vat),2))); ?>">
                                             <input type="hidden" id="totaldue" name="totaldue" value="<?php echo e(round((($payNoww - $discount) + $vat),2)); ?>">
                                         <?php endif; ?>
                                     </div>
@@ -604,9 +623,10 @@ unset($__errorArgs, $__bag); ?>
                         <input type="hidden" name="ppid" value="<?php echo e((isset($pdet->id))?$pdet->id:''); ?>">
                         <input type="hidden" name="uid" value="<?php echo e(Auth::user()->id); ?>">
                         <input type="hidden" name="whichpayment" value="<?php echo e(($whichPayment) ? $whichPayment : 'First Payment'); ?>">
+                        <input type="hidden" name="first_p" value="<?php echo e($pdet->first_payment_price); ?>">
+                        <input type="hidden" name="second_p" value="<?php echo e($pdet->second_payment_price); ?>">
+                        <input type="hidden" name="third_p" value="<?php echo e($pdet->third_payment_price); ?>">
                     
-
-                        
                         <div class="form-group row mt-4" style="margin-bottom: 70px">
                             <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
                                 <button type="submit" class="btn btn-primary submitBtn">Continue</button>
@@ -622,6 +642,7 @@ unset($__errorArgs, $__bag); ?>
 
         $('#showDiscount').hide();
         $('#discount').hide();
+        $('#promoDiscount').hide();
 
         $('#amount').keyup(function() {
 
@@ -631,7 +652,8 @@ unset($__errorArgs, $__bag); ?>
         });
 
         $('.dicountBtn').click(function(){
-
+            var paynow = <?php echo $payNoww; ?>;     
+            var vat = $('#vats').val();
             var $this = $(this); 
             $.ajax({ 
                 url: '<?php echo e(route("getPromo")); ?> ',
@@ -639,42 +661,64 @@ unset($__errorArgs, $__bag); ?>
                 data: {
                     "_token": "<?php echo e(csrf_token()); ?>",
                     "discount_code" : $('#discount_code').val(),
-                    "totaldue" : $('#totaldue').val()
+                    "totaldue" : $('#totaldue').val(),
+                    'paynow' : paynow,
+                    'vat' : vat
                 }
             }).done( function (response) {
             
                 if (response.status == true) {
                     // alert(response.myDiscount);
                     // alert(response.status);
+                    $('#amountLink2').val(0);
+                    $('#totaldue').val(0);
+                    // $('#discountValue').html(0);
+                    // $('#discountValue').text(0);
+                    // $('#myDiscount').val(0);
          
                     var nf = Intl.NumberFormat(); 
-                    let amtNow = response.topaynow;
-                    let amtNoww = nf.format(amtNow);
+                    // let amtNow = response.topaynow;
+                    let amtNow = Math.floor(response.topaynow * 100)/100;
+
+                    // let amtNoww = nf.format(amtNow);
+                    let amtNoww = nf.format(Math.floor(response.topaynow *100)/100);
 
                     let discountAmt = response.discountamt;
                     let discountAmtt = nf.format(discountAmt);
               
+                    let vatNow = Math.floor(response.vatNow * 100)/100;
+                    let totalValueNotRounding = Math.floor(response.topaynow *100)/100;
 
+                    // $('#promoDiscount #discountValue').html(discountAmtt);
+                    // $('#promoDiscount #discountValue').text(discountAmtt);
                     $('#discountValue').html(discountAmtt);
                     $('#discountPercent').html(response.discountPercent);
 
                     $('#amountLink').html(amtNoww);
+                    $('#vatt').html(vatNow);
+                    // alert(response.topaynow.toFixed(2));
+                    $('#amountLink2').val(totalValueNotRounding);
+                    $('#totaldue').val(totalValueNotRounding);
 
-                    document.getElementById("amountLink2").value = response.topaynow;
+                    // document.getElementById("amountLink2").value = response.topaynow;
 
-                    document.getElementById("myDiscount").value = response.discountamt;
+                    document.getElementById("vats").value = Math.floor(response.vatNow * 100)/100;
+                    // document.getElementById("myDiscount").value = response.discountamt;
+                    document.getElementById("myDiscount").value = Math.floor(discountAmt * 100)/100;
+
                     document.getElementById("myDiscountCode").value = $('#discount_code').val();
                     // document.getElementById("totaldue").value = response.topaynow;
                     // $('#amountLink2').html(response.topaynow);
                     // $('#totaldue').html(response.topaynow);
                     $('#showDiscount').show();
+                    toastr.success('Discount Applied Successfully !');
 
                 } else {
                     let preAmt = $('#totaldue').val();
                     $('#amountLink').html(preAmt);
                     
                     $('#showDiscount').hide();
-                    alert('Invalid Discount Code');
+                    toastr.error('Invalid Discount Code');
                 }
             });
         });
@@ -687,19 +731,26 @@ unset($__errorArgs, $__bag); ?>
             var vt =(amtx*5)/100;
             if($this.val()=='United Arab Emirates')
             {
-                document.getElementById("amountLink2").value = (amtx + (amtx*5/100)).toFixed(2);
-                $('#amountLink').text(parseFloat((amtx + (amtx*5/100)).toFixed(2)).toLocaleString('en')); //= amtx + (amtx*5/100);
-              document.getElementById("totaldue").value = (amtx + (amtx*5/100)).toFixed(2);
+                document.getElementById("amountLink2").value = Math.floor((amtx + (amtx*5/100)) *100)/100;
+              $('#amountLink').text(parseFloat(Math.floor((amtx + (amtx*5/100)) * 100)/100).toLocaleString('en')); //= amtx + (amtx*5/100);
+              document.getElementById("totaldue").value = Math.floor((amtx + (amtx*5/100)) *100)/100;
+
+              var nf = Intl.NumberFormat(); 
+              $('#vatt').html(nf.format(vt));
+              // $('#vats').val(vt.toFixed(2));
+              $('#vats').val(Math.floor(vt * 100)/100);
               $('#showVat').show();
               $('#vt').text("VAT Inclusive");
               $('.vtt').text("(+ 5% VAT)");
             } else {
                 document.getElementById("amountLink2").value = amtx.toFixed(2);
-                $('#amountLink').text(parseFloat(amtx.toFixed(2)).toLocaleString('en')); //= amtx;
+                $('#amountLink').text(parseFloat(Math.floor(amtx *100)/100).toLocaleString('en')); //= amtx;
                 // (1234567.89).toLocaleString('en') 
-              document.getElementById("totaldue").value = amtx.toFixed(2);
+              document.getElementById("totaldue").value = Math.floor(amtx * 100)/100;
               $('#showVat').hide();
             //   $('#vt').hide();
+              $('#vatt').html(0);
+              $('#vats').val(0);
               $('#vt').text("No VAT");
               $('.vtt').text("");
             }

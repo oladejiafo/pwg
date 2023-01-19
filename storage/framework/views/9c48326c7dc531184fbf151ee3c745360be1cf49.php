@@ -119,6 +119,7 @@
         response: 1
       },
       success: function(data) {
+        console.log(data);
         if (data) {
           location.href = "<?php echo e(url('payment_form')); ?>/" + '<?php echo e($data->id); ?>';
 

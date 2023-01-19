@@ -7,11 +7,11 @@ class Constant {
     const WhiteJob = 2;
     const FamilyPackage = 3;
 
-    const Poland = 'poland';
-    const Canada = 'canada';
-    const Germany = 'germany';
-    const Czech = 'czech';
-    const Malta = 'malta';
+    const poland = 'poland';
+    const canada = 'canada';
+    const germany = 'germany';
+    const czech = 'czech';
+    const malta = 'malta';
 
 
     

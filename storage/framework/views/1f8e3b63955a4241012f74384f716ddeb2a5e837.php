@@ -22,6 +22,16 @@
     border-color: grey !important;
     border-style: solid !important;
   }
+
+  .top{
+    margin-block: 50px;
+  }
+
+  @media (max-width: 1024px) {
+    .top{
+      margin-block: 150px;
+    } 
+  }
 </style>
 
 <body>
@@ -55,7 +65,7 @@
 
   <section class="product-section">
     <div class="container-fluid">
-      <div class="row" style="margin-block: 50px; background-color:#fff; border-radius:10px">
+      <div class="row top" style="background-color:#fff; border-radius:10px">
 
         <!-- <p style="font-style: italics; text-decoration:none"><a href="/"><b><i>Packages </a> > <?php echo e($data->name); ?> </i></b></p> -->
 
@@ -166,12 +176,12 @@
 
           <?php if(Route::has('login')): ?>
           <?php if(auth()->guard()->check()): ?>
-          <form action="<?php echo e(url('contract', $data->id)); ?>" method="GET">
-            <?php else: ?>
-            <form action="<?php echo e(url('login')); ?>">
-              <?php Session::put('prod_id', $data->id); ?>
-              <?php endif; ?>
-              <?php endif; ?>
+           <form action="<?php echo e(url('contract', $data->id)); ?>" method="GET">
+          <?php else: ?>
+           <form action="<?php echo e(url('login')); ?>">
+            <?php Session::put('prod_id', $data->id); ?>
+          <?php endif; ?>
+          <?php endif; ?>
               <input type="hidden" value="<?php echo e($data->id); ?>">
 
               <p style="margin-left:2px;font-weight:bold; font-size:1.4em">Please, select one of the following options:</p>
@@ -184,11 +194,11 @@
 
               ?>
 
-              <p><button class="btn btn-secondary se2" id="buy" value="1" name="payall" style="font-size:1.6em">Full Payment</button>
-                <button class="btn btn-secondary" id="buy" value="0" name="payall" style="width:100%; font-size:1.6em">Pay in Installments</button>
+              <p><button class="btn btn-secondary se2" id="buy" value="1" name="payall" >Full Payment</button>
+                <button class="btn btn-secondary" id="buy" value="0" name="payall" style="width:100%; ">Pay in Installments</button>
               </p>
 
-              <p>&nbsp; <input type="checkbox" class="checkcolor" id="agree" style="font-size:25px;transform: scale(1.8); " required=""> &nbsp; By checking this box you accept our <a href="#" style="color:blue;margin:0">Terms & Conditions</a></p>
+              <p>&nbsp; <input type="checkbox" class="checkcolor" id="agree" style="font-size:25px;transform: scale(1.8); " required=""> &nbsp; By checking this box you accept our <a target="_blank" href="<?php echo e(route('terms')); ?>"  style="color:blue;margin:0">Terms & Conditions</a></p>
             </form>
 
         </div>

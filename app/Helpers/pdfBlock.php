@@ -5,9 +5,12 @@ use Codedge\Fpdf\Fpdf\Fpdf;
 use setasign\Fpdi\Fpdi;
 use setasign\Fpdi\PdfReader;
 use App\Models\User;
+use App\Models\Applicant;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Constant;
+use \setasign\Fpdi\PdfParser\StreamReader;
+
 
 class pdfBlock
 {
@@ -49,8 +52,8 @@ class pdfBlock
             //Select Arial italic 8
             $pdf->SetFont('Arial', 'B','9');
             $pdf->SetTextColor(0,0,0);
-            
-            if ($pageNo == 1 && ($product == Constant::Poland || $product == Constant::Germany)){
+
+            if ($pageNo == 1 && ($product == Constant::poland || $product == Constant::germany)){
                 //Date
                 $pdf->SetXY(28, 40 );
                 $pdf->Write(2, date('d/m/Y'));
@@ -82,7 +85,7 @@ class pdfBlock
                 //email
                 $pdf->SetXY(70, 170 );
                 $pdf->Write(2, $client->email);                
-            } else if ($pageNo == 1 && $product == Constant::Czech){
+            } else if ($pageNo == 1 && $product == Constant::czech){
                  //Date
                  $pdf->SetXY(28, 45 );
                  $pdf->Write(2, date('d/m/Y'));
@@ -102,7 +105,7 @@ class pdfBlock
                  //email
                  $pdf->SetXY(70, 138 );
                  $pdf->Write(2, $client->email);   
-            } else if ($pageNo == 1 && $product == Constant::Malta){
+            } else if ($pageNo == 1 && $product == Constant::malta){
                 //Date
                 $pdf->SetXY(28, 22 );
                 $pdf->Write(2, date('d/m/Y'));
@@ -122,7 +125,7 @@ class pdfBlock
                 //email
                 $pdf->SetXY(50, 100 );
                 $pdf->Write(2, $client->email);   
-            } else if($pageNo == 1 && $product == Constant::Canada){
+            } else if($pageNo == 1 && $product == Constant::canada){
                 if($package == Constant::CanadaExpressEntry){
                      //Date
                      $pdf->SetXY(30, 40 );
@@ -214,12 +217,12 @@ class pdfBlock
             $pdf->SetTextColor(0, 0, 0);
             $client = User::find(Auth::id());
 
-            if ($product->name == 'Poland') {
+            if (strtolower($product->name) == Constant::poland) {
                 if ($pageNo == 4) {
                     if ($paymentType == 'First Payment' || $paymentType == 'Full-Outstanding Payment') {
                         //signature
                         $pdf->Image($signature, 45, 114, 25, 20, 'PNG');
-                        $pdf->Image($signature, 123, 179, 25, 20, 'PNG');
+                        $pdf->Image($signature, 123, 111, 25, 20, 'PNG');
                         $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_first_payment_contract.pdf';
                     }
                 }

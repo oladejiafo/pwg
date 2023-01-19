@@ -56,6 +56,19 @@ class users
         return $randomString;
     }
 
+    public static function getAlphabeticRandomString()
+    {
+        $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $randomString = '';
+
+        for ($i = 0; $i < 3; $i++) {
+            $index = rand(0, strlen($characters) - 1);
+            $randomString .= $characters[$index];
+        }
+
+        return $randomString;
+    }
+
     
     public static function getWorkpermitFile($paidDetails)
     {

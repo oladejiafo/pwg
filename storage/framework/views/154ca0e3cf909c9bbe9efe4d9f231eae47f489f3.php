@@ -58,24 +58,26 @@
                                     class="zoomOut" alt="pwg">
                             </div>
                             <div class="contractPdf">
-                                <embed src="<?php echo e($fileUrl); ?>" type="application/pdf" />
+                                <embed src="<?php echo e($fileUrl); ?>#toolbar=0&navpanes=0&pagemode=none" width="auto" view="fit" type="application/pdf" />
 
                                 
                             </div>
                         </div>
                         <div class="contractPreview">
-                            <embed src="<?php echo e($fileUrl); ?>" type="application/pdf" />
+                            <embed src="<?php echo e($fileUrl); ?>#toolbar=0&navpanes=0&pagemode=none" width="auto" view="fit" type="application/pdf" />
 
                             
                         </div>
                         <div class="col-12 col-md-8 col-lg-8 offset-md-2 offset-lg-2">
                             
+                   
+
                             <button type="button" class="btn btn-secondary zoomOut" id="zoom"
-                                value="<?php echo e($payall); ?>" name="payall" style="width:100%; font-size:1.6em">ZOOM TO
+                                value="<?php echo e($payall); ?>" name="payall" style="width:100%; font-size:1.6em"><i class="fa fa-magnifying-glass-plus"></i> ZOOM TO
                                 REVIEW</button>
                             <button type="button" class="btn btn-secondary zoomIn" id="zoom"
-                                value="<?php echo e($payall); ?>" name="payall" style="width:100%; font-size:1.6em">ZOOM TO
-                                REVIEW</button>
+                                value="<?php echo e($payall); ?>" name="payall" style="width:100%; font-size:1.6em"><i class="fa-solid fa-magnifying-glass-minus"></i> ZOOM TO
+                                REVIEW</button>    
 
                             <button type="submit" class="btn btn-secondary" id="signd" value="<?php echo e($payall); ?>"
                                 name="payall" style="width:100%; font-size:1.6em;margin-top: 18px;">SIGNATURE</button>
