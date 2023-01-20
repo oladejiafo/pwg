@@ -41,40 +41,40 @@ class HomeController extends Controller
     {
         if (Auth::id()) {
             $client = User::find(Auth::id());
+            // if ($client->email_verified_at) { // Use on production 
 
-            // if($client->email_verified_at){ // Use on production 
+                if (session('prod_id')) {
+                    $id = Session::get('prod_id');
 
-            if (session('prod_id')) {
-                $id = Session::get('prod_id');
+                    $data = product::find($id);
 
-                $data = product::find($id);
+                    $promo = promo::where('employee_id', '=', $id)->where('active_until', '>=', date('Y-m-d'))->get();
+                    $ppay = product_payments::where('destination_id', '=', $id)->first();
+                    // $proddet = product_details::where('product_id', '=', $id)->get();
 
-                $promo = promo::where('employee_id', '=', $id)->where('active_until', '>=', date('Y-m-d'))->get();
-                $ppay = product_payments::where('destination_id', '=', $id)->first();
-                // $proddet = product_details::where('product_id', '=', $id)->get();
+                    session()->forget('prod_id');
+                    return view('user.package', compact('data', 'ppay', 'promo'));
+                    //   return \Redirect::route('product', $idd);
 
-                session()->forget('prod_id');
-                return view('user.package', compact('data', 'ppay', 'promo'));
-                //   return \Redirect::route('product', $idd);
+                } else {
+                    $started = DB::table('applications')
+                        ->select('pricing_plan_id', 'destination_id', 'client_id', 'first_payment_status', 'status')
+                        ->where('applications.client_id', '=', Auth::user()->id)
+                        ->orderBy('applications.id', 'desc')
+                        ->first();
 
-            } else {
-                $started = DB::table('applications')
-                    ->select('pricing_plan_id', 'destination_id', 'client_id', 'first_payment_status', 'status')
-                    ->where('applications.client_id', '=', Auth::user()->id)
-                    ->orderBy('applications.id', 'desc')
-                    ->first();
+                    //Quickbook
+                    Quickbook::updateTokenAccess();
 
-                //Quickbook
-                Quickbook::updateTokenAccess();
+                    // $ppay = product_payments::where('destination_id', '=', $id)->first();
+                    $package = DB::table('destinations')->orderBy(DB::raw('FIELD(name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
 
-                // $ppay = product_payments::where('destination_id', '=', $id)->first();
-                $package = DB::table('destinations')->orderBy(DB::raw('FIELD(name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
+                    $promo = promo::where('active_until', '>=', date('Y-m-d'))->get();
 
-                $promo = promo::where('active_until', '>=', date('Y-m-d'))->get();
-
-                return view('user.home', compact('package', 'promo', 'started'));
-            }
+                    return view('user.home', compact('package', 'promo', 'started'));
+                }
             // } else {
+            //     Auth::logout();
             //     return view('auth.verify-email');
             // }
         } else {

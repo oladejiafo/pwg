@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\Fortify;
+use Illuminate\Support\Facades\Auth;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -31,6 +32,11 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // Email Verification
+        Fortify::verifyEmailView(function (Request $request) { // <--- this
+            Auth::logout();
+            return view('auth.verify-email');
+        });
         Fortify::twoFactorChallengeView(function () {
             return view('auth.two-factor-challenge');
         });
