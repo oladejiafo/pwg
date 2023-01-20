@@ -858,7 +858,6 @@ class HomeController extends Controller
                 $order = array();
                 $successUrl = url('/') . '/payment/success';
                 $failUrl =  url('/') . '/payment/fail';
-
                 $order['action']                        = "PURCHASE";                      // Transaction mode ("AUTH" = authorize only, no automatic settle/capture, "SALE" = authorize + automatic settle/capture)
                 $order['amount']['currencyCode']       = "AED";                           // Payment currency ('AED' only for now)
                 $order['amount']['value']                = floor($amount * 100);              // Minor units (1000 = 10.00 AED)
@@ -1363,7 +1362,9 @@ class HomeController extends Controller
                         $dataArray = [
                             'title' => $criteria . ' Mail from PWG Group',
                             'body' => $message,
-                            'link' => $link
+                            'link' => $link,
+                            'paymentType' => $paymentDetails['payment_type'],
+                            'status' => 'payment'
                         ];
 
                         $check_noti = notifications::where('criteria', '=', $criteria)->where('client_id', '=', Auth::user()->id)->first();

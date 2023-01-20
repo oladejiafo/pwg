@@ -31,8 +31,8 @@
  }
  
  @keyframes  flash {
-     from {color: red;}
-     to {color: rgb(255, 167, 4);}
+     from {color: rgb(255, 167, 4);}
+     to {color: white;}
  }
  .flashes {
     animation-name: flash;
@@ -102,16 +102,16 @@
     </div>
 
     <?php if(isset($msg) && strlen($msg)>2): ?> 
-    <div class="row" style="display:flex;color:white; margin:10px;margin-top:20px;padding:20px;background-color: <?php echo e($color); ?>; height: 80px; float:left;border-radius:5px"> 
-      <span class="col-md-1 col-sm-12 fa-stack fa-2x;display:inline-block;margin-left:1%;height: 80px;">
-        <i class="fas fa-comment fa-stack-2x fa-rotate-270" style="font-style:italics;color:white; font-size: 40px"> </i>
-        <i class="fas fa-bell fa-stack-1x" style="font-style:italics;color:#800000; margin:auto; font-size:20px"></i> 
+    <div class="row pay-info" style="background-color: <?php echo e($color); ?>; float:left;border-radius:5px"> 
+      <span class="col-md-1 col-sm-12 fa-stack fa-2x" style="display:inline-block;margin-left:1%;height: 80px;">
+        <i class="fas fa-comment fa-stack-2x fa-rotate-270 pay-info-icon"> </i>
+        <i class="fas fa-bell fa-stack-1x" style="font-style:italics;color:#800000; margin:auto; font-size:25px"></i> 
       </span> 
       <span class="col-md-9 col-sm-12" align="center" style="display:inline-block;font-size:16px;margin-left: 2px;height: 80px;">
         <b><?php echo e($hd); ?></b> <span class="flashes" style="color:#F8F0E3;"><?php echo e($msg); ?></span>
       </span>
       <?php if(isset($type) && $type=="Pay"): ?>
-      <span align="right" class="col-md-2 col-sm-12" style="display:inline-block;float: right;height: 80px;"> 
+      <span align="right" class="col-md-2 col-sm-12" style="display:inline-block;float: right"> 
         <form action="<?php echo e(route('payment',$prod->id)); ?>" method="GET">
           <button style="border-radius: 10px;background-color:#800000; color:#fff; border-color:#fff">Pay Now</button>
         </form>
@@ -449,8 +449,8 @@
                     <div class="modal-body" style="height:auto">
 
                       <?php if($paid->third_payment_status =='PAID'): ?>
-                        <p>Congratutaion! You have completed your payments. </p>
-                        <p style="font-size:15px">Your embassy appearnce date will be indicated soon.</p>
+                      <h4>Congratutaion! <br>You have completed your payments. </h4>
+                      <p style="font-size:15px">Your embassy appearance date will be indicated soon.</p>
                       <?php elseif($paid->second_payment_status =='PAID'): ?>
                         <p>Your Application is in progress! </p> 
                         <p style="font-size:17px">Your third payment is pending. </p>
@@ -460,7 +460,8 @@
                         <p style="font-size:15px">Your second payment pending.</p> 
                       <?php else: ?> 
                         <?php if($paid->first_payment_remaining >0 && $paid->first_payment_status !='PAID'): ?>
-                          <p style="font-size:15px">You have outstanding payment of <?php echo e($paid->first_payment_remaining); ?> on first payment</p>
+                        
+                          <p style="font-size:15px">You have outstanding payment of <?php echo e($paid->first_payment_remaining); ?> <br> on first payment</p>
                         <?php endif; ?>
                       <?php endif; ?>                      
 

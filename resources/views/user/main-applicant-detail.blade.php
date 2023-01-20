@@ -51,8 +51,8 @@
                                 <label for="floatingInput">Middle Name</label>
                             </div>
                             <div class="form-floating col-sm-4 mt-3">
-                                <input type="text" name="surname" id="floatingInput" class="form-control surname" @if(count($name) > 1)   value="{{$client['sur_name']}}" @endif placeholder="Surname*"  autocomplete="off"  />
-                                <label for="floatingInput">Surname</label>
+                                <input type="text" name="surname" id="floatingInput" class="form-control surname" @if(count($name) > 1)   value="{{$name[count($name) - 1]}}" @endif placeholder="Surname*"  autocomplete="off"  />
+                                <label for="floatingInput">Surname*</label>
                                 <span class="surname_errorClass"></span>
                             </div>
                         </div>

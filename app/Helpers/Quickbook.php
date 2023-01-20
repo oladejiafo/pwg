@@ -323,7 +323,7 @@ class Quickbook
                         $theResourceObj = Invoice::create([
                             "Line" => [
                                 [
-                                    "Description" => 'Second Payment',
+                                    "Description" => $FullSecondPaymentProduct->Description,
                                     "Amount" => $apply->planSecondPrice,
                                     "DetailType" => "SalesItemLineDetail",
                                     "SalesItemLineDetail" => [
@@ -338,7 +338,7 @@ class Quickbook
                                     ]
                                 ],
                                 [
-                                    "Description" => 'Third Payment',
+                                    "Description" => $FullThirdPaymentProduct->Description,
                                     "Amount" => $apply->planThirdPrice,
                                     "DetailType" => "SalesItemLineDetail",
                                     "SalesItemLineDetail" =>
@@ -396,7 +396,7 @@ class Quickbook
                         $theResourceObj = Invoice::create([
                             "Line" => [
                                 [
-                                    "Description" => 'Second Payment',
+                                    "Description" => $FullSecondPaymentProduct->Description,
                                     "Amount" => $apply->planSecondPrice,
                                     "DetailType" => "SalesItemLineDetail",
                                     "SalesItemLineDetail" => [
@@ -447,7 +447,7 @@ class Quickbook
                         $theResourceObj = Invoice::create([
                             "Line" => [
                                 [
-                                    "Description" => 'First payment',
+                                    "Description" => $FullFirstPaymentProduct->Description,
                                     "Amount" => $apply->planFirstPrice,
                                     "DetailType" =>
                                     "SalesItemLineDetail",
@@ -464,7 +464,7 @@ class Quickbook
                                     ]
                                 ],
                                 [
-                                    "Description" => 'Second Payment',
+                                    "Description" => $FullSecondPaymentProduct->Description,
                                     "Amount" => $apply->planSecondPrice,
                                     "DetailType" => "SalesItemLineDetail",
                                     "SalesItemLineDetail" => [
@@ -479,7 +479,7 @@ class Quickbook
                                     ]
                                 ],
                                 [
-                                    "Description" => 'Third Payment',
+                                    "Description" => $FullThirdPaymentProduct->Description,
                                     "Amount" => $apply->planThirdPrice,
                                     "DetailType" => "SalesItemLineDetail",
                                     "SalesItemLineDetail" =>
@@ -537,7 +537,7 @@ class Quickbook
                         $theResourceObj = Invoice::create([
                             "Line" => [
                                 [
-                                    "Description" => 'First payment',
+                                    "Description" => $FullFirstPaymentProduct->Description,
                                     "Amount" => $apply->planFirstPrice,
                                     "DetailType" =>
                                     "SalesItemLineDetail",
@@ -554,7 +554,7 @@ class Quickbook
                                     ]
                                 ],
                                 [
-                                    "Description" => 'Second Payment',
+                                    "Description" => $FullFirstPaymentProduct->Description,
                                     "Amount" => $apply->planSecondPrice,
                                     "DetailType" => "SalesItemLineDetail",
                                     "SalesItemLineDetail" => [

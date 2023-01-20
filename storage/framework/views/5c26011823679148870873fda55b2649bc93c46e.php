@@ -3,7 +3,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>EMAS Notification</title>	
-    {{-- <link rel='stylesheet' type='text/css' media='screen' href='{{asset('css/mail.css')}}'> --}}
+    
 </head>
 <body style="background: #E9EBF4;">
 	<table border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -14,8 +14,8 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <div style="width: 400px;height: 300px;display: block;margin: auto;">
-                                        <img src="{{asset('images/congratulationsicon.png')}}" alt="" width="100%" height="100%">
+                                    <div style="width: 450px;height: 300px;display: block;margin: auto;">
+                                        <img src="<?php echo e(asset('images/congratulationsicon.png')); ?>" alt="" width="100%" height="100%">
                                     </div>
                                     <div class="content-block">
                                         <div class="mailHead" style="font-family: Yantramanav, sans-serif;font-size: 30px;font-weight: 900;line-height: 48px;letter-spacing: 0em;text-align: center;color: #383838; margin-top: 30px;">APPLICATION SUBMITTED 
@@ -33,7 +33,7 @@
                                     <div style="display: block; margin-top:50px">
                                         <div style="width:49%; display:inline-block">
                                             <div style="width:73%;float:right; height: 51px">
-                                                <img src="{{asset('images/logo.png')}}" alt="" width="100%" height="100%">
+                                                <img src="<?php echo e(asset('user/images/Logo-PWG-Copy.png')); ?>" alt="" width="100%" height="100%">
                                             </div>
                                         </div>
                                         <div style="display: inline-block;border: 1.5px solid #383838;height: 47px;"></div>
@@ -45,7 +45,7 @@
                                             line-height: 20px;
                                             color: #383838;
                                             text-align: left;">
-                                                ©{{ now()->year }} PWG Group <br>
+                                                ©<?php echo e(now()->year); ?> PWG Group <br>
                                                 The Oberoi Centre, Office - 20th Floor<br>
                                                 Business Bay, Dubai<br>
                                             </p>
@@ -60,3 +60,4 @@
         </tbody>
     </table>
 </body>
+<?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views/emails/application-submitted.blade.php ENDPATH**/ ?>
