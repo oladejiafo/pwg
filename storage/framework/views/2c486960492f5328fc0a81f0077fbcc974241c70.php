@@ -292,7 +292,7 @@ unset($__errorArgs, $__bag); ?>
                             <?php
                                 if ($payall == 0 || empty($payall)) {
 
-                                 if($pays->first_payment_status !="Paid" || $pays->first_payment_status ==null){
+                                 if($pays->first_payment_status !="PAID" || $pays->first_payment_status ==null){
 
                                    $whichPayment =  "First Payment";
                                 
@@ -307,7 +307,7 @@ unset($__errorArgs, $__bag); ?>
                                     }
 
                                  }
-                                 elseif($pays->first_payment_status =="Paid" && $pays->second_payment_status !="Paid"){
+                                 elseif($pays->first_payment_status =="PAID" && $pays->second_payment_status !="PAID"){
                                     
                                     $whichPayment =  "Second Payment";
                                     if ($diff > 0 && $pays->is_first_payment_partially_paid == 1) {
@@ -325,7 +325,7 @@ unset($__errorArgs, $__bag); ?>
                                     }
 
                                  }
-                                 elseif($pays->second_payment_status =="Paid" && $pays->third_payment_status !="Paid"){
+                                 elseif($pays->second_payment_status =="PAID" && $pays->third_payment_status !="PAID"){
                                     
                                     $whichPayment =  "Third Payment";
                                     if ($diff > 0 && $pays->is_second_payment_partially_paid == 1) {
@@ -351,7 +351,7 @@ unset($__errorArgs, $__bag); ?>
                                  $discount=0;
 
                                 } else {
-                                    if($pays->first_payment_status !="Paid"){
+                                    if($pays->first_payment_status !="PAID"){
                                         if($diff > 0) {
                                             $payNow = $pdet->total_price-$pays->first_payment_paid;
                                             $payNoww = $pdet->total_price-$pays->first_payment_paid;
@@ -365,14 +365,14 @@ unset($__errorArgs, $__bag); ?>
                                             $discountPercent = '5%';
                                             $discount = ($payNow * 5 / 100);
                                         }
-                                    } elseif($pays->first_payment_status =="Paid" && $pays->second_payment_status =="PENDING"){
+                                    } elseif($pays->first_payment_status =="PAID" && $pays->second_payment_status =="PENDING"){
                                         $payNow = $pdet->total_price - $pdet->first_payment_price;
                                         $payNoww = $payNow;
                                         $pendMsg = "Full Outstanding Payment";
 
                                         $discountPercent = '5%';
                                         $discount = ($payNow * 5 / 100);
-                                    } elseif ($pays->first_payment_status =="Paid" && $pays->second_payment_status =="Paid" && $pays->third_payment_status =="PENDING") {
+                                    } elseif ($pays->first_payment_status =="PAID" && $pays->second_payment_status =="PAID" && $pays->third_payment_status =="PENDING") {
                                         $payNow = $pdet->third_payment_price;
                                         $payNoww = $payNow;
                                         $pendMsg = "";

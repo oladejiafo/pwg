@@ -307,11 +307,11 @@ class HomeController extends Controller
             $signate = Auth::user()->id . '_' . time() . '.' . $image_type;
             $signature = user::find(Auth::user()->id);
 
-            // if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
-            //     $signature->addMediaFromBase64($request->signed)->usingFileName($signate)->toMediaCollection(User::$media_collection_main_signture, env('MEDIA_DISK'));
-            // } else {
+            if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+                $signature->addMediaFromBase64($request->signed)->usingFileName($signate)->toMediaCollection(User::$media_collection_main_signture, env('MEDIA_DISK'));
+            } else {
                 $signature->addMediaFromBase64($request->signed)->usingFileName($signate)->toMediaCollection(User::$media_collection_main_signture, 'local');
-            // }
+            }
             // $signature->addMediaFromBase64($request->signed)->usingFileName($signate)->toMediaCollection(User::$media_collection_main_signture, env('MEDIA_DISK'));
             $signature->save();
 
@@ -603,7 +603,7 @@ class HomeController extends Controller
                 } else {
                     $packageType = $complete->work_permit_category;
                 }
-
+                
                 $data = product::find(Session::get('myproduct_id'));
 
                 $pays = DB::table('applications')
@@ -615,7 +615,7 @@ class HomeController extends Controller
                     ->limit(1)
                     ->first();
 
-                
+                   
                     if(!$pays)
                     {
                         return redirect('home');
@@ -636,7 +636,8 @@ class HomeController extends Controller
                         ->where('pricing_plan_type', '=', $packageType)
                         ->first();
                 }
-
+           
+            
                 /* Newly Added starts here*/
                 $applicant = Applicant::where('client_id', Auth::id())
                 ->where('destination_id', $id)
@@ -651,6 +652,7 @@ class HomeController extends Controller
                             $originalPdf = ltrim($originalPdf, $originalPdf[0]);
                         }
                         $paymentType =  "First Payment";
+                      
                     } elseif ($pays->first_payment_status == "PAID" && $pays->second_payment_status != "PAID") {
                         $originalPdf = (isset($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getUrl() : null;
                         $originalPdf = ltrim($originalPdf, $originalPdf[0]);
@@ -680,12 +682,12 @@ class HomeController extends Controller
                 $user = User::find(Auth::id());
                 $signatureUrl = (isset($user->getMedia(User::$media_collection_main_signture)[0])) ? $user->getMedia(User::$media_collection_main_signture)[0]->getUrl() : null;
                 // if (File::exists($user->getMedia(User::$media_collection_main_signture)[0]->getPath())) {
-                        if (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
-                                $signatureUrl = ltrim($signatureUrl, $signatureUrl[0]);
-                            }
-                            $result = pdfBlock::attachSignature($originalPdf, $signatureUrl, $data, $paymentType, $applicant);
-                        // }
-                        /* Newly added endss here*/
+                    if (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+                        $signatureUrl = ltrim($signatureUrl, $signatureUrl[0]);
+                    }
+                    // $result = pdfBlock::attachSignature($originalPdf, $signatureUrl, $data, $paymentType, $applicant);
+                // }
+                /* Newly added endss here*/
                 return view('user.payment-form', compact('data', 'pdet', 'pays', 'payall'));
             } else {
                 // return redirect()->back()->with('message', 'You are not authorized');
@@ -1611,6 +1613,10 @@ class HomeController extends Controller
 
     public function contract($productId)
     {
+    //     $user = User::find(Auth::id());
+    //     $signatureUrl = (isset($user->getMedia(User::$media_collection_main_signture)[0])) ? $user->getMedia(User::$media_collection_main_signture)[0]->getUrl() : null;
+
+    //     dd($signatureUrl);
         if (Auth::id()) {
             $originalPdf = null;
             $destination_file = null;
@@ -1669,12 +1675,12 @@ class HomeController extends Controller
                     ->update([
                         'contract' => $newFileName
                     ]);
-                $fileUrl = Storage::disk('local')->url('Applications/Contracts/client_contracts/'.$newFileName);
-                // if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
-                //     $fileUrl = Storage::disk(env('MEDIA_DISK'))->url('Applications/Contracts/client_contracts/' . $newFileName);
-                // } else {
-                //     $fileUrl = Storage::disk('local')->url('Applications/Contracts/client_contracts/' . $newFileName);
-                // }
+                // $fileUrl = Storage::disk('local')->url('Applications/Contracts/client_contracts/'.$newFileName);
+                if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+                    $fileUrl = Storage::disk(env('MEDIA_DISK'))->url('Applications/Contracts/client_contracts/' . $newFileName);
+                } else {
+                    $fileUrl = Storage::disk('local')->url('Applications/Contracts/client_contracts/' . $newFileName);
+                }
                 return view('user.contract', compact('productId', 'newFileName', 'fileUrl'));
             }
         } else {

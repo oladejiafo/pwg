@@ -38,6 +38,43 @@
         <?php endif; ?>
             <?php echo $__env->yieldContent('content'); ?>
         </div>
-        <?php echo $__env->yieldPushContent('custom-scripts'); ?>
+        <script>
+            <?php if(Session::has('message')): ?>
+              toastr.options =
+              {
+                  "closeButton" : true,
+                  "progressBar" : true
+              }
+              toastr.success("<?php echo e(session('message')); ?>");
+          <?php endif; ?>
+  
+          <?php if(Session::has('error')): ?>
+            toastr.options =
+            {
+                "closeButton" : true,
+                "progressBar" : true
+            }
+            toastr.error("<?php echo e(session('error')); ?>");
+          <?php endif; ?>
+  
+          <?php if(Session::has('info')): ?>
+            toastr.options =
+            {
+                "closeButton" : true,
+                "progressBar" : true
+            }
+            toastr.info("<?php echo e(session('info')); ?>");
+          <?php endif; ?>
+  
+          <?php if(Session::has('warning')): ?>
+            toastr.options =
+            {
+                "closeButton" : true,
+                "progressBar" : true
+            }
+            toastr.warning("<?php echo e(session('warning')); ?>");
+          <?php endif; ?>
+          </script>
+          <?php echo $__env->yieldPushContent('custom-scripts'); ?>
     </body>
 </html><?php /**PATH C:\Users\dejia\OneDrive\Desktop\mygit\pwg_eportal\resources\views/layouts/auth.blade.php ENDPATH**/ ?>
