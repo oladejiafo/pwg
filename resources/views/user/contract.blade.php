@@ -68,7 +68,7 @@
 
                             {{-- <embed src="{{asset('pdf/'.$newFileName)}}" type="application/pdf" /> --}}
                         </div>
-                        <div class="col-12 col-md-8 col-lg-8 offset-md-2 offset-lg-2">
+                        <div class="col-12 col-md-8 col-lg-8 offset-md-2 offset-lg-2" style="margin-top: 25px">
                             {{-- <div class="agree">
                                 <p>&nbsp; <input type="checkbox" class="checkcolor" id="agree" style="font-size:25px;transform: scale(1.8); " checked required="" > &nbsp; By checking this box you accept our <a href="#" style="color:blue;margin:0">Terms & Conditions</a></p>
                             </div> --}}

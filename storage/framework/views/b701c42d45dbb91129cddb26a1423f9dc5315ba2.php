@@ -68,7 +68,7 @@
 
                             
                         </div>
-                        <div class="col-12 col-md-8 col-lg-8 offset-md-2 offset-lg-2">
+                        <div class="col-12 col-md-8 col-lg-8 offset-md-2 offset-lg-2" style="margin-top: 25px">
                             
                    
 

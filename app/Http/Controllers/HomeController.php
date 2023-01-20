@@ -538,7 +538,7 @@ class HomeController extends Controller
 
             $prod = DB::table('destinations')
                 ->join('applications', 'destinations.id', '=', 'applications.destination_id')
-                ->select('destinations.name', 'destinations.id')
+                ->select('destinations.name', 'destinations.id', 'destinations.full_payment_discount')
                 ->where('applications.client_id', '=', $id)
                 ->where('applications.destination_id', '=', $p_id)
                 ->groupBy('destinations.id')
