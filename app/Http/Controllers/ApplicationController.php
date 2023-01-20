@@ -564,7 +564,8 @@ class ApplicationController extends Controller
         $dataArray = [
             'title' => $criteria . 'Mail from PWG Group',
             'body' => $message,
-            'link' => $link
+            'link' => $link,
+            'status' => 'application'
         ];
 
         $check_noti = DB::table('notifications')
@@ -1036,9 +1037,9 @@ class ApplicationController extends Controller
 
     public function getJobCategoryFourList(Request $request, $status = null)
     {
-        $filters = $request->input('filters');
+        $filters = $request->input('filter');
         $query = JobCategoryFour::orderBy('job_category_four.name', 'desc');
-        if ($filters && isset($filters['search_keyword'])) {
+        if ($filters) {
             $query->select('job_category_four.*', 'job_category_two.id as job_category_two_id', 'job_category_one.id as job_category_one_id');
             $query->distinct();
             $query->join('job_category_three', 'job_category_three.id', 'job_category_four.job_category_three_id');
@@ -1046,12 +1047,12 @@ class ApplicationController extends Controller
             $query->join('job_category_one', 'job_category_one.id', 'job_category_two.job_category_one_id');
             $query->where(function ($query) use ($filters) {
 
-                $query = $query->where('job_category_one.name', 'like', '%' . $filters['search_keyword'] . '%');
-                $query = $query->orWhere('job_category_two.name', 'like', '%' . $filters['search_keyword'] . '%');
-                $query = $query->orWhere('job_category_three.name', 'like', '%' . $filters['search_keyword'] . '%');
-                $query = $query->orWhere('job_category_four.name', 'like', '%' . $filters['search_keyword'] . '%');
-                $query = $query->orWhere('job_category_four.description', 'like', '%' . $filters['search_keyword'] . '%');
-                $query = $query->orWhere('job_category_four.example_titles', 'like', '%' . $filters['search_keyword'] . '%');
+                $query = $query->where('job_category_one.name', 'like', '%' . $filters . '%');
+                $query = $query->orWhere('job_category_two.name', 'like', '%' . $filters . '%');
+                $query = $query->orWhere('job_category_three.name', 'like', '%' . $filters . '%');
+                $query = $query->orWhere('job_category_four.name', 'like', '%' . $filters . '%');
+                $query = $query->orWhere('job_category_four.description', 'like', '%' . $filters . '%');
+                $query = $query->orWhere('job_category_four.example_titles', 'like', '%' . $filters . '%');
             });
         }
         $jobCategoryList = $query->get();

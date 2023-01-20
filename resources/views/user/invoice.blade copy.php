@@ -120,17 +120,17 @@ $total = $totalP + $vatP;
         </div><hr style="height:0.7px; opacity:0.2;color:#ccc;">
         <div class="row" style="display: block">
             <div align="left" class="col-4" style="width:30%;display: inline-block; height:20px"> {{$pricing->plan_name}}</div>
-            <div align="left" class="col-4" style="width:30%;display: inline-block; height:20px"> First Payment @if($apply->first_payment_status =='Paid' || $apply->first_payment_status =='Partial') <span style="font-weigth:bold;color:#ccc">[{{$apply->first_payment_status}}]</span> @endif</div>
+            <div align="left" class="col-4" style="width:30%;display: inline-block; height:20px"> First Payment @if($apply->first_payment_status =='PAID' || $apply->first_payment_status =='PARTIAL') <span style="font-weigth:bold;color:#ccc">[{{$apply->first_payment_status}}]</span> @endif</div>
             <div align="right" class="col-4" style="width:30%;display: inline-block; height:20px"> @if(Auth::user()->country_of_residence == "United Arab Emirates")  {{number_format($pricing->first_payment_price + ($pricing->first_payment_price*5/100),2)}} @else {{number_format($pricing->first_payment_price,2) }} @endif</div>
         </div>
         <div class="row" style="display: block">
             <div align="left" class="col-4" style="width:30%;display: inline-block; height:20px"> </div>
-            <div align="left" class="col-4" style="width:30%;display: inline-block; height:20px"> Second Payment @if($apply->second_payment_status =='Paid') <span style="font-weigth:bold;color:#ccc">[PAID]</span> @endif</div>
+            <div align="left" class="col-4" style="width:30%;display: inline-block; height:20px"> Second Payment @if($apply->second_payment_status =='PAID') <span style="font-weigth:bold;color:#ccc">[PAID]</span> @endif</div>
             <div align="right" class="col-4" style="width:30%;display: inline-block; height:20px"> @if(Auth::user()->country_of_residence == "United Arab Emirates")  {{number_format($pricing->second_payment_price + ($pricing->second_payment_price*5/100),2)}} @else {{number_format($pricing->second_payment_price,2) }} @endif</div>
         </div>
         <div class="row" style="display: block">
             <div align="left" class="col-4" style="width:30%;display: inline-block; height:20px"> </div>
-            <div align="left" class="col-4" style="width:30%;display: inline-block; height:20px"> Third Payment @if($apply->third_payment_status =='Paid') <span style="font-weigth:bold;color:#ccc">[PAID]</span> @endif</div>
+            <div align="left" class="col-4" style="width:30%;display: inline-block; height:20px"> Third Payment @if($apply->third_payment_status =='PAID') <span style="font-weigth:bold;color:#ccc">[PAID]</span> @endif</div>
             <div align="right" class="col-4" style="width:30%;display: inline-block; height:20px"> @if(Auth::user()->country_of_residence == "United Arab Emirates")  {{number_format($pricing->third_payment_price + ($pricing->third_payment_price*5/100),2)}} @else {{number_format($pricing->third_payment_price,2) }} @endif</div>
         </div><hr style="height:0.7px; opacity:0.2;color:#ccc;">
         <div class="row" style="display: block">

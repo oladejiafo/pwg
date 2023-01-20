@@ -292,7 +292,7 @@ unset($__errorArgs, $__bag); ?>
                             <?php
                                 if ($payall == 0 || empty($payall)) {
 
-                                 if($pays->first_payment_status !="Paid" || $pays->first_payment_status ==null){
+                                 if($pays->first_payment_status !="PAID" || $pays->first_payment_status ==null){
 
                                    $whichPayment =  "First Payment";
                                 
@@ -307,7 +307,7 @@ unset($__errorArgs, $__bag); ?>
                                     }
 
                                  }
-                                 elseif($pays->first_payment_status =="Paid" && $pays->second_payment_status !="Paid"){
+                                 elseif($pays->first_payment_status =="PAID" && $pays->second_payment_status !="PAID"){
                                     
                                     $whichPayment =  "Second Payment";
                                     if ($diff > 0 && $pays->is_first_payment_partially_paid == 1) {
@@ -325,7 +325,7 @@ unset($__errorArgs, $__bag); ?>
                                     }
 
                                  }
-                                 elseif($pays->second_payment_status =="Paid" && $pays->third_payment_status !="Paid"){
+                                 elseif($pays->second_payment_status =="PAID" && $pays->third_payment_status !="PAID"){
                                     
                                     $whichPayment =  "Third Payment";
                                     if ($diff > 0 && $pays->is_second_payment_partially_paid == 1) {
@@ -351,40 +351,76 @@ unset($__errorArgs, $__bag); ?>
                                  $discount=0;
 
                                 } else {
-                                    if($pays->first_payment_status !="Paid"){
-                                        if($diff > 0) {
-                                            $payNow = $pdet->total_price-$pays->first_payment_paid;
-                                            $payNoww = $pdet->total_price-$pays->first_payment_paid;
+                                    if($pays->first_payment_status =="PENDING" && $pays->second_payment_status =="PENDING" & $pays->third_payment_status =="PENDING") {
+                                        $payNow = $pdet->total_price;
+                                        $payNoww = $payNow;
+                                        $pendMsg = "Full Payment";
+                                        $discountPercent =  ($data->full_payment_discount) ? $data->full_payment_discount.'%' : 0;
+
+                                        // $discountPercent = '5%';
+                                        // $discount = ($payNow * 5 / 100);
+                                        $discount = ($data->full_payment_discount > 0) ? ($payNow * $data->full_payment_discount / 100) : 0; //product discount fetch
+                                        $whichPayment =  "Full-Outstanding Payment";
+                                    } elseif($pays->first_payment_status !="PAID"){
+                                        if(is_null($pdet->third_payment_price) OR empty($pdet->third_payment_price) ) {
+                                            $payNow = $pdet->second_payment_price;
+                                            $payNoww = $payNow;
+                                            if($diff > 0){
+                                             $pendMsg = "Part Paid already";
+                                            } else {
+                                                $pendMsg="";
+                                            }
+                                            $discountPercent = '';
+                                            $discount = 0;
+                                        }elseif($diff > 0) {
+                                            // $payNow = $pdet->total_price-$pays->first_payment_paid;
+                                            // $payNoww = $pdet->total_price-$pays->first_payment_paid;
+                                            $payNow = $pdet->total_price-$pdet->first_payment_price;
+                                            $payNoww = $pdet->total_price-$pdet->first_payment_price;
                                             $pendMsg = "Part Paid already";
-                                            $discountPercent =  '5%'; //$data->full_payment_discount
-                                            $discount = ($payNow * 5 / 100);
+                                            $discountPercent =  ($data->full_payment_discount) ? $data->full_payment_discount.'%' : 0;
+                                            // $discountPercent =  '5%'; //$data->full_payment_discount
+                                            // $discount = ($payNow * 5 / 100);
+                                            $discount = ($data->full_payment_discount > 0) ? ($payNow * $data->full_payment_discount / 100) : 0; //product discount fetch
+
                                         } else {
                                             $payNow = $pdet->total_price;
                                             $payNoww = $pdet->total_price;
                                             $pendMsg = "Full Payment";
-                                            $discountPercent = '5%';
-                                            $discount = ($payNow * 5 / 100);
+                                            // $discountPercent = '5%';
+                                            // $discount = ($payNow * 5 / 100);
+                                            $discountPercent =  ($data->full_payment_discount) ? $data->full_payment_discount.'%' : 0;
+                                            $discount = ($data->full_payment_discount > 0) ? ($payNow * $data->full_payment_discount / 100) : 0; //product discount fetch
                                         }
-                                    } elseif($pays->first_payment_status =="Paid" && $pays->second_payment_status =="PENDING"){
-                                        $payNow = $pdet->total_price - $pdet->first_payment_price;
-                                        $payNoww = $payNow;
-                                        $pendMsg = "Full Outstanding Payment";
+                                        $whichPayment =  "Full-Outstanding Payment";
+                                    } elseif($pays->first_payment_status =="PAID" && $pays->second_payment_status =="PENDING"){
+                                        if($pdet->third_payment_price != null || $pdet->third_payment_price != 0){
+                                            $payNow = $pdet->second_payment_price + $pdet->third_payment_price;
+                                            $payNoww = $payNow;
+                                            $pendMsg = "Full Outstanding Payment";
+                                            $discountPercent =  ($data->full_payment_discount) ? $data->full_payment_discount.'%' : 0;
+                                            $discount = ($data->full_payment_discount > 0) ? ($payNow * $data->full_payment_discount / 100) : 0;
+                                            $whichPayment =  "Full-Outstanding Payment";
+                                        } else {
+                                            $payNow = $pdet->second_payment_price;
+                                            $payNoww = $payNow;
+                                            $pendMsg = "";
+                                            $discountPercent = '';
+                                            $discount = 0;
+                                            $whichPayment =  "Second Payment";
+                                        }
+                                        // $payNow = $pdet->total_price - $pdet->first_payment_price;
+                                        // $payNoww = $payNow;
+                                        // $pendMsg = "Full Outstanding Payment";
 
-                                        $discountPercent = '5%';
-                                        $discount = ($payNow * 5 / 100);
-                                    } elseif ($pays->first_payment_status =="Paid" && $pays->second_payment_status =="Paid" && $pays->third_payment_status =="PENDING") {
+                                        // $discountPercent = '5%';
+                                        // $discount = ($payNow * 5 / 100);
+                                    } elseif ($pays->first_payment_status =="PAID" && $pays->second_payment_status =="PAID" && $pays->third_payment_status =="PENDING") {
                                         $payNow = $pdet->third_payment_price;
                                         $payNoww = $payNow;
                                         $pendMsg = "";
                                         $discountPercent = '';
                                         $discount = 0;
-                                    } elseif($pays->first_payment_status =="PENDING" && $pays->second_payment_status =="PENDING" & $pays->third_payment_status =="PENDING") {
-                                        $payNow = $pdet->total_price;
-                                        $payNoww = $payNow;
-                                        $pendMsg = "Full Payment";
-
-                                        $discountPercent = '5%';
-                                        $discount = ($payNow * 5 / 100);
                                     }else{
                                         $payNow = 0;
                                         $payNoww = $payNow;
@@ -599,7 +635,8 @@ unset($__errorArgs, $__bag); ?>
                                         <?php else: ?>
                                             <h2 style="font-size: 1em;">Now you will pay <?php echo e(strtolower($which)); ?> installment only 
                                                 <span id="amountLink">
-                                                    <b><?php echo e((($pays->first_payment_status !="PAID") ? (($diff > 0) ? number_format((floor(((($payNoww - $discount)+ $vat)+$pays->first_payment_remaining)*100)/100),2) : (number_format((floor((($payNoww - $discount)+ $vat)*100)/100),2))):number_format((floor((($payNoww - $discount)+ $vat)*100)/100),2))); ?></b>
+                                                    
+                                                    <b><span id="amountLink"> <?php echo e((($pays->first_payment_status !="PAID") ? (($diff > 0) ? number_format((floor(((($payNoww - $discount)+ $vat)+$pays->first_payment_remaining)*100)/100),2) : (number_format((floor((($payNoww - $discount)+ $vat)*100)/100),2))):number_format((floor((($payNoww - $discount)+ $vat)*100)/100),2))); ?> </span></b>
                                                 </span> AED 
                                                 <span style="font-size:11px;opacity:0.6"  id="amountText">
                                                     <?php if($vat>0): ?> 

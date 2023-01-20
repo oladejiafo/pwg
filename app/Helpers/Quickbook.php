@@ -323,7 +323,7 @@ class Quickbook
                         $theResourceObj = Invoice::create([
                             "Line" => [
                                 [
-                                    "Description" => 'Second Payment',
+                                    "Description" => $FullSecondPaymentProduct->Description,
                                     "Amount" => $apply->planSecondPrice,
                                     "DetailType" => "SalesItemLineDetail",
                                     "SalesItemLineDetail" => [
@@ -338,7 +338,7 @@ class Quickbook
                                     ]
                                 ],
                                 [
-                                    "Description" => 'Third Payment',
+                                    "Description" => $FullThirdPaymentProduct->Description,
                                     "Amount" => $apply->planThirdPrice,
                                     "DetailType" => "SalesItemLineDetail",
                                     "SalesItemLineDetail" =>
@@ -396,7 +396,7 @@ class Quickbook
                         $theResourceObj = Invoice::create([
                             "Line" => [
                                 [
-                                    "Description" => 'Second Payment',
+                                    "Description" => $FullSecondPaymentProduct->Description,
                                     "Amount" => $apply->planSecondPrice,
                                     "DetailType" => "SalesItemLineDetail",
                                     "SalesItemLineDetail" => [
@@ -437,7 +437,6 @@ class Quickbook
                                 "Address" => "v@intuit.com"
                             ]
                         ]);
-                        // dd($theResourceObj);
                         $invoiceData = $dataService->Add($theResourceObj);
                         $paymentDetails->invoice_no = $invoiceData->DocNumber;
                         $paymentDetails->invoice_id = $invoiceData->Id;
@@ -448,7 +447,7 @@ class Quickbook
                         $theResourceObj = Invoice::create([
                             "Line" => [
                                 [
-                                    "Description" => 'First payment',
+                                    "Description" => $FullFirstPaymentProduct->Description,
                                     "Amount" => $apply->planFirstPrice,
                                     "DetailType" =>
                                     "SalesItemLineDetail",
@@ -465,7 +464,7 @@ class Quickbook
                                     ]
                                 ],
                                 [
-                                    "Description" => 'Second Payment',
+                                    "Description" => $FullSecondPaymentProduct->Description,
                                     "Amount" => $apply->planSecondPrice,
                                     "DetailType" => "SalesItemLineDetail",
                                     "SalesItemLineDetail" => [
@@ -480,7 +479,7 @@ class Quickbook
                                     ]
                                 ],
                                 [
-                                    "Description" => 'Third Payment',
+                                    "Description" => $FullThirdPaymentProduct->Description,
                                     "Amount" => $apply->planThirdPrice,
                                     "DetailType" => "SalesItemLineDetail",
                                     "SalesItemLineDetail" =>
@@ -538,7 +537,7 @@ class Quickbook
                         $theResourceObj = Invoice::create([
                             "Line" => [
                                 [
-                                    "Description" => 'First payment',
+                                    "Description" => $FullFirstPaymentProduct->Description,
                                     "Amount" => $apply->planFirstPrice,
                                     "DetailType" =>
                                     "SalesItemLineDetail",
@@ -555,7 +554,7 @@ class Quickbook
                                     ]
                                 ],
                                 [
-                                    "Description" => 'Second Payment',
+                                    "Description" => $FullFirstPaymentProduct->Description,
                                     "Amount" => $apply->planSecondPrice,
                                     "DetailType" => "SalesItemLineDetail",
                                     "SalesItemLineDetail" => [
@@ -618,7 +617,6 @@ class Quickbook
                         ->where('invoice_id', '!=', null)
                         ->where('invoice_no', '!=', null)
                         ->first();
-                    // dd($firstPaymentDue);
                     if ($firstPaymentDue) {
                         $remainingPayment = $firstPaymentDue->payable_amount - $firstPaymentDue->paid_amount;
                         self::firstPaymentBalanceDue($paymentType, $apply, $paymentDetails, $customer, $dataService, $remainingPayment);
@@ -629,7 +627,6 @@ class Quickbook
                     self::quickBook($dataService, $coupon, $unitPrice, $updatItem, $paidAmount, $tax, $customer, $paymentDetails, $apply);
                 }
             }
-
             if ($error) {
                 echo "The Status code is: " . $error->getHttpStatusCode() . "\n";
                 echo "The Helper message is: " . $error->getOAuthHelperError() . "\n";
@@ -682,7 +679,8 @@ class Quickbook
                         "name" => (User::find(Auth::id())->country_of_residence == 'United Arab Emirates') ? "VAT" : '', // tax rate name
                     ],
                     "TotalTax" => (User::find(Auth::id())->country_of_residence == 'United Arab Emirates') ? $tax : 0,
-                ],                "PaymentRefNum" => $paymentDetails->bank_reference_no,
+                ],   
+                "PaymentRefNum" => $paymentDetails->bank_reference_no,
 
                 "CustomerRef" => [
                     "value" => ($customer->Id) ??  $customer[0]->Id
@@ -709,12 +707,12 @@ class Quickbook
                         "Amount" => $unitPrice,
                         "DetailType" => "SalesItemLineDetail",
                         "SalesItemLineDetail" => [
+                            "TaxCodeRef" => [
+                                "value" => "TAX"
+                            ],
                             "ItemRef" => [
                                 "value" => $updatItem->Id,
                                 "name" => $updatItem->Name
-                            ],
-                            "TaxCodeRef" => [
-                                "value" => "Tax"
                             ],
                             'UnitPrice' => $unitPrice,
                             'Qty' => 1.0
@@ -725,8 +723,8 @@ class Quickbook
                 // no tax due to free zone
                 "TxnTaxDetail" => [
                     "TxnTaxCodeRef" => [
-                        "value" => 5 , // tax rate
-                        "name" => "VAT", // tax rate name
+                        "value" => "5",  // tax rate
+                        "name" => "VAT" // tax rate name
                     ],
                     "TotalTax" => $tax,
                 ],
@@ -750,7 +748,6 @@ class Quickbook
                 ]
             ]);
         }
-        // dd($theResourceObj);
         $invoiceData = $dataService->Add($theResourceObj);
         $paymentDetails->invoice_no = $invoiceData->DocNumber;
         $paymentDetails->invoice_id = $invoiceData->Id;

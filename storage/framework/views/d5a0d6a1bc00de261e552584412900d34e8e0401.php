@@ -51,8 +51,8 @@
                                 <label for="floatingInput">Middle Name</label>
                             </div>
                             <div class="form-floating col-sm-4 mt-3">
-                                <input type="text" name="surname" id="floatingInput" class="form-control surname" <?php if(count($name) > 1): ?>   value="<?php echo e($client['sur_name']); ?>" <?php endif; ?> placeholder="Surname*"  autocomplete="off"  />
-                                <label for="floatingInput">Surname</label>
+                                <input type="text" name="surname" id="floatingInput" class="form-control surname" <?php if(count($name) > 1): ?>   value="<?php echo e($name[count($name) - 1]); ?>" <?php endif; ?> placeholder="Surname*"  autocomplete="off"  />
+                                <label for="floatingInput">Surname*</label>
                                 <span class="surname_errorClass"></span>
                             </div>
                         </div>
