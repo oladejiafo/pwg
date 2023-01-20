@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>EMAS Notification</title>	
+	<title>PWG Notification</title>	
     {{-- <link rel='stylesheet' type='text/css' media='screen' href='{{asset('css/mail.css')}}'> --}}
 </head>
 <body style="background: #E9EBF4;">
@@ -22,7 +22,7 @@
                                             <br> SUCCESSFULLY!</div>
                                                                                     
                                         <p class="mailContent" style="font-family: Yantramanav, sans-serif;font-size: 16px;font-weight: lighter;line-height: 27px;letter-spacing: 0em;text-align: center;color: #383838;margin-top: 20px;">
-                                            Thank you for starting your journey with EMAS Immigration <br>
+                                            Thank you for starting your journey with PWG Group <br>
                                             you can view your application under <b style="font-weight: bold">My Applications</b> on our portal. 
                                         </p>
                                     </div>

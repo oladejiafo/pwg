@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>EMAS Notification</title>	
+	<title>PWG Notification</title>	
     {{-- <link rel='stylesheet' type='text/css' media='screen' href='{{asset('css/mail.css')}}'> --}}
 </head>
 <style>
@@ -46,7 +46,7 @@
                                             You have successfully made your <b style="font-weight: bold">{{ucwords($data['paymentType'])}}</b><br>
                                             and you can view & download your invoice under <br>
                                             <b>My Applications</b> on our portal.@if(ucwords($data['paymentType']) != 'Third Payment') You will be notified when your <br>
-                                            @if(ucwords($data['paymentType']) != 'First Payment')work permit is ready. @elseif(ucwords($data['paymentType']) == 'Second Payment') embassy appointment is set. @elseif(ucwords($data['paymentType']) == 'Full-Outstanding Payment') work permit & embassy appointment is set. @endif @endif</p>
+                                            @if(ucwords($data['paymentType']) == 'First Payment') work permit is ready. @elseif(ucwords($data['paymentType']) == 'Second Payment') embassy appointment is set. @elseif(ucwords($data['paymentType']) == 'Full-Outstanding Payment') work permit & embassy appointment is set. @endif @endif</p>
                                     </div>
                                 </td>
                             </tr>

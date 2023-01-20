@@ -22,6 +22,7 @@ use QuickBooksOnline\API\DataService\DataService;
 use DB;
 use Session;
 use Carbon\Carbon;
+use App\Constant;
 
 class ApplicationController extends Controller
 {
@@ -132,7 +133,11 @@ class ApplicationController extends Controller
         }
         $client = User::find(Auth::id());
         if($request->hasFile('cv')){
-            $client->addMedia($request->file('cv'))->toMediaCollection(User::$media_collection_main_resume, env('MEDIA_DISK'));
+            if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+                $client->addMedia($request->file('cv'))->toMediaCollection(User::$media_collection_main_resume, env('MEDIA_DISK'));
+            } else {
+                $client->addMedia($request->file('cv'))->toMediaCollection(User::$media_collection_main_resume, 'local');
+            }
             $client->save();
         }
         User::where('id', Auth::id())
@@ -195,7 +200,11 @@ class ApplicationController extends Controller
         $fileName = '';
         if ($request->hasFile('passport_copy')) {
             $fileName = Auth::user()->id . '_' . time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
-            $client->addMedia($request->file('passport_copy'))->usingFileName($fileName)->toMediaCollection(User::$media_collection_main, env('MEDIA_DISK'));
+            if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+                $client->addMedia($request->file('passport_copy'))->usingFileName($fileName)->toMediaCollection(User::$media_collection_main, env('MEDIA_DISK'));
+            } else {
+                $client->addMedia($request->file('passport_copy'))->usingFileName($fileName)->toMediaCollection(User::$media_collection_main, 'local');
+            }
         }
 
         $client->passport_number  = $request['passport_number'];
@@ -323,7 +332,11 @@ class ApplicationController extends Controller
         if ($request->hasFile('residence_copy')) {
             $file = $request->file('residence_copy');
             $residenceCopy = Auth::user()->id . '_' . time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
-            $client->addMedia($request->file('residence_copy'))->usingFileName($residenceCopy)->toMediaCollection(User::$media_collection_main_residence_id, env('MEDIA_DISK'));
+            if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+                $client->addMedia($request->file('residence_copy'))->usingFileName($residenceCopy)->toMediaCollection(User::$media_collection_main_residence_id, env('MEDIA_DISK'));
+            } else {
+                $client->addMedia($request->file('residence_copy'))->usingFileName($residenceCopy)->toMediaCollection(User::$media_collection_main_residence_id, 'local');
+            }
         } else {
             $residenceCopy = $request->file('residence_copy');
         }
@@ -331,7 +344,11 @@ class ApplicationController extends Controller
         if ($request->hasFile('visa_copy')) {
             $file = $request->file('visa_copy');
             $visaCopy = Auth::user()->id . '_' . time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
-            $client->addMedia($request->file('visa_copy'))->usingFileName($visaCopy)->toMediaCollection(User::$media_collection_main_residence_visa, env('MEDIA_DISK'));
+            if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+                $client->addMedia($request->file('visa_copy'))->usingFileName($visaCopy)->toMediaCollection(User::$media_collection_main_residence_visa, env('MEDIA_DISK'));
+            } else {
+                $client->addMedia($request->file('visa_copy'))->usingFileName($visaCopy)->toMediaCollection(User::$media_collection_main_residence_visa, 'local');
+            }
         }
         $client->country_of_residence = $request->current_country;
         $client->residence_mobile_number = $request->current_residance_mobile;
@@ -380,7 +397,11 @@ class ApplicationController extends Controller
         if ($request->hasFile('schengen_copy')) {
             $file = $request->file('schengen_copy');
             $schengenCopy = Auth::user()->id.'_'.time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
-            $client->addMediaFromRequest('schengen_copy')->withCustomProperties(['mime-type' => 'image/jpeg'])->preservingOriginal()->usingFileName($schengenCopy)->toMediaCollection(User::$media_collection_main_schengen_visa, env('MEDIA_DISK'));
+            if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+                $client->addMediaFromRequest('schengen_copy')->withCustomProperties(['mime-type' => 'image/jpeg'])->preservingOriginal()->usingFileName($schengenCopy)->toMediaCollection(User::$media_collection_main_schengen_visa, env('MEDIA_DISK'));
+            } else {
+                $client->addMediaFromRequest('schengen_copy')->withCustomProperties(['mime-type' => 'image/jpeg'])->preservingOriginal()->usingFileName($schengenCopy)->toMediaCollection(User::$media_collection_main_schengen_visa, 'local');
+            }
             $client->save();
         }
 

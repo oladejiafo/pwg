@@ -222,7 +222,7 @@ class pdfBlock
             $pdf->SetTextColor(0, 0, 0);
             $client = User::find(Auth::id());
 
-            if (strtolower($product->name) == Constant::poland) 
+            if (strtolower($product->name) == Constant::poland || strtolower($product->name) == Constant::germany) 
             {
                 
                 if ($pageNo == 4) {

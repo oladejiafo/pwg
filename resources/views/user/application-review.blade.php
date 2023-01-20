@@ -145,7 +145,7 @@
                     </div>
                 </div>
 
-                <div style="display:flex;color:white; padding:2%;background-color: #dd9951; height: 80px; float:left;border-radius:3px"> 
+                <div style="display:flex;color:white; padding:2%;background-color: #dd9951; height: 80px; float:left;border-radius:3px;margin-top: 5px;"> 
                     <span class="review-info-icon"><i class="fas fa-exclamation-triangle"></i></span> 
                     <span class="review-info" style="display:inline-block;"><b>Application Review:</b> Please confirm your entered details are accurate and submit.<span>
                 </div>
@@ -281,7 +281,6 @@
                                                             <input type="file" class="upload up cv_upload" id="up"  name="cv"  value="{{$client['resumeName']}}"/>
                                                             </span><!-- btn-orange -->
                                                     </div><!-- btn -->
-                                                    <a href="javascript:void(0)" onclick="showCV()">click to view uploaded CV copy</a>
                                                     <span class="cv_errorClass"></span>
                                                     <label for="cv">CV</label>
                                                 </div>
@@ -365,7 +364,6 @@
                                                             <input type="file" class="upload up passport_copy" id="up" value="{{$client['passport']}}"  name="passport_copy" />
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
-                                                    {{-- <a href="javascript:void(0)"  onclick="showPassport()">click to view uploaded passport copy</a> --}}
                                                     <span class="passport_copy_errorClass"></span>
                                                     <label for="passport_copy">Passport Copy Upload*</label>
                                                 </div>
@@ -494,7 +492,6 @@
                                                             <input type="file" class="upload residence_id" id="up"  name="residence_copy" />
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
-                                                    {{-- <a href="javascript:void(0)" onclick="residenceCopyModal()">click to view uploaded residence id copy</a> --}}
                                                     <span class="residence_copy_errorClass"></span>
                                                     <label for="residence_copy">Residence ID Copy*</label>
                                                 </div>
@@ -506,10 +503,7 @@
                                                             <input type="file" class="upload visa_copy" id="up"  name="visa_copy" />
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
-                                                    <label for="visa_copy">Visa Copy*</label>
-                                                    {{-- @if($client['visaCopyUrl'])
-                                                        <a href="javascript:void(0)" onclick="visaCopyModal()">click to view uploaded visa copy</a>
-                                                    @endif --}}
+                                                    <label for="visa_copy">Visa Copy</label>
                                                 </div>
                                             </div>
                                             {{-- <div class="form-group row mt-4">
@@ -628,10 +622,6 @@
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
                                                     <label for="schengen_copy">Image of Schengen Or National Visa Issued During Last 5 Years*</label>
-                                                   
-                                                    {{-- @if($client['schengenVisaUrl'])
-                                                        <a href="javascript:void(0)" onclick="schengenVisatModal()">click to view uploaded schengen visa copy</a>
-                                                    @endif --}}
                                                     @php 
                                                         $cnt = 0; 
                                                         for($i = 1; $i <= 4; $i++)
@@ -965,7 +955,6 @@
                                                             <input type="file" class="upload up dependent_resume" id="up"  name="dependent_resume" accept="application/pdf" value="{{$dependent['resumeName']}}"/>
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
-                                                    <a href="javascript:void(0)" onclick="showResume()">click to view uploaded resume</a>
                                                     <label for="dependent_resume">Upload your cv (PDF only)*</label>
                                                     <span class="dependent_resume_errorClass"></span>
                                                 </div>
@@ -1107,7 +1096,6 @@
                                                             <input type="file" class="upload up dependent_passport_copy" id="up"  name="dependent_passport_copy" />
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
-                                                    <a href="javascript:void(0)" onclick="dependentPassword()">click to view uploaded passport copy</a>
                                                     <label for="dependent_passport_copy">Upload Passport Copy*</label>
                                                     <span class="dependent_passport_copy_errorClass"></span>
                                                 </div>
@@ -1237,7 +1225,6 @@
                                                             <input type="file" class="upload dependent_residence_copy" id="up"  name="dependent_residence_copy" />
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
-                                                    {{-- <a href="javascript:void(0)" onclick="dependentResidence()">click to view uploaded residence copy</a> --}}
                                                     <label for="dependent_residence_copy">Residence/Emirates ID*</label>
                                                     <span class="dependent_residence_copy_errorClass"></span>
                                                 </div>
@@ -1250,9 +1237,6 @@
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
                                                     <label for="dependent_visa_copy">Visa Copy</label>
-                                                    {{-- @if($dependent['visaCopyUrl'] != null)
-                                                        <a href="javascript:void(0)" onclick="dependentVisa()">click to view uploaded visa copy</a>
-                                                    @endif --}}
                                                 </div>
                                             </div>
                                             {{-- <div class="form-group row mt-4">
@@ -1365,9 +1349,7 @@
                                                         </span><!-- btn-orange -->
                                                     </div><!-- btn -->
                                                     <label for="dependent_schengen_copy">Image of Schengen Or National Visa Issued During Last 5 Years</label>
-                                                    @if($dependent['schengenVisaUrl'] != null)
-                                                        <a href="javascript:void(0)" onclick="dependentSchengenVisatModal()">click to view uploaded schengen visa copy</a>
-                                                    @endif    
+                                                        
                                                     @php 
                                                         $cnt = 0; 
                                                         for($i = 1; $i <= 4; $i++)

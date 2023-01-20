@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Helpers;
+
 use Codedge\Fpdf\Fpdf\Fpdf;
 use setasign\Fpdi\Fpdi;
 use setasign\Fpdi\PdfReader;
@@ -19,6 +20,7 @@ use Carbon\Carbon;
 use App\Mail\QuickbookMail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+
 class users
 {
     public function clients(): ?Client
@@ -69,32 +71,23 @@ class users
         return $randomString;
     }
 
-    
+
     public static function getWorkpermitFile($paidDetails)
     {
         $response = [
             'fileUrl' => '',
             'FileExist' => false
         ];
-        if (strtoupper($paidDetails->first_payment_status) == 'PAID' && $paidDetails->work_permit_status == "WORK_PERMIT_RECEIVED"){
+        if (strtoupper($paidDetails->first_payment_status) == 'PAID' && $paidDetails->work_permit_status == "WORK_PERMIT_RECEIVED") {
             $client = new \GuzzleHttp\Client();
-            if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
-                $res = $client->request(
-                    'POST',
-                    config('app.admin_url') . '/api/get-work-permit',
-                    [
-                        'form_params' => $paidDetails,
-                    ]
-                );
-            } else {
-                $res = $client->request(
-                    'POST',
-                    config('app.admin_url_local') . '/api/get-work-permit',
-                    [
-                        'form_params' => $paidDetails,
-                    ]
-                );
-            }
+            $res = $client->request(
+                'POST',
+                env('ADMIN_URL') . '/api/get-work-permit',
+                [
+                    'form_params' => $paidDetails,
+                ]
+            );
+
             $fileData = $res->getBody()->getContents();
             $file = json_decode($fileData);
             $response = [
@@ -124,5 +117,4 @@ class users
         }
         return $response;
     }
-
 }
