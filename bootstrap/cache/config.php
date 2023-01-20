@@ -1,10 +1,10 @@
 <?php return array (
   'app' => 
   array (
-    'name' => 'PWG Group',
+    'name' => 'Laravel',
     'env' => 'local',
     'debug' => true,
-    'url' => 'http://localhost:888',
+    'url' => 'http://localhost:8000',
     'asset_url' => NULL,
     'timezone' => 'Asia/Dubai',
     'locale' => 'en',
@@ -173,7 +173,7 @@
   ),
   'cache' => 
   array (
-    'default' => 'file',
+    'default' => NULL,
     'stores' => 
     array (
       'apc' => 
@@ -195,7 +195,7 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => 'C:\\Users\\dejia\\OneDrive\\Desktop\\mygit\\pwg_eportal\\storage\\framework/cache/data',
+        'path' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\storage\\framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -239,7 +239,7 @@
         'driver' => 'octane',
       ),
     ),
-    'prefix' => 'pwg_group_cache',
+    'prefix' => 'laravel_cache',
   ),
   'cors' => 
   array (
@@ -287,7 +287,7 @@
         'driver' => 'mysql',
         'url' => NULL,
         'host' => '127.0.0.1',
-        'port' => '3308',
+        'port' => '3306',
         'database' => 'backoffice_pwg',
         'username' => 'root',
         'password' => '',
@@ -307,7 +307,7 @@
         'driver' => 'pgsql',
         'url' => NULL,
         'host' => '127.0.0.1',
-        'port' => '3308',
+        'port' => '3306',
         'database' => 'backoffice_pwg',
         'username' => 'root',
         'password' => '',
@@ -322,7 +322,7 @@
         'driver' => 'sqlsrv',
         'url' => NULL,
         'host' => '127.0.0.1',
-        'port' => '3308',
+        'port' => '3306',
         'database' => 'backoffice_pwg',
         'username' => 'root',
         'password' => '',
@@ -338,7 +338,7 @@
       'options' => 
       array (
         'cluster' => 'redis',
-        'prefix' => 'pwg_group_database_',
+        'prefix' => 'laravel_database_',
       ),
       'default' => 
       array (
@@ -367,13 +367,13 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\Users\\dejia\\OneDrive\\Desktop\\mygit\\pwg_eportal\\storage\\app/public',
+        'root' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\storage\\app/public',
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\Users\\dejia\\OneDrive\\Desktop\\mygit\\pwg_eportal\\storage\\app/public',
-        'url' => 'http://localhost:888/storage',
+        'root' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\storage\\app/public',
+        'url' => 'http://localhost:8000/storage',
         'visibility' => 'public',
       ),
       's3' => 
@@ -389,14 +389,14 @@
       'media' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\Users\\dejia\\OneDrive\\Desktop\\mygit\\pwg_eportal\\public\\storage',
-        'url' => 'http://localhost:888/storage',
+        'root' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\public\\storage',
+        'url' => 'http://localhost:8000/storage',
         'visibility' => 'public',
       ),
     ),
     'links' => 
     array (
-      'C:\\Users\\dejia\\OneDrive\\Desktop\\mygit\\pwg_eportal\\public\\storage' => 'C:\\Users\\dejia\\OneDrive\\Desktop\\mygit\\pwg_eportal\\storage\\app/public',
+      'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\public\\storage' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\storage\\app/public',
     ),
   ),
   'fortify' => 
@@ -485,13 +485,13 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => 'C:\\Users\\dejia\\OneDrive\\Desktop\\mygit\\pwg_eportal\\storage\\logs/laravel.log',
+        'path' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\storage\\logs/laravel.log',
         'level' => 'debug',
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => 'C:\\Users\\dejia\\OneDrive\\Desktop\\mygit\\pwg_eportal\\storage\\logs/laravel.log',
+        'path' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\storage\\logs/laravel.log',
         'level' => 'debug',
         'days' => 14,
       ),
@@ -542,7 +542,7 @@
       ),
       'emergency' => 
       array (
-        'path' => 'C:\\Users\\dejia\\OneDrive\\Desktop\\mygit\\pwg_eportal\\storage\\logs/laravel.log',
+        'path' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\storage\\logs/laravel.log',
       ),
     ),
   ),
@@ -554,11 +554,11 @@
       'smtp' => 
       array (
         'transport' => 'smtp',
-        'host' => 'mail.pwggroup.ae',
-        'port' => '465',
-        'encryption' => 'ssl',
-        'username' => 'pwggroup@pwggroup.ae',
-        'password' => '3C%9Ahvg@,',
+        'host' => 'smtp.mailtrap.io',
+        'port' => '2525',
+        'encryption' => NULL,
+        'username' => '98615f1c256d22',
+        'password' => '9ce096fd3c3a3f',
         'timeout' => NULL,
         'auth_mode' => NULL,
       ),
@@ -601,14 +601,14 @@
     'from' => 
     array (
       'address' => 'no-reply@pwggroup.ae',
-      'name' => 'PWG Group',
+      'name' => 'PWG GROUP',
     ),
     'markdown' => 
     array (
       'theme' => 'default',
       'paths' => 
       array (
-        0 => 'C:\\Users\\dejia\\OneDrive\\Desktop\\mygit\\pwg_eportal\\resources\\views/vendor/mail',
+        0 => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\resources\\views/vendor/mail',
       ),
     ),
   ),
@@ -753,7 +753,7 @@
       2 => '127.0.0.1',
       3 => '127.0.0.1:8000',
       4 => '::1',
-      5 => 'localhost:888',
+      5 => 'localhost:8000',
     ),
     'guard' => 
     array (
@@ -811,7 +811,7 @@
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => 'C:\\Users\\dejia\\OneDrive\\Desktop\\mygit\\pwg_eportal\\storage\\framework/sessions',
+    'files' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\storage\\framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -820,7 +820,7 @@
       0 => 2,
       1 => 100,
     ),
-    'cookie' => 'pwg_group_session',
+    'cookie' => 'laravel_session',
     'path' => '/',
     'domain' => NULL,
     'secure' => NULL,
@@ -831,9 +831,9 @@
   array (
     'paths' => 
     array (
-      0 => 'C:\\Users\\dejia\\OneDrive\\Desktop\\mygit\\pwg_eportal\\resources\\views',
+      0 => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\resources\\views',
     ),
-    'compiled' => 'C:\\Users\\dejia\\OneDrive\\Desktop\\mygit\\pwg_eportal\\storage\\framework\\views',
+    'compiled' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\storage\\framework\\views',
   ),
   'dompdf' => 
   array (
@@ -842,10 +842,10 @@
     'convert_entities' => true,
     'options' => 
     array (
-      'font_dir' => 'C:\\Users\\dejia\\OneDrive\\Desktop\\mygit\\pwg_eportal\\storage\\fonts',
-      'font_cache' => 'C:\\Users\\dejia\\OneDrive\\Desktop\\mygit\\pwg_eportal\\storage\\fonts',
-      'temp_dir' => 'C:\\Users\\dejia\\AppData\\Local\\Temp',
-      'chroot' => 'C:\\Users\\dejia\\OneDrive\\Desktop\\mygit\\pwg_eportal',
+      'font_dir' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\storage\\fonts',
+      'font_cache' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\storage\\fonts',
+      'temp_dir' => 'C:\\Users\\SHAMSH~1\\AppData\\Local\\Temp',
+      'chroot' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal',
       'allowed_protocols' => 
       array (
         'file://' => 
@@ -937,7 +937,7 @@
   'livewire' => 
   array (
     'class_namespace' => 'App\\Http\\Livewire',
-    'view_path' => 'C:\\Users\\dejia\\OneDrive\\Desktop\\mygit\\pwg_eportal\\resources\\views/livewire',
+    'view_path' => 'C:\\Users\\Shamshera Hamza\\pwg_client_portal\\resources\\views/livewire',
     'layout' => 'layouts.app',
     'asset_url' => NULL,
     'app_url' => NULL,

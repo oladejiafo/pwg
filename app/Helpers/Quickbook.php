@@ -54,12 +54,12 @@ class Quickbook
         $quickbook = QuickModel::first();
         $dataService = DataService::Configure(array(
             'auth_mode' => 'oauth2',
-            'ClientID' => (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.client_id') : config('services.quickbook.client_id'),
-            'ClientSecret' => (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.client_secret') : config('services.quickbook.client_secret'),
+            'ClientID' => config('services.quickbook_local.client_id'), // (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.client_id') : config('services.quickbook.client_id'),
+            'ClientSecret' => config('services.quickbook_local.client_secret'), //(in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.client_secret') : config('services.quickbook.client_secret'),
             'accessTokenKey' => $quickbook['access_token'],
             'refreshTokenKey' => $quickbook['refresh_token'],
-            'QBORealmID' => (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.QBORealmID') : config('services.quickbook.QBORealmID'),
-            'baseUrl' => (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? "Development" : "production"
+            'QBORealmID' => config('services.quickbook_local.QBORealmID'), //(in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.QBORealmID') : config('services.quickbook.QBORealmID'),
+            'baseUrl' => 'Development', //(in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? "Development" : "production"
         ));
         $dataService->setLogLocation("/Users/hlu2/Desktop/newFolderForLog");
         $dataService->throwExceptionOnError(true);
@@ -232,6 +232,7 @@ class Quickbook
                     } else {
                         $updatItem = $dataService->FindbyId('Item', $productObj[0]->Id);
                     }
+                    break;
                 case Constant::germany:
                     if ($paymentType == 'First Payment') {
                         $productObj = $dataService->Query("select * from Item Where Name='Photocopy- CV, Passport - Germany'");
@@ -262,6 +263,7 @@ class Quickbook
                     } else {
                         $updatItem = $dataService->FindbyId('Item', $productObj[0]->Id);
                     }
+                    break;
                 default:
                     $Item = Item::create([
                         "Name" => $paymentDetails->payment_type . '-' . $destinationName,
@@ -271,6 +273,10 @@ class Quickbook
                         "Taxable" => true,
                         "UnitPrice" => $unitPrice,
                         "Type" => "Service",
+                        "IncomeAccountRef" => [
+                            "value"=> 1,
+                            "name"=> "Services"
+                        ]
                     ]);
                     $resultingObj = $dataService->Add($Item);
                     $updatItem = $Item;
@@ -294,6 +300,14 @@ class Quickbook
                         "Taxable" => true,
                         "UnitPrice" => $unitPrice,
                         "Type" => "Service",
+                        "IncomeAccountRef" => [
+                            "value"=> 1,
+                            "name"=> "Services"
+                        ],
+                        "ExpenseAccountRef"=> [
+                            "value"=> 80,
+                            "name"=> "Cost of Goods Sold"
+                        ],
                     ]);
                     $resultingObj = $dataService->Add($Item);
                     $updatItem = $Item;
@@ -679,7 +693,7 @@ class Quickbook
                         "name" => (User::find(Auth::id())->country_of_residence == 'United Arab Emirates') ? "VAT" : '', // tax rate name
                     ],
                     "TotalTax" => (User::find(Auth::id())->country_of_residence == 'United Arab Emirates') ? $tax : 0,
-                ],   
+                ],
                 "PaymentRefNum" => $paymentDetails->bank_reference_no,
 
                 "CustomerRef" => [
@@ -760,14 +774,14 @@ class Quickbook
             $quickbook = QuickModel::first();
             $dataService = DataService::Configure(array(
                 'auth_mode' => 'oauth2',
-                'ClientID' => (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.client_id') : config('services.quickbook.client_id'),
-                'ClientSecret' => (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.client_secret') : config('services.quickbook.client_secret'),
-                'RedirectURI' => (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.oauth_redirect_uri') : config('services.quickbook.oauth_redirect_uri'),
-                'scope' => (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.oauth_scope') : config('services.quickbook.oauth_scope'),
+                'ClientID' => config('services.quickbook_local.client_id'), //(in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.client_id') : config('services.quickbook.client_id'),
+                'ClientSecret' => config('services.quickbook_local.client_secret'), //(in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.client_secret') : config('services.quickbook.client_secret'),
+                'RedirectURI' => config('services.quickbook_local.oauth_redirect_uri'), //(in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.oauth_redirect_uri') : config('services.quickbook.oauth_redirect_uri'),
+                'scope' => config('services.quickbook_local.oauth_scope'), //(in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.oauth_scope') : config('services.quickbook.oauth_scope'),
                 'accessTokenKey' => $quickbook['access_token'],
                 'refreshTokenKey' => $quickbook['refresh_token'],
-                'QBORealmID' => (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.QBORealmID') : config('services.quickbook.QBORealmID'),
-                'baseUrl' => (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? "Development" : "production"
+                'QBORealmID' => config('services.quickbook_local.QBORealmID'), //(in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.QBORealmID') : config('services.quickbook.QBORealmID'),
+                'baseUrl' => 'Development', //(in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? "Development" : "production"
             ));
             $OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
             $refreshedAccessTokenObj = $OAuth2LoginHelper->refreshToken();
@@ -792,7 +806,6 @@ class Quickbook
                 $quickbook->save();
             }
         } catch (Exception $exception) {
-            $quickbook = QuickModel::first();
             return \Redirect::route('myapplication')->with('error', $exception->getMessage());
         }
     }

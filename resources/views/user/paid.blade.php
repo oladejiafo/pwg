@@ -515,7 +515,7 @@
     @endphp
 
     <div class="card d-flex aligns-items-center justify-content-center text-center wiggy" style="background-color:#000; color: #fff; padding-block:35px; font-weight: bold;font-family:'TT Norms Pro'">
-      <h3 style="font-size:36px">Earn {{round(($prod->full_payment_discount) ?? 5)}} discount when you pay full amount! </h3>
+      <h3 style="font-size:36px">Earn {{round(($prod->full_payment_discount) ?? 5)}}% discount when you pay full amount! </h3>
       <p style="margin-top: 5px;">
       @if($paid->application_stage_status != 5)
         <button class="btn btn-secondary toastrDefaultError" style="border-width:thin; width:250px; height:60px; font-size:32px; font-weight:bold" onclick="toastr.error('Your application process not completed!')">Pay All Now</button>                           
