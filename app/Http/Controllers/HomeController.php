@@ -1235,7 +1235,7 @@ class HomeController extends Controller
 
             // if (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
             // local
-            $outletRef           = config('app.payment_reference_local');
+            $outletRef       = config('app.payment_reference_local');
             $apikey          = config('app.payment_api_key_local');
             $idServiceURL    = "https://identity.sandbox.ngenius-payments.com/auth/realms/ni/protocol/openid-connect/token";           // set the identity service URL (example only)
             $residServiceURL = "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders/" . $orderReference;

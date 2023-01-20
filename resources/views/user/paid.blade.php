@@ -307,9 +307,7 @@
                 @endif
               </li>
 
-
               <!-- 3rd Payment Column  -->
-
               <li>
                 <div align="center" class="col-md-4 col-sm-12 img-fluid cellContainer">
                 @if($pays->third_payment_price >0 )

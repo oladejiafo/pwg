@@ -309,9 +309,7 @@
                 <?php endif; ?>
               </li>
 
-
               <!-- 3rd Payment Column  -->
-
               <li>
                 <div align="center" class="col-md-4 col-sm-12 img-fluid cellContainer">
                 <?php if($pays->third_payment_price >0 ): ?>
@@ -519,7 +517,7 @@
     ?>
 
     <div class="card d-flex aligns-items-center justify-content-center text-center wiggy" style="background-color:#000; color: #fff; padding-block:35px; font-weight: bold;font-family:'TT Norms Pro'">
-      <h3 style="font-size:36px">Earn <?php echo e(round(($prod->full_payment_discount) ?? 5)); ?> discount when you pay full amount! </h3>
+      <h3 style="font-size:36px">Earn <?php echo e(round(($prod->full_payment_discount) ?? 5)); ?>% discount when you pay full amount! </h3>
       <p style="margin-top: 5px;">
       <?php if($paid->application_stage_status != 5): ?>
         <button class="btn btn-secondary toastrDefaultError" style="border-width:thin; width:250px; height:60px; font-size:32px; font-weight:bold" onclick="toastr.error('Your application process not completed!')">Pay All Now</button>                           
