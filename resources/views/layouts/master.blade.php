@@ -143,5 +143,8 @@
         
     </script>
         @stack('custom-scripts')
-</body>
+
+        @include('user/footer')
+
+    </body>
 </html>

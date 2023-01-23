@@ -74,5 +74,7 @@
           @endif
           </script>
           @stack('custom-scripts')
+
+          @include('user/footer')
     </body>
 </html>

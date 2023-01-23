@@ -226,7 +226,7 @@
   {{-- Session::get('totalCost') --}}
   {{-- Session::get('mySpouse') --}}
   {{-- Session::get('myKids') --}}
-
+  @include('user/footer')
 </body>
 
 </html>

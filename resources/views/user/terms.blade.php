@@ -42,6 +42,7 @@
     </ol>
     </div>
     
+    @include('user/footer')
     </body>
     </html>
     

@@ -250,6 +250,7 @@
         @endif
 
     </div>
+    @include('user/footer')
     <!-- End Product Section -->
 
 

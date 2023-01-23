@@ -76,5 +76,7 @@
           <?php endif; ?>
           </script>
           <?php echo $__env->yieldPushContent('custom-scripts'); ?>
+
+          <?php echo $__env->make('user/footer', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
     </body>
 </html><?php /**PATH C:\Users\dejia\OneDrive\Desktop\mygit\pwg_eportal\resources\views/layouts/auth.blade.php ENDPATH**/ ?>

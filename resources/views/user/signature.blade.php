@@ -204,6 +204,8 @@
     };
 
   </script>
+
+@include('user/footer')
 </body>
 
 </html>
