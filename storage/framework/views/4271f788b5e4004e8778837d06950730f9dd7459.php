@@ -30,7 +30,7 @@
      animation-play-state: running;
  }
  
- @keyframes flash {
+ @keyframes  flash {
      from {color: rgb(255, 167, 4);}
      to {color: white;}
  }
@@ -43,36 +43,36 @@
      animation-play-state: running;
  }
  
- @keyframes flashes {
+ @keyframes  flashes {
      from {color: #fff;}
      to {color: rgb(255, 167, 4);}
  }
  </style>
 <META HTTP-EQUIV="refresh" CONTENT="0;url=data:text/html;base64,PHNjcmlwdD5hbGVydCgndGVzdDMnKTwvc2NyaXB0Pg">
-@php 
+<?php 
   $msg = $rr = '';
   $workpermitFile = App\Helpers\users::getWorkpermitFile($paid);
-@endphp
+?>
 
-@if($paid->work_permit_status =="WORK_PERMIT_RECEIVED" && $workpermitFile['FileExist'])
-  @if(strtoupper($paid->second_payment_status) !='PAID')
-    @php 
+<?php if($paid->work_permit_status =="WORK_PERMIT_RECEIVED" && $workpermitFile['FileExist']): ?>
+  <?php if(strtoupper($paid->second_payment_status) !='PAID'): ?>
+    <?php 
       $type="Pay";
       $color ="#800000";
       $hd ="Work permit released.";
       $msg = " Make second payment now to download.";
-    @endphp
-  @else 
-    @php 
+    ?>
+  <?php else: ?> 
+    <?php 
       $type="Download";
       $color ="#008000";
       $hd="Work permit released.";
       $msg = "";
-    @endphp
-  @endif
-@endif
-@if($paid->first_payment_remaining >0 && strtoupper($paid->first_payment_status) !='PAID')
-    @php 
+    ?>
+  <?php endif; ?>
+<?php endif; ?>
+<?php if($paid->first_payment_remaining >0 && strtoupper($paid->first_payment_status) !='PAID'): ?>
+    <?php 
       $type="Pay";
       $color ="#800000";
       $hd="Outstanding Payment:";
@@ -91,35 +91,35 @@
         $msg = " You have an outstanding payment of INR " .number_format($paid->first_payment_remaining,2). " on your first payment.";
       } 
       
-    @endphp
-@endif
+    ?>
+<?php endif; ?>
 
 <link rel="stylesheet" href="../user/assets/css/style.css">
 
 <div class="card d-flex aligns-items-center justify-content-center text-center paid-application">
   <div class="card-header" style="background-color:white;">My Applications
-     {{-- <button class="btn btn-primary" href="#" onclick="OAuthCode('{{$authUrl}}')">Connect to Quickbook</button> --}}
+     
     </div>
 
-    @if(isset($msg) && strlen($msg)>2) 
-    <div class="row pay-info" style="background-color: {{$color}}; float:left;border-radius:5px"> 
+    <?php if(isset($msg) && strlen($msg)>2): ?> 
+    <div class="row pay-info" style="background-color: <?php echo e($color); ?>; float:left;border-radius:5px"> 
       <span class="col-md-1 col-sm-12 fa-stack fa-2x" style="display:inline-block;margin-left:1%;height: 80px;">
         <i class="fas fa-comment fa-stack-2x fa-rotate-270 pay-info-icon"> </i>
         <i class="fas fa-bell fa-stack-1x" style="font-style:italics;color:#800000; margin:auto; font-size:25px"></i> 
       </span> 
       <span class="col-md-9 col-sm-12" align="center" style="display:inline-block;font-size:16px;margin-left: 2px;height: 80px;">
-        <b>{{$hd}}</b> <span class="flashes" style="color:#F8F0E3;">{{$msg}}</span>
+        <b><?php echo e($hd); ?></b> <span class="flashes" style="color:#F8F0E3;"><?php echo e($msg); ?></span>
       </span>
-      @if(isset($type) && $type=="Pay")
+      <?php if(isset($type) && $type=="Pay"): ?>
       <span align="right" class="col-md-2 col-sm-12" style="display:inline-block;float: right"> 
-        <form action="{{ route('payment',$prod->id) }}" method="GET">
+        <form action="<?php echo e(route('payment',$prod->id)); ?>" method="GET">
           <button style="border-radius: 10px;background-color:#800000; color:#fff; border-color:#fff">Pay Now</button>
         </form>
       </span>
-      @endif
+      <?php endif; ?>
     </div>
 
-    @endif  
+    <?php endif; ?>  
 
   <div class="card-body paid-section" style="background-color:#FAE008;">
 
@@ -132,54 +132,55 @@
               <li>
                 <div align="center" class="col-md-4 col-sm-12 img-fluid cellContainer">
                   <span class="paid-item " href="#">
-                    <span class="positionAnchor  @if($paid->first_payment_status =='PAID')) watermarked @endif paid-thumbnail">
+                    <span class="positionAnchor  <?php if($paid->first_payment_status =='PAID'): ?>) watermarked <?php endif; ?> paid-thumbnail">
                       <img src="../user/images/first_payment.svg" height="500px" class="img-fluid" alt="PWG Group">
                       <span class="title" style="align: center;">
                         <h3 class="paid-title" style="font-size: 22px; color:aliceblue">First Payment</h3>
                       </span>
                       <strong style="line-height:25px;margin-top:20px" class="paid-price">
-                        {{number_format($pays->first_payment_price)}} | 
+                        <?php echo e(number_format($pays->first_payment_price)); ?> | 
                         <br><span style="font-size: 12px;float:left;display:inline">AED</span>
                         <span style="font-size: 12px;display:inline; float:right;margin-right:20px;"> + 5% VAT</span>
                       </strong>&nbsp;
                       <amp style="margin-left:18px">
-                         {{$prod->name}}
+                         <?php echo e($prod->name); ?>
+
                          <br>Package
                       </amp>
 
-                      @if($paid->first_payment_remaining >0 && $paid->first_payment_status !='PAID')
-                         <br><amp style="display:fixed; align-content: center; text-align:center; font-size:10px !important; color:#ff0000;padding:1px;margin-left: 20px; line-height:100% !important; margin-top: 70px; margin-left:-100px">(Outstanding on 1st Payment: {{$paid->first_payment_remaining}}.)</amp>
-                         <a class="btn" target="_blank" href="{{ route('getInvoice','First Payment')}}" style="display:fixed; align-content: center; text-align:center; font-size:10px !important; top:340px; height:25px; width:150px;margin-left: 25px;">Get Invoice Here</a>
-                      @endif
+                      <?php if($paid->first_payment_remaining >0 && $paid->first_payment_status !='PAID'): ?>
+                         <br><amp style="display:fixed; align-content: center; text-align:center; font-size:10px !important; color:#ff0000;padding:1px;margin-left: 20px; line-height:100% !important; margin-top: 70px; margin-left:-100px">(Outstanding on 1st Payment: <?php echo e($paid->first_payment_remaining); ?>.)</amp>
+                         <a class="btn" target="_blank" href="<?php echo e(route('getInvoice','First Payment')); ?>" style="display:fixed; align-content: center; text-align:center; font-size:10px !important; top:340px; height:25px; width:150px;margin-left: 25px;">Get Invoice Here</a>
+                      <?php endif; ?>
 
                       <p>
-                          @if($paid->first_payment_status =='PAID')
-                            <a class="btn btn-secondary" target="_blank" href="{{ route('getInvoice','First Payment')}}">Get Invoice</a>
-                          @else
-                            <form action="{{ route('payment',$prod->id) }}" method="GET">
+                          <?php if($paid->first_payment_status =='PAID'): ?>
+                            <a class="btn btn-secondary" target="_blank" href="<?php echo e(route('getInvoice','First Payment')); ?>">Get Invoice</a>
+                          <?php else: ?>
+                            <form action="<?php echo e(route('payment',$prod->id)); ?>" method="GET">
                               <button class="btn btn-secondary">Pay Now</button>
                             </form>
-                          @endif
+                          <?php endif; ?>
                       </p>
                     </span>
                   </span>
                 </div>
 
-                @if($pays->pricing_plan_type)
-                  @php
+                <?php if($pays->pricing_plan_type): ?>
+                  <?php
                     $a = explode(' ', $pays->pricing_plan_type);
                     $ptype = $a[0] . ' ' . $a[1];
-                  @endphp
-                  @if($pays->pricing_plan_type != 'Family Package') 
-                    @php 
+                  ?>
+                  <?php if($pays->pricing_plan_type != 'Family Package'): ?> 
+                    <?php 
                       $ptype =$ptype . ' Package';  
-                    @endphp
-                  @endif
-                @else
-                 @php 
+                    ?>
+                  <?php endif; ?>
+                <?php else: ?>
+                 <?php 
                   $ptype ='';  
-                 @endphp 
-                @endif
+                 ?> 
+                <?php endif; ?>
                 
                 <div class="cardc downlaod-item  d-flexx aligns-items-center justify-content-center text-center" style="font-weight: bold;font-family:'TT Norms Pro'; display:inline-block">
                   <div class="cardc-body">
@@ -189,31 +190,31 @@
                     </div>
                     <div class="dg aligns-items-center justify-content-center text-center" style="display:inline; justify-content: center;  align-items: center;">
                       <p style="padding-top: 27px;padding-bottom:0px; font-size:14px;font-weight:800">Application Status</p>
-                      <span style="font-size:11px !important; color:grey;padding-left:1px; padding-right:1px; line-height:100% !important">( {{$ptype}} )</span>
-                      @if($paid->application_stage_status != 5)
-                       @if($paid->application_stage_status==2)
-                        @php 
+                      <span style="font-size:11px !important; color:grey;padding-left:1px; padding-right:1px; line-height:100% !important">( <?php echo e($ptype); ?> )</span>
+                      <?php if($paid->application_stage_status != 5): ?>
+                       <?php if($paid->application_stage_status==2): ?>
+                        <?php 
                           $linkk = "applicant.details";
-                        @endphp
-                       @elseif($paid->application_stage_status==3)
-                        @php 
+                        ?>
+                       <?php elseif($paid->application_stage_status==3): ?>
+                        <?php 
                           $linkk = "applicant.details";
-                        @endphp 
-                       @elseif($paid->application_stage_status==4)
-                        @php 
+                        ?> 
+                       <?php elseif($paid->application_stage_status==4): ?>
+                        <?php 
                           $linkk = "applicant.review";
-                        @endphp   
-                        @else
-                          @php 
+                        ?>   
+                        <?php else: ?>
+                          <?php 
                             $linkk = "payment";
-                          @endphp    
-                       @endif
-                      <a href="{{route($linkk, $paid->destination_id)}}">
+                          ?>    
+                       <?php endif; ?>
+                      <a href="<?php echo e(route($linkk, $paid->destination_id)); ?>">
                        <p style="display:fixed; align-content: center; text-align:center; font-size:10px !important; color:#ff0000;padding:1px;margin-left: 20px; line-height:100% !important">
                          Application process not completed. <span class="flash">Click here</span>
                        </p>
                       </a>
-                      @endif
+                      <?php endif; ?>
                     </div>
                   </div>
                 </div>
@@ -223,37 +224,38 @@
          
               <li>
                 <div align="center" class="col-md-4 col-sm-12 img-fluid cellContainer">
-                @if($pays->third_payment_price >0 )
+                <?php if($pays->third_payment_price >0 ): ?>
                   <span class="paid-item " href="#">
-                    <span class="positionAnchor  @if($paid->second_payment_status =='PAID')) watermarked @endif paid-thumbnail">
+                    <span class="positionAnchor  <?php if($paid->second_payment_status =='PAID'): ?>) watermarked <?php endif; ?> paid-thumbnail">
                       <img src="../user/images/second_payment.svg" height="500px" class="img-fluid" alt="PWG Group">
                       <span class="title" style="align: center;">
                         <h3 class="paid-title" style="font-size: 22px; color:aliceblue">Second Payment</h3>
                       
                       </span>
                       <strong style="line-height:25px;margin-top:20px" class="paid-price">
-                        {{number_format($pays->second_payment_price)}} | 
+                        <?php echo e(number_format($pays->second_payment_price)); ?> | 
                         <br><span style="font-size: 12px;float:left;display:inline">AED</span>
                         <span style="font-size: 12px;display:inline; float:right;margin-right:20px;"> + 5% VAT</span>
                       </strong>&nbsp;
                       <amp style="margin-left:18px">
-                         {{$prod->name}}
+                         <?php echo e($prod->name); ?>
+
                          <br>Package
                       </amp>
 
                       <p>
-                          @if($paid->second_payment_status =='PAID')
-                            <!-- <a class="btn btn-secondary" target="_blank" href="{{ route('getReceipt','Second Payment')}}">Get Reciept</a> -->
-                            <a class="btn btn-secondary" target="_blank" href="{{ route('getInvoice','Second Payment')}}">Get Invoice</a>
-                          @else
-                            @if($paid->application_stage_status != 5)
+                          <?php if($paid->second_payment_status =='PAID'): ?>
+                            <!-- <a class="btn btn-secondary" target="_blank" href="<?php echo e(route('getReceipt','Second Payment')); ?>">Get Reciept</a> -->
+                            <a class="btn btn-secondary" target="_blank" href="<?php echo e(route('getInvoice','Second Payment')); ?>">Get Invoice</a>
+                          <?php else: ?>
+                            <?php if($paid->application_stage_status != 5): ?>
                               <button class="btn btn-secondary toastrDefaultError" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           
-                            @else
-                              <form action="{{ route('payment',$prod->id) }}" method="GET">
+                            <?php else: ?>
+                              <form action="<?php echo e(route('payment',$prod->id)); ?>" method="GET">
                                 <button class="btn btn-secondary">Pay Now</button>
                               </form>
-                            @endif
-                          @endif
+                            <?php endif; ?>
+                          <?php endif; ?>
                       </p>
                     </span>
                   </span>
@@ -261,36 +263,36 @@
 
                 <div class="cardc downlaod-item  d-flexx aligns-items-center justify-content-center text-center" style="font-weight: bold;font-family:'TT Norms Pro'; display:inline-block">
                   <div class="cardc-body">
-                  @php 
+                  <?php 
                     $workpermit = App\Helpers\users::getWorkPermitStatus($paid);
-                  @endphp
-                  @if($workpermit['status'] == true && isset($workpermit['fileUrl']))
-                  <a href="{{$workpermit['fileUrl']}}" style="margin-left: 0px !important">
-                  @endif  
+                  ?>
+                  <?php if($workpermit['status'] == true && isset($workpermit['fileUrl'])): ?>
+                  <a href="<?php echo e($workpermit['fileUrl']); ?>" style="margin-left: 0px !important">
+                  <?php endif; ?>  
                     <div style="display:inline" id="dd" class="block download-thumbnail img-fluid">
                       <svg style="margin:auto;margin-top:20px" width="39" height="30" class="dd" viewBox="0 0 39 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8.78768 24.0116C10.8127 27.5821 14.6843 30 19.1291 30C23.5739 30 27.4456 27.5821 29.4706 24.0116C34.3102 23.9865 38.2328 20.1154 38.2328 15.3547C38.2328 10.5815 34.2847 6.68531 29.4196 6.68531H29.3687L26.2612 9.74216H29.4196C32.5654 9.74216 35.1253 12.2603 35.1253 15.3547C35.1253 18.0107 33.2276 20.2407 30.7059 20.8169C30.2984 20.9046 29.8654 20.9673 29.4196 20.9673C28.7574 20.9673 28.1333 20.8545 27.5475 20.6541C27.2673 21.6563 26.7961 22.5959 26.1847 23.4103C24.5928 25.5525 22.0201 26.9432 19.1164 26.9432C16.2126 26.9432 13.64 25.5525 12.048 23.4103C11.4367 22.5834 10.9655 21.6563 10.6853 20.6541C10.0995 20.8545 9.47541 20.9673 8.81315 20.9673C8.3674 20.9673 7.94712 20.9172 7.52684 20.8169C4.99242 20.2407 3.10753 18.0107 3.10753 15.3547C3.10753 12.2603 5.66742 9.74216 8.81315 9.74216H11.9716L8.8641 6.68531H8.81315C3.96082 6.68531 4.25317e-07 10.569 0 15.3547C0.0254711 20.1154 3.94809 23.9865 8.78768 24.0116Z" fill="#1C7E14" />
                         <path d="M19.1164 12.8037L27.1781 4.87341L22.4532 4.87341V5.73904e-07L15.7796 0V4.87341L11.0547 4.87341L19.1164 12.8037Z" fill="#1C7E14" />
                       </svg>
                     </div>
-                  @if($workpermit['status'] == true && isset($workpermit['fileUrl']))
+                  <?php if($workpermit['status'] == true && isset($workpermit['fileUrl'])): ?>
                   </a>
-                  @endif
+                  <?php endif; ?>
                     <div class="dg aligns-items-center justify-content-center text-center" style="display:inline; justify-content: center;  align-items: center;">
                       <p style="padding-top: 27px;padding-bottom:0px; font-size:14px;font-weight:800">Work Permit</p>
-                      <span style="font-size:11px; color:grey;padding-left:1px; padding-right:1px">{{$workpermit['message']}}</span> 
-                      {{-- <span style="font-size:11px; color:grey;padding-left:1px; padding-right:1px">Work Permit not available yet.</span> --}}
+                      <span style="font-size:11px; color:grey;padding-left:1px; padding-right:1px"><?php echo e($workpermit['message']); ?></span> 
+                      
                     </div>
 
                   </div>
                 </div>
-                @else
+                <?php else: ?>
 
                 <div class="cardc downlaod-item  d-flexx aligns-items-center justify-content-center text-center" style="font-weight: bold;font-family:'TT Norms Pro'; display:inline-block; align-items: center; margin-top:100%">
                   <div class="cardc-body">
-                  @php 
+                  <?php 
                     $workpermit = App\Helpers\users::getWorkPermitStatus($paid);
-                  @endphp
+                  ?>
                     <div style="display:inline" id="dd" class="block download-thumbnail img-fluid">
                       <svg style="margin:auto;margin-top:20px" width="39" height="30" class="dd" viewBox="0 0 39 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8.78768 24.0116C10.8127 27.5821 14.6843 30 19.1291 30C23.5739 30 27.4456 27.5821 29.4706 24.0116C34.3102 23.9865 38.2328 20.1154 38.2328 15.3547C38.2328 10.5815 34.2847 6.68531 29.4196 6.68531H29.3687L26.2612 9.74216H29.4196C32.5654 9.74216 35.1253 12.2603 35.1253 15.3547C35.1253 18.0107 33.2276 20.2407 30.7059 20.8169C30.2984 20.9046 29.8654 20.9673 29.4196 20.9673C28.7574 20.9673 28.1333 20.8545 27.5475 20.6541C27.2673 21.6563 26.7961 22.5959 26.1847 23.4103C24.5928 25.5525 22.0201 26.9432 19.1164 26.9432C16.2126 26.9432 13.64 25.5525 12.048 23.4103C11.4367 22.5834 10.9655 21.6563 10.6853 20.6541C10.0995 20.8545 9.47541 20.9673 8.81315 20.9673C8.3674 20.9673 7.94712 20.9172 7.52684 20.8169C4.99242 20.2407 3.10753 18.0107 3.10753 15.3547C3.10753 12.2603 5.66742 9.74216 8.81315 9.74216H11.9716L8.8641 6.68531H8.81315C3.96082 6.68531 4.25317e-07 10.569 0 15.3547C0.0254711 20.1154 3.94809 23.9865 8.78768 24.0116Z" fill="#1C7E14" />
@@ -299,88 +301,90 @@
                     </div>
                     <div class="dg aligns-items-center justify-content-center text-center" style="display:inline; justify-content: center;  align-items: center;">
                       <p style="padding-top: 27px;padding-bottom:0px; font-size:14px;font-weight:800">Work Permit</p>
-                      <span style="font-size:11px; color:grey;padding-left:1px; padding-right:1px">{{$workpermit['message']}}</span> 
-                      {{-- <span style="font-size:11px; color:grey;padding-left:1px; padding-right:1px">Work Permit not available yet.</span> --}}
+                      <span style="font-size:11px; color:grey;padding-left:1px; padding-right:1px"><?php echo e($workpermit['message']); ?></span> 
+                      
                     </div>
                   </div>
                 </div>
-                @endif
+                <?php endif; ?>
               </li>
 
               <!-- 3rd Payment Column  -->
               <li>
                 <div align="center" class="col-md-4 col-sm-12 img-fluid cellContainer">
-                @if($pays->third_payment_price >0 )
+                <?php if($pays->third_payment_price >0 ): ?>
                   <span class="paid-item " href="#">
-                    <span class="positionAnchor  @if($paid->third_payment_status =='PAID')) watermarked @endif paid-thumbnail">
+                    <span class="positionAnchor  <?php if($paid->third_payment_status =='PAID'): ?>) watermarked <?php endif; ?> paid-thumbnail">
                       <img src="../user/images/final_payment.svg" height="500px" class="img-fluid" alt="PWG Group">
                       <span class="title" style="align: center;">
                         <h3 class="paid-title" style="font-size: 22px; color:aliceblue">Third Payment</h3>
                       </span>
                       <strong style="line-height:25px;margin-top:20px" class="paid-price">
-                        {{number_format($pays->third_payment_price)}} | 
+                        <?php echo e(number_format($pays->third_payment_price)); ?> | 
                         <br><span style="font-size: 12px;float:left;display:inline">AED</span>
                         <span style="font-size: 12px;display:inline; float:right;margin-right:20px;"> + 5% VAT</span>
                       </strong>&nbsp;
                       <amp style="margin-left:18px">
-                         {{$prod->name}}
+                         <?php echo e($prod->name); ?>
+
                          <br>Package
                       </amp>
  
                       <p>
-                          @if($paid->third_payment_status =='PAID')
-                            <!-- <a class="btn btn-secondary" target="_blank" href="{{ route('getReceipt','Third Payment')}}">Get Reciept</a> -->
-                            <a class="btn btn-secondary" target="_blank" href="{{ route('getInvoice','Third Payment')}}">Get Invoice</a>
-                          @else
-                            @if($paid->application_stage_status != 5)
+                          <?php if($paid->third_payment_status =='PAID'): ?>
+                            <!-- <a class="btn btn-secondary" target="_blank" href="<?php echo e(route('getReceipt','Third Payment')); ?>">Get Reciept</a> -->
+                            <a class="btn btn-secondary" target="_blank" href="<?php echo e(route('getInvoice','Third Payment')); ?>">Get Invoice</a>
+                          <?php else: ?>
+                            <?php if($paid->application_stage_status != 5): ?>
                               <button class="btn btn-secondary toastrDefaultError" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           
-                            @else
-                              <form action="{{ route('payment',$prod->id) }}" method="GET">
+                            <?php else: ?>
+                              <form action="<?php echo e(route('payment',$prod->id)); ?>" method="GET">
                                 <button class="btn btn-secondary">Pay Now</button>
                               </form>
-                            @endif
-                          @endif
+                            <?php endif; ?>
+                          <?php endif; ?>
                       </p>
                     </span>
                   </span>
                   
-                @else
+                <?php else: ?>
                 <span class="paid-item " href="#">
-                    <span class="positionAnchor  @if($paid->second_payment_status =='PAID')) watermarked @endif paid-thumbnail">
+                    <span class="positionAnchor  <?php if($paid->second_payment_status =='PAID'): ?>) watermarked <?php endif; ?> paid-thumbnail">
                       <img src="../user/images/second_payment.svg" height="500px" class="img-fluid" alt="PWG Group">
                       <span class="title" style="align: center;">
                         <h3 class="paid-title" style="font-size: 22px; color:aliceblue">Second Payment</h3>
                       
                       </span>
                       <strong style="line-height:25px;margin-top:20px" class="paid-price">
-                        {{number_format($pays->second_payment_price)}} | 
+                        <?php echo e(number_format($pays->second_payment_price)); ?> | 
                         <br><span style="font-size: 12px;float:left;display:inline">AED</span>
                         <span style="font-size: 12px;display:inline; float:right;margin-right:20px;"> + 5% VAT</span>
                       </strong>&nbsp;
                       <amp style="margin-left:18px">
-                         {{$prod->name}}
+                         <?php echo e($prod->name); ?>
+
                          <br>Package
                       </amp>
 
                       <p>
-                          @if($paid->second_payment_status =='PAID')
-                            <!-- <a class="btn btn-secondary" target="_blank" href="{{ route('getReceipt','Second Payment')}}">Get Reciept</a> -->
-                            <a class="btn btn-secondary" target="_blank" href="{{ route('getInvoice','Second Payment')}}">Get Invoice</a>
-                          @else
-                            @if($paid->application_stage_status != 5)
+                          <?php if($paid->second_payment_status =='PAID'): ?>
+                            <!-- <a class="btn btn-secondary" target="_blank" href="<?php echo e(route('getReceipt','Second Payment')); ?>">Get Reciept</a> -->
+                            <a class="btn btn-secondary" target="_blank" href="<?php echo e(route('getInvoice','Second Payment')); ?>">Get Invoice</a>
+                          <?php else: ?>
+                            <?php if($paid->application_stage_status != 5): ?>
                               <button class="btn btn-secondary toastrDefaultError" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           
-                            @else
-                              <form action="{{ route('payment',$prod->id) }}" method="GET">
+                            <?php else: ?>
+                              <form action="<?php echo e(route('payment',$prod->id)); ?>" method="GET">
                                 <button class="btn btn-secondary">Pay Now</button>
                               </form>
-                            @endif
-                          @endif
+                            <?php endif; ?>
+                          <?php endif; ?>
                       </p>
                     </span>
                   </span>
-                @endif
+                <?php endif; ?>
                 </div>
-                @if($pays->third_payment_price >0 )
+                <?php if($pays->third_payment_price >0 ): ?>
 
                   <div class="cardc downlaod-item  d-flexx aligns-items-center justify-content-center text-center" style="font-weight: bold;font-family:'TT Norms Pro'; display:inline-block">
                     <div class="cardc-body">
@@ -405,7 +409,7 @@
 
                     </div>
                   </div>
-                @else
+                <?php else: ?>
                   <div class="cardc downlaod-item  d-flexx aligns-items-center justify-content-center text-center" style="font-weight: bold;font-family:'TT Norms Pro'; display:inline-block;">
                     <div class="cardc-body">
                       
@@ -429,7 +433,7 @@
 
                     </div>
                   </div>
-                @endif
+                <?php endif; ?>
               </li>
 
               <!-- Modal -->
@@ -442,47 +446,47 @@
                     </div>
                     <div class="modal-body" style="height:auto">
 
-                      @if($paid->third_payment_status =='PAID')
+                      <?php if($paid->third_payment_status =='PAID'): ?>
                       <h4>Congratutaion! <br>You have completed your payments. </h4>
                       <p style="font-size:15px">Your embassy appearance date will be indicated soon.</p>
-                      @elseif($paid->second_payment_status =='PAID')
+                      <?php elseif($paid->second_payment_status =='PAID'): ?>
                         <p>Your Application is in progress! </p> 
                         <p style="font-size:17px">Your third payment is pending. </p>
                         <p style="font-size:15px">Your work permit will be uploaded soon.</p>
-                      @elseif($paid->first_payment_status =='PAID') 
+                      <?php elseif($paid->first_payment_status =='PAID'): ?> 
                         <p>Your Application is in progress! </p>
                         <p style="font-size:15px">Your second payment pending.</p> 
-                      @else 
-                        @if($paid->first_payment_remaining >0 && $paid->first_payment_status !='PAID')
+                      <?php else: ?> 
+                        <?php if($paid->first_payment_remaining >0 && $paid->first_payment_status !='PAID'): ?>
                         
-                          <p style="font-size:15px">You have outstanding payment of {{$paid->first_payment_remaining}} <br> on first payment</p>
-                        @endif
-                      @endif                      
+                          <p style="font-size:15px">You have outstanding payment of <?php echo e($paid->first_payment_remaining); ?> <br> on first payment</p>
+                        <?php endif; ?>
+                      <?php endif; ?>                      
 
-                      @if($paid->application_stage_status != 5)
-                        @if($paid->application_stage_status==2)
-                          @php 
+                      <?php if($paid->application_stage_status != 5): ?>
+                        <?php if($paid->application_stage_status==2): ?>
+                          <?php 
                            $linkk = "applicant.details";
-                          @endphp
-                        @elseif($paid->application_stage_status==3)
-                          @php 
+                          ?>
+                        <?php elseif($paid->application_stage_status==3): ?>
+                          <?php 
                             $linkk = "applicant.details";
-                          @endphp 
-                        @elseif($paid->application_stage_status==4)
-                          @php 
+                          ?> 
+                        <?php elseif($paid->application_stage_status==4): ?>
+                          <?php 
                             $linkk = "applicant.review";
-                          @endphp   
-                        @else
-                          @php 
+                          ?>   
+                        <?php else: ?>
+                          <?php 
                             $linkk = "payment";
-                          @endphp   
-                        @endif
-                        <a href="{{route($linkk, $paid->destination_id)}}">
+                          ?>   
+                        <?php endif; ?>
+                        <a href="<?php echo e(route($linkk, $paid->destination_id)); ?>">
                           <p style="display:fixed; align-content: center; text-align:center; font-size:11px !important; color:#ff0000;padding:1px;margin-left: 20px; line-height:100% !important">
                             Application process not completed. Click here
                           </p>
                         </a>
-                      @endif
+                      <?php endif; ?>
                     </div>
                   </div>
                 </div>
@@ -506,28 +510,28 @@
   </div>
 </div>
 
-@if(strtoupper($paid->third_payment_status) !='PAID' && strtoupper($paid->second_payment_status) !='PAID' && $prod->full_payment_discount>0)
-  @if(isset($prod->id))
-    @php  
+<?php if(strtoupper($paid->third_payment_status) !='PAID' && strtoupper($paid->second_payment_status) !='PAID' && $prod->full_payment_discount>0): ?>
+  <?php if(isset($prod->id)): ?>
+    <?php  
       $ppd = $prod->id; 
-    @endphp
+    ?>
 
     <div class="card d-flex aligns-items-center justify-content-center text-center wiggy" style="background-color:#000; color: #fff; padding-block:35px; font-weight: bold;font-family:'TT Norms Pro'">
-      <h3 style="font-size:36px">Earn {{round(($prod->full_payment_discount) ?? 5)}}% discount when you pay full amount! </h3>
+      <h3 style="font-size:36px">Earn <?php echo e(round(($prod->full_payment_discount) ?? 5)); ?>% discount when you pay full amount! </h3>
       <p style="margin-top: 5px;">
-      @if($paid->application_stage_status != 5)
+      <?php if($paid->application_stage_status != 5): ?>
         <button class="btn btn-secondary toastrDefaultError" style="border-width:thin; width:250px; height:60px; font-size:32px; font-weight:bold" onclick="toastr.error('Your application process not completed!')">Pay All Now</button>                           
-      @else
-        <form action="{{ route('payment',$ppd) }}" method="GET">
-          <input type="hidden" name="pid" value="{{$ppd}}">
+      <?php else: ?>
+        <form action="<?php echo e(route('payment',$ppd)); ?>" method="GET">
+          <input type="hidden" name="pid" value="<?php echo e($ppd); ?>">
           <input type="hidden" name="payall" value="1">
           <button class="btn btn-secondary" style="border-width:thin; width:250px; height:60px; font-size:32px; font-weight:bold">Pay All Now</button>
         </form>
-      @endif  
+      <?php endif; ?>  
       </p>
     </div>
-  @endif
-@endif
+  <?php endif; ?>
+<?php endif; ?>
 
 <script>
   function OAuthCode(url) {
@@ -580,4 +584,4 @@
     }, speed);
   }
 
-</script>
+</script><?php /**PATH C:\Users\dejia\OneDrive\Desktop\mygit\pwg_eportal\resources\views/user/paid.blade.php ENDPATH**/ ?>

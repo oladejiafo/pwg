@@ -14,7 +14,9 @@ use \setasign\Fpdi\PdfParser\StreamReader;
 
 class pdfBlock
 {
+
     public static function pdfBlock(){
+
         $pdf = new \setasign\Fpdi\Fpdi();
         $pdf->AddPage();
 
@@ -39,12 +41,12 @@ class pdfBlock
 
     public static function mapDetails($originalPdf, $destination_file, $product, $package)
     {
-       
+     
         $pdf = new \setasign\Fpdi\Fpdi();
         $pagecount = $pdf->setSourceFile($originalPdf);
 
         for ($pageNo = 1; $pageNo <= $pagecount; $pageNo++) {
-       
+            
             $pdf->AddPage();
             $template = $pdf->importPage($pageNo);
             $client = User::find(Auth::id());
@@ -117,19 +119,20 @@ class pdfBlock
 
                 // //mask
                 // $mask = "user/images/mask2.jpg";
+                // $pdf->SetProtection(array('print'));
                 // $pdf->Image($mask, 85, 39, 15, 4, 'JPG');
                 
                 //Name
                 $pdf->SetXY(65, 69);
-                $pdf->Write(2, $client->name . ' ' . $client->sur_name);                               
+                $pdf->Write(2, $client->name . ' ' . $client->sur_name);
 
                 //Phone
                 $pdf->SetXY(45, 93 );
-                $pdf->Write(2, $client->phone_number);                
+                $pdf->Write(2, $client->phone_number);
 
                 //email
                 $pdf->SetXY(50, 100 );
-                $pdf->Write(2, $client->email);   
+                $pdf->Write(2, $client->email);
             } else if($pageNo == 1 && $product == Constant::canada){
                 if($package == Constant::CanadaExpressEntry){
                      //Date

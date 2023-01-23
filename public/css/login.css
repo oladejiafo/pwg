@@ -617,6 +617,7 @@ input [type="phone"] {
     border: 1px solid #F0F3F4;
     margin-left: auto;
     margin-right: auto;
+    padding-top: 20px;
 }
 
 .invoice-later {
@@ -823,6 +824,12 @@ input [type="phone"] {
     font-size: 18px;
 }
 
+@media (min-width:768px) and (max-width:985px) {
+    .forgot-password .btn {
+        font-size: 18px;
+
+    }
+}
 @media (min-width:375px) and (max-width:768px) {
     .forgot-password .ose {
         width: 80%;
@@ -1149,7 +1156,9 @@ input [type="phone"] {
     .forgot-password {
         padding: 100px;
     }
-
+    .form-sec1, .forgot-password {
+        padding: 56px;
+    }
     /* 
     .forgot-password {
         width: 90%;
