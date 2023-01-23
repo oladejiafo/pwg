@@ -3,7 +3,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>PWG Notification</title>	
-    {{-- <link rel='stylesheet' type='text/css' media='screen' href='{{asset('css/mail.css')}}'> --}}
+    
 </head>
 <style>
     body{
@@ -36,17 +36,17 @@
                             <tr style="border-bottom:1px solid #383838 ">
                                 <td>
                                     <div class="mailHeadImage" style="width: 500px;height: 300px;display: block;margin: auto;">
-                                        <img src="{{asset('images/paymentsuccesmail.png')}}" alt="" width="100%" height="100%">
+                                        <img src="<?php echo e(asset('images/paymentsuccesmail.png')); ?>" alt="" width="100%" height="100%">
                                     </div>
                                     <div class="content-block">
                                         <div class="mailHead" style="font-family: Yantramanav, sans-serif;font-size: 30px;font-weight: 900;line-height: 48px;letter-spacing: 0em;text-align: center;color: #383838; margin-top: 30px;">PAYMENT SUBMITTED <br>
                                             SUCCESSFULLY!</div>
                                                                                     
                                         <p class="mailContent" style="font-family: Yantramanav, sans-serif;font-size: 18px;font-weight: lighter;line-height: 27px;letter-spacing: 0em;text-align: center;color: #383838;margin-top: 20px;">Thank you. <br>
-                                            You have successfully made your <b style="font-weight: bold">{{ucwords($data['paymentType'])}}</b><br>
+                                            You have successfully made your <b style="font-weight: bold"><?php echo e(ucwords($data['paymentType'])); ?></b><br>
                                             and you can view & download your invoice under <br>
-                                            <b>My Applications</b> on our portal.@if(ucwords($data['paymentType']) != 'Third Payment') You will be notified when your <br>
-                                            @if(ucwords($data['paymentType']) == 'First Payment') work permit is ready. @elseif(ucwords($data['paymentType']) == 'Second Payment') embassy appointment is set. @elseif(ucwords($data['paymentType']) == 'Full-Outstanding Payment') work permit & embassy appointment is set. @endif @endif</p>
+                                            <b>My Applications</b> on our portal.<?php if(ucwords($data['paymentType']) != 'Third Payment'): ?> You will be notified when your <br>
+                                            <?php if(ucwords($data['paymentType']) == 'First Payment'): ?> work permit is ready. <?php elseif(ucwords($data['paymentType']) == 'Second Payment'): ?> embassy appointment is set. <?php elseif(ucwords($data['paymentType']) == 'Full-Outstanding Payment'): ?> work permit & embassy appointment is set. <?php endif; ?> <?php endif; ?></p>
                                     </div>
                                 </td>
                             </tr>
@@ -61,7 +61,7 @@
                                     font-style: normal;
                                     font-weight: 700;
                                     font-size: 24px;
-                                    line-height: 125px;" href="{{env('APP_URL')}}">GET INVOICE</a>
+                                    line-height: 125px;" href="<?php echo e(env('APP_URL')); ?>">GET INVOICE</a>
                                 </td>
                             </tr>
                             <tr>
@@ -70,7 +70,7 @@
                                     <div style="display: block; margin-top:50px">
                                         <div style="width:35%; display:inline-block;padding-bottom:5px">
                                             <div style="float:right; height: 51px">
-                                                <img src="{{asset('images/logoo.png')}}" alt="" width="100%" height="100%">
+                                                <img src="<?php echo e(asset('images/logoo.png')); ?>" alt="" width="100%" height="100%">
                                             </div>
                                         </div>
                                 
@@ -83,7 +83,7 @@
                                                 line-height: 16px;
                                                 color: #383838;
                                                 text-align: left;">
-                                                ©{{ now()->year }} PWG Group <br>
+                                                ©<?php echo e(now()->year); ?> PWG Group <br>
                                                 The Oberoi Centre, Office - 20th Floor<br>
                                                 Business Bay, Dubai<br>
                                             </p>
@@ -98,3 +98,4 @@
         </tbody>
     </table>
 </body>
+<?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views/emails/payment-success.blade.php ENDPATH**/ ?>
