@@ -73,7 +73,7 @@
             <div class="forgot-password">
                 <div class="reset">
                     <div class="resetImage">
-                        <img src="<?php echo e(asset('images/CheckMark.svg')); ?>" alt="approved">
+                        <img src="<?php echo e(asset('images/CheckMark.png')); ?>" alt="approved">
                     </div>
                     <div class="reset-heading">
                         Payment successful !

@@ -73,7 +73,7 @@
             <div class="forgot-password">
                 <div class="reset">
                     <div class="resetImage">
-                        <img src="{{asset('images/CheckMark.svg')}}" alt="approved">
+                        <img src="{{asset('images/CheckMark.png')}}" alt="approved">
                     </div>
                     <div class="reset-heading">
                         Payment successful !

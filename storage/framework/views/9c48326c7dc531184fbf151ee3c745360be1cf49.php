@@ -204,6 +204,8 @@
     };
 
   </script>
+
+<?php echo $__env->make('user/footer', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 </body>
 
 </html><?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views/user/signature.blade.php ENDPATH**/ ?>
