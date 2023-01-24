@@ -116,14 +116,24 @@
           <table border=0 style="border-radius:10px">
             <tr>
               <td align="left" class="pie" style="border-color:#fff;">
+                <?php if($ppay->third_payment_price > 0 || $ppay->second_payment_price > 0): ?>
                 <img src="../user/images/progress_payment_1.svg" alt="PWG Group">
+                <?php else: ?>
+                <img src="../user/images/progress_payment_3.svg" alt="PWG Group">
+                <?php endif; ?>
               </td>
+
               <td align="center" class="line" style="border-color:#fff;">
                 <img src="../user/images/progress_bar.svg" alt="PWG Group">
               </td>
               <td align="left" class="pie" style="border-color:#fff;">
+                <?php if($ppay->third_payment_price > 0 || $ppay->second_payment_price > 0): ?>
                 <img src="../user/images/progress_payment_2.svg" alt="PWG Group">
+                <?php else: ?>
+                <img src="../user/images/progress_payment_3.svg" alt="PWG Group">
+                <?php endif; ?>
               </td>
+              
               <?php if($ppay->third_payment_price > 0): ?>
               <td align="center" class="line" style="border-color:#fff;">
                 <img src="../user/images/progress_bar.svg" alt="PWG Group">
