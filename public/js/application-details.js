@@ -2088,7 +2088,6 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]({
   },
   methods: {
     getCategories: function getCategories() {
-      console.log('here');
       axios__WEBPACK_IMPORTED_MODULE_1___default().post('/get/job/category/list').then(function (response) {
         app.jobCategories = response.data;
       })["catch"](function (error) {
@@ -2174,6 +2173,10 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]({
           filter: this.search
         }).then(function (response) {
           app.filterData = response.data;
+
+          if (response.data.length == 0) {
+            toastr.error('Result not found!');
+          }
         })["catch"](function (error) {
           console.log(error);
         });

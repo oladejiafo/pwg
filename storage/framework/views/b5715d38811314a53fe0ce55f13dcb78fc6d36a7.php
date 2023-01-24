@@ -239,7 +239,7 @@ unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
                     <hr>
-                    <?php endif; ?>
+                <?php endif; ?>
 
 
                         <?php if(session()->has('myDiscount') && session()->has('haveCoupon') && session()->get('haveCoupon')==1): ?>
@@ -255,8 +255,8 @@ unset($__errorArgs, $__bag); ?>
                         <?php if(isset($pdet)): ?>
                             <?php
                                 $first_pay = $pdet->first_payment_price;
-                                $second_pay = $pdet->second_payment_price;
-                                $third_pay = $pdet->third_payment_price;
+                                $second_pay = $pdet->submission_payment_price;
+                                $third_pay = $pdet->second_payment_price;
 
                                 $tot_pay = $first_pay + $second_pay + $third_pay;
                             ?>
@@ -307,38 +307,38 @@ unset($__errorArgs, $__bag); ?>
                                     }
 
                                  }
-                                 elseif($pays->first_payment_status =="PAID" && $pays->second_payment_status !="PAID"){
+                                 elseif($pays->first_payment_status =="PAID" && $pays->submission_payment_status !="PAID"){
                                     
                                     $whichPayment =  "Second Payment";
                                     if ($diff > 0 && $pays->is_first_payment_partially_paid == 1) {
+                                        $payNow = $pdet->submission_payment_price;
+                                        $payNoww = $pdet->submission_payment_price + $pends;
+                                        $pendMsg = ' + ' . $pends . " carried over from previous payment";
+                                    } elseif ($diff < 0 && $pays->is_first_payment_partially_paid == 1) {
+                                        $payNow = $pdet->submission_payment_price;
+                                        $payNoww = $pdet->submission_payment_price - $pends;
+                                        $pendMsg = ' - ' . $pends . " over paid from previous payment";
+                                    } else {
+                                        $payNow = $pdet->submission_payment_price;
+                                        $payNoww = $pdet->submission_payment_price;
+                                        $pendMsg = "";
+                                    }
+
+                                 }
+                                 elseif($pays->submission_payment_status =="PAID" && $pays->second_payment_status !="PAID"){
+                                    
+                                    $whichPayment =  "Third Payment";
+                                    if ($diff > 0 && $pays->is_submission_payment_partially_paid == 1) {
                                         $payNow = $pdet->second_payment_price;
                                         $payNoww = $pdet->second_payment_price + $pends;
                                         $pendMsg = ' + ' . $pends . " carried over from previous payment";
-                                    } elseif ($diff < 0 && $pays->is_first_payment_partially_paid == 1) {
+                                    } elseif ($diff < 0 && $pays->is_submission_payment_partially_paid == 1) {
                                         $payNow = $pdet->second_payment_price;
                                         $payNoww = $pdet->second_payment_price - $pends;
                                         $pendMsg = ' - ' . $pends . " over paid from previous payment";
                                     } else {
                                         $payNow = $pdet->second_payment_price;
                                         $payNoww = $pdet->second_payment_price;
-                                        $pendMsg = "";
-                                    }
-
-                                 }
-                                 elseif($pays->second_payment_status =="PAID" && $pays->third_payment_status !="PAID"){
-                                    
-                                    $whichPayment =  "Third Payment";
-                                    if ($diff > 0 && $pays->is_second_payment_partially_paid == 1) {
-                                        $payNow = $pdet->third_payment_price;
-                                        $payNoww = $pdet->third_payment_price + $pends;
-                                        $pendMsg = ' + ' . $pends . " carried over from previous payment";
-                                    } elseif ($diff < 0 && $pays->is_second_payment_partially_paid == 1) {
-                                        $payNow = $pdet->third_payment_price;
-                                        $payNoww = $pdet->third_payment_price - $pends;
-                                        $pendMsg = ' - ' . $pends . " over paid from previous payment";
-                                    } else {
-                                        $payNow = $pdet->third_payment_price;
-                                        $payNoww = $pdet->third_payment_price;
                                         $pendMsg = "";
                                     }
 
@@ -351,7 +351,7 @@ unset($__errorArgs, $__bag); ?>
                                  $discount=0;
 
                                 } else {
-                                    if($pays->first_payment_status =="PENDING" && $pays->second_payment_status =="PENDING" & $pays->third_payment_status =="PENDING") {
+                                    if($pays->first_payment_status =="PENDING" && $pays->submission_payment_status =="PENDING" & $pays->second_payment_status =="PENDING") {
                                         $payNow = $pdet->total_price;
                                         $payNoww = $payNow;
                                         $pendMsg = "Full Payment";
@@ -362,8 +362,8 @@ unset($__errorArgs, $__bag); ?>
                                         $discount = ($data->full_payment_discount > 0) ? ($payNow * $data->full_payment_discount / 100) : 0; //product discount fetch
                                         $whichPayment =  "Full-Outstanding Payment";
                                     } elseif($pays->first_payment_status !="PAID"){
-                                        if(is_null($pdet->third_payment_price) OR empty($pdet->third_payment_price) ) {
-                                            $payNow = $pdet->second_payment_price;
+                                        if(is_null($pdet->second_payment_price) OR empty($pdet->second_payment_price) ) {
+                                            $payNow = $pdet->submission_payment_price;
                                             $payNoww = $payNow;
                                             if($diff > 0){
                                              $pendMsg = "Part Paid already";
@@ -393,16 +393,16 @@ unset($__errorArgs, $__bag); ?>
                                             $discount = ($data->full_payment_discount > 0) ? ($payNow * $data->full_payment_discount / 100) : 0; //product discount fetch
                                         }
                                         $whichPayment =  "Full-Outstanding Payment";
-                                    } elseif($pays->first_payment_status =="PAID" && $pays->second_payment_status =="PENDING"){
-                                        if($pdet->third_payment_price != null || $pdet->third_payment_price != 0){
-                                            $payNow = $pdet->second_payment_price + $pdet->third_payment_price;
+                                    } elseif($pays->first_payment_status =="PAID" && $pays->submission_payment_status =="PENDING"){
+                                        if($pdet->second_payment_price != null || $pdet->second_payment_price != 0){
+                                            $payNow = $pdet->submission_payment_price + $pdet->second_payment_price;
                                             $payNoww = $payNow;
                                             $pendMsg = "Full Outstanding Payment";
                                             $discountPercent =  ($data->full_payment_discount) ? $data->full_payment_discount.'%' : 0;
                                             $discount = ($data->full_payment_discount > 0) ? ($payNow * $data->full_payment_discount / 100) : 0;
                                             $whichPayment =  "Full-Outstanding Payment";
                                         } else {
-                                            $payNow = $pdet->second_payment_price;
+                                            $payNow = $pdet->submission_payment_price;
                                             $payNoww = $payNow;
                                             $pendMsg = "";
                                             $discountPercent = '';
@@ -415,8 +415,8 @@ unset($__errorArgs, $__bag); ?>
 
                                         // $discountPercent = '5%';
                                         // $discount = ($payNow * 5 / 100);
-                                    } elseif ($pays->first_payment_status =="PAID" && $pays->second_payment_status =="PAID" && $pays->third_payment_status =="PENDING") {
-                                        $payNow = $pdet->third_payment_price;
+                                    } elseif ($pays->first_payment_status =="PAID" && $pays->submission_payment_status =="PAID" && $pays->second_payment_status =="PENDING") {
+                                        $payNow = $pdet->second_payment_price;
                                         $payNoww = $payNow;
                                         $pendMsg = "";
                                         $discountPercent = '';
@@ -481,10 +481,10 @@ unset($__errorArgs, $__bag); ?>
                                                 <div class="left-section col-6">
 
                                                     <?php if( $whichPayment == "Second Payment"): ?>
-                                                    <b>Second Payment</b> <?php if(strlen($pendMsg)>1): ?> <br>
+                                                    <b>Submission Payment</b> <?php if(strlen($pendMsg)>1): ?> <br>
                                                     <font style='font-size:11px;color:red'><i fa fa-arrow-up></i> </font> <?php endif; ?>
                                                     <?php else: ?>
-                                                    Second Payment
+                                                    Submission Payment
                                                     <?php endif; ?>
                                                     <span style="font-size:11px" class="vtt"><?php if($vat>0): ?>(+ 5% VAT)<?php endif; ?></span>
                                                 </div>
@@ -506,11 +506,11 @@ unset($__errorArgs, $__bag); ?>
                                                 <div class="left-section col-6">
                                                     <?php if( $whichPayment ==  "Third Payment"): ?>
                                                     
-                                                    <b>Third Payment</b> <?php if(strlen($pendMsg)>1): ?> <br>
+                                                    <b>Second Payment</b> <?php if(strlen($pendMsg)>1): ?> <br>
 
                                                     <font style='font-size:11px;color:red'><i fa fa-arrow-up></i> </font> <?php endif; ?>
                                                     <?php else: ?>
-                                                    Third Payment
+                                                    Second Payment
                                                     <?php endif; ?>
                                                     <span style="font-size:11px" class="vtt"><?php if($vat>0): ?>(+ 5% VAT)<?php endif; ?></span>
                                                 </div>
@@ -661,8 +661,8 @@ unset($__errorArgs, $__bag); ?>
                         <input type="hidden" name="uid" value="<?php echo e(Auth::user()->id); ?>">
                         <input type="hidden" name="whichpayment" value="<?php echo e(($whichPayment) ? $whichPayment : 'First Payment'); ?>">
                         <input type="hidden" name="first_p" value="<?php echo e($pdet->first_payment_price); ?>">
-                        <input type="hidden" name="second_p" value="<?php echo e($pdet->second_payment_price); ?>">
-                        <input type="hidden" name="third_p" value="<?php echo e($pdet->third_payment_price); ?>">
+                        <input type="hidden" name="second_p" value="<?php echo e($pdet->submission_payment_price); ?>">
+                        <input type="hidden" name="third_p" value="<?php echo e($pdet->second_payment_price); ?>">
                     
                         <div class="form-group row mt-4" style="margin-bottom: 70px">
                             <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
@@ -680,12 +680,17 @@ unset($__errorArgs, $__bag); ?>
         $('#showDiscount').hide();
         $('#discount').hide();
         $('#promoDiscount').hide();
+        // document.getElementById("amountLink2").value = $(this).val();
+        // let ax = $('#amountLink').text(($('#totaldue').val()));
 
         $('#amount').keyup(function() {
-
-            let ax = $('#amountLink').text($(this).val());
-            document.getElementById("amountLink2").value = $(this).val();
-
+            if($('#amount').val()){
+                document.getElementById("amountLink2").value = $(this).val();
+                let ax = $('#amountLink').text(parseInt($(this).val()).toLocaleString());
+            } else {
+                document.getElementById("amountLink2").value = $('#totaldue').val();
+                let ax = $('#amountLink').text(parseInt($('#totaldue').val()).toLocaleString());
+            }
         });
 
         $('.dicountBtn').click(function(){

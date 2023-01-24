@@ -1,5 +1,5 @@
 <!-- Theme style  -->
-<link rel="stylesheet" href="{{asset('user/extra/css/styled.css')}}">
+<link rel="stylesheet" href="<?php echo e(asset('user/extra/css/styled.css')); ?>">
 
 <div class="row card">
 
@@ -11,7 +11,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading" role="tab" id="headingOne">
                             <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne"> &nbsp;  {{$prod->name}} PACKAGE
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne"> &nbsp;  <?php echo e($prod->name); ?> PACKAGE
                                 </a>
                             </h4>
                         </div>
@@ -43,31 +43,31 @@
                                     </div>
                                     <div class="col-md-3" align="left">
                                         <p>
-                                         @if($paid->first_payment_status =='PAID')
+                                         <?php if($paid->first_payment_status =='PAID'): ?>
                                             Status PAID
-                                         @elseif($paid->first_payment_status =='PARTIAL')
+                                         <?php elseif($paid->first_payment_status =='PARTIAL'): ?>
                                             Status PAID PARTIAL   
-                                         @else
+                                         <?php else: ?>
                                             Status PENDING
-                                         @endif
+                                         <?php endif; ?>
 
                                         </p>
                                     </div>
                                     <div class="col-md-6" align="right">
                                         <p>
-                                        @if($paid->first_payment_status =='PAID')
+                                        <?php if($paid->first_payment_status =='PAID'): ?>
 
-                                            <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="{{ url('/get/invoice/First Payment')}}">Get Invoice</a>
-                                       @else
-                                        @if($paid->application_stage_status != 5)
+                                            <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="<?php echo e(url('/get/invoice/First Payment')); ?>">Get Invoice</a>
+                                       <?php else: ?>
+                                        <?php if($paid->application_stage_status != 5): ?>
                                             <button class="btn btn-secondary toastrDefaultError" style="font-weight:700" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           
-                                        @else
-                                         <form action="{{ route('payment',$prod->id) }}" method="GET">
+                                        <?php else: ?>
+                                         <form action="<?php echo e(route('payment',$prod->id)); ?>" method="GET">
 
                                             <button class="btn btn-secondary" style="font-weight:700">Pay Now</button>
                                          </form>
-                                        @endif
-                                       @endif
+                                        <?php endif; ?>
+                                       <?php endif; ?>
 
                                         </p>
                                     </div>
@@ -85,11 +85,11 @@
                                     </div>
                                     <div class="col-md-3" align="left">
                                         <p>
-                                         @if($paid->submission_payment_status =='PAID')
+                                         <?php if($paid->submission_payment_status =='PAID'): ?>
                                             Status PAID
-                                         @else
+                                         <?php else: ?>
                                             Status PENDING
-                                         @endif
+                                         <?php endif; ?>
 
                                         </p>
                                     </div>
@@ -97,19 +97,19 @@
                                         <p>
 
                                            
-                                        @if($paid->submission_payment_status =='PAID')
+                                        <?php if($paid->submission_payment_status =='PAID'): ?>
 
-                                            <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="{{ url('/get/invoice/Second Payment')}}">Get Invoice</a>
-                                       @else
-                                        @if($paid->application_stage_status != 5)
+                                            <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="<?php echo e(url('/get/invoice/Second Payment')); ?>">Get Invoice</a>
+                                       <?php else: ?>
+                                        <?php if($paid->application_stage_status != 5): ?>
                                             <button class="btn btn-secondary toastrDefaultError" style="font-weight:700" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           
-                                        @else
-                                         <form action="{{ route('payment',$prod->id) }}" method="GET">
+                                        <?php else: ?>
+                                         <form action="<?php echo e(route('payment',$prod->id)); ?>" method="GET">
 
                                             <button class="btn btn-secondary" style="font-weight:700">Pay Now</button>
                                          </form>
-                                        @endif
-                                       @endif
+                                        <?php endif; ?>
+                                       <?php endif; ?>
 
                                         </p>
                                     </div>
@@ -118,7 +118,7 @@
                                  <!-- Second Ends -->
                                 
                                 <!-- Third Begins -->
-                                @if($pays->second_payment_price > 0)
+                                <?php if($pays->second_payment_price > 0): ?>
                                 <div class="row">
                                     <div class="col-md-3" align="left">
                                         <p>
@@ -127,11 +127,11 @@
                                     </div>
                                     <div class="col-md-3" align="left">
                                         <p>
-                                         @if($paid->second_payment_status =='PAID')
+                                         <?php if($paid->second_payment_status =='PAID'): ?>
                                             Status PAID
-                                         @else
+                                         <?php else: ?>
                                             Status PENDING
-                                         @endif
+                                         <?php endif; ?>
 
                                         </p>
                                     </div>
@@ -139,24 +139,24 @@
                                         <p>
 
                                            
-                                        @if($paid->second_payment_status =='PAID')
+                                        <?php if($paid->second_payment_status =='PAID'): ?>
 
-                                            <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="{{ url('/get/invoice/Third Payment')}}">Get Invoice</a>
-                                       @else
-                                        @if($paid->application_stage_status != 5)
+                                            <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="<?php echo e(url('/get/invoice/Third Payment')); ?>">Get Invoice</a>
+                                       <?php else: ?>
+                                        <?php if($paid->application_stage_status != 5): ?>
                                             <button class="btn btn-secondary toastrDefaultError" style="font-weight:700" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           
-                                        @else
-                                         <form action="{{ route('payment',$prod->id) }}" method="GET">
+                                        <?php else: ?>
+                                         <form action="<?php echo e(route('payment',$prod->id)); ?>" method="GET">
 
                                             <button class="btn btn-secondary" style="font-weight:700">Pay Now</button>
                                          </form>
-                                        @endif
+                                        <?php endif; ?>
 
-                                       @endif
+                                       <?php endif; ?>
                                         </p>
                                     </div>
                                 </div>
-                                @endif
+                                <?php endif; ?>
                                  <!-- Third Ends -->
 
                             </div>
@@ -164,30 +164,30 @@
                     </div>  
 
 
-                    @if($paid->second_payment_status != 'PAID')
+                    <?php if($paid->second_payment_status != 'PAID'): ?>
                     <div class="row" style="font-size:18px">
                         <div style="align-items: left; align:left; float: left; padding-left:40px;padding-right:40px" class="col-12">Your next payment is <b>
 
-                          @if($paid->submission_payment_status =='PAID')                    
-                            {{ $pays->second_payment_price }} AED
+                          <?php if($paid->submission_payment_status =='PAID'): ?>                    
+                            <?php echo e($pays->second_payment_price); ?> AED
                             </b>, to be charged for Third Payment.
-                          @elseif($paid->first_payment_status =='PAID')
-                            {{ $pays->submission_payment_price }} AED
+                          <?php elseif($paid->first_payment_status =='PAID'): ?>
+                            <?php echo e($pays->submission_payment_price); ?> AED
                             </b>, to be charged for Second Payment.
-                          @elseif($paid->first_payment_status !='PAID' && $paid->submission_payment_status !='PAID')
+                          <?php elseif($paid->first_payment_status !='PAID' && $paid->submission_payment_status !='PAID'): ?>
 
-                           @if($paid->first_payment_remaining >0 && $paid->first_payment_status !='PAID')
-                               {{ $paid->first_payment_remaining }} AED
+                           <?php if($paid->first_payment_remaining >0 && $paid->first_payment_status !='PAID'): ?>
+                               <?php echo e($paid->first_payment_remaining); ?> AED
                                 </b>, outstanding on First Payment.
-                           @else
-                                {{ $pays->first_payment_price }} AED
+                           <?php else: ?>
+                                <?php echo e($pays->first_payment_price); ?> AED
                                 </b>, to be charged for First Payment.
-                           @endif
-                          @endif
+                           <?php endif; ?>
+                          <?php endif; ?>
 
                         </div>
                     </div>
-                    @endif
+                    <?php endif; ?>
 
                 </div>
 
@@ -202,10 +202,10 @@
 </div>
 
 <!-- jQuery -->
-<script src="{{asset('user/extra/js/jquery.min.js')}}"></script>
+<script src="<?php echo e(asset('user/extra/js/jquery.min.js')); ?>"></script>
 <!-- Bootstrap -->
-<script src="{{asset('user/extra/js/bootstrap.min.js')}}"></script>
+<script src="<?php echo e(asset('user/extra/js/bootstrap.min.js')); ?>"></script>
 
 </body>
 
-</html>
+</html><?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views/user/paid_details.blade.php ENDPATH**/ ?>

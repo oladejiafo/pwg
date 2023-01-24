@@ -61,7 +61,7 @@ class Quickbook
             'QBORealmID' => config('services.quickbook_local.QBORealmID'), //(in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.QBORealmID') : config('services.quickbook.QBORealmID'),
             'baseUrl' => 'Development', //(in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? "Development" : "production"
         ));
-        $dataService->setLogLocation("/Users/hlu2/Desktop/newFolderForLog");
+        $dataService->setLogLocation(public_path() . "/QBLog");
         $dataService->throwExceptionOnError(true);
         return $dataService;
     }
@@ -72,7 +72,7 @@ class Quickbook
         try {
             $dataService = self::connectQucikBook();
 
-            $dataService->setLogLocation("/Users/hlu2/Desktop/newFolderForLog");
+            $dataService->setLogLocation(public_path() . "/QBLog");
             $customer = $dataService->Query("select * from Customer Where PrimaryEmailAddr='" . Auth::user()->email . "'");
             $dataService->throwExceptionOnError(true);
             $paymentDetails = PaymentDetails::where('id', Session::get('paymentId'))->first();
@@ -111,7 +111,7 @@ class Quickbook
                 $customer = $dataService->Add($customer);
             }
             $apply = DB::table('applications')
-                ->select('applications.*', 'pricing_plans.total_price as planTotal', 'pricing_plans.first_payment_price as planFirstPrice', 'pricing_plans.second_payment_price as  planSecondPrice', 'pricing_plans.third_payment_price as  planThirdPrice')
+                ->select('applications.*', 'pricing_plans.total_price as planTotal', 'pricing_plans.first_payment_price as planFirstPrice', 'pricing_plans.submission_payment_price as  planSecondPrice', 'pricing_plans.second_payment_price as  planThirdPrice')
                 ->join('pricing_plans', 'pricing_plans.id', '=', 'applications.pricing_plan_id')
                 ->where('applications.destination_id', Session::get('myproduct_id'))
                 ->where('applications.client_id', Auth::id())
@@ -126,12 +126,13 @@ class Quickbook
                 $tax = $apply->first_payment_vat;
             } else if ($paymentType == 'Second Payment') {
                 $unitPrice = $apply->planSecondPrice;
-                $tax = $apply->second_payment_vat;
+                $tax = $apply->submission_payment_vat;
             } else if ($paymentType == 'Third Payment') {
                 $unitPrice = $apply->planThirdPrice;
-                $tax = $apply->third_payment_vat;
+                $tax = $apply->second_payment_vat;
             }
             $destinationName = strtolower($destination->name);
+            $productObj = null;
             switch ($destinationName) {
                 case Constant::poland:
                     if ($paymentType == 'First Payment') {
@@ -149,7 +150,11 @@ class Quickbook
                         $FullThirdPayment = $dataService->Query("select * from Item Where Name='Travel Documents Submission - Poland'");
                         $FullThirdPaymentProduct = $dataService->FindbyId('Item', $FullThirdPayment[0]->Id);
                     } else {
-                        $updatItem = $dataService->FindbyId('Item', $productObj[0]->Id);
+                        if($productObj[0]) {
+                            $updatItem = $dataService->FindbyId('Item', $productObj[0]->Id);
+                        } else {
+                            $updatItem = self::createNewItem($paymentDetails, $destinationName, $unitPrice, $dataService);
+                        }
                     }
                     break;
                 case Constant::czech:
@@ -168,7 +173,11 @@ class Quickbook
                         $FullThirdPayment = $dataService->Query("select * from Item Where Name='Travel Documents Submission - Czech Republic'");
                         $FullThirdPaymentProduct = $dataService->FindbyId('Item', $FullThirdPayment[0]->Id);
                     } else {
-                        $updatItem = $dataService->FindbyId('Item', $productObj[0]->Id);
+                        if($productObj[0]) {
+                            $updatItem = $dataService->FindbyId('Item', $productObj[0]->Id);
+                        } else {
+                            $updatItem = self::createNewItem($paymentDetails, $destinationName, $unitPrice, $dataService);
+                        }
                     }
                     break;
                 case Constant::malta:
@@ -199,7 +208,11 @@ class Quickbook
                         ];
                         $dataService->Update(Item::update($FullThirdPaymentProduct, $FullThirdPaymentProductChange));
                     } else {
-                        $updatItem = $dataService->FindbyId('Item', $productObj[0]->Id);
+                        if ($productObj) {
+                            $updatItem = $dataService->FindbyId('Item', $productObj[0]->Id);
+                        } else {
+                            $updatItem = self::createNewItem($paymentDetails, $destinationName, $unitPrice, $dataService);
+                        }
                     }
                     break;
                 case Constant::canada:
@@ -230,7 +243,11 @@ class Quickbook
                         ];
                         $dataService->Update(Item::update($FullThirdPaymentProduct, $FullThirdPaymentProductChange));
                     } else {
-                        $updatItem = $dataService->FindbyId('Item', $productObj[0]->Id);
+                        if($productObj[0]) {
+                            $updatItem = $dataService->FindbyId('Item', $productObj[0]->Id);
+                        } else {
+                            $updatItem = self::createNewItem($paymentDetails, $destinationName, $unitPrice, $dataService);
+                        }
                     }
                     break;
                 case Constant::germany:
@@ -261,25 +278,15 @@ class Quickbook
                         ];
                         $dataService->Update(Item::update($FullThirdPaymentProduct, $FullThirdPaymentProductChange));
                     } else {
-                        $updatItem = $dataService->FindbyId('Item', $productObj[0]->Id);
+                        if($productObj[0]) {
+                            $updatItem = $dataService->FindbyId('Item', $productObj[0]->Id);
+                        } else {
+                            $updatItem = self::createNewItem($paymentDetails, $destinationName, $unitPrice, $dataService);
+                        }
                     }
                     break;
                 default:
-                    $Item = Item::create([
-                        "Name" => $paymentDetails->payment_type . '-' . $destinationName,
-                        "Description" => $paymentDetails->payment_type . '-' . $destinationName,
-                        "Active" => true,
-                        "FullyQualifiedName" => $paymentDetails->payment_type . '-' . $destinationName,
-                        "Taxable" => true,
-                        "UnitPrice" => $unitPrice,
-                        "Type" => "Service",
-                        "IncomeAccountRef" => [
-                            "value"=> 1,
-                            "name"=> "Services"
-                        ]
-                    ]);
-                    $resultingObj = $dataService->Add($Item);
-                    $updatItem = $Item;
+                    $updatItem = self::createNewItem($paymentDetails, $destinationName, $unitPrice, $dataService);
             }
             $paidAmount = $paymentDetails->paid_amount;
             if ($paymentDetails->payment_type ==  'Full-Outstanding Payment') {
@@ -292,25 +299,7 @@ class Quickbook
                     $theResourceObj = Item::update($updatItem, $productChange);
                     $dataService->Update($theResourceObj);
                 } else {
-                    $Item = Item::create([
-                        "Name" => $paymentDetails->payment_type . '-' . $destinationName,
-                        "Description" => $paymentDetails->payment_type . '-' . $destinationName,
-                        "Active" => true,
-                        "FullyQualifiedName" => $paymentDetails->payment_type . '-' . $destinationName,
-                        "Taxable" => true,
-                        "UnitPrice" => $unitPrice,
-                        "Type" => "Service",
-                        "IncomeAccountRef" => [
-                            "value"=> 1,
-                            "name"=> "Services"
-                        ],
-                        "ExpenseAccountRef"=> [
-                            "value"=> 80,
-                            "name"=> "Cost of Goods Sold"
-                        ],
-                    ]);
-                    $resultingObj = $dataService->Add($Item);
-                    $updatItem = $Item;
+                    $updatItem = self::createNewItem($paymentDetails, $destinationName, $unitPrice, $dataService);
                 }
             }
             $coupon = DB::table('coupons')
@@ -333,7 +322,7 @@ class Quickbook
                     } else {
                         self::firstPaymentBalanceDue($paymentType, $apply, $paymentDetails, $customer, $dataService, $remainingPayment);
                     }
-                    if ($apply->third_payment_price > 0) {
+                    if ($apply->second_payment_price > 0) {
                         $theResourceObj = Invoice::create([
                             "Line" => [
                                 [
@@ -379,10 +368,10 @@ class Quickbook
                             "Deposit" => $apply->total_paid - $remainingPayment,
                             "TxnTaxDetail" => [
                                 "TxnTaxCodeRef" => [
-                                    "value" => (User::find(Auth::id())->country_of_residence == 'United Arab Emirates') ? '5' : 0,  // tax rate
-                                    "name" => (User::find(Auth::id())->country_of_residence == 'United Arab Emirates') ? "VAT" : '', // tax rate name
+                                    "value" => ($apply->total_vat != 0 || $apply->total_vat != null) ? '5' : 0,  // tax rate
+                                    "name" => ($apply->total_vat != 0 || $apply->total_vat != null) ? "VAT" : '', // tax rate name
                                 ],
-                                "TotalTax" => (User::find(Auth::id())->country_of_residence == 'United Arab Emirates') ? $apply->total_vat : 0,
+                                "TotalTax" => ($apply->total_vat != 0 || $apply->total_vat != null) ? $apply->total_vat : 0,
                             ],
                             "PaymentRefNum" => $paymentDetails->bank_reference_no,
                             "CustomerMemo" => [
@@ -428,10 +417,10 @@ class Quickbook
                             "Deposit" => $apply->total_paid - $remainingPayment,
                             "TxnTaxDetail" => [
                                 "TxnTaxCodeRef" => [
-                                    "value" => (User::find(Auth::id())->country_of_residence == 'United Arab Emirates') ? '5' : 0,  // tax rate
-                                    "name" => (User::find(Auth::id())->country_of_residence == 'United Arab Emirates') ? "VAT" : '', // tax rate name
+                                    "value" => ($apply->total_vat != 0 || $apply->total_vat != null) ? '5' : 0,  // tax rate
+                                    "name" => ($apply->total_vat != 0 || $apply->total_vat != null) ? "VAT" : '', // tax rate name
                                 ],
-                                "TotalTax" => (User::find(Auth::id())->country_of_residence == 'United Arab Emirates') ? $apply->total_vat : 0,
+                                "TotalTax" => ($apply->total_vat != 0 || $apply->total_vat != null) ? $apply->total_vat : 0,
                             ],
                             "PaymentRefNum" => $paymentDetails->bank_reference_no,
                             "CustomerMemo" => [
@@ -457,7 +446,7 @@ class Quickbook
                         $paymentDetails->save();
                     }
                 } else {
-                    if ($apply->third_payment_price > 0) {
+                    if ($apply->second_payment_price > 0) {
                         $theResourceObj = Invoice::create([
                             "Line" => [
                                 [
@@ -520,10 +509,10 @@ class Quickbook
                             "Deposit" => $apply->total_paid,
                             "TxnTaxDetail" => [
                                 "TxnTaxCodeRef" => [
-                                    "value" => (User::find(Auth::id())->country_of_residence == 'United Arab Emirates') ? '5' : 0,  // tax rate
-                                    "name" => (User::find(Auth::id())->country_of_residence == 'United Arab Emirates') ? "VAT" : '', // tax rate name
+                                    "value" => ($apply->total_vat != 0 || $apply->total_vat != null) ? '5' : 0,  // tax rate
+                                    "name" => ($apply->total_vat != 0 || $apply->total_vat != null) ? "VAT" : '', // tax rate name
                                 ],
-                                "TotalTax" => (User::find(Auth::id())->country_of_residence == 'United Arab Emirates') ? $apply->total_vat : 0,
+                                "TotalTax" => ($apply->total_vat != 0 || $apply->total_vat != null) ? $apply->total_vat : 0,
                             ],
                             "PaymentRefNum" => $paymentDetails->bank_reference_no,
                             "CustomerMemo" => [
@@ -594,10 +583,10 @@ class Quickbook
                             "Deposit" => $apply->total_paid,
                             "TxnTaxDetail" => [
                                 "TxnTaxCodeRef" => [
-                                    "value" => (User::find(Auth::id())->country_of_residence == 'United Arab Emirates') ? '5' : 0,  // tax rate
-                                    "name" => (User::find(Auth::id())->country_of_residence == 'United Arab Emirates') ? "VAT" : '', // tax rate name
+                                    "value" => ($apply->total_vat != 0 || $apply->total_vat != null) ? '5' : 0,  // tax rate
+                                    "name" => ($apply->total_vat != 0 || $apply->total_vat != null) ? "VAT" : '', // tax rate name
                                 ],
-                                "TotalTax" => (User::find(Auth::id())->country_of_residence == 'United Arab Emirates') ? $apply->total_vat : 0,
+                                "TotalTax" => ($apply->total_vat != 0 || $apply->total_vat != null) ? $apply->total_vat : 0,
                             ],
                             "PaymentRefNum" => $paymentDetails->bank_reference_no,
                             "CustomerMemo" => [
@@ -689,10 +678,10 @@ class Quickbook
 
                 "TxnTaxDetail" => [
                     "TxnTaxCodeRef" => [
-                        "value" => (User::find(Auth::id())->country_of_residence == 'United Arab Emirates') ? 5 : 0,  // tax rate
-                        "name" => (User::find(Auth::id())->country_of_residence == 'United Arab Emirates') ? "VAT" : '', // tax rate name
+                        "value" => ($tax > 0 || $tax != null) ? 5 : 0,  // tax rate
+                        "name" => ($tax > 0 || $tax != null) ? "VAT" : '', // tax rate name
                     ],
-                    "TotalTax" => (User::find(Auth::id())->country_of_residence == 'United Arab Emirates') ? $tax : 0,
+                    "TotalTax" => ($tax > 0 || $tax != null) ? $tax : 0,
                 ],
                 "PaymentRefNum" => $paymentDetails->bank_reference_no,
 
@@ -737,10 +726,10 @@ class Quickbook
                 // no tax due to free zone
                 "TxnTaxDetail" => [
                     "TxnTaxCodeRef" => [
-                        "value" => "5",  // tax rate
-                        "name" => "VAT" // tax rate name
+                        "value" => ($tax > 0 || $tax != null) ? 5 : 0,  // tax rate
+                        "name" => ($tax > 0 || $tax != null) ? "VAT" : '', // tax rate name
                     ],
-                    "TotalTax" => $tax,
+                    "TotalTax" => ($tax > 0 || $tax != null) ? $tax : 0,
                 ],
                 "PaymentRefNum" => $paymentDetails->bank_reference_no,
 
@@ -838,5 +827,24 @@ class Quickbook
         $resultingObj = $dataService->Add($paymentObj);
         $paymentDetails->invoice_id = $resultingObj->Id;
         $paymentDetails->save();
+    }
+
+    private static function createNewItem($paymentDetails, $destinationName, $unitPrice, $dataService)
+    {
+        $Item = Item::create([
+            "Name" => $paymentDetails->payment_type . '-' . $destinationName. '-' . Carbon::now()->format('YmdHis'),
+            "Description" => $paymentDetails->payment_type . '-' . $destinationName,
+            "Active" => true,
+            "FullyQualifiedName" => $paymentDetails->payment_type . '-' . $destinationName,
+            "Taxable" => true,
+            "UnitPrice" => $unitPrice,
+            "Type" => "Service",
+            "IncomeAccountRef" => [
+                "value" => 1,
+                "name" => "Services"
+            ]
+        ]);
+        $resultingObj = $dataService->Add($Item);
+        return $Item;
     }
 }

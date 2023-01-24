@@ -31,11 +31,11 @@
 		<tbody>
 			<tr>
                 <td>
-					<table border="0" cellpadding="0" cellspacing="0" class="mail" style="width: 60%;max-width: 100%;margin-left: auto;margin-right: auto;margin: 0 auto;padding: 100px;background-color: #ffffff;margin-bottom: 150px;margin-top: 150px;text-align: center; ">
+					<table border="0" cellpadding="0" cellspacing="0" class="mail" style="width: 80%;max-width: 100%;margin-left: auto;margin-right: auto;margin: 0 auto;padding: 80px 80px 40px 80px;background-color: #ffffff;margin-bottom: 150px;margin-top: 150px;text-align: center; ">
                         <tbody style="border-bottom:1px solid #383838 ">
                             <tr style="border-bottom:1px solid #383838 ">
                                 <td>
-                                    <div class="mailHeadImage" style="width: 500px;height: 300px;display: block;margin: auto;">
+                                    <div class="mailHeadImage" style="width: 400px;height: 250px;display: block;margin: auto;">
                                         <img src="{{asset('images/paymentsuccesmail.png')}}" alt="" width="100%" height="100%">
                                     </div>
                                     <div class="content-block">
@@ -61,21 +61,35 @@
                                     font-style: normal;
                                     font-weight: 700;
                                     font-size: 24px;
-                                    line-height: 125px;" href="{{env('APP_URL')}}">GET INVOICE</a>
+                                    line-height: 125px;" href="{{env('APP_URL')}}">GET-INVOICE</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td min-width ="100%;">
+                                    <a class="btn" style="color: #fff;
+                                    background: #6dcb16;
+                                    text-decoration: none;
+                                    padding: 12px 58px;
+                                    margin: 20px auto;
+                                    font-family: 'Montserrat';
+                                    font-style: normal;
+                                    font-weight: 700;
+                                    font-size: 24px;
+                                    line-height: 125px;" href="{{env('APP_URL')}}">INVOICE</a>
                                 </td>
                             </tr>
                             <tr>
                                 <td width="100%" min-width ="100%;">
-                                    <hr style="margin-left: -100px; margin-right:-100px !important;color:#383838;height:0.25px">
+                                    <hr style="margin-left: -80px; margin-right:-80px !important;color:#383838;height:0.25px">
                                     <div style="display: block; margin-top:50px">
-                                        <div style="width:35%; display:inline-block;padding-bottom:5px">
+                                        <div style="width:35%; display:inline-block;">
                                             <div style="float:right; height: 51px">
                                                 <img src="{{asset('images/logoo.png')}}" alt="" width="100%" height="100%">
                                             </div>
                                         </div>
                                 
                                         <div style="display: inline-block;border: 1.5px solid #383838;height: 56px;"></div>
-                                        <div style="width:35%; display:inline-block;padding-bottom:5px">
+                                        <div style="width:35%; display:inline-block;">
                                             <p style="font-family: Yantramanav, sans-serif;
                                                 font-style: normal;
                                                 font-weight: 300;

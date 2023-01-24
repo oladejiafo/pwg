@@ -124,7 +124,7 @@
               <td align="left" class="pie" style="border-color:#fff;">
                 <img src="../user/images/progress_payment_2.svg" alt="PWG Group">
               </td>
-              @if($ppay->third_payment_price > 0)
+              @if($ppay->second_payment_price > 0)
               <td align="center" class="line" style="border-color:#fff;">
                 <img src="../user/images/progress_bar.svg" alt="PWG Group">
               </td>
@@ -139,18 +139,18 @@
                 <span class="prices" style="font-size:30px;font-weight:bold;">{{number_format($ppay->first_payment_price)}} </span><br>
                 <span class="pays" style="margin-left:0px;font-size:10px;font-weight:bold;">First Payment</span>
               </td>
+              @if($ppay->submission_payment_price > 0)
+              <td align="left" style="border-color:#fff;width:60px"> </td>
+              <td align="center" style="border-color:#fff;">
+                <span class="prices" style="font-size:30px;font-weight:bold;">{{number_format($ppay->submission_payment_price)}} </span><br>
+                <span class="pays" style="margin-left:0px;font-size:10px;font-weight:bold;">Submission Payment</span>
+              </td>
+              @endif
               @if($ppay->second_payment_price > 0)
               <td align="left" style="border-color:#fff;width:60px"> </td>
               <td align="center" style="border-color:#fff;">
                 <span class="prices" style="font-size:30px;font-weight:bold;">{{number_format($ppay->second_payment_price)}} </span><br>
                 <span class="pays" style="margin-left:0px;font-size:10px;font-weight:bold;">Second Payment</span>
-              </td>
-              @endif
-              @if($ppay->third_payment_price > 0)
-              <td align="left" style="border-color:#fff;width:60px"> </td>
-              <td align="center" style="border-color:#fff;">
-                <span class="prices" style="font-size:30px;font-weight:bold;">{{number_format($ppay->third_payment_price)}} </span><br>
-                <span class="pays" style="margin-left:0px;font-size:10px;font-weight:bold;">Third Payment</span>
               </td>
               @endif
             </tr>

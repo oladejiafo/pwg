@@ -31523,7 +31523,7 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]({
   },
   methods: {
     getCategories: function getCategories() {
-      axios__WEBPACK_IMPORTED_MODULE_1___default().post('https://bo.pwggroup.ae/api/get-job-category-list').then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_1___default().post('/get/job/category/list').then(function (response) {
         app.jobCategories = response.data;
       })["catch"](function (error) {
         console.log(error);
@@ -31600,10 +31600,14 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]({
     },
     filterJob: function filterJob() {
       if (this.search) {
-        axios__WEBPACK_IMPORTED_MODULE_1___default().post('https://bo.pwggroup.ae/api/get-job-category-four-list', {
+        axios__WEBPACK_IMPORTED_MODULE_1___default().post('/get/job/category/four/list', {
           filter: this.search
         }).then(function (response) {
           app.filterData = response.data;
+
+          if (response.data.length == 0) {
+            toastr.error('Result not found!');
+          }
         })["catch"](function (error) {
           console.log(error);
         });

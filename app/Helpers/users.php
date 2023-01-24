@@ -103,11 +103,11 @@ class users
         $response['status'] = false;
         try {
             $file = self::getWorkpermitFile($paidDetails);
-            if (strtoupper($paidDetails->first_payment_status) == 'PAID' && strtoupper($paidDetails->second_payment_status) == 'PAID' && $paidDetails->work_permit_status == "WORK_PERMIT_RECEIVED" && $file['FileExist']) {
+            if (strtoupper($paidDetails->first_payment_status) == 'PAID' && strtoupper($paidDetails->submission_payment_status) == 'PAID' && $paidDetails->work_permit_status == "WORK_PERMIT_RECEIVED" && $file['FileExist']) {
                 $response['message'] = "Download work permit";
                 $response['fileUrl'] = $file['FileUrl'];
                 $response['status'] = true;
-            } else if (strtoupper($paidDetails->first_payment_status) == 'PAID' && $paidDetails->work_permit_status == "WORK_PERMIT_RECEIVED" && strtoupper($paidDetails->second_payment_status) != 'PAID' && $file['FileExist']) {
+            } else if (strtoupper($paidDetails->first_payment_status) == 'PAID' && $paidDetails->work_permit_status == "WORK_PERMIT_RECEIVED" && strtoupper($paidDetails->submission_payment_status) != 'PAID' && $file['FileExist']) {
                 $response['message'] = "Download after second payment";
             } else {
                 $response['message'] = "Work permit not available yet.";

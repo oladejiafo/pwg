@@ -21,8 +21,6 @@ const app = new Vue({
     },
     methods: {
         getCategories() { 
-            console.log('here');
-
             axios
             .post('/get/job/category/list')
             .then(function (response) {
@@ -125,6 +123,9 @@ const app = new Vue({
                 })
                 .then(function (response) {
                     app.filterData = response.data;
+                    if(response.data.length == 0){
+                        toastr.error('Result not found!');
+                    }
                 })
                 .catch(function (error) {
                     console.log(error);

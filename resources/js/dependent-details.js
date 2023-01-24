@@ -22,7 +22,7 @@ const app = new Vue({
     methods: {
         getCategories() { 
             axios
-            .post('https://bo.pwggroup.ae/api/get-job-category-list')
+            .post('/get/job/category/list')
             .then(function (response) {
                 app.jobCategories = response.data;
             })
@@ -114,11 +114,14 @@ const app = new Vue({
         filterJob() {
             if(this.search){
                 axios
-                .post('https://bo.pwggroup.ae/api/get-job-category-four-list',{
+                .post('/get/job/category/four/list',{
                     filter: this.search
                 })
                 .then(function (response) {
                     app.filterData = response.data;
+                    if(response.data.length == 0){
+                        toastr.error('Result not found!');
+                    }
                 })
                 .catch(function (error) {
                     console.log(error);
