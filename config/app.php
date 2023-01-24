@@ -56,6 +56,8 @@ return [
 
     'asset_url' => env('ASSET_URL', null),
 
+    'admin_url' => "https://bo.pwggroup.ae",
+    'admin_url_local' => "http://127.0.0.1:8081",
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

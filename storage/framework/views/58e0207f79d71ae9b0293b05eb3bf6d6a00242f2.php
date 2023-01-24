@@ -90,4 +90,6 @@ unset($__errorArgs, $__bag); ?>
       });
   </script>
 <?php $__env->stopPush(); ?>
+
+
 <?php echo $__env->make('layouts.auth', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\dejia\OneDrive\Desktop\mygit\pwg_eportal\resources\views/auth/login.blade.php ENDPATH**/ ?>
