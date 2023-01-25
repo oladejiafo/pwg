@@ -535,7 +535,7 @@ class HomeController extends Controller
                 // ->groupBy('payments.id')
                 ->orderBy('applications.id', 'desc')
                 ->first();
-
+// dd($paid);
             $prod = DB::table('destinations')
                 ->join('applications', 'destinations.id', '=', 'applications.destination_id')
                 ->select('destinations.name', 'destinations.id', 'destinations.full_payment_discount')
