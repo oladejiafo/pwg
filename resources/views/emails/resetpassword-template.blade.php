@@ -54,7 +54,7 @@
                                         <div style="width:40%; display:inline-block;">
                                             <div style="text-align: center;
                                             height: 51px;
-                                            width: 30%;
+                                            width: 23%;
                                             float: right;">
                                                 <img src="{{asset('images/logoo.png')}}" alt="" width="100%" height="100%">
                                             </div>

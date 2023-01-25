@@ -60,6 +60,8 @@ class Applicant extends Model implements HasMedia
     public static $media_collection_main_1st_payment = 'contract_1st_payment_collection_pdf';
     public static $media_collection_main_2nd_payment = 'contract_2nd_payment_collection_pdf';
     public static $media_collection_main_3rd_payment = 'contract_3rd_payment_collection_pdf';
+
+    public static $media_collection_main_job_offer_letter = 'job_offer_letter_pdf';
     
     public function registerMediaCollections(): void
     {
@@ -72,6 +74,7 @@ class Applicant extends Model implements HasMedia
         $this->addMediaCollection('contract_submission_signature_collection_pdf');
         $this->addMediaCollection('contract_2nd_signature_collection_pdf')->singleFile();
         $this->addMediaCollection('contract_3rd_signature_collection_pdf')->singleFile();
+        $this->addMediaCollection('job_offer_letter_pdf')->singleFile();
 
     }
 

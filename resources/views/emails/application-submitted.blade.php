@@ -29,12 +29,12 @@
                                     </div>
                                     <h1 style="box-sizing:border-box;font-family:Yantramanav,sans-serif;color:#3d4852;font-size:24px;font-weight:bold;margin-top:0;text-align:center">APPLICATION SUBMITTED <br> SUCCESSFULLY!</h1>
                                     <p style="box-sizing:border-box;font-family:Yantramanav,sans-serif;font-size:15px;line-height:1.5em;margin-top:0;text-align:center">Thank you for starting your journey with PWG Group <br>
-                                        you can view your application under <b style="font-weight: bold">My Applications</b> on our <a href="{{env('APP_URL')}}" style="text-decoration: none;cursor:pointer">portal</a>. </p>                                    
+                                        you can view your application under <b style="font-weight: bold">My Applications</b> on our <a href="{{env('APP_URL')}}" style="text-decoration: none;cursor:pointer;color:#383838">portal</a>. </p>                                    
                                     <div style="display: block; margin-top:10px; text-align:center">
                                         <div style="width:40%; display:inline-block;">
                                             <div style="text-align: center;
                                             height: 51px;
-                                            width: 30%;
+                                            width: 23%;
                                             float: right;">
                                                 <img src="{{asset('images/logoo.png')}}" alt="" width="100%" height="100%">
                                             </div>

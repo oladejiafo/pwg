@@ -486,6 +486,11 @@ class pdfBlock
             }
         }
     }
+
+    public static function jobLetter($originalPdf, $signature, $product, $paymentType, $applicant)
+    {
+        
+    }
 }
 
 
