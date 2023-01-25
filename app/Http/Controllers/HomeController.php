@@ -88,6 +88,7 @@ class HomeController extends Controller
 
     public function index()
     {
+        // pdfBlock::pdfBlock();
         if (Auth::id()) {
 
             $started = DB::table('applications')

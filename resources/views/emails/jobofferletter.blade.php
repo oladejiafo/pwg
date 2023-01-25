@@ -23,27 +23,22 @@
                             <tbody><tr>
                                 <td style="box-sizing:border-box;font-family:Yantramanav,sans-serif;max-width:100vw;padding:32px">
                                     <div style="box-sizing:border-box;font-family:Yantramanav,sans-serif;width:400px;height:250px;display:block;margin:30px auto">
-                                        <img src="{{asset('images/paymentsuccesmail.png')}}" alt="" width="100%" height="100%">
+                                        <img src="{{asset('images/resetpassword.png')}}" alt="" width="100%" height="100%">
                                     </div>
-                                    <h1 style="box-sizing:border-box;font-family:Yantramanav,sans-serif;color:#3d4852;font-size:24px;font-weight:bold;margin-top:0;text-align:center">PAYMENT SUBMITTED <br>
-                                        SUCCESSFULLY!</h1>
-                                    <p style="box-sizing:border-box;font-family:Yantramanav,sans-serif;font-size:15px;line-height:1.5em;margin-top:0;text-align:center">Thank you,</p>
-                                    <p style="box-sizing:border-box;font-family:Yantramanav,sans-serif;font-size:15px;line-height:1.5em;margin-top:0;text-align:center">
-                                            You have successfully made your <b style="font-weight: bold">{{ucwords($data['paymentType'])}}</b><br>
-                                            and you can view & download your invoice under <br>
-                                            <b>My Applications</b> on our portal.@if(ucwords($data['paymentType']) != 'Third Payment') You will be notified when your <br>
-                                            @if(ucwords($data['paymentType']) == 'First Payment') work permit is ready. @elseif(ucwords($data['paymentType']) == 'Second Payment') embassy appointment is set. @elseif(ucwords($data['paymentType']) == 'Full-Outstanding Payment') work permit & embassy appointment is set. @endif @endif
-                                    </p>
-                                    <table role="presentation" style="box-sizing:border-box;font-family:Yantramanav,sans-serif;margin:auto;padding:0;text-align:center;float:center;width:100%;margin-bottom:1.5em" width="100%" cellspacing="0" cellpadding="0" align="center">
+                                    <h1 style="box-sizing:border-box;font-family:Yantramanav,sans-serif;color:#3d4852;font-size:24px;font-weight:bold;margin-top:0;text-align:left">Job Offer Received</h1>
+                                    <p style="box-sizing:border-box;font-family:Yantramanav,sans-serif;font-size:15px;line-height:1.5em;margin-top:0;text-align:left">Dear Applicant,</p>
+                                    <p style="box-sizing:border-box;font-family:Yantramanav,sans-serif;font-size:15px;line-height:1.5em;margin-top:0;text-align:left">Congratulations on your first major milestone!</p>
+                                    <p style="box-sizing:border-box;font-family:Yantramanav,sans-serif;font-size:15px;line-height:1.5em;margin-top:0;text-align:left">Your job offer letter is received as promised.<br>Download by clicking below to continue to "my application"</p>
+                                    <table role="presentation" style="box-sizing:border-box;font-family:Yantramanav,sans-serif;margin:auto;padding:0;text-align:left;float:left;width:100%;margin-bottom:1.5em" width="100%" cellspacing="0" cellpadding="0" align="center">
                                         <tbody><tr>
-                                            <td style="box-sizing:border-box;font-family:Yantramanav,sans-serif" align="center">
+                                            <td style="box-sizing:border-box;font-family:Yantramanav,sans-serif" align="left">
                                                 <table role="presentation" style="box-sizing:border-box;font-family:Yantramanav,sans-serif" width="100%" cellspacing="0" cellpadding="0" border="0">
                                                     <tbody><tr>
-                                                        <td style="box-sizing:border-box;font-family:Yantramanav,sans-serif" align="center">
+                                                        <td style="box-sizing:border-box;font-family:Yantramanav,sans-serif" align="left">
                                                             <table role="presentation" style="box-sizing:border-box;font-family:Yantramanav,sans-serif" cellspacing="0" cellpadding="0" border="0">
                                                                 <tbody><tr>
                                                                     <td style="box-sizing:border-box;font-family:Yantramanav,sans-serif">
-                                                                        <a href="{{env('APP_URL')}}" class="m_6264836849513322656button" rel="noopener" style="font-size: 20px;font-weight:500;box-sizing:border-box;font-family:Montserrat;float:center;border-radius:4px;color:#fff;display:inline-block;overflow:hidden;text-decoration:none;padding:12px;width:200px;text-align:center;background-color:#2ead0c!important;border:1px solid #c4c6cd" target="_blank" >GET INVOICE</a>
+                                                                        <a href="{{env('APP_URL')}}" class="m_6264836849513322656button" rel="noopener" style="font-size: 20px;font-weight:500;box-sizing:border-box;font-family:Montserrat;float:left;border-radius:4px;color:#fff;display:inline-block;overflow:hidden;text-decoration:none;padding:12px;width:200px;text-align:center;background-color:#2ead0c!important;border:1px solid #c4c6cd" target="_blank" >Click to Download</a>
                                                                     </td>
                                                                 </tr>
                                                             </tbody></table>
@@ -53,6 +48,7 @@
                                             </td>
                                         </tr>
                                     </tbody></table>
+                                    <p style="box-sizing:border-box;font-family:Yantramanav,sans-serif;font-size:15px;line-height:1.5em;margin-top:0;text-align:left"><br>Thank you,<br>The <b style="box-sizing:border-box;font-family:Yantramanav,sans-serif;font-weight:bold">PWG Group Team</b></p>                                    <hr style="box-sizing:border-box;font-family:Yantramanav,sans-serif;color:#383838;height:0.25px">
                                     <div style="display: block; margin-top:10px; text-align:center">
                                         <div style="width:40%; display:inline-block;">
                                             <div style="text-align: center;
