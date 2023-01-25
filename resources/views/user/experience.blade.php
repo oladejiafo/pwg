@@ -78,6 +78,7 @@
                     </div>
                 </div>
             </div>
+            
             <div v-else-if="jobCategories.length > 0" >
                 <div v-for='(jobCategoryOne, index) in jobCategories' class="jobCategory">
                     <div class="experience-sec" data-bs-toggle="collapse" :data-bs-target="'#collapseExperience'+index" aria-expanded="false" :aria-controls="'collapseExperience'+index">

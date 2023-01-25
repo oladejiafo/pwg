@@ -41,8 +41,7 @@ class HomeController extends Controller
     {
         if (Auth::id()) {
             $client = User::find(Auth::id());
-
-            // if($client->email_verified_at){ // Use on production 
+            // if ($client->email_verified_at) { // Use on production 
 
             if (session('prod_id')) {
                 $id = Session::get('prod_id');
@@ -75,6 +74,7 @@ class HomeController extends Controller
                 return view('user.home', compact('package', 'promo', 'started'));
             }
             // } else {
+            //     Auth::logout();
             //     return view('auth.verify-email');
             // }
         } else {
@@ -521,7 +521,7 @@ class HomeController extends Controller
 
             $pays = DB::table('pricing_plans')
                 ->join('applications', 'applications.pricing_plan_id', '=', 'pricing_plans.id')
-                ->select('applications.pricing_plan_id', 'applications.destination_id', 'pricing_plans.id', 'pricing_plans.pricing_plan_type', 'pricing_plans.total_price', 'pricing_plans.destination_id', 'pricing_plans.first_payment_price', 'pricing_plans.second_payment_price', 'pricing_plans.third_payment_price', 'pricing_plans.total_price')
+                ->select('applications.pricing_plan_id', 'applications.destination_id', 'pricing_plans.id', 'pricing_plans.pricing_plan_type', 'pricing_plans.total_price', 'pricing_plans.destination_id', 'pricing_plans.first_payment_price', 'pricing_plans.submission_payment_price', 'pricing_plans.second_payment_price','pricing_plans.third_payment_price', 'pricing_plans.total_price')
                 ->where('pricing_plans.pricing_plan_type', '=', $packageType)
                 ->where('applications.destination_id', '=', $p_id)
                 ->where('applications.client_id', '=', $id)
@@ -594,7 +594,7 @@ class HomeController extends Controller
                 } else {
                     $payall = 0;
                 }
-                if (isset($complete->work_permit_category) && $complete->third_payment_status == 'PENDING') {
+                if (isset($complete->work_permit_category) && $complete->second_payment_status == 'PENDING') {
                     $packageType = $complete->work_permit_category;
                 } elseif (Session::has('packageType')) {
                     $packageType = Session::get('packageType');
@@ -605,7 +605,7 @@ class HomeController extends Controller
                 $data = product::find(Session::get('myproduct_id'));
 
                 $pays = DB::table('applications')
-                    ->select('applications.pricing_plan_id', 'applications.total_price', 'applications.total_paid', 'applications.first_payment_status', 'applications.second_payment_status', 'applications.third_payment_status', 'first_payment_price', 'first_payment_paid', 'first_payment_remaining', 'is_first_payment_partially_paid', 'second_payment_price', 'second_payment_paid', 'second_payment_remaining', 'third_payment_price', 'third_payment_paid', 'third_payment_remaining')
+                    ->select('applications.pricing_plan_id', 'applications.total_price', 'applications.total_paid', 'applications.first_payment_status', 'applications.submission_payment_status', 'applications.second_payment_status', 'first_payment_price', 'first_payment_paid', 'first_payment_remaining', 'is_first_payment_partially_paid', 'submission_payment_price', 'submission_payment_paid', 'submission_payment_remaining', 'second_payment_price', 'second_payment_paid', 'second_payment_remaining')
                     ->where('applications.client_id', '=', Auth::user()->id)
                     ->where('applications.destination_id', '=', $id)
                     ->where('work_permit_category', $packageType)
@@ -648,7 +648,7 @@ class HomeController extends Controller
                             $originalPdf = ltrim($originalPdf, $originalPdf[0]);
                         }
                         $paymentType =  "First Payment";
-                    } elseif ($pays->first_payment_status == "PAID" && $pays->second_payment_status != "PAID") {
+                    } elseif ($pays->first_payment_status == "PAID" && $pays->submission_payment_status != "PAID") {
                         $originalPdf = (isset($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getUrl() : null;
                         if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                             if (Storage::disk(env('MEDIA_DISK'))->exists($originalPdf)) {
@@ -663,7 +663,7 @@ class HomeController extends Controller
                             $originalPdf = ltrim($originalPdf, $originalPdf[0]);
                         }
                         $paymentType =  "Second Payment";
-                    } elseif ($pays->second_payment_status == "PAID" && $pays->third_payment_status != "PAID") {
+                    } elseif ($pays->submission_payment_status == "PAID" && $pays->second_payment_status != "PAID") {
                         $originalPdf = (isset($applicant->getMedia(Applicant::$media_collection_main_2nd_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_2nd_signature)[0]->getUrl() : null;
                         if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                             if (Storage::disk(env('MEDIA_DISK'))->exists($originalPdf)) {
@@ -692,8 +692,8 @@ class HomeController extends Controller
                         $originalPdf = Storage::disk(env('MEDIA_DISK'))->url('Applications/Contracts/client_contracts/' . $applicant->contract);
                     } else {
                         $originalPdf = Storage::disk('local')->url('Applications/Contracts/client_contracts/' . $applicant->contract);
+                        $originalPdf = ltrim($originalPdf, $originalPdf[0]);
                     }
-                    $originalPdf = ltrim($originalPdf, $originalPdf[0]);
                     $paymentType = 'Full-Outstanding Payment ';
                 }
                 $user = User::find(Auth::id());
@@ -862,11 +862,11 @@ class HomeController extends Controller
             $idServiceURL  = "https://identity.sandbox.ngenius-payments.com/auth/realms/ni/protocol/openid-connect/token";           // set the identity service URL (example only)
             $txnServiceURL = "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders";
             // } else {
-            //     $outletRef       = config('app.payment_reference');
-            //     $apikey          = config('app.payment_api_key');
+                // $outletRef       = config('app.payment_reference');
+                // $apikey          = config('app.payment_api_key');
             //     // LIVE URLS 
-            //     $idServiceURL  = "https://identity.ngenius-payments.com/auth/realms/NetworkInternational/protocol/openid-connect/token";           // set the identity service URL (example only)
-            //     $txnServiceURL = "https://api-gateway.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders";
+                // $idServiceURL  = "https://identity.ngenius-payments.com/auth/realms/NetworkInternational/protocol/openid-connect/token";           // set the identity service URL (example only)
+                // $txnServiceURL = "https://api-gateway.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders";
             // }
 
             $tokenHeaders  = array("Authorization: Basic " . $apikey, "Content-Type: application/x-www-form-urlencoded");
@@ -969,20 +969,20 @@ class HomeController extends Controller
                         $data->first_payment_vat = $thisVat;
                         $data->first_payment_discount = $thisDiscount;
                     } elseif ($request->whichpayment == 'Second Payment') {
+                        $data->submission_payment_price = $thisPayment;
+                        $data->submission_payment_paid = $thisPaymentMade;
+                        $data->submission_payment_vat = $thisVat;
+                        $data->submission_payment_discount = $thisDiscount;
+                    } elseif ($request->whichpayment == 'Third Payment') {
                         $data->second_payment_price = $thisPayment;
                         $data->second_payment_paid = $thisPaymentMade;
                         $data->second_payment_vat = $thisVat;
                         $data->second_payment_discount = $thisDiscount;
-                    } elseif ($request->whichpayment == 'Third Payment') {
-                        $data->third_payment_price = $thisPayment;
-                        $data->third_payment_paid = $thisPaymentMade;
-                        $data->third_payment_vat = $thisVat;
-                        $data->third_payment_discount = $thisDiscount;
                         $data->coupon_code = $thisCode;
                         $res = $data->save();
                     } else {
 
-                        // $data->third_payment_status = 'PAID';
+                        // $data->second_payment_status = 'PAID';
                         $data->total_price = $thisPayment;
                         $data->total_vat = $thisVat;
                         $data->total_discount = $thisDiscount;
@@ -1031,19 +1031,19 @@ class HomeController extends Controller
                                 // $secondVat = ($request->second_p * 5) / 100;
                             }
                             if (isset($thisVat) && $thisVat > 0) {
-                                // $secondVat = ($paysplit->second_payment_price * 5) / 100;
+                                // $secondVat = ($paysplit->submission_payment_price * 5) / 100;
                                 $secondVat = (($request->second_p - $secondDisc) * 5) / 100;
                             } else {
                                 $secondVat = 0;
                             }
                             $paymentCreds['secondVat'] = $secondVat;
 
-                            // $data->second_payment_price = $paysplit->second_payment_price  + $secondVat;
-                            $data->second_payment_price = ($paysplit->second_payment_price - $secondDisc) + $secondVat;
-                            $paymentCreds['paysplit']->second_payment_price = ($paysplit->second_payment_price - $secondDisc) + $secondVat;
+                            // $data->submission_payment_price = $paysplit->submission_payment_price  + $secondVat;
+                            $data->submission_payment_price = ($paysplit->submission_payment_price - $secondDisc) + $secondVat;
+                            $paymentCreds['paysplit']->submission_payment_price = ($paysplit->submission_payment_price - $secondDisc) + $secondVat;
 
-                            $data->second_payment_vat = $secondVat;
-                            $data->second_payment_discount = $secondDisc;
+                            $data->submission_payment_vat = $secondVat;
+                            $data->submission_payment_discount = $secondDisc;
 
                             //Third Split
                             if ($thisDiscount > 0) {
@@ -1055,7 +1055,7 @@ class HomeController extends Controller
                                 // $thirdVat = ($request->third_p * 5) / 100;
                             }
                             if (isset($thisVat) && $thisVat > 0) {
-                                // $thirdVat = ($paysplit->third_payment_price * 5) / 100;
+                                // $thirdVat = ($paysplit->second_payment_price * 5) / 100;
 
                                 $thirdVat = (($request->third_p - $thirdDisc) * 5) / 100;
                             } else {
@@ -1063,12 +1063,12 @@ class HomeController extends Controller
                             }
                             $paymentCreds['thirdVat'] = $thirdVat;
 
-                            // $data->third_payment_price = $paysplit->third_payment_price + $thirdVat;
-                            $data->third_payment_price = ($paysplit->third_payment_price - $thirdDisc) + $thirdVat;
-                            $paymentCreds['paysplit']->third_payment_price = ($paysplit->third_payment_price - $thirdDisc) + $thirdVat;
+                            // $data->second_payment_price = $paysplit->second_payment_price + $thirdVat;
+                            $data->second_payment_price = ($paysplit->second_payment_price - $thirdDisc) + $thirdVat;
+                            $paymentCreds['paysplit']->second_payment_price = ($paysplit->second_payment_price - $thirdDisc) + $thirdVat;
 
-                            $data->third_payment_vat = $thirdVat;
-                            $data->third_payment_discount = $thirdDisc;
+                            $data->second_payment_vat = $thirdVat;
+                            $data->second_payment_discount = $thirdDisc;
                         }
                     }
 
@@ -1094,13 +1094,13 @@ class HomeController extends Controller
                             $datas->first_payment_price = $thisPayment;
                         }
                     } elseif ($request->whichpayment == 'Second Payment') {
+                        $datas->submission_payment_price = $thisPayment;
+                        $datas->submission_payment_vat = $thisVat;
+                        $datas->submission_payment_discount = $thisDiscount;
+                    } elseif ($request->whichpayment == 'Third Payment') {
                         $datas->second_payment_price = $thisPayment;
                         $datas->second_payment_vat = $thisVat;
                         $datas->second_payment_discount = $thisDiscount;
-                    } elseif ($request->whichpayment == 'Third Payment') {
-                        $datas->third_payment_price = $thisPayment;
-                        $datas->third_payment_vat = $thisVat;
-                        $datas->third_payment_discount = $thisDiscount;
                     } else {
                         $datas->total_price = $thisPayment;
                         $datas->total_vat = $thisVat;
@@ -1153,15 +1153,15 @@ class HomeController extends Controller
                                 // $secondVat = ($request->second_p * 5) / 100;
                             }
                             if (isset($thisVat) && $thisVat > 0) {
-                                //$secondVat = ($paysplit->second_payment_price * 5) / 100;
+                                //$secondVat = ($paysplit->submission_payment_price * 5) / 100;
                                 $secondVat = (($request->second_p - $secondDisc) * 5) / 100;
                             }
-                            // $datas->second_payment_price = $paysplit->second_payment_price + $secondVat;
-                            $datas->second_payment_price = ($apply->second_payment_price > 0) ? ($apply->first_payment_price) : ($paysplit->second_payment_price - $secondDisc) + $secondVat;
-                            $paymentCreds['paysplit']->second_payment_price = ($apply->second_payment_price) ?? ($paysplit->second_payment_price - $secondDisc) + $secondVat;
+                            // $datas->submission_payment_price = $paysplit->submission_payment_price + $secondVat;
+                            $datas->submission_payment_price = ($apply->submission_payment_price > 0) ? ($apply->first_payment_price) : ($paysplit->submission_payment_price - $secondDisc) + $secondVat;
+                            $paymentCreds['paysplit']->submission_payment_price = ($apply->submission_payment_price) ?? ($paysplit->submission_payment_price - $secondDisc) + $secondVat;
 
-                            $datas->second_payment_vat = ($apply->second_payment_vat) ?? $secondVat;
-                            $datas->second_payment_discount = $secondDisc;
+                            $datas->submission_payment_vat = ($apply->submission_payment_vat) ?? $secondVat;
+                            $datas->submission_payment_discount = $secondDisc;
                             $paymentCreds['secondVat'] = $secondVat;
                             $thirdVat = 0;
                             $thirdDisc = 0;
@@ -1177,15 +1177,15 @@ class HomeController extends Controller
                                 // $thirdVat = ($request->third_p * 5) / 100;
                             }
                             if (isset($thisVat) && $thisVat > 0) {
-                                //$thirdVat = ($paysplit->third_payment_price * 5) / 100;
+                                //$thirdVat = ($paysplit->second_payment_price * 5) / 100;
                                 $thirdVat = (($request->third_p - $thirdDisc) * 5) / 100;
                             }
-                            // $datas->third_payment_price = $paysplit->third_payment_price + $thirdVat;
-                            $datas->third_payment_price = ($paysplit->third_payment_price - $thirdDisc) + $thirdVat;
-                            $paymentCreds['paysplit']->third_payment_price = ($paysplit->third_payment_price - $thirdDisc) + $thirdVat;
+                            // $datas->second_payment_price = $paysplit->second_payment_price + $thirdVat;
+                            $datas->second_payment_price = ($paysplit->second_payment_price - $thirdDisc) + $thirdVat;
+                            $paymentCreds['paysplit']->second_payment_price = ($paysplit->second_payment_price - $thirdDisc) + $thirdVat;
 
-                            $datas->third_payment_vat = $thirdVat;
-                            $datas->third_payment_discount = $thirdDisc;
+                            $datas->second_payment_vat = $thirdVat;
+                            $datas->second_payment_discount = $thirdDisc;
                             $paymentCreds['thirdVat'] = $thirdVat;
                         }
                     }
@@ -1240,11 +1240,11 @@ class HomeController extends Controller
             $idServiceURL    = "https://identity.sandbox.ngenius-payments.com/auth/realms/ni/protocol/openid-connect/token";           // set the identity service URL (example only)
             $residServiceURL = "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders/" . $orderReference;
             // } else {
-            //     $outletRef           = config('app.payment_reference');
-            //     $apikey          = config('app.payment_api_key');
+                // $outletRef           = config('app.payment_reference');
+                // $apikey          = config('app.payment_api_key');
 
-            //     $idServiceURL    = "https://identity.ngenius-payments.com/auth/realms/Networkinternational/protocol/openid-connect/token";           // set the identity service URL (example only)
-            //     $residServiceURL = "https://api-gateway.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders/" . $orderReference;
+                // $idServiceURL    = "https://identity.ngenius-payments.com/auth/realms/Networkinternational/protocol/openid-connect/token";           // set the identity service URL (example only)
+                // $residServiceURL = "https://api-gateway.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders/" . $orderReference;
             // }
 
             $tokenHeaders    = array("Authorization: Basic " . $apikey, "Content-Type: application/x-www-form-urlencoded");
@@ -1296,18 +1296,18 @@ class HomeController extends Controller
                             $data->first_payment_paid = $paymentCreds['thisPaymentMade']; // add in payment success
                         }
                     } elseif ($paymentCreds['whichpayment'] == 'Second Payment') {
-                        $data->second_payment_paid = $paymentCreds['thisPaymentMade']; // add in payment success
-                        $data->second_payment_status = $paymentCreds['whatsPaid'];  // add in payment success
+                        $data->submission_payment_paid = $paymentCreds['thisPaymentMade']; // add in payment success
+                        $data->submission_payment_status = $paymentCreds['whatsPaid'];  // add in payment success
                         $data->status = 'WAITING_FOR_3RD_PAYMENT';  // add in payment success
                         if ($paymentCreds['whatsPaid'] == 'PARTIAL') { // add in payment success
-                            $data->is_second_payment_partially_paid = 1; // add in payment success
+                            $data->is_submission_payment_partially_paid = 1; // add in payment success
                         } // add in payment success
                     } elseif ($paymentCreds['whichpayment'] == 'Third Payment') {
-                        $data->third_payment_paid = $paymentCreds['thisPaymentMade']; // add in payment success
-                        $data->third_payment_status = $paymentCreds['whatsPaid']; // add in payment success
+                        $data->second_payment_paid = $paymentCreds['thisPaymentMade']; // add in payment success
+                        $data->second_payment_status = $paymentCreds['whatsPaid']; // add in payment success
                         $data->status = 'WAITING_FOR_EMBASSY_APPEARANCE'; // add in payment success
                         if ($paymentCreds['whatsPaid'] == 'PARTIAL') { // add in payment success
-                            $data->is_third_payment_partially_paid = 1; // add in payment success
+                            $data->is_second_payment_partially_paid = 1; // add in payment success
                         } // add in payment success
                     } else {
                         $data->total_paid = $paymentCreds['thisPaymentMade']; // add in payment success
@@ -1317,13 +1317,13 @@ class HomeController extends Controller
                             $data->first_payment_paid = ($data->first_payment_price) ?? $paymentCreds['paysplit']->first_payment_price; // add in payment success
 
                             $data->first_payment_status = 'PAID'; // add in payment success
-                            // $data->second_payment_paid = $paymentCreds['paysplit']->second_payment_price + $paymentCreds['secondVat']; // add in payment success
-                            $data->second_payment_paid = ($data->second_payment_price) ?? $paymentCreds['paysplit']->second_payment_price; // add in payment success
+                            // $data->submission_payment_paid = $paymentCreds['paysplit']->submission_payment_price + $paymentCreds['secondVat']; // add in payment success
+                            $data->submission_payment_paid = ($data->submission_payment_price) ?? $paymentCreds['paysplit']->submission_payment_price; // add in payment success
 
+                            $data->submission_payment_status = 'PAID'; // add in payment success
+                            // $data->second_payment_paid = $paymentCreds['paysplit']->second_payment_price + $paymentCreds['thirdVat']; // add in payment success
+                            $data->second_payment_paid = $paymentCreds['paysplit']->second_payment_price; // add in payment success
                             $data->second_payment_status = 'PAID'; // add in payment success
-                            // $data->third_payment_paid = $paymentCreds['paysplit']->third_payment_price + $paymentCreds['thirdVat']; // add in payment success
-                            $data->third_payment_paid = $paymentCreds['paysplit']->third_payment_price; // add in payment success
-                            $data->third_payment_status = 'PAID'; // add in payment success
                         }
                     }
                     $data->save();
@@ -1468,6 +1468,16 @@ class HomeController extends Controller
                 //    $datas->is_first_payment_partially_paid = 0;
                 //    $datas->status = 'PENDING';
             } elseif ($pays->payment_type == 'Second Payment') {
+                $datas->submission_payment_price = 0;
+                $datas->submission_payment_paid = 0;
+                $datas->submission_payment_vat = 0;
+                $datas->submission_payment_discount = 0;
+                $datas->submission_payment_status = 'PENDING';
+                $datas->status = 'PENDING';
+                $datas->is_submission_payment_partially_paid = 0;
+                // //Undo Payment update
+                // Payment::where('id', Session::get('paymentId'))->delete();
+            } elseif ($pays->payment_type == 'Third Payment') {
                 $datas->second_payment_price = 0;
                 $datas->second_payment_paid = 0;
                 $datas->second_payment_vat = 0;
@@ -1477,18 +1487,8 @@ class HomeController extends Controller
                 $datas->is_second_payment_partially_paid = 0;
                 // //Undo Payment update
                 // Payment::where('id', Session::get('paymentId'))->delete();
-            } elseif ($pays->payment_type == 'Third Payment') {
-                $datas->third_payment_price = 0;
-                $datas->third_payment_paid = 0;
-                $datas->third_payment_vat = 0;
-                $datas->third_payment_discount = 0;
-                $datas->third_payment_status = 'PENDING';
-                $datas->status = 'PENDING';
-                $datas->is_third_payment_partially_paid = 0;
-                // //Undo Payment update
-                // Payment::where('id', Session::get('paymentId'))->delete();
             } elseif ($pays->payment_type == 'Full-Outstanding Payment') {
-                if ($first_payment_status = 'PENDING') {
+                if ($first_payment_status == 'PENDING') {
                     $datas->first_payment_price = 0;
                     $datas->first_payment_paid = 0;
                     $datas->first_payment_vat = 0;
@@ -1498,6 +1498,13 @@ class HomeController extends Controller
                     $datas->is_first_payment_partially_paid = 0;
                 }
                 $datas->status = 'PENDING';
+                $datas->submission_payment_price = 0;
+                $datas->submission_payment_paid = 0;
+                $datas->submission_payment_vat = 0;
+                $datas->submission_payment_discount = 0;
+                $datas->submission_payment_status = 'PENDING';
+                $datas->status = 'PENDING';
+                $datas->is_submission_payment_partially_paid = 0;
                 $datas->second_payment_price = 0;
                 $datas->second_payment_paid = 0;
                 $datas->second_payment_vat = 0;
@@ -1505,13 +1512,6 @@ class HomeController extends Controller
                 $datas->second_payment_status = 'PENDING';
                 $datas->status = 'PENDING';
                 $datas->is_second_payment_partially_paid = 0;
-                $datas->third_payment_price = 0;
-                $datas->third_payment_paid = 0;
-                $datas->third_payment_vat = 0;
-                $datas->third_payment_discount = 0;
-                $datas->third_payment_status = 'PENDING';
-                $datas->status = 'PENDING';
-                $datas->is_third_payment_partially_paid = 0;
                 $datas->total_price = 0;
                 $datas->total_paid = 0;
                 $datas->total_vat = 0;

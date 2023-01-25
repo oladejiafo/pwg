@@ -22,9 +22,9 @@
         {
             $discounted = $apply->first_payment_discount;
         } elseif($user->payment_type =="Second Payment") {
-            $discounted = $apply->second_payment_discount;
+            $discounted = $apply->submission_payment_discount;
         } elseif($user->payment_type =="Third Payment") {
-            $discounted = $apply->third_payment_discount;  
+            $discounted = $apply->second_payment_discount;  
         } else {
             $discounted =0;
         }

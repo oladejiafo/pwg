@@ -77,6 +77,50 @@
 
                                 
                                 <!-- Second Begins -->
+                                <?php if($pays->submission_payment_price > 0): ?>
+                                <div class="row">
+                                    <div class="col-md-3" align="left">
+                                        <p>
+                                           Submission Payment
+                                        </p>
+                                    </div>
+                                    <div class="col-md-3" align="left">
+                                        <p>
+                                         <?php if($paid->submission_payment_status =='PAID'): ?>
+                                            Status PAID
+                                         <?php else: ?>
+                                            Status PENDING
+                                         <?php endif; ?>
+
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6" align="right">
+                                        <p>
+
+                                           
+                                        <?php if($paid->submission_payment_status =='PAID'): ?>
+
+                                            <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="<?php echo e(url('/get/invoice/Second Payment')); ?>">Get Invoice</a>
+                                       <?php else: ?>
+                                        <?php if($paid->application_stage_status != 5): ?>
+                                            <button class="btn btn-secondary toastrDefaultError" style="font-weight:700" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           
+                                        <?php else: ?>
+                                         <form action="<?php echo e(route('payment',$prod->id)); ?>" method="GET">
+
+                                            <button class="btn btn-secondary" style="font-weight:700">Pay Now</button>
+                                         </form>
+                                        <?php endif; ?>
+                                       <?php endif; ?>
+
+                                        </p>
+                                    </div>
+                                </div>
+                                <?php endif; ?>
+                                <hr>
+                                 <!-- Second Ends -->
+                                
+                                <!-- Third Begins -->
+                                <?php if($pays->second_payment_price > 0): ?>
                                 <div class="row">
                                     <div class="col-md-3" align="left">
                                         <p>
@@ -98,48 +142,6 @@
 
                                            
                                         <?php if($paid->second_payment_status =='PAID'): ?>
-
-                                            <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="<?php echo e(url('/get/invoice/Second Payment')); ?>">Get Invoice</a>
-                                       <?php else: ?>
-                                        <?php if($paid->application_stage_status != 5): ?>
-                                            <button class="btn btn-secondary toastrDefaultError" style="font-weight:700" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           
-                                        <?php else: ?>
-                                         <form action="<?php echo e(route('payment',$prod->id)); ?>" method="GET">
-
-                                            <button class="btn btn-secondary" style="font-weight:700">Pay Now</button>
-                                         </form>
-                                        <?php endif; ?>
-                                       <?php endif; ?>
-
-                                        </p>
-                                    </div>
-                                </div>
-                                <hr>
-                                 <!-- Second Ends -->
-                                
-                                <!-- Third Begins -->
-                                <?php if($pays->third_payment_price > 0): ?>
-                                <div class="row">
-                                    <div class="col-md-3" align="left">
-                                        <p>
-                                           Third Payment
-                                        </p>
-                                    </div>
-                                    <div class="col-md-3" align="left">
-                                        <p>
-                                         <?php if($paid->third_payment_status =='PAID'): ?>
-                                            Status PAID
-                                         <?php else: ?>
-                                            Status PENDING
-                                         <?php endif; ?>
-
-                                        </p>
-                                    </div>
-                                    <div class="col-md-6" align="right">
-                                        <p>
-
-                                           
-                                        <?php if($paid->third_payment_status =='PAID'): ?>
 
                                             <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="<?php echo e(url('/get/invoice/Third Payment')); ?>">Get Invoice</a>
                                        <?php else: ?>
@@ -164,17 +166,17 @@
                     </div>  
 
 
-                    <?php if($paid->third_payment_status != 'PAID'): ?>
+                    <?php if($paid->second_payment_status != 'PAID'): ?>
                     <div class="row" style="font-size:18px">
                         <div style="align-items: left; align:left; float: left; padding-left:40px;padding-right:40px" class="col-12">Your next payment is <b>
 
-                          <?php if($paid->second_payment_status =='PAID'): ?>                    
-                            <?php echo e($pays->third_payment_price); ?> AED
+                          <?php if($paid->submission_payment_status =='PAID'): ?>                    
+                            <?php echo e($pays->second_payment_price); ?> AED
                             </b>, to be charged for Third Payment.
                           <?php elseif($paid->first_payment_status =='PAID'): ?>
-                            <?php echo e($pays->second_payment_price); ?> AED
+                            <?php echo e($pays->submission_payment_price); ?> AED
                             </b>, to be charged for Second Payment.
-                          <?php elseif($paid->first_payment_status !='PAID' && $paid->second_payment_status !='PAID'): ?>
+                          <?php elseif($paid->first_payment_status !='PAID' && $paid->submission_payment_status !='PAID'): ?>
 
                            <?php if($paid->first_payment_remaining >0 && $paid->first_payment_status !='PAID'): ?>
                                <?php echo e($paid->first_payment_remaining); ?> AED

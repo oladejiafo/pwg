@@ -31,11 +31,11 @@
 		<tbody>
 			<tr>
                 <td>
-					<table border="0" cellpadding="0" cellspacing="0" class="mail" style="width: 60%;max-width: 100%;margin-left: auto;margin-right: auto;margin: 0 auto;padding: 100px;background-color: #ffffff;margin-bottom: 150px;margin-top: 150px;text-align: center; ">
+					<table border="0" cellpadding="0" cellspacing="0" class="mail" style="width: 80%;max-width: 100%;margin-left: auto;margin-right: auto;margin: 0 auto;padding: 80px 80px 40px 80px;background-color: #ffffff;margin-bottom: 150px;margin-top: 150px;text-align: center; ">
                         <tbody style="border-bottom:1px solid #383838 ">
                             <tr style="border-bottom:1px solid #383838 ">
                                 <td>
-                                    <div class="mailHeadImage" style="width: 500px;height: 300px;display: block;margin: auto;">
+                                    <div class="mailHeadImage" style="width: 400px;height: 250px;display: block;margin: auto;">
                                         <img src="{{asset('images/paymentsuccesmail.png')}}" alt="" width="100%" height="100%">
                                     </div>
                                     <div class="content-block">
@@ -51,28 +51,52 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>
-                                    <a class="btn" style="color:#fff;background: #6DCB16;  text-decoration: none;padding: 17px 97px;margin: 20px auto;font-family: 'Montserrat';font-style: normal;font-weight: 700;font-size: 28px;line-height: 125px;" href="{{env('APP_URL')}}">GET INVOICE</a>
+                                <td min-width ="100%;">
+                                    <a class="btn" style="color: #fff;
+                                    background: #6dcb16;
+                                    text-decoration: none;
+                                    padding: 12px 58px;
+                                    margin: 20px auto;
+                                    font-family: 'Montserrat';
+                                    font-style: normal;
+                                    font-weight: 700;
+                                    font-size: 24px;
+                                    line-height: 125px;" href="{{env('APP_URL')}}">GET-INVOICE</a>
                                 </td>
                             </tr>
-                            <tr style="width:100%">
-                                <td>
-                                    <hr style="margin-left: -100px; margin-right:-100px !important;color:#383838;height:0.25px">
-                                    <div style="display: block">
-                                        <div style="width:49%; display:inline-block">
-                                            <div style="width:73%;float:right; height: 51px">
-                                                <img src="{{asset('images/logo.png')}}" alt="" width="100%" height="100%">
+                            <tr>
+                                <td min-width ="100%;">
+                                    <a class="btn" style="color: #fff;
+                                    background: #6dcb16;
+                                    text-decoration: none;
+                                    padding: 12px 58px;
+                                    margin: 20px auto;
+                                    font-family: 'Montserrat';
+                                    font-style: normal;
+                                    font-weight: 700;
+                                    font-size: 24px;
+                                    line-height: 125px;" href="{{env('APP_URL')}}">INVOICE</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="100%" min-width ="100%;">
+                                    <hr style="margin-left: -80px; margin-right:-80px !important;color:#383838;height:0.25px">
+                                    <div style="display: block; margin-top:50px">
+                                        <div style="width:35%; display:inline-block;">
+                                            <div style="float:right; height: 51px">
+                                                <img src="{{asset('images/logoo.png')}}" alt="" width="100%" height="100%">
                                             </div>
                                         </div>
-                                        <div style="display: inline-block;border: 1.5px solid #383838;height: 47px;"></div>
-                                        <div style="width:49%; display:inline-block">
-                                            <p style="font-family: 'Yantramanav';
-                                            font-style: normal;
-                                            font-weight: 300;
-                                            font-size: 10px;
-                                            line-height: 20px;
-                                            color: #383838;
-                                            text-align: left;">
+                                
+                                        <div style="display: inline-block;border: 1.5px solid #383838;height: 56px;"></div>
+                                        <div style="width:35%; display:inline-block;">
+                                            <p style="font-family: Yantramanav, sans-serif;
+                                                font-style: normal;
+                                                font-weight: 300;
+                                                font-size: 10px;
+                                                line-height: 16px;
+                                                color: #383838;
+                                                text-align: left;">
                                                 ©{{ now()->year }} PWG Group <br>
                                                 The Oberoi Centre, Office - 20th Floor<br>
                                                 Business Bay, Dubai<br>

@@ -10,11 +10,11 @@
 		<tbody>
 			<tr>
                 <td>
-					<table border="0" cellpadding="0" cellspacing="0" class="mail" style="width: 60%;max-width: 100%;margin-left: auto;margin-right: auto;margin: 0 auto;padding: 80px;background-color: #ffffff;margin-bottom: 150px;margin-top: 150px;text-align: center; ">
+					<table border="0" cellpadding="0" cellspacing="0" class="mail" style="width: 80%;max-width: 100%;margin-left: auto;margin-right: auto;margin: 0 auto;padding: 80px 80px 40px 80px;background-color: #ffffff;margin-bottom: 150px;margin-top: 150px;text-align: center; ">
                         <tbody>
                             <tr>
                                 <td>
-                                    <div style="width: 400px;height: 300px;display: block;margin: auto;">
+                                    <div style="width: 400px;height: 250px;display: block;margin: auto;">
                                         <img src="{{asset('images/congratulationsicon.png')}}" alt="" width="100%" height="100%">
                                     </div>
                                     <div class="content-block">
@@ -28,23 +28,25 @@
                                     </div>
                                 </td>
                             </tr>
-                            <tr style="width:100%">
-                                <td>
+                            
+                            <tr>
+                                <td width="100%" min-width ="100%;">
                                     <div style="display: block; margin-top:50px">
-                                        <div style="width:49%; display:inline-block">
-                                            <div style="width:73%;float:right; height: 51px">
-                                                <img src="{{asset('images/logo.png')}}" alt="" width="100%" height="100%">
+                                        <div style="width:35%; display:inline-block;">
+                                            <div style="float:right; height: 51px">
+                                                <img src="{{asset('images/logoo.png')}}" alt="" width="100%" height="100%">
                                             </div>
                                         </div>
-                                        <div style="display: inline-block;border: 1.5px solid #383838;height: 47px;"></div>
-                                        <div style="width:49%; display:inline-block">
-                                            <p style="font-family: 'Yantramanav';
-                                            font-style: normal;
-                                            font-weight: 300;
-                                            font-size: 10px;
-                                            line-height: 20px;
-                                            color: #383838;
-                                            text-align: left;">
+                                
+                                        <div style="display: inline-block;border: 1.5px solid #383838;height: 56px;"></div>
+                                        <div style="width:35%; display:inline-block;">
+                                            <p style="font-family: Yantramanav, sans-serif;
+                                                font-style: normal;
+                                                font-weight: 300;
+                                                font-size: 10px;
+                                                line-height: 16px;
+                                                color: #383838;
+                                                text-align: left;">
                                                 ©{{ now()->year }} PWG Group <br>
                                                 The Oberoi Centre, Office - 20th Floor<br>
                                                 Business Bay, Dubai<br>

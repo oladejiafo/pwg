@@ -77,6 +77,50 @@
 
                                 
                                 <!-- Second Begins -->
+                                @if($pays->submission_payment_price > 0)
+                                <div class="row">
+                                    <div class="col-md-3" align="left">
+                                        <p>
+                                           Submission Payment
+                                        </p>
+                                    </div>
+                                    <div class="col-md-3" align="left">
+                                        <p>
+                                         @if($paid->submission_payment_status =='PAID')
+                                            Status PAID
+                                         @else
+                                            Status PENDING
+                                         @endif
+
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6" align="right">
+                                        <p>
+
+                                           
+                                        @if($paid->submission_payment_status =='PAID')
+
+                                            <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="{{ url('/get/invoice/Second Payment')}}">Get Invoice</a>
+                                       @else
+                                        @if($paid->application_stage_status != 5)
+                                            <button class="btn btn-secondary toastrDefaultError" style="font-weight:700" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           
+                                        @else
+                                         <form action="{{ route('payment',$prod->id) }}" method="GET">
+
+                                            <button class="btn btn-secondary" style="font-weight:700">Pay Now</button>
+                                         </form>
+                                        @endif
+                                       @endif
+
+                                        </p>
+                                    </div>
+                                </div>
+                                @endif
+                                <hr>
+                                 <!-- Second Ends -->
+                                
+                                <!-- Third Begins -->
+                                @if($pays->second_payment_price > 0)
                                 <div class="row">
                                     <div class="col-md-3" align="left">
                                         <p>
@@ -98,48 +142,6 @@
 
                                            
                                         @if($paid->second_payment_status =='PAID')
-
-                                            <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="{{ url('/get/invoice/Second Payment')}}">Get Invoice</a>
-                                       @else
-                                        @if($paid->application_stage_status != 5)
-                                            <button class="btn btn-secondary toastrDefaultError" style="font-weight:700" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           
-                                        @else
-                                         <form action="{{ route('payment',$prod->id) }}" method="GET">
-
-                                            <button class="btn btn-secondary" style="font-weight:700">Pay Now</button>
-                                         </form>
-                                        @endif
-                                       @endif
-
-                                        </p>
-                                    </div>
-                                </div>
-                                <hr>
-                                 <!-- Second Ends -->
-                                
-                                <!-- Third Begins -->
-                                @if($pays->third_payment_price > 0)
-                                <div class="row">
-                                    <div class="col-md-3" align="left">
-                                        <p>
-                                           Third Payment
-                                        </p>
-                                    </div>
-                                    <div class="col-md-3" align="left">
-                                        <p>
-                                         @if($paid->third_payment_status =='PAID')
-                                            Status PAID
-                                         @else
-                                            Status PENDING
-                                         @endif
-
-                                        </p>
-                                    </div>
-                                    <div class="col-md-6" align="right">
-                                        <p>
-
-                                           
-                                        @if($paid->third_payment_status =='PAID')
 
                                             <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="{{ url('/get/invoice/Third Payment')}}">Get Invoice</a>
                                        @else
@@ -164,17 +166,17 @@
                     </div>  
 
 
-                    @if($paid->third_payment_status != 'PAID')
+                    @if($paid->second_payment_status != 'PAID')
                     <div class="row" style="font-size:18px">
                         <div style="align-items: left; align:left; float: left; padding-left:40px;padding-right:40px" class="col-12">Your next payment is <b>
 
-                          @if($paid->second_payment_status =='PAID')                    
-                            {{ $pays->third_payment_price }} AED
+                          @if($paid->submission_payment_status =='PAID')                    
+                            {{ $pays->second_payment_price }} AED
                             </b>, to be charged for Third Payment.
                           @elseif($paid->first_payment_status =='PAID')
-                            {{ $pays->second_payment_price }} AED
+                            {{ $pays->submission_payment_price }} AED
                             </b>, to be charged for Second Payment.
-                          @elseif($paid->first_payment_status !='PAID' && $paid->second_payment_status !='PAID')
+                          @elseif($paid->first_payment_status !='PAID' && $paid->submission_payment_status !='PAID')
 
                            @if($paid->first_payment_remaining >0 && $paid->first_payment_status !='PAID')
                                {{ $paid->first_payment_remaining }} AED
