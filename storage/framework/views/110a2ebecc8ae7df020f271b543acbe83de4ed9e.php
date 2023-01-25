@@ -2,12 +2,12 @@
 
 <html>
 
-@include('user/header')
+<?php echo $__env->make('user/header', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
 <!-- bootstrap core css -->
-<link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
+<link href="<?php echo e(asset('user/css/bootstrap.min.css')); ?>" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-<link href="{{asset('user/css/products.css')}}" rel="stylesheet">
+<link href="<?php echo e(asset('user/css/products.css')); ?>" rel="stylesheet">
 
 <style>
   .se2 {
@@ -36,8 +36,8 @@
 
 <body>
 
-  @if($promo->first())
-  @foreach($promo as $prom)
+  <?php if($promo->first()): ?>
+  <?php $__currentLoopData = $promo; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $prom): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
   <?php
   // $offer_discount= $data->prev_discount - $data->discount;
 
@@ -55,27 +55,27 @@
   }
 
   ?>
-  @endforeach
+  <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
-  @else
-  @php
+  <?php else: ?>
+  <?php
   $icon = '';
-  $offer_discount_msg = ''; @endphp
-  @endif
+  $offer_discount_msg = ''; ?>
+  <?php endif; ?>
 
   <section class="product-section">
     <div class="container-fluid">
       <div class="row top" style="background-color:#fff; border-radius:10px">
 
-        <!-- <p style="font-style: italics; text-decoration:none"><a href="/"><b><i>Packages </a> > {{$data->name}} </i></b></p> -->
+        <!-- <p style="font-style: italics; text-decoration:none"><a href="/"><b><i>Packages </a> > <?php echo e($data->name); ?> </i></b></p> -->
 
         <div class="col-12 col-md-12 col-lg-6 img-fluid packageImage" style="margin-bottom: 0px;">
-          <img src="../user/images/{{$data->image}}" style="border-radius:10px" width="100%" height="100%" border="0" alt="PWG Group" />
+          <img src="../user/images/<?php echo e($data->image); ?>" style="border-radius:10px" width="100%" height="100%" border="0" alt="PWG Group" />
         </div>
         <div class="col-12 col-md-12 col-lg-6 text">
-          <h1>{{$data->name}}</h1>
-          <p class="subheading"><span>{{$data->slogan}}</span></p>
-          <p>{{$data->description}}</p>
+          <h1><?php echo e($data->name); ?></h1>
+          <p class="subheading"><span><?php echo e($data->slogan); ?></span></p>
+          <p><?php echo e($data->description); ?></p>
           <h2>
             <?php
              $totalCost = Session::get('totalCost');
@@ -87,96 +87,96 @@
                 $totalCost = $totalCost;
               }
             ?> 
-            @if (Session::get('totalCost') >0)
+            <?php if(Session::get('totalCost') >0): ?>
              
-               {{ $totalCost }} 
-            @else
-               {{number_format($ppay->total_price,2)}} 
-            @endif 
-            <span style="font-size:25px">{{$data->currency}} </span>
+               <?php echo e($totalCost); ?> 
+            <?php else: ?>
+               <?php echo e(number_format($ppay->total_price,2)); ?> 
+            <?php endif; ?> 
+            <span style="font-size:25px"><?php echo e($data->currency); ?> </span>
           </h2>
 
           <p class="subheading" style="margin-left: 0px;">
-            <i class="<?php echo $icon; ?>"></i><i> {{$offer_discount_msg}} </i>
+            <i class="<?php echo $icon; ?>"></i><i> <?php echo e($offer_discount_msg); ?> </i>
           </p><br>
 
-          @if(Session::has('packageType'))
-            @php
+          <?php if(Session::has('packageType')): ?>
+            <?php
              $a = explode(' ', Session::get('packageType'));
              $ptype = $a[0] . ' ' . $a[1];
-            @endphp
-          @else 
+            ?>
+          <?php else: ?> 
              $ptype ='';  
-          @endif
+          <?php endif; ?>
      
           
 
           <p>
-          <h3>{{$ptype}} Payment Installments</h3>
+          <h3><?php echo e($ptype); ?> Payment Installments</h3>
           <table border=0 style="border-radius:10px">
             <tr>
               <td align="left" class="pie" style="border-color:#fff;">
-                @if($ppay->submission_payment_price > 0 || $ppay->second_payment_price > 0)
+                <?php if($ppay->submission_payment_price > 0 || $ppay->second_payment_price > 0): ?>
                 <img src="../user/images/progress_payment_1.svg" alt="PWG Group">
-                @else
+                <?php else: ?>
                 <img src="../user/images/progress_payment_3.svg" alt="PWG Group">
-                @endif
+                <?php endif; ?>
               </td>
 
               <td align="center" class="line" style="border-color:#fff;">
                 <img src="../user/images/progress_bar.svg" alt="PWG Group">
               </td>
               <td align="left" class="pie" style="border-color:#fff;">
-                @if($ppay->submission_payment_price > 0 || $ppay->second_payment_price > 0)
+                <?php if($ppay->submission_payment_price > 0 || $ppay->second_payment_price > 0): ?>
                 <img src="../user/images/progress_payment_2.svg" alt="PWG Group">
-                @else
+                <?php else: ?>
                 <img src="../user/images/progress_payment_3.svg" alt="PWG Group">
-                @endif
+                <?php endif; ?>
               </td>
-              @if($ppay->second_payment_price > 0)
+              <?php if($ppay->second_payment_price > 0): ?>
               <td align="center" class="line" style="border-color:#fff;">
                 <img src="../user/images/progress_bar.svg" alt="PWG Group">
               </td>
               <td align="left" class="pie" style="border-color:#fff;">
                 <img src="../user/images/progress_payment_3.svg" alt="PWG Group">
               </td>
-              @endif    
-              @if($ppay->third_payment_price > 0)
+              <?php endif; ?>    
+              <?php if($ppay->third_payment_price > 0): ?>
               <td align="center" class="line" style="border-color:#fff;">
-                {{-- <img src="../user/images/progress_bar.svg" alt="PWG Group"> --}}
+                
               </td>
               <td align="left" class="pie" style="border-color:#fff;">
                 <img src="../user/images/progress_payment_4.svg" width="85px" alt="PWG Group">
               </td>
-              @endif             
+              <?php endif; ?>             
             </tr>
 
             <tr>
               <td align="center" style="border-color:#fff;">
-                <span class="prices" style="font-weight:bold;">{{number_format($ppay->first_payment_price)}} </span><br>
+                <span class="prices" style="font-weight:bold;"><?php echo e(number_format($ppay->first_payment_price)); ?> </span><br>
                 <span class="pays" style="margin-left:0px;font-weight:bold;">First Payment</span>
               </td>
-              @if($ppay->submission_payment_price > 0)
+              <?php if($ppay->submission_payment_price > 0): ?>
               <td align="left" style="border-color:#fff;width:60px"> </td>
               <td align="center" style="border-color:#fff;">
-                <span class="prices" style="font-weight:bold;">{{number_format($ppay->submission_payment_price)}} </span><br>
+                <span class="prices" style="font-weight:bold;"><?php echo e(number_format($ppay->submission_payment_price)); ?> </span><br>
                 <span class="pays" style="margin-left:0px;font-weight:bold;">Submission Payment</span>
               </td>
-              @endif
-              @if($ppay->second_payment_price > 0)
+              <?php endif; ?>
+              <?php if($ppay->second_payment_price > 0): ?>
               <td align="left" style="border-color:#fff;width:60px"> </td>
               <td align="center" style="border-color:#fff;">
-                <span class="prices" style="font-weight:bold;">{{number_format($ppay->second_payment_price)}} </span><br>
+                <span class="prices" style="font-weight:bold;"><?php echo e(number_format($ppay->second_payment_price)); ?> </span><br>
                 <span class="pays" style="margin-left:0px;font-weight:bold;">Second Payment</span>
               </td>
-              @endif
-              @if($ppay->third_payment_price > 0)
+              <?php endif; ?>
+              <?php if($ppay->third_payment_price > 0): ?>
               <td align="left" style="border-color:#fff;width:60px"> </td>
               <td align="center" style="border-color:#fff;">
-                <span class="prices" style="font-weight:bold;">{{number_format($ppay->third_payment_price)}} </span><br>
+                <span class="prices" style="font-weight:bold;"><?php echo e(number_format($ppay->third_payment_price)); ?> </span><br>
                 <span class="pays" style="margin-left:0px;font-size:10px;font-weight:bold;">Salary Deduction</span>
               </td>
-              @endif
+              <?php endif; ?>
             </tr>
 
           </table>
@@ -185,36 +185,36 @@
    
 
           <br>
-          <h4>Working in {{$data->name}} provides several benefits not limited to:</h4>
+          <h4>Working in <?php echo e($data->name); ?> provides several benefits not limited to:</h4>
 
           <p>
           <ul>
-            @if ($data->benefits != "")
+            <?php if($data->benefits != ""): ?>
 
-            @foreach(explode(' - ' ,$data->benefits) as $item)
+            <?php $__currentLoopData = explode(' - ' ,$data->benefits); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 
-            <li> {{$item}} </li>
+            <li> <?php echo e($item); ?> </li>
 
-            @endforeach
-            @endif
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            <?php endif; ?>
           </ul>
           </p>
 
-          @if(Route::has('login'))
-          @auth
-           <form action="{{ url('contract', $data->id) }}" method="GET">
-          @else
-           <form action="{{ url('login') }}">
-            @php Session::put('prod_id', $data->id); @endphp
-          @endauth
-          @endif
-              <input type="hidden" value="{{$data->id}}">
+          <?php if(Route::has('login')): ?>
+          <?php if(auth()->guard()->check()): ?>
+           <form action="<?php echo e(url('contract', $data->id)); ?>" method="GET">
+          <?php else: ?>
+           <form action="<?php echo e(url('login')); ?>">
+            <?php Session::put('prod_id', $data->id); ?>
+          <?php endif; ?>
+          <?php endif; ?>
+              <input type="hidden" value="<?php echo e($data->id); ?>">
 
               <p style="margin-left:2px;font-weight:bold; font-size:1.4em">Please, select one of the following options:</p>
               <?php
               if ($data->full_payment_discount > 0) {
               ?>
-                <p style="margin-left:2px;font-weight:bold">Get {{number_format($data->full_payment_discount)}}% discount on Full Payment</p>
+                <p style="margin-left:2px;font-weight:bold">Get <?php echo e(number_format($data->full_payment_discount)); ?>% discount on Full Payment</p>
               <?php
               }
 
@@ -224,7 +224,7 @@
                 <button class="btn btn-secondary" id="buy" value="0" name="payall" style="width:100%; ">Pay in Installments</button>
               </p>
 
-              <p>&nbsp; <input type="checkbox" class="checkcolor" id="agree" style="font-size:25px;transform: scale(1.8); " required=""> &nbsp; By checking this box you accept our <a target="_blank" href="{{route('terms')}}"  style="color:blue;margin:0">Terms & Conditions</a></p>
+              <p>&nbsp; <input type="checkbox" class="checkcolor" id="agree" style="font-size:25px;transform: scale(1.8); " required=""> &nbsp; By checking this box you accept our <a target="_blank" href="<?php echo e(route('terms')); ?>"  style="color:blue;margin:0">Terms & Conditions</a></p>
             </form>
 
         </div>
@@ -241,16 +241,16 @@
     });
   </script>
 
-  {{-- @include('user.package-jobs') --}}
+  
 
 
-  {{-- Session::get('myproduct_id') --}}
+  
 
-  {{-- Session::get('packageType') --}}
-  {{-- Session::get('totalCost') --}}
-  {{-- Session::get('mySpouse') --}}
-  {{-- Session::get('myKids') --}}
-  @include('user/footer')
+  
+  
+  
+  
+  <?php echo $__env->make('user/footer', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 </body>
 
-</html>
+</html><?php /**PATH C:\Users\dejia\OneDrive\Desktop\mygit\pwg_eportal\resources\views/user/package.blade.php ENDPATH**/ ?>

@@ -522,7 +522,7 @@ class HomeController extends Controller
 
             $pays = DB::table('pricing_plans')
                 ->join('applications', 'applications.pricing_plan_id', '=', 'pricing_plans.id')
-                ->select('applications.pricing_plan_id', 'applications.destination_id', 'pricing_plans.id', 'pricing_plans.pricing_plan_type', 'pricing_plans.total_price', 'pricing_plans.destination_id', 'pricing_plans.first_payment_price', 'pricing_plans.submission_payment_price', 'pricing_plans.second_payment_price', 'pricing_plans.total_price')
+                ->select('applications.pricing_plan_id', 'applications.destination_id', 'pricing_plans.id', 'pricing_plans.pricing_plan_type', 'pricing_plans.total_price', 'pricing_plans.destination_id', 'pricing_plans.first_payment_price', 'pricing_plans.submission_payment_price', 'pricing_plans.second_payment_price','pricing_plans.third_payment_price', 'pricing_plans.total_price')
                 ->where('pricing_plans.pricing_plan_type', '=', $packageType)
                 ->where('applications.destination_id', '=', $p_id)
                 ->where('applications.client_id', '=', $id)

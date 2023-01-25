@@ -35,7 +35,15 @@ body {
 .destinationView {
   margin-top: 3%;
 }
-
+.pays {
+  font-size:10px;
+}
+.prices{
+  font-size: 30px;
+}
+.pie img {
+max-width: 85px;
+}
 @media (min-width:260px) and (max-width: 414px) {
   .banner_bg {
     background-size: 345% !important;
@@ -626,6 +634,57 @@ a .hoveer {
   } */
 
 /* Mobile styles */
+
+@media (max-width:600px)
+{
+  .pays {
+    font-size:9px;
+  }
+  .prices{
+    font-size: 25px;
+  }
+  .pie img {
+    max-width: 75px;
+    }
+}
+@media (max-width:400px)
+{
+  .pays {
+    font-size:9px;
+  }
+  .prices{
+    font-size: 20px;
+  }
+  .pie img {
+    max-width: 60px;
+    }
+}
+
+@media (max-width:400px)
+{
+  .pays {
+    font-size:9px;
+  }
+  .prices{
+    font-size: 20px;
+  }
+  .pie img {
+    max-width: 50px;
+    }
+}
+@media (max-width:360px)
+{
+  .pays {
+    font-size:9px;
+  }
+  .prices{
+    font-size: 20px;
+  }
+  .pie img {
+    max-width: 50px;
+    }
+}
+
 @media only screen and (max-device-width: 480px),
 only screen and (max-width: 480px) {}
 
@@ -669,5 +728,7 @@ only screen and (max-width: 480px) {}
 .cellContainer {
   padding-left: 16px;
 }
-
+.pays {
+  font-size:9px;
+}
 }
