@@ -146,7 +146,7 @@
                 {{-- <img src="../user/images/progress_bar.svg" alt="PWG Group"> --}}
               </td>
               <td align="left" class="pie" style="border-color:#fff;">
-                <img src="../user/images/progress_payment_4.svg" width="85px" alt="PWG Group">
+                <img src="../user/images/progress_payment_41.svg" width="85px" alt="PWG Group">
               </td>
               @endif             
             </tr>

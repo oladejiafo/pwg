@@ -42,7 +42,7 @@ body {
   font-size: 30px;
 }
 .pie img {
-max-width: 85px;
+width: 85px;
 }
 @media (min-width:260px) and (max-width: 414px) {
   .banner_bg {
@@ -644,7 +644,7 @@ a .hoveer {
     font-size: 25px;
   }
   .pie img {
-    max-width: 75px;
+    width: 75px;
     }
 }
 @media (max-width:400px)
@@ -656,7 +656,7 @@ a .hoveer {
     font-size: 20px;
   }
   .pie img {
-    max-width: 60px;
+    width: 60px;
     }
 }
 
@@ -669,11 +669,26 @@ a .hoveer {
     font-size: 20px;
   }
   .pie img {
-    max-width: 50px;
+    width: 50px;
     }
 }
 @media (max-width:360px)
 {
+  .text {
+    margin-top: 0;
+    padding-left: 30px;
+    padding-right: 30px;
+    justify-content: left;
+
+  }
+  .text h2 {
+
+    font-size: 45px;
+}
+  .text h3 {
+    font-weight: 500;
+    font-size: 20px;
+}
   .pays {
     font-size:9px;
   }
@@ -681,10 +696,42 @@ a .hoveer {
     font-size: 20px;
   }
   .pie img {
-    max-width: 50px;
+    width: 60px;
+    }
+  .top {
+      margin-block: 50px !important;
+  }
+}
+@media (max-width:280px)
+{
+  .text {
+    margin-top: 0;
+    padding-left: 30px;
+    padding-right: 30px;
+    justify-content: left;
+
+  }
+  .text h2 {
+
+    font-size: 35px;
+}
+  .text h3 {
+    font-weight: 500;
+    font-size: 15px;
+}
+.text h4, .text p {
+  font-size: 15px;
+}
+  .pays {
+    font-size:9px;
+  }
+  .prices{
+    font-size: 14px;
+  }
+  .pie img {
+    width: 45px;
     }
 }
-
 @media only screen and (max-device-width: 480px),
 only screen and (max-width: 480px) {}
 
