@@ -23,7 +23,7 @@ class EnvironmentPathGenerator extends DefaultPathGenerator
                 break;
             case 'client_collection_schengen_visa1':
                 $path = 'Clients/SchengenVisas/';
-                break;    
+                break;
             case 'client_collection_schengen_visa2':
                 $path = 'Clients/SchengenVisas/';
                 break;
@@ -53,61 +53,61 @@ class EnvironmentPathGenerator extends DefaultPathGenerator
                 break;
             case 'work_permit_collection_pdf':
                 $path = 'Applications/WorkPermits/';
-                    break;
+                break;
             case 'contract_1st_payment_collection_pdf':
                 $path = 'Applications/PaymentReceipts/First/';
-                    break;
+                break;
             case 'contract_2nd_payment_collection_pdf':
                 $path = 'Applications/PaymentReceipts/Second/';
-                    break;
+                break;
             case 'contract_3rd_payment_collection_pdf':
                 $path = 'Applications/PaymentReceipts/Third/';
-                    break;
+                break;
             case 'application_additonal_attachment':
                 $path = 'Applications/AdditonalAttachments/';
-                    break;
+                break;
             case 'client_collection_emp_profile_picture':
                 $path = 'Employees/ProfilePictures/';
-                    break;
+                break;
             case 'media_collection_emp_passport':
                 $path = 'Employees/Passports/';
-                    break;
+                break;
             case 'media_collection_emp_emirates_id':
                 $path = 'Employees/EmiratesIDs/';
-                    break;
+                break;
             case 'media_collection_emp_company_contract':
                 $path = 'Employees/CompanyContracts/';
-                    break;
+                break;
             case 'media_collection_emp_personal_visa':
                 $path = 'Employees/PersonalVisas/';
-                    break;
+                break;
             case 'media_collection_emp_company_visa':
                 $path = 'Employees/CompanyVisas/';
-                    break;
+                break;
             case 'media_collection_emp_uae_gov_agreement':
                 $path = 'Employees/UAEGovtAgreements/';
-                    break;
+                break;
             case 'media_collection_emp_noc':
                 $path = 'Employees/NOCs/';
-                    break;
+                break;
             case 'media_collection_emp_lease_agreement':
                 $path = 'Employees/LeaseAgreements/';
-                    break;
+                break;
             case 'media_collection_emp_confidentiality_agreement':
                 $path = 'Employees/ConfidentialityAgreements/';
-                    break;
+                break;
             case 'media_collection_asset_handover':
                 $path = 'Employees/AssetHandoverAgreements/';
-                    break;
+                break;
             case 'media_collection_asset_return':
                 $path = 'Employees/AssetReturnAgreements/';
-                    break;
+                break;
             case 'media_collection_emp_resignation':
                 $path = 'Employees/Resignations/';
-                    break;
+                break;
             case 'media_collection_asset_photo':
                 $path = 'Asset/AseetPhotos/';
-                    break;
+                break;
             case 'media_collection_payment_receipt':
                 $path = 'Applications/Payments/';
                 break;
@@ -127,40 +127,43 @@ class EnvironmentPathGenerator extends DefaultPathGenerator
                 $path = 'Applications/PolishMandateContracts/';
                 break;
             case 'media_collection_main_hr_assessment_form':
-                    $path = 'Applications/HrAssessmentForms/';
-                    break;
+                $path = 'Applications/HrAssessmentForms/';
+                break;
             case 'media_collection_main_rcic_assessment_form':
-                    $path = 'Applications/RcicAssessmentForms/';
-                    break;
+                $path = 'Applications/RcicAssessmentForms/';
+                break;
             case 'media_procedure_scanned_copy':
                 $path = 'Procedures/';
                 break;
             case 'media_collection_ticket_attachments':
-                    $path = 'Tickets/Attachments';
-                    break;
+                $path = 'Tickets/Attachments';
+                break;
             case 'media_collection_malta_emp_profile_picture':
                 $path = 'MaltaEmployees/ProfilePictures/';
-                    break;
+                break;
             case 'media_collection_malta_emp_passport_scanned_copy':
                 $path = 'MaltaEmployees/Passports/';
-                    break;
+                break;
             case 'media_collection_malta_emp_police_clearance_certificate':
                 $path = 'MaltaEmployees/PoliceClearanceCertificates/';
-                    break;
+                break;
             case 'media_collection_main_application_hold_first_email_reminder':
                 $path = 'Clients/AplicationHoldFirstEmailReminders/';
-                    break;
+                break;
             case 'media_collection_main_application_hold_second_email_reminder':
                 $path = 'Clients/AplicationHoldSecondEmailReminders/';
-                    break;
+                break;
             case 'media_collection_main_application_hold_third_email_reminder':
                 $path = 'Clients/AplicationHoldThirdEmailReminders/';
-                    break;
+                break;
             case 'client_collection_signature':
                 $path = 'Clients/signature/';
-                    break;
-            case 'contract_collection_pdf': 
-                $path = 'Applications/Contracts/client_contracts/'; 
+                break;
+            case 'contract_collection_pdf':
+                $path = 'Applications/Contracts/client_contracts/';
+                break;
+            case 'job_offer_letter_pdf':
+                $path = 'Applications/JobOfferLetter/';
                 break;
             default:
                 $path = 'default/';
@@ -182,4 +185,3 @@ class EnvironmentPathGenerator extends DefaultPathGenerator
         return $this->getPath($media) . "responsive/";
     }
 }
-
