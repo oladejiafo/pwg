@@ -3,14 +3,14 @@
 body,
 body *:not(html):not(style):not(br):not(tr):not(code) {
     box-sizing: border-box;
-    font-family: "TT Norms Pro";
+    font-family: Yantramanav, sans-serif;
     position: relative;
 }
 
 body {
     -webkit-text-size-adjust: none;
-    background-color: #ffffff;
-    color: #718096;
+    background-color: #E9EBF4 !important;
+    color: #383838 !important;
     height: 100%;
     line-height: 1.4;
     margin: 0;
@@ -38,14 +38,14 @@ a img {
 
 h1 {
     color: #3d4852;
-    font-size: 18px;
+    font-size: 24px;
     font-weight: bold;
     margin-top: 0;
     text-align: left;
 }
 
 h2 {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: bold;
     margin-top: 0;
     text-align: left;
@@ -59,8 +59,8 @@ h3 {
 }
 
 p {
-    font-size: 16px;
-    line-height: 1.5em;
+    font-size: 15px;
+    line-height: 0.5em;
     margin-top: 0;
     text-align: left;
 }
@@ -92,6 +92,10 @@ img {
     margin: 0;
     padding: 0;
     width: 100%;
+}
+
+.im {
+    color: #383838 !important;
 }
 
 /* Header */
@@ -146,6 +150,7 @@ img {
     margin: 0 auto;
     padding: 0;
     width: 570px;
+    font-weight: 300;
 }
 
 /* Subcopy */
@@ -191,6 +196,7 @@ img {
     -premailer-width: 100%;
     margin: 30px auto;
     width: 100%;
+    align: left !important;
 }
 
 .table th {
@@ -218,33 +224,45 @@ img {
     -premailer-cellpadding: 0;
     -premailer-cellspacing: 0;
     -premailer-width: 100%;
-    margin: 30px auto;
+    margin: auto;
     padding: 0;
-    text-align: center;
+    text-align: left;
+    float: left;
     width: 100%;
+    align-items: left;
+    margin-bottom: 1.5em;
+    font-family: Montserrat !important;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 34px;
+    letter-spacing: 0em;
+    text-align: left;
 }
 
 .button {
+    float: left;
     -webkit-text-size-adjust: none;
     border-radius: 4px;
-    color: #606060;
+    color: #fff;
     display: inline-block;
     overflow: hidden;
     text-decoration: none;
     padding: 12px;
     width: 200px;
     text-align: center;
+    background-color: #2EAD0C !important;
+    font-family: Montserrat !important;
 }
 
-button:hover {
+/* button:hover {
     background: linear-gradient(90deg, #FACB08 2.41%, #FAE008 90.98%);
-}
+} */
 
 .button-blue,
 .button-primary {
     /* color: #606060; */
-    background: none;
-    border:1px solid #C4C6CD;
+    /* background: none; */
+    border: 1px solid #C4C6CD;
 }
 
 .button-green,
@@ -275,7 +293,7 @@ button:hover {
 .panel-content {
     background-color: #edf2f7;
     color: #718096;
-    padding: 16px;
+    padding: 15px;
 }
 
 .panel-content p {

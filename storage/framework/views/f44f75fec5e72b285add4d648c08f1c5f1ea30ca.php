@@ -27,4 +27,4 @@
     <hr>
     &copy <?php echo e(date('Y')); ?> <a style="" href="http://pwggroup.ae" target="_blank">PWG Group</a>. All rights reserved.
 </div>
-<?php /**PATH C:\Users\dejia\OneDrive\Desktop\mygit\pwg_eportal\resources\views/user/footer.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views/user/footer.blade.php ENDPATH**/ ?>

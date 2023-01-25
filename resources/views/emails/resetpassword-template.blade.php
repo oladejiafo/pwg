@@ -1,35 +1,99 @@
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset='utf-8'>
-        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-        <title>PWG Group</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel='stylesheet' type='text/css' media='screen' href='{{asset('css/login.css')}}'>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>PWG Group</title>	
     </head>
     <body>
-        <div class="login">
-            <div class="container">
-                <div class="forgot-password">
-                    <div class="reset">
-                        <div class="resetImage">
-                            {{-- <img src="{{asset('images/Approved.svg')}}" alt="approved"> --}}
-                        </div>
-                        <div class="reset-heading">
-                            Reset Password
-                        </div>
-                        <div class="reset-title">
-                            <p>You are receiving this email because we received a password reset request for your account.</p>
-                            <p>Here is your OTP {{$token}}</p>
-                            <p>This password reset will expire in 15 minutes.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <table role="presentation" style="box-sizing:border-box;font-family:Yantramanav,sans-serif;background-color:#edf2f7;margin:0;padding:0;width:100%" width="100%" cellspacing="0" cellpadding="0">
+        <tbody>
+            <tr>
+            <td style="box-sizing:border-box;font-family:Yantramanav,sans-serif" align="center">
+                <table role="presentation" style="box-sizing:border-box;font-family:Yantramanav,sans-serif;margin:0;padding:0;width:100%" width="100%" cellspacing="0" cellpadding="0">
+                <tbody>
+                    <tr>
+                        <td>
+                            <div style="box-sizing:border-box;font-family:Yantramanav,sans-serif;margin-bottom:30px"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td cellpadding="0" cellspacing="0" style="box-sizing:border-box;font-family:Yantramanav,sans-serif;background-color:#edf2f7;border-bottom:1px solid #edf2f7;border-top:1px solid #edf2f7;margin:0;padding:0;width:100%" width="100%">
+                            <table class="m_7403659591128230136inner-body" role="presentation" style="box-sizing:border-box;font-family:Yantramanav,sans-serif;background-color:#ffffff;border-color:#e8e5ef;border-radius:2px;border-width:1px;margin:0 auto;padding:0;width:570px;font-weight:300" width="570" cellspacing="0" cellpadding="0" align="center">
+        
+                            <tbody><tr>
+                                <td style="box-sizing:border-box;font-family:Yantramanav,sans-serif;max-width:100vw;padding:32px">
+                                    <div style="box-sizing:border-box;font-family:Yantramanav,sans-serif;width:400px;height:250px;display:block;margin:30px auto">
+                                        <img src="{{asset('images/resetpassword.png')}}" alt="" width="100%" height="100%">
+                                    </div>
+                                    <h1 style="box-sizing:border-box;font-family:Yantramanav,sans-serif;color:#3d4852;font-size:24px;font-weight:bold;margin-top:0;text-align:left">Reset Password</h1>
+                                    <p style="box-sizing:border-box;font-family:Yantramanav,sans-serif;font-size:15px;line-height:1.5em;margin-top:0;text-align:left">You are receiving this email because we received a <b style="font-weight: bold">password reset</b> request for your <b style="font-weight: bold">PWG Client</b> account.</p>
+                                    <p style="box-sizing:border-box;font-family:Yantramanav,sans-serif;font-size:15px;line-height:1.5em;margin-top:0;text-align:left">Your verification code is.</p>
+                                    <h1 style="box-sizing:border-box;font-family:Yantramanav,sans-serif;color:#3d4852;font-size:24px;font-weight:bold;margin-top:0;text-align:left">{{$token}}</h1>
+                                    <p style="box-sizing:border-box;font-family:Yantramanav,sans-serif;font-size:15px;line-height:1.5em;margin-top:0;text-align:left">
+                                        Do not share this OTP with anyone. PWG takes your account security 
+                                        very seriously. If you receive a suspicious email with a link to update your 
+                                        account information, do not click on the link—instead, report the email to 
+                                        PWG for investigation.</p>
+                                    <table role="presentation" style="box-sizing:border-box;font-family:Yantramanav,sans-serif;margin:auto;padding:0;text-align:left;float:left;width:100%;margin-bottom:1.5em" width="100%" cellspacing="0" cellpadding="0" align="center">
+                                        <tbody><tr>
+                                            <td style="box-sizing:border-box;font-family:Yantramanav,sans-serif" align="center">
+                                                <table role="presentation" style="box-sizing:border-box;font-family:Yantramanav,sans-serif" width="100%" cellspacing="0" cellpadding="0" border="0">
+                                                    <tbody><tr>
+                                                        <td style="box-sizing:border-box;font-family:Yantramanav,sans-serif" align="center">
+                                                           
+                                                        </td>
+                                                    </tr>
+                                                </tbody></table>
+                                            </td>
+                                        </tr>
+                                    </tbody></table>
+                                    <p style="box-sizing:border-box;font-family:Yantramanav,sans-serif;font-size:15px;line-height:1.5em;margin-top:0;text-align:left"><br>Thank you!</p>
+                                    <hr style="box-sizing:border-box;font-family:Yantramanav,sans-serif;color:#383838;height:0.25px">
+                                    <div style="display: block; margin-top:10px; text-align:center">
+                                        <div style="width:40%; display:inline-block;">
+                                            <div style="text-align: center;
+                                            height: 51px;
+                                            width: 30%;
+                                            float: right;">
+                                                <img src="{{asset('images/logoo.png')}}" alt="" width="100%" height="100%">
+                                            </div>
+                                        </div>
+                        
+                                        <div style="display: inline-block;border: 1px solid #383838;height: 56px;"></div>
+                                        <div style="width:50%; display:inline-block;">
+                                            <p style="font-family: Yantramanav, sans-serif;
+                                                font-style: normal;
+                                                font-weight: 300;
+                                                font-size: 9px;
+                                                line-height: 14px;
+                                                color: #383838;
+                                                text-align: left;">
+                                                ©{{ now()->year }} PWG Group <br>
+                                                The Oberoi Centre, Office - 20th Floor<br>
+                                                Business Bay, Dubai, United Arab Emirates<br>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody></table>
+                    </td>
+                </tr>
+            <tr>
+            <td style="box-sizing:border-box;font-family:Yantramanav,sans-serif">
+            <table class="m_7403659591128230136footer" role="presentation" style="box-sizing:border-box;font-family:Yantramanav,sans-serif;margin:0 auto;padding:0;text-align:center;width:570px" width="570" cellspacing="0" cellpadding="0" align="center">
+                <tbody><tr>
+                    <td style="box-sizing:border-box;font-family:Yantramanav,sans-serif;max-width:100vw;padding:32px" align="center">
+                    </td>
+                </tr>
+            </tbody></table>
+        </td>
+        </tr>
+        </tbody></table>
+        </td>
+        </tr>
+        </tbody></table>
     </body>
 </html>
     

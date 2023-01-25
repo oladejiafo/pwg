@@ -329,4 +329,4 @@ function sideScroll(element,direction,speed,distance,step){
     toastr.warning("<?php echo e(session('warning')); ?>");
     <?php endif; ?>
     }); 
-   </script><?php /**PATH C:\Users\dejia\OneDrive\Desktop\mygit\pwg_eportal\resources\views/user/home.blade.php ENDPATH**/ ?>
+   </script><?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views/user/home.blade.php ENDPATH**/ ?>
