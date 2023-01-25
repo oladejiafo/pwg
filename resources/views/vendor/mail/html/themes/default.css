@@ -60,7 +60,7 @@ h3 {
 
 p {
     font-size: 15px;
-    line-height: 1.5em;
+    line-height: 0.5em;
     margin-top: 0;
     text-align: left;
 }
@@ -232,9 +232,9 @@ img {
     align-items: left;
     margin-bottom: 1.5em;
     font-family: Montserrat !important;
-    font-size: 40px;
+    font-size: 20px;
     font-weight: 500;
-    line-height: 49px;
+    line-height: 34px;
     letter-spacing: 0em;
     text-align: left;
 }
