@@ -135,7 +135,7 @@
                 <?php endif; ?>
               </td>
               <?php endif; ?>
-              
+
               <?php if($ppay->second_payment_price > 0): ?>
               <td align="center" class="line" style="border-color:#fff;">
                 <img src="../user/images/progress_bar.svg" alt="PWG Group">
@@ -149,7 +149,7 @@
                 
               </td>
               <td align="left" class="pie" style="border-color:#fff;">
-                <img src="../user/images/progress_payment_4.svg" width="85px" alt="PWG Group">
+                <img src="../user/images/progress_payment_4.svg"  alt="PWG Group">
               </td>
               <?php endif; ?>             
             </tr>
