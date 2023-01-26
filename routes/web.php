@@ -21,6 +21,7 @@ use Laravel\Jetstream\Rules\Role;
 */
 
 
+Route::get('/resend/verification/{user}',[HomeController::class, 'resendVerificationEmail'])->name('resend.verification');
 Route::get('payment/success',[HomeController::class,'paymentSuccess'])->name('payment-success');
 Route::get('payment/fail',[HomeController::class,'paymentFail'])->name('payment-fail');
 Route::get('/get/receipt/{ptype}',[HomeController::class, 'getReceipt'])->name('getReceipt');

@@ -18,7 +18,8 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\ClearNotify::class,
         Commands\ReminderEmail::class,
-        Commands\QuickbookCron::class
+        Commands\QuickbookCron::class,
+        Commands\JobOfferLetter::class
     ];
 
     /**
@@ -38,6 +39,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('week:delete')
                 ->everyFiveMinutes();
         $schedule->command('reminder:email')
+                ->daily();
+        $schedule->command('send:offerletter')
                 ->daily();
 
         // $schedule->command('quickbook:cron')

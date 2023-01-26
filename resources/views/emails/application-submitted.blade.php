@@ -30,17 +30,18 @@
                                     <h1 style="box-sizing:border-box;font-family:Yantramanav,sans-serif;color:#3d4852;font-size:24px;font-weight:bold;margin-top:0;text-align:center">APPLICATION SUBMITTED <br> SUCCESSFULLY!</h1>
                                     <p style="box-sizing:border-box;font-family:Yantramanav,sans-serif;font-size:15px;line-height:1.5em;margin-top:0;text-align:center">Thank you for starting your journey with PWG Group <br>
                                         you can view your application under <b style="font-weight: bold">My Applications</b> on our <a href="{{env('APP_URL')}}" style="text-decoration: none;cursor:pointer;color:#383838">portal</a>. </p>                                    
-                                    <div style="display: block; margin-top:10px; text-align:center">
+                                    <div style="display: block; margin-top:40px; text-align:center">
                                         <div style="width:40%; display:inline-block;">
                                             <div style="text-align: center;
                                             height: 51px;
                                             width: 23%;
-                                            float: right;">
+                                            float: right;
+                                            margin-right:25px">
                                                 <img src="{{asset('images/logoo.png')}}" alt="" width="100%" height="100%">
                                             </div>
                                         </div>
                         
-                                        <div style="display: inline-block;border: 1px solid #383838;height: 56px;"></div>
+                                        <div style="display: inline-block;border: 1px solid #383838;height: 45px;"></div>
                                         <div style="width:50%; display:inline-block;">
                                             <p style="font-family: Yantramanav, sans-serif;
                                                 font-style: normal;
@@ -48,7 +49,8 @@
                                                 font-size: 9px;
                                                 line-height: 14px;
                                                 color: #383838;
-                                                text-align: left;">
+                                                text-align: left;
+                                                margin-left:25px">
                                                 ©{{ now()->year }} PWG Group <br>
                                                 The Oberoi Centre, Office - 20th Floor<br>
                                                 Business Bay, Dubai, United Arab Emirates<br>

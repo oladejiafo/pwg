@@ -43,11 +43,11 @@ return [
     'quickbook' => [
         'authorizationRequestUrl' => 'https://appcenter.intuit.com/connect/oauth2',
         'tokenEndPointUrl' => 'https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer',
-        'client_id' => 'ABPfOuKNtTYwV94Hjr1tcj65e5JoiSUCM2ACWopTd7u9CahREh',
-        'client_secret' => 'oET6MJe9roPU4xHCZqIuMRhuVI0OwWg30o4evSxx',
+        'client_id' => 'ABty2fSU5dbOwPph1GuDnMURTf64yOL9Xbpp4Wzyxq5eZnU5GV',
+        'client_secret' => 'VHSMqP5JGLYStvr2QwIhsuEqtb8jBE3cOuL8dCGB',
         'oauth_scope' => 'com.intuit.quickbooks.accounting',
-        'oauth_redirect_uri' => 'https://eportal.emasimmigration.in/quickbook/token',
-        'QBORealmID' => "9130355486922526",
+        'oauth_redirect_uri' => 'https://eportal.pwggroup.ae/quickbook/token',
+        'QBORealmID' => "9130348422444366",
     ],
 
 ];

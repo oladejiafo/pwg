@@ -34,8 +34,9 @@ class FortifyServiceProvider extends ServiceProvider
     {
         // Email Verification
         Fortify::verifyEmailView(function (Request $request) { // <--- this
+            $id = Auth::Id();
             Auth::logout();
-            return view('auth.verify-email');
+            return view('auth.verify-email',compact('id'));
         });
         Fortify::twoFactorChallengeView(function () {
             return view('auth.two-factor-challenge');

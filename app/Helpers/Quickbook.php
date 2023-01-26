@@ -54,12 +54,12 @@ class Quickbook
         $quickbook = QuickModel::first();
         $dataService = DataService::Configure(array(
             'auth_mode' => 'oauth2',
-            'ClientID' => config('services.quickbook_local.client_id'), // (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.client_id') : config('services.quickbook.client_id'),
-            'ClientSecret' => config('services.quickbook_local.client_secret'), //(in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.client_secret') : config('services.quickbook.client_secret'),
+            'ClientID' => (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.client_id') : config('services.quickbook.client_id'),
+            'ClientSecret' => (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.client_secret') : config('services.quickbook.client_secret'),
             'accessTokenKey' => $quickbook['access_token'],
             'refreshTokenKey' => $quickbook['refresh_token'],
-            'QBORealmID' => config('services.quickbook_local.QBORealmID'), //(in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.QBORealmID') : config('services.quickbook.QBORealmID'),
-            'baseUrl' => 'Development', //(in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? "Development" : "production"
+            'QBORealmID' => (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.QBORealmID') : config('services.quickbook.QBORealmID'),
+            'baseUrl' => (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? "Development" : "production"
         ));
         $dataService->setLogLocation(public_path() . "/QBLog");
         $dataService->throwExceptionOnError(true);
@@ -763,14 +763,14 @@ class Quickbook
             $quickbook = QuickModel::first();
             $dataService = DataService::Configure(array(
                 'auth_mode' => 'oauth2',
-                'ClientID' => config('services.quickbook_local.client_id'), //(in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.client_id') : config('services.quickbook.client_id'),
-                'ClientSecret' => config('services.quickbook_local.client_secret'), //(in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.client_secret') : config('services.quickbook.client_secret'),
-                'RedirectURI' => config('services.quickbook_local.oauth_redirect_uri'), //(in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.oauth_redirect_uri') : config('services.quickbook.oauth_redirect_uri'),
-                'scope' => config('services.quickbook_local.oauth_scope'), //(in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.oauth_scope') : config('services.quickbook.oauth_scope'),
+                'ClientID' => (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.client_id') : config('services.quickbook.client_id'),
+                'ClientSecret' => (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.client_secret') : config('services.quickbook.client_secret'),
+                'RedirectURI' => (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.oauth_redirect_uri') : config('services.quickbook.oauth_redirect_uri'),
+                'scope' => (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.oauth_scope') : config('services.quickbook.oauth_scope'),
                 'accessTokenKey' => $quickbook['access_token'],
                 'refreshTokenKey' => $quickbook['refresh_token'],
-                'QBORealmID' => config('services.quickbook_local.QBORealmID'), //(in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.QBORealmID') : config('services.quickbook.QBORealmID'),
-                'baseUrl' => 'Development', //(in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? "Development" : "production"
+                'QBORealmID' => (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.QBORealmID') : config('services.quickbook.QBORealmID'),
+                'baseUrl' => (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? "Development" : "production"
             ));
             $OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
             $refreshedAccessTokenObj = $OAuth2LoginHelper->refreshToken();

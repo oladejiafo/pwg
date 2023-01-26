@@ -92,4 +92,4 @@ $notifications = DB::table('notifications')
         });
     });
 
-</script><?php /**PATH C:\Users\dejia\OneDrive\Desktop\mygit\pwg_eportal\resources\views/user/notifications.blade.php ENDPATH**/ ?>
+</script><?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views/user/notifications.blade.php ENDPATH**/ ?>
