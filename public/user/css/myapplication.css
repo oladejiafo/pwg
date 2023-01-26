@@ -184,7 +184,7 @@ body {
   white-space: nowrap;
   padding-bottom: 1em;
   display: flex;
-
+  /* overflow-x: auto; */
 }
 
 .paid-section .outer li {
@@ -200,6 +200,7 @@ body {
   white-space: normal;
   flex: none;
 
+  
 }
 
 .paid-section .paid-item {
@@ -337,7 +338,15 @@ body {
   margin: 0;
 }
 
+@media(max-width:1770px) {
+  .paid-section .outer {
+    overflow-x: auto;
+  }
+}
 @media(max-width:1370px) {
+  .paid-section .outer {
+    overflow-x: auto;
+  }
   .paid-section .outer .controls{
     display:block;
   }
