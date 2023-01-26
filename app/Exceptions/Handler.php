@@ -75,7 +75,7 @@ class Handler extends ExceptionHandler
             }
         } else {
             // if ($e instanceof ValidationException) {
-                return parent::render($request, $e);
+            return parent::render($request, $e);
             // }
             // if (Auth::id()) {
             //     return redirect()->guest('myapplication');

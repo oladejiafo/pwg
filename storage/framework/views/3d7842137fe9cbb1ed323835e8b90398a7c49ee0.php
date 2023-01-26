@@ -279,7 +279,7 @@
         
                                           ?>
                                           <?php if($workpermit['status'] == true && isset($workpermit['fileUrl'])): ?>
-                                          <a href="<?php echo e($workpermit['fileUrl']); ?>" style="margin-left: 0px !important">
+                                          <a href="<?php echo e($workpermit['fileUrl']); ?>" style="margin-left: 0px !important;position: unset;display: contents;">
                                           <?php endif; ?>  
                                             <div style="display:inline" id="dd" class="block download-thumbnail img-fluid">
                                               <svg style="margin:auto;margin-top:20px" width="39" height="30" class="dd" viewBox="0 0 39 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -324,7 +324,7 @@
                                         
                                           <div class="cardc-body">
                                             <?php if(isset($getContract->contractUrl) && strlen($getContract->contractUrl) > 2): ?>
-                                                <a href="<?php echo e($getContract->contractUrl); ?>" target="_blank" style="margin:0">
+                                                <a href="<?php echo e($getContract->contractUrl); ?>" target="_blank" style="margin:0;position: unset;display: contents;">
                                             <?php endif; ?>
                                             <div style="display:inline" id="dd" class="block download-thumbnail img-fluid">
                                               <svg style="margin:auto;margin-top:20px" width="39" height="30" class="dd" viewBox="0 0 39 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -484,7 +484,7 @@
                                           $workpermit = App\Helpers\users::getWorkPermitStatus($paid);
                                         ?>
                                         <?php if($workpermit['status'] == true && isset($workpermit['fileUrl'])): ?>
-                                        <a href="<?php echo e($workpermit['fileUrl']); ?>" style="margin-left: 0px !important">
+                                        <a href="<?php echo e($workpermit['fileUrl']); ?>" style="margin-left: 0px !important;position: unset;display: contents;">
                                         <?php endif; ?>  
                                           <div style="display:inline" id="dd" class="block download-thumbnail img-fluid">
                                             <svg style="margin:auto;margin-top:20px" width="39" height="30" class="dd" viewBox="0 0 39 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -529,7 +529,7 @@
                                       
                                         <div class="cardc-body">
                                           <?php if(isset($getContract->contractUrl) && strlen($getContract->contractUrl) > 2): ?>
-                                              <a href="<?php echo e($getContract->contractUrl); ?>" target="_blank" style="margin:0">
+                                              <a href="<?php echo e($getContract->contractUrl); ?>" target="_blank" style="margin:0;position: unset;display: contents;">
                                           <?php endif; ?>
                                           <div style="display:inline" id="dd" class="block download-thumbnail img-fluid">
                                             <svg style="margin:auto;margin-top:20px" width="39" height="30" class="dd" viewBox="0 0 39 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -733,7 +733,7 @@
                                           $workpermit = App\Helpers\users::getWorkPermitStatus($paid);
                                         ?>
                                         <?php if($workpermit['status'] == true && isset($workpermit['fileUrl'])): ?>
-                                        <a href="<?php echo e($workpermit['fileUrl']); ?>" style="margin-left: 0px !important">
+                                        <a href="<?php echo e($workpermit['fileUrl']); ?>" style="margin-left: 0px !important;position: unset;display: contents;">
                                         <?php endif; ?>  
                                           <div style="display:inline" id="dd" class="block download-thumbnail img-fluid">
                                             <svg style="margin:auto;margin-top:20px" width="39" height="30" class="dd" viewBox="0 0 39 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -779,7 +779,7 @@
                                         <div class="cardc-body">
                         
                                           <?php if(isset($getContract->contractUrl) && strlen($getContract->contractUrl) > 2): ?>
-                                           <a href="<?php echo e($getContract->contractUrl); ?>" target="_blank" style="margin:0">
+                                           <a href="<?php echo e($getContract->contractUrl); ?>" target="_blank" style="margin:0;position: unset;display: contents;">
                                           <?php endif; ?>
                                           <div style="display:inline" id="dd" class="block download-thumbnail img-fluid">
                                             <svg style="margin:auto;margin-top:20px" width="39" height="30" class="dd" viewBox="0 0 39 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1070,7 +1070,7 @@
                                             ?>
                                             <?php if($workpermit['status'] == true && isset($workpermit['fileUrl'])): ?>
                                                 <a href="<?php echo e($workpermit['fileUrl']); ?>"
-                                                    style="margin-left: 0px !important">
+                                                    style="margin-left: 0px !important;position: unset;display: contents;">
                                             <?php endif; ?>
                                             <div style="display:inline" id="dd"
                                                 class="block download-thumbnail img-fluid">
@@ -1231,7 +1231,7 @@
                                         <div class="cardc-body">
 
                                           <?php if(isset($getContract->contractUrl) && strlen($getContract->contractUrl) > 2): ?>
-                                              <a href="<?php echo e($getContract->contractUrl); ?>" target="_blank" style="margin:0">
+                                              <a href="<?php echo e($getContract->contractUrl); ?>" target="_blank" style="margin:0; position: unset;display: contents;">
                                           <?php endif; ?>
                                             <div style="display:inline" id="dd"  class="block download-thumbnail img-fluid">
                                                 <svg style="margin:auto;margin-top:20px" width="39"
@@ -1442,4 +1442,4 @@
         }, speed);
     }
 </script>
-<?php /**PATH C:\Users\dejia\OneDrive\Desktop\mygit\pwg_eportal\resources\views/user/paid.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views/user/paid.blade.php ENDPATH**/ ?>

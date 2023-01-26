@@ -1,8 +1,8 @@
-@extends('layouts.master')
+
 
 <head>
     
-<link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
+<link href="<?php echo e(asset('user/css/bootstrap.min.css')); ?>" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 <style>
     .forgot-password .btn {
@@ -32,7 +32,7 @@
 
 
     .invoice-image:hover {
-        background-image: url("{{asset('images/invoice-download-White.svg')}}") !important;
+        background-image: url("<?php echo e(asset('images/invoice-download-White.svg')); ?>") !important;
         background: #0f8c13;
     }
 
@@ -42,7 +42,7 @@
         height: 35px;
         margin-left: 24px;
         margin-top: 20px;
-        background-image: url("{{asset('images/invoice-download.svg')}}") !important;
+        background-image: url("<?php echo e(asset('images/invoice-download.svg')); ?>") !important;
         background-position: 47% 51% !important;
         background-repeat: no-repeat !important;
     }
@@ -51,7 +51,7 @@
         font-size: 18px
     }
 
-    @media only screen and (max-width: 768px) and (min-width: 230px)
+    @media  only screen and (max-width: 768px) and (min-width: 230px)
     {
         .ose {
             font-size: 14px
@@ -67,13 +67,13 @@
                 ->first();
 ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="container">
         <div class="col-12">
             <div class="forgot-password">
                 <div class="reset">
                     <div class="resetImage">
-                        <img src="{{asset('images/CheckMark.png')}}" alt="approved">
+                        <img src="<?php echo e(asset('images/CheckMark.png')); ?>" alt="approved">
                     </div>
                     <div class="reset-heading">
                         Payment successful !
@@ -82,10 +82,10 @@
                     <div class="sig">
                         <div class="invoice-now">
                             <div class="invoice">
-                            <a href="{{url('/get/invoice')}}" target="_blank">
+                            <a href="<?php echo e(url('/get/invoice')); ?>" target="_blank">
                                 <div class="invoice-image">
                                 </div>
-                                    <p><a href="{{url('/get/invoice')}}" target="_blank"> Get the invoice now </a></p>
+                                    <p><a href="<?php echo e(url('/get/invoice')); ?>" target="_blank"> Get the invoice now </a></p>
                             </div></a>
                         </div>
                         <div class="invoice-later">
@@ -95,12 +95,12 @@
                             </label>
                             <p> Get the invoice later </p>
                         </div>
-                        @if($applicant->application_stage_status == 5)
-                          <form action="{{ url('myapplication') }}" method="GET">
-                        @else
-                            <form action="{{ url('applicant/details',$id) }}" method="GET">
-                        @endif
-                            <input type="hidden" name="pid" value="{{$id}}">
+                        <?php if($applicant->application_stage_status == 5): ?>
+                          <form action="<?php echo e(url('myapplication')); ?>" method="GET">
+                        <?php else: ?>
+                            <form action="<?php echo e(url('applicant/details',$id)); ?>" method="GET">
+                        <?php endif; ?>
+                            <input type="hidden" name="pid" value="<?php echo e($id); ?>">
                             <button class="btn btn-primary ose">APPLICATION DETAILS</button>
                         </form>
                     </div>
@@ -108,4 +108,6 @@
             </div>
         </div>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views/user/payment-success.blade.php ENDPATH**/ ?>

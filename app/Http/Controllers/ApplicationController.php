@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Applicant;
 use App\Models\ApplicantExperience;
+use Illuminate\Support\Facades\Storage;
 use App\Models\JobCategoryOne;
 use App\Models\JobCategoryFour;
 use App\Models\JobCategoryThree;
 use App\Models\JobCategoryTwo;
+use App\Models\product;
 use Exception;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
@@ -22,6 +24,8 @@ use QuickBooksOnline\API\DataService\DataService;
 use DB;
 use Session;
 use Carbon\Carbon;
+use App\Helpers\pdfBlock;
+use App\Helpers\users as UserHelper;
 use App\Constant;
 
 class ApplicationController extends Controller

@@ -38,7 +38,7 @@
                                                             <table role="presentation" style="box-sizing:border-box;font-family:Yantramanav,sans-serif" cellspacing="0" cellpadding="0" border="0">
                                                                 <tbody><tr>
                                                                     <td style="box-sizing:border-box;font-family:Yantramanav,sans-serif">
-                                                                        <a href="{{env('APP_URL')}}" class="m_6264836849513322656button" rel="noopener" style="font-size: 20px;font-weight:500;box-sizing:border-box;font-family:Montserrat;float:left;border-radius:4px;color:#fff;display:inline-block;overflow:hidden;text-decoration:none;padding:12px;width:200px;text-align:center;background-color:#2ead0c!important;border:1px solid #c4c6cd" target="_blank" >Click to Download</a>
+                                                                        <a href="{{env('APP_URL')}}" class="m_6264836849513322656button" rel="noopener" style="font-size: 20px;font-weight:500;box-sizing:border-box;float:left;border-radius:4px;color:#fff;display:inline-block;overflow:hidden;text-decoration:none;padding:12px;width:200px;text-align:center;background-color:#2ead0c!important;border:1px solid #c4c6cd" target="_blank" >Click to Download</a>
                                                                     </td>
                                                                 </tr>
                                                             </tbody></table>
@@ -49,17 +49,18 @@
                                         </tr>
                                     </tbody></table>
                                     <p style="box-sizing:border-box;font-family:Yantramanav,sans-serif;font-size:15px;line-height:1.5em;margin-top:0;text-align:left"><br>Thank you,<br>The <b style="box-sizing:border-box;font-family:Yantramanav,sans-serif;font-weight:bold">PWG Group Team</b></p>                                    <hr style="box-sizing:border-box;font-family:Yantramanav,sans-serif;color:#383838;height:0.25px">
-                                    <div style="display: block; margin-top:10px; text-align:center">
+                                    <div style="display: block; margin-top:40px; text-align:center">
                                         <div style="width:40%; display:inline-block;">
                                             <div style="text-align: center;
                                             height: 51px;
                                             width: 23%;
-                                            float: right;">
+                                            float: right;
+                                            margin-right:25px;">
                                                 <img src="{{asset('images/logoo.png')}}" alt="" width="100%" height="100%">
                                             </div>
                                         </div>
                         
-                                        <div style="display: inline-block;border: 1px solid #383838;height: 56px;"></div>
+                                        <div style="display: inline-block;border: 1px solid #383838;height: 45px;"></div>
                                         <div style="width:50%; display:inline-block;">
                                             <p style="font-family: Yantramanav, sans-serif;
                                                 font-style: normal;
@@ -67,7 +68,8 @@
                                                 font-size: 9px;
                                                 line-height: 14px;
                                                 color: #383838;
-                                                text-align: left;">
+                                                text-align: left;
+                                                margin-left:25px">
                                                 ©{{ now()->year }} PWG Group <br>
                                                 The Oberoi Centre, Office - 20th Floor<br>
                                                 Business Bay, Dubai, United Arab Emirates<br>

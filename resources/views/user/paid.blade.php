@@ -278,7 +278,7 @@
         
                                           @endphp
                                           @if($workpermit['status'] == true && isset($workpermit['fileUrl']))
-                                          <a href="{{$workpermit['fileUrl']}}" style="margin-left: 0px !important">
+                                          <a href="{{$workpermit['fileUrl']}}" style="margin-left: 0px !important;position: unset;display: contents;">
                                           @endif  
                                             <div style="display:inline" id="dd" class="block download-thumbnail img-fluid">
                                               <svg style="margin:auto;margin-top:20px" width="39" height="30" class="dd" viewBox="0 0 39 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -326,7 +326,7 @@
                                         <div class="cardc downlaod-item  d-flexx aligns-items-center justify-content-center text-center" style="font-weight: bold;font-family:'TT Norms Pro'; display:inline-block;"> --}}
                                           <div class="cardc-body">
                                             @if (isset($getContract->contractUrl) && strlen($getContract->contractUrl) > 2)
-                                                <a href="{{$getContract->contractUrl}}" target="_blank" style="margin:0">
+                                                <a href="{{$getContract->contractUrl}}" target="_blank" style="margin:0;position: unset;display: contents;">
                                             @endif
                                             <div style="display:inline" id="dd" class="block download-thumbnail img-fluid">
                                               <svg style="margin:auto;margin-top:20px" width="39" height="30" class="dd" viewBox="0 0 39 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -485,7 +485,7 @@
                                           $workpermit = App\Helpers\users::getWorkPermitStatus($paid);
                                         @endphp
                                         @if($workpermit['status'] == true && isset($workpermit['fileUrl']))
-                                        <a href="{{$workpermit['fileUrl']}}" style="margin-left: 0px !important">
+                                        <a href="{{$workpermit['fileUrl']}}" style="margin-left: 0px !important;position: unset;display: contents;">
                                         @endif  
                                           <div style="display:inline" id="dd" class="block download-thumbnail img-fluid">
                                             <svg style="margin:auto;margin-top:20px" width="39" height="30" class="dd" viewBox="0 0 39 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -533,7 +533,7 @@
                                       <div class="cardc downlaod-item  d-flexx aligns-items-center justify-content-center text-center" style="font-weight: bold;font-family:'TT Norms Pro'; display:inline-block;"> --}}
                                         <div class="cardc-body">
                                           @if (isset($getContract->contractUrl) && strlen($getContract->contractUrl) > 2)
-                                              <a href="{{$getContract->contractUrl}}" target="_blank" style="margin:0">
+                                              <a href="{{$getContract->contractUrl}}" target="_blank" style="margin:0;position: unset;display: contents;">
                                           @endif
                                           <div style="display:inline" id="dd" class="block download-thumbnail img-fluid">
                                             <svg style="margin:auto;margin-top:20px" width="39" height="30" class="dd" viewBox="0 0 39 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -735,7 +735,7 @@
                                           $workpermit = App\Helpers\users::getWorkPermitStatus($paid);
                                         @endphp
                                         @if($workpermit['status'] == true && isset($workpermit['fileUrl']))
-                                        <a href="{{$workpermit['fileUrl']}}" style="margin-left: 0px !important">
+                                        <a href="{{$workpermit['fileUrl']}}" style="margin-left: 0px !important;position: unset;display: contents;">
                                         @endif  
                                           <div style="display:inline" id="dd" class="block download-thumbnail img-fluid">
                                             <svg style="margin:auto;margin-top:20px" width="39" height="30" class="dd" viewBox="0 0 39 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -784,7 +784,7 @@
                                         <div class="cardc-body">
                         
                                           @if (isset($getContract->contractUrl) && strlen($getContract->contractUrl) > 2)
-                                           <a href="{{$getContract->contractUrl}}" target="_blank" style="margin:0">
+                                           <a href="{{$getContract->contractUrl}}" target="_blank" style="margin:0;position: unset;display: contents;">
                                           @endif
                                           <div style="display:inline" id="dd" class="block download-thumbnail img-fluid">
                                             <svg style="margin:auto;margin-top:20px" width="39" height="30" class="dd" viewBox="0 0 39 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1071,7 +1071,7 @@
                                             @endphp
                                             @if ($workpermit['status'] == true && isset($workpermit['fileUrl']))
                                                 <a href="{{ $workpermit['fileUrl'] }}"
-                                                    style="margin-left: 0px !important">
+                                                    style="margin-left: 0px !important;position: unset;display: contents;">
                                             @endif
                                             <div style="display:inline" id="dd"
                                                 class="block download-thumbnail img-fluid">
@@ -1230,7 +1230,7 @@
                                         <div class="cardc-body">
 
                                           @if (isset($getContract->contractUrl) && strlen($getContract->contractUrl) > 2)
-                                              <a href="{{$getContract->contractUrl}}" target="_blank" style="margin:0">
+                                              <a href="{{$getContract->contractUrl}}" target="_blank" style="margin:0; position: unset;display: contents;">
                                           @endif
                                             <div style="display:inline" id="dd"  class="block download-thumbnail img-fluid">
                                                 <svg style="margin:auto;margin-top:20px" width="39"

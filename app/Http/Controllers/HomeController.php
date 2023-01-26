@@ -27,6 +27,7 @@ use QuickBooksOnline\API\DataService\DataService;
 use App\Mail\NotifyMail;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\File;
+use \setasign\Fpdi\PdfParser\StreamReader;
 use Config;
 use PDF;
 use DB;
@@ -441,7 +442,6 @@ class HomeController extends Controller
                 // ->whereNotIn('status',  array('APPLICATION_COMPLETED','VISA_REFUSED', 'APPLICATION_CANCELLED','REFUNDED') )
                 ->orderBy('id', 'desc')
                 ->first();
-
             // {
             if ($complete) {
                 $app_id = $complete->id;
@@ -522,7 +522,7 @@ class HomeController extends Controller
 
             $pays = DB::table('pricing_plans')
                 ->join('applications', 'applications.pricing_plan_id', '=', 'pricing_plans.id')
-                ->select('applications.pricing_plan_id', 'applications.destination_id', 'pricing_plans.id', 'pricing_plans.pricing_plan_type', 'pricing_plans.total_price', 'pricing_plans.destination_id', 'pricing_plans.first_payment_price', 'pricing_plans.submission_payment_price', 'pricing_plans.second_payment_price','pricing_plans.third_payment_price', 'pricing_plans.total_price')
+                ->select('applications.pricing_plan_id', 'applications.destination_id', 'pricing_plans.id', 'pricing_plans.pricing_plan_type', 'pricing_plans.total_price', 'pricing_plans.destination_id', 'pricing_plans.first_payment_price', 'pricing_plans.submission_payment_price', 'pricing_plans.second_payment_price', 'pricing_plans.third_payment_price', 'pricing_plans.total_price')
                 ->where('pricing_plans.pricing_plan_type', '=', $packageType)
                 ->where('applications.destination_id', '=', $p_id)
                 ->where('applications.client_id', '=', $id)
@@ -535,7 +535,7 @@ class HomeController extends Controller
                 // ->groupBy('payments.id')
                 ->orderBy('applications.id', 'desc')
                 ->first();
-// dd($paid);
+            // dd($paid);
             $prod = DB::table('destinations')
                 ->join('applications', 'destinations.id', '=', 'applications.destination_id')
                 ->select('destinations.name', 'destinations.id', 'destinations.full_payment_discount')
@@ -652,12 +652,12 @@ class HomeController extends Controller
                     } elseif ($pays->first_payment_status == "PAID" && $pays->submission_payment_status != "PAID") {
                         $originalPdf = (isset($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getUrl() : null;
                         if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
-                            if (Storage::disk(env('MEDIA_DISK'))->exists($originalPdf)) {
+                            if (File::exists($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getPath())) {
                             } else {
                                 $originalPdf = Storage::disk(env('MEDIA_DISK'))->url('Applications/Contracts/client_contracts/' . $applicant->contract);
                             }
                         } else {
-                            if (Storage::disk('local')->exists($originalPdf)) {
+                            if (File::exists($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getPath())) {
                             } else {
                                 $originalPdf = Storage::disk('local')->url('Applications/Contracts/client_contracts/' . $applicant->contract);
                             }
@@ -665,14 +665,14 @@ class HomeController extends Controller
                         }
                         $paymentType =  "Second Payment";
                     } elseif ($pays->submission_payment_status == "PAID" && $pays->second_payment_status != "PAID") {
-                        $originalPdf = (isset($applicant->getMedia(Applicant::$media_collection_main_2nd_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_2nd_signature)[0]->getUrl() : null;
+                        $originalPdf = (isset($applicant->getMedia(Applicant::$media_collection_main_submission_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_submission_signature)[0]->getUrl() : null;
                         if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
-                            if (Storage::disk(env('MEDIA_DISK'))->exists($originalPdf)) {
+                            if (File::exists($applicant->getMedia(Applicant::$media_collection_main_submission_signature)[0]->getPath())) {
                             } else {
                                 $originalPdf = Storage::disk(env('MEDIA_DISK'))->url('Applications/Contracts/client_contracts/' . $applicant->contract);
                             }
                         } else {
-                            if (Storage::disk('local')->exists($originalPdf)) {
+                            if (File::exists($applicant->getMedia(Applicant::$media_collection_main_submission_signature)[0]->getPath())) {
                             } else {
                                 $originalPdf = Storage::disk('local')->url('Applications/Contracts/client_contracts/' . $applicant->contract);
                             }
@@ -863,11 +863,11 @@ class HomeController extends Controller
             $idServiceURL  = "https://identity.sandbox.ngenius-payments.com/auth/realms/ni/protocol/openid-connect/token";           // set the identity service URL (example only)
             $txnServiceURL = "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders";
             // } else {
-                // $outletRef       = config('app.payment_reference');
-                // $apikey          = config('app.payment_api_key');
+            // $outletRef       = config('app.payment_reference');
+            // $apikey          = config('app.payment_api_key');
             //     // LIVE URLS 
-                // $idServiceURL  = "https://identity.ngenius-payments.com/auth/realms/NetworkInternational/protocol/openid-connect/token";           // set the identity service URL (example only)
-                // $txnServiceURL = "https://api-gateway.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders";
+            // $idServiceURL  = "https://identity.ngenius-payments.com/auth/realms/NetworkInternational/protocol/openid-connect/token";           // set the identity service URL (example only)
+            // $txnServiceURL = "https://api-gateway.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders";
             // }
 
             $tokenHeaders  = array("Authorization: Basic " . $apikey, "Content-Type: application/x-www-form-urlencoded");
@@ -1241,11 +1241,11 @@ class HomeController extends Controller
             $idServiceURL    = "https://identity.sandbox.ngenius-payments.com/auth/realms/ni/protocol/openid-connect/token";           // set the identity service URL (example only)
             $residServiceURL = "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders/" . $orderReference;
             // } else {
-                // $outletRef           = config('app.payment_reference');
-                // $apikey          = config('app.payment_api_key');
+            // $outletRef           = config('app.payment_reference');
+            // $apikey          = config('app.payment_api_key');
 
-                // $idServiceURL    = "https://identity.ngenius-payments.com/auth/realms/Networkinternational/protocol/openid-connect/token";           // set the identity service URL (example only)
-                // $residServiceURL = "https://api-gateway.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders/" . $orderReference;
+            // $idServiceURL    = "https://identity.ngenius-payments.com/auth/realms/Networkinternational/protocol/openid-connect/token";           // set the identity service URL (example only)
+            // $residServiceURL = "https://api-gateway.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders/" . $orderReference;
             // }
 
             $tokenHeaders    = array("Authorization: Basic " . $apikey, "Content-Type: application/x-www-form-urlencoded");
@@ -1989,5 +1989,13 @@ class HomeController extends Controller
     public function terms()
     {
         return view('user.terms');
+    }
+
+    public function resendVerificationEmail(User $user)
+    {
+        $id = $user->id;
+        $user = User::find($user->id);
+        $user->sendEmailVerificationNotification();
+        return view('auth.verify-email', compact('id'))->with('message', 'Please check your mail for verification mail.');
     }
 }

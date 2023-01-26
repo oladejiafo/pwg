@@ -100,10 +100,9 @@ class users
 
     public static function getContract($paidDetails) {
         $applicant = Applicant::find($paidDetails->id);
-
         if(strtoupper($paidDetails->third_payment_status) == 'PAID' && !empty($paidDetails->contract)) {
             $applicant->contractUrl = (isset($applicant->getMedia(Applicant::$media_collection_main_3rd_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_3rd_signature)[0]->getFullUrl() : null;
-
+            
             if(File::exists($applicant->getMedia(Applicant::$media_collection_main_3rd_signature)[0]->getPath())){
                 return $applicant;
             }

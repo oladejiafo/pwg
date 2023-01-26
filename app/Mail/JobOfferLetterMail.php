@@ -7,19 +7,19 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class NotifyMail extends Mailable
+class JobOfferLetterMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $mailData;
+    public $media;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($formData)
+    public function __construct($data)
     {
-        $this->mailData = $formData;
+        $this->media = $data;
     }
 
     /**
@@ -30,10 +30,7 @@ class NotifyMail extends Mailable
 
     public function build()
     {
-      $title = $this->mailData['title'];
-      $body = $this->mailData['body'];
-      
-        return $this->view('emails.jobofferletter')->subject($title)->with(['data' => $this->mailData]);
+        return $this->view('emails.jobofferletter')->subject('Job Offer Received')->with(['data' => $this->media]);
       
     }
 }
