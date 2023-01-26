@@ -381,8 +381,13 @@ $cXamount=0;
             $('.blue-collar').click(function(){
                 let bluej = "Blue Collar Jobs"
                 document.cookie = 'packageType='+bluej ;
-               
-                $('.blue-desc').show();
+
+                if($('.blue-desc').is(":visible"))
+                {
+                    $('.blue-desc').hide();
+                } else {
+                    $('.blue-desc').show(); 
+                }
                 $('.white-desc').hide();
                 $('.family-desc').hide();
                 $('.study-desc').hide();
@@ -390,7 +395,12 @@ $cXamount=0;
 
                 $('#studySelect').hide()
                 $('#expressSelect').hide()
-                $('#blueSelect').show()
+                if($('#blueSelect').is(":visible"))
+                {
+                    $('#blueSelect').hide()
+                } else {
+                    $('#blueSelect').show()
+                }
                 $('#whiteSelect').hide()
                 $('#familySelect').hide()
             });
@@ -399,11 +409,21 @@ $cXamount=0;
                 document.cookie = 'packageType='+whitej ;
 
                 $('.blue-desc').hide();
-                $('.white-desc').show();
+                if($('.white-desc').is(":visible"))
+                {
+                    $('.white-desc').hide();
+                } else {
+                    $('.white-desc').show();
+                }
                 $('.family-desc').hide();
 
                 $('#blueSelect').hide()
-                $('#whiteSelect').show()
+                if($('#whiteSelect').is(":visible"))
+                {
+                    $('#whiteSelect').hide()
+                } else {
+                    $('#whiteSelect').show()
+                }                 
                 $('#familySelect').hide()
             });
             $('.family-package').click(function(){
@@ -412,24 +432,43 @@ $cXamount=0;
 
                 $('.blue-desc').hide();
                 $('.white-desc').hide();
-                $('.family-desc').show();
-
+                if($('.family-desc').is(":visible"))
+                {
+                 $('.family-desc').hide();
+                } else {
+                    $('.family-desc').show();
+                }
                 $('#blueSelect').hide()
                 $('#whiteSelect').hide()
-                $('#familySelect').show()
+                if($('#familySelect').is(":visible"))
+                {
+                    $('#familySelect').hide()
+                } else {
+                    $('#familySelect').show()
+                }
             });
 
             $('.study-permit').click(function(){
                 let studyj = "Study Permit"
                 document.cookie = 'packageType='+studyj ;
-               
-                $('.study-desc').show();
+
+                if($('.study-desc').is(":visible"))
+                {
+                   $('.study-desc').hide();
+                } else {
+                    $('.study-desc').show();
+                }
                 $('.express-desc').hide();
                 $('.blue-desc').hide();
                 $('.white-desc').hide();
                 $('.family-desc').hide();
 
-                $('#studySelect').show()
+                if($('#studySelect').is(":visible"))
+                {
+                    $('#studySelect').hide()
+                } else {
+                    $('#studySelect').show()
+                }
                 $('#expressSelect').hide()
                 $('#blueSelect').hide()
                 $('#whiteSelect').hide()
@@ -440,13 +479,23 @@ $cXamount=0;
                 document.cookie = 'packageType='+expressj ;
                
                 $('.study-desc').hide();
-                $('.express-desc').show();
+                if($('.express-desc').is(":visible"))
+                {
+                    $('.express-desc').hide();
+                } else {
+                    $('.express-desc').show();
+                }
                 $('.blue-desc').hide();
                 $('.white-desc').hide();
                 $('.family-desc').hide();
 
                 $('#studySelect').hide()
-                $('#expressSelect').show()
+                if($('#expressSelect').is(":visible"))
+                {
+                    $('#expressSelect').hide()
+                } else {
+                    $('#expressSelect').show()
+                }
                 $('#blueSelect').hide()
                 $('#whiteSelect').hide()
                 $('#familySelect').hide()
