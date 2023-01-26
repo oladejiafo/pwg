@@ -184,7 +184,7 @@ body {
   white-space: nowrap;
   padding-bottom: 1em;
   display: flex;
-
+  /* overflow-x: auto; */
 }
 
 .paid-section .outer li {
@@ -200,6 +200,7 @@ body {
   white-space: normal;
   flex: none;
 
+  
 }
 
 .paid-section .paid-item {
@@ -336,8 +337,18 @@ body {
   font-size: 11px;
   margin: 0;
 }
-
+.pay-full h3 {
+  font-size:36px;
+}
+@media(max-width:1770px) {
+  .paid-section .outer {
+    overflow-x: auto;
+  }
+}
 @media(max-width:1370px) {
+  .paid-section .outer {
+    overflow-x: auto;
+  }
   .paid-section .outer .controls{
     display:block;
   }
@@ -736,6 +747,19 @@ p {
   max-height: 210px;
 }
 }
+
+@media (max-width: 600px)
+{
+  .pay-full h3 {
+    font-size:28px;
+  }
+}
+@media (max-width: 400px)
+{
+  .pay-full h3 {
+    font-size:25px;
+  }
+}
 @media (max-width:360px) {
 
   .paid-section .paid-item .domore {
@@ -807,17 +831,36 @@ p {
   width: 100%;
   padding: 0px 20px;
   margin: auto;
-  max-height: 530px;
+  /* max-height: 530px; */
+}
+
+.paid-section .paid-item {
+  margin: 0px 0px 0 0;
+ }
+
+ .card .card-body img {
+   padding-block: 0px;
+ }
+ .pay-full h3 {
+  font-size: 15px;
 }
 }
 
 @media (max-width:280px) {
 
-  .paid-section .paid-item .domore {
+  .domore {
     position:static; 
-    display: block; 
-    margin-top: 1px;
+    /* display: inline-block; */
+    display: table-cell; 
+    margin-top: -1px;
+    font-size: 20px !important;
   }
+
+   .domore p {
+    display: inline-block;
+    margin-top: -10px;
+  }
+
   .block2 {
     width: 63px;
     height: 63px;
@@ -891,7 +934,7 @@ p {
 
   .paid-section .paid-item img {
     height: auto;
-    min-height: 425px;
+    min-height: 450px;
     padding-bottom: 20px;
   }
 
@@ -913,4 +956,12 @@ p {
     width: auto;
     min-width: 200px;
  }
+
+ .cardc span {
+  margin-bottom: 0px !important;
+  padding-bottom: 0px !important;
+  line-height: 20px !important;
+  white-space: normal;
+  display: block;
+}
 }

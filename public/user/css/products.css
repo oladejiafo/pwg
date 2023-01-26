@@ -41,8 +41,11 @@ body {
 .prices{
   font-size: 30px;
 }
-.pie img {
-width: 85px;
+.product-section .top .pie {
+  width: 100px !important;
+  }
+.product-section .top .pie img {
+width: 85px !important;
 }
 @media (min-width:260px) and (max-width: 414px) {
   .banner_bg {
@@ -635,16 +638,41 @@ a .hoveer {
 
 /* Mobile styles */
 
+@media (max-width: 1400px) {
+  .product-section .top .pie {
+    width: 120px !important;
+    }
+    .product-section .top  .pie img {
+      width: 77px !important;
+      }
+      .prices{
+        font-size: 24px;
+      }
+}
+@media (max-width: 1024px) {
+  .product-section .top .pie {
+    width: 120px !important;
+    }
+    .product-section .top  .pie img {
+      width: 97px !important;
+      }
+      .prices{
+        font-size: 24px;
+      }
+}
 @media (max-width:600px)
 {
   .pays {
     font-size:9px;
   }
   .prices{
-    font-size: 25px;
+    font-size: 24px;
   }
-  .pie img {
-    width: 75px;
+  .product-section .top .pie {
+    width: 95px !important;
+    }
+  .product-section .top  .pie img {
+    width: 88px !important;
     }
 }
 @media (max-width:400px)
@@ -668,8 +696,11 @@ a .hoveer {
   .prices{
     font-size: 20px;
   }
-  .pie img {
-    width: 50px;
+  .product-section .top .pie {
+    width: 52px !important;
+    }
+  .product-section .top .pie img {
+    width: 50px !important;
     }
 }
 @media (max-width:360px)
@@ -695,8 +726,11 @@ a .hoveer {
   .prices{
     font-size: 20px;
   }
-  .pie img {
-    width: 60px;
+  .product-section .top .pie {
+    width: 62px !important;
+    }
+  .product-section .top .pie img {
+    width: 60px !important;
     }
   .top {
       margin-block: 50px !important;
@@ -728,8 +762,12 @@ a .hoveer {
   .prices{
     font-size: 14px;
   }
-  .pie img {
-    width: 45px;
+
+  .product-section .top .pie {
+    width: 47px !important;
+    }
+  .product-section .top .pie img {
+    width: 47px !important;
     }
 }
 @media only screen and (max-device-width: 480px),
