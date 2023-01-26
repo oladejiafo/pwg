@@ -1366,9 +1366,9 @@
             $ppd = $prod->id;
         ?>
 
-        <div class="card d-flex aligns-items-center justify-content-center text-center wiggy"
+        <div class="card d-flex aligns-items-center justify-content-center text-center wiggy pay-full"
             style="background-color:#000; color: #fff; padding-block:35px; font-weight: bold;font-family:'TT Norms Pro'">
-            <h3 style="font-size:36px">Earn <?php echo e(round($prod->full_payment_discount ?? 5)); ?>% discount when you pay
+            <h3>Earn <?php echo e(round($prod->full_payment_discount ?? 5)); ?>% discount when you pay
                 full amount! </h3>
             <p style="margin-top: 5px;">
                 <?php if(
