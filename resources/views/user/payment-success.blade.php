@@ -26,7 +26,7 @@
 
     .invoice {
         transition: transform 0.9s ease;
-        /* margin-top: -8%; */
+        margin-top: -8%;
     }
 
 
@@ -82,10 +82,10 @@
                     <div class="sig">
                         <div class="invoice-now">
                             <div class="invoice">
-                            <a href="{{url('/get/invoice')}}" target="_blank">
+                            <a href="{{url('/get/invoice')}}">
                                 <div class="invoice-image">
                                 </div>
-                                    <p><a href="{{url('/get/invoice')}}" target="_blank"> Get the invoice now </a></p>
+                                    <p><a href="{{url('/get/invoice')}}"> Get the invoice now </a></p>
                             </div></a>
                         </div>
                         <div class="invoice-later">

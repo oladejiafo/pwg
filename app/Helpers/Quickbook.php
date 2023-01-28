@@ -8,7 +8,7 @@ use QuickBooksOnline\API\DataService\DataService;
 use QuickBooksOnline\API\PlatformService\PlatformService;
 use QuickBooksOnline\API\Core\Http\Serialization\XmlObjectSerializer;
 use QuickBooksOnline\API\Facades\Invoice;
-use QuickBooksOnline\API\Facades\payment;
+use QuickBooksOnline\API\Facades\payment as QuickbookPayment;
 use QuickBooksOnline\API\Facades\Customer;
 use QuickBooksOnline\API\Facades\Item;
 use Illuminate\Support\Facades\Redirect;
@@ -330,6 +330,9 @@ class Quickbook
                                     "Amount" => $apply->planSecondPrice,
                                     "DetailType" => "SalesItemLineDetail",
                                     "SalesItemLineDetail" => [
+                                        "TaxCodeRef" => [
+                                            "value" => ($apply->total_vat == 0 || $apply->total_vat == null) ? 4 : 12, //'TAX
+                                        ],
                                         "ItemRef" =>
                                         [
                                             "value" => $FullSecondPaymentProduct->Id, //$updatSecondItem->Id
@@ -346,6 +349,9 @@ class Quickbook
                                     "DetailType" => "SalesItemLineDetail",
                                     "SalesItemLineDetail" =>
                                     [
+                                        "TaxCodeRef" => [
+                                            "value" => ($apply->total_vat == 0 || $apply->total_vat == null) ? 4 : 12, //'TAX
+                                        ],
                                         "ItemRef" =>
                                         [
                                             "value" => $FullThirdPaymentProduct->Id, //$updatThirdItem->Id
@@ -366,12 +372,14 @@ class Quickbook
                             ],
                             "ApplyTaxAfterDiscount" => true,
                             "Deposit" => $apply->total_paid - $remainingPayment,
+                            "AutoDocNumber" => true,
+
                             "TxnTaxDetail" => [
                                 "TxnTaxCodeRef" => [
-                                    "value" => ($apply->total_vat != 0 || $apply->total_vat != null) ? '5' : 0,  // tax rate
-                                    "name" => ($apply->total_vat != 0 || $apply->total_vat != null) ? "VAT" : '', // tax rate name
+                                    "value" => ($apply->total_vat == 0 || $apply->total_vat == null) ? 0 : 5,  // tax rate
+                                    "name" => ($apply->total_vat == 0 || $apply->total_vat == null) ? 'EX Exempt' : "SR Standard Rated (DXB)", // tax rate name
                                 ],
-                                "TotalTax" => ($apply->total_vat != 0 || $apply->total_vat != null) ? $apply->total_vat : 0,
+                                "TotalTax" => ($apply->total_vat == 0 || $apply->total_vat == null) ? 0 : $apply->total_vat,
                             ],
                             "PaymentRefNum" => $paymentDetails->bank_reference_no,
                             "CustomerMemo" => [
@@ -403,6 +411,9 @@ class Quickbook
                                     "Amount" => $apply->planSecondPrice,
                                     "DetailType" => "SalesItemLineDetail",
                                     "SalesItemLineDetail" => [
+                                        "TaxCodeRef" => [
+                                            "value" => ($apply->total_vat == 0 || $apply->total_vat == null) ? 4 : 12, //'TAX
+                                        ],
                                         "ItemRef" =>
                                         [
                                             "value" => $FullSecondPaymentProduct->Id,
@@ -415,12 +426,14 @@ class Quickbook
                                 ],
                             ],
                             "Deposit" => $apply->total_paid - $remainingPayment,
+                            "AutoDocNumber" => true,
+
                             "TxnTaxDetail" => [
                                 "TxnTaxCodeRef" => [
-                                    "value" => ($apply->total_vat != 0 || $apply->total_vat != null) ? '5' : 0,  // tax rate
-                                    "name" => ($apply->total_vat != 0 || $apply->total_vat != null) ? "VAT" : '', // tax rate name
+                                    "value" => ($apply->total_vat == 0 || $apply->total_vat == null) ? 0 : 5,  // tax rate
+                                    "name" => ($apply->total_vat == 0 || $apply->total_vat == null) ? 'EX Exempt' : "SR Standard Rated (DXB)", // tax rate name
                                 ],
-                                "TotalTax" => ($apply->total_vat != 0 || $apply->total_vat != null) ? $apply->total_vat : 0,
+                                "TotalTax" => ($apply->total_vat == 0 || $apply->total_vat == null) ? 0 : $apply->total_vat,
                             ],
                             "PaymentRefNum" => $paymentDetails->bank_reference_no,
                             "CustomerMemo" => [
@@ -456,6 +469,9 @@ class Quickbook
                                     "SalesItemLineDetail",
                                     "SalesItemLineDetail" =>
                                     [
+                                        "TaxCodeRef" => [
+                                            "value" => ($apply->total_vat == 0 || $apply->total_vat == null) ? 4 : 12, //'TAX
+                                        ],
                                         "ItemRef" =>
                                         [
                                             "value" => $FullFirstPaymentProduct->Id,
@@ -471,6 +487,9 @@ class Quickbook
                                     "Amount" => $apply->planSecondPrice,
                                     "DetailType" => "SalesItemLineDetail",
                                     "SalesItemLineDetail" => [
+                                        "TaxCodeRef" => [
+                                            "value" => ($apply->total_vat == 0 || $apply->total_vat == null) ? 4 : 12, //'TAX
+                                        ],
                                         "ItemRef" =>
                                         [
                                             "value" => $FullSecondPaymentProduct->Id,
@@ -487,6 +506,9 @@ class Quickbook
                                     "DetailType" => "SalesItemLineDetail",
                                     "SalesItemLineDetail" =>
                                     [
+                                        "TaxCodeRef" => [
+                                            "value" => ($apply->total_vat == 0 || $apply->total_vat == null) ? 4 : 12, //'TAX
+                                        ],
                                         "ItemRef" =>
                                         [
                                             "value" => $FullThirdPaymentProduct->Id,
@@ -507,12 +529,14 @@ class Quickbook
                             ],
                             "ApplyTaxAfterDiscount" => true,
                             "Deposit" => $apply->total_paid,
+                            "AutoDocNumber" => true,
+
                             "TxnTaxDetail" => [
                                 "TxnTaxCodeRef" => [
-                                    "value" => ($apply->total_vat != 0 || $apply->total_vat != null) ? '5' : 0,  // tax rate
-                                    "name" => ($apply->total_vat != 0 || $apply->total_vat != null) ? "VAT" : '', // tax rate name
+                                    "value" => ($apply->total_vat == 0 || $apply->total_vat == null) ? 0 : 5,  // tax rate
+                                    "name" => ($apply->total_vat == 0 || $apply->total_vat == null) ? 'EX Exempt' : "SR Standard Rated (DXB)", // tax rate name
                                 ],
-                                "TotalTax" => ($apply->total_vat != 0 || $apply->total_vat != null) ? $apply->total_vat : 0,
+                                "TotalTax" => ($apply->total_vat == 0 || $apply->total_vat == null) ? 0 : $apply->total_vat,
                             ],
                             "PaymentRefNum" => $paymentDetails->bank_reference_no,
                             "CustomerMemo" => [
@@ -546,6 +570,9 @@ class Quickbook
                                     "SalesItemLineDetail",
                                     "SalesItemLineDetail" =>
                                     [
+                                        "TaxCodeRef" => [
+                                            "value" => ($apply->total_vat == 0 || $apply->total_vat == null) ? 4 : 12, //'TAX
+                                        ],
                                         "ItemRef" =>
                                         [
                                             "value" => $FullFirstPaymentProduct->Id,
@@ -561,6 +588,9 @@ class Quickbook
                                     "Amount" => $apply->planSecondPrice,
                                     "DetailType" => "SalesItemLineDetail",
                                     "SalesItemLineDetail" => [
+                                        "TaxCodeRef" => [
+                                            "value" => ($apply->total_vat == 0 || $apply->total_vat == null) ? 4 : 12, //'TAX
+                                        ],
                                         "ItemRef" =>
                                         [
                                             "value" => $FullSecondPaymentProduct->Id,
@@ -581,12 +611,14 @@ class Quickbook
                             ],
                             "ApplyTaxAfterDiscount" => true,
                             "Deposit" => $apply->total_paid,
+                            "AutoDocNumber" => true,
+
                             "TxnTaxDetail" => [
                                 "TxnTaxCodeRef" => [
-                                    "value" => ($apply->total_vat != 0 || $apply->total_vat != null) ? '5' : 0,  // tax rate
-                                    "name" => ($apply->total_vat != 0 || $apply->total_vat != null) ? "VAT" : '', // tax rate name
+                                    "value" => ($apply->total_vat == 0 || $apply->total_vat == null) ? 0 : 5,  // tax rate
+                                    "name" => ($apply->total_vat == 0 || $apply->total_vat == null) ? 'EX Exempt' : "SR Standard Rated (DXB)", // tax rate name
                                 ],
-                                "TotalTax" => ($apply->total_vat != 0 || $apply->total_vat != null) ? $apply->total_vat : 0,
+                                "TotalTax" => ($apply->total_vat == 0 || $apply->total_vat == null) ? 0 : $apply->total_vat,
                             ],
                             "PaymentRefNum" => $paymentDetails->bank_reference_no,
                             "CustomerMemo" => [
@@ -653,12 +685,12 @@ class Quickbook
                         "Amount" => $unitPrice,
                         "DetailType" => "SalesItemLineDetail",
                         "SalesItemLineDetail" => [
+                            "TaxCodeRef" => [
+                                "value" => ($tax == 0 || $tax == null) ? 4 : 12, //'TAX
+                            ],
                             "ItemRef" => [
                                 "value" => $updatItem->Id,
                                 "name" => $updatItem->Name
-                            ],
-                            "TaxCodeRef" => [
-                                "value" => "Tax"
                             ],
                             'UnitPrice' => $unitPrice,
                             'Qty' => 1.0
@@ -674,14 +706,16 @@ class Quickbook
                     ]
                 ],
                 "Deposit" => $paidAmount,
+                "AutoDocNumber" => true,
+
                 // no tax due to free zone
 
                 "TxnTaxDetail" => [
                     "TxnTaxCodeRef" => [
-                        "value" => ($tax > 0 || $tax != null) ? 5 : 0,  // tax rate
-                        "name" => ($tax > 0 || $tax != null) ? "VAT" : '', // tax rate name
+                        "value" => ($tax == 0 || $tax == null) ? 0 : 5,  // tax rate
+                        "name" => ($tax == 0 || $tax == null) ? 'EX Exempt' : "SR Standard Rated (DXB)", // tax rate name
                     ],
-                    "TotalTax" => ($tax > 0 || $tax != null) ? $tax : 0,
+                    "TotalTax" => ($tax == 0 || $tax == null) ? 0 : $tax,
                 ],
                 "PaymentRefNum" => $paymentDetails->bank_reference_no,
 
@@ -711,7 +745,7 @@ class Quickbook
                         "DetailType" => "SalesItemLineDetail",
                         "SalesItemLineDetail" => [
                             "TaxCodeRef" => [
-                                "value" => "TAX"
+                                "value" =>  ($tax == 0 || $tax == null) ? 4 : 12, //'TAX',
                             ],
                             "ItemRef" => [
                                 "value" => $updatItem->Id,
@@ -723,13 +757,14 @@ class Quickbook
                     ]
                 ],
                 "Deposit" => $paidAmount,
+                "AutoDocNumber" => true,
                 // no tax due to free zone
                 "TxnTaxDetail" => [
                     "TxnTaxCodeRef" => [
-                        "value" => ($tax > 0 || $tax != null) ? 5 : 0,  // tax rate
-                        "name" => ($tax > 0 || $tax != null) ? "VAT" : '', // tax rate name
+                        "value" => ($tax == 0 || $tax == null) ? 0 : 5,  // tax rate
+                        "name" => ($tax == 0 || $tax == null) ? 'EX Exempt' : "SR Standard Rated (DXB)", // tax rate name
                     ],
-                    "TotalTax" => ($tax > 0 || $tax != null) ? $tax : 0,
+                    "TotalTax" => ($tax == 0 || $tax == null) ? 0 : $tax,
                 ],
                 "PaymentRefNum" => $paymentDetails->bank_reference_no,
 
@@ -772,6 +807,7 @@ class Quickbook
                 'QBORealmID' => (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.QBORealmID') : config('services.quickbook.QBORealmID'),
                 'baseUrl' => (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? "Development" : "production"
             ));
+            
             $OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
             $refreshedAccessTokenObj = $OAuth2LoginHelper->refreshToken();
             $dataService->updateOAuth2Token($refreshedAccessTokenObj);
@@ -806,7 +842,7 @@ class Quickbook
             ->where('invoice_id', '!=', null)
             ->where('invoice_no', '!=', null)
             ->first();
-        $paymentObj = Payment::create([
+        $paymentObj = \QuickBooksOnline\API\Facades\Payment::create([
             "TotalAmt" =>  $paymentDetails->invoice_amount,
             "UnappliedAmt" => 0.00,
             "CustomerRef" => ($customer->Id) ??  $customer[0]->Id,

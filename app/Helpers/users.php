@@ -7,7 +7,7 @@ use setasign\Fpdi\Fpdi;
 use setasign\Fpdi\PdfReader;
 use App\Models\Affiliate;
 use App\Models\Client;
-
+use Illuminate\Support\Facades\Storage;
 use App\Models\product;
 use App\Models\Applicant;
 use App\Models\user;
@@ -98,49 +98,76 @@ class users
         return $response;
     }
 
-    public static function getContract($paidDetails) {
+    public static function getContract($paidDetails)
+    {
         $applicant = Applicant::find($paidDetails->id);
-        if(strtoupper($paidDetails->third_payment_status) == 'PAID' && !empty($paidDetails->contract)) {
+        if (strtoupper($paidDetails->third_payment_status) == 'PAID' && !empty($paidDetails->contract)) {
             $applicant->contractUrl = (isset($applicant->getMedia(Applicant::$media_collection_main_3rd_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_3rd_signature)[0]->getFullUrl() : null;
-            
-            if(File::exists($applicant->getMedia(Applicant::$media_collection_main_3rd_signature)[0]->getPath())){
-                return $applicant;
+            if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+                if (Storage::disk('s3')->exists($applicant->contractUrl)) {
+                    // if(File::exists($applicant->getMedia(Applicant::$media_collection_main_3rd_signature)[0]->getPath())){
+                    return $applicant;
+                }
+            } else {
+                if (File::exists($applicant->getMedia(Applicant::$media_collection_main_3rd_signature)[0]->getPath())) {
+                    return $applicant;
+                }
             }
-        } else if(strtoupper($paidDetails->second_payment_status) == 'PAID' && !empty($paidDetails->contract)) {
+        } else if (strtoupper($paidDetails->second_payment_status) == 'PAID' && !empty($paidDetails->contract)) {
             $applicant->contractUrl = (isset($applicant->getMedia(Applicant::$media_collection_main_2nd_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_2nd_signature)[0]->getFullUrl() : null;
-
-            if(File::exists($applicant->getMedia(Applicant::$media_collection_main_2nd_signature)[0]->getPath())){
-                return $applicant;
+            if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+                if (Storage::disk('s3')->exists($applicant->contractUrl)) {
+                    // if(File::exists($applicant->getMedia(Applicant::$media_collection_main_2nd_signature)[0]->getPath())){
+                    return $applicant;
+                }
+            } else {
+                if (File::exists($applicant->getMedia(Applicant::$media_collection_main_2nd_signature)[0]->getPath())) {
+                    return $applicant;
+                }
             }
-        } else if(strtoupper($paidDetails->submission_payment_status) == 'PAID' && !empty($paidDetails->contract)) {
+        } else if (strtoupper($paidDetails->submission_payment_status) == 'PAID' && !empty($paidDetails->contract)) {
             $applicant->contractUrl = (isset($applicant->getMedia(Applicant::$media_collection_main_submission_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_submission_signature)[0]->getFullUrl() : null;
-
-            if(File::exists($applicant->getMedia(Applicant::$media_collection_main_submission_signature)[0]->getPath())){
-                return $applicant;
+            if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+                if (Storage::disk('s3')->exists($applicant->contractUrl)) {
+                    // if(File::exists($applicant->getMedia(Applicant::$media_collection_main_submission_signature)[0]->getPath())){
+                    return $applicant;
+                }
+            } else {
+                if (File::exists($applicant->getMedia(Applicant::$media_collection_main_submission_signature)[0]->getPath())) {
+                    return $applicant;
+                }
             }
-
-        } else if(strtoupper($paidDetails->first_payment_status) == 'PAID' && !empty($paidDetails->contract)){
+        } else if (strtoupper($paidDetails->first_payment_status) == 'PAID' && !empty($paidDetails->contract)) {
             $applicant->contractUrl = (isset($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getFullUrl() : null;
-
-            if(File::exists($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getPath())){
-                return $applicant;
+            if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+                if (Storage::disk('s3')->exists($applicant->contractUrl)) {
+                    // if(File::exists($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getPath())){
+                        return $applicant;
+                    }
+                } else {
+                    if (File::exists($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getPath())) {
+                        return $applicant;
+                    }
             }
         } else {
-            $applicant->contractUrl="";
+            $applicant->contractUrl = "";
         }
-
     }
     public static function getWorkPermitStatus($paidDetails)
     {
         $response['status'] = false;
         try {
             $file = self::getWorkpermitFile($paidDetails);
-            if (strtoupper($paidDetails->first_payment_status) == 'PAID' && strtoupper($paidDetails->submission_payment_status) == 'PAID' && $paidDetails->work_permit_status == "WORK_PERMIT_RECEIVED" && $file['FileExist']) {
-                $response['message'] = "Download work permit";
-                $response['fileUrl'] = $file['FileUrl'];
-                $response['status'] = true;
-            } else if (strtoupper($paidDetails->first_payment_status) == 'PAID' && $paidDetails->work_permit_status == "WORK_PERMIT_RECEIVED" && strtoupper($paidDetails->submission_payment_status) != 'PAID' && $file['FileExist']) {
-                $response['message'] = "Download after second payment";
+            if(isset($file['FileExist'])){
+                if (strtoupper($paidDetails->first_payment_status) == 'PAID' && strtoupper($paidDetails->submission_payment_status) == 'PAID' && $paidDetails->work_permit_status == "WORK_PERMIT_RECEIVED" && $file['FileExist']) {
+                    $response['message'] = "Download work permit";
+                    $response['fileUrl'] = $file['FileUrl'];
+                    $response['status'] = true;
+                } else if (strtoupper($paidDetails->first_payment_status) == 'PAID' && $paidDetails->work_permit_status == "WORK_PERMIT_RECEIVED" && strtoupper($paidDetails->submission_payment_status) != 'PAID' && $file['FileExist']) {
+                    $response['message'] = "Download after second payment";
+                } else {
+                    $response['message'] = "Work permit not available yet.";
+                }
             } else {
                 $response['message'] = "Work permit not available yet.";
             }

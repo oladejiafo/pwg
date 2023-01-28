@@ -354,7 +354,7 @@ class ApplicationController extends Controller
                 $client->addMedia($request->file('visa_copy'))->usingFileName($visaCopy)->toMediaCollection(User::$media_collection_main_residence_visa, 'local');
             }
         }
-        $client->country_of_residence = $request->current_country;
+        $client->country_of_residence = (strlen($request->current_country) > 0) ? $request->current_country : $client->country_of_residence;
         $client->residence_mobile_number = $request->current_residance_mobile;
         $client->residence_id = $request->residence_id;
         $client->visa_validity = date('Y-m-d', strtotime($request->visa_validity));
@@ -597,7 +597,7 @@ class ApplicationController extends Controller
             ->where('criteria', '=', $criteria)
             ->where('client_id', '=', Auth::user()->id)
             ->first();
-
+        pdfBlock::mapMoreInfo($applicant);
         if ($check_noti === null) {
             $tday = date('Y-m-d');
             DB::table('notifications')->insert(
