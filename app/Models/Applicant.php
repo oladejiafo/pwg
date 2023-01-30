@@ -71,7 +71,7 @@ class Applicant extends Model implements HasMedia
         $this->addMediaCollection('contract_3rd_payment_collection_pdf');
         $this->addMediaCollection('client_collection_contracts');
         $this->addMediaCollection('contract_1st_signature_collection_pdf')->singleFile();
-        $this->addMediaCollection('contract_submission_signature_collection_pdf');
+        $this->addMediaCollection('contract_submission_signature_collection_pdf')->singleFile();
         $this->addMediaCollection('contract_2nd_signature_collection_pdf')->singleFile();
         $this->addMediaCollection('contract_3rd_signature_collection_pdf')->singleFile();
         $this->addMediaCollection('job_offer_letter_pdf')->singleFile();

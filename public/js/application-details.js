@@ -2176,6 +2176,8 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_2__["default"]({
 
           if (response.data.length == 0) {
             toastr.error('Result not found!');
+          } else if (response.length == 0) {
+            toastr.error('Result not found!');
           }
         })["catch"](function (error) {
           console.log(error);

@@ -89,7 +89,7 @@ class HomeController extends Controller
 
     public function index()
     {
-        // pdfBlock::pdfBlock();
+        // dd(pdfBlock::pdfBlock()); .
         if (Auth::id()) {
 
             $started = DB::table('applications')
@@ -553,7 +553,7 @@ class HomeController extends Controller
 
     public function payment(Request $request)
     {
-        try {
+        // try {
             $famCode = 0;
             if (Auth::id()) {
                 Session::forget('haveCoupon');
@@ -652,31 +652,27 @@ class HomeController extends Controller
                         } elseif ($pays->first_payment_status == "PAID" && $pays->submission_payment_status != "PAID") {
                             $originalPdf = (isset($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getUrl() : null;
                             if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
-                                // if (File::exists($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getPath())) {
-                                if (Storage::disk('s3')->exists($originalPdf)) {
+                                    if (Storage::disk('s3')->exists($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getPath())) {
+                                    } else {
+                                        $originalPdf = Storage::disk(env('MEDIA_DISK'))->url('Applications/Contracts/client_contracts/' . $applicant->contract);
+                                    }
                                 } else {
-                                    $originalPdf = Storage::disk(env('MEDIA_DISK'))->url('Applications/Contracts/client_contracts/' . $applicant->contract);
+                                    if (File::exists($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getPath())) {
+                                    } else {
+                                        $originalPdf = Storage::disk('local')->url('Applications/Contracts/client_contracts/' . $applicant->contract);
+                                    }
+                                    $originalPdf = ltrim($originalPdf, $originalPdf[0]);
                                 }
-                            } else {
-                                if (Storage::disk('local')->exists($originalPdf)) {
-                                    // if (File::exists($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getPath())) {
-                                } else {
-                                    $originalPdf = Storage::disk('local')->url('Applications/Contracts/client_contracts/' . $applicant->contract);
-                                }
-                                $originalPdf = ltrim($originalPdf, $originalPdf[0]);
-                            }
                             $paymentType =  "Second Payment";
                         } elseif ($pays->submission_payment_status == "PAID" && $pays->second_payment_status != "PAID") {
                             $originalPdf = (isset($applicant->getMedia(Applicant::$media_collection_main_submission_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_submission_signature)[0]->getUrl() : null;
                             if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
-                                if (Storage::disk('s3')->exists($originalPdf)) {
-                                    // if (File::exists($applicant->getMedia(Applicant::$media_collection_main_submission_signature)[0]->getPath())) {
+                                if (Storage::disk('s3')->exists($applicant->getMedia(Applicant::$media_collection_main_submission_signature)[0]->getPath())) {
                                 } else {
                                     $originalPdf = Storage::disk(env('MEDIA_DISK'))->url('Applications/Contracts/client_contracts/' . $applicant->contract);
                                 }
                             } else {
-                                if (Storage::disk('local')->exists($originalPdf)) {
-                                    // if (File::exists($applicant->getMedia(Applicant::$media_collection_main_submission_signature)[0]->getPath())) {
+                                if (File::exists($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getPath())) {
                                 } else {
                                     $originalPdf = Storage::disk('local')->url('Applications/Contracts/client_contracts/' . $applicant->contract);
                                 }
@@ -716,9 +712,9 @@ class HomeController extends Controller
                 // return redirect()->back()->with('message', 'You are not authorized');
                 return redirect('home');
             }
-        } catch (Exception $e) {
-            return redirect('home')->with('error', $e->getMessage());
-        }
+        // } catch (Exception $e) {
+        //     return redirect('home')->with('error', $e->getMessage());
+        // }
     }
 
 
@@ -752,7 +748,7 @@ class HomeController extends Controller
 
     public function addpayment(Request $request)
     {
-        // try {
+        try {
         if (Auth::id()) {
             session()->forget('info');
             $amount = $request->totalpay;
@@ -861,19 +857,19 @@ class HomeController extends Controller
 
                 */
 
-            // if (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+            if (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                 $outletRef       = config('app.payment_reference_local');
                 $apikey          = config('app.payment_api_key_local');
                 // Test URLS 
                 $idServiceURL  = "https://identity.sandbox.ngenius-payments.com/auth/realms/ni/protocol/openid-connect/token";           // set the identity service URL (example only)
                 $txnServiceURL = "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders";
-            // } else {
-            //     $outletRef       = config('app.payment_reference');
-            //     $apikey          = config('app.payment_api_key');
-            //     // LIVE URLS 
-            //     $idServiceURL  = "https://identity.ngenius-payments.com/auth/realms/NetworkInternational/protocol/openid-connect/token";           // set the identity service URL (example only)
-            //     $txnServiceURL = "https://api-gateway.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders";
-            // }
+            } else {
+                $outletRef       = config('app.payment_reference');
+                $apikey          = config('app.payment_api_key');
+                // LIVE URLS 
+                $idServiceURL  = "https://identity.ngenius-payments.com/auth/realms/NetworkInternational/protocol/openid-connect/token";           // set the identity service URL (example only)
+                $txnServiceURL = "https://api-gateway.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders";
+            }
 
             $tokenHeaders  = array("Authorization: Basic " . $apikey, "Content-Type: application/x-www-form-urlencoded");
             $tokenResponse = $this->invokeCurlRequest("POST", $idServiceURL, $tokenHeaders, http_build_query(array('grant_type' => 'client_credentials')));
@@ -1226,9 +1222,9 @@ class HomeController extends Controller
             return redirect('home');
         }
 
-        // } catch (Exception $e) {
-        //     return redirect('myapplication')->with($e->getMessage());
-        // }
+        } catch (Exception $e) {
+            return redirect('myapplication')->with($e->getMessage());
+        }
     }
 
 
@@ -1240,19 +1236,19 @@ class HomeController extends Controller
             $id = Session::get('myproduct_id');
             $orderReference  = $_GET['ref'];
 
-            // if (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+            if (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                 // local
                 $outletRef       = config('app.payment_reference_local');
                 $apikey          = config('app.payment_api_key_local');
                 $idServiceURL    = "https://identity.sandbox.ngenius-payments.com/auth/realms/ni/protocol/openid-connect/token";           // set the identity service URL (example only)
                 $residServiceURL = "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders/" . $orderReference;
-            // } else {
-            //     $outletRef           = config('app.payment_reference');
-            //     $apikey          = config('app.payment_api_key');
+            } else {
+                $outletRef           = config('app.payment_reference');
+                $apikey          = config('app.payment_api_key');
 
-            //     $idServiceURL    = "https://identity.ngenius-payments.com/auth/realms/Networkinternational/protocol/openid-connect/token";           // set the identity service URL (example only)
-            //     $residServiceURL = "https://api-gateway.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders/" . $orderReference;
-            // }
+                $idServiceURL    = "https://identity.ngenius-payments.com/auth/realms/Networkinternational/protocol/openid-connect/token";           // set the identity service URL (example only)
+                $residServiceURL = "https://api-gateway.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders/" . $orderReference;
+            }
 
             $tokenHeaders    = array("Authorization: Basic " . $apikey, "Content-Type: application/x-www-form-urlencoded");
             $tokenResponse   = $this->invokeCurlRequest("POST", $idServiceURL, $tokenHeaders, http_build_query(array('grant_type' => 'client_credentials')));

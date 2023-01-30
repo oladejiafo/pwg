@@ -125,6 +125,8 @@ const app = new Vue({
                     app.filterData = response.data;
                     if(response.data.length == 0){
                         toastr.error('Result not found!');
+                    } else if(response.length == 0){
+                        toastr.error('Result not found!');
                     }
                 })
                 .catch(function (error) {
