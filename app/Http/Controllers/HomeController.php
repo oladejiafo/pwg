@@ -748,7 +748,7 @@ class HomeController extends Controller
 
     public function addpayment(Request $request)
     {
-        // try {
+        try {
         if (Auth::id()) {
             session()->forget('info');
             $amount = $request->totalpay;
@@ -1222,9 +1222,9 @@ class HomeController extends Controller
             return redirect('home');
         }
 
-        // } catch (Exception $e) {
-        //     return redirect('myapplication')->with($e->getMessage());
-        // }
+        } catch (Exception $e) {
+            return redirect('myapplication')->with($e->getMessage());
+        }
     }
 
 
