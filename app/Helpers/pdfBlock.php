@@ -335,7 +335,7 @@ class pdfBlock
                         $pdf->Image($signature, 169, 186, 18, 12, 'PNG');
                         $pdf->Image($signature, 169, 217, 18, 12, 'PNG');
                         $pdf->SetXY(166, 234);
-                        $pdf->Write(2, date('d/m/Y'));
+                        $pdf->Write(2, date('d/m/Y')); 
 
                         $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_third_payment_contract.pdf';
                     }
@@ -458,7 +458,6 @@ class pdfBlock
             if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                 $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_2nd_signature, env('MEDIA_DISK'));
             } else {
-
                 $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_2nd_signature, 'local');
             }
         }

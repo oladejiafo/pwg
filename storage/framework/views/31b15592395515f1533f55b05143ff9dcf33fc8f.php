@@ -1,13 +1,13 @@
-@include('user.header')
+<?php echo $__env->make('user.header', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
 <!-- bootstrap core css -->
 
 
-<link rel="stylesheet" href="{{asset('user/extra/css/bootstrap.css')}}">
-<link rel="stylesheet" href="{{asset('user/extra/css/styled.css')}}">
-<link rel="stylesheet" href="{{ asset('css/app.css') }}">
+<link rel="stylesheet" href="<?php echo e(asset('user/extra/css/bootstrap.css')); ?>">
+<link rel="stylesheet" href="<?php echo e(asset('user/extra/css/styled.css')); ?>">
+<link rel="stylesheet" href="<?php echo e(asset('css/app.css')); ?>">
 <!--  -->
-<link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
+<link href="<?php echo e(asset('user/css/bootstrap.min.css')); ?>" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     
 
@@ -131,14 +131,15 @@
 </style>
 
 <!-- Scripts -->
-<script src="{{ asset('js/app.js') }}" defer></script>
+<script src="<?php echo e(asset('js/app.js')); ?>" defer></script>
 
 
-<x-slot name="header">
+ <?php $__env->slot('header', null, []); ?> 
     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        {{ __('User Profile') }}
+        <?php echo e(__('User Profile')); ?>
+
     </h2>
-</x-slot>
+ <?php $__env->endSlot(); ?>
 
 <body>
 
@@ -186,10 +187,11 @@
                                                 <path class="cls-1" d="M88.25,28.26c0,1-.68,1.48-1.94,1.48q-9.41,0-18.83,0c-1.45,0-2.26-1.06-1.72-2.18a1.64,1.64,0,0,1,1.69-.86c3.14,0,6.28,0,9.42,0h9.41C87.63,26.71,88.28,27.23,88.25,28.26Z" />
                                             </svg>
 
-                                            <!-- <img src="{{asset('images/Icons_applicant_details.svg')}}" width="70px" height="auto" style="margin-right:50px"> -->
+                                            <!-- <img src="<?php echo e(asset('images/Icons_applicant_details.svg')); ?>" width="70px" height="auto" style="margin-right:50px"> -->
                                         </span>
                                         <span class="title" style="display:inline-block">
-                                            |&nbsp; {{ __('Profile Information') }}
+                                            |&nbsp; <?php echo e(__('Profile Information')); ?>
+
                                         </span>
                                     </a>
                                 </h4>
@@ -198,11 +200,36 @@
                             <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                                 <div class="panel-body">
 
-                                    @if (Laravel\Fortify\Features::canUpdateProfileInformation())
-                                    @livewire('profile.update-profile-information-form')
+                                    <?php if(Laravel\Fortify\Features::canUpdateProfileInformation()): ?>
+                                    <?php
+if (! isset($_instance)) {
+    $html = \Livewire\Livewire::mount('profile.update-profile-information-form')->html();
+} elseif ($_instance->childHasBeenRendered('b4AScNL')) {
+    $componentId = $_instance->getRenderedChildComponentId('b4AScNL');
+    $componentTag = $_instance->getRenderedChildComponentTagName('b4AScNL');
+    $html = \Livewire\Livewire::dummyMount($componentId, $componentTag);
+    $_instance->preserveRenderedChild('b4AScNL');
+} else {
+    $response = \Livewire\Livewire::mount('profile.update-profile-information-form');
+    $html = $response->html();
+    $_instance->logRenderedChild('b4AScNL', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
+}
+echo $html;
+?>
 
-                                    <x-jet-section-border />
-                                    @endif
+                                    <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'jetstream::components.section-border','data' => []]); ?>
+<?php $component->withName('jet-section-border'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes([]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                                    <?php endif; ?>
 
                                 </div>
                             </div>
@@ -240,10 +267,11 @@
                                                 <path class="cls-1" d="M31,49a1.8,1.8,0,0,1-1.77,1.87c-1,0-2,0-3,0-.58,0-.73.19-.71.73,0,1,0,1.92,0,2.87a1.8,1.8,0,1,1-3.59,0c-.06-1.8-.06-3.61,0-5.42a1.75,1.75,0,0,1,2-1.79c.85,0,1.7,0,2.55,0h0c.92,0,1.84,0,2.76,0A1.76,1.76,0,0,1,31,49Z" />
                                             </svg>
 
-                                            <!-- <img src="{{asset('images/Icons_applicant_details.svg')}}" width="70px" height="auto" style="margin-right:50px"> -->
+                                            <!-- <img src="<?php echo e(asset('images/Icons_applicant_details.svg')); ?>" width="70px" height="auto" style="margin-right:50px"> -->
                                         </span>
                                         <span class="title" style="display:inline-block">
-                                            |&nbsp; {{ __('Update Password') }}
+                                            |&nbsp; <?php echo e(__('Update Password')); ?>
+
                                         </span>
 
                                     </a>
@@ -253,14 +281,25 @@
                             <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                                 <div class="panel-body">
 
-                                    @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::updatePasswords()))
+                                    <?php if(Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::updatePasswords())): ?>
                                     <div class="mt-10 sm:mt-0">
-                                        {{-- @livewire('profile.update-password-form') --}}
-                                            @include('profile.update-password-form')
+                                        
+                                            <?php echo $__env->make('profile.update-password-form', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                                     </div>
 
-                                    <x-jet-section-border />
-                                    @endif
+                                    <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'jetstream::components.section-border','data' => []]); ?>
+<?php $component->withName('jet-section-border'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes([]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
+<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
+<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
+<?php endif; ?>
+                                    <?php endif; ?>
 
 
                                 </div>
@@ -268,69 +307,7 @@
                         </div>
                         <p style="margin-top: 5px;"> &nbsp; </p>
                         
-{{--
-                        <!-- Tab Three -->
-                        <div class="panel panel-default card" style="border-radius: 10px;margin-top:1px">
-                            <div class="ppanel-heading" role="tab" id="headingThree">
-                                <h4 class="panel-title">
-                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style="vertical-align: middle;">
-                                        <span style="display:inline-block">
 
-                                            <svg height="100%"  id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 114.77 114.78">
-                                                <defs>
-                                                    <style>
-                                                        .cls-1 {
-                                                            fill: #383838;
-                                                        }
-                                                    </style>
-                                                </defs>
-                                                <path class="cls-1" d="M58.28,0a5.06,5.06,0,0,0,2.33.4A53.16,53.16,0,0,1,94.48,18.25,52.34,52.34,0,0,1,107,43.37a53.8,53.8,0,0,1-1.62,27.52q-.81,2.49-3.21.81a21.61,21.61,0,0,0-28.36,2.8c-6,6.44-7.73,14.08-4.75,22.39s9.11,13.16,17.86,14.3a21.77,21.77,0,0,0,24.47-23,21.37,21.37,0,0,0-2.88-9.48,6.85,6.85,0,0,1-.75,1.11Q98.61,89,89.44,98.12c-1.41,1.41-2,1.4-3.45,0q-5.19-5.2-10.38-10.38a2,2,0,0,1-.72-2.09c.39-1.24,1.84-1.5,2.9-.49,1.34,1.3,2.65,2.64,4,4,1.77,1.77,3.56,3.51,5.29,5.32.54.57.81.56,1.36,0Q99.75,83,111.14,71.67l.64-.63a1.68,1.68,0,1,1,2.39,2.34c-.8.84-1.6,1.68-2.46,2.45-.54.47-.5.82-.18,1.41A25.2,25.2,0,1,1,64.75,94a24.61,24.61,0,0,1-.18-7.8c.11-.75,0-.95-.83-.86a31,31,0,0,1-10.47-.33,18.15,18.15,0,0,1-10.86-7,1.07,1.07,0,0,0-1.55-.39,16.1,16.1,0,0,1-6.65,1.25,1.71,1.71,0,0,1-1.92-1.59,1.69,1.69,0,0,1,1.89-1.75,16.09,16.09,0,0,0,6.3-1.35c1.8-.76,2.61-.52,3.93,1,.81.93,1.57,1.91,2.45,2.77a15.67,15.67,0,0,0,10.43,4.25,31.79,31.79,0,0,0,7.48-.39A1.19,1.19,0,0,0,65.88,81c.25-.77.58-1.51.91-2.37a23.27,23.27,0,0,1-5.24.76c-1.23,0-1.95-.61-2-1.65S60.28,76,61.52,76A15.1,15.1,0,0,0,72,71.54a24.71,24.71,0,0,1,18.9-7.16,23.68,23.68,0,0,1,11,3.16c.8.46,1,.35,1.2-.51,4.09-17,.72-32.36-10.47-45.81A48,48,0,0,0,64.1,4.41C48.21,1.34,33.87,5,21.41,15.35a47.68,47.68,0,0,0-17,28.57C.93,62.8,6.36,78.9,20.5,91.9a48.46,48.46,0,0,0,26.15,12.24,48.45,48.45,0,0,0,15.06,0,7.2,7.2,0,0,1,1.22-.12,1.49,1.49,0,0,1,1.65,1.34,1.47,1.47,0,0,1-1.17,1.87,37.7,37.7,0,0,1-4.09.61A54,54,0,0,1,.23,59.17c0-.23.12-.54-.23-.66v-.9c.19-.2.09-.44.12-.67s.07-.48-.12-.67V53.35A1.73,1.73,0,0,0,0,52V50.89a.29.29,0,0,0,0-.45V49.32A63.76,63.76,0,0,1,1,42,53.6,53.6,0,0,1,12.75,18.76,54.21,54.21,0,0,1,30.63,5,52.62,52.62,0,0,1,46.23.28C47.32.12,48.45.22,49.54,0h.9a.5.5,0,0,0,.67,0h1.12a1.75,1.75,0,0,0,1.35,0h.89a1.75,1.75,0,0,0,1.35,0h1.12a.5.5,0,0,0,.67,0Z" />
-                                                <path class="cls-1" d="M53.58,0a1,1,0,0,1-1.35,0Z" />
-                                                <path class="cls-1" d="M55.82,0a1,1,0,0,1-1.35,0Z" />
-                                                <path class="cls-1" d="M0,52a1,1,0,0,1,0,1.34Z" />
-                                                <path class="cls-1" d="M51.11,0c-.22.27-.45.37-.67,0Z" />
-                                                <path class="cls-1" d="M57.61,0c-.22.37-.45.27-.67,0Z" />
-                                                <path class="cls-1" d="M0,56.27c.29.17.22.43.19.69-.08.08-.14.07-.19,0Z" />
-                                                <path class="cls-1" d="M0,56.94l.19,0c0,.23.19.53-.19.65Z" />
-                                                <path class="cls-1" d="M0,50.44c.34.15.28.3,0,.45Z" />
-                                                <path class="cls-1" d="M54,39.53a8.69,8.69,0,0,0-1.16,3.75,27.06,27.06,0,0,0,.3,10.34,8.26,8.26,0,0,0,1.08,2.56,3.55,3.55,0,0,0,6.07.13A10.52,10.52,0,0,0,61.86,51a34.38,34.38,0,0,0,0-5.37c-.08-1.34.49-2.11,1.53-2.18s1.74.65,1.82,2a26.78,26.78,0,0,1-.94,10.19c-1.36,4-4.4,6-8.26,5.52a6.91,6.91,0,0,1-3.4-1.6c0,4.76,3,8.9,7.07,9.75A9.36,9.36,0,0,0,68,67.12a18.26,18.26,0,0,0,5.87-10.2A38.76,38.76,0,0,0,72,33a21.88,21.88,0,0,0-6.71-8.95A1.77,1.77,0,0,1,64.56,22,1.59,1.59,0,0,1,66,20.89a2.2,2.2,0,0,1,1.69.75,25.65,25.65,0,0,1,7.17,9.46,41.93,41.93,0,0,1,3.28,20.12,29.46,29.46,0,0,1-3.9,13.63c-2.3,3.81-5.39,6.7-9.84,7.74-6.31,1.49-11.94-1.72-14.17-7.94A16.86,16.86,0,0,1,49.15,59c0-4.93-.22-9.87.17-14.79a15.4,15.4,0,0,1,1.36-5.62,3.69,3.69,0,0,1,3.22-2.43,3.63,3.63,0,0,1,3.38,2.35c1.44,2.88,1.68,6,1.73,9.16,0,1.08,0,2.16-.06,3.25C58.9,52.27,58.27,53,57.16,53s-1.61-.76-1.57-2.13a32.54,32.54,0,0,0-.45-8.36A8,8,0,0,0,54,39.53Z" />
-                                                <path class="cls-1" d="M43.7,66.24a13.57,13.57,0,0,1-9.52,6.51,12.68,12.68,0,0,1-2.22.14,1.5,1.5,0,0,1-1.56-1.46,1.53,1.53,0,0,1,1.3-1.8c.69-.14,1.42-.1,2.11-.24,4.58-.93,7.73-4.35,8.57-9.2a29,29,0,0,0,.3-4.46c.06-4.29-.22-8.6.37-12.87a18.87,18.87,0,0,1,3.55-9.4,9.15,9.15,0,0,1,14.82,0,15.14,15.14,0,0,1,2.51,4.83A1.68,1.68,0,0,1,63,40.5a1.65,1.65,0,0,1-2.23-1.1,13.91,13.91,0,0,0-2.13-4,5.79,5.79,0,0,0-9.35.08A14.08,14.08,0,0,0,46.45,43a88.23,88.23,0,0,0,0,19.56c.72,5.93,3.56,10.53,9.5,12.7a1.65,1.65,0,0,1,1.13,2.21,1.71,1.71,0,0,1-2.34.91A16.58,16.58,0,0,1,44.59,68.6C44.29,67.88,44,67.15,43.7,66.24Z" />
-                                                <path class="cls-1" d="M71.73,48A26.48,26.48,0,0,1,69.1,60.81c-1.69,3.24-4.12,5.56-7.89,6.11a4,4,0,0,1-1.34,0,1.57,1.57,0,0,1-1.43-1.71,1.45,1.45,0,0,1,1.42-1.58c3.56-.12,5.41-2.39,6.68-5.29,1.92-4.4,2.11-9,1.73-13.74a29,29,0,0,0-2.4-9.94c-2.5-5.43-7.21-8.42-12.89-8-4.43.31-7.62,2.73-9.93,6.41a20.18,20.18,0,0,0-2.23,5.46,9.67,9.67,0,0,1-.27,1,1.58,1.58,0,0,1-2,1,1.5,1.5,0,0,1-1.21-1.86c1.75-8.43,7.11-14.08,14.23-15.26a16.21,16.21,0,0,1,16.75,8.69,32.42,32.42,0,0,1,3.39,13.67C71.77,46.53,71.73,47.28,71.73,48Z" />
-                                                <path class="cls-1" d="M29.82,50.84a47,47,0,0,1,2-16.21c2.16-6.53,5.8-11.94,12-15.26A21.31,21.31,0,0,1,61.05,18c1.18.38,1.69,1.24,1.38,2.18a1.68,1.68,0,0,1-2.35,1c-9.1-3.06-18.58.9-23.33,10.32A36,36,0,0,0,33.2,47.18c-.07,3.55,0,7.09,0,10.64,0,1.22-.63,2-1.63,2a1.71,1.71,0,0,1-1.72-1.91C29.81,55.83,29.82,53.74,29.82,50.84Z" />
-                                                <path class="cls-1" d="M39.7,51.42c-.15,2.91.17,5.83-.46,8.71-.85,3.88-3.54,6.45-7.08,6.74-1.39.11-2.23-.42-2.33-1.49s.6-1.67,1.92-1.85c2.47-.32,3.92-1.93,4.34-4.79a41.71,41.71,0,0,0,.18-5.7c0-2.58,0-5.16.09-7.73a1.68,1.68,0,0,1,2.52-1.64,1.74,1.74,0,0,1,.83,1.71C39.69,47.39,39.7,49.41,39.7,51.42Z" />
-                                                <path class="cls-1" d="M52.76,91.22a23.39,23.39,0,0,1-16.31-7.33c-1-1-1-2-.21-2.73s1.69-.58,2.63.41a20.29,20.29,0,0,0,14.6,6.3,5,5,0,0,1,.78,0,1.59,1.59,0,0,1,1.42,1.72,1.57,1.57,0,0,1-1.44,1.59A9.9,9.9,0,0,1,52.76,91.22Z" />
-                                            </svg>
-
-                                            <!-- <img src="{{asset('images/Icons_applicant_details.svg')}}" width="70px" height="auto" style="margin-right:50px"> -->
-                                        </span>
-                                        <span class="title" style="display:inline-block">
-                                            |&nbsp; {{ __('Authentication') }}
-                                        </span>
-                                    </a>
-                                </h4>
-                            </div>
-                            <hr style="height:1px;border:none;color:#ccc;background-color:#ccc;">
-                            <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-                                <div class="panel-body">
-
-                                    @if (Laravel\Fortify\Features::canManageTwoFactorAuthentication())
-                                    <div class="mt-10 sm:mt-0">
-                                        @livewire('profile.two-factor-authentication-form')
-                                    </div>
-
-                                    <x-jet-section-border />
-                                    @endif
-
-                                    <div class="mt-10 sm:mt-0">
-                                        @livewire('profile.logout-other-browser-sessions-form')
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-
-                        <p style="margin-top: 5px;"> &nbsp; </p>
-                        --}}
 
                         <!-- Tab Four -->
                         <!-- <div class="panel panel-default card" style="border-radius: 10px;margin-top:1px">
@@ -352,7 +329,8 @@
                                             </svg>
                                         </span>
                                         <span class="title" style="display:inline-block">
-                                            |&nbsp; {{ __('Delete Account') }}
+                                            |&nbsp; <?php echo e(__('Delete Account')); ?>
+
                                         </span>
                                     </a>
                                 </h4>
@@ -361,15 +339,7 @@
                             <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
                                 <div class="panel-body">
                                                     -->
-{{--
-                                    @if (Laravel\Jetstream\Jetstream::hasAccountDeletionFeatures())
-                                    <x-jet-section-border />
 
-                                    <div class="mt-10 sm:mt-0">
-                                        @livewire('profile.delete-user-form')
-                                    </div>
-                                    @endif
---}}
                                     <!--                                    
 
                                 </div>
@@ -407,10 +377,11 @@
                                                     <rect class="cls-1" x="72.74" y="39.86" width="4.05" height="2.61" rx="0.76" />
                                                 </svg>
 
-                                                <!-- <img src="{{asset('images/Icons_applicant_details.svg')}}" width="70px" height="auto" style="margin-right:50px"> -->
+                                                <!-- <img src="<?php echo e(asset('images/Icons_applicant_details.svg')); ?>" width="70px" height="auto" style="margin-right:50px"> -->
                                         </span>
                                         <span class="title" style="display:inline-block">
-                                            |&nbsp; {{ __('Payment Card Information') }}
+                                            |&nbsp; <?php echo e(__('Payment Card Information')); ?>
+
                                         </span>
                                     </a>
                                 </h4>
@@ -419,7 +390,7 @@
                             <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
                                 <div class="panel-body">
 
-                                    @include('profile.card-info')
+                                    <?php echo $__env->make('profile.card-info', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
                                 </div>
                             </div>
@@ -432,4 +403,4 @@
     </div>
 </body>
 
-@livewireScripts
+<?php echo \Livewire\Livewire::scripts(); ?><?php /**PATH C:\Users\dejia\OneDrive\Desktop\mygit\pwg_eportal\resources\views/profile/show.blade.php ENDPATH**/ ?>
