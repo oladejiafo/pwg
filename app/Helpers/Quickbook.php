@@ -47,10 +47,12 @@ class Quickbook
         $OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
         $authUrl = $OAuth2LoginHelper->getAuthorizationCodeURL();
         return $authUrl;
+
     }
 
     public static function connectQucikBook()
     {
+
         $quickbook = QuickModel::first();
         $dataService = DataService::Configure(array(
             'auth_mode' => 'oauth2',
@@ -64,6 +66,7 @@ class Quickbook
         $dataService->setLogLocation(public_path() . "/QBLog");
         $dataService->throwExceptionOnError(true);
         return $dataService;
+
     }
 
 

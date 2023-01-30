@@ -434,7 +434,7 @@ $cXamount=0;
                 $('.white-desc').hide();
                 if($('.family-desc').is(":visible"))
                 {
-                 $('.family-desc').hide();
+                    $('.family-desc').hide();
                 } else {
                     $('.family-desc').show();
                 }
