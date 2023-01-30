@@ -1,6 +1,6 @@
-@extends('layouts.master')
-<link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
-<link href="{{asset('user/css/products.css')}}" rel="stylesheet">
+
+<link href="<?php echo e(asset('user/css/bootstrap.min.css')); ?>" rel="stylesheet">
+<link href="<?php echo e(asset('user/css/products.css')); ?>" rel="stylesheet">
 
 <style>
   .selected path {
@@ -35,39 +35,39 @@
 </style>
 
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 
-@if($canadaOthers->first())
+<?php if($canadaOthers->first()): ?>
 
-@php 
+<?php 
 $cSamount=0;
 $cXamount=0;
-@endphp
-@foreach($canadaOthers as $canada)
+?>
+<?php $__currentLoopData = $canadaOthers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $canada): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 
-@if($canada->pricing_plan_type == "Study Permit")
-@php  
+<?php if($canada->pricing_plan_type == "Study Permit"): ?>
+<?php  
   $cSname = $canada->pricing_plan_type;
   $cSamount =$cSamount + $canada->total_price;
-@endphp
-@endif
+?>
+<?php endif; ?>
 
-@if($canada->pricing_plan_type == "Express Entry")
-@php  
+<?php if($canada->pricing_plan_type == "Express Entry"): ?>
+<?php  
   $cXname = $canada->pricing_plan_type;
   $cXamount = $cXamount + $canada->total_price;
-@endphp
-@endif
+?>
+<?php endif; ?>
 
-@endforeach
+<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
-@endif
+<?php endif; ?>
 
     <div class="container" style="margin-top: 150px;">
         <div class="col-12">
             <div class="package">
                 <div class="header">
-                    <h3>{{$data->name}} Package Types</h3>
+                    <h3><?php echo e($data->name); ?> Package Types</h3>
                     <div class="bottoom-title">
                         <p>We’ve got you covered</p>
                     </div>
@@ -75,46 +75,46 @@ $cXamount=0;
                 
                 <div class="row" style="margin-left:auto; margin-right:auto; text-align:center;justify-content: center; display: flex;">
                 
-                      @if($proddet->first())
-                        @foreach($proddet as $prdet)
-                        @if ($loop->first)
+                      <?php if($proddet->first()): ?>
+                        <?php $__currentLoopData = $proddet; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $prdet): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php if($loop->first): ?>
                     
-                            @php                                   
+                            <?php                                   
                             $blue_cost = $prdet->total_price
-                            @endphp 
+                            ?> 
 
-                            @endif
-                        @endforeach
-                        @else 
-                        @php                                   
+                            <?php endif; ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php else: ?> 
+                        <?php                                   
                             $blue_cost = 0
-                            @endphp
-                        @endif
+                            ?>
+                        <?php endif; ?>
 
                     <div class="col-xs-6 col-md-4" style="display:inline-block;">
                         <div class="package-type blue-collar">
                             <div class="content">
                             <div class="dataCompletedx" id="blueSelect">
-                                <img class="selected" style="width:30px" src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="PWG Group approved">
+                                <img class="selected" style="width:30px" src="<?php echo e(asset('images/Affiliate_Program_Section_completed.svg')); ?>" alt="PWG Group approved">
                             </div>
-                                <img src="{{asset('images/yellowWhiteCollar.svg')}}" alt="PWG Group">
+                                <img src="<?php echo e(asset('images/yellowWhiteCollar.svg')); ?>" alt="PWG Group">
                                 <h6>Blue Collar Package</h6>
-                                <p class="amountSection"><span class="amount">{{number_format($blue_cost,0)}}</span><b style="font-size:15px">AED</b></p>
+                                <p class="amountSection"><span class="amount"><?php echo e(number_format($blue_cost,0)); ?></span><b style="font-size:15px">AED</b></p>
                             </div>
                         </div>
                     </div>
                     
-                    @if($data->name == "Canada" && $canada->is_active==1)
+                    <?php if($data->name == "Canada" && $canada->is_active==1): ?>
                     <div class="col-xs-12 col-md-4" style="display:inline-block;">
                         <div class="package-type  study-permit">                            
                             <div class="content">
                              <div class="dataCompletedx" id="studySelect">
-                                <img class="selected" style="width:30px" src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="PWG Group approved">
+                                <img class="selected" style="width:30px" src="<?php echo e(asset('images/Affiliate_Program_Section_completed.svg')); ?>" alt="PWG Group approved">
                              </div>
-                                <img src="{{asset('images/yellowBlueCollar.svg')}}" alt="PWG Group">
+                                <img src="<?php echo e(asset('images/yellowBlueCollar.svg')); ?>" alt="PWG Group">
 
-                                <h6>{{$cSname}} Package</h6>
-                                <p class="amountSection"><span class="amount">{{($cSamount > 0) ? number_format($cSamount,0) : 0}}</span><b style="font-size:15px">AED</b></p>
+                                <h6><?php echo e($cSname); ?> Package</h6>
+                                <p class="amountSection"><span class="amount"><?php echo e(($cSamount > 0) ? number_format($cSamount,0) : 0); ?></span><b style="font-size:15px">AED</b></p>
                             </div>
                         </div>
                     </div>
@@ -122,60 +122,60 @@ $cXamount=0;
                         <div class="package-type  express-entry">                            
                             <div class="content">
                              <div class="dataCompletedx" id="expressSelect">
-                                <img class="selected" style="width:30px" src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="PWG Group approved">
+                                <img class="selected" style="width:30px" src="<?php echo e(asset('images/Affiliate_Program_Section_completed.svg')); ?>" alt="PWG Group approved">
                              </div>
-                                <img src="{{asset('images/yellowFamily.svg')}}" alt="PWG Group">
+                                <img src="<?php echo e(asset('images/yellowFamily.svg')); ?>" alt="PWG Group">
 
-                                <h6>{{$cXname}} </h6>
-                                <p class="amountSection"><span class="amount">{{($cXamount > 0) ? number_format($cXamount,0) : 0}}</span><b style="font-size:15px">AED</b></p>
+                                <h6><?php echo e($cXname); ?> </h6>
+                                <p class="amountSection"><span class="amount"><?php echo e(($cXamount > 0) ? number_format($cXamount,0) : 0); ?></span><b style="font-size:15px">AED</b></p>
                             </div>
                         </div>
                     </div>
-                    @endif
+                    <?php endif; ?>
 
 
 
-                        @if($whiteJobs->first())
-                        @foreach($whiteJobs as $whiteJob)
-                        @if ($loop->first)
+                        <?php if($whiteJobs->first()): ?>
+                        <?php $__currentLoopData = $whiteJobs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $whiteJob): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php if($loop->first): ?>
                         
-                            @php                                   
+                            <?php                                   
                             $whiteJob_cost = $whiteJob->total_price
-                            @endphp 
+                            ?> 
 
-                            @endif
-                        @endforeach
-                        @else 
-                        @php                                   
+                            <?php endif; ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php else: ?> 
+                        <?php                                   
                             $whiteJob_cost = 0
-                            @endphp
-                        @endif
+                            ?>
+                        <?php endif; ?>
 
-                       @if(isset($whiteJob_cost) && $whiteJob_cost > 0)
+                       <?php if(isset($whiteJob_cost) && $whiteJob_cost > 0): ?>
                        <div class="col-xs-12 col-md-4" style="display:inline-block;">
                         <div class="package-type  white-collar">                            
                             <div class="content">
                              <div class="dataCompletedx" id="whiteSelect">
-                                <img class="selected" style="width:30px" src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="PWG Group approved">
+                                <img class="selected" style="width:30px" src="<?php echo e(asset('images/Affiliate_Program_Section_completed.svg')); ?>" alt="PWG Group approved">
                              </div>
-                                <img src="{{asset('images/yellowBlueCollar.svg')}}" alt="PWG Group">
+                                <img src="<?php echo e(asset('images/yellowBlueCollar.svg')); ?>" alt="PWG Group">
 
                                 <h6>White Collar Package</h6>
-                                <p class="amountSection"><span class="amount">{{($whiteJob_cost > 0) ? number_format($whiteJob_cost,0) : 0}}</span><b style="font-size:15px">AED</b></p>
+                                <p class="amountSection"><span class="amount"><?php echo e(($whiteJob_cost > 0) ? number_format($whiteJob_cost,0) : 0); ?></span><b style="font-size:15px">AED</b></p>
                                                       
-                                   @if($whiteJob_cost == 0)
+                                   <?php if($whiteJob_cost == 0): ?>
                                    <p style="font-size: 14px">
                                      Package Not Available 
                                    </p> 
-                                   @endif
+                                   <?php endif; ?>
                                 
                             </div>
                         </div>
                         </div>
-                        @endif
+                        <?php endif; ?>
 
 
-                    @if($famdet)
+                    <?php if($famdet): ?>
                         <!-- <style>
                             .package-typed {
                                 align-items: center;
@@ -190,20 +190,20 @@ $cXamount=0;
                         <div class="package-type family-package">
                             <div class="content">
                             <div class="dataCompletedx" id="familySelect">
-                                <img class="selected" style="width:30px" src="{{asset('images/Affiliate_Program_Section_completed.svg')}}"  alt="PWG Group approved">
+                                <img class="selected" style="width:30px" src="<?php echo e(asset('images/Affiliate_Program_Section_completed.svg')); ?>"  alt="PWG Group approved">
                             </div>
-                                <img src="{{asset('images/yellowFamily.svg')}}" alt="PWG Group">
+                                <img src="<?php echo e(asset('images/yellowFamily.svg')); ?>" alt="PWG Group">
                                 <h6>Family Package</h6>
-                                <p class="amountSection"><span class="Famamount">{{($famdet) ?  number_format($famdet['total_price'],0) : 0 }}</span><b style="font-size:15px">AED</b></p>
-                                   @if(!$famdet)
+                                <p class="amountSection"><span class="Famamount"><?php echo e(($famdet) ?  number_format($famdet['total_price'],0) : 0); ?></span><b style="font-size:15px">AED</b></p>
+                                   <?php if(!$famdet): ?>
                                    <p style="font-size: 14px">
                                      Package Not Available 
                                    </p> 
-                                   @endif
+                                   <?php endif; ?>
                             </div>
                         </div>
                     </div>
-                    @endif
+                    <?php endif; ?>
                     <p style="font-size:11px; color:#ccc">Click on a package to select</p>
                     </div>
 
@@ -211,31 +211,31 @@ $cXamount=0;
                     <div class="package-desc">
                         <div class="blue-desc">
                             
-                           {{-- @include('user.package-jobs') --}}
+                           
                             <div class="form-group row" style="margin-top: -120px;"> 
                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                <form method="POST" action="{{ url('product') }}">
-                                    @csrf
-                                    <input type="hidden" name="cost" value="{{$blue_cost}}">
+                                <form method="POST" action="<?php echo e(url('product')); ?>">
+                                    <?php echo csrf_field(); ?>
+                                    <input type="hidden" name="cost" value="<?php echo e($blue_cost); ?>">
                                    
                                      <input type="hidden" value="Blue Collar Jobs" name="myPack">
-                                    <!-- <a class="btn btn-primary" href="{{ url('product') }}" style="width: 100%;font-size: 24px;">Continue</a> -->
+                                    <!-- <a class="btn btn-primary" href="<?php echo e(url('product')); ?>" style="width: 100%;font-size: 24px;">Continue</a> -->
                                     <button type="submit" class="btn btn-primary" style="width: 100%;font-size: 24px;">Continue</button>
                                 </form>
                                 </div>
                             </div>
                         </div>
                      
-                       @if($data->name == "Canada" && $canada->is_active==1)
+                       <?php if($data->name == "Canada" && $canada->is_active==1): ?>
                         <div class="study-desc">
                         
                             <div class="form-group row" style="margin-top: -120px"> 
                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                <form method="POST" action="{{ url('product') }}">
-                                    @csrf
-                                    <input type="hidden" name="cost" value="{{$cSamount}}">
-                                    <input type="hidden" value="{{$cSname}}" name="myPack">
-                                    <!-- <a class="btn btn-primary" href="{{ url('product') }}" style="width: 100%;font-size: 24px;">Continue</a> -->
+                                <form method="POST" action="<?php echo e(url('product')); ?>">
+                                    <?php echo csrf_field(); ?>
+                                    <input type="hidden" name="cost" value="<?php echo e($cSamount); ?>">
+                                    <input type="hidden" value="<?php echo e($cSname); ?>" name="myPack">
+                                    <!-- <a class="btn btn-primary" href="<?php echo e(url('product')); ?>" style="width: 100%;font-size: 24px;">Continue</a> -->
                                     <button type="submit" class="btn btn-primary" style="width: 100%;font-size: 24px;">Continue</button>
                                 </form>
                                 </div>
@@ -246,37 +246,37 @@ $cXamount=0;
                         
                          <div class="form-group row" style="margin-top: -120px"> 
                             <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                            <form method="POST" action="{{ url('product') }}">
-                                @csrf
-                                <input type="hidden" name="cost" value="{{$cXamount}}">
-                                <input type="hidden" value="{{$cXname}}" name="myPack">
-                                <!-- <a class="btn btn-primary" href="{{ url('product') }}" style="width: 100%;font-size: 24px;">Continue</a> -->
+                            <form method="POST" action="<?php echo e(url('product')); ?>">
+                                <?php echo csrf_field(); ?>
+                                <input type="hidden" name="cost" value="<?php echo e($cXamount); ?>">
+                                <input type="hidden" value="<?php echo e($cXname); ?>" name="myPack">
+                                <!-- <a class="btn btn-primary" href="<?php echo e(url('product')); ?>" style="width: 100%;font-size: 24px;">Continue</a> -->
                                 <button type="submit" class="btn btn-primary" style="width: 100%;font-size: 24px;">Continue</button>
                             </form>
                             </div>
                         </div>
                        </div>
-                       @endif
+                       <?php endif; ?>
 
-                       @if(isset($whiteJob_cost) && $whiteJob_cost == 0)
+                       <?php if(isset($whiteJob_cost) && $whiteJob_cost == 0): ?>
                         
                         <script>
                             $(document).ready(function(){
                             $('.white-desc').hide();
                         </script>
-                        @else     
+                        <?php else: ?>     
                        
-                       @endif
+                       <?php endif; ?>
                        <div class="white-desc">
-                             {{-- @include('user.white-collar-packge') --}}
+                             
                         
                             <div class="form-group row" style="margin-top: -120px"> 
                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                <form method="POST" action="{{ url('product') }}">
-                                    @csrf
-                                    <input type="hidden" name="cost" value="{{$whiteJob_cost}}">
+                                <form method="POST" action="<?php echo e(url('product')); ?>">
+                                    <?php echo csrf_field(); ?>
+                                    <input type="hidden" name="cost" value="<?php echo e($whiteJob_cost); ?>">
                                     <input type="hidden" value="White Collar Jobs" name="myPack">
-                                    <!-- <a class="btn btn-primary" href="{{ url('product') }}" style="width: 100%;font-size: 24px;">Continue</a> -->
+                                    <!-- <a class="btn btn-primary" href="<?php echo e(url('product')); ?>" style="width: 100%;font-size: 24px;">Continue</a> -->
                                     <button type="submit" class="btn btn-primary" style="width: 100%;font-size: 24px;">Continue</button>
                                 </form>
                                 </div>
@@ -292,26 +292,26 @@ $cXamount=0;
                                 </div>
                             </div>
 
-                            <form method="POST" action="{{ url('product') }}">
+                            <form method="POST" action="<?php echo e(url('product')); ?>">
                            
-                                @csrf
+                                <?php echo csrf_field(); ?>
                               
-                                <input type="hidden" name="productId" value="{{$productId}}">
-                                <input type="hidden" class="hiddenFamAmount" name="cost" value="{{($famdet) ?  number_format($famdet['total_price']) : 0 }}">
+                                <input type="hidden" name="productId" value="<?php echo e($productId); ?>">
+                                <input type="hidden" class="hiddenFamAmount" name="cost" value="<?php echo e(($famdet) ?  number_format($famdet['total_price']) : 0); ?>">
                                 <input type="hidden" value="FAMILY PACKAGE" name="myPack">
-                                <input type="hidden" value="{{($famdet) ? $famdet->id : 0 }}" name="fam_id">
+                                <input type="hidden" value="<?php echo e(($famdet) ? $famdet->id : 0); ?>" name="fam_id">
 
                                 <div class="partner-sec">
                                 <?php $XYZ = Session::get('mySpouse'); ?>
                                     <p style="height: 13px"><span class="header"> Partner/Spouse</span>
                                         Yes
                                         <label class="switch">
-                                            <input type="radio" id="mySpouse" name="spouse" @if($XYZ == 'yes' ) checked="checked" @endif  onclick="handleClick(this);" value="yes">
+                                            <input type="radio" id="mySpouse" name="spouse" <?php if($XYZ == 'yes' ): ?> checked="checked" <?php endif; ?>  onclick="handleClick(this);" value="yes">
                                             <span class="slider round"></span>
                                         </label>
                                         
                                         No<label class="switch">
-                                            <input type="radio" id="mySpouse" name="spouse" @if($XYZ == 'no' || $XYZ == null) checked="checked" @endif onclick="handleClick(this);" value="no">
+                                            <input type="radio" id="mySpouse" name="spouse" <?php if($XYZ == 'no' || $XYZ == null): ?> checked="checked" <?php endif; ?> onclick="handleClick(this);" value="no">
                                             <span class="slider round"></span>
                                         </label>
                                     </p>
@@ -325,30 +325,24 @@ $cXamount=0;
                                     <p style="height: 13px">
                                         <span class="header"> Children</span>
                                         <ul class="children">
-                                            {{--<li>
-                                                <input type="radio" id="none" name="children" @if($ABC == 0 || $ABC==null ) checked="checked" @endif  onclick="handleKids(this);" value="0"/>
-                                                <label for="none">None</label>
-                                            </li> --}}
+                                            
                                             <li>
-                                                <input type="radio" id="one" name="children" @if($ABC == 1 || $ABC==null ) checked="checked" @endif onclick="handleKids(this);" value="1"/>
+                                                <input type="radio" id="one" name="children" <?php if($ABC == 1 || $ABC==null ): ?> checked="checked" <?php endif; ?> onclick="handleKids(this);" value="1"/>
                                                 <label for="one">One</label>
                                             </li>
                                             <li>
-                                                <input type="radio" id="two" name="children" @if($ABC == 2 ) checked="checked" @endif onclick="handleKids(this);" value="2" />
+                                                <input type="radio" id="two" name="children" <?php if($ABC == 2 ): ?> checked="checked" <?php endif; ?> onclick="handleKids(this);" value="2" />
                                                 <label for="two">Two</label>
                                             </li>
                                             <li>
-                                                <input type="radio" id="three" name="children" @if($ABC == 3 ) checked="checked" @endif onclick="handleKids(this);" value="3" />
+                                                <input type="radio" id="three" name="children" <?php if($ABC == 3 ): ?> checked="checked" <?php endif; ?> onclick="handleKids(this);" value="3" />
                                                 <label for="three">Three</label>
                                             </li>
                                             <li>
-                                                <input type="radio" id="four" name="children" @if($ABC == 4 ) checked="checked" @endif onclick="handleKids(this);" value="4" />
+                                                <input type="radio" id="four" name="children" <?php if($ABC == 4 ): ?> checked="checked" <?php endif; ?> onclick="handleKids(this);" value="4" />
                                                 <label for="four">Four</label>
                                             </li>
-                                            {{-- <li>
-                                                <input type="radio" id="five" disabled="disabled" name="children" @if($ABC == 5 ) checked="checked" @endif  onclick="handleKids(this);" value="5" />
-                                                <label for="five">Five</label>
-                                            </li> --}}
+                                            
                                         </ul>
                                     </p>
                                 </div>
@@ -368,8 +362,8 @@ $cXamount=0;
 
     </div>
 
-@endSection
-@push('custom-scripts')
+<?php $__env->stopSection(); ?>
+<?php $__env->startPush('custom-scripts'); ?>
 <script>
     $(document).ready(function(){
             $('.blue-desc').hide();
@@ -509,7 +503,7 @@ $cXamount=0;
         });
 
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
@@ -534,7 +528,7 @@ getCost(kidd,parents);
 
 
 //  document.cookie = 'pers='+kidd ; 
-//  window.location.href = "{{ route('packageType',$productId) }}";
+//  window.location.href = "<?php echo e(route('packageType',$productId)); ?>";
 }
 
 function getCost(kidd, parents)
@@ -542,7 +536,7 @@ function getCost(kidd, parents)
  
     $.ajax({
         type: 'GET',
-        url: "{{ route('packageType',$productId)  }}",
+        url: "<?php echo e(route('packageType',$productId)); ?>",
         data: {kid : kidd, parents: parents , response : 1}, 
         success: function (data) {
             $('.Famamount').text(parseFloat(data.total_price).toLocaleString());
@@ -554,3 +548,4 @@ function getCost(kidd, parents)
 }
 
 </script>
+<?php echo $__env->make('layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\dejia\OneDrive\Desktop\mygit\pwg_eportal\resources\views/user/package-type.blade.php ENDPATH**/ ?>
