@@ -13,8 +13,11 @@ use Illuminate\Support\Facades\Storage;
 use App\Constant;
 use \setasign\Fpdi\PdfParser\StreamReader;
 use App\Helpers\users as UserHelper;
+use Spatie\PdfToImage\Pdf;
 use Exception;
-
+use Imagick;
+use ImagickDraw;
+use ImagickPixel;
 
 class pdfBlock
 {
@@ -23,24 +26,50 @@ class pdfBlock
     {
 
         $pdf = new \setasign\Fpdi\Fpdi();
-        $pdf->AddPage();
+        $pagecount = $pdf->setSourceFile("pdf/workpermittemplate.pdf");
+        // for ($pageNo = 1; $pageNo <= $pagecount; $pageNo++) {
 
-        $pagecount = $pdf->setSourceFile("pdf/test.pdf");
+        $pdf->AddPage();
         $template = $pdf->importPage(1);
 
         // use the imported page and place it at point 20,30 with a width of 170 mm
         $pdf->useTemplate($template);
 
+        // //mask
+        $mask = "user/images/mask2.jpg";
+        // if ($pageNo == 1){
+        $pdf->Image($mask, 145, 19, 50, 4, 'JPG');
+        $pdf->Image($mask, 22, 56, 35, 5, 'JPG');
+        $pdf->Image($mask, 145, 56, 40, 5, 'JPG');
+        $pdf->Image($mask, 107, 79, 35, 5, 'JPG');
+        $pdf->Image($mask, 21, 149, 90, 4, 'JPG');
+        // }
+
         //Select Arial italic 8
-        $pdf->SetFont('Arial', '', 8);
-        $pdf->SetTextColor(0, 0, 0);
-        $pdf->SetXY(90, 160);
+        // $pdf->SetFont('Arial', '', 8);
+        // $pdf->SetTextColor(0, 0, 0);
+        // $pdf->SetXY(90, 160);
 
-        $pdf->Image('pdf/block.jpg', 10, 10, -300, -100);
+        // $pdf->Image('pdf/block.jpg', 10, 10, -300, -100);
 
-        $pdf->Write(0, "Hello World");
+        // $pdf->Write(0, "Hello World");
 
-        $pdf->Output("pdf/modified_pdf.pdf", "F");
+        // $pdf->Output("pdf/modified_pdf.pdf", "F");   
+        // }
+        $newFileName = 'workpermit' . Auth::id() . '-' . UserHelper::getRandomString() . '-' . '.pdf';
+        $destination_file = 'Applications/Contracts/workPermit/' . $newFileName;
+        $theString = $pdf->Output('S');
+
+        Storage::disk(env('MEDIA_DISK'))->put($destination_file, $theString, 'public');
+        $client = User::find(Auth::id());
+        // $client->addMediaFromString($theString)->usingFileName($newFileName)->toMediaCollection(User::$media_collection_main_resume, 'local');
+
+        // $spdf = new Spatie\PdfToImage\Pdf('Applications/Contracts/workPermit/workpermitsample.pdf');
+        // $spdf->saveImage('Applications/Contracts/workPermit/workpit'. UserHelper::getRandomString() . '-' . '.jpg');
+        // $imagick = new Imagick();
+        // $imagick->readImage('Applications/Contracts/workPermit/workpermitsample.pdf[0]');
+        // $imagick->writeImages('workpit'. UserHelper::getRandomString() . '-' . '.jpg');
+
     }
 
 
@@ -537,7 +566,7 @@ class pdfBlock
         } else {
             $fileContent = file_get_contents($originalPdf, 'rb');
             $pagecount = $pdf->setSourceFile(StreamReader::createByString($fileContent));
-        } 
+        }
         for ($pageNo = 1; $pageNo <= $pagecount; $pageNo++) {
             $pdf->AddPage();
             $template = $pdf->importPage($pageNo);
