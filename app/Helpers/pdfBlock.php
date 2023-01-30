@@ -490,10 +490,18 @@ class pdfBlock
         $productName = strtolower($product);
         $package = $applicant->work_permit_category;
         if ($applicant->second_payment_status == 'PAID') {
-            $originalPdf = (isset($applicant->getMedia(Applicant::$media_collection_main_2nd_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_2nd_signature)[0]->getUrl() : null;
+            if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+                $originalPdf = (isset($applicant->getMedia(Applicant::$media_collection_main_2nd_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_2nd_signature)[0]->getUrl() : null;
+            } else {
+                $originalPdf = (isset($applicant->getMedia(Applicant::$media_collection_main_2nd_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_2nd_signature)[0]->getPath() : null;
+            }
             $destination_file = Applicant::$media_collection_main_2nd_signature;
         } elseif ($applicant->first_payment_status == 'PAID' || $applicant->first_payment_status == 'PARTIAL') {
-            $originalPdf = (isset($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getUrl() : null;
+            if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+                $originalPdf = (isset($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getUrl() : null;
+            } else {
+                $originalPdf = (isset($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getPath() : null;
+            }
             $destination_file = Applicant::$media_collection_main_1st_signature;
         } else {
             if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
