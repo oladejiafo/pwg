@@ -57,6 +57,9 @@ class EnvironmentPathGenerator extends DefaultPathGenerator
             case 'contract_1st_payment_collection_pdf':
                 $path = 'Applications/PaymentReceipts/First/';
                 break;
+            case 'contract_submission_signature_collection_pdf':
+                $path = 'Applications/Contracts/Submission/';
+                break;
             case 'contract_2nd_payment_collection_pdf':
                 $path = 'Applications/PaymentReceipts/Second/';
                 break;
