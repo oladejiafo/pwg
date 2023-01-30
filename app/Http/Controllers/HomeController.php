@@ -553,7 +553,7 @@ class HomeController extends Controller
 
     public function payment(Request $request)
     {
-        try {
+        // try {
             $famCode = 0;
             if (Auth::id()) {
                 Session::forget('haveCoupon');
@@ -652,31 +652,27 @@ class HomeController extends Controller
                         } elseif ($pays->first_payment_status == "PAID" && $pays->submission_payment_status != "PAID") {
                             $originalPdf = (isset($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getUrl() : null;
                             if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
-                                // if (File::exists($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getPath())) {
-                                if (Storage::disk('s3')->exists($originalPdf)) {
+                                    if (Storage::disk('s3')->exists($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getPath())) {
+                                    } else {
+                                        $originalPdf = Storage::disk(env('MEDIA_DISK'))->url('Applications/Contracts/client_contracts/' . $applicant->contract);
+                                    }
                                 } else {
-                                    $originalPdf = Storage::disk(env('MEDIA_DISK'))->url('Applications/Contracts/client_contracts/' . $applicant->contract);
+                                    if (File::exists($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getPath())) {
+                                    } else {
+                                        $originalPdf = Storage::disk('local')->url('Applications/Contracts/client_contracts/' . $applicant->contract);
+                                    }
+                                    $originalPdf = ltrim($originalPdf, $originalPdf[0]);
                                 }
-                            } else {
-                                if (Storage::disk('local')->exists($originalPdf)) {
-                                    // if (File::exists($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getPath())) {
-                                } else {
-                                    $originalPdf = Storage::disk('local')->url('Applications/Contracts/client_contracts/' . $applicant->contract);
-                                }
-                                $originalPdf = ltrim($originalPdf, $originalPdf[0]);
-                            }
                             $paymentType =  "Second Payment";
                         } elseif ($pays->submission_payment_status == "PAID" && $pays->second_payment_status != "PAID") {
                             $originalPdf = (isset($applicant->getMedia(Applicant::$media_collection_main_submission_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_submission_signature)[0]->getUrl() : null;
                             if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
-                                if (Storage::disk('s3')->exists($originalPdf)) {
-                                    // if (File::exists($applicant->getMedia(Applicant::$media_collection_main_submission_signature)[0]->getPath())) {
+                                if (Storage::disk('s3')->exists($applicant->getMedia(Applicant::$media_collection_main_submission_signature)[0]->getPath())) {
                                 } else {
                                     $originalPdf = Storage::disk(env('MEDIA_DISK'))->url('Applications/Contracts/client_contracts/' . $applicant->contract);
                                 }
                             } else {
-                                if (Storage::disk('local')->exists($originalPdf)) {
-                                    // if (File::exists($applicant->getMedia(Applicant::$media_collection_main_submission_signature)[0]->getPath())) {
+                                if (File::exists($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getPath())) {
                                 } else {
                                     $originalPdf = Storage::disk('local')->url('Applications/Contracts/client_contracts/' . $applicant->contract);
                                 }
@@ -716,9 +712,9 @@ class HomeController extends Controller
                 // return redirect()->back()->with('message', 'You are not authorized');
                 return redirect('home');
             }
-        } catch (Exception $e) {
-            return redirect('home')->with('error', $e->getMessage());
-        }
+        // } catch (Exception $e) {
+        //     return redirect('home')->with('error', $e->getMessage());
+        // }
     }
 
 

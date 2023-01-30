@@ -226,7 +226,6 @@ class pdfBlock
         $pdf = new \setasign\Fpdi\Fpdi();
         $fileContent = file_get_contents($originalPdf, 'rb');
         $pagecount = $pdf->setSourceFile(StreamReader::createByString($fileContent));
-        // return $originalPdf;
         for ($pageNo = 1; $pageNo <= $pagecount; $pageNo++) {
             $pdf->AddPage();
             $template = $pdf->importPage($pageNo);
@@ -491,10 +490,10 @@ class pdfBlock
         $productName = strtolower($product);
         $package = $applicant->work_permit_category;
         if ($applicant->second_payment_status == 'PAID') {
-            $originalPdf = (isset($applicant->getMedia(Applicant::$media_collection_main_2nd_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_2nd_signature)[0]->getUrl() : null;
+            $originalPdf = (isset($applicant->getMedia(Applicant::$media_collection_main_2nd_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_2nd_signature)[0]->getPath() : null;
             $destination_file = Applicant::$media_collection_main_2nd_signature;
         } elseif ($applicant->first_payment_status == 'PAID' || $applicant->first_payment_status == 'PARTIAL') {
-            $originalPdf = (isset($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getUrl() : null;
+            $originalPdf = (isset($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getPath() : null;
             $destination_file = Applicant::$media_collection_main_1st_signature;
         } else {
             if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
