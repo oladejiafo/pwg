@@ -152,19 +152,25 @@ class HomeController extends Controller
                 ->where('pricing_plan_type', 'FAMILY_PACKAGE')
                 ->where('no_of_parent', $parentt)
                 ->where('no_of_children', $kids)
+                ->where('status','CURRENT')
+                ->orderBy('sub_total', 'asc')
                 ->first();
 
             if ($request->response == 1) {
                 return $famdet;
             }
         } else {
-            $famdet = family_breakdown::where('destination_id', '=', $productId)->where('pricing_plan_type', 'FAMILY_PACKAGE')->first();
+            $famdet = family_breakdown::where('destination_id', '=', $productId)
+                ->where('pricing_plan_type', 'FAMILY_PACKAGE')
+                ->where('status','CURRENT')
+                ->orderBy('sub_total', 'asc')
+                ->first();
         }
 
 
-        $proddet = family_breakdown::where('destination_id', '=', $productId)->where('pricing_plan_type', 'BLUE_COLLAR')->get();
-        $whiteJobs = family_breakdown::where('destination_id', '=', $productId)->where('pricing_plan_type', 'WHITE_COLLAR')->get();
-        $canadaOthers = family_breakdown::where('destination_id', '=', $productId)->whereIn('pricing_plan_type', array('EXPRESS_ENTRY', 'STUDY_PERMIT'))->get();
+        $proddet = family_breakdown::where('destination_id', '=', $productId)->where('pricing_plan_type', 'BLUE_COLLAR')->where('status','CURRENT')->get();
+        $whiteJobs = family_breakdown::where('destination_id', '=', $productId)->where('pricing_plan_type', 'WHITE_COLLAR')->where('status','CURRENT')->get();
+        $canadaOthers = family_breakdown::where('destination_id', '=', $productId)->whereIn('pricing_plan_type', array('EXPRESS_ENTRY', 'STUDY_PERMIT'))->where('status','CURRENT')->get();
         return view('user.package-type', compact('proddet', 'famdet', 'productId', 'whiteJobs', 'data', 'canadaOthers'));
     }
 
@@ -176,7 +182,6 @@ class HomeController extends Controller
         session()->forget('totalCost');
         Session::put('totalCost', $request->cost);
         Session::put('fam_id', $request->fam_id);
-
 
         $data = product::find($id);
         $promo = promo::where('employee_id', '=', $id)->where('active_until', '>=', date('Y-m-d'))->get();
@@ -199,10 +204,13 @@ class HomeController extends Controller
                 ->where('pricing_plan_type', '=', Session::get('packageType'))
                 ->where('no_of_parent', '=', $parentt)
                 ->where('no_of_children', '=', $kids)
+                ->where('status','CURRENT')
+                ->orderBy('sub_total', 'asc')
                 ->first();
         } else {
             $ppay = family_breakdown::where('destination_id', '=', $id)
                 ->where('pricing_plan_type', '=', Session::get('packageType'))
+                ->where('status','CURRENT')
                 // ->where('family_sub_id', '=', Session::get('fam_id'))      
                 ->first();
         }

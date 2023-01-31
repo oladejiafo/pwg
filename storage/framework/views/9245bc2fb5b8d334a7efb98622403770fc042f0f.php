@@ -45,17 +45,17 @@ $cXamount=0;
 ?>
 <?php $__currentLoopData = $canadaOthers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $canada): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 
-<?php if($canada->pricing_plan_type == "Study Permit"): ?>
+<?php if($canada->pricing_plan_type == "STUDY_PERMIT"): ?>
 <?php  
   $cSname = $canada->pricing_plan_type;
-  $cSamount =$cSamount + $canada->total_price;
+  $cSamount =$cSamount + $canada->sub_total - $canada->third_payment_sub_total;
 ?>
 <?php endif; ?>
 
-<?php if($canada->pricing_plan_type == "Express Entry"): ?>
+<?php if($canada->pricing_plan_type == "EXPRESS_ENTRY"): ?>
 <?php  
   $cXname = $canada->pricing_plan_type;
-  $cXamount = $cXamount + $canada->total_price;
+  $cXamount = $cXamount + $canada->sub_total - $canada->third_payment_sub_total;
 ?>
 <?php endif; ?>
 
@@ -79,8 +79,9 @@ $cXamount=0;
                         <?php $__currentLoopData = $proddet; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $prdet): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <?php if($loop->first): ?>
                     
-                            <?php                                   
-                            $blue_cost = $prdet->total_price
+                            <?php 
+                            // $blue_cost = $prdet->total_price
+                            $blue_cost = $prdet->sub_total - $prdet->third_payment_sub_total
                             ?> 
 
                             <?php endif; ?>
@@ -140,7 +141,8 @@ $cXamount=0;
                         <?php if($loop->first): ?>
                         
                             <?php                                   
-                            $whiteJob_cost = $whiteJob->total_price
+                            // $whiteJob_cost = $whiteJob->total_price
+                            $whiteJob_cost = $whiteJob->sub_total - $whiteJob->third_payment_sub_total
                             ?> 
 
                             <?php endif; ?>
@@ -194,7 +196,8 @@ $cXamount=0;
                             </div>
                                 <img src="<?php echo e(asset('images/yellowFamily.svg')); ?>" alt="PWG Group">
                                 <h6>Family Package</h6>
-                                <p class="amountSection"><span class="Famamount"><?php echo e(($famdet) ?  number_format($famdet['total_price'],0) : 0); ?></span><b style="font-size:15px">AED</b></p>
+                                
+                                <p class="amountSection"><span class="Famamount"><?php echo e(($famdet) ?  number_format(($famdet['sub_total']),0) : 0); ?></span><b style="font-size:15px">AED</b></p>
                                    <?php if(!$famdet): ?>
                                    <p style="font-size: 14px">
                                      Package Not Available 
@@ -218,7 +221,7 @@ $cXamount=0;
                                     <?php echo csrf_field(); ?>
                                     <input type="hidden" name="cost" value="<?php echo e($blue_cost); ?>">
                                    
-                                     <input type="hidden" value="Blue Collar Jobs" name="myPack">
+                                     <input type="hidden" value="BLUE_COLLAR" name="myPack">
                                     <!-- <a class="btn btn-primary" href="<?php echo e(url('product')); ?>" style="width: 100%;font-size: 24px;">Continue</a> -->
                                     <button type="submit" class="btn btn-primary" style="width: 100%;font-size: 24px;">Continue</button>
                                 </form>
@@ -275,7 +278,7 @@ $cXamount=0;
                                 <form method="POST" action="<?php echo e(url('product')); ?>">
                                     <?php echo csrf_field(); ?>
                                     <input type="hidden" name="cost" value="<?php echo e($whiteJob_cost); ?>">
-                                    <input type="hidden" value="White Collar Jobs" name="myPack">
+                                    <input type="hidden" value="WHITE_COLLAR" name="myPack">
                                     <!-- <a class="btn btn-primary" href="<?php echo e(url('product')); ?>" style="width: 100%;font-size: 24px;">Continue</a> -->
                                     <button type="submit" class="btn btn-primary" style="width: 100%;font-size: 24px;">Continue</button>
                                 </form>
@@ -297,8 +300,8 @@ $cXamount=0;
                                 <?php echo csrf_field(); ?>
                               
                                 <input type="hidden" name="productId" value="<?php echo e($productId); ?>">
-                                <input type="hidden" class="hiddenFamAmount" name="cost" value="<?php echo e(($famdet) ?  number_format($famdet['total_price']) : 0); ?>">
-                                <input type="hidden" value="FAMILY PACKAGE" name="myPack">
+                                <input type="hidden" class="hiddenFamAmount" name="cost" value="<?php echo e(($famdet) ?  number_format($famdet['sub_total']) : 0); ?>">
+                                <input type="hidden" value="FAMILY_PACKAGE" name="myPack">
                                 <input type="hidden" value="<?php echo e(($famdet) ? $famdet->id : 0); ?>" name="fam_id">
 
                                 <div class="partner-sec">
@@ -379,7 +382,7 @@ $cXamount=0;
             $('#expressSelect').hide()
 
             $('.blue-collar').click(function(){
-                let bluej = "Blue Collar Jobs"
+                let bluej = "BLUE_COLLAR"
                 document.cookie = 'packageType='+bluej ;
 
                 if($('.blue-desc').is(":visible"))
@@ -405,7 +408,7 @@ $cXamount=0;
                 $('#familySelect').hide()
             });
             $('.white-collar').click(function(){
-                let whitej = "White Collar Jobs"
+                let whitej = "WHITE_COLLAR"
                 document.cookie = 'packageType='+whitej ;
 
                 $('.blue-desc').hide();
@@ -427,7 +430,7 @@ $cXamount=0;
                 $('#familySelect').hide()
             });
             $('.family-package').click(function(){
-                let famj = "FAMILY PACKAGE"
+                let famj = "FAMILY_PACKAGE"
                 document.cookie = 'packageType='+famj ;
 
                 $('.blue-desc').hide();
@@ -449,7 +452,7 @@ $cXamount=0;
             });
 
             $('.study-permit').click(function(){
-                let studyj = "Study Permit"
+                let studyj = "STUDY_PERMIT"
                 document.cookie = 'packageType='+studyj ;
 
                 if($('.study-desc').is(":visible"))
@@ -475,7 +478,7 @@ $cXamount=0;
                 $('#familySelect').hide()
             });
             $('.express-entry').click(function(){
-                let expressj = "Express Entry"
+                let expressj = "EXPRESS_ENTRY"
                 document.cookie = 'packageType='+expressj ;
                
                 $('.study-desc').hide();

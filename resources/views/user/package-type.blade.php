@@ -48,14 +48,14 @@ $cXamount=0;
 @if($canada->pricing_plan_type == "STUDY_PERMIT")
 @php  
   $cSname = $canada->pricing_plan_type;
-  $cSamount =$cSamount + $canada->total_price;
+  $cSamount =$cSamount + $canada->sub_total - $canada->third_payment_sub_total;
 @endphp
 @endif
 
 @if($canada->pricing_plan_type == "EXPRESS_ENTRY")
 @php  
   $cXname = $canada->pricing_plan_type;
-  $cXamount = $cXamount + $canada->total_price;
+  $cXamount = $cXamount + $canada->sub_total - $canada->third_payment_sub_total;
 @endphp
 @endif
 
@@ -79,8 +79,9 @@ $cXamount=0;
                         @foreach($proddet as $prdet)
                         @if ($loop->first)
                     
-                            @php                                   
-                            $blue_cost = $prdet->total_price
+                            @php 
+                            // $blue_cost = $prdet->total_price
+                            $blue_cost = $prdet->sub_total - $prdet->third_payment_sub_total
                             @endphp 
 
                             @endif
@@ -140,7 +141,8 @@ $cXamount=0;
                         @if ($loop->first)
                         
                             @php                                   
-                            $whiteJob_cost = $whiteJob->total_price
+                            // $whiteJob_cost = $whiteJob->total_price
+                            $whiteJob_cost = $whiteJob->sub_total - $whiteJob->third_payment_sub_total
                             @endphp 
 
                             @endif
@@ -194,7 +196,8 @@ $cXamount=0;
                             </div>
                                 <img src="{{asset('images/yellowFamily.svg')}}" alt="PWG Group">
                                 <h6>Family Package</h6>
-                                <p class="amountSection"><span class="Famamount">{{($famdet) ?  number_format($famdet['total_price'],0) : 0 }}</span><b style="font-size:15px">AED</b></p>
+                                {{-- - $famdet['third_payment_sub_total'] --}}
+                                <p class="amountSection"><span class="Famamount">{{($famdet) ?  number_format(($famdet['sub_total']),0) : 0 }}</span><b style="font-size:15px">AED</b></p>
                                    @if(!$famdet)
                                    <p style="font-size: 14px">
                                      Package Not Available 
@@ -297,7 +300,7 @@ $cXamount=0;
                                 @csrf
                               
                                 <input type="hidden" name="productId" value="{{$productId}}">
-                                <input type="hidden" class="hiddenFamAmount" name="cost" value="{{($famdet) ?  number_format($famdet['total_price']) : 0 }}">
+                                <input type="hidden" class="hiddenFamAmount" name="cost" value="{{($famdet) ?  number_format($famdet['sub_total']) : 0 }}">
                                 <input type="hidden" value="FAMILY_PACKAGE" name="myPack">
                                 <input type="hidden" value="{{($famdet) ? $famdet->id : 0 }}" name="fam_id">
 
