@@ -374,7 +374,7 @@ class pdfBlock
                         $pdf->Image($signature, 169, 186, 18, 12, 'PNG');
                         $pdf->Image($signature, 169, 217, 18, 12, 'PNG');
                         $pdf->SetXY(166, 234);
-                        $pdf->Write(2, date('d/m/Y'));
+                        $pdf->Write(2, date('d/m/Y')); 
 
                         $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_third_payment_contract.pdf';
                     }
@@ -502,7 +502,6 @@ class pdfBlock
             if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                 $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_2nd_signature, env('MEDIA_DISK'));
             } else {
-
                 $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_2nd_signature, 'local');
             }
             $applicant->contract_2nd_signature_status = 'SIGNED';
@@ -531,9 +530,60 @@ class pdfBlock
         $applicant->save();
     }
 
-    public static function jobLetter($originalPdf, $signature, $product, $paymentType, $applicant)
+    public static function jobLetter($applicant,$date)
     {
-        return true; //url;
+        // if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+        //     $originalPdf = Storage::disk(env('MEDIA_DISK'))->url('Applications/Contracts/client_contracts/' . $applicant->contract);
+        // } else {
+        //     $originalPdf = 'pdf/workpermittemplate.pdf';
+        //     $originalPdf = ltrim($originalPdf, $originalPdf[0]);
+        // }
+        
+        $pdf = new \setasign\Fpdi\Fpdi();
+        // $pagecount = $pdf->setSourceFile($originalPdf);
+        $pagecount = $pdf->setSourceFile("pdf/offer_letter_template.pdf");
+
+        $offer_date = date('F d, Y', strtotime($date. ' + 7 days'));
+
+        $return_date = date('F d, Y', strtotime($offer_date. ' + 7 days'));
+
+        for ($pageNo = 1; $pageNo <= $pagecount; $pageNo++) {
+
+            $pdf->AddPage();
+            $template = $pdf->importPage($pageNo);
+            $client = User::find($applicant);
+            // use the imported page and place it at point 20,30 with a width of 170 mm
+            $pdf->useTemplate($template, 10, 10, 200);
+            //Select Arial italic 8
+            $pdf->SetFont('Arial', 'B', '9');
+            $pdf->SetTextColor(0, 0, 0);
+            if ($pageNo == 1) {
+                // $pdf->Image($signature, 155, 64, 18, 15, 'PNG');
+                $pdf->SetXY(161, 47);
+                $pdf->Write(2, $offer_date);
+
+                $pdf->SetXY(37, 103.5);
+                $pdf->Write(2, $client->name . ' ' . $client->middle_name . ' ' . $client->sur_name);
+
+                $pdf->SetXY(61, 109);
+                $pdf->Write(2, $client->passport_number);
+
+                $pdf->SetXY(37, 115.4);
+                $pdf->Write(2, $client->country_of_residence);
+
+                $pdf->SetXY(60, 126);
+                $pdf->Write(2, $client->name . ' ' . $client->sur_name);
+
+                $pdf->SetXY(57, 178);
+                $pdf->Write(2,  $return_date);
+            }
+        }
+        // $theString = $pdf->Output('S');
+        $destination_file = 'pdf/offer_letter/'.$client->id.'_'.$client->sur_name.'_offer_letter_template.pdf';
+
+    //    Storage::disk('local')->put($destination_file, $theString, 'public');
+        $pdf->Output($destination_file, "F");   
+        // return true; //url;
     }
 
     public static function mapMoreInfo($complete)

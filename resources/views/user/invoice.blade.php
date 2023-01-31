@@ -29,8 +29,21 @@
             $discounted =0;
         }
 
-        $thisAmt = ($user->payable_amount*(100/105)); $thisVat = $user->payable_amount - $thisAmt; 
+        $thisAmt = ($user->payable_amount);
+        $thisAmt_pseudo = ($user->payable_amount*(100/105));
+        // $thisVat = $user->payable_amount - $thisAmt_pseudo; 
     @endphp
+
+@php
+if(Auth::user()->country_of_residence == "United Arab Emirates")
+{
+    $vatP = $thisVat = $pricing->total_price * 5/100;
+} else {
+    $vatP = $thisVat = 0;
+}
+$totalP = $pricing->total_price;
+$total = $totalP + $vatP;
+@endphp
   <body>
         <div class="row" style="margin-bottom:30px;display: block;text-align: center;">
             <div class="col-lg-2 pull-left" valign="top" style="display: inline-block; float:left; height:auto">
@@ -123,16 +136,7 @@
         </div>            
 
 
-@php
-if(Auth::user()->country_of_residence == "United Arab Emirates")
-{
-    $vatP = $pricing->total_price * 5/100;
-} else {
-    $vatP = 0;
-}
-$totalP = $pricing->total_price;
-$total = $totalP + $vatP;
-@endphp
+
 <br>
 @if(Auth::user()->country_of_residence == "United Arab Emirates")
                     <div class="row">
@@ -141,7 +145,10 @@ $total = $totalP + $vatP;
                         </div>
                     </div>
                     <!-- ($user->payable_amount*(100/105)) -->
-                    @php $thisAmt = ($user->payable_amount*(100/105)); $thisVat = $user->payable_amount - $thisAmt; @endphp
+                    @php 
+                    //$thisAmt = ($user->payable_amount*(100/105)); 
+                    //$thisVat = $user->payable_amount - $thisAmt; 
+                    @endphp
                     <div class="row" style="display: block">
                     <b>
                         <div class="col" align="right" style="width:20%;display: inline-block;height:12px; opacity: 0.7;font-size:9px">RATE</div>
