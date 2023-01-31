@@ -23,12 +23,12 @@
                             <tbody><tr>
                                 <td style="box-sizing:border-box;font-family:Yantramanav,sans-serif;max-width:100vw;padding:32px">
                                     <div style="box-sizing:border-box;font-family:Yantramanav,sans-serif;width:400px;height:250px;display:block;margin:30px auto">
-                                        <img src="{{asset('images/offerletter.png')}}" alt="" width="100%" height="100%">
+                                        <img src="<?php echo e(asset('images/resetpassword.png')); ?>" alt="" width="100%" height="100%">
                                     </div>
                                     <h1 style="box-sizing:border-box;font-family:Yantramanav,sans-serif;color:#3d4852;font-size:24px;font-weight:bold;margin-top:0;text-align:left">Job Offer Received</h1>
                                     <p style="box-sizing:border-box;font-family:Yantramanav,sans-serif;font-size:15px;line-height:1.5em;margin-top:0;text-align:left">Dear Applicant,</p>
                                     <p style="box-sizing:border-box;font-family:Yantramanav,sans-serif;font-size:15px;line-height:1.5em;margin-top:0;text-align:left">Congratulations on your first major milestone!</p>
-                                    <p style="box-sizing:border-box;font-family:Yantramanav,sans-serif;font-size:15px;line-height:1.5em;margin-top:0;text-align:left">Your job offer letter is received as promised.<br>Download by clicking below button</p>
+                                    <p style="box-sizing:border-box;font-family:Yantramanav,sans-serif;font-size:15px;line-height:1.5em;margin-top:0;text-align:left">Your job offer letter is received as promised.<br>Download by clicking below to continue to "my application"</p>
                                     <table role="presentation" style="box-sizing:border-box;font-family:Yantramanav,sans-serif;margin:auto;padding:0;text-align:left;float:left;width:100%;margin-bottom:1.5em" width="100%" cellspacing="0" cellpadding="0" align="center">
                                         <tbody><tr>
                                             <td style="box-sizing:border-box;font-family:Yantramanav,sans-serif" align="left">
@@ -38,7 +38,7 @@
                                                             <table role="presentation" style="box-sizing:border-box;font-family:Yantramanav,sans-serif" cellspacing="0" cellpadding="0" border="0">
                                                                 <tbody><tr>
                                                                     <td style="box-sizing:border-box;font-family:Yantramanav,sans-serif">
-                                                                        <a href="{{$data}}" class="m_6264836849513322656button" rel="noopener" style="font-size: 20px;font-weight:500;box-sizing:border-box;float:left;border-radius:4px;color:#fff;display:inline-block;overflow:hidden;text-decoration:none;padding:12px;width:200px;text-align:center;background-color:#2ead0c!important;border:1px solid #c4c6cd" target="_blank" >Click to Download</a>
+                                                                        <a href="<?php echo e($data); ?>" class="m_6264836849513322656button" rel="noopener" style="font-size: 20px;font-weight:500;box-sizing:border-box;float:left;border-radius:4px;color:#fff;display:inline-block;overflow:hidden;text-decoration:none;padding:12px;width:200px;text-align:center;background-color:#2ead0c!important;border:1px solid #c4c6cd" target="_blank" >Click to Download</a>
                                                                     </td>
                                                                 </tr>
                                                             </tbody></table>
@@ -56,7 +56,7 @@
                                             width: 23%;
                                             float: right;
                                             margin-right:25px;">
-                                                <img src="{{asset('images/logoo.png')}}" alt="" width="100%" height="100%">
+                                                <img src="<?php echo e(asset('images/logoo.png')); ?>" alt="" width="100%" height="100%">
                                             </div>
                                         </div>
                         
@@ -70,7 +70,7 @@
                                                 color: #383838;
                                                 text-align: left;
                                                 margin-left:25px">
-                                                ©{{ now()->year }} PWG Group <br>
+                                                ©<?php echo e(now()->year); ?> PWG Group <br>
                                                 The Oberoi Centre, Office - 20th Floor<br>
                                                 Business Bay, Dubai, United Arab Emirates<br>
                                             </p>
@@ -96,4 +96,4 @@
         </tr>
         </tbody></table>
     </body>
-</html>
+</html><?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views/emails/jobofferletter.blade.php ENDPATH**/ ?>

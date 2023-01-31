@@ -290,28 +290,28 @@ class pdfBlock
                     if ($paymentType == 'FIRST' || $paymentType == 'Full-Outstanding Payment') {
                         //signature
 
-                        $pdf->Image($signature, 155, 69, 18, 15, 'PNG');
-                        $pdf->Image($signature, 155, 109, 18, 15, 'PNG');
+                        // $pdf->Image($signature, 155, 69, 18, 15, 'PNG');
+                        // $pdf->Image($signature, 155, 109, 18, 15, 'PNG');
                         $pdf->SetXY(162, 137);
                         $pdf->Write(2, date('d/m/Y'));
 
                         $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_first_payment_contract.pdf';
                     }
                     if ($paymentType == 'SUBMISSION' || $paymentType == 'Full-Outstanding Payment') {
-                        $pdf->Image($signature, 155, 149, 18, 15, 'PNG');
-                        $pdf->Image($signature, 155, 195, 18, 15, 'PNG');
+                        // $pdf->Image($signature, 155, 149, 18, 15, 'PNG');
+                        // $pdf->Image($signature, 155, 195, 18, 15, 'PNG');
                         $pdf->SetXY(162, 226);
                         $pdf->Write(2, date('d/m/Y'));
 
                         $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_second_payment_contract.pdf';
                     }
                 }
-                if ($pageNo == 6) {
+                if ($pageNo == 5) {
 
                     if ($paymentType == 'SECOND' || $paymentType == 'Full-Outstanding Payment') {
 
-                        $pdf->Image($signature, 155, 64, 18, 15, 'PNG');
-                        $pdf->Image($signature, 155, 103, 18, 15, 'PNG');
+                        // $pdf->Image($signature, 155, 64, 18, 15, 'PNG');
+                        // $pdf->Image($signature, 155, 103, 18, 15, 'PNG');
                         $pdf->SetXY(165, 127);
                         $pdf->Write(2, date('d/m/Y'));
 
@@ -319,8 +319,8 @@ class pdfBlock
                     }
                     if ($paymentType == 'Fourth Payment' || $paymentType == 'Full-Outstanding Payment') {
 
-                        $pdf->Image($signature, 167, 170, 18, 12, 'PNG');
-                        $pdf->Image($signature, 167, 200, 18, 12, 'PNG');
+                        // $pdf->Image($signature, 167, 170, 18, 12, 'PNG');
+                        // $pdf->Image($signature, 167, 200, 18, 12, 'PNG');
                         $pdf->SetXY(162, 218);
                         $pdf->Write(2, date('d/m/Y'));
 
@@ -341,8 +341,8 @@ class pdfBlock
                     if ($paymentType == 'FIRST' || $paymentType == 'Full-Outstanding Payment') {
                         //signature
 
-                        $pdf->Image($signature, 155, 72, 18, 15, 'PNG');
-                        $pdf->Image($signature, 155, 117, 18, 15, 'PNG');
+                        // $pdf->Image($signature, 155, 72, 18, 15, 'PNG');
+                        // $pdf->Image($signature, 155, 117, 18, 15, 'PNG');
                         $pdf->SetXY(165, 147);
                         $pdf->Write(2, date('d/m/Y'));
 
@@ -350,20 +350,20 @@ class pdfBlock
                     }
                     if ($paymentType == 'SUBMISSION' || $paymentType == 'Full-Outstanding Payment') {
 
-                        $pdf->Image($signature, 159, 160, 18, 15, 'PNG');
-                        $pdf->Image($signature, 155, 209, 18, 15, 'PNG');
+                        // $pdf->Image($signature, 159, 160, 18, 15, 'PNG');
+                        // $pdf->Image($signature, 155, 209, 18, 15, 'PNG');
                         $pdf->SetXY(165, 238);
                         $pdf->Write(2, date('d/m/Y'));
 
                         $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_second_payment_contract.pdf';
                     }
                 }
-                if ($pageNo == 6) {
+                if ($pageNo == 5) {
 
                     if ($paymentType == 'SECOND' || $paymentType == 'Full-Outstanding Payment') {
 
-                        $pdf->Image($signature, 158, 68, 18, 15, 'PNG');
-                        $pdf->Image($signature, 158, 119, 18, 15, 'PNG');
+                        // $pdf->Image($signature, 158, 68, 18, 15, 'PNG');
+                        // $pdf->Image($signature, 158, 119, 18, 15, 'PNG');
                         $pdf->SetXY(166, 149);
                         $pdf->Write(2, date('d/m/Y'));
 
@@ -371,8 +371,8 @@ class pdfBlock
                     }
                     if ($paymentType == 'Fourth Payment' || $paymentType == 'Full-Outstanding Payment') {
 
-                        $pdf->Image($signature, 169, 186, 18, 12, 'PNG');
-                        $pdf->Image($signature, 169, 217, 18, 12, 'PNG');
+                        // $pdf->Image($signature, 169, 186, 18, 12, 'PNG');
+                        // $pdf->Image($signature, 169, 217, 18, 12, 'PNG');
                         $pdf->SetXY(166, 234);
                         $pdf->Write(2, date('d/m/Y')); 
 
@@ -436,8 +436,8 @@ class pdfBlock
                     if ($paymentType == 'FIRST' || $paymentType == 'Full-Outstanding Payment') {
                         //signature
 
-                        $pdf->Image($signature, 155, 72, 18, 15, 'PNG');
-                        $pdf->Image($signature, 155, 117, 18, 15, 'PNG');
+                        // $pdf->Image($signature, 155, 72, 18, 15, 'PNG');
+                        // $pdf->Image($signature, 155, 117, 18, 15, 'PNG');
                         $pdf->SetXY(165, 147);
                         $pdf->Write(2, date('d/m/Y'));
 
@@ -445,20 +445,20 @@ class pdfBlock
                     }
                     if ($paymentType == 'SUBMISSION' || $paymentType == 'Full-Outstanding Payment') {
 
-                        $pdf->Image($signature, 155, 159, 18, 15, 'PNG');
-                        $pdf->Image($signature, 155, 209, 18, 15, 'PNG');
+                        // $pdf->Image($signature, 155, 159, 18, 15, 'PNG');
+                        // $pdf->Image($signature, 155, 209, 18, 15, 'PNG');
                         $pdf->SetXY(165, 238);
                         $pdf->Write(2, date('d/m/Y'));
 
                         $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_second_payment_contract.pdf';
                     }
                 }
-                if ($pageNo == 6) {
+                if ($pageNo == 5) {
 
                     if ($paymentType == 'SECOND' || $paymentType == 'Full-Outstanding Payment') {
 
-                        $pdf->Image($signature, 155, 64, 18, 15, 'PNG');
-                        $pdf->Image($signature, 155, 128, 18, 15, 'PNG');
+                        // $pdf->Image($signature, 155, 64, 18, 15, 'PNG');
+                        // $pdf->Image($signature, 155, 128, 18, 15, 'PNG');
                         $pdf->SetXY(166, 153.5);
                         $pdf->Write(2, date('d/m/Y'));
 
@@ -466,8 +466,8 @@ class pdfBlock
                     }
                     if ($paymentType == 'Fourth Payment' || $paymentType == 'Full-Outstanding Payment') {
 
-                        $pdf->Image($signature, 170, 200, 18, 12, 'PNG');
-                        $pdf->Image($signature, 170, 229, 18, 12, 'PNG');
+                        // $pdf->Image($signature, 170, 200, 18, 12, 'PNG');
+                        // $pdf->Image($signature, 170, 229, 18, 12, 'PNG');
                         $pdf->SetXY(166, 247);
                         $pdf->Write(2, date('d/m/Y'));
 
@@ -530,18 +530,13 @@ class pdfBlock
         $applicant->save();
     }
 
-    public static function jobLetter($applicant,$date)
+    public static function jobLetter($applicant,$clientId,$date)
     {
-        // if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
-        //     $originalPdf = Storage::disk(env('MEDIA_DISK'))->url('Applications/Contracts/client_contracts/' . $applicant->contract);
-        // } else {
-        //     $originalPdf = 'pdf/workpermittemplate.pdf';
-        //     $originalPdf = ltrim($originalPdf, $originalPdf[0]);
-        // }
         
         $pdf = new \setasign\Fpdi\Fpdi();
-        // $pagecount = $pdf->setSourceFile($originalPdf);
-        $pagecount = $pdf->setSourceFile("pdf/offer_letter_template.pdf");
+        // $pagecount = $pdf->setSourceFile('pdf/offer_letter_template.pdf');
+        $fileContent = file_get_contents(public_path('pdf/offer_letter_template.pdf', 'rb'));
+        $pagecount = $pdf->setSourceFile(StreamReader::createByString($fileContent));
 
         $offer_date = date('F d, Y', strtotime($date. ' + 7 days'));
 
@@ -551,7 +546,7 @@ class pdfBlock
 
             $pdf->AddPage();
             $template = $pdf->importPage($pageNo);
-            $client = User::find($applicant);
+            $client = User::find($clientId);
             // use the imported page and place it at point 20,30 with a width of 170 mm
             $pdf->useTemplate($template, 10, 10, 200);
             //Select Arial italic 8
@@ -578,12 +573,10 @@ class pdfBlock
                 $pdf->Write(2,  $return_date);
             }
         }
-        // $theString = $pdf->Output('S');
-        $destination_file = 'pdf/offer_letter/'.$client->id.'_'.$client->sur_name.'_offer_letter_template.pdf';
-
-    //    Storage::disk('local')->put($destination_file, $theString, 'public');
-        $pdf->Output($destination_file, "F");   
-        // return true; //url;
+        $fileName = 'offer_letter_template_'.$client->id.'_'.$client->sur_name.'.pdf';
+        $theString = $pdf->Output('S');
+        $Applicants = Applicant::find($applicant);
+        $Applicants->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_job_offer_letter, env('MEDIA_DISK'));
     }
 
     public static function mapMoreInfo($complete)
