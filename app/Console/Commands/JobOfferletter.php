@@ -48,7 +48,7 @@ class JobOfferLetter extends Command
         $today = Carbon::now()->format('Y-m-d');;
         $applicants = Payment::join('applications', 'payments.application_id', 'applications.id')
                             ->where('applications.first_payment_status', 'PAID')
-                            ->where('payments.payment_type','First Payment')
+                            ->where('payments.payment_type','FIRST')
                             ->where('applications.is_job_offer_letter_delivered', 0)
                             ->select('payments.created_at', 'applications.id', 'applications.client_id')
                             ->get();

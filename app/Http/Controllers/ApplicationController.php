@@ -1003,7 +1003,7 @@ class ApplicationController extends Controller
 
         if ($applicant) {
             $response['status'] = true;
-            if ($applicant['work_permit_category'] == 'FAMILY PACKAGE') {
+            if ($applicant['work_permit_category'] == 'FAMILY_PACKAGE') {
                 if (Auth::user()->is_spouse  == 1) {
                     $family = User::where('family_member_id', Auth::id())
                         ->where('is_dependent', 1)

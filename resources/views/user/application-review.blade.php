@@ -2597,7 +2597,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            if(('{{$applicant['work_permit_category']}}' == 'FAMILY PACKAGE') && ('{{$client['is_spouse']}}' > 0)){
+            if(('{{$applicant['work_permit_category']}}' == 'FAMILY_PACKAGE') && ('{{$client['is_spouse']}}' > 0)){
                 const dependentcurrentresidancemobile = document.querySelector("#dependent_current_residance_mobile");
                 const dependentcurrentresidancemobileInput = window.intlTelInput(dependentcurrentresidancemobile,{
                     separateDialCode: false,
@@ -3010,7 +3010,7 @@
         });
         let dependentPhoneInput = null;
         let dependentcurrentresidancemobileInput = null;
-        if(('{{$applicant['work_permit_category']}}' == 'FAMILY PACKAGE') && ('{{$client['is_spouse']}}' > 0)){
+        if(('{{$applicant['work_permit_category']}}' == 'FAMILY_PACKAGE') && ('{{$client['is_spouse']}}' > 0)){
             const dependentPhone = document.querySelector("#dependent_phone");
             dependentPhoneInput = window.intlTelInput(dependentPhone,{
                 separateDialCode: false,

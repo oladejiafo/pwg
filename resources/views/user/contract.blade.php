@@ -23,9 +23,9 @@
         @elseif($prodd->name == 'Malta')
             @php $contract_name = "malta.pdf"; @endphp
         @elseif($prodd->name == 'Canada')
-            @if ($package == 'Express Entry')
+            @if ($package == 'EXPRESS_ENTRY')
                 @php $contract_name = "canada_express_entry.pdf"; @endphp
-            @elseif($package == 'Study Permit')
+            @elseif($package == 'STUDY_PERMIT')
                 @php $contract_name = "canada_study.pdf"; @endphp
             @else
                 @php $contract_name = "canada.pdf"; @endphp

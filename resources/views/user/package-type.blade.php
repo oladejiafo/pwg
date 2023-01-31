@@ -45,14 +45,14 @@ $cXamount=0;
 @endphp
 @foreach($canadaOthers as $canada)
 
-@if($canada->pricing_plan_type == "Study Permit")
+@if($canada->pricing_plan_type == "STUDY_PERMIT")
 @php  
   $cSname = $canada->pricing_plan_type;
   $cSamount =$cSamount + $canada->total_price;
 @endphp
 @endif
 
-@if($canada->pricing_plan_type == "Express Entry")
+@if($canada->pricing_plan_type == "EXPRESS_ENTRY")
 @php  
   $cXname = $canada->pricing_plan_type;
   $cXamount = $cXamount + $canada->total_price;
@@ -218,7 +218,7 @@ $cXamount=0;
                                     @csrf
                                     <input type="hidden" name="cost" value="{{$blue_cost}}">
                                    
-                                     <input type="hidden" value="Blue Collar Jobs" name="myPack">
+                                     <input type="hidden" value="BLUE_COLLAR" name="myPack">
                                     <!-- <a class="btn btn-primary" href="{{ url('product') }}" style="width: 100%;font-size: 24px;">Continue</a> -->
                                     <button type="submit" class="btn btn-primary" style="width: 100%;font-size: 24px;">Continue</button>
                                 </form>
@@ -275,7 +275,7 @@ $cXamount=0;
                                 <form method="POST" action="{{ url('product') }}">
                                     @csrf
                                     <input type="hidden" name="cost" value="{{$whiteJob_cost}}">
-                                    <input type="hidden" value="White Collar Jobs" name="myPack">
+                                    <input type="hidden" value="WHITE_COLLAR" name="myPack">
                                     <!-- <a class="btn btn-primary" href="{{ url('product') }}" style="width: 100%;font-size: 24px;">Continue</a> -->
                                     <button type="submit" class="btn btn-primary" style="width: 100%;font-size: 24px;">Continue</button>
                                 </form>
@@ -298,7 +298,7 @@ $cXamount=0;
                               
                                 <input type="hidden" name="productId" value="{{$productId}}">
                                 <input type="hidden" class="hiddenFamAmount" name="cost" value="{{($famdet) ?  number_format($famdet['total_price']) : 0 }}">
-                                <input type="hidden" value="FAMILY PACKAGE" name="myPack">
+                                <input type="hidden" value="FAMILY_PACKAGE" name="myPack">
                                 <input type="hidden" value="{{($famdet) ? $famdet->id : 0 }}" name="fam_id">
 
                                 <div class="partner-sec">
@@ -385,7 +385,7 @@ $cXamount=0;
             $('#expressSelect').hide()
 
             $('.blue-collar').click(function(){
-                let bluej = "Blue Collar Jobs"
+                let bluej = "BLUE_COLLAR"
                 document.cookie = 'packageType='+bluej ;
 
                 if($('.blue-desc').is(":visible"))
@@ -411,7 +411,7 @@ $cXamount=0;
                 $('#familySelect').hide()
             });
             $('.white-collar').click(function(){
-                let whitej = "White Collar Jobs"
+                let whitej = "WHITE_COLLAR"
                 document.cookie = 'packageType='+whitej ;
 
                 $('.blue-desc').hide();
@@ -433,7 +433,7 @@ $cXamount=0;
                 $('#familySelect').hide()
             });
             $('.family-package').click(function(){
-                let famj = "FAMILY PACKAGE"
+                let famj = "FAMILY_PACKAGE"
                 document.cookie = 'packageType='+famj ;
 
                 $('.blue-desc').hide();
@@ -455,7 +455,7 @@ $cXamount=0;
             });
 
             $('.study-permit').click(function(){
-                let studyj = "Study Permit"
+                let studyj = "STUDY_PERMIT"
                 document.cookie = 'packageType='+studyj ;
 
                 if($('.study-desc').is(":visible"))
@@ -481,7 +481,7 @@ $cXamount=0;
                 $('#familySelect').hide()
             });
             $('.express-entry').click(function(){
-                let expressj = "Express Entry"
+                let expressj = "EXPRESS_ENTRY"
                 document.cookie = 'packageType='+expressj ;
                
                 $('.study-desc').hide();

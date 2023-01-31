@@ -27,7 +27,7 @@
           ->get();
             $pays = DB::table('payments')
             ->where('application_id', '=', $client->id)
-            ->where('payment_type', '=', 'First Payment')
+            ->where('payment_type', '=', 'FIRST')
             ->first();
 
             $prod = DB::table('pricing_plans')

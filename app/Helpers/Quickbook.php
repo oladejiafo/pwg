@@ -124,13 +124,13 @@ class Quickbook
             $unitPrice = 0;
             $paidAmount = 0;
             $tax = 0;
-            if ($paymentType == 'First Payment') {
+            if ($paymentType == 'FIRST') {
                 $unitPrice = $apply->planFirstPrice;
                 $tax = $apply->first_payment_vat;
-            } else if ($paymentType == 'Second Payment') {
+            } else if ($paymentType == 'SUBMISSION') {
                 $unitPrice = $apply->planSecondPrice;
                 $tax = $apply->submission_payment_vat;
-            } else if ($paymentType == 'Third Payment') {
+            } else if ($paymentType == 'SECOND') {
                 $unitPrice = $apply->planThirdPrice;
                 $tax = $apply->second_payment_vat;
             }
@@ -138,11 +138,11 @@ class Quickbook
             $productObj = null;
             switch ($destinationName) {
                 case Constant::poland:
-                    if ($paymentType == 'First Payment') {
+                    if ($paymentType == 'FIRST') {
                         $productObj = $dataService->Query("select * from Item Where Name='Photocopy Cv, Passport - Poland'");
-                    } else if ($paymentType == 'Second Payment') {
+                    } else if ($paymentType == 'SUBMISSION') {
                         $productObj = $dataService->Query("select * from Item Where Name='Typing for Visa Application - Poland'");
-                    } else if ($paymentType == 'Third Payment') {
+                    } else if ($paymentType == 'SECOND') {
                         $productObj = $dataService->Query("select * from Item Where Name='Travel Documents Submission - Poland'");
                     }
                     if ($paymentDetails->payment_type ==  'Full-Outstanding Payment') {
@@ -161,11 +161,11 @@ class Quickbook
                     }
                     break;
                 case Constant::czech:
-                    if ($paymentType == 'First Payment') {
+                    if ($paymentType == 'FIRST') {
                         $productObj = $dataService->Query("select * from Item Where Name='Photocopy - CV, Passport - Czech Republic'");
-                    } else if ($paymentType == 'Second Payment') {
+                    } else if ($paymentType == 'SUBMISSION') {
                         $productObj = $dataService->Query("select * from Item Where Name='Typing for Visa Application - Czech Republic'");
-                    } else if ($paymentType == 'Third Payment') {
+                    } else if ($paymentType == 'SECOND') {
                         $productObj = $dataService->Query("select * from Item Where Name='Travel Documents Submission - Czech Republic'");
                     }
                     if ($paymentDetails->payment_type ==  'Full-Outstanding Payment') {
@@ -184,11 +184,11 @@ class Quickbook
                     }
                     break;
                 case Constant::malta:
-                    if ($paymentType == 'First Payment') {
+                    if ($paymentType == 'FIRST') {
                         $productObj = $dataService->Query("select * from Item Where Name='Photocopy - CV, Passport - Malta'");
-                    } else if ($paymentType == 'Second Payment') {
+                    } else if ($paymentType == 'SUBMISSION') {
                         $productObj = $dataService->Query("select * from Item Where Name='Typing for Visa Application - Malta'");
-                    } else if ($paymentType == 'Third Payment') {
+                    } else if ($paymentType == 'SECOND') {
                         $productObj = $dataService->Query("select * from Item Where Name='Travel Documents Submission - Malta'");
                     }
                     if ($paymentDetails->payment_type ==  'Full-Outstanding Payment') {
@@ -219,11 +219,11 @@ class Quickbook
                     }
                     break;
                 case Constant::canada:
-                    if ($paymentType == 'First Payment') {
+                    if ($paymentType == 'FIRST') {
                         $productObj = $dataService->Query("select * from Item Where Name='Photocopy Cv, Passport - Canada'");
-                    } else if ($paymentType == 'Second Payment') {
+                    } else if ($paymentType == 'SUBMISSION') {
                         $productObj = $dataService->Query("select * from Item Where Name='Typing for Visa Application - Canada'");
-                    } else if ($paymentType == 'Third Payment') {
+                    } else if ($paymentType == 'SECOND') {
                         $productObj = $dataService->Query("select * from Item Where Name='Travel Documents Sumitted  Canada'");
                     }
                     if ($paymentDetails->payment_type ==  'Full-Outstanding Payment') {
@@ -254,11 +254,11 @@ class Quickbook
                     }
                     break;
                 case Constant::germany:
-                    if ($paymentType == 'First Payment') {
+                    if ($paymentType == 'FIRST') {
                         $productObj = $dataService->Query("select * from Item Where Name='Photocopy- CV, Passport - Germany'");
-                    } else if ($paymentType == 'Second Payment') {
+                    } else if ($paymentType == 'SUBMISSION') {
                         $productObj = $dataService->Query("select * from Item Where Name='Typing for Visa Application - Germany'");
-                    } else if ($paymentType == 'Third Payment') {
+                    } else if ($paymentType == 'SECOND') {
                         $productObj = $dataService->Query("select * from Item Where Name='Travel Documents Submission - Germany'");
                     }
                     if ($paymentDetails->payment_type ==  'Full-Outstanding Payment') {
@@ -314,7 +314,7 @@ class Quickbook
                 ->first();
             if ($paymentDetails->payment_type ==  'Full-Outstanding Payment') {
                 $firstPaymentDone = PaymentDetails::where('application_id', $apply->id)
-                    ->where('payment_type', 'First Payment')
+                    ->where('payment_type', 'FIRST')
                     ->where('paid_amount', '!=', null)
                     ->where('invoice_no', '!=', null)
                     ->where('invoice_id', '!=', null)
@@ -648,7 +648,7 @@ class Quickbook
                     }
                 }
             } else {
-                if ($paymentType == 'First Payment') {
+                if ($paymentType == 'FIRST') {
                     $firstPaymentDue = PaymentDetails::where('application_id', $apply->id)
                         ->where('payment_type', $paymentType)
                         ->where('paid_amount', '!=', null)
@@ -661,7 +661,7 @@ class Quickbook
                     } else {
                         self::quickBook($dataService, $coupon, $unitPrice, $updatItem, $paidAmount, $tax, $customer, $paymentDetails, $apply);
                     }
-                } elseif ($paymentType == 'Second Payment' || $paymentType == 'Third Payment') {
+                } elseif ($paymentType == 'SUBMISSION' || $paymentType == 'SECOND') {
                     self::quickBook($dataService, $coupon, $unitPrice, $updatItem, $paidAmount, $tax, $customer, $paymentDetails, $apply);
                 }
             }
@@ -841,7 +841,7 @@ class Quickbook
     private static function firstPaymentBalanceDue($paymentType, $apply, $paymentDetails, $customer, $dataService, $remainingPayment = 0)
     {
         $prevInvoice  =  PaymentDetails::where('application_id', $apply->id)
-            ->where('payment_type', 'First Payment')
+            ->where('payment_type', 'FIRST')
             ->where('invoice_id', '!=', null)
             ->where('invoice_no', '!=', null)
             ->first();

@@ -31,8 +31,8 @@
                                     <p style="box-sizing:border-box;font-family:Yantramanav,sans-serif;font-size:15px;line-height:1.5em;margin-top:0;text-align:center">
                                             You have successfully made your <b style="font-weight: bold">{{ucwords($data['paymentType'])}}</b><br>
                                             and you can view & download your invoice under <br>
-                                            <b>My Applications</b> on our portal.@if(ucwords($data['paymentType']) != 'Third Payment') You will be notified when your <br>
-                                            @if(ucwords($data['paymentType']) == 'First Payment') work permit is ready. @elseif(ucwords($data['paymentType']) == 'Second Payment') embassy appointment is set. @elseif(ucwords($data['paymentType']) == 'Full-Outstanding Payment') work permit & embassy appointment is set. @endif @endif
+                                            <b>My Applications</b> on our portal.@if(ucwords($data['paymentType']) != 'SECOND') You will be notified when your <br>
+                                            @if(ucwords($data['paymentType']) == 'FIRST') work permit is ready. @elseif(ucwords($data['paymentType']) == 'SUBMISSION') embassy appointment is set. @elseif(ucwords($data['paymentType']) == 'Full-Outstanding Payment') work permit & embassy appointment is set. @endif @endif
                                     </p>
                                     <table role="presentation" style="box-sizing:border-box;font-family:Yantramanav,sans-serif;margin:auto;padding:0;text-align:center;float:center;width:100%;margin-bottom:1.5em" width="100%" cellspacing="0" cellpadding="0" align="center">
                                         <tbody><tr>

@@ -18,12 +18,12 @@
   @endphp
 
     @php
-        if($user->payment_type =="First Payment")
+        if($user->payment_type =="FIRST")
         {
             $discounted = $apply->first_payment_discount;
-        } elseif($user->payment_type =="Second Payment") {
+        } elseif($user->payment_type =="SUBMISSION") {
             $discounted = $apply->submission_payment_discount;
-        } elseif($user->payment_type =="Third Payment") {
+        } elseif($user->payment_type =="SECOND") {
             $discounted = $apply->second_payment_discount;  
         } else {
             $discounted =0;

@@ -28,10 +28,11 @@ class Constant {
     const maltaThirdPayment = 'Malta - third Payment';
 
 
-    const PolandFamilyPackage = 'FAMILY PACKAGE';
-    const CanadaExpressEntry = 'Express Entry';
-    const CanadaStudyPermit = 'Study Permit';
-    const BlueCollar = 'Blue Collar Jobs';
+    const PolandFamilyPackage = 'FAMILY_PACKAGE';
+    const CanadaExpressEntry = 'EXPRESS_ENTRY';
+    const CanadaStudyPermit = 'STUDY_PERMIT';
+    const BlueCollar = 'BLUE_COLLAR';
+    const WhiteCollar = 'WHITE_COLLAR';
 
     const is_local = [
         '127.0.0.1',

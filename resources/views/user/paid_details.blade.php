@@ -45,7 +45,7 @@
                                         <p>
                                          @if($paid->first_payment_status =='PAID')
                                             Status PAID
-                                         @elseif($paid->first_payment_status =='PARTIAL')
+                                         @elseif($paid->first_payment_status =='PARTIALLY_PAID')
                                             Status PAID PARTIAL   
                                          @else
                                             Status PENDING
@@ -57,7 +57,7 @@
                                         <p>
                                         @if($paid->first_payment_status =='PAID')
 
-                                            <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="{{ url('/get/invoice/First Payment')}}">Get Invoice</a>
+                                            <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="{{ url('/get/invoice/FIRST')}}">Get Invoice</a>
                                        @else
                                         @if($paid->application_stage_status != 5)
                                             <button class="btn btn-secondary toastrDefaultError" style="font-weight:700" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           
@@ -100,7 +100,7 @@
                                            
                                         @if($paid->submission_payment_status =='PAID')
 
-                                            <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="{{ url('/get/invoice/Second Payment')}}">Get Invoice</a>
+                                            <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="{{ url('/get/invoice/SUBMISSION')}}">Get Invoice</a>
                                        @else
                                         @if($paid->application_stage_status != 5)
                                             <button class="btn btn-secondary toastrDefaultError" style="font-weight:700" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           
@@ -143,7 +143,7 @@
                                            
                                         @if($paid->second_payment_status =='PAID')
 
-                                            <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="{{ url('/get/invoice/Third Payment')}}">Get Invoice</a>
+                                            <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="{{ url('/get/invoice/SECOND')}}">Get Invoice</a>
                                        @else
                                         @if($paid->application_stage_status != 5)
                                             <button class="btn btn-secondary toastrDefaultError" style="font-weight:700" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           

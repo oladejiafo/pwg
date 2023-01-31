@@ -280,7 +280,7 @@ $vals=array(0,1,2);
 
                                  if($pays->first_payment_status !="PAID" || $pays->first_payment_status ==null){
 
-                                   $whichPayment =  "First Payment";
+                                   $whichPayment =  "FIRST";
                                 
                                     $payNow = $pdet->first_payment_price;
                                     if($diff > 0) {
@@ -295,7 +295,7 @@ $vals=array(0,1,2);
                                  }
                                  elseif($pays->first_payment_status =="PAID" && $pays->submission_payment_status !="PAID"){
                                     
-                                    $whichPayment =  "Second Payment";
+                                    $whichPayment =  "SUBMISSION";
                                     if ($diff > 0 && $pays->is_first_payment_partially_paid == 1) {
                                         $payNow = $pdet->submission_payment_price;
                                         $payNoww = $pdet->submission_payment_price + $pends;
@@ -313,7 +313,7 @@ $vals=array(0,1,2);
                                  }
                                  elseif($pays->submission_payment_status =="PAID" && $pays->second_payment_status !="PAID"){
                                     
-                                    $whichPayment =  "Third Payment";
+                                    $whichPayment =  "SECOND";
                                     if ($diff > 0 && $pays->is_submission_payment_partially_paid == 1) {
                                         $payNow = $pdet->second_payment_price;
                                         $payNoww = $pdet->second_payment_price + $pends;
@@ -329,7 +329,7 @@ $vals=array(0,1,2);
                                     }
 
                                  }else {
-                                    $whichPayment =  "First Payment";
+                                    $whichPayment =  "FIRST";
                                     $payNow = $pdet->first_payment_price;
                                     $payNoww = $pdet->first_payment_price;
                                     $pendMsg = "";
@@ -393,7 +393,7 @@ $vals=array(0,1,2);
                                             $pendMsg = "";
                                             $discountPercent = '';
                                             $discount = 0;
-                                            $whichPayment =  "Second Payment";
+                                            $whichPayment =  "SUBMISSION";
                                         }
                                         // $payNow = $pdet->total_price - $pdet->first_payment_price;
                                         // $payNoww = $payNow;
@@ -438,7 +438,7 @@ $vals=array(0,1,2);
                                             <div class="total-sec row mt-3">
                                                 <div class="left-section col-6">
 
-                                                    @if($whichPayment  == "First Payment")
+                                                    @if($whichPayment  == "FIRST")
 
                                                     <b>First Payment</b> 
                                                     @else
@@ -452,7 +452,7 @@ $vals=array(0,1,2);
                                                     @endif
                                                 </div>
                                                 <div class="right-section col-6" align="right">
-                                                    @if($whichPayment == "First Payment")
+                                                    @if($whichPayment == "FIRST")
                                                   
                                                     <b>{{number_format($first_pay,2)}}</b>
 
@@ -465,7 +465,7 @@ $vals=array(0,1,2);
                                             <div class="total-sec row mt-3">
                                                 <div class="left-section col-6">
 
-                                                    @if( $whichPayment == "Second Payment")
+                                                    @if( $whichPayment == "SUBMISSION")
                                                     <b>Submission Payment</b> @if(strlen($pendMsg)>1) <br>
                                                     <font style='font-size:11px;color:red'><i fa fa-arrow-up></i>{{-- {{ $pendMsg }} --}} </font> @endif
                                                     @else
@@ -475,7 +475,7 @@ $vals=array(0,1,2);
                                                 </div>
                                                 <div class="right-section col-6" align="right">
 
-                                                    @if( $whichPayment ==  "Second Payment")
+                                                    @if( $whichPayment ==  "SUBMISSION")
                                                     
                                                     <b>{{number_format($second_pay,2)}}</b>
 
@@ -488,7 +488,7 @@ $vals=array(0,1,2);
                                             </div>
                                             <div class="total-sec row mt-3">
                                                 <div class="left-section col-6">
-                                                    @if( $whichPayment ==  "Third Payment")
+                                                    @if( $whichPayment ==  "SECOND")
                                                     
                                                     <b>Second Payment</b> @if(strlen($pendMsg)>1) <br>
 
@@ -499,7 +499,7 @@ $vals=array(0,1,2);
                                                     <span style="font-size:11px" class="vtt">@if($vat>0)(+ 5% VAT)@endif</span>
                                                 </div>
                                                 <div class="right-section col-6" align="right">
-                                                    @if( $whichPayment ==  "Third Payment")
+                                                    @if( $whichPayment ==  "SECOND")
                                                     
                                                     <b>{{number_format($third_pay,2)}}</b>
 
@@ -590,7 +590,7 @@ $vals=array(0,1,2);
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-12">
-                                        @if($whichPayment =="First Payment" && ($diff == 0 || empty($diff)))
+                                        @if($whichPayment =="FIRST" && ($diff == 0 || empty($diff)))
                                           <div class="partial" style="height: 100%;">
                                             <p>Pay {{strtolower($which)}} installment in partial</p>
                                             <input type="text" class="form-control" name="amount" id="amount" placeholder="Enter partial payment" style="text-align:left !important" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');">
@@ -640,7 +640,7 @@ $vals=array(0,1,2);
                         <input type="hidden" name="pid" value="{{$data->id}}">
                         <input type="hidden" name="ppid" value="{{(isset($pdet->id))?$pdet->id:''}}">
                         <input type="hidden" name="uid" value="{{Auth::user()->id}}">
-                        <input type="hidden" name="whichpayment" value="{{ ($whichPayment) ? $whichPayment : 'First Payment' }}">
+                        <input type="hidden" name="whichpayment" value="{{ ($whichPayment) ? $whichPayment : 'FIRST' }}">
                         <input type="hidden" name="first_p" value="{{$pdet->first_payment_price}}">
                         <input type="hidden" name="second_p" value="{{$pdet->submission_payment_price}}">
                         <input type="hidden" name="third_p" value="{{$pdet->second_payment_price}}">

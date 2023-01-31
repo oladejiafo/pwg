@@ -181,7 +181,7 @@
                                                         (Outstanding on 1st Payment:
                                                         {{ $paid->first_payment_remaining }}.)</amp>
                                                     <a class="btn" target="_blank"
-                                                        href="{{ route('getInvoice', 'First Payment') }}"
+                                                        href="{{ route('getInvoice', 'FIRST') }}"
                                                         style="display:fixed; align-content: center; text-align:center; font-size:10px !important; top:340px; height:25px; width:150px;margin-left: 25px;">Get
                                                         Invoice Here</a>
                                                 @endif
@@ -189,7 +189,7 @@
                                                 <p>
                                                     @if ($paid->first_payment_status == 'PAID')
                                                         <a class="btn btn-secondary" target="_blank"
-                                                            href="{{ route('getInvoice', 'First Payment') }}">Get
+                                                            href="{{ route('getInvoice', 'FIRST') }}">Get
                                                             Invoice</a>
                                                     @else
                                                         <form action="{{ route('payment', $prod->id) }}" method="GET">
@@ -207,7 +207,7 @@
                                         $a = explode(' ', $pays->pricing_plan_type);
                                         $ptype = $a[0] . ' ' . $a[1];
                                     @endphp
-                                    @if ($pays->pricing_plan_type != 'Family Package')
+                                    @if ($pays->pricing_plan_type != 'FAMILY_PACKAGE')
                                         @php
                                             $ptype = $ptype . ' Package';
                                         @endphp
@@ -389,7 +389,7 @@
                                                       (Outstanding on 1st Payment:
                                                       {{ $paid->first_payment_remaining }}.)</amp>
                                                   <a class="btn" target="_blank"
-                                                      href="{{ route('getInvoice', 'First Payment') }}"
+                                                      href="{{ route('getInvoice', 'FIRST') }}"
                                                       style="display:fixed; align-content: center; text-align:center; font-size:10px !important; top:340px; height:25px; width:150px;margin-left: 25px;">Get
                                                       Invoice Here</a>
                                               @endif
@@ -397,7 +397,7 @@
                                               <p>
                                                   @if ($paid->first_payment_status == 'PAID')
                                                       <a class="btn btn-secondary" target="_blank"
-                                                          href="{{ route('getInvoice', 'First Payment') }}">Get
+                                                          href="{{ route('getInvoice', 'FIRST') }}">Get
                                                           Invoice</a>
                                                   @else
                                                       <form action="{{ route('payment', $prod->id) }}" method="GET">
@@ -415,7 +415,7 @@
                                       $a = explode(' ', $pays->pricing_plan_type);
                                       $ptype = $a[0] . ' ' . $a[1];
                                   @endphp
-                                  @if ($pays->pricing_plan_type != 'Family Package')
+                                  @if ($pays->pricing_plan_type != 'FAMILY_PACKAGE')
                                       @php
                                           $ptype = $ptype . ' Package';
                                       @endphp
@@ -583,8 +583,8 @@
                 
                                       <p>
                                           @if($paid->submission_payment_status =='PAID')
-                                            <!-- <a class="btn btn-secondary" target="_blank" href="{{ route('getReceipt','Second Payment')}}">Get Reciept</a> -->
-                                            <a class="btn btn-secondary" target="_blank" href="{{ route('getInvoice','Second Payment')}}">Get Invoice</a>
+                                            <!-- <a class="btn btn-secondary" target="_blank" href="{{ route('getReceipt','SUBMISSION')}}">Get Reciept</a> -->
+                                            <a class="btn btn-secondary" target="_blank" href="{{ route('getInvoice','SUBMISSION')}}">Get Invoice</a>
                                           @else
                                             @if($paid->application_stage_status != 5)
                                               <button class="btn btn-secondary toastrDefaultError" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           
@@ -639,7 +639,7 @@
                                                       (Outstanding on 1st Payment:
                                                       {{ $paid->first_payment_remaining }}.)</amp>
                                                   <a class="btn" target="_blank"
-                                                      href="{{ route('getInvoice', 'First Payment') }}"
+                                                      href="{{ route('getInvoice', 'FIRST') }}"
                                                       style="display:fixed; align-content: center; text-align:center; font-size:10px !important; top:340px; height:25px; width:150px;margin-left: 25px;">Get
                                                       Invoice Here</a>
                                               @endif
@@ -647,7 +647,7 @@
                                               <p>
                                                   @if ($paid->first_payment_status == 'PAID')
                                                       <a class="btn btn-secondary" target="_blank"
-                                                          href="{{ route('getInvoice', 'First Payment') }}">Get
+                                                          href="{{ route('getInvoice', 'FIRST') }}">Get
                                                           Invoice</a>
                                                   @else
                                                       <form action="{{ route('payment', $prod->id) }}" method="GET">
@@ -665,7 +665,7 @@
                                       $a = explode(' ', $pays->pricing_plan_type);
                                       $ptype = $a[0] . ' ' . $a[1];
                                   @endphp
-                                  @if ($pays->pricing_plan_type != 'Family Package')
+                                  @if ($pays->pricing_plan_type != 'FAMILY_PACKAGE')
                                       @php
                                           $ptype = $ptype . ' Package';
                                       @endphp
@@ -835,8 +835,8 @@
                 
                                       <p>
                                           @if($paid->submission_payment_status =='PAID')
-                                            <!-- <a class="btn btn-secondary" target="_blank" href="{{ route('getReceipt','Second Payment')}}">Get Reciept</a> -->
-                                            <a class="btn btn-secondary" target="_blank" href="{{ route('getInvoice','Second Payment')}}">Get Invoice</a>
+                                            <!-- <a class="btn btn-secondary" target="_blank" href="{{ route('getReceipt','SUBMISSION')}}">Get Reciept</a> -->
+                                            <a class="btn btn-secondary" target="_blank" href="{{ route('getInvoice','SUBMISSION')}}">Get Invoice</a>
                                           @else
                                             @if($paid->application_stage_status != 5)
                                               <button class="btn btn-secondary toastrDefaultError" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           
@@ -876,8 +876,8 @@
                 
                                       <p>
                                           @if($paid->second_payment_status =='PAID')
-                                            <!-- <a class="btn btn-secondary" target="_blank" href="{{ route('getReceipt','Third Payment')}}">Get Reciept</a> -->
-                                            <a class="btn btn-secondary" target="_blank" href="{{ route('getInvoice','Third Payment')}}">Get Invoice</a>
+                                            <!-- <a class="btn btn-secondary" target="_blank" href="{{ route('getReceipt','SECOND')}}">Get Reciept</a> -->
+                                            <a class="btn btn-secondary" target="_blank" href="{{ route('getInvoice','SECOND')}}">Get Invoice</a>
                                           @else
                                             @if($paid->application_stage_status != 5)
                                               <button class="btn btn-secondary toastrDefaultError" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           
@@ -928,7 +928,7 @@
                                                         (Outstanding on 1st Payment:
                                                         {{ $paid->first_payment_remaining }}.)</amp>
                                                     <a class="btn" target="_blank"
-                                                        href="{{ route('getInvoice', 'First Payment') }}"
+                                                        href="{{ route('getInvoice', 'FIRST') }}"
                                                         style="display:fixed; align-content: center; text-align:center; font-size:10px !important; top:340px; height:25px; width:150px;margin-left: 25px;">Get
                                                         Invoice Here</a>
                                                 @endif
@@ -936,7 +936,7 @@
                                                 <p>
                                                     @if ($paid->first_payment_status == 'PAID')
                                                         <a class="btn btn-secondary" target="_blank"
-                                                            href="{{ route('getInvoice', 'First Payment') }}">Get
+                                                            href="{{ route('getInvoice', 'FIRST') }}">Get
                                                             Invoice</a>
                                                     @else
                                                         <form action="{{ route('payment', $prod->id) }}"
@@ -954,7 +954,7 @@
                                             $a = explode(' ', $pays->pricing_plan_type);
                                             $ptype = $a[0] . ' ' . $a[1];
                                         @endphp
-                                        @if ($pays->pricing_plan_type != 'Family Package')
+                                        @if ($pays->pricing_plan_type != 'FAMILY_PACKAGE')
                                             @php
                                                 $ptype = $ptype . ' Package';
                                             @endphp
@@ -1042,9 +1042,9 @@
 
                                                 <p>
                                                     @if ($paid->submission_payment_status == 'PAID')
-                                                        <!-- <a class="btn btn-secondary" target="_blank" href="{{ route('getReceipt', 'Second Payment') }}">Get Reciept</a> -->
+                                                        <!-- <a class="btn btn-secondary" target="_blank" href="{{ route('getReceipt', 'SUBMISSION') }}">Get Reciept</a> -->
                                                         <a class="btn btn-secondary" target="_blank"
-                                                            href="{{ route('getInvoice', 'Second Payment') }}">Get
+                                                            href="{{ route('getInvoice', 'SUBMISSION') }}">Get
                                                             Invoice</a>
                                                     @else
                                                         @if ($paid->application_stage_status != 5)
@@ -1132,9 +1132,9 @@
 
                                                 <p>
                                                     @if ($paid->second_payment_status == 'PAID')
-                                                        <!-- <a class="btn btn-secondary" target="_blank" href="{{ route('getReceipt', 'Third Payment') }}">Get Reciept</a> -->
+                                                        <!-- <a class="btn btn-secondary" target="_blank" href="{{ route('getReceipt', 'SECOND') }}">Get Reciept</a> -->
                                                         <a class="btn btn-secondary" target="_blank"
-                                                            href="{{ route('getInvoice', 'Third Payment') }}">Get
+                                                            href="{{ route('getInvoice', 'SECOND') }}">Get
                                                             Invoice</a>
                                                     @else
                                                         @if ($paid->application_stage_status != 5)
@@ -1371,7 +1371,7 @@
                 full amount! </h3>
             <p style="margin-top: 5px;">
                 @if (
-                    (strtoupper($paid->first_payment_status) == 'PAID' || strtoupper($paid->first_payment_status) == 'PARTIAL') &&
+                    (strtoupper($paid->first_payment_status) == 'PAID' || strtoupper($paid->first_payment_status) == 'PARTIALLY_PAID') &&
                         $paid->application_stage_status != 5)
                     <button class="btn btn-secondary toastrDefaultError"
                         style="border-width:thin; width:250px; height:60px; font-size:32px; font-weight:bold"

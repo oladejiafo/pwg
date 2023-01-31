@@ -18,6 +18,7 @@ use Exception;
 use Imagick;
 use ImagickDraw;
 use ImagickPixel;
+use Carbon\Carbon;
 
 class pdfBlock
 {
@@ -56,14 +57,24 @@ class pdfBlock
 
         // $pdf->Output("pdf/modified_pdf.pdf", "F");   
         // }
-        $newFileName = 'workpermit' . Auth::id() . '-' . UserHelper::getRandomString() . '-' . '.pdf';
+        $newFileName = 'workpermit' . Auth::id() . '-' . UserHelper::getRandomString() . '-' . '.png';
         $destination_file = 'Applications/Contracts/workPermit/' . $newFileName;
         $theString = $pdf->Output('S');
 
         Storage::disk(env('MEDIA_DISK'))->put($destination_file, $theString, 'public');
-        $client = User::find(Auth::id());
-        // $client->addMediaFromString($theString)->usingFileName($newFileName)->toMediaCollection(User::$media_collection_main_resume, 'local');
+        require_once('fpdi/FPDI_Protection.php');
 
+        // $pdf =& new FPDI_Protection();
+
+        $pagecount = $pdf->setSourceFile($destination_file);
+        $pdf->SetProtection(array(),$password);
+        $theString = $pdf->Output('S');
+        Storage::disk(env('MEDIA_DISK'))->put($destination_file, $theString, 'public');
+
+        // $client = User::find(Auth::id());
+        // dd($client->addMediaFromString($theString)->usingFileName($newFileName)->toMediaCollection(User::$media_collection_main_resume, 'local'));
+        // $pdf = new Pdf('Applications/Contracts/workPermit/' . $newFileName);
+        // $pdf->saveImage($destination_file);
         // $spdf = new Spatie\PdfToImage\Pdf('Applications/Contracts/workPermit/workpermitsample.pdf');
         // $spdf->saveImage('Applications/Contracts/workPermit/workpit'. UserHelper::getRandomString() . '-' . '.jpg');
         // $imagick = new Imagick();
@@ -268,7 +279,7 @@ class pdfBlock
             if (strtolower($product->name) == Constant::poland || strtolower($product->name) == Constant::germany) {
 
                 if ($pageNo == 4) {
-                    if ($paymentType == 'First Payment' || $paymentType == 'Full-Outstanding Payment') {
+                    if ($paymentType == 'FIRST' || $paymentType == 'Full-Outstanding Payment') {
                         //signature
                         $pdf->Image($signature, 40, 217, 25, 20, 'PNG');
 
@@ -276,7 +287,7 @@ class pdfBlock
                     }
                 }
                 if ($pageNo == 5) {
-                    if ($paymentType == 'First Payment' || $paymentType == 'Full-Outstanding Payment') {
+                    if ($paymentType == 'FIRST' || $paymentType == 'Full-Outstanding Payment') {
                         //signature
 
                         $pdf->Image($signature, 155, 69, 18, 15, 'PNG');
@@ -286,7 +297,7 @@ class pdfBlock
 
                         $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_first_payment_contract.pdf';
                     }
-                    if ($paymentType == 'Second Payment' || $paymentType == 'Full-Outstanding Payment') {
+                    if ($paymentType == 'SUBMISSION' || $paymentType == 'Full-Outstanding Payment') {
                         $pdf->Image($signature, 155, 149, 18, 15, 'PNG');
                         $pdf->Image($signature, 155, 195, 18, 15, 'PNG');
                         $pdf->SetXY(162, 226);
@@ -297,7 +308,7 @@ class pdfBlock
                 }
                 if ($pageNo == 6) {
 
-                    if ($paymentType == 'Third Payment' || $paymentType == 'Full-Outstanding Payment') {
+                    if ($paymentType == 'SECOND' || $paymentType == 'Full-Outstanding Payment') {
 
                         $pdf->Image($signature, 155, 64, 18, 15, 'PNG');
                         $pdf->Image($signature, 155, 103, 18, 15, 'PNG');
@@ -319,7 +330,7 @@ class pdfBlock
             } else if (strtolower($product->name) == Constant::czech) {
 
                 if ($pageNo == 4) {
-                    if ($paymentType == 'First Payment' || $paymentType == 'Full-Outstanding Payment') {
+                    if ($paymentType == 'FIRST' || $paymentType == 'Full-Outstanding Payment') {
                         //signature
 
                         $pdf->Image($signature, 40, 229, 25, 20, 'PNG');
@@ -327,7 +338,7 @@ class pdfBlock
                     }
                 }
                 if ($pageNo == 5) {
-                    if ($paymentType == 'First Payment' || $paymentType == 'Full-Outstanding Payment') {
+                    if ($paymentType == 'FIRST' || $paymentType == 'Full-Outstanding Payment') {
                         //signature
 
                         $pdf->Image($signature, 155, 72, 18, 15, 'PNG');
@@ -337,7 +348,7 @@ class pdfBlock
 
                         $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_first_payment_contract.pdf';
                     }
-                    if ($paymentType == 'Second Payment' || $paymentType == 'Full-Outstanding Payment') {
+                    if ($paymentType == 'SUBMISSION' || $paymentType == 'Full-Outstanding Payment') {
 
                         $pdf->Image($signature, 159, 160, 18, 15, 'PNG');
                         $pdf->Image($signature, 155, 209, 18, 15, 'PNG');
@@ -349,7 +360,7 @@ class pdfBlock
                 }
                 if ($pageNo == 6) {
 
-                    if ($paymentType == 'Third Payment' || $paymentType == 'Full-Outstanding Payment') {
+                    if ($paymentType == 'SECOND' || $paymentType == 'Full-Outstanding Payment') {
 
                         $pdf->Image($signature, 158, 68, 18, 15, 'PNG');
                         $pdf->Image($signature, 158, 119, 18, 15, 'PNG');
@@ -371,7 +382,7 @@ class pdfBlock
             } else if (strtolower($product->name) == Constant::canada) {
 
                 if ($pageNo == 4) {
-                    if ($paymentType == 'First Payment' || $paymentType == 'Full-Outstanding Payment') {
+                    if ($paymentType == 'FIRST' || $paymentType == 'Full-Outstanding Payment') {
                         //signature
                         $pdf->Image($signature, 40, 215, 25, 20, 'PNG');
 
@@ -379,7 +390,7 @@ class pdfBlock
                     }
                 }
                 if ($pageNo == 5) {
-                    if ($paymentType == 'First Payment' || $paymentType == 'Full-Outstanding Payment') {
+                    if ($paymentType == 'FIRST' || $paymentType == 'Full-Outstanding Payment') {
                         //signature
 
                         $pdf->Image($signature, 155, 76, 18, 15, 'PNG');
@@ -389,7 +400,7 @@ class pdfBlock
 
                         $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_first_payment_contract.pdf';
                     }
-                    if ($paymentType == 'Second Payment' || $paymentType == 'Full-Outstanding Payment') {
+                    if ($paymentType == 'SUBMISSION' || $paymentType == 'Full-Outstanding Payment') {
 
                         $pdf->Image($signature, 155, 156, 18, 15, 'PNG');
                         $pdf->Image($signature, 155, 203, 18, 15, 'PNG');
@@ -401,7 +412,7 @@ class pdfBlock
                 }
                 if ($pageNo == 6) {
 
-                    if ($paymentType == 'Third Payment' || $paymentType == 'Full-Outstanding Payment') {
+                    if ($paymentType == 'SECOND' || $paymentType == 'Full-Outstanding Payment') {
 
                         $pdf->Image($signature, 155, 81, 18, 15, 'PNG');
                         $pdf->Image($signature, 155, 122, 18, 15, 'PNG');
@@ -414,7 +425,7 @@ class pdfBlock
             } else if (strtolower($product->name) == Constant::malta) {
 
                 if ($pageNo == 4) {
-                    if ($paymentType == 'First Payment' || $paymentType == 'Full-Outstanding Payment') {
+                    if ($paymentType == 'FIRST' || $paymentType == 'Full-Outstanding Payment') {
                         //signature
 
                         $pdf->Image($signature, 40, 229, 25, 20, 'PNG');
@@ -422,7 +433,7 @@ class pdfBlock
                     }
                 }
                 if ($pageNo == 5) {
-                    if ($paymentType == 'First Payment' || $paymentType == 'Full-Outstanding Payment') {
+                    if ($paymentType == 'FIRST' || $paymentType == 'Full-Outstanding Payment') {
                         //signature
 
                         $pdf->Image($signature, 155, 72, 18, 15, 'PNG');
@@ -432,7 +443,7 @@ class pdfBlock
 
                         $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_first_payment_contract.pdf';
                     }
-                    if ($paymentType == 'Second Payment' || $paymentType == 'Full-Outstanding Payment') {
+                    if ($paymentType == 'SUBMISSION' || $paymentType == 'Full-Outstanding Payment') {
 
                         $pdf->Image($signature, 155, 159, 18, 15, 'PNG');
                         $pdf->Image($signature, 155, 209, 18, 15, 'PNG');
@@ -444,7 +455,7 @@ class pdfBlock
                 }
                 if ($pageNo == 6) {
 
-                    if ($paymentType == 'Third Payment' || $paymentType == 'Full-Outstanding Payment') {
+                    if ($paymentType == 'SECOND' || $paymentType == 'Full-Outstanding Payment') {
 
                         $pdf->Image($signature, 155, 64, 18, 15, 'PNG');
                         $pdf->Image($signature, 155, 128, 18, 15, 'PNG');
@@ -465,23 +476,28 @@ class pdfBlock
                 }
             }
         }
-        if ($paymentType == 'First Payment') {
+        if ($paymentType == 'FIRST') {
             $theString = $pdf->Output('S');
             if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                 $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_1st_signature, env('MEDIA_DISK'));
             } else {
                 $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_1st_signature, 'local');
             }
+            $applicant->contract_1st_signature_status = 'SIGNED';
+            $applicant->contract_1st_signature_at = Carbon::now();
         }
-        if ($paymentType == 'Second Payment') {
+        if ($paymentType == 'SUBMISSION') {
             $theString = $pdf->Output('S');
             if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                 $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_submission_signature, env('MEDIA_DISK'));
             } else {
                 $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_submission_signature, 'local');
             }
+            $applicant->contract_submission_signature_status = 'SIGNED';
+            $applicant->contract_submission_signature_at = Carbon::now();
+
         }
-        if ($paymentType == 'Third Payment') {
+        if ($paymentType == 'SECOND') {
             $theString = $pdf->Output('S');
             if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                 $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_2nd_signature, env('MEDIA_DISK'));
@@ -489,6 +505,9 @@ class pdfBlock
 
                 $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_2nd_signature, 'local');
             }
+            $applicant->contract_2nd_signature_status = 'SIGNED';
+            $applicant->contract_2nd_signature_at = Carbon::now();
+
         }
         if ($paymentType == 'Full-Outstanding Payment') {
             $theString = $pdf->Output('S');
@@ -502,7 +521,14 @@ class pdfBlock
                 $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_submission_signature, 'local');
                 $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_2nd_signature, 'local');
             }
+            $applicant->contract_1st_signature_status = 'SIGNED';
+            $applicant->contract_submission_signature_status = 'SIGNED';
+            $applicant->contract_2nd_signature_status = 'SIGNED';
+            $applicant->contract_1st_signature_at = Carbon::now();
+            $applicant->contract_submission_signature_at = Carbon::now();
+            $applicant->contract_2nd_signature_at = Carbon::now();
         }
+        $applicant->save();
     }
 
     public static function jobLetter($originalPdf, $signature, $product, $paymentType, $applicant)
@@ -525,7 +551,7 @@ class pdfBlock
                 $originalPdf = (isset($applicant->getMedia(Applicant::$media_collection_main_2nd_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_2nd_signature)[0]->getPath() : null;
             }
             $destination_file = Applicant::$media_collection_main_2nd_signature;
-        } elseif ($applicant->first_payment_status == 'PAID' || $applicant->first_payment_status == 'PARTIAL') {
+        } elseif ($applicant->first_payment_status == 'PAID' || $applicant->first_payment_status == 'PARTIALLY_PAID') {
             if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                 $originalPdf = (isset($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getUrl() : null;
             } else {
@@ -646,7 +672,7 @@ class pdfBlock
                 $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_submission_signature, 'local');
                 $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_2nd_signature, 'local');
             }
-        } elseif ($applicant->first_payment_status == 'PAID' || $applicant->first_payment_status == 'PARTIAL') {
+        } elseif ($applicant->first_payment_status == 'PAID' || $applicant->first_payment_status == 'PARTIALLY_PAID') {
             $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_first_payment_contract.pdf';
             $theString = $pdf->Output('S');
             if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {

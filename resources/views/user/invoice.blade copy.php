@@ -10,12 +10,12 @@
 </style>
   </head>
     @php
-        if($user->payment_type =="First Payment")
+        if($user->payment_type =="FIRST")
         {
             $discounted = $apply->first_payment_discount;
-        } elseif($user->payment_type =="Second Payment") {
+        } elseif($user->payment_type =="SUBMISSION") {
             $discounted = $apply->submission_payment_discount;
-        } elseif($user->payment_type =="Third Payment") {
+        } elseif($user->payment_type =="SECOND") {
             $discounted = $apply->second_payment_discount;  
         } else {
             $discounted =0;
@@ -120,7 +120,7 @@ $total = $totalP + $vatP;
         </div><hr style="height:0.7px; opacity:0.2;color:#ccc;">
         <div class="row" style="display: block">
             <div align="left" class="col-4" style="width:30%;display: inline-block; height:20px"> {{$pricing->plan_name}}</div>
-            <div align="left" class="col-4" style="width:30%;display: inline-block; height:20px"> First Payment @if($apply->first_payment_status =='PAID' || $apply->first_payment_status =='PARTIAL') <span style="font-weigth:bold;color:#ccc">[{{$apply->first_payment_status}}]</span> @endif</div>
+            <div align="left" class="col-4" style="width:30%;display: inline-block; height:20px"> First Payment @if($apply->first_payment_status =='PAID' || $apply->first_payment_status =='PARTIALLY_PAID') <span style="font-weigth:bold;color:#ccc">[{{$apply->first_payment_status}}]</span> @endif</div>
             <div align="right" class="col-4" style="width:30%;display: inline-block; height:20px"> @if(Auth::user()->country_of_residence == "United Arab Emirates")  {{number_format($pricing->first_payment_price + ($pricing->first_payment_price*5/100),2)}} @else {{number_format($pricing->first_payment_price,2) }} @endif</div>
         </div>
         <div class="row" style="display: block">
