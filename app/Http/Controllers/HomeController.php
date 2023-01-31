@@ -1387,7 +1387,7 @@ class HomeController extends Controller
                             $ems = " You will be notified when your embassy appearance date is set.";
                         }
 
-                        $criteria = $paymentDetails['payment_type'] . " Completed!";
+                        $criteria = ucFirst($paymentDetails['payment_type']) . " Payment Completed!";
                         $message = "You have successfully made your " . $paymentDetails['payment_type'] . ". Check your receipt on 'My Application'" . $ems;
 
                         $link = "";
