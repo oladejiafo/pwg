@@ -145,9 +145,9 @@
                         <ul>
 
                             <?php if(
-                                ($pays->submission_payment_price == 0 || empty($pays->submission_payment_price)) &&
-                                    ($pays->second_payment_price == 0 || empty($pays->second_payment_price)) &&
-                                    ($pays->third_payment_price == 0 || empty($pays->third_payment_price))): ?>
+                                ($pays->submission_payment_sub_total == 0 || empty($pays->submission_payment_sub_total)) &&
+                                    ($pays->second_payment_sub_total == 0 || empty($pays->second_payment_sub_total)) &&
+                                    ($pays->third_payment_sub_total == 0 || empty($pays->third_payment_sub_total))): ?>
 
                                 <!-- 1st Payment Column  -->
                                 <li>
@@ -162,7 +162,7 @@
                                                     </h3>
                                                 </span>
                                                 <strong style="line-height:25px;margin-top:20px" class="paid-price">
-                                                    <?php echo e(number_format($pays->first_payment_price)); ?> |
+                                                    <?php echo e(number_format($pays->first_payment_sub_total)); ?> |
                                                     <br><span
                                                         style="font-size: 12px;float:left;display:inline">AED</span>
                                                     <span
@@ -182,7 +182,7 @@
                                                         (Outstanding on 1st Payment:
                                                         <?php echo e($paid->first_payment_remaining); ?>.)</amp>
                                                     <a class="btn" target="_blank"
-                                                        href="<?php echo e(route('getInvoice', 'First Payment')); ?>"
+                                                        href="<?php echo e(route('getInvoice', 'FIRST')); ?>"
                                                         style="display:fixed; align-content: center; text-align:center; font-size:10px !important; top:340px; height:25px; width:150px;margin-left: 25px;">Get
                                                         Invoice Here</a>
                                                 <?php endif; ?>
@@ -190,7 +190,7 @@
                                                 <p>
                                                     <?php if($paid->first_payment_status == 'PAID'): ?>
                                                         <a class="btn btn-secondary" target="_blank"
-                                                            href="<?php echo e(route('getInvoice', 'First Payment')); ?>">Get
+                                                            href="<?php echo e(route('getInvoice', 'FIRST')); ?>">Get
                                                             Invoice</a>
                                                     <?php else: ?>
                                                         <form action="<?php echo e(route('payment', $prod->id)); ?>" method="GET">
@@ -208,7 +208,7 @@
                                         $a = explode(' ', $pays->pricing_plan_type);
                                         $ptype = $a[0] . ' ' . $a[1];
                                     ?>
-                                    <?php if($pays->pricing_plan_type != 'Family Package'): ?>
+                                    <?php if($pays->pricing_plan_type != 'FAMILY_PACKAGE'): ?>
                                         <?php
                                             $ptype = $ptype . ' Package';
                                         ?>
@@ -351,9 +351,9 @@
                                     </div>
                                 </li>
                             <?php elseif(
-                                $pays->submission_payment_price > 0 &&
-                                    ($pays->second_payment_price == 0 || empty($pays->second_payment_price)) &&
-                                    ($pays->third_payment_price == 0 || empty($pays->third_payment_price))): ?>
+                                $pays->submission_payment_sub_total > 0 &&
+                                    ($pays->second_payment_sub_total == 0 || empty($pays->second_payment_sub_total)) &&
+                                    ($pays->third_payment_sub_total == 0 || empty($pays->third_payment_sub_total))): ?>
 
                                 <!-- 1st Payment Column  -->
                                 <li>
@@ -368,7 +368,7 @@
                                                   </h3>
                                               </span>
                                               <strong style="line-height:25px;margin-top:20px" class="paid-price">
-                                                  <?php echo e(number_format($pays->first_payment_price)); ?> |
+                                                  <?php echo e(number_format($pays->first_payment_sub_total)); ?> |
                                                   <br><span
                                                       style="font-size: 12px;float:left;display:inline">AED</span>
                                                   <span
@@ -388,7 +388,7 @@
                                                       (Outstanding on 1st Payment:
                                                       <?php echo e($paid->first_payment_remaining); ?>.)</amp>
                                                   <a class="btn" target="_blank"
-                                                      href="<?php echo e(route('getInvoice', 'First Payment')); ?>"
+                                                      href="<?php echo e(route('getInvoice', 'FIRST')); ?>"
                                                       style="display:fixed; align-content: center; text-align:center; font-size:10px !important; top:340px; height:25px; width:150px;margin-left: 25px;">Get
                                                       Invoice Here</a>
                                               <?php endif; ?>
@@ -396,7 +396,7 @@
                                               <p>
                                                   <?php if($paid->first_payment_status == 'PAID'): ?>
                                                       <a class="btn btn-secondary" target="_blank"
-                                                          href="<?php echo e(route('getInvoice', 'First Payment')); ?>">Get
+                                                          href="<?php echo e(route('getInvoice', 'FIRST')); ?>">Get
                                                           Invoice</a>
                                                   <?php else: ?>
                                                       <form action="<?php echo e(route('payment', $prod->id)); ?>" method="GET">
@@ -414,7 +414,7 @@
                                       $a = explode(' ', $pays->pricing_plan_type);
                                       $ptype = $a[0] . ' ' . $a[1];
                                   ?>
-                                  <?php if($pays->pricing_plan_type != 'Family Package'): ?>
+                                  <?php if($pays->pricing_plan_type != 'FAMILY_PACKAGE'): ?>
                                       <?php
                                           $ptype = $ptype . ' Package';
                                       ?>
@@ -568,7 +568,7 @@
                                       
                                       </span>
                                       <strong style="line-height:25px;margin-top:20px" class="paid-price">
-                                        <?php echo e(number_format($pays->submission_payment_price)); ?> | 
+                                        <?php echo e(number_format($pays->submission_payment_sub_total)); ?> | 
                                         <br><span style="font-size: 12px;float:left;display:inline">AED</span>
                                         <span style="font-size: 12px;display:inline; float:right;margin-right:20px;"> + 5% VAT</span>
                                       </strong>&nbsp;
@@ -580,8 +580,8 @@
                 
                                       <p>
                                           <?php if($paid->submission_payment_status =='PAID'): ?>
-                                            <!-- <a class="btn btn-secondary" target="_blank" href="<?php echo e(route('getReceipt','Second Payment')); ?>">Get Reciept</a> -->
-                                            <a class="btn btn-secondary" target="_blank" href="<?php echo e(route('getInvoice','Second Payment')); ?>">Get Invoice</a>
+                                            <!-- <a class="btn btn-secondary" target="_blank" href="<?php echo e(route('getReceipt','SUBMISSION')); ?>">Get Reciept</a> -->
+                                            <a class="btn btn-secondary" target="_blank" href="<?php echo e(route('getInvoice','SUBMISSION')); ?>">Get Invoice</a>
                                           <?php else: ?>
                                             <?php if($paid->application_stage_status != 5): ?>
                                               <button class="btn btn-secondary toastrDefaultError" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           
@@ -599,9 +599,9 @@
                               </li>
                 
                             <?php elseif(
-                                $pays->submission_payment_price > 0 &&
-                                    $pays->second_payment_price > 0 &&
-                                    ($pays->third_payment_price == 0 || empty($pays->third_payment_price))): ?>
+                                $pays->submission_payment_sub_total > 0 &&
+                                    $pays->second_payment_sub_total > 0 &&
+                                    ($pays->third_payment_sub_total == 0 || empty($pays->third_payment_sub_total))): ?>
 
 
                                 <!-- 1st Payment Column  -->
@@ -617,7 +617,7 @@
                                                   </h3>
                                               </span>
                                               <strong style="line-height:25px;margin-top:20px" class="paid-price">
-                                                  <?php echo e(number_format($pays->first_payment_price)); ?> |
+                                                  <?php echo e(number_format($pays->first_payment_sub_total)); ?> |
                                                   <br><span
                                                       style="font-size: 12px;float:left;display:inline">AED</span>
                                                   <span
@@ -637,7 +637,7 @@
                                                       (Outstanding on 1st Payment:
                                                       <?php echo e($paid->first_payment_remaining); ?>.)</amp>
                                                   <a class="btn" target="_blank"
-                                                      href="<?php echo e(route('getInvoice', 'First Payment')); ?>"
+                                                      href="<?php echo e(route('getInvoice', 'FIRST')); ?>"
                                                       style="display:fixed; align-content: center; text-align:center; font-size:10px !important; top:340px; height:25px; width:150px;margin-left: 25px;">Get
                                                       Invoice Here</a>
                                               <?php endif; ?>
@@ -645,7 +645,7 @@
                                               <p>
                                                   <?php if($paid->first_payment_status == 'PAID'): ?>
                                                       <a class="btn btn-secondary" target="_blank"
-                                                          href="<?php echo e(route('getInvoice', 'First Payment')); ?>">Get
+                                                          href="<?php echo e(route('getInvoice', 'FIRST')); ?>">Get
                                                           Invoice</a>
                                                   <?php else: ?>
                                                       <form action="<?php echo e(route('payment', $prod->id)); ?>" method="GET">
@@ -663,7 +663,7 @@
                                       $a = explode(' ', $pays->pricing_plan_type);
                                       $ptype = $a[0] . ' ' . $a[1];
                                   ?>
-                                  <?php if($pays->pricing_plan_type != 'Family Package'): ?>
+                                  <?php if($pays->pricing_plan_type != 'FAMILY_PACKAGE'): ?>
                                       <?php
                                           $ptype = $ptype . ' Package';
                                       ?>
@@ -819,7 +819,7 @@
                                       
                                       </span>
                                       <strong style="line-height:25px;margin-top:20px" class="paid-price">
-                                        <?php echo e(number_format($pays->submission_payment_price)); ?> | 
+                                        <?php echo e(number_format($pays->submission_payment_sub_total)); ?> | 
                                         <br><span style="font-size: 12px;float:left;display:inline">AED</span>
                                         <span style="font-size: 12px;display:inline; float:right;margin-right:20px;"> + 5% VAT</span>
                                       </strong>&nbsp;
@@ -831,8 +831,8 @@
                 
                                       <p>
                                           <?php if($paid->submission_payment_status =='PAID'): ?>
-                                            <!-- <a class="btn btn-secondary" target="_blank" href="<?php echo e(route('getReceipt','Second Payment')); ?>">Get Reciept</a> -->
-                                            <a class="btn btn-secondary" target="_blank" href="<?php echo e(route('getInvoice','Second Payment')); ?>">Get Invoice</a>
+                                            <!-- <a class="btn btn-secondary" target="_blank" href="<?php echo e(route('getReceipt','SUBMISSION')); ?>">Get Reciept</a> -->
+                                            <a class="btn btn-secondary" target="_blank" href="<?php echo e(route('getInvoice','SUBMISSION')); ?>">Get Invoice</a>
                                           <?php else: ?>
                                             <?php if($paid->application_stage_status != 5): ?>
                                               <button class="btn btn-secondary toastrDefaultError" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           
@@ -861,7 +861,7 @@
                                         <h3 class="paid-title" style="font-size: 22px; color:aliceblue"></h3>
                                       </span>
                                       <strong style="line-height:25px;margin-top:20px" class="paid-price">
-                                        <?php echo e(number_format($pays->second_payment_price)); ?> | 
+                                        <?php echo e(number_format($pays->second_payment_sub_total)); ?> | 
                                         <br><span style="font-size: 12px;float:left;display:inline">AED</span>
                                         <span style="font-size: 12px;display:inline; float:right;margin-right:20px;"> + 5% VAT</span>
                                       </strong>&nbsp;
@@ -873,8 +873,8 @@
                 
                                       <p>
                                           <?php if($paid->second_payment_status =='PAID'): ?>
-                                            <!-- <a class="btn btn-secondary" target="_blank" href="<?php echo e(route('getReceipt','Third Payment')); ?>">Get Reciept</a> -->
-                                            <a class="btn btn-secondary" target="_blank" href="<?php echo e(route('getInvoice','Third Payment')); ?>">Get Invoice</a>
+                                            <!-- <a class="btn btn-secondary" target="_blank" href="<?php echo e(route('getReceipt','SECOND')); ?>">Get Reciept</a> -->
+                                            <a class="btn btn-secondary" target="_blank" href="<?php echo e(route('getInvoice','SECOND')); ?>">Get Invoice</a>
                                           <?php else: ?>
                                             <?php if($paid->application_stage_status != 5): ?>
                                               <button class="btn btn-secondary toastrDefaultError" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           
@@ -906,7 +906,7 @@
                                                     </h3>
                                                 </span>
                                                 <strong style="line-height:25px;margin-top:20px" class="paid-price">
-                                                    <?php echo e(number_format($pays->first_payment_price)); ?> |
+                                                    <?php echo e(number_format($pays->first_payment_sub_total)); ?> |
                                                     <br><span
                                                         style="font-size: 12px;float:left;display:inline">AED</span>
                                                     <span
@@ -926,7 +926,7 @@
                                                         (Outstanding on 1st Payment:
                                                         <?php echo e($paid->first_payment_remaining); ?>.)</amp>
                                                     <a class="btn" target="_blank"
-                                                        href="<?php echo e(route('getInvoice', 'First Payment')); ?>"
+                                                        href="<?php echo e(route('getInvoice', 'FIRST')); ?>"
                                                         style="display:fixed; align-content: center; text-align:center; font-size:10px !important; top:340px; height:25px; width:150px;margin-left: 25px;">Get
                                                         Invoice Here</a>
                                                 <?php endif; ?>
@@ -934,7 +934,7 @@
                                                 <p>
                                                     <?php if($paid->first_payment_status == 'PAID'): ?>
                                                         <a class="btn btn-secondary" target="_blank"
-                                                            href="<?php echo e(route('getInvoice', 'First Payment')); ?>">Get
+                                                            href="<?php echo e(route('getInvoice', 'FIRST')); ?>">Get
                                                             Invoice</a>
                                                     <?php else: ?>
                                                         <form action="<?php echo e(route('payment', $prod->id)); ?>"
@@ -949,10 +949,10 @@
 
                                     <?php if($pays->pricing_plan_type): ?>
                                         <?php
-                                            $a = explode(' ', $pays->pricing_plan_type);
-                                            $ptype = $a[0] . ' ' . $a[1];
+                                            $a = explode('_', strtolower($pays->pricing_plan_type));
+                                            $ptype = ucFirst($a[0]) . ' ' . ucFirst($a[1]);
                                         ?>
-                                        <?php if($pays->pricing_plan_type != 'Family Package'): ?>
+                                        <?php if($pays->pricing_plan_type != 'FAMILY_PACKAGE'): ?>
                                             <?php
                                                 $ptype = $ptype . ' Package';
                                             ?>
@@ -1026,7 +1026,7 @@
 
                                                 </span>
                                                 <strong style="line-height:25px;margin-top:20px" class="paid-price">
-                                                    <?php echo e(number_format($pays->submission_payment_price)); ?> |
+                                                    <?php echo e(number_format($pays->submission_payment_sub_total)); ?> |
                                                     <br><span
                                                         style="font-size: 12px;float:left;display:inline">AED</span>
                                                     <span
@@ -1041,9 +1041,9 @@
 
                                                 <p>
                                                     <?php if($paid->submission_payment_status == 'PAID'): ?>
-                                                        <!-- <a class="btn btn-secondary" target="_blank" href="<?php echo e(route('getReceipt', 'Second Payment')); ?>">Get Reciept</a> -->
+                                                        <!-- <a class="btn btn-secondary" target="_blank" href="<?php echo e(route('getReceipt', 'SUBMISSION')); ?>">Get Reciept</a> -->
                                                         <a class="btn btn-secondary" target="_blank"
-                                                            href="<?php echo e(route('getInvoice', 'Second Payment')); ?>">Get
+                                                            href="<?php echo e(route('getInvoice', 'SUBMISSION')); ?>">Get
                                                             Invoice</a>
                                                     <?php else: ?>
                                                         <?php if($paid->application_stage_status != 5): ?>
@@ -1117,7 +1117,7 @@
                                                     </h3>
                                                 </span>
                                                 <strong style="line-height:25px;margin-top:20px" class="paid-price">
-                                                    <?php echo e(number_format($pays->second_payment_price)); ?> |
+                                                    <?php echo e(number_format($pays->second_payment_sub_total)); ?> |
                                                     <br><span
                                                         style="font-size: 12px;float:left;display:inline">AED</span>
                                                     <span
@@ -1132,9 +1132,9 @@
 
                                                 <p>
                                                     <?php if($paid->second_payment_status == 'PAID'): ?>
-                                                        <!-- <a class="btn btn-secondary" target="_blank" href="<?php echo e(route('getReceipt', 'Third Payment')); ?>">Get Reciept</a> -->
+                                                        <!-- <a class="btn btn-secondary" target="_blank" href="<?php echo e(route('getReceipt', 'SECOND')); ?>">Get Reciept</a> -->
                                                         <a class="btn btn-secondary" target="_blank"
-                                                            href="<?php echo e(route('getInvoice', 'Third Payment')); ?>">Get
+                                                            href="<?php echo e(route('getInvoice', 'SECOND')); ?>">Get
                                                             Invoice</a>
                                                     <?php else: ?>
                                                         <?php if($paid->application_stage_status != 5): ?>
@@ -1208,7 +1208,7 @@
                                                     </h3>
                                                 </span>
                                                 <strong style="line-height:25px;margin-top:20px" class="paid-price">
-                                                    <?php echo e(number_format($pays->third_payment_price)); ?> |
+                                                    <?php echo e(number_format($pays->third_payment_sub_total)); ?> |
                                                     <br><span
                                                         style="font-size: 12px;float:left;display:inline">AED</span>
                                                     
@@ -1372,7 +1372,7 @@
                 full amount! </h3>
             <p style="margin-top: 5px;">
                 <?php if(
-                    (strtoupper($paid->first_payment_status) == 'PAID' || strtoupper($paid->first_payment_status) == 'PARTIAL') &&
+                    (strtoupper($paid->first_payment_status) == 'PAID' || strtoupper($paid->first_payment_status) == 'PARTIALLY_PAID') &&
                         $paid->application_stage_status != 5): ?>
                     <button class="btn btn-secondary toastrDefaultError"
                         style="border-width:thin; width:250px; height:60px; font-size:32px; font-weight:bold"

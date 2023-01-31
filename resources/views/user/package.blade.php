@@ -91,7 +91,7 @@
              
                {{ $totalCost }} 
             @else
-               {{number_format($ppay->total_price,2)}} 
+            {{number_format(($ppay->sub_total - $ppay->third_payment_sub_total),2)}}
             @endif 
             <span style="font-size:25px">{{$data->currency}} </span>
           </h2>
@@ -108,8 +108,6 @@
           @else 
              $ptype ='';  
           @endif
-     
-          
 
           <p>
           <h3>{{$ptype}} Payment Installments</h3>

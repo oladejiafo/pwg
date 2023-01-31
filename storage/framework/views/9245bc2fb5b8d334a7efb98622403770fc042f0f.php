@@ -105,7 +105,7 @@ $cXamount=0;
                         </div>
                     </div>
                     
-                    <?php if($data->name == "Canada" && $canada->is_active==1): ?>
+                    <?php if(isset($canada) && $data->name == "Canada" && $canada->is_active==1): ?>
                     <div class="col-xs-12 col-md-4" style="display:inline-block;">
                         <div class="package-type  study-permit">                            
                             <div class="content">
@@ -229,7 +229,7 @@ $cXamount=0;
                             </div>
                         </div>
                      
-                       <?php if($data->name == "Canada" && $canada->is_active==1): ?>
+                       <?php if($data->name == "Canada" && isset($canada) && $canada->is_active==1): ?>
                         <div class="study-desc">
                         
                             <div class="form-group row" style="margin-top: -120px"> 
@@ -542,8 +542,8 @@ function getCost(kidd, parents)
         url: "<?php echo e(route('packageType',$productId)); ?>",
         data: {kid : kidd, parents: parents , response : 1}, 
         success: function (data) {
-            $('.Famamount').text(parseFloat(data.total_price).toLocaleString());
-            $('.hiddenFamAmount').val(data.total_price);
+            $('.Famamount').text(parseFloat(data.sub_total).toLocaleString());
+            $('.hiddenFamAmount').val(data.sub_total);
         },
         errror: function (error) {
         }

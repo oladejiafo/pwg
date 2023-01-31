@@ -91,7 +91,8 @@
              
                <?php echo e($totalCost); ?> 
             <?php else: ?>
-               <?php echo e(number_format($ppay->total_price,2)); ?> 
+            <?php echo e(number_format(($ppay->sub_total - $ppay->third_payment_sub_total),2)); ?>
+
             <?php endif; ?> 
             <span style="font-size:25px"><?php echo e($data->currency); ?> </span>
           </h2>
@@ -108,8 +109,6 @@
           <?php else: ?> 
              $ptype ='';  
           <?php endif; ?>
-     
-          
 
           <p>
           <h3><?php echo e($ptype); ?> Payment Installments</h3>

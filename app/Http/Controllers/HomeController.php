@@ -171,6 +171,7 @@ class HomeController extends Controller
         $proddet = family_breakdown::where('destination_id', '=', $productId)->where('pricing_plan_type', 'BLUE_COLLAR')->where('status','CURRENT')->get();
         $whiteJobs = family_breakdown::where('destination_id', '=', $productId)->where('pricing_plan_type', 'WHITE_COLLAR')->where('status','CURRENT')->get();
         $canadaOthers = family_breakdown::where('destination_id', '=', $productId)->whereIn('pricing_plan_type', array('EXPRESS_ENTRY', 'STUDY_PERMIT'))->where('status','CURRENT')->get();
+        // dd($canadaOthers);
         return view('user.package-type', compact('proddet', 'famdet', 'productId', 'whiteJobs', 'data', 'canadaOthers'));
     }
 
@@ -213,6 +214,7 @@ class HomeController extends Controller
                 ->where('status','CURRENT')
                 // ->where('family_sub_id', '=', Session::get('fam_id'))      
                 ->first();
+                // dd($ppay);
         }
 
         session()->forget('prod_id');
@@ -529,10 +531,12 @@ class HomeController extends Controller
 
             $pays = DB::table('pricing_plans')
                 ->join('applications', 'applications.pricing_plan_id', '=', 'pricing_plans.id')
-                ->select('applications.pricing_plan_id', 'applications.destination_id', 'pricing_plans.id', 'pricing_plans.pricing_plan_type', 'pricing_plans.total_price', 'pricing_plans.destination_id', 'pricing_plans.first_payment_price', 'pricing_plans.submission_payment_price', 'pricing_plans.second_payment_price', 'pricing_plans.third_payment_price', 'pricing_plans.total_price')
+                // ->select('applications.pricing_plan_id', 'applications.destination_id', 'pricing_plans.id', 'pricing_plans.pricing_plan_type', 'pricing_plans.total_price', 'pricing_plans.destination_id', 'pricing_plans.first_payment_price', 'pricing_plans.submission_payment_price', 'pricing_plans.second_payment_price', 'pricing_plans.third_payment_price', 'pricing_plans.total_price')
+                ->select('applications.pricing_plan_id', 'applications.destination_id', 'pricing_plans.id', 'pricing_plans.pricing_plan_type', 'pricing_plans.sub_total', 'pricing_plans.destination_id', 'pricing_plans.first_payment_sub_total', 'pricing_plans.submission_payment_sub_total', 'pricing_plans.second_payment_sub_total', 'pricing_plans.third_payment_sub_total', 'pricing_plans.sub_total')
                 ->where('pricing_plans.pricing_plan_type', '=', $packageType)
                 ->where('applications.destination_id', '=', $p_id)
                 ->where('applications.client_id', '=', $id)
+                
                 ->orderBy('pricing_plans.id')
                 ->first();
 
@@ -1935,7 +1939,9 @@ class HomeController extends Controller
             $pricing = DB::table('pricing_plans')
                 ->where('destination_id', $apply->destination_id)
                 ->where('id', $apply->pricing_plan_id)
+                ->where('status', 'CURRENT')
                 ->first();
+                // dd($pricing);
             $pdf = PDF::loadView('user.invoice', compact('user', 'apply', 'pricing'));
 
             return $pdf->stream("", array("Attachment" => false));

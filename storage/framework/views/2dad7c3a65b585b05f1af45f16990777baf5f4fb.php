@@ -45,7 +45,7 @@
                                         <p>
                                          <?php if($paid->first_payment_status =='PAID'): ?>
                                             Status PAID
-                                         <?php elseif($paid->first_payment_status =='PARTIAL'): ?>
+                                         <?php elseif($paid->first_payment_status =='PARTIALLY_PAID'): ?>
                                             Status PAID PARTIAL   
                                          <?php else: ?>
                                             Status PENDING
@@ -57,7 +57,7 @@
                                         <p>
                                         <?php if($paid->first_payment_status =='PAID'): ?>
 
-                                            <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="<?php echo e(url('/get/invoice/First Payment')); ?>">Get Invoice</a>
+                                            <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="<?php echo e(url('/get/invoice/FIRST')); ?>">Get Invoice</a>
                                        <?php else: ?>
                                         <?php if($paid->application_stage_status != 5): ?>
                                             <button class="btn btn-secondary toastrDefaultError" style="font-weight:700" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           
@@ -77,7 +77,7 @@
 
                                 
                                 <!-- Second Begins -->
-                                <?php if($pays->submission_payment_price > 0): ?>
+                                <?php if($pays->submission_payment_sub_total > 0): ?>
                                 <div class="row">
                                     <div class="col-md-3" align="left">
                                         <p>
@@ -100,7 +100,7 @@
                                            
                                         <?php if($paid->submission_payment_status =='PAID'): ?>
 
-                                            <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="<?php echo e(url('/get/invoice/Second Payment')); ?>">Get Invoice</a>
+                                            <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="<?php echo e(url('/get/invoice/SUBMISSION')); ?>">Get Invoice</a>
                                        <?php else: ?>
                                         <?php if($paid->application_stage_status != 5): ?>
                                             <button class="btn btn-secondary toastrDefaultError" style="font-weight:700" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           
@@ -120,7 +120,7 @@
                                  <!-- Second Ends -->
                                 
                                 <!-- Third Begins -->
-                                <?php if($pays->second_payment_price > 0): ?>
+                                <?php if($pays->second_payment_sub_total > 0): ?>
                                 <div class="row">
                                     <div class="col-md-3" align="left">
                                         <p>
@@ -143,7 +143,7 @@
                                            
                                         <?php if($paid->second_payment_status =='PAID'): ?>
 
-                                            <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="<?php echo e(url('/get/invoice/Third Payment')); ?>">Get Invoice</a>
+                                            <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="<?php echo e(url('/get/invoice/SECOND')); ?>">Get Invoice</a>
                                        <?php else: ?>
                                         <?php if($paid->application_stage_status != 5): ?>
                                             <button class="btn btn-secondary toastrDefaultError" style="font-weight:700" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           
@@ -171,10 +171,10 @@
                         <div style="align-items: left; align:left; float: left; padding-left:40px;padding-right:40px" class="col-12">Your next payment is <b>
 
                           <?php if($paid->submission_payment_status =='PAID'): ?>                    
-                            <?php echo e($pays->second_payment_price); ?> AED
+                            <?php echo e($pays->second_payment_sub_total); ?> AED
                             </b>, to be charged for Third Payment.
                           <?php elseif($paid->first_payment_status =='PAID'): ?>
-                            <?php echo e($pays->submission_payment_price); ?> AED
+                            <?php echo e($pays->submission_payment_sub_total); ?> AED
                             </b>, to be charged for Second Payment.
                           <?php elseif($paid->first_payment_status !='PAID' && $paid->submission_payment_status !='PAID'): ?>
 
@@ -182,7 +182,7 @@
                                <?php echo e($paid->first_payment_remaining); ?> AED
                                 </b>, outstanding on First Payment.
                            <?php else: ?>
-                                <?php echo e($pays->first_payment_price); ?> AED
+                                <?php echo e($pays->first_payment_sub_total); ?> AED
                                 </b>, to be charged for First Payment.
                            <?php endif; ?>
                           <?php endif; ?>

@@ -77,7 +77,7 @@
 
                                 
                                 <!-- Second Begins -->
-                                @if($pays->submission_payment_price > 0)
+                                @if($pays->submission_payment_sub_total > 0)
                                 <div class="row">
                                     <div class="col-md-3" align="left">
                                         <p>
@@ -120,7 +120,7 @@
                                  <!-- Second Ends -->
                                 
                                 <!-- Third Begins -->
-                                @if($pays->second_payment_price > 0)
+                                @if($pays->second_payment_sub_total > 0)
                                 <div class="row">
                                     <div class="col-md-3" align="left">
                                         <p>
@@ -171,10 +171,10 @@
                         <div style="align-items: left; align:left; float: left; padding-left:40px;padding-right:40px" class="col-12">Your next payment is <b>
 
                           @if($paid->submission_payment_status =='PAID')                    
-                            {{ $pays->second_payment_price }} AED
+                            {{ $pays->second_payment_sub_total }} AED
                             </b>, to be charged for Third Payment.
                           @elseif($paid->first_payment_status =='PAID')
-                            {{ $pays->submission_payment_price }} AED
+                            {{ $pays->submission_payment_sub_total }} AED
                             </b>, to be charged for Second Payment.
                           @elseif($paid->first_payment_status !='PAID' && $paid->submission_payment_status !='PAID')
 
@@ -182,7 +182,7 @@
                                {{ $paid->first_payment_remaining }} AED
                                 </b>, outstanding on First Payment.
                            @else
-                                {{ $pays->first_payment_price }} AED
+                                {{ $pays->first_payment_sub_total }} AED
                                 </b>, to be charged for First Payment.
                            @endif
                           @endif

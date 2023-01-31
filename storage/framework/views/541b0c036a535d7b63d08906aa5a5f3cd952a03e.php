@@ -18,30 +18,49 @@
   ?>
 
     <?php
-        if($user->payment_type =="First Payment")
+        if($user->payment_type =="FIRST")
         {
             $discounted = $apply->first_payment_discount;
-        } elseif($user->payment_type =="Second Payment") {
+            if(Auth::user()->country_of_residence == "United Arab Emirates")
+            {
+              $vatP = $thisVat = $pricing->first_payment_vat;
+            } else {
+              $vatP = $thisVat = 0;
+            }
+            // $thisAmt = $pricing->first_payment_sub_total  
+        } elseif($user->payment_type =="SUBMISSION") {
             $discounted = $apply->submission_payment_discount;
-        } elseif($user->payment_type =="Third Payment") {
-            $discounted = $apply->second_payment_discount;  
+            if(Auth::user()->country_of_residence == "United Arab Emirates")
+            {
+                $vatP = $thisVat = $pricing->submission_payment_vat;
+            } else {
+              $vatP = $thisVat = 0;
+            }    
+        } elseif($user->payment_type =="SECOND") {
+            $discounted = $apply->second_payment_discount;
+            if(Auth::user()->country_of_residence == "United Arab Emirates")
+            {
+                $vatP = $thisVat = $pricing->second_payment_vat ; 
+            } else {
+                $vatP = $thisVat = 0;
+            }
         } else {
             $discounted =0;
         }
 
-        $thisAmt = ($user->payable_amount);
-        $thisAmt_pseudo = ($user->payable_amount*(100/105));
+        // $thisAmt = ($user->payable_amount);
+        $thisAmt = ($user->payable_amount*(100/105));
         // $thisVat = $user->payable_amount - $thisAmt_pseudo; 
     ?>
 
 <?php
-if(Auth::user()->country_of_residence == "United Arab Emirates")
-{
-    $vatP = $thisVat = $pricing->total_price * 5/100;
-} else {
-    $vatP = $thisVat = 0;
-}
-$totalP = $pricing->total_price;
+// if(Auth::user()->country_of_residence == "United Arab Emirates")
+// {
+//     $vatP = $thisVat = ($pricing->sub_total - $pricing->third_payment_sub_total) * 5/100;
+// } else {
+//     $vatP = $thisVat = 0;
+// }
+ $totalP = ($pricing->sub_total - $pricing->third_payment_sub_total);
 $total = $totalP + $vatP;
 ?>
   <body>
