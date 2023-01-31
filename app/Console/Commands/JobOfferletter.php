@@ -48,15 +48,14 @@ class JobOfferLetter extends Command
         $today = Carbon::now()->format('Y-m-d');;
         $applicants = Payment::join('applications', 'payments.application_id', 'applications.id')
             ->where('applications.first_payment_status', 'PAID')
-            ->where('payments.payment_type','First Payment')
+            ->where('payments.payment_type','FIRST')
             ->where('applications.is_job_offer_letter_delivered', 0)
             ->select('payments.created_at', 'applications.id', 'applications.client_id')
             ->get();
         foreach($applicants as $applicant){
             $paiddate = $applicant['created_at']->addDays(7)->format('Y-m-d');
             if($paiddate == $today){
-                // pdfBlock::jobLetter($applicant->id);
-                pdfBlock::jobLetter($applicant->client_id,$applicant->created_at);
+                pdfBlock::jobLetter($applicant->id,$applicant->client_id,$applicant->created_at);
                 $client = User::find($applicant->client_id);
                 $application = Applicant::find($applicant->id);
                 $media = (isset($application->getMedia(Applicant::$media_collection_main_job_offer_letter)[0])) ? $application->getMedia(Applicant::$media_collection_main_job_offer_letter)[0]->getFullUrl() : null;
@@ -65,17 +64,6 @@ class JobOfferLetter extends Command
                 $application->save();
             }
         }
-        ///
-        // $applicants = Payment::join('applications', 'payments.application_id', 'applications.id')
-        // ->where('applications.first_payment_status', 'PAID')
-        // ->where('payments.payment_type','First Payment')
-        // // ->where('applications.is_job_offer_letter_delivered', 0)
-        // ->where('client_id',1)
-        // ->select('payments.created_at', 'applications.id', 'applications.client_id')
-        // ->first();
-
-        // pdfBlock::jobLetter($applicants->client_id,$applicants->created_at);
-        ///
     }
 
 }

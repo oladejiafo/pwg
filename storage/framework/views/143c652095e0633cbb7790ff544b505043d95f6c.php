@@ -45,7 +45,7 @@
                                         <p>
                                          <?php if($paid->first_payment_status =='PAID'): ?>
                                             Status PAID
-                                         <?php elseif($paid->first_payment_status =='PARTIAL'): ?>
+                                         <?php elseif($paid->first_payment_status =='PARTIALLY_PAID'): ?>
                                             Status PAID PARTIAL   
                                          <?php else: ?>
                                             Status PENDING
@@ -57,7 +57,7 @@
                                         <p>
                                         <?php if($paid->first_payment_status =='PAID'): ?>
 
-                                            <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="<?php echo e(url('/get/invoice/First Payment')); ?>">Get Invoice</a>
+                                            <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="<?php echo e(url('/get/invoice/FIRST')); ?>">Get Invoice</a>
                                        <?php else: ?>
                                         <?php if($paid->application_stage_status != 5): ?>
                                             <button class="btn btn-secondary toastrDefaultError" style="font-weight:700" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           
@@ -100,7 +100,7 @@
                                            
                                         <?php if($paid->submission_payment_status =='PAID'): ?>
 
-                                            <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="<?php echo e(url('/get/invoice/Second Payment')); ?>">Get Invoice</a>
+                                            <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="<?php echo e(url('/get/invoice/SUBMISSION')); ?>">Get Invoice</a>
                                        <?php else: ?>
                                         <?php if($paid->application_stage_status != 5): ?>
                                             <button class="btn btn-secondary toastrDefaultError" style="font-weight:700" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           
@@ -143,7 +143,7 @@
                                            
                                         <?php if($paid->second_payment_status =='PAID'): ?>
 
-                                            <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="<?php echo e(url('/get/invoice/Third Payment')); ?>">Get Invoice</a>
+                                            <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="<?php echo e(url('/get/invoice/SECOND')); ?>">Get Invoice</a>
                                        <?php else: ?>
                                         <?php if($paid->application_stage_status != 5): ?>
                                             <button class="btn btn-secondary toastrDefaultError" style="font-weight:700" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           

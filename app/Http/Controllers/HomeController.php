@@ -645,7 +645,7 @@ class HomeController extends Controller
                         ->first();
                 }
 
-                if ($pays->first_payment_status != "PARTIALLY_PAID"){
+                // if ($pays->first_payment_status != "PARTIALLY_PAID"){
                     /* Newly Added starts here*/
                     $applicant = Applicant::where('client_id', Auth::id())
                         ->where('destination_id', $id)
@@ -717,7 +717,7 @@ class HomeController extends Controller
                     $result = pdfBlock::attachSignature($originalPdf, $signatureUrl, $data, $paymentType, $applicant);
                     // }
                     /* Newly added endss here*/
-                }
+                // }
                 return view('user.payment-form', compact('data', 'pdet', 'pays', 'payall'));
             } else {
                 // return redirect()->back()->with('message', 'You are not authorized');
