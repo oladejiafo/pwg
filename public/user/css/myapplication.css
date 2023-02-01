@@ -342,17 +342,19 @@ body {
 }
 @media(max-width:1770px) {
   .paid-section .outer {
-    overflow-x: auto;
+    overflow-x: hidden;
   }
 }
 @media(max-width:1370px) {
   .paid-section .outer {
-    overflow-x: auto;
+    overflow-x: hidden;
   }
   .paid-section .outer .controls{
     display:block;
   }
 }
+
+
 @media only screen and (max-width: 768px) and (min-width: 370px) {
   .paid-section {
     padding: 1px 1px 1px 1px;
@@ -593,7 +595,367 @@ body {
   margin: auto;
   background-color: #fff;
 }
+.paid-section .paid-item .salari {
+  
+    margin:0 15%;
+    margin-top:-65%;
+}
+@media (max-width: 1500px) and (min-width:1335px)
+{
+  .paid-section .paid-item strong {
+    font-size: 25px !important;
+  }
 
+  .paid-section .paid-item amp {
+    /* top: 260px; */
+    left: 110px;
+  }
+.paid-section .paid-item .salari {
+  margin: 0px 10%;
+  margin-top: -70%;
+}
+
+  
+.paid-section .paid-item a {
+  top: 355px;
+  left: 10%;
+  width: 80%;
+}
+
+.paid-section .paid-item button {
+  top: 355px;
+  left: 10%;
+  width: 80%;
+  /* font-size: 30px; */
+}
+
+.paid-section .cardc,
+.paid-section .cardc .cardc-body {
+  width: 100% !important;
+}
+
+.paid-section .cardc .cardc-body:hover {
+  width: 105%;
+}
+
+.block, .block2 {
+  width: 60px;
+  height: 60px;
+  padding-top: 0px;
+}
+.paid-section .cardc .process {
+  margin-top: -5px;
+}
+
+}
+
+@media (max-width: 1366px) and (min-width:1201px)
+{
+  
+  .paid-section .paid-item strong {
+    font-size: 25px !important;
+  }
+
+  .paid-section .paid-item amp {
+    /* top: 260px; */
+    left: 110px;
+  }
+.paid-section .paid-item .salari {
+  margin: 0px 7%;
+    margin-top: -70%;
+}
+  
+.paid-section .paid-item a {
+  top: 355px;
+  left: 10%;
+  width: 80%;
+}
+
+.paid-section .paid-item button {
+  top: 355px;
+  left: 10%;
+  width: 80%;
+  /* font-size: 30px; */
+}
+
+.paid-section .cardc,
+.paid-section .cardc .cardc-body {
+  width: 100% !important;
+}
+
+.paid-section .cardc .cardc-body:hover {
+  width: 105%;
+}
+
+.block, .block2 {
+  width: 60px;
+  height: 60px;
+  padding-top: 0px;
+}
+.paid-section .cardc .process {
+  margin-top: -5px;
+}
+
+.card .card-body {
+  padding: 30px 50px 30px 50px;
+}
+}
+
+
+@media (max-width: 1200px) and (min-width:1025px)
+{
+  
+  .paid-section .paid-item strong {
+    font-size: 25px !important;
+  }
+
+  .paid-section .paid-item amp {
+    /* top: 260px; */
+    left: 110px;
+  }
+.paid-section .paid-item .salari {
+  margin: 0px 5%;
+    margin-top: -85%;
+}
+  
+.paid-section .paid-item a {
+  top: 355px;
+  left: 10%;
+  width: 80%;
+}
+
+.paid-section .paid-item button {
+  top: 355px;
+  left: 10%;
+  width: 80%;
+  /* font-size: 30px; */
+}
+
+.paid-section .cardc,
+.paid-section .cardc .cardc-body {
+  width: 100% !important;
+}
+
+.paid-section .cardc .cardc-body:hover {
+  width: 105%;
+}
+
+.block, .block2 {
+  width: 60px;
+  height: 60px;
+  padding-top: 0px;
+}
+.paid-section .cardc .process {
+  margin-top: -25px;
+}
+
+.cardc-body .dg p {
+  white-space: normal;
+}
+.cardc-body .prodd {
+  margin-top: 5px !important;
+  line-height: 15px !important;
+  display: block;
+}
+}
+
+
+@media (max-width: 1024px) and (min-width:980px)
+{
+  
+  .paid-section .paid-item strong {
+    font-size: 20px !important;
+    margin-left: -25px;
+  }
+
+  .paid-section .paid-item amp {
+    /* top: 260px; */
+    left: 67px !important;
+    font-size: 15px !important;
+  }
+.paid-section .paid-item .salari {
+  margin: 0px 5%;
+  margin-top: -120%;
+  white-space: normal;
+}
+  
+.paid-section .paid-item a {
+  top: 325px;
+  left: 10%;
+  width: 80%;
+  font-size: 20px;
+  height: 40px;
+}
+
+.paid-section .paid-item button {
+  top: 325px;
+  left: 10%;
+  width: 80%;
+  font-size: 20px;
+  height: 40px;
+  /* font-size: 30px; */
+}
+
+.paid-section .cardc,
+.paid-section .cardc .cardc-body {
+  width: 100% !important;
+}
+
+.paid-section .cardc .cardc-body:hover {
+  width: 105%;
+}
+
+.block, .block2 {
+  width: 60px;
+  height: 60px;
+  padding-top: 0px;
+  margin-top: 10px;
+  margin-left: 10px;
+  padding: 1px;
+}
+.paid-section .cardc .process {
+  margin-top: -45px;
+  margin-left: 5px;
+}
+
+.cardc-body .dg p {
+  white-space: normal;
+  padding-top: 10px !important;
+}
+.cardc-body .prodd {
+  margin-top: 5px !important;
+  line-height: 15px !important;
+  display: block;
+}
+.paid-section .outer {
+  padding: 0 5%;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.watermarked:after {
+  width: 100px;
+  height: 100px;
+  top: 45% !important;
+  left: 30% !important;
+  background-size: 70px 70px !important;
+  background-position: 30px 30px;
+
+}
+ .cardc {
+  /* margin-top: -113px !important; */
+}
+.paid-section .paid-item {
+  margin: 0px auto;
+  padding: 0 5%;
+  max-height: 430px;
+}
+
+.paid-thumbnail .upper {
+  max-height: 435px !important;
+}
+}
+
+@media (max-width:980px)
+{
+  
+  .paid-section .paid-item strong {
+    font-size: 30px !important;
+    margin-left: 1px;
+  }
+
+  .paid-section .paid-item amp {
+    /* top: 260px; */
+    left: 130px !important;
+    font-size: 17px !important;
+  }
+.paid-section .paid-item .salari {
+  margin: 0px 15%;
+  margin-top: -60%;
+  white-space: normal;
+}
+  
+.paid-section .paid-item a {
+  top: 380px;
+  left: 10%;
+  width: 80%;
+  font-size: 20px;
+  height: 40px;
+}
+
+.paid-section .paid-item button {
+  top: 380px;
+  left: 10%;
+  width: 80%;
+  font-size: 20px;
+  height: 40px;
+  /* font-size: 30px; */
+}
+
+.paid-section .cardc,
+.paid-section .cardc .cardc-body {
+  width: 280px !important;
+}
+
+.paid-section .cardc .cardc-body:hover {
+  width: 290px;
+}
+
+.block, .block2 {
+  width: 70px;
+  height: 70px;
+  padding-top: 5px;
+  margin-top: 20px;
+  margin-left: 20px;
+  /* padding: 1px; */
+}
+.paid-section .cardc .process {
+  margin-top: -45px;
+  margin-left: 5px;
+}
+
+.cardc-body .dg p {
+  white-space: normal;
+  padding-top: 20px !important;
+}
+.cardc-body .prodd {
+  margin-top: 5px !important;
+  line-height: 15px !important;
+  display: block;
+}
+.paid-section .outer {
+
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.watermarked:after {
+  width: 120px;
+  height: 120px;
+  top: 50% !important;
+  left: 40% !important;
+  background-size: 80px 80px !important;
+  background-position: 30px 30px;
+
+}
+
+.paid-section .paid-item {
+  margin: 20px 0px 0 0;
+  max-height: 500px;
+}
+
+.paid-thumbnail .upper {
+  max-height: auto !important;
+}
+}
+
+@media (max-width: 767px)
+{
+.paid-section .cardc, .paid-section .cardc .cardc-body {
+    width: 280px!important;
+    margin: 0 auto;
+}
+}
 @media (min-width:375px) and (max-width:678px) {
   .cellContainer {
     padding: 0px;
