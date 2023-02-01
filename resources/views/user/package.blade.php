@@ -110,6 +110,7 @@
           @endif
 
           <p>
+         
           <h3>{{$ptype}} Payment Installments</h3>
           <table border=0 style="border-radius:10px">
             <tr>
@@ -210,6 +211,7 @@
           @endauth
           @endif
               <input type="hidden" value="{{$data->id}}">
+              <input type="hidden" value="{{$ppay->id}}">
 
               <p style="margin-left:2px;font-weight:bold; font-size:1.4em">Please, select one of the following options:</p>
               <?php

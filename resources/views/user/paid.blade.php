@@ -1180,7 +1180,8 @@
                                                             @endphp
                                                         @else
                                                             @php
-                                                                $linkk = 'payment';
+                                                                $linkk = 'applicant.details';
+                                                                // $linkk = 'payment';
                                                             @endphp
                                                         @endif
                                                         <a href="{{ route($linkk, $paid->destination_id) }}"

@@ -50,7 +50,7 @@ class HomeController extends Controller
                 $data = product::find($id);
 
                 $promo = promo::where('employee_id', '=', $id)->where('active_until', '>=', date('Y-m-d'))->get();
-                $ppay = product_payments::where('destination_id', '=', $id)->first();
+                $ppay = product_payments::where('destination_id', '=', $id)->where('pricing_plan_type', '=', Session::get('packageType'))->where('status','CURRENT')->first();
                 // $proddet = product_details::where('product_id', '=', $id)->get();
 
                 session()->forget('prod_id');
@@ -124,6 +124,7 @@ class HomeController extends Controller
     {
         Session::forget('packageType');
         Session::forget('myproduct_id');
+        Session::forget('mypack_id');
         Session::forget('mySpouse');
         Session::forget('myKids');
 
@@ -133,6 +134,7 @@ class HomeController extends Controller
         }
 
         Session::put('myproduct_id', $productId);
+        // Session::put('mypack_id', $pack_id);
         $data = product::find($productId);
 
         if (Session::has('mySpouse')) {
@@ -178,6 +180,7 @@ class HomeController extends Controller
     public function product(Request $request)
     {
         Session::put('packageType', $request->myPack);
+
         $id = Session::get('myproduct_id');
 
         session()->forget('totalCost');
@@ -202,14 +205,17 @@ class HomeController extends Controller
             }
 
             $ppay = family_breakdown::where('destination_id', '=', $id)
+                // ->where('id','=', $pid)
                 ->where('pricing_plan_type', '=', Session::get('packageType'))
                 ->where('no_of_parent', '=', $parentt)
                 ->where('no_of_children', '=', $kids)
                 ->where('status','CURRENT')
                 ->orderBy('sub_total', 'asc')
                 ->first();
+                
         } else {
             $ppay = family_breakdown::where('destination_id', '=', $id)
+                // ->where('id','=', $pid) 
                 ->where('pricing_plan_type', '=', Session::get('packageType'))
                 ->where('status','CURRENT')
                 // ->where('family_sub_id', '=', Session::get('fam_id'))      
