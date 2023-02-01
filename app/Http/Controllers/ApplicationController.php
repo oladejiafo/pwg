@@ -119,7 +119,7 @@ class ApplicationController extends Controller
             'surname' => 'required',
             'dob' => 'required',
             'email' => 'required | email:rfc,dns',
-            'phone_number' => 'required | unique:clients',
+            'phone_number' => 'required',
             'place_birth' => 'required',
             'country_birth' => 'required',
             'sex' => 'required',

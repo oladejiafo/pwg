@@ -2616,7 +2616,7 @@ unset($__errorArgs, $__bag); ?>
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            if(('<?php echo e($applicant['work_permit_category']); ?>' == 'FAMILY PACKAGE') && ('<?php echo e($client['is_spouse']); ?>' > 0)){
+            if(('<?php echo e($applicant['work_permit_category']); ?>' == 'FAMILY_PACKAGE') && ('<?php echo e($client['is_spouse']); ?>' > 0)){
                 const dependentcurrentresidancemobile = document.querySelector("#dependent_current_residance_mobile");
                 const dependentcurrentresidancemobileInput = window.intlTelInput(dependentcurrentresidancemobile,{
                     separateDialCode: false,
@@ -3029,7 +3029,7 @@ unset($__errorArgs, $__bag); ?>
         });
         let dependentPhoneInput = null;
         let dependentcurrentresidancemobileInput = null;
-        if(('<?php echo e($applicant['work_permit_category']); ?>' == 'FAMILY PACKAGE') && ('<?php echo e($client['is_spouse']); ?>' > 0)){
+        if(('<?php echo e($applicant['work_permit_category']); ?>' == 'FAMILY_PACKAGE') && ('<?php echo e($client['is_spouse']); ?>' > 0)){
             const dependentPhone = document.querySelector("#dependent_phone");
             dependentPhoneInput = window.intlTelInput(dependentPhone,{
                 separateDialCode: false,

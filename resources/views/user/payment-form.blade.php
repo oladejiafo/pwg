@@ -278,9 +278,7 @@ $vals=array(0,1,2);
 
                             <?php
                                 if ($payall == 0 || empty($payall)) {
-
                                  if($pays->first_payment_status !="PAID" || $pays->first_payment_status ==null){
-
                                    $whichPayment =  "FIRST";
                                 
                                     $payNow = $pdet->first_payment_sub_total;
@@ -336,85 +334,94 @@ $vals=array(0,1,2);
                                     $pendMsg = "";
                                  }
                                  $discount=0;
-
                                 } else {
-                                    if($pays->first_payment_status =="PENDING" && $pays->submission_payment_status =="PENDING" & $pays->second_payment_status =="PENDING") {
-                                        $payNow = $pdet->sub_total - $pdet->third_payment_sub_total;
-                                        $payNoww = $payNow;
-                                        $pendMsg = "Full Payment";
-                                        $discountPercent =  ($data->full_payment_discount) ? $data->full_payment_discount.'%' : 0;
-
-                                        // $discountPercent = '5%';
-                                        // $discount = ($payNow * 5 / 100);
-                                        $discount = ($data->full_payment_discount > 0) ? ($payNow * $data->full_payment_discount / 100) : 0; //product discount fetch
-                                        $whichPayment =  "Full-Outstanding Payment";
-                                    } elseif($pays->first_payment_status !="PAID"){
-                                        if(is_null($pdet->second_payment_price) OR empty($pdet->second_payment_price) ) {
-                                            $payNow = $pdet->submission_payment_sub_total;
-                                            $payNoww = $payNow;
-                                            if($diff > 0){
-                                             $pendMsg = "Part Paid already";
-                                            } else {
-                                                $pendMsg="";
-                                            }
-                                            $discountPercent = '';
-                                            $discount = 0;
-                                        }elseif($diff > 0) {
-                                            // $payNow = $pdet->total_price-$pays->first_payment_paid;
-                                            // $payNoww = $pdet->total_price-$pays->first_payment_paid;
-                                            $payNow = $pdet->total_price-$pdet->first_payment_sub_total;
-                                            $payNoww = $pdet->total_price-$pdet->first_payment_sub_total;
-                                            $pendMsg = "Part Paid already";
-                                            $discountPercent =  ($data->full_payment_discount) ? $data->full_payment_discount.'%' : 0;
-                                            // $discountPercent =  '5%'; //$data->full_payment_discount
-                                            // $discount = ($payNow * 5 / 100);
-                                            $discount = ($data->full_payment_discount > 0) ? ($payNow * $data->full_payment_discount / 100) : 0; //product discount fetch
-
-                                        } else {
+                                    $discount=0;
+                                    $discountPercent = 0;
+                                        if($pays->first_payment_status =="PENDING" && $pays->submission_payment_status =="PENDING" & $pays->second_payment_status =="PENDING") {
                                             $payNow = $pdet->sub_total - $pdet->third_payment_sub_total;
-                                            $payNoww = $pdet->sub_total - $pdet->third_payment_sub_total;
+                                            $payNoww = $payNow;
                                             $pendMsg = "Full Payment";
+                                            if($pdet->submission_payment_sub_total > 0 || $pdet->second_payment_sub_total > 0){
+                                                $discountPercent =  ($data->full_payment_discount) ? $data->full_payment_discount.'%' : 0;
+
+                                                // $discountPercent = '5%';
+                                                // $discount = ($payNow * 5 / 100);
+                                                $discount = ($data->full_payment_discount > 0) ? ($payNow * $data->full_payment_discount / 100) : 0; //product discount fetch
+                                            }
+                                            $whichPayment =  "Full-Outstanding Payment";
+                                        } elseif($pays->first_payment_status !="PAID"){
+                                            if(is_null($pdet->second_payment_price) OR empty($pdet->second_payment_price) ) {
+                                                $payNow = $pdet->submission_payment_sub_total;
+                                                $payNoww = $payNow;
+                                                if($diff > 0){
+                                                $pendMsg = "Part Paid already";
+                                                } else {
+                                                    $pendMsg="";
+                                                }
+                                                $discountPercent = '';
+                                                $discount = 0;
+                                            }elseif($diff > 0) {
+                                                // $payNow = $pdet->total_price-$pays->first_payment_paid;
+                                                // $payNoww = $pdet->total_price-$pays->first_payment_paid;
+                                                $payNow = $pdet->sub_total-$pdet->first_payment_sub_total-$pdet->third_payment_sub_total;
+                                                $payNoww = $pdet->sub_total-$pdet->first_payment_sub_total-$pdet->third_payment_sub_total;
+                                                $pendMsg = "Part Paid already";
+                                                if($pdet->submission_payment_sub_total > 0 || $pdet->second_payment_sub_total > 0){
+                                                    $discountPercent =  ($data->full_payment_discount) ? $data->full_payment_discount.'%' : 0;
+                                                    // $discountPercent =  '5%'; //$data->full_payment_discount
+                                                    // $discount = ($payNow * 5 / 100);
+                                                    $discount = ($data->full_payment_discount > 0) ? ($payNow * $data->full_payment_discount / 100) : 0; //product discount fetch
+                                                }
+                                            } else {
+                                                $payNow = $pdet->sub_total - $pdet->third_payment_sub_total;
+                                                $payNoww = $pdet->sub_total - $pdet->third_payment_sub_total;
+                                                $pendMsg = "Full Payment";
+                                                if($pdet->submission_payment_sub_total > 0 || $pdet->second_payment_sub_total > 0){
+                                                    // $discountPercent = '5%';
+                                                    // $discount = ($payNow * 5 / 100);
+                                                    $discountPercent =  ($data->full_payment_discount) ? $data->full_payment_discount.'%' : 0;
+                                                    $discount =($data->full_payment_discount > 0) ? ($payNow * $data->full_payment_discount / 100) : 0; //product discount fetch
+                                                }
+                                            }
+                                            $whichPayment =  "Full-Outstanding Payment";
+                                        } elseif($pays->first_payment_status =="PAID" && $pays->submission_payment_status =="PENDING"){
+                                            if($pdet->second_payment_price != null || $pdet->second_payment_price != 0){
+                                                $payNow = $pdet->submission_payment_sub_total + $pdet->second_payment_sub_total;
+                                                $payNoww = $payNow;
+                                                $pendMsg = "Full Outstanding Payment";
+                                                if($pdet->submission_payment_sub_total > 0 || $pdet->second_payment_sub_total > 0){
+                                                    $discountPercent =  ($data->full_payment_discount) ? $data->full_payment_discount.'%' : 0;
+                                                    $discount = ($data->full_payment_discount > 0) ? ($payNow * $data->full_payment_discount / 100) : 0;
+                                                }
+                                                $whichPayment =  "Full-Outstanding Payment";
+                                            } else {
+                                                $payNow = $pdet->submission_payment_sub_total;
+                                                $payNoww = $payNow;
+                                                $pendMsg = "";
+                                                $discountPercent = '';
+                                                $discount = 0;
+                                                $whichPayment =  "SUBMISSION";
+                                            }
+                                            // $payNow = $pdet->total_price - $pdet->first_payment_price;
+                                            // $payNoww = $payNow;
+                                            // $pendMsg = "Full Outstanding Payment";
+
                                             // $discountPercent = '5%';
                                             // $discount = ($payNow * 5 / 100);
-                                            $discountPercent =  ($data->full_payment_discount) ? $data->full_payment_discount.'%' : 0;
-                                            $discount = ($data->full_payment_discount > 0) ? ($payNow * $data->full_payment_discount / 100) : 0; //product discount fetch
-                                        }
-                                        $whichPayment =  "Full-Outstanding Payment";
-                                    } elseif($pays->first_payment_status =="PAID" && $pays->submission_payment_status =="PENDING"){
-                                        if($pdet->second_payment_price != null || $pdet->second_payment_price != 0){
-                                            $payNow = $pdet->submission_payment_sub_total + $pdet->second_payment_sub_total;
-                                            $payNoww = $payNow;
-                                            $pendMsg = "Full Outstanding Payment";
-                                            $discountPercent =  ($data->full_payment_discount) ? $data->full_payment_discount.'%' : 0;
-                                            $discount = ($data->full_payment_discount > 0) ? ($payNow * $data->full_payment_discount / 100) : 0;
-                                            $whichPayment =  "Full-Outstanding Payment";
-                                        } else {
-                                            $payNow = $pdet->submission_payment_sub_total;
+                                        } elseif ($pays->first_payment_status =="PAID" && $pays->submission_payment_status =="PAID" && $pays->second_payment_status =="PENDING") {
+                                            $payNow = $pdet->second_payment_sub_total;
                                             $payNoww = $payNow;
                                             $pendMsg = "";
                                             $discountPercent = '';
                                             $discount = 0;
-                                            $whichPayment =  "SUBMISSION";
+                                        }else{
+                                            $payNow = 0;
+                                            $payNoww = $payNow;
+                                            $pendMsg = "";
+                                            $discountPercent = '';
+                                            $discount = 0;
                                         }
-                                        // $payNow = $pdet->total_price - $pdet->first_payment_price;
-                                        // $payNoww = $payNow;
-                                        // $pendMsg = "Full Outstanding Payment";
-
-                                        // $discountPercent = '5%';
-                                        // $discount = ($payNow * 5 / 100);
-                                    } elseif ($pays->first_payment_status =="PAID" && $pays->submission_payment_status =="PAID" && $pays->second_payment_status =="PENDING") {
-                                        $payNow = $pdet->second_payment_sub_total;
-                                        $payNoww = $payNow;
-                                        $pendMsg = "";
-                                        $discountPercent = '';
-                                        $discount = 0;
-                                    }else{
-                                        $payNow = 0;
-                                        $payNoww = $payNow;
-                                        $pendMsg = "";
-                                        $discountPercent = '';
-                                        $discount = 0;
-                                    }
+                                    
 
                                     $whichPayment =  "Full-Outstanding Payment";
                                     // $discountPercent = $data->full_payment_discount . '%';

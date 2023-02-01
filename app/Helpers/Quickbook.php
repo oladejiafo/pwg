@@ -47,7 +47,6 @@ class Quickbook
         $OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
         $authUrl = $OAuth2LoginHelper->getAuthorizationCodeURL();
         return $authUrl;
-
     }
 
     public static function connectQucikBook()
@@ -66,7 +65,6 @@ class Quickbook
         $dataService->setLogLocation(public_path() . "/QBLog");
         $dataService->throwExceptionOnError(true);
         return $dataService;
-
     }
 
 
@@ -114,10 +112,11 @@ class Quickbook
                 $customer = $dataService->Add($customer);
             }
             $apply = DB::table('applications')
-                ->select('applications.*', 'pricing_plans.total_price as planTotal', 'pricing_plans.first_payment_price as planFirstPrice', 'pricing_plans.submission_payment_price as  planSecondPrice', 'pricing_plans.second_payment_price as  planThirdPrice')
+                ->select('applications.*', 'pricing_plans.total_price as planTotal', 'pricing_plans.first_payment_sub_total as planFirstPrice', 'pricing_plans.submission_payment_sub_total as  planSecondPrice', 'pricing_plans.second_payment_sub_total as  planThirdPrice')
                 ->join('pricing_plans', 'pricing_plans.id', '=', 'applications.pricing_plan_id')
                 ->where('applications.destination_id', Session::get('myproduct_id'))
                 ->where('applications.client_id', Auth::id())
+                ->where('pricing_plans.status', 'CURRENT')
                 ->orderBy('id', 'DESC')
                 ->first();
             $destination = product::find($apply->destination_id);
@@ -153,7 +152,7 @@ class Quickbook
                         $FullThirdPayment = $dataService->Query("select * from Item Where Name='Travel Documents Submission - Poland'");
                         $FullThirdPaymentProduct = $dataService->FindbyId('Item', $FullThirdPayment[0]->Id);
                     } else {
-                        if($productObj[0]) {
+                        if ($productObj[0]) {
                             $updatItem = $dataService->FindbyId('Item', $productObj[0]->Id);
                         } else {
                             $updatItem = self::createNewItem($paymentDetails, $destinationName, $unitPrice, $dataService);
@@ -176,7 +175,7 @@ class Quickbook
                         $FullThirdPayment = $dataService->Query("select * from Item Where Name='Travel Documents Submission - Czech Republic'");
                         $FullThirdPaymentProduct = $dataService->FindbyId('Item', $FullThirdPayment[0]->Id);
                     } else {
-                        if($productObj[0]) {
+                        if ($productObj[0]) {
                             $updatItem = $dataService->FindbyId('Item', $productObj[0]->Id);
                         } else {
                             $updatItem = self::createNewItem($paymentDetails, $destinationName, $unitPrice, $dataService);
@@ -246,7 +245,7 @@ class Quickbook
                         ];
                         $dataService->Update(Item::update($FullThirdPaymentProduct, $FullThirdPaymentProductChange));
                     } else {
-                        if($productObj[0]) {
+                        if ($productObj[0]) {
                             $updatItem = $dataService->FindbyId('Item', $productObj[0]->Id);
                         } else {
                             $updatItem = self::createNewItem($paymentDetails, $destinationName, $unitPrice, $dataService);
@@ -281,7 +280,7 @@ class Quickbook
                         ];
                         $dataService->Update(Item::update($FullThirdPaymentProduct, $FullThirdPaymentProductChange));
                     } else {
-                        if($productObj[0]) {
+                        if ($productObj[0]) {
                             $updatItem = $dataService->FindbyId('Item', $productObj[0]->Id);
                         } else {
                             $updatItem = self::createNewItem($paymentDetails, $destinationName, $unitPrice, $dataService);
@@ -334,7 +333,7 @@ class Quickbook
                                     "DetailType" => "SalesItemLineDetail",
                                     "SalesItemLineDetail" => [
                                         "TaxCodeRef" => [
-                                            "value" => ($apply->total_vat == 0 || $apply->total_vat == null) ? 4 : 12, //'TAX
+                                            "value" => (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? (($apply->total_vat == 0 || $apply->total_vat == null) ? 4 : 12) : 'TAX'
                                         ],
                                         "ItemRef" =>
                                         [
@@ -353,7 +352,7 @@ class Quickbook
                                     "SalesItemLineDetail" =>
                                     [
                                         "TaxCodeRef" => [
-                                            "value" => ($apply->total_vat == 0 || $apply->total_vat == null) ? 4 : 12, //'TAX
+                                            "value" => (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? (($apply->total_vat == 0 || $apply->total_vat == null) ? 4 : 12) : 'TAX'
                                         ],
                                         "ItemRef" =>
                                         [
@@ -415,7 +414,7 @@ class Quickbook
                                     "DetailType" => "SalesItemLineDetail",
                                     "SalesItemLineDetail" => [
                                         "TaxCodeRef" => [
-                                            "value" => ($apply->total_vat == 0 || $apply->total_vat == null) ? 4 : 12, //'TAX
+                                            "value" => (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? (($apply->total_vat == 0 || $apply->total_vat == null) ? 4 : 12) : 'TAX'
                                         ],
                                         "ItemRef" =>
                                         [
@@ -473,7 +472,7 @@ class Quickbook
                                     "SalesItemLineDetail" =>
                                     [
                                         "TaxCodeRef" => [
-                                            "value" => ($apply->total_vat == 0 || $apply->total_vat == null) ? 4 : 12, //'TAX
+                                            "value" => (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? (($apply->total_vat == 0 || $apply->total_vat == null) ? 4 : 12) : 'TAX'
                                         ],
                                         "ItemRef" =>
                                         [
@@ -491,7 +490,7 @@ class Quickbook
                                     "DetailType" => "SalesItemLineDetail",
                                     "SalesItemLineDetail" => [
                                         "TaxCodeRef" => [
-                                            "value" => ($apply->total_vat == 0 || $apply->total_vat == null) ? 4 : 12, //'TAX
+                                            "value" => (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? (($apply->total_vat == 0 || $apply->total_vat == null) ? 4 : 12) : 'TAX'
                                         ],
                                         "ItemRef" =>
                                         [
@@ -510,7 +509,7 @@ class Quickbook
                                     "SalesItemLineDetail" =>
                                     [
                                         "TaxCodeRef" => [
-                                            "value" => ($apply->total_vat == 0 || $apply->total_vat == null) ? 4 : 12, //'TAX
+                                            "value" => (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? (($apply->total_vat == 0 || $apply->total_vat == null) ? 4 : 12) : 'TAX'
                                         ],
                                         "ItemRef" =>
                                         [
@@ -574,7 +573,7 @@ class Quickbook
                                     "SalesItemLineDetail" =>
                                     [
                                         "TaxCodeRef" => [
-                                            "value" => ($apply->total_vat == 0 || $apply->total_vat == null) ? 4 : 12, //'TAX
+                                            "value" => (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? (($apply->total_vat == 0 || $apply->total_vat == null) ? 4 : 12) : 'TAX'
                                         ],
                                         "ItemRef" =>
                                         [
@@ -592,7 +591,7 @@ class Quickbook
                                     "DetailType" => "SalesItemLineDetail",
                                     "SalesItemLineDetail" => [
                                         "TaxCodeRef" => [
-                                            "value" => ($apply->total_vat == 0 || $apply->total_vat == null) ? 4 : 12, //'TAX
+                                            "value" => (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? (($apply->total_vat == 0 || $apply->total_vat == null) ? 4 : 12) :'TAX'
                                         ],
                                         "ItemRef" =>
                                         [
@@ -689,7 +688,7 @@ class Quickbook
                         "DetailType" => "SalesItemLineDetail",
                         "SalesItemLineDetail" => [
                             "TaxCodeRef" => [
-                                "value" => ($tax == 0 || $tax == null) ? 4 : 12, //'TAX
+                                "value" => (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? (($tax == 0 || $tax == null) ? 4 : 12) :'TAX'
                             ],
                             "ItemRef" => [
                                 "value" => $updatItem->Id,
@@ -748,7 +747,7 @@ class Quickbook
                         "DetailType" => "SalesItemLineDetail",
                         "SalesItemLineDetail" => [
                             "TaxCodeRef" => [
-                                "value" =>  ($tax == 0 || $tax == null) ? 4 : 12, //'TAX',
+                                "value" => (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? (($tax == 0 || $tax == null) ? 4 : 12) : 'TAX' 
                             ],
                             "ItemRef" => [
                                 "value" => $updatItem->Id,
@@ -810,7 +809,7 @@ class Quickbook
                 'QBORealmID' => (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.QBORealmID') : config('services.quickbook.QBORealmID'),
                 'baseUrl' => (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? "Development" : "production"
             ));
-            
+
             $OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
             $refreshedAccessTokenObj = $OAuth2LoginHelper->refreshToken();
             $dataService->updateOAuth2Token($refreshedAccessTokenObj);
@@ -871,7 +870,7 @@ class Quickbook
     private static function createNewItem($paymentDetails, $destinationName, $unitPrice, $dataService)
     {
         $Item = Item::create([
-            "Name" => $paymentDetails->payment_type . '-' . $destinationName. '-' . Carbon::now()->format('YmdHis'),
+            "Name" => $paymentDetails->payment_type . '-' . $destinationName . '-' . Carbon::now()->format('YmdHis'),
             "Description" => $paymentDetails->payment_type . '-' . $destinationName,
             "Active" => true,
             "FullyQualifiedName" => $paymentDetails->payment_type . '-' . $destinationName,
