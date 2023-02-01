@@ -8,7 +8,6 @@
 <style>
     input {
         text-align: left;
-
     }
     .dicountBtn {
         font-size: 28px !important;
@@ -24,7 +23,6 @@
     @media (min-width:375px) and (max-width:768px) {
     .dicountBtn {
         font-size: 1.2em !important;
-
     }
 }
 </style>
