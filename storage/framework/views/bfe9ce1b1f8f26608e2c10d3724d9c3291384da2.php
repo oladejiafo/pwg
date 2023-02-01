@@ -612,7 +612,7 @@
                 if($('.homeCountryCompleted').val() == 1) {
                     if($('.currentCountryCompleted').val() == 1) {
                         if($('.schengenCompleted').val() == 1) {
-                            if(('<?php echo e(($applicant['work_permit_category'])); ?>' == 'FAMILY PACKAGE') && ('<?php echo e($client['is_spouse']); ?>' == null || '<?php echo e($client['is_spouse']); ?>' == 0)){
+                            if(('<?php echo e(($applicant['work_permit_category'])); ?>' == 'FAMILY_PACKAGE') && ('<?php echo e($client['is_spouse']); ?>' == null || '<?php echo e($client['is_spouse']); ?>' == 0)){
                                 updateStatus('applicant'); 
                                 $('#children').show();
                                 $('#mainApplicant, #dependant').hide();
@@ -1441,7 +1441,7 @@
                 if($('.spouseHomeCountryCompleted').val() == 1) {
                     if($('.spouseCurrentCountryCompleted').val() == 1) {
                         if($('.schengenSpouseCompleted').val() == 1) {
-                            if(('<?php echo e(($applicant['work_permit_category'])); ?>' == 'FAMILY PACKAGE') && ('<?php echo e($client['children_count']); ?>' != null || '<?php echo e($client['children_count']); ?>' != 0)){
+                            if(('<?php echo e(($applicant['work_permit_category'])); ?>' == 'FAMILY_PACKAGE') && ('<?php echo e($client['children_count']); ?>' != null || '<?php echo e($client['children_count']); ?>' != 0)){
                                 updateStatus('family'); 
                                 $('#children').show();
                                 $('#mainApplicant, #dependant').hide();

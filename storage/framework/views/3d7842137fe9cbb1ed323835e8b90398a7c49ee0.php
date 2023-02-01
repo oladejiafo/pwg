@@ -145,9 +145,9 @@
                         <ul>
 
                             <?php if(
-                                ($pays->submission_payment_price == 0 || empty($pays->submission_payment_price)) &&
-                                    ($pays->second_payment_price == 0 || empty($pays->second_payment_price)) &&
-                                    ($pays->third_payment_price == 0 || empty($pays->third_payment_price))): ?>
+                                ($pays->submission_payment_sub_total == 0 || empty($pays->submission_payment_sub_total)) &&
+                                    ($pays->second_payment_sub_total == 0 || empty($pays->second_payment_sub_total)) &&
+                                    ($pays->third_payment_sub_total == 0 || empty($pays->third_payment_sub_total))): ?>
 
                                 <!-- 1st Payment Column  -->
                                 <li>
@@ -162,7 +162,7 @@
                                                     </h3>
                                                 </span>
                                                 <strong style="line-height:25px;margin-top:20px" class="paid-price">
-                                                    <?php echo e(number_format($pays->first_payment_price)); ?> |
+                                                    <?php echo e(number_format($pays->first_payment_sub_total)); ?> |
                                                     <br><span
                                                         style="font-size: 12px;float:left;display:inline">AED</span>
                                                     <span
@@ -205,7 +205,7 @@
 
                                 <?php if($pays->pricing_plan_type): ?>
                                     <?php
-                                        $a = explode(' ', $pays->pricing_plan_type);
+                                        $a = explode('_', $pays->pricing_plan_type);
                                         $ptype = $a[0] . ' ' . $a[1];
                                     ?>
                                     <?php if($pays->pricing_plan_type != 'FAMILY_PACKAGE'): ?>
@@ -351,9 +351,9 @@
                                     </div>
                                 </li>
                             <?php elseif(
-                                $pays->submission_payment_price > 0 &&
-                                    ($pays->second_payment_price == 0 || empty($pays->second_payment_price)) &&
-                                    ($pays->third_payment_price == 0 || empty($pays->third_payment_price))): ?>
+                                $pays->submission_payment_sub_total > 0 &&
+                                    ($pays->second_payment_sub_total == 0 || empty($pays->second_payment_sub_total)) &&
+                                    ($pays->third_payment_sub_total == 0 || empty($pays->third_payment_sub_total))): ?>
 
                                 <!-- 1st Payment Column  -->
                                 <li>
@@ -368,7 +368,7 @@
                                                   </h3>
                                               </span>
                                               <strong style="line-height:25px;margin-top:20px" class="paid-price">
-                                                  <?php echo e(number_format($pays->first_payment_price)); ?> |
+                                                  <?php echo e(number_format($pays->first_payment_sub_total)); ?> |
                                                   <br><span
                                                       style="font-size: 12px;float:left;display:inline">AED</span>
                                                   <span
@@ -411,7 +411,7 @@
 
                               <?php if($pays->pricing_plan_type): ?>
                                   <?php
-                                      $a = explode(' ', $pays->pricing_plan_type);
+                                      $a = explode('_', $pays->pricing_plan_type);
                                       $ptype = $a[0] . ' ' . $a[1];
                                   ?>
                                   <?php if($pays->pricing_plan_type != 'FAMILY_PACKAGE'): ?>
@@ -568,7 +568,7 @@
                                       
                                       </span>
                                       <strong style="line-height:25px;margin-top:20px" class="paid-price">
-                                        <?php echo e(number_format($pays->submission_payment_price)); ?> | 
+                                        <?php echo e(number_format($pays->submission_payment_sub_total)); ?> | 
                                         <br><span style="font-size: 12px;float:left;display:inline">AED</span>
                                         <span style="font-size: 12px;display:inline; float:right;margin-right:20px;"> + 5% VAT</span>
                                       </strong>&nbsp;
@@ -599,9 +599,9 @@
                               </li>
                 
                             <?php elseif(
-                                $pays->submission_payment_price > 0 &&
-                                    $pays->second_payment_price > 0 &&
-                                    ($pays->third_payment_price == 0 || empty($pays->third_payment_price))): ?>
+                                $pays->submission_payment_sub_total > 0 &&
+                                    $pays->second_payment_sub_total > 0 &&
+                                    ($pays->third_payment_sub_total == 0 || empty($pays->third_payment_sub_total))): ?>
 
 
                                 <!-- 1st Payment Column  -->
@@ -617,7 +617,7 @@
                                                   </h3>
                                               </span>
                                               <strong style="line-height:25px;margin-top:20px" class="paid-price">
-                                                  <?php echo e(number_format($pays->first_payment_price)); ?> |
+                                                  <?php echo e(number_format($pays->first_payment_sub_total)); ?> |
                                                   <br><span
                                                       style="font-size: 12px;float:left;display:inline">AED</span>
                                                   <span
@@ -660,7 +660,7 @@
 
                               <?php if($pays->pricing_plan_type): ?>
                                   <?php
-                                      $a = explode(' ', $pays->pricing_plan_type);
+                                      $a = explode('_', $pays->pricing_plan_type);
                                       $ptype = $a[0] . ' ' . $a[1];
                                   ?>
                                   <?php if($pays->pricing_plan_type != 'FAMILY_PACKAGE'): ?>
@@ -819,7 +819,7 @@
                                       
                                       </span>
                                       <strong style="line-height:25px;margin-top:20px" class="paid-price">
-                                        <?php echo e(number_format($pays->submission_payment_price)); ?> | 
+                                        <?php echo e(number_format($pays->submission_payment_sub_total)); ?> | 
                                         <br><span style="font-size: 12px;float:left;display:inline">AED</span>
                                         <span style="font-size: 12px;display:inline; float:right;margin-right:20px;"> + 5% VAT</span>
                                       </strong>&nbsp;
@@ -861,7 +861,7 @@
                                         <h3 class="paid-title" style="font-size: 22px; color:aliceblue"></h3>
                                       </span>
                                       <strong style="line-height:25px;margin-top:20px" class="paid-price">
-                                        <?php echo e(number_format($pays->second_payment_price)); ?> | 
+                                        <?php echo e(number_format($pays->second_payment_sub_total)); ?> | 
                                         <br><span style="font-size: 12px;float:left;display:inline">AED</span>
                                         <span style="font-size: 12px;display:inline; float:right;margin-right:20px;"> + 5% VAT</span>
                                       </strong>&nbsp;
@@ -906,7 +906,7 @@
                                                     </h3>
                                                 </span>
                                                 <strong style="line-height:25px;margin-top:20px" class="paid-price">
-                                                    <?php echo e(number_format($pays->first_payment_price)); ?> |
+                                                    <?php echo e(number_format($pays->first_payment_sub_total)); ?> |
                                                     <br><span
                                                         style="font-size: 12px;float:left;display:inline">AED</span>
                                                     <span
@@ -949,8 +949,8 @@
 
                                     <?php if($pays->pricing_plan_type): ?>
                                         <?php
-                                            $a = explode(' ', $pays->pricing_plan_type);
-                                            $ptype = $a[0] . ' ' . $a[1];
+                                            $a = explode('_', strtolower($pays->pricing_plan_type));
+                                            $ptype = ucFirst($a[0]) . ' ' . ucFirst($a[1]);
                                         ?>
                                         <?php if($pays->pricing_plan_type != 'FAMILY_PACKAGE'): ?>
                                             <?php
@@ -1026,7 +1026,7 @@
 
                                                 </span>
                                                 <strong style="line-height:25px;margin-top:20px" class="paid-price">
-                                                    <?php echo e(number_format($pays->submission_payment_price)); ?> |
+                                                    <?php echo e(number_format($pays->submission_payment_sub_total)); ?> |
                                                     <br><span
                                                         style="font-size: 12px;float:left;display:inline">AED</span>
                                                     <span
@@ -1117,7 +1117,7 @@
                                                     </h3>
                                                 </span>
                                                 <strong style="line-height:25px;margin-top:20px" class="paid-price">
-                                                    <?php echo e(number_format($pays->second_payment_price)); ?> |
+                                                    <?php echo e(number_format($pays->second_payment_sub_total)); ?> |
                                                     <br><span
                                                         style="font-size: 12px;float:left;display:inline">AED</span>
                                                     <span
@@ -1208,7 +1208,7 @@
                                                     </h3>
                                                 </span>
                                                 <strong style="line-height:25px;margin-top:20px" class="paid-price">
-                                                    <?php echo e(number_format($pays->third_payment_price)); ?> |
+                                                    <?php echo e(number_format($pays->third_payment_sub_total)); ?> |
                                                     <br><span
                                                         style="font-size: 12px;float:left;display:inline">AED</span>
                                                     

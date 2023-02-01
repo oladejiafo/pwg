@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -23,42 +25,18 @@
                             <tbody><tr>
                                 <td style="box-sizing:border-box;font-family:Yantramanav,sans-serif;max-width:100vw;padding:32px">
                                     <div style="box-sizing:border-box;font-family:Yantramanav,sans-serif;width:400px;height:250px;display:block;margin:30px auto">
-                                        <img src="<?php echo e(asset('images/paymentsuccesmail.png')); ?>" alt="" width="100%" height="100%">
+                                        <img src="<?php echo e(asset('images/congratulationsicon.png')); ?>" alt="" width="100%" height="100%">
                                     </div>
-                                    <h1 style="box-sizing:border-box;font-family:Yantramanav,sans-serif;color:#3d4852;font-size:24px;font-weight:bold;margin-top:0;text-align:center">PAYMENT SUBMITTED <br>
-                                        SUCCESSFULLY!</h1>
-                                    <p style="box-sizing:border-box;font-family:Yantramanav,sans-serif;font-size:15px;line-height:1.5em;margin-top:0;text-align:center">Thank you,</p>
-                                    <p style="box-sizing:border-box;font-family:Yantramanav,sans-serif;font-size:15px;line-height:1.5em;margin-top:0;text-align:center">
-                                            You have successfully made your <b style="font-weight: bold"><?php echo e(ucwords($data['paymentType'])); ?></b><br>
-                                            and you can view & download your invoice under <br>
-                                            <b>My Applications</b> on our portal.<?php if(ucwords($data['paymentType']) != 'SECOND'): ?> You will be notified when your <br>
-                                            <?php if(ucwords($data['paymentType']) == 'FIRST'): ?> work permit is ready. <?php elseif(ucwords($data['paymentType']) == 'SUBMISSION'): ?> embassy appointment is set. <?php elseif(ucwords($data['paymentType']) == 'Full-Outstanding Payment'): ?> work permit & embassy appointment is set. <?php endif; ?> <?php endif; ?>
-                                    </p>
-                                    <table role="presentation" style="box-sizing:border-box;font-family:Yantramanav,sans-serif;margin:auto;padding:0;text-align:center;float:center;width:100%;margin-bottom:1.5em" width="100%" cellspacing="0" cellpadding="0" align="center">
-                                        <tbody><tr>
-                                            <td style="box-sizing:border-box;font-family:Yantramanav,sans-serif" align="center">
-                                                <table role="presentation" style="box-sizing:border-box;font-family:Yantramanav,sans-serif" width="100%" cellspacing="0" cellpadding="0" border="0">
-                                                    <tbody><tr>
-                                                        <td style="box-sizing:border-box;font-family:Yantramanav,sans-serif" align="center">
-                                                            <table role="presentation" style="box-sizing:border-box;font-family:Yantramanav,sans-serif" cellspacing="0" cellpadding="0" border="0">
-                                                                <tbody><tr>
-                                                                    <td style="box-sizing:border-box;font-family:Yantramanav,sans-serif">
-                                                                        <a href="<?php echo e(env('APP_URL')); ?>myapplication" class="m_6264836849513322656button" rel="noopener" style="font-size: 20px;font-weight:500;box-sizing:border-box;float:center;border-radius:4px;color:#fff;display:inline-block;overflow:hidden;text-decoration:none;padding:12px;width:200px;text-align:center;background-color:#2ead0c!important;border:1px solid #c4c6cd" target="_blank" >GET INVOICE</a>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody></table>
-                                                        </td>
-                                                    </tr>
-                                                </tbody></table>
-                                            </td>
-                                        </tr>
-                                    </tbody></table>
+                                    <h1 style="box-sizing:border-box;font-family:Yantramanav,sans-serif;color:#3d4852;font-size:24px;font-weight:bold;margin-top:0;text-align:center">APPLICATION SUBMITTED <br> SUCCESSFULLY!</h1>
+                                    <p style="box-sizing:border-box;font-family:Yantramanav,sans-serif;font-size:15px;line-height:1.5em;margin-top:0;text-align:center">Thank you for starting your journey with PWG Group <br>
+                                        you can view your application under <b style="font-weight: bold">My Applications</b> on our <a href="<?php echo e(env('APP_URL')); ?>" style="text-decoration: none;cursor:pointer;color:#383838">portal</a>. </p>                                    
                                     <div style="display: block; margin-top:40px; text-align:center">
                                         <div style="width:40%; display:inline-block;">
                                             <div style="text-align: center;
                                             height: 51px;
                                             width: 23%;
-                                            float: right;margin-right:25px;">
+                                            float: right;
+                                            margin-right:25px">
                                                 <img src="<?php echo e(asset('images/logoo.png')); ?>" alt="" width="100%" height="100%">
                                             </div>
                                         </div>
@@ -100,4 +78,5 @@
         </tbody></table>
     </body>
 </html>
-<?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views/emails/payment-success.blade.php ENDPATH**/ ?>
+    
+<?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views/emails/application-submitted.blade.php ENDPATH**/ ?>

@@ -204,7 +204,7 @@
 
                                 @if ($pays->pricing_plan_type)
                                     @php
-                                        $a = explode(' ', $pays->pricing_plan_type);
+                                        $a = explode('_', $pays->pricing_plan_type);
                                         $ptype = $a[0] . ' ' . $a[1];
                                     @endphp
                                     @if ($pays->pricing_plan_type != 'FAMILY_PACKAGE')
@@ -412,7 +412,7 @@
 
                               @if ($pays->pricing_plan_type)
                                   @php
-                                      $a = explode(' ', $pays->pricing_plan_type);
+                                      $a = explode('_', $pays->pricing_plan_type);
                                       $ptype = $a[0] . ' ' . $a[1];
                                   @endphp
                                   @if ($pays->pricing_plan_type != 'FAMILY_PACKAGE')
@@ -662,7 +662,7 @@
 
                               @if ($pays->pricing_plan_type)
                                   @php
-                                      $a = explode(' ', $pays->pricing_plan_type);
+                                      $a = explode('_', $pays->pricing_plan_type);
                                       $ptype = $a[0] . ' ' . $a[1];
                                   @endphp
                                   @if ($pays->pricing_plan_type != 'FAMILY_PACKAGE')

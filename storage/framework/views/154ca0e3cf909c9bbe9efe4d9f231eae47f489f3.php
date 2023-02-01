@@ -23,9 +23,9 @@
         <?php elseif($prodd->name == 'Malta'): ?>
             <?php $contract_name = "malta.pdf"; ?>
         <?php elseif($prodd->name == 'Canada'): ?>
-            <?php if($package == 'Express Entry'): ?>
+            <?php if($package == 'EXPRESS_ENTRY'): ?>
                 <?php $contract_name = "canada_express_entry.pdf"; ?>
-            <?php elseif($package == 'Study Permit'): ?>
+            <?php elseif($package == 'STUDY_PERMIT'): ?>
                 <?php $contract_name = "canada_study.pdf"; ?>
             <?php else: ?>
                 <?php $contract_name = "canada.pdf"; ?>

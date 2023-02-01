@@ -34,18 +34,12 @@ class Kernel extends ConsoleKernel
         //     notifications::where('updated_at', '<', Carbon::now()->subDays(1))->delete();
         // })->everyMinute();
 
-        // $schedule->command('week:delete')
-        //         ->weekly();
         $schedule->command('week:delete')
-                ->everyFiveMinutes();
+                ->weekly();
         $schedule->command('reminder:email')
                 ->daily();
         $schedule->command('send:offerletter')
                 ->daily();
-
-        // $schedule->command('quickbook:cron')
-        //                 ->hourlyAt(17);	
-
     }
 
     /**

@@ -91,7 +91,8 @@
              
                <?php echo e($totalCost); ?> 
             <?php else: ?>
-               <?php echo e(number_format($ppay->total_price,2)); ?> 
+            <?php echo e(number_format(($ppay->sub_total - $ppay->third_payment_sub_total),2)); ?>
+
             <?php endif; ?> 
             <span style="font-size:25px"><?php echo e($data->currency); ?> </span>
           </h2>
@@ -102,14 +103,12 @@
 
           <?php if(Session::has('packageType')): ?>
             <?php
-             $a = explode(' ', Session::get('packageType'));
-             $ptype = $a[0] . ' ' . $a[1];
+             $a = explode('_', strtolower(Session::get('packageType')));
+             $ptype = ucFirst($a[0]). ' ' . ucFirst($a[1]);
             ?>
           <?php else: ?> 
              $ptype ='';  
           <?php endif; ?>
-     
-          
 
           <p>
           <h3><?php echo e($ptype); ?> Payment Installments</h3>
@@ -156,27 +155,27 @@
 
             <tr>
               <td align="center" class="pie" style="border-color:#fff;">
-                <span class="prices" style="font-weight:bold;"><?php echo e(number_format($ppay->first_payment_price)); ?> </span><br>
+                <span class="prices" style="font-weight:bold;"><?php echo e(number_format($ppay->first_payment_sub_total)); ?> </span><br>
                 <span class="pays" style="margin-left:0px;font-weight:bold;">First Payment &nbsp;&nbsp;&nbsp;&nbsp;</span>
               </td>
               <?php if($ppay->submission_payment_price > 0): ?>
               <td align="left" style="border-color:#fff;width:60px"> </td>
               <td align="center" class="pie" style="border-color:#fff;">
-                <span class="prices" style="font-weight:bold;"><?php echo e(number_format($ppay->submission_payment_price)); ?> </span><br>
+                <span class="prices" style="font-weight:bold;"><?php echo e(number_format($ppay->submission_payment_sub_total)); ?> </span><br>
                 <span class="pays" style="margin-left:0px;font-weight:bold;">Submission Payment</span>
               </td>
               <?php endif; ?>
               <?php if($ppay->second_payment_price > 0): ?>
               <td align="left" style="border-color:#fff;width:60px"> </td>
               <td align="center" class="pie" style="border-color:#fff;">
-                <span class="prices" style="font-weight:bold;"><?php echo e(number_format($ppay->second_payment_price)); ?> </span><br>
+                <span class="prices" style="font-weight:bold;"><?php echo e(number_format($ppay->second_payment_sub_total)); ?> </span><br>
                 <span class="pays" style="margin-left:0px;font-weight:bold;">Second Payment</span>
               </td>
               <?php endif; ?>
               <?php if($ppay->third_payment_price > 0): ?>
               <td align="left" style="border-color:#fff;width:60px"> </td>
               <td align="center" class="pie" style="border-color:#fff;">
-                <span class="prices" style="font-weight:bold;"><?php echo e(number_format($ppay->third_payment_price)); ?> </span><br>
+                <span class="prices" style="font-weight:bold;"><?php echo e(number_format($ppay->third_payment_sub_total)); ?> </span><br>
                 <span class="pays" style="margin-left:0px;font-size:10px;font-weight:bold;">Salary Deduction</span>
               </td>
               <?php endif; ?>
