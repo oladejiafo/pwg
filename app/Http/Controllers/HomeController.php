@@ -386,6 +386,7 @@ class HomeController extends Controller
                 ->where('destination_id', $pid)
                 ->where('no_of_parent', $mySpouse)
                 ->where('no_of_children', $myCHildren)
+                ->where('status','CURRENT')
                 ->pluck('id')
                 ->first();
             $user = User::where('id', Auth::id())
