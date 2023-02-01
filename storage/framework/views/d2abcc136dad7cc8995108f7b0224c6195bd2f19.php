@@ -251,6 +251,18 @@
         <?php endif; ?>
 
     </div>
+    <div class="modal fade" id="formatModal" tabindex="-1" aria-labelledby="formatModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header" style="border-bottom: 1px solid #fff">
+              <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img loading="lazy" src="<?php echo e(asset('images/warningimage.png')); ?>" width ="100%" height ="100%;" alt="EMAS">
+            </div>
+          </div>
+        </div>
+    </div>
     <?php echo $__env->make('user/footer', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
     <!-- End Product Section -->
 
@@ -263,6 +275,22 @@
 </html>
 
 <script>
+    $(document).ready(function() {
+        $('#formatModal').modal({
+            backdrop: 'static',
+            keyboard: false
+        });
+        if(!Cookies.get("visited")){
+            $('#formatModal').modal('show');
+        }
+
+        $('.btn-close').click(function(){
+            var date = new Date();
+            date.setDate(date.getDate() + 1);
+            Cookies.set('visited', true, {expires: date});
+            $('#formatModal').modal('hide');
+        });
+    });
 var button = document.getElementById('slide');
 button.onclick = function () {
     var container = document.getElementById('container');

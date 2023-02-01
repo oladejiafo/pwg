@@ -880,19 +880,19 @@ class HomeController extends Controller
 
                 */
 
-            // if (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+            if (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                 $outletRef       = config('app.payment_reference_local');
                 $apikey          = config('app.payment_api_key_local');
                 // Test URLS 
                 $idServiceURL  = "https://identity.sandbox.ngenius-payments.com/auth/realms/ni/protocol/openid-connect/token";           // set the identity service URL (example only)
                 $txnServiceURL = "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders";
-            // } else {
-            //     $outletRef       = config('app.payment_reference');
-            //     $apikey          = config('app.payment_api_key');
-            //     // LIVE URLS 
-            //     $idServiceURL  = "https://identity.ngenius-payments.com/auth/realms/NetworkInternational/protocol/openid-connect/token";           // set the identity service URL (example only)
-            //     $txnServiceURL = "https://api-gateway.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders";
-            // }
+            } else {
+                $outletRef       = config('app.payment_reference');
+                $apikey          = config('app.payment_api_key');
+                // LIVE URLS 
+                $idServiceURL  = "https://identity.ngenius-payments.com/auth/realms/NetworkInternational/protocol/openid-connect/token";           // set the identity service URL (example only)
+                $txnServiceURL = "https://api-gateway.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders";
+            }
 
             $tokenHeaders  = array("Authorization: Basic " . $apikey, "Content-Type: application/x-www-form-urlencoded");
             $tokenResponse = $this->invokeCurlRequest("POST", $idServiceURL, $tokenHeaders, http_build_query(array('grant_type' => 'client_credentials')));
@@ -1261,19 +1261,19 @@ class HomeController extends Controller
             $id = Session::get('myproduct_id');
             $orderReference  = $_GET['ref'];
 
-            // if (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+            if (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                 // local
                 $outletRef       = config('app.payment_reference_local');
                 $apikey          = config('app.payment_api_key_local');
                 $idServiceURL    = "https://identity.sandbox.ngenius-payments.com/auth/realms/ni/protocol/openid-connect/token";           // set the identity service URL (example only)
                 $residServiceURL = "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders/" . $orderReference;
-            // } else {
-            //     $outletRef           = config('app.payment_reference');
-            //     $apikey          = config('app.payment_api_key');
+            } else {
+                $outletRef           = config('app.payment_reference');
+                $apikey          = config('app.payment_api_key');
 
-            //     $idServiceURL    = "https://identity.ngenius-payments.com/auth/realms/Networkinternational/protocol/openid-connect/token";           // set the identity service URL (example only)
-            //     $residServiceURL = "https://api-gateway.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders/" . $orderReference;
-            // }
+                $idServiceURL    = "https://identity.ngenius-payments.com/auth/realms/Networkinternational/protocol/openid-connect/token";           // set the identity service URL (example only)
+                $residServiceURL = "https://api-gateway.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders/" . $orderReference;
+            }
 
             $tokenHeaders    = array("Authorization: Basic " . $apikey, "Content-Type: application/x-www-form-urlencoded");
             $tokenResponse   = $this->invokeCurlRequest("POST", $idServiceURL, $tokenHeaders, http_build_query(array('grant_type' => 'client_credentials')));
@@ -1314,7 +1314,7 @@ class HomeController extends Controller
                             $data->first_payment_remaining = 0; // add in payment success
 
                             $data->is_first_payment_partially_paid = 0; // add in payment success
-                            $data->status = 'WAITING_FOR_2ND_PAYMENT'; // add in payment success
+                            $data->status = 'DOCUMENT_SUBMITTED'; // add in payment success
                         }
                         if (isset($paymentCreds['totalremaining']) && $paymentCreds['totalremaining'] > 0) { // add in payment success
                             //     // $data->first_payment_price = $thisPayment;
