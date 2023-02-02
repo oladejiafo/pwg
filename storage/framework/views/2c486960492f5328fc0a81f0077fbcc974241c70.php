@@ -297,6 +297,7 @@ unset($__errorArgs, $__bag); ?>
                                     if($diff > 0) {
                                         $pendMsg = "You have " . $pends . " balance on first payment.";
                                         $payNoww = $pends;
+                                        $whichPayment =  "BALANCE_ON_FIRST";
 
                                     } else {
                                         $pendMsg = "";
