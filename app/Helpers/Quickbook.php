@@ -111,19 +111,20 @@ class Quickbook
                 ]);
                 $customer = $dataService->Add($customer);
             }
+            
             $apply = DB::table('applications')
-                ->select('applications.*', 'pricing_plans.total_price as planTotal', 'pricing_plans.first_payment_sub_total as planFirstPrice', 'pricing_plans.submission_payment_sub_total as  planSecondPrice', 'pricing_plans.second_payment_sub_total as  planThirdPrice')
-                ->join('pricing_plans', 'pricing_plans.id', '=', 'applications.pricing_plan_id')
-                ->where('applications.destination_id', Session::get('myproduct_id'))
-                ->where('applications.client_id', Auth::id())
-                ->where('pricing_plans.status', 'CURRENT')
-                ->orderBy('id', 'DESC')
-                ->first();
+            ->select('applications.*', 'pricing_plans.total_price as planTotal', 'pricing_plans.first_payment_sub_total as planFirstPrice', 'pricing_plans.submission_payment_sub_total as  planSecondPrice', 'pricing_plans.second_payment_sub_total as  planThirdPrice')
+            ->join('pricing_plans', 'pricing_plans.id', '=', 'applications.pricing_plan_id')
+            ->where('applications.destination_id', Session::get('myproduct_id'))
+            ->where('applications.client_id', Auth::id())
+            ->where('pricing_plans.status', 'CURRENT')
+            ->orderBy('id', 'DESC')
+            ->first();
             $destination = product::find($apply->destination_id);
             $unitPrice = 0;
             $paidAmount = 0;
             $tax = 0;
-            if ($paymentType == 'FIRST') {
+            if ($paymentType == 'FIRST' || $paymentType == 'BALANCE_ON_FIRST') {
                 $unitPrice = $apply->planFirstPrice;
                 $tax = $apply->first_payment_vat;
             } else if ($paymentType == 'SUBMISSION') {
@@ -137,7 +138,7 @@ class Quickbook
             $productObj = null;
             switch ($destinationName) {
                 case Constant::poland:
-                    if ($paymentType == 'FIRST') {
+                    if ($paymentType == 'FIRST' || $paymentType == 'BALANCE_ON_FIRST') {
                         $productObj = $dataService->Query("select * from Item Where Name='Photocopy Cv, Passport - Poland'");
                     } else if ($paymentType == 'SUBMISSION') {
                         $productObj = $dataService->Query("select * from Item Where Name='Typing for Visa Application - Poland'");
@@ -160,7 +161,7 @@ class Quickbook
                     }
                     break;
                 case Constant::czech:
-                    if ($paymentType == 'FIRST') {
+                    if ($paymentType == 'FIRST' || $paymentType == 'BALANCE_ON_FIRST') {
                         $productObj = $dataService->Query("select * from Item Where Name='Photocopy - CV, Passport - Czech Republic'");
                     } else if ($paymentType == 'SUBMISSION') {
                         $productObj = $dataService->Query("select * from Item Where Name='Typing for Visa Application - Czech Republic'");
@@ -183,7 +184,7 @@ class Quickbook
                     }
                     break;
                 case Constant::malta:
-                    if ($paymentType == 'FIRST') {
+                    if ($paymentType == 'FIRST' || $paymentType == 'BALANCE_ON_FIRST') {
                         $productObj = $dataService->Query("select * from Item Where Name='Photocopy - CV, Passport - Malta'");
                     } else if ($paymentType == 'SUBMISSION') {
                         $productObj = $dataService->Query("select * from Item Where Name='Typing for Visa Application - Malta'");
@@ -218,7 +219,7 @@ class Quickbook
                     }
                     break;
                 case Constant::canada:
-                    if ($paymentType == 'FIRST') {
+                    if ($paymentType == 'FIRST' || $paymentType == 'BALANCE_ON_FIRST') {
                         $productObj = $dataService->Query("select * from Item Where Name='Photocopy Cv, Passport - Canada'");
                     } else if ($paymentType == 'SUBMISSION') {
                         $productObj = $dataService->Query("select * from Item Where Name='Typing for Visa Application - Canada'");
@@ -253,7 +254,7 @@ class Quickbook
                     }
                     break;
                 case Constant::germany:
-                    if ($paymentType == 'FIRST') {
+                    if ($paymentType == 'FIRST' || $paymentType == 'BALANCE_ON_FIRST') {
                         $productObj = $dataService->Query("select * from Item Where Name='Photocopy- CV, Passport - Germany'");
                     } else if ($paymentType == 'SUBMISSION') {
                         $productObj = $dataService->Query("select * from Item Where Name='Typing for Visa Application - Germany'");
@@ -647,7 +648,7 @@ class Quickbook
                     }
                 }
             } else {
-                if ($paymentType == 'FIRST') {
+                if ($paymentType == 'FIRST' || $paymentType == 'BALANCE_ON_FIRST') {
                     $firstPaymentDue = PaymentDetails::where('application_id', $apply->id)
                         ->where('payment_type', $paymentType)
                         ->where('paid_amount', '!=', null)

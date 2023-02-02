@@ -132,7 +132,7 @@
                                         </span>
 
                                         
-                                        <p style="font-size:12px"><?php if($offer->name == "Canada" || $offer->name == "Germany"): ?> Starting From <?php else: ?> First Installment Payment From <?php endif; ?></p>
+                                        <p style="font-size:12px"><?php if($offer->name == "Canada" || $offer->name == "Germany"): ?> Full Payment Price <?php else: ?> First Installment Payment From <?php endif; ?></p>
 
                                         <strong class="product-price">  <?php echo e(number_format($offer->first_payment_sub_total,2)); ?> <?php echo e($offer->currency); ?></strong>
 
@@ -225,7 +225,7 @@
                             </span>
                             
 
-                            <p style="font-size:12px"><?php if($offer->name == "Canada" || $offer->name == "Germany"): ?> Starting From <?php else: ?> First Installment Payment From <?php endif; ?></p>
+                            <p style="font-size:12px"><?php if($offer->name == "Canada" || $offer->name == "Germany"): ?> Full Payment Price <?php else: ?> First Installment Payment From <?php endif; ?></p>
                             <strong class="product-price"><?php echo e(number_format($offer->first_payment_sub_total,2)); ?> <?php echo e($offer->currency); ?></strong>
                             <p>
                                 <i class="<?php echo e($icon); ?>"></i> <?php echo e($offer_discount_msg); ?> 

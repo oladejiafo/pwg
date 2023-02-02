@@ -1535,10 +1535,10 @@ class HomeController extends Controller
                     //Undo Payment update
                     // Payment::where('id', Session::get('paymentId'))->delete();
                 }
-            } elseif ($pays->payment_type == 'Balance on First Payment') {
+            } elseif ($pays->payment_type == 'BALANCE_ON_FIRST') {
                 //    $datas->first_payment_price = 0;
                 // $datas->first_payment_paid = $datas->first_payment_paid - $pays->paid_amount;
-                //    $datas->first_payment_vat = 0;
+                //    $datas->first_payment_vat = 0;    
                 //    $datas->first_payment_discount = 0;
                 $datas->first_payment_status = 'PARTIALLY_PAID';
                 // $datas->first_payment_remaining =  $datas->first_payment_remaining - $pays->paid_amount;
