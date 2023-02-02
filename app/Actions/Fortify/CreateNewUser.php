@@ -34,6 +34,7 @@ class CreateNewUser implements CreatesNewUsers
             'email' => $input['email'],
             'phone_number' => preg_replace("/[^0-9+]/", '', strip_tags($input['phone_number'])),
             'password' => Hash::make($input['password']),
+            'sales_agent_name_by_client' => $input['agent'],
         ]);
     }
 }

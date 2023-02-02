@@ -167,7 +167,7 @@
               </li> 
              @else
               <li class="nav-item">
-                <a class="nav-link" href="{{route('login')}}">
+                <a class="nav-link" href="{{route('register')}}">
                   <div class="navbar-profile" style="font-family:'TT Norms Pro'; font-size: 18px; font-weight:500">
                     <img class="img-xs rounded-circlex" src="{{asset('user/images/signin.svg')}}" style="width: 40px; height: 40px;" alt="PWG ">&nbsp; Login
                   </div>

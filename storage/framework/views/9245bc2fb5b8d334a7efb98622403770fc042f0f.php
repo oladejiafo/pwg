@@ -100,7 +100,10 @@ $cXamount=0;
                             </div>
                                 <img src="<?php echo e(asset('images/yellowWhiteCollar.svg')); ?>" alt="PWG Group">
                                 <h6>Blue Collar Package</h6>
-                                <p class="amountSection"><span class="amount"><?php echo e(number_format($blue_cost,0)); ?></span><b style="font-size:15px">AED</b></p>
+                                <p class="amountSection"><span class="amount"><?php echo e(number_format($blue_cost,0)); ?></span><b style="font-size:15px">AED</b>
+                                    <br>
+                                    <span style="font-size: 10px">Total Package Amount</span>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -115,7 +118,11 @@ $cXamount=0;
                                 <img src="<?php echo e(asset('images/yellowBlueCollar.svg')); ?>" alt="PWG Group">
 
                                 <h6><?php echo e($cSname); ?> Package</h6>
-                                <p class="amountSection"><span class="amount"><?php echo e(($cSamount > 0) ? number_format($cSamount,0) : 0); ?></span><b style="font-size:15px">AED</b></p>
+                                <p class="amountSection"><span class="amount"><?php echo e(($cSamount > 0) ? number_format($cSamount,0) : 0); ?></span><b style="font-size:15px">AED</b>
+                                    <br>
+                                    <span style="font-size: 10px">Total Package Amount</span>
+                                </p>
+                                    
                             </div>
                         </div>
                     </div>
@@ -128,7 +135,10 @@ $cXamount=0;
                                 <img src="<?php echo e(asset('images/yellowFamily.svg')); ?>" alt="PWG Group">
 
                                 <h6><?php echo e($cXname); ?> </h6>
-                                <p class="amountSection"><span class="amount"><?php echo e(($cXamount > 0) ? number_format($cXamount,0) : 0); ?></span><b style="font-size:15px">AED</b></p>
+                                <p class="amountSection"><span class="amount"><?php echo e(($cXamount > 0) ? number_format($cXamount,0) : 0); ?></span><b style="font-size:15px">AED</b> 
+                                    <br>
+                                    <span style="font-size: 10px">Total Package Amount</span>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -163,7 +173,10 @@ $cXamount=0;
                                 <img src="<?php echo e(asset('images/yellowBlueCollar.svg')); ?>" alt="PWG Group">
 
                                 <h6>White Collar Package</h6>
-                                <p class="amountSection"><span class="amount"><?php echo e(($whiteJob_cost > 0) ? number_format($whiteJob_cost,0) : 0); ?></span><b style="font-size:15px">AED</b></p>
+                                <p class="amountSection"><span class="amount"><?php echo e(($whiteJob_cost > 0) ? number_format($whiteJob_cost,0) : 0); ?></span><b style="font-size:15px">AED</b>
+                                    <br>
+                                    <span style="font-size: 10px">Total Package Amount</span>
+                                </p>
                                                       
                                    <?php if($whiteJob_cost == 0): ?>
                                    <p style="font-size: 14px">
@@ -197,7 +210,10 @@ $cXamount=0;
                                 <img src="<?php echo e(asset('images/yellowFamily.svg')); ?>" alt="PWG Group">
                                 <h6>Family Package</h6>
                                 
-                                <p class="amountSection"><span class="Famamount"><?php echo e(($famdet) ?  number_format(($famdet['sub_total']),0) : 0); ?></span><b style="font-size:15px">AED</b></p>
+                                <p class="amountSection"><span class="Famamount"><?php echo e(($famdet) ?  number_format(($famdet['sub_total']),0) : 0); ?></span><b style="font-size:15px">AED</b>
+                                    <br>
+                                    <span style="font-size: 10px">Total Package Amount</span>
+                                </p>
                                    <?php if(!$famdet): ?>
                                    <p style="font-size: 14px">
                                      Package Not Available 

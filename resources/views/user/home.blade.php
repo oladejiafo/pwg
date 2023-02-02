@@ -130,9 +130,15 @@
                                             <h3 class="product-title intro-excerpt" style="font-size: 35px; color:aliceblue">{{ucfirst($offer->name)}}</h3>
                                             <p style="font-size:20px">{{$offer->slogan}}</p>
                                         </span>
-                                        <p style="font-size:12px">Starting from </p>
 
-                                        <strong class="product-price">  {{number_format($offer->unit_price,2)}} {{$offer->currency}}</strong>
+                                        
+                                        <p style="font-size:12px">@if($offer->name == "Canada" || $offer->name == "Germany") Starting From @else First Installment Payment From @endif</p>
+
+                                        <strong class="product-price">  {{number_format($offer->first_payment_sub_total,2)}} {{$offer->currency}}</strong>
+
+                                        {{-- <p style="font-size:12px">Starting from </p>
+
+                                        <strong class="product-price">  {{number_format($offer->unit_price,2)}} {{$offer->currency}}</strong> --}}
                                         <p> 
                                             <i class="{{$icon}}"></i> {{$offer_discount_msg}}
                                         </p>
@@ -218,9 +224,11 @@
                                 <h3 class="product-title intro-excerpt" style="font-size: 35px; color:aliceblue">{{ucfirst($offer->name)}}</h3>
                                 <p style="font-size:20px">{{$offer->slogan}}</p>
                             </span>
-                            <p style="font-size:12px">Starting from </p>
-                            <strong class="product-price">{{number_format($offer->unit_price,2)}} {{$offer->currency}}</strong>
+                            {{-- <p style="font-size:12px">Starting from </p>
+                            <strong class="product-price">{{number_format($offer->unit_price,2)}} {{$offer->currency}}</strong> --}}
 
+                            <p style="font-size:12px">@if($offer->name == "Canada" || $offer->name == "Germany") Starting From @else First Installment Payment From @endif</p>
+                            <strong class="product-price">{{number_format($offer->first_payment_sub_total,2)}} {{$offer->currency}}</strong>
                             <p>
                                 <i class="{{$icon}}"></i> {{$offer_discount_msg}} 
                             </p>
