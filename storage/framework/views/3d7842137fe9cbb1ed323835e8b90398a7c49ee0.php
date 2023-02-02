@@ -1178,7 +1178,8 @@
                                                             ?>
                                                         <?php else: ?>
                                                             <?php
-                                                                $linkk = 'payment';
+                                                                $linkk = 'applicant.details';
+                                                                // $linkk = 'payment';
                                                             ?>
                                                         <?php endif; ?>
                                                         <a href="<?php echo e(route($linkk, $paid->destination_id)); ?>"

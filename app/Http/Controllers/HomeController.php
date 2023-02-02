@@ -1322,6 +1322,9 @@ class HomeController extends Controller
 
                             $data->is_first_payment_partially_paid = 0; // add in payment success
                             $data->status = 'DOCUMENT_SUBMITTED'; // add in payment success
+
+                            $data->first_payment_verified_by_accountant = 1;
+                            $data->first_payment_verified_by_cfo = 1;
                         }
                         if (isset($paymentCreds['totalremaining']) && $paymentCreds['totalremaining'] > 0) { // add in payment success
                             //     // $data->first_payment_price = $thisPayment;
@@ -1333,20 +1336,26 @@ class HomeController extends Controller
                     } elseif ($paymentCreds['whichpayment'] == 'SUBMISSION') {
                         $data->submission_payment_paid = $paymentCreds['thisPaymentMade']; // add in payment success
                         $data->submission_payment_status = $paymentCreds['whatsPaid'];  // add in payment success
-                        $data->status = 'WAITING_FOR_3RD_PAYMENT';  // add in payment success
+                        if($data->work_permit_status == "WORK_PERMIT_RECEIVED"){
+                            $data->status = 'WAITING_FOR_EMBASSY_APPEARANCE';  // add in payment success
+                        }
                         if ($paymentCreds['whatsPaid'] == 'PARTIALLY_PAID') { // add in payment success
                             $data->is_submission_payment_partially_paid = 1; // add in payment success
                         } // add in payment success
+                        $data->submission_payment_verified_by_accountant = 1;
+                        $data->submission_payment_verified_by_cfo = 1;
                     } elseif ($paymentCreds['whichpayment'] == 'SECOND') {
                         $data->second_payment_paid = $paymentCreds['thisPaymentMade']; // add in payment success
                         $data->second_payment_status = $paymentCreds['whatsPaid']; // add in payment success
-                        $data->status = 'WAITING_FOR_EMBASSY_APPEARANCE'; // add in payment success
+                        $data->status = 'APPLICATION_COMPLETED'; // add in payment success
                         if ($paymentCreds['whatsPaid'] == 'PARTIALLY_PAID') { // add in payment success
                             $data->is_second_payment_partially_paid = 1; // add in payment success
                         } // add in payment success
+                        $data->second_payment_verified_by_accountant = 1;
+                        $data->second_payment_verified_by_cfo = 1;
                     } else {
                         $data->total_paid = $paymentCreds['thisPaymentMade']; // add in payment success
-                        $data->status = 'WAITING_FOR_EMBASSY_APPEARANCE'; // add in payment success
+                        // $data->status = 'WAITING_FOR_EMBASSY_APPEARANCE'; // add in payment success
                         if ($paymentCreds['paysplit']) {
                             // $data->first_payment_paid = $paymentCreds['paysplit']->first_payment_price + $paymentCreds['firstVat']; // add in payment success
                             $data->first_payment_paid = ($data->first_payment_price) ?? $paymentCreds['paysplit']->first_payment_price; // add in payment success
@@ -1360,6 +1369,13 @@ class HomeController extends Controller
                             $data->second_payment_paid = $paymentCreds['paysplit']->second_payment_price; // add in payment success
                             $data->second_payment_status = 'PAID'; // add in payment success
                         }
+                        $data->first_payment_verified_by_accountant = 1;
+                        $data->first_payment_verified_by_cfo = 1;
+                        $data->submission_payment_verified_by_accountant = 1;
+                        $data->submission_payment_verified_by_cfo = 1;
+                        $data->second_payment_verified_by_accountant = 1;
+                        $data->second_payment_verified_by_cfo = 1;
+                        $data->status = 'DOCUMENT_SUBMITTED'; // add in payment success
                     }
                     $data->save();
                     $paymentDetails->update([

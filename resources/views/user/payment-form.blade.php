@@ -604,6 +604,7 @@ $vals=array(0,1,2);
                                               <div class="error">{{ $errors->first('totalpay') }}</div>
                                             @endif 
                                             <p>Minimum amount of <b> 1,000 AED</b></p>
+                                            <p><b>Remaining amount to be paid in 7 days</b></p>
                                           </div>
                                         @endif
                                     </div>

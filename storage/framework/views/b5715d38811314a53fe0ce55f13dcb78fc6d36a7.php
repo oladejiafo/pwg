@@ -8,7 +8,6 @@
 <style>
     input {
         text-align: left;
-
     }
     .dicountBtn {
         font-size: 28px !important;
@@ -24,7 +23,6 @@
     @media (min-width:375px) and (max-width:768px) {
     .dicountBtn {
         font-size: 1.2em !important;
-
     }
 }
 </style>
@@ -625,6 +623,7 @@ unset($__errorArgs, $__bag); ?>
                                               <div class="error"><?php echo e($errors->first('totalpay')); ?></div>
                                             <?php endif; ?> 
                                             <p>Minimum amount of <b> 1,000 AED</b></p>
+                                            <p><b>Remaining amount to be paid in 7 days</b></p>
                                           </div>
                                         <?php endif; ?>
                                     </div>

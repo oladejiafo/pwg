@@ -111,6 +111,7 @@
           <?php endif; ?>
 
           <p>
+         
           <h3><?php echo e($ptype); ?> Payment Installments</h3>
           <table border=0 style="border-radius:10px">
             <tr>
@@ -211,6 +212,7 @@
           <?php endif; ?>
           <?php endif; ?>
               <input type="hidden" value="<?php echo e($data->id); ?>">
+              <input type="hidden" value="<?php echo e($ppay->id); ?>">
 
               <p style="margin-left:2px;font-weight:bold; font-size:1.4em">Please, select one of the following options:</p>
               <?php
