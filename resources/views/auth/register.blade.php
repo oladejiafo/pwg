@@ -23,8 +23,12 @@ input [type="phone"]
 
 @php
 $agents = DB::table('employees')
-->select(DB::raw("CONCAT(name, ' ', sur_name) as fullname"))
+// ->select(DB::raw("CONCAT(name, ' ', sur_name) as fullname"))
+->select('name','sur_name')
+->where('emp_role', '=' , "AGENT")
 ->where('is_active', '=', 1)
+->whereRaw('name != ""')
+// ->orWhereNotNull('name')
 ->orderBy('id','asc')
 ->get();
 @endphp
@@ -103,7 +107,7 @@ $agents = DB::table('employees')
                 <option selected disabled>--Select Your Agent--</option>
                 @endif
                 @foreach ($agents as $agent)
-                    <option>{{$agent->fullname}}</option>
+                    <option>{{ucwords($agent->name)}} {{ucwords($agent->sur_name)}}</option>
                 @endforeach
                 <option>N/A</option>
               </select>

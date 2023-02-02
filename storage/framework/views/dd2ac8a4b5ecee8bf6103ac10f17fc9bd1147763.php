@@ -20,13 +20,26 @@ input [type="phone"]
   padding: 10px;
 }
 </style>
+
+<?php
+$agents = DB::table('employees')
+// ->select(DB::raw("CONCAT(name, ' ', sur_name) as fullname"))
+->select('name','sur_name')
+->where('emp_role', '=' , "AGENT")
+->where('is_active', '=', 1)
+->whereRaw('name != ""')
+// ->orWhereNotNull('name')
+->orderBy('id','asc')
+->get();
+?>
+
 <?php $__env->startSection('content'); ?>
   <div class="container">
     <div class="form-sec1">
       <div class="heading">
         <div class="first-heading">
           <h3>
-            Let’s get you started!
+            Let's get you started!
           </h3>
         </div>
         <div class="bottoom-title">
@@ -100,6 +113,33 @@ unset($__errorArgs, $__bag); ?>
               <img src="<?php echo e(asset('images/Eye_Icon.png')); ?>" alt=img id="cofirmation">
               <img src="<?php echo e(asset('images/view_password.svg')); ?>" alt=img class="confirmation_viewIcon">
               <?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <span class="error"><?php echo e($message); ?></span> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+            </div>
+          </div>
+          <div class="mb-3">
+            <div class="label">
+              <label for="Agent" class="form-label">Your Agent Name</label>
+            </div>
+            <div class="inputs-iconx">
+
+              <select name="agent" class="form-control agentInput" id="exampleInputAgent">
+                <?php if(old('agent')): ?>
+                <option selected><?php echo e(old('agent')); ?></option>
+                <?php else: ?>
+                <option selected disabled>--Select Your Agent--</option>
+                <?php endif; ?>
+                <?php $__currentLoopData = $agents; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $agent): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <option><?php echo e(ucwords($agent->name)); ?> <?php echo e(ucwords($agent->sur_name)); ?></option>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <option>N/A</option>
+              </select>
+              <?php $__errorArgs = ['agent'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
