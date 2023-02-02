@@ -68,7 +68,13 @@ class HomeController extends Controller
                 Quickbook::updateTokenAccess();
 
                 // $ppay = product_payments::where('destination_id', '=', $id)->first();
-                $package = DB::table('destinations')->orderBy(DB::raw('FIELD(name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
+                // $package = DB::table('destinations')->orderBy(DB::raw('FIELD(name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
+                $package = DB::table('pricing_plans')
+                ->join('destinations', 'destinations.id', '=', 'pricing_plans.destination_id')
+                ->where('pricing_plans.pricing_plan_type', 'BLUE_COLLAR')
+                ->where('pricing_plans.status','CURRENT')
+                ->orderBy(DB::raw('FIELD(destinations.name, "Poland", "Czech", "Malta", "Canada", "Germany")'))
+                ->get();
 
                 $promo = promo::where('active_until', '>=', date('Y-m-d'))->get();
 
@@ -80,7 +86,13 @@ class HomeController extends Controller
             // }
         } else {
             Session::flush();
-            $package = DB::table('destinations')->orderBy(DB::raw('FIELD(name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
+            // $package = DB::table('destinations')->orderBy(DB::raw('FIELD(name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
+            $package = DB::table('pricing_plans')
+            ->join('destinations', 'destinations.id', '=', 'pricing_plans.destination_id')
+            ->where('pricing_plans.pricing_plan_type', 'BLUE_COLLAR')
+            ->where('pricing_plans.status','CURRENT')
+            ->orderBy(DB::raw('FIELD(destinations.name, "Poland", "Czech", "Malta", "Canada", "Germany")'))
+            ->get();
             $promo = promo::where('active_until', '>=', date('Y-m-d'))->get();
 
             return view('user.home', compact('package', 'promo'));
@@ -97,13 +109,29 @@ class HomeController extends Controller
                 ->orderBy('applications.id', 'desc')
                 ->first();
 
-            $package = DB::table('destinations')->orderBy(DB::raw('FIELD(name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
+            // $package = DB::table('destinations')->orderBy(DB::raw('FIELD(name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
+
+            $package = DB::table('pricing_plans')
+            ->join('destinations', 'destinations.id', '=', 'pricing_plans.destination_id')
+            ->where('pricing_plans.pricing_plan_type', 'BLUE_COLLAR')
+            ->where('pricing_plans.status','CURRENT')
+            ->orderBy(DB::raw('FIELD(destinations.name, "Poland", "Czech", "Malta", "Canada", "Germany")'))
+            ->get();
+
             $promo = promo::where('active_until', '>=', date('Y-m-d'))->get();
 
             return view('user.home', compact('package', 'promo', 'started'));
         } else {
 
-            $package = DB::table('destinations')->orderBy(DB::raw('FIELD(name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
+            // $package = DB::table('destinations')->orderBy(DB::raw('FIELD(name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
+
+            $package = DB::table('pricing_plans')
+            ->join('destinations', 'destinations.id', '=', 'pricing_plans.destination_id')
+            ->where('pricing_plans.pricing_plan_type', 'BLUE_COLLAR')
+            ->where('pricing_plans.status','CURRENT')
+            ->orderBy(DB::raw('FIELD(destinations.name, "Poland", "Czech", "Malta", "Canada", "Germany")'))
+            ->get();
+            // dd($package);
             $promo = promo::where('active_until', '>=', date('Y-m-d'))->get();
 
             return view('user.home', compact('package', 'promo'));
@@ -442,8 +470,6 @@ class HomeController extends Controller
             return redirect('home');
         }
     }
-
-
 
     public function myapplication()
     {

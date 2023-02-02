@@ -130,9 +130,13 @@
                                             <h3 class="product-title intro-excerpt" style="font-size: 35px; color:aliceblue"><?php echo e(ucfirst($offer->name)); ?></h3>
                                             <p style="font-size:20px"><?php echo e($offer->slogan); ?></p>
                                         </span>
-                                        <p style="font-size:12px">Starting from </p>
 
-                                        <strong class="product-price">  <?php echo e(number_format($offer->unit_price,2)); ?> <?php echo e($offer->currency); ?></strong>
+                                        
+                                        <p style="font-size:12px"><?php if($offer->name == "Canada" || $offer->name == "Germany"): ?> Starting From <?php else: ?> First Installment Payment From <?php endif; ?></p>
+
+                                        <strong class="product-price">  <?php echo e(number_format($offer->first_payment_sub_total,2)); ?> <?php echo e($offer->currency); ?></strong>
+
+                                        
                                         <p> 
                                             <i class="<?php echo e($icon); ?>"></i> <?php echo e($offer_discount_msg); ?>
 
@@ -219,9 +223,10 @@
                                 <h3 class="product-title intro-excerpt" style="font-size: 35px; color:aliceblue"><?php echo e(ucfirst($offer->name)); ?></h3>
                                 <p style="font-size:20px"><?php echo e($offer->slogan); ?></p>
                             </span>
-                            <p style="font-size:12px">Starting from </p>
-                            <strong class="product-price"><?php echo e(number_format($offer->unit_price,2)); ?> <?php echo e($offer->currency); ?></strong>
+                            
 
+                            <p style="font-size:12px"><?php if($offer->name == "Canada" || $offer->name == "Germany"): ?> Starting From <?php else: ?> First Installment Payment From <?php endif; ?></p>
+                            <strong class="product-price"><?php echo e(number_format($offer->first_payment_sub_total,2)); ?> <?php echo e($offer->currency); ?></strong>
                             <p>
                                 <i class="<?php echo e($icon); ?>"></i> <?php echo e($offer_discount_msg); ?> 
                             </p>

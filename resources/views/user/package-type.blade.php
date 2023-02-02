@@ -100,7 +100,10 @@ $cXamount=0;
                             </div>
                                 <img src="{{asset('images/yellowWhiteCollar.svg')}}" alt="PWG Group">
                                 <h6>Blue Collar Package</h6>
-                                <p class="amountSection"><span class="amount">{{number_format($blue_cost,0)}}</span><b style="font-size:15px">AED</b></p>
+                                <p class="amountSection"><span class="amount">{{number_format($blue_cost,0)}}</span><b style="font-size:15px">AED</b>
+                                    <br>
+                                    <span style="font-size: 10px">Total Package Amount</span>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -115,7 +118,11 @@ $cXamount=0;
                                 <img src="{{asset('images/yellowBlueCollar.svg')}}" alt="PWG Group">
 
                                 <h6>{{$cSname}} Package</h6>
-                                <p class="amountSection"><span class="amount">{{($cSamount > 0) ? number_format($cSamount,0) : 0}}</span><b style="font-size:15px">AED</b></p>
+                                <p class="amountSection"><span class="amount">{{($cSamount > 0) ? number_format($cSamount,0) : 0}}</span><b style="font-size:15px">AED</b>
+                                    <br>
+                                    <span style="font-size: 10px">Total Package Amount</span>
+                                </p>
+                                    
                             </div>
                         </div>
                     </div>
@@ -128,7 +135,10 @@ $cXamount=0;
                                 <img src="{{asset('images/yellowFamily.svg')}}" alt="PWG Group">
 
                                 <h6>{{$cXname}} </h6>
-                                <p class="amountSection"><span class="amount">{{($cXamount > 0) ? number_format($cXamount,0) : 0}}</span><b style="font-size:15px">AED</b></p>
+                                <p class="amountSection"><span class="amount">{{($cXamount > 0) ? number_format($cXamount,0) : 0}}</span><b style="font-size:15px">AED</b> 
+                                    <br>
+                                    <span style="font-size: 10px">Total Package Amount</span>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -163,7 +173,10 @@ $cXamount=0;
                                 <img src="{{asset('images/yellowBlueCollar.svg')}}" alt="PWG Group">
 
                                 <h6>White Collar Package</h6>
-                                <p class="amountSection"><span class="amount">{{($whiteJob_cost > 0) ? number_format($whiteJob_cost,0) : 0}}</span><b style="font-size:15px">AED</b></p>
+                                <p class="amountSection"><span class="amount">{{($whiteJob_cost > 0) ? number_format($whiteJob_cost,0) : 0}}</span><b style="font-size:15px">AED</b>
+                                    <br>
+                                    <span style="font-size: 10px">Total Package Amount</span>
+                                </p>
                                                       
                                    @if($whiteJob_cost == 0)
                                    <p style="font-size: 14px">
@@ -197,7 +210,10 @@ $cXamount=0;
                                 <img src="{{asset('images/yellowFamily.svg')}}" alt="PWG Group">
                                 <h6>Family Package</h6>
                                 {{-- - $famdet['third_payment_sub_total'] --}}
-                                <p class="amountSection"><span class="Famamount">{{($famdet) ?  number_format(($famdet['sub_total']),0) : 0 }}</span><b style="font-size:15px">AED</b></p>
+                                <p class="amountSection"><span class="Famamount">{{($famdet) ?  number_format(($famdet['sub_total']),0) : 0 }}</span><b style="font-size:15px">AED</b>
+                                    <br>
+                                    <span style="font-size: 10px">Total Package Amount</span>
+                                </p>
                                    @if(!$famdet)
                                    <p style="font-size: 14px">
                                      Package Not Available 

@@ -20,13 +20,22 @@ input [type="phone"]
   padding: 10px;
 }
 </style>
+
+@php
+$agents = DB::table('employees')
+->select(DB::raw("CONCAT(name, ' ', sur_name) as fullname"))
+->where('is_active', '=', 1)
+->orderBy('id','asc')
+->get();
+@endphp
+
 @Section('content')
   <div class="container">
     <div class="form-sec1">
       <div class="heading">
         <div class="first-heading">
           <h3>
-            Let’s get you started!
+            Let's get you started!
           </h3>
         </div>
         <div class="bottoom-title">
@@ -79,6 +88,26 @@ input [type="phone"]
               <img src="{{asset('images/Eye_Icon.png')}}" alt=img id="cofirmation">
               <img src="{{asset('images/view_password.svg')}}" alt=img class="confirmation_viewIcon">
               @error('password') <span class="error">{{ $message }}</span> @enderror
+            </div>
+          </div>
+          <div class="mb-3">
+            <div class="label">
+              <label for="Agent" class="form-label">Your Agent Name</label>
+            </div>
+            <div class="inputs-iconx">
+
+              <select name="agent" class="form-control agentInput" id="exampleInputAgent">
+                @if(old('agent'))
+                <option selected>{{old('agent')}}</option>
+                @else
+                <option selected disabled>--Select Your Agent--</option>
+                @endif
+                @foreach ($agents as $agent)
+                    <option>{{$agent->fullname}}</option>
+                @endforeach
+                <option>N/A</option>
+              </select>
+              @error('agent') <span class="error">{{ $message }}</span> @enderror
             </div>
           </div>
           <div class="mb-3">
