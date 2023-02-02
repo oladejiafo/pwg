@@ -319,6 +319,7 @@ class Quickbook
                     ->where('invoice_no', '!=', null)
                     ->where('invoice_id', '!=', null)
                     ->first();
+
                 if ($firstPaymentDone) {
                     $remainingPayment = $firstPaymentDone->payable_amount - $firstPaymentDone->paid_amount;
                     if ($remainingPayment == 0) {
@@ -650,10 +651,11 @@ class Quickbook
             } else {
                 if ($paymentType == 'FIRST' || $paymentType == 'BALANCE_ON_FIRST') {
                     $firstPaymentDue = PaymentDetails::where('application_id', $apply->id)
-                        ->where('payment_type', $paymentType)
+                        ->where('payment_type', 'FIRST')
                         ->where('paid_amount', '!=', null)
                         ->where('invoice_id', '!=', null)
                         ->where('invoice_no', '!=', null)
+                        ->where('remaining_amount', '>', 0)
                         ->first();
                     if ($firstPaymentDue) {
                         $remainingPayment = $firstPaymentDue->payable_amount - $firstPaymentDue->paid_amount;

@@ -601,8 +601,11 @@ $vals=array(0,1,2);
                                           <div class="partial" style="height: 100%;">
                                             <p>Pay {{strtolower($whichPayment)}} installment in partial</p>
                                             <input type="text" class="form-control" name="amount" id="amount" placeholder="Enter partial payment" style="text-align:left !important" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');">
-                                            @if($errors->has('totalpay'))
+                                            {{-- @if($errors->has('totalpay'))
                                               <div class="error">{{ $errors->first('totalpay') }}</div>
+                                            @endif  --}}
+                                            @if($errors->has('amount'))
+                                              <div class="error">{{ $errors->first('amount') }}</div>
                                             @endif 
                                             <p>Minimum amount of <b> 1,000 AED</b><span style="font-size:11px" class="vtt"> @if($vat>0)(+ 5% VAT)@endif</span></p>
                                         
@@ -675,12 +678,18 @@ $vals=array(0,1,2);
 
         $('#amount').keyup(function() {
             if($('#amount').val()){
-                var aVat =($('#amount').val()*5)/100;
-                let vval = parseInt($('#amount').val()) + parseInt(($('#amount').val()*5)/100);
+                if($('.current_location').val() =='United Arab Emirates'){
+                    var aVat =($('#amount').val()*5)/100;
+                    let vval = parseInt($('#amount').val()) + parseInt(($('#amount').val()*5)/100);
 
-                // document.getElementById("amountLink2").value = $(this).val();
-                document.getElementById("amountLink2").value = vval;
-                let ax = $('#amountLink').text(parseInt(vval).toLocaleString());
+                    // document.getElementById("amountLink2").value = $(this).val();
+                    document.getElementById("amountLink2").value = vval;
+                    let ax = $('#amountLink').text(parseInt(vval).toLocaleString());
+                } else {
+
+                    document.getElementById("amountLink2").value = $(this).val();
+                    let ax = $('#amountLink').text(parseInt($(this).val()).toLocaleString());
+                }                
                 
             } else {
                 document.getElementById("amountLink2").value = $('#totaldue').val();
@@ -766,6 +775,7 @@ $vals=array(0,1,2);
             var discount = '{{$discount}}';
             var amtx = (paynow - discount);
             var vt =(amtx*5)/100;
+            $('#amount').val('');
             if($this.val()=='United Arab Emirates')
             {
                 document.getElementById("amountLink2").value = Math.floor((amtx + (amtx*5/100)) *100)/100;

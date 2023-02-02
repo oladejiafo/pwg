@@ -833,11 +833,15 @@ class HomeController extends Controller
             $vals = array(0, 1, 2);
 
             if (in_array($apply->application_stage_status, $vals) && (empty($apply->embassy_country) || $apply->embassy_country == null)) {
+                // if ($apply->current_location == "Unites") {
+
                 $validator = Validator::make($request->all(), [
                     'totaldue' => 'required',
-                    'totalpay' => 'numeric|gte:1000|lte:' . $request->totaldue,
+                    // 'totalpay' => 'numeric|gte:1000|lte:' . $request->totaldue,
                     'current_location' => 'required',
-                    'embassy_appearance' => 'required'
+                    'embassy_appearance' => 'required',
+                    'amount' => 'numeric|gte:1000|lte:' . $request->totaldue
+
                 ]);
                 if ($validator->fails()) {
                     return back()->withErrors($validator)
@@ -1028,7 +1032,7 @@ class HomeController extends Controller
                         $data->first_payment_paid = $thisPaymentMade; //was remarked
                         $data->first_payment_vat = $thisVat;
                         $data->first_payment_discount = $thisDiscount;
-                    } elseif ($request->whichpayment == 'SUBMISSION') {
+                    }  elseif ($request->whichpayment == 'SUBMISSION') {
                         $data->submission_payment_price = $thisPayment;
                         $data->submission_payment_paid = $thisPaymentMade;
                         $data->submission_payment_vat = $thisVat;
@@ -1336,7 +1340,7 @@ class HomeController extends Controller
                         ->orderBy('id', 'DESC')
                         ->first();
 
-                    if ($paymentCreds['whichpayment'] == 'FIRST') {
+                    if ($paymentCreds['whichpayment'] == 'FIRST' || $paymentCreds['whichpayment'] == 'BALANCE_ON_FIRST') {
                         $data->first_payment_status = $paymentCreds['whatsPaid'];
                         if ($paymentCreds['whatsPaid'] == 'PARTIALLY_PAID') { // add in payment success
                             $data->first_payment_remaining =  $paymentCreds['thisPayment'] - $paymentCreds['thisPaymentMade']; // add in payment success
@@ -1892,7 +1896,6 @@ class HomeController extends Controller
         //$payment = $dataService->Query("select * from Payment");
         $paymentDetails = Payment::where('id', Session::get('paymentId'))
             ->first();
-            // dd($ptype);
         if(isset($ptype)) {
             $apply = Applicant::where('client_id', Auth::id())
                 ->orderBy('id', 'DESC')
@@ -1921,11 +1924,11 @@ class HomeController extends Controller
                 return self::getInvoiceDevelop($paymentDetails->payment_type);
             }
         } else {
-            if ($paymentDetails->payment_type == 'FIRST') {
+            if ($paymentDetails->payment_type == 'FIRST' || $paymentDetails->payment_type == 'BALANCE_ON_FIRST') {
                 $firstPaymentDue = Payment::where('application_id', $paymentDetails->application_id)
-                    ->where('payment_type', 'FIRST')
+                    ->where('payment_type', 'BALANCE_ON_FIRST')
                     ->count();
-                if ($firstPaymentDue == 2) {
+                if ($firstPaymentDue > 0) {
                     if ($ptype) {
                         $paymentDetails  =  Payment::where('application_id', $apply->id)
                             ->where('payment_type', $ptype)

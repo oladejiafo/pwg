@@ -297,6 +297,7 @@ unset($__errorArgs, $__bag); ?>
                                     if($diff > 0) {
                                         $pendMsg = "You have " . $pends . " balance on first payment.";
                                         $payNoww = $pends;
+                                        $whichPayment =  "BALANCE_ON_FIRST";
 
                                     } else {
                                         $pendMsg = "";
@@ -619,8 +620,9 @@ unset($__errorArgs, $__bag); ?>
                                           <div class="partial" style="height: 100%;">
                                             <p>Pay <?php echo e(strtolower($whichPayment)); ?> installment in partial</p>
                                             <input type="text" class="form-control" name="amount" id="amount" placeholder="Enter partial payment" style="text-align:left !important" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');">
-                                            <?php if($errors->has('totalpay')): ?>
-                                              <div class="error"><?php echo e($errors->first('totalpay')); ?></div>
+                                            
+                                            <?php if($errors->has('amount')): ?>
+                                              <div class="error"><?php echo e($errors->first('amount')); ?></div>
                                             <?php endif; ?> 
                                             <p>Minimum amount of <b> 1,000 AED</b><span style="font-size:11px" class="vtt"> <?php if($vat>0): ?>(+ 5% VAT)<?php endif; ?></span></p>
                                         
@@ -693,12 +695,18 @@ unset($__errorArgs, $__bag); ?>
 
         $('#amount').keyup(function() {
             if($('#amount').val()){
-                var aVat =($('#amount').val()*5)/100;
-                let vval = parseInt($('#amount').val()) + parseInt(($('#amount').val()*5)/100);
+                if($('.current_location').val() =='United Arab Emirates'){
+                    var aVat =($('#amount').val()*5)/100;
+                    let vval = parseInt($('#amount').val()) + parseInt(($('#amount').val()*5)/100);
 
-                // document.getElementById("amountLink2").value = $(this).val();
-                document.getElementById("amountLink2").value = vval;
-                let ax = $('#amountLink').text(parseInt(vval).toLocaleString());
+                    // document.getElementById("amountLink2").value = $(this).val();
+                    document.getElementById("amountLink2").value = vval;
+                    let ax = $('#amountLink').text(parseInt(vval).toLocaleString());
+                } else {
+
+                    document.getElementById("amountLink2").value = $(this).val();
+                    let ax = $('#amountLink').text(parseInt($(this).val()).toLocaleString());
+                }                
                 
             } else {
                 document.getElementById("amountLink2").value = $('#totaldue').val();
@@ -784,6 +792,7 @@ unset($__errorArgs, $__bag); ?>
             var discount = '<?php echo e($discount); ?>';
             var amtx = (paynow - discount);
             var vt =(amtx*5)/100;
+            $('#amount').val('');
             if($this.val()=='United Arab Emirates')
             {
                 document.getElementById("amountLink2").value = Math.floor((amtx + (amtx*5/100)) *100)/100;
