@@ -1,5 +1,6 @@
 @extends('layouts.auth')
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/> -->
+<link href="{{asset('user/css/select2.min.css') }}" rel="stylesheet" />
 
 
 <style>
@@ -23,12 +24,10 @@ input [type="phone"]
 
 @php
 $agents = DB::table('employees')
-// ->select(DB::raw("CONCAT(name, ' ', sur_name) as fullname"))
 ->select('name','sur_name')
-->where('emp_role', '=' , "AGENT")
 ->where('is_active', '=', 1)
 ->whereRaw('name != ""')
-// ->orWhereNotNull('name')
+->whereIn('designation_id', [1,33,35])
 ->orderBy('id','asc')
 ->get();
 @endphp
@@ -107,7 +106,7 @@ $agents = DB::table('employees')
                 <option selected disabled>--Select Your Agent--</option>
                 @endif
                 @foreach ($agents as $agent)
-                    <option>{{ucwords($agent->name)}} {{ucwords($agent->sur_name)}}</option>
+                    <option>{{ucfirst(strtolower($agent->name))}} {{ucfirst(strtolower($agent->sur_name))}}</option>
                 @endforeach
                 <option>N/A</option>
               </select>
@@ -132,12 +131,15 @@ $agents = DB::table('employees')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/css/intlTelInput.min.css" rel="stylesheet"/>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/intlTelInput.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script>
       $(document).ready(function() {
+        $('#exampleInputAgent').select2();
+
         //password
         $('.iconImg').show();
         $('.viewIcon').hide();
