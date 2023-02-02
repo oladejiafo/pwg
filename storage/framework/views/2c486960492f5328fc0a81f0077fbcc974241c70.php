@@ -623,6 +623,8 @@ unset($__errorArgs, $__bag); ?>
                                               <div class="error"><?php echo e($errors->first('totalpay')); ?></div>
                                             <?php endif; ?> 
                                             <p>Minimum amount of <b> 1,000 AED</b><span style="font-size:11px" class="vtt"> <?php if($vat>0): ?>(+ 5% VAT)<?php endif; ?></span></p>
+                                        
+                                            <p><b>Remaining amount to be paid in 7 days</b></p>
                                           </div>
                                         <?php endif; ?>
                                     </div>

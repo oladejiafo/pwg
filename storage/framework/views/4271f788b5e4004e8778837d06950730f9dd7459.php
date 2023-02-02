@@ -88,7 +88,7 @@
         $hd = 'Outstanding Payment:';
         $font = '18px';
         
-        // $msg = " You have an outstanding payment of INR " .number_format($paid->first_payment_remaining,2). " on your first payment.";
+        // $msg = " You have an outstanding payment of " .number_format($paid->first_payment_remaining,2). " AED on your first payment.";
         
         if ($dueDay > 0) {
             $msg = ' You have an outstanding payment of ' . number_format($paid->first_payment_remaining, 2) . ' AED on your first payment, due in ' . $dueDay . ' days ';
