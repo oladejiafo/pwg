@@ -967,6 +967,7 @@ class HomeController extends Controller
                     ['invoice_amount', $request->totalpay],
                     ['payment_type', $request->whichpayment]
                 ])
+                   
                     ->where(function ($query) use ($request) {
                         $query->where('paid_amount', $request->totalpay)
                             ->orWhere('paid_amount', NULL);

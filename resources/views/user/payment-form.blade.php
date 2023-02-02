@@ -283,7 +283,8 @@ $vals=array(0,1,2);
                                     if($diff > 0) {
                                         $pendMsg = "You have " . $pends . " balance on first payment.";
                                         $payNoww = $pends;
-                                        $whichPayment = "BALANCE_ON_FIRST";
+                                        $whichPayment =  "BALANCE_ON_FIRST";
+
                                     } else {
                                         $pendMsg = "";
                                         $payNoww = $pdet->first_payment_sub_total;
