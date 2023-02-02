@@ -104,7 +104,7 @@ $agents = DB::table('employees')
                 @if(old('agent'))
                 <option selected>{{old('agent')}}</option>
                 @else
-                <option selected disabled>--Select Your Agent--</option>
+                <option selected disabled>--Select Your Agent, if you have one--</option>
                 @endif
                 @foreach ($agents as $agent)
                     <option>{{ucwords($agent->name)}} {{ucwords($agent->sur_name)}}</option>

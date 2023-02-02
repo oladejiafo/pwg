@@ -132,7 +132,7 @@ unset($__errorArgs, $__bag); ?>
                 <?php if(old('agent')): ?>
                 <option selected><?php echo e(old('agent')); ?></option>
                 <?php else: ?>
-                <option selected disabled>--Select Your Agent--</option>
+                <option selected disabled>--Select Your Agent, if you have one--</option>
                 <?php endif; ?>
                 <?php $__currentLoopData = $agents; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $agent): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <option><?php echo e(ucwords($agent->name)); ?> <?php echo e(ucwords($agent->sur_name)); ?></option>

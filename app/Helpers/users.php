@@ -139,7 +139,9 @@ class users
         //     }
         // } else 
         if (strtoupper($paidDetails->first_payment_status) == 'PAID' && !empty($paidDetails->contract)) {
+            
             $applicant->contractUrl = (isset($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getFullUrl() : null;
+           
             if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                 if (Storage::disk('s3')->exists($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getPath())) {
                     // if(File::exists($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getPath())){
