@@ -603,7 +603,12 @@ $vals=array(0,1,2);
                                             @if($errors->has('totalpay'))
                                               <div class="error">{{ $errors->first('totalpay') }}</div>
                                             @endif 
+<<<<<<< HEAD
                                             <p>Minimum amount of <b> 1,000 AED</b><span style="font-size:11px" class="vtt"> @if($vat>0)(+ 5% VAT)@endif</span></p>
+=======
+                                            <p>Minimum amount of <b> 1,000 AED</b></p>
+                                            <p><b>Remaining amount to be paid in 7 days</b></p>
+>>>>>>> 5a62e118c3d2601765467231e3e4e7b6af4cae18
                                           </div>
                                         @endif
                                     </div>

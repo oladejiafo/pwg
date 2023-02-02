@@ -913,19 +913,19 @@ class HomeController extends Controller
 
                 */
 
-            // if (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+            if (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                 $outletRef       = config('app.payment_reference_local');
                 $apikey          = config('app.payment_api_key_local');
                 // Test URLS 
                 $idServiceURL  = "https://identity.sandbox.ngenius-payments.com/auth/realms/ni/protocol/openid-connect/token";           // set the identity service URL (example only)
                 $txnServiceURL = "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders";
-            // } else {
-            //     $outletRef       = config('app.payment_reference');
-            //     $apikey          = config('app.payment_api_key');
-            //     // LIVE URLS 
-            //     $idServiceURL  = "https://identity.ngenius-payments.com/auth/realms/NetworkInternational/protocol/openid-connect/token";           // set the identity service URL (example only)
-            //     $txnServiceURL = "https://api-gateway.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders";
-            // }
+            } else {
+                $outletRef       = config('app.payment_reference');
+                $apikey          = config('app.payment_api_key');
+                // LIVE URLS 
+                $idServiceURL  = "https://identity.ngenius-payments.com/auth/realms/NetworkInternational/protocol/openid-connect/token";           // set the identity service URL (example only)
+                $txnServiceURL = "https://api-gateway.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders";
+            }
 
             $tokenHeaders  = array("Authorization: Basic " . $apikey, "Content-Type: application/x-www-form-urlencoded");
             $tokenResponse = $this->invokeCurlRequest("POST", $idServiceURL, $tokenHeaders, http_build_query(array('grant_type' => 'client_credentials')));
@@ -1294,19 +1294,19 @@ class HomeController extends Controller
             $id = Session::get('myproduct_id');
             $orderReference  = $_GET['ref'];
 
-            // if (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+            if (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                 // local
                 $outletRef       = config('app.payment_reference_local');
                 $apikey          = config('app.payment_api_key_local');
                 $idServiceURL    = "https://identity.sandbox.ngenius-payments.com/auth/realms/ni/protocol/openid-connect/token";           // set the identity service URL (example only)
                 $residServiceURL = "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders/" . $orderReference;
-            // } else {
-            //     $outletRef           = config('app.payment_reference');
-            //     $apikey          = config('app.payment_api_key');
+            } else {
+                $outletRef           = config('app.payment_reference');
+                $apikey          = config('app.payment_api_key');
 
-            //     $idServiceURL    = "https://identity.ngenius-payments.com/auth/realms/Networkinternational/protocol/openid-connect/token";           // set the identity service URL (example only)
-            //     $residServiceURL = "https://api-gateway.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders/" . $orderReference;
-            // }
+                $idServiceURL    = "https://identity.ngenius-payments.com/auth/realms/Networkinternational/protocol/openid-connect/token";           // set the identity service URL (example only)
+                $residServiceURL = "https://api-gateway.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders/" . $orderReference;
+            }
 
             $tokenHeaders    = array("Authorization: Basic " . $apikey, "Content-Type: application/x-www-form-urlencoded");
             $tokenResponse   = $this->invokeCurlRequest("POST", $idServiceURL, $tokenHeaders, http_build_query(array('grant_type' => 'client_credentials')));
@@ -1347,7 +1347,10 @@ class HomeController extends Controller
                             $data->first_payment_remaining = 0; // add in payment success
 
                             $data->is_first_payment_partially_paid = 0; // add in payment success
-                            $data->status = 'WAITING_FOR_2ND_PAYMENT'; // add in payment success
+                            $data->status = 'DOCUMENT_SUBMITTED'; // add in payment success
+
+                            $data->first_payment_verified_by_accountant = 1;
+                            $data->first_payment_verified_by_cfo = 1;
                         }
                         if (isset($paymentCreds['totalremaining']) && $paymentCreds['totalremaining'] > 0) { // add in payment success
                             //     // $data->first_payment_price = $thisPayment;
@@ -1359,20 +1362,26 @@ class HomeController extends Controller
                     } elseif ($paymentCreds['whichpayment'] == 'SUBMISSION') {
                         $data->submission_payment_paid = $paymentCreds['thisPaymentMade']; // add in payment success
                         $data->submission_payment_status = $paymentCreds['whatsPaid'];  // add in payment success
-                        $data->status = 'WAITING_FOR_3RD_PAYMENT';  // add in payment success
+                        if($data->work_permit_status == "WORK_PERMIT_RECEIVED"){
+                            $data->status = 'WAITING_FOR_EMBASSY_APPEARANCE';  // add in payment success
+                        }
                         if ($paymentCreds['whatsPaid'] == 'PARTIALLY_PAID') { // add in payment success
                             $data->is_submission_payment_partially_paid = 1; // add in payment success
                         } // add in payment success
+                        $data->submission_payment_verified_by_accountant = 1;
+                        $data->submission_payment_verified_by_cfo = 1;
                     } elseif ($paymentCreds['whichpayment'] == 'SECOND') {
                         $data->second_payment_paid = $paymentCreds['thisPaymentMade']; // add in payment success
                         $data->second_payment_status = $paymentCreds['whatsPaid']; // add in payment success
-                        $data->status = 'WAITING_FOR_EMBASSY_APPEARANCE'; // add in payment success
+                        $data->status = 'APPLICATION_COMPLETED'; // add in payment success
                         if ($paymentCreds['whatsPaid'] == 'PARTIALLY_PAID') { // add in payment success
                             $data->is_second_payment_partially_paid = 1; // add in payment success
                         } // add in payment success
+                        $data->second_payment_verified_by_accountant = 1;
+                        $data->second_payment_verified_by_cfo = 1;
                     } else {
                         $data->total_paid = $paymentCreds['thisPaymentMade']; // add in payment success
-                        $data->status = 'WAITING_FOR_EMBASSY_APPEARANCE'; // add in payment success
+                        // $data->status = 'WAITING_FOR_EMBASSY_APPEARANCE'; // add in payment success
                         if ($paymentCreds['paysplit']) {
                             // $data->first_payment_paid = $paymentCreds['paysplit']->first_payment_price + $paymentCreds['firstVat']; // add in payment success
                             $data->first_payment_paid = ($data->first_payment_price) ?? $paymentCreds['paysplit']->first_payment_price; // add in payment success
@@ -1386,6 +1395,13 @@ class HomeController extends Controller
                             $data->second_payment_paid = $paymentCreds['paysplit']->second_payment_price; // add in payment success
                             $data->second_payment_status = 'PAID'; // add in payment success
                         }
+                        $data->first_payment_verified_by_accountant = 1;
+                        $data->first_payment_verified_by_cfo = 1;
+                        $data->submission_payment_verified_by_accountant = 1;
+                        $data->submission_payment_verified_by_cfo = 1;
+                        $data->second_payment_verified_by_accountant = 1;
+                        $data->second_payment_verified_by_cfo = 1;
+                        $data->status = 'DOCUMENT_SUBMITTED'; // add in payment success
                     }
                     $data->save();
                     $paymentDetails->update([

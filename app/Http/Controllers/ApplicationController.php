@@ -571,7 +571,7 @@ class ApplicationController extends Controller
             ->where('destination_id', $request->product_id)
             ->update([
                 'application_stage_status' => 5,
-                'status' => 'APPLICATION_SUBMITTED',
+                'status' => 'DOCUMENTS_SUBMITTED',
                 'processing_status' => 'NOT_STARTED'
             ]);
 
