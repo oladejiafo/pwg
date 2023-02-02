@@ -603,7 +603,7 @@ $vals=array(0,1,2);
                                             @if($errors->has('totalpay'))
                                               <div class="error">{{ $errors->first('totalpay') }}</div>
                                             @endif 
-                                            <p>Minimum amount of <b> 1,000 AED</b></p>
+                                            <p>Minimum amount of <b> 1,000 AED</b><span style="font-size:11px" class="vtt"> @if($vat>0)(+ 5% VAT)@endif</span></p>
                                           </div>
                                         @endif
                                     </div>
@@ -672,8 +672,13 @@ $vals=array(0,1,2);
 
         $('#amount').keyup(function() {
             if($('#amount').val()){
-                document.getElementById("amountLink2").value = $(this).val();
-                let ax = $('#amountLink').text(parseInt($(this).val()).toLocaleString());
+                var aVat =($('#amount').val()*5)/100;
+                let vval = parseInt($('#amount').val()) + parseInt(($('#amount').val()*5)/100);
+
+                // document.getElementById("amountLink2").value = $(this).val();
+                document.getElementById("amountLink2").value = vval;
+                let ax = $('#amountLink').text(parseInt(vval).toLocaleString());
+                
             } else {
                 document.getElementById("amountLink2").value = $('#totaldue').val();
                 let ax = $('#amountLink').text(parseInt($('#totaldue').val()).toLocaleString());

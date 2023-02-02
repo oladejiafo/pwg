@@ -43,7 +43,7 @@
                                                             <table role="presentation" style="box-sizing:border-box;font-family:Yantramanav,sans-serif" cellspacing="0" cellpadding="0" border="0">
                                                                 <tbody><tr>
                                                                     <td style="box-sizing:border-box;font-family:Yantramanav,sans-serif">
-                                                                        <a href="{{env('APP_URL')}}myapplication" class="m_6264836849513322656button" rel="noopener" style="font-size: 20px;font-weight:500;box-sizing:border-box;float:center;border-radius:4px;color:#fff;display:inline-block;overflow:hidden;text-decoration:none;padding:12px;width:200px;text-align:center;background-color:#2ead0c!important;border:1px solid #c4c6cd" target="_blank" >GET INVOICE</a>
+                                                                        <a href="{{env('APP_URL')}}/myapplication" class="m_6264836849513322656button" rel="noopener" style="font-size: 20px;font-weight:500;box-sizing:border-box;float:center;border-radius:4px;color:#fff;display:inline-block;overflow:hidden;text-decoration:none;padding:12px;width:200px;text-align:center;background-color:#2ead0c!important;border:1px solid #c4c6cd" target="_blank" >GET INVOICE</a>
                                                                     </td>
                                                                 </tr>
                                                             </tbody></table>

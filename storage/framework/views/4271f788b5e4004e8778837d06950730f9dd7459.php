@@ -91,13 +91,13 @@
         // $msg = " You have an outstanding payment of INR " .number_format($paid->first_payment_remaining,2). " on your first payment.";
         
         if ($dueDay > 0) {
-            $msg = ' You have an outstanding payment of INR ' . number_format($paid->first_payment_remaining, 2) . ' on your first payment, due in ' . $dueDay . ' days ';
+            $msg = ' You have an outstanding payment of ' . number_format($paid->first_payment_remaining, 2) . ' AED on your first payment, due in ' . $dueDay . ' days ';
         } elseif ($dueDay == 0) {
-            $msg = ' You have an outstanding payment of INR ' . number_format($paid->first_payment_remaining, 2) . ' on your first payment, due today! ';
+            $msg = ' You have an outstanding payment of ' . number_format($paid->first_payment_remaining, 2) . ' AED on your first payment, due today! ';
         } elseif ($dueDay < 0) {
-            $msg = ' You have an outstanding payment of INR ' . number_format($paid->first_payment_remaining, 2) . ' on your first payment. It was due ' . -1 * $dueDay . ' days ago';
+            $msg = ' You have an outstanding payment of ' . number_format($paid->first_payment_remaining, 2) . ' AED on your first payment. It was due ' . -1 * $dueDay . ' days ago';
         } else {
-            $msg = ' You have an outstanding payment of INR ' . number_format($paid->first_payment_remaining, 2) . ' on your first payment.';
+            $msg = ' You have an outstanding payment of ' . number_format($paid->first_payment_remaining, 2) . ' AED on your first payment.';
         }
         
     ?>
