@@ -435,6 +435,8 @@ $vals=array(0,1,2);
                                 } else {
                                     $vat = 0;
                                 }
+                                // $vat = (($payNow - $discount) * 5) / 100;
+
                                 $totalPay = round((($payNow - $discount) + $vat),2);
                                 // list($which, $zzz) = explode(' ', $whichPayment);
                             ?>
@@ -689,6 +691,12 @@ $vals=array(0,1,2);
 
                     document.getElementById("amountLink2").value = $(this).val();
                     let ax = $('#amountLink').text(parseInt($(this).val()).toLocaleString());
+
+                    // var aVat =($('#amount').val()*5)/100;
+                    // let vval = parseInt($('#amount').val()) + parseInt(($('#amount').val()*5)/100);
+
+                    // document.getElementById("amountLink2").value = vval;
+                    // let ax = $('#amountLink').text(parseInt(vval).toLocaleString());
                 }                
                 
             } else {
@@ -778,7 +786,7 @@ $vals=array(0,1,2);
             $('#amount').val('');
             if($this.val()=='United Arab Emirates')
             {
-                document.getElementById("amountLink2").value = Math.floor((amtx + (amtx*5/100)) *100)/100;
+              document.getElementById("amountLink2").value = Math.floor((amtx + (amtx*5/100)) *100)/100;
               $('#amountLink').text(parseFloat(Math.floor((amtx + (amtx*5/100)) * 100)/100).toLocaleString('en')); //= amtx + (amtx*5/100);
               document.getElementById("totaldue").value = Math.floor((amtx + (amtx*5/100)) *100)/100;
 
@@ -790,16 +798,29 @@ $vals=array(0,1,2);
               $('#vt').text("VAT Inclusive");
               $('.vtt').text("(+ 5% VAT)");
             } else {
-                document.getElementById("amountLink2").value = amtx.toFixed(2);
-                $('#amountLink').text(parseFloat(Math.floor(amtx *100)/100).toLocaleString('en')); //= amtx;
-                // (1234567.89).toLocaleString('en') 
+                
+              document.getElementById("amountLink2").value = amtx.toFixed(2);
+              $('#amountLink').text(parseFloat(Math.floor(amtx *100)/100).toLocaleString('en')); //= amtx;
               document.getElementById("totaldue").value = Math.floor(amtx * 100)/100;
               $('#showVat').hide();
-            //   $('#vt').hide();
+              //   $('#vt').hide();
               $('#vatt').html(0);
               $('#vats').val(0);
               $('#vt').text("No VAT");
               $('.vtt').text("");
+
+
+            //   document.getElementById("amountLink2").value = Math.floor((amtx + (amtx*5/100)) *100)/100;
+            //   $('#amountLink').text(parseFloat(Math.floor((amtx + (amtx*5/100)) * 100)/100).toLocaleString('en')); //= amtx + (amtx*5/100);
+            //   document.getElementById("totaldue").value = Math.floor((amtx + (amtx*5/100)) *100)/100;
+
+            //   var nf = Intl.NumberFormat(); 
+            //   $('#vatt').html(nf.format(vt));
+ 
+            //   $('#vats').val(Math.floor(vt * 100)/100);
+            //   $('#showVat').show();
+            //   $('#vt').text("VAT Inclusive");
+            //   $('.vtt').text("(+ 5% VAT)");
             }
 
         });

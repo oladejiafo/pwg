@@ -132,7 +132,7 @@ Route::get('disconnect/quickbook', [HomeController::class, 'disconnectQuickbook'
 
 //Terms
 Route::get('/terms',[HomeController::class, 'terms'])->name('terms');
-
+Route::get('autocompleteAgent', [HomeController::class, 'autocompleteAgent'])->name('autocompleteAgent');
 // Affiliate
 
 Route::group(['namespace' => 'Affiliate', 'prefix' => '/affiliate','as' => 'affiliate.',

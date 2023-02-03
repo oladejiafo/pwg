@@ -1,7 +1,6 @@
 @extends('layouts.auth')
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/> -->
 
-
 <style>
   .checkcolor {
   accent-color: #f9bf29;
@@ -22,13 +21,13 @@ input [type="phone"]
 </style>
 
 @php
-$agents = DB::table('employees')
-->select('name','sur_name')
-->where('is_active', '=', 1)
-->whereRaw('name != ""')
-->whereIn('designation_id', [1,33,35])
-->orderBy('id','asc')
-->get();
+// $agents = DB::table('employees')
+// ->select('name','sur_name')
+// ->where('is_active', '=', 1)
+// ->whereRaw('name != ""')
+// ->whereIn('designation_id', [1,33,35])
+// ->orderBy('id','asc')
+// ->get();
 @endphp
 
 @Section('content')
@@ -97,8 +96,8 @@ $agents = DB::table('employees')
               <label for="Agent" class="form-label">Your Agent Name</label>
             </div>
             <div class="inputs-iconx">
-
-              <select name="agent" class="form-control agentInput" id="exampleInputAgent">
+              <input  name="agent" class="agent form-control" type="text" autocomplete="off" placeholder="Type Your Agent, if you have one..">
+              {{-- <select name="agent" class="form-control agentInput" id="exampleInputAgent">
                 @if(old('agent'))
                 <option selected>{{old('agent')}}</option>
                 @else
@@ -108,7 +107,7 @@ $agents = DB::table('employees')
                     <option>{{ucfirst(strtolower($agent->name))}} {{ucfirst(strtolower($agent->sur_name))}}</option>
                 @endforeach
                 <option>N/A</option>
-              </select>
+              </select> --}}
               @error('agent') <span class="error">{{ $message }}</span> @enderror
             </div>
           </div>
@@ -126,6 +125,8 @@ $agents = DB::table('employees')
   </div>
 @endsection
 @push('custom-scripts')
+
+
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script> -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/css/intlTelInput.min.css" rel="stylesheet"/>
 
@@ -133,8 +134,9 @@ $agents = DB::table('employees')
 
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> --}}
+<script>
       $(document).ready(function() {
 
         //password
@@ -217,4 +219,25 @@ $agents = DB::table('employees')
       // });
         // });
   </script>
+{{-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> --}}
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
+
+<script type="text/javascript">
+  var path = "{{ route('autocompleteAgent') }}";
+  $('input.agent').typeahead({
+      source:  function (str, process) 
+      {
+        return $.get(path, { str: str }, function (data) {
+          var name = [];
+          $.each(data, function(index, value) {
+            name.push(value.name+' '+ value.sur_name+' - '+ value.phone_number);
+          });
+          // console.log(name);
+              return process(name);
+              // return name;
+          });
+      }
+  });
+</script>
 @endpush

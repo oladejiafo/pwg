@@ -37,7 +37,8 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         'phone_number',
         'password',
         'passport_number',
-        'sales_agent_name_by_client'
+        'sales_agent_name_by_client',
+        'sales_agent_phone_number_by_client'
     ];
 
     /**

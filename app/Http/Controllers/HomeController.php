@@ -1447,7 +1447,7 @@ class HomeController extends Controller
                         $email = Auth::user()->email;
                         $userID = Auth::user()->id;
 
-                        if ($paymentDetails['payment_type'] == "FIRST") {
+                        if ($paymentDetails['payment_type'] == "FIRST" || $paymentDetails['payment_type'] == "BALANCE_ON_FIRST") {
                             $ems = "";
                         } else if ($paymentDetails['payment_type'] == "SUBMISSION") {
                             $ems = " You will be notified when your Work Permit is ready.";
@@ -1455,8 +1455,14 @@ class HomeController extends Controller
                             $ems = " You will be notified when your embassy appearance date is set.";
                         }
 
-                        $criteria = ucFirst($paymentDetails['payment_type']) . " Payment Completed!";
-                        $message = "You have successfully made your " . $paymentDetails['payment_type'] . ". Check your receipt on 'My Application'" . $ems;
+                        // $criteria = ucFirst(strtolower($paymentDetails['payment_type'])) . " Payment Completed!";
+                        // $message = "You have successfully made your " . $paymentDetails['payment_type'] . ". Check your receipt on 'My Application'" . $ems;
+
+                        $paym = ucwords(strtolower(str_replace('_', ' ', $paymentDetails['payment_type'])));
+
+                        $criteria = $paym . " Payment Completed!";
+                        $message = "You have successfully made your " . $paym . ". Check your receipt on 'My Application'. " . $ems;
+              
 
                         $link = "";
 
@@ -1516,8 +1522,8 @@ class HomeController extends Controller
             ['client_id', '=', Auth::user()->id],
             ['id', '=', $pays->application_id],
         ])
-            ->orderBy('id', 'DESC')
-            ->first();
+        ->orderBy('id', 'DESC')
+        ->first();
 
         if ($datas === null) {
         } else {
@@ -2083,5 +2089,20 @@ class HomeController extends Controller
         $user = User::find($user->id);
         $user->sendEmailVerificationNotification();
         return view('auth.verify-email', compact('id'))->with('message', 'Please check your mail for verification mail.');
+    }
+
+    public function autocompleteAgent(Request $request)
+    {        
+
+        $data = DB::table('employees')
+            ->select('name','sur_name', 'phone_number')
+            ->where("name","LIKE","%{$request->str}%")
+            ->where('is_active', '=', 1)
+            ->whereRaw('name != ""')
+            ->whereIn('designation_id', [1,33,35])
+            ->orderBy('id','asc')
+            ->get('query');
+
+        return response()->json($data);
     }
 }

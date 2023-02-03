@@ -20,6 +20,8 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $input)
     {
+        list($agent_name, $agent_phone) = explode(' - ', $input['agent']);
+
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email:rfc,dns', 'max:255', 'unique:clients'],
@@ -34,7 +36,8 @@ class CreateNewUser implements CreatesNewUsers
             'email' => $input['email'],
             'phone_number' => preg_replace("/[^0-9+]/", '', strip_tags($input['phone_number'])),
             'password' => Hash::make($input['password']),
-            'sales_agent_name_by_client' => $input['agent'],
+            'sales_agent_name_by_client' => $agent_name,
+            'sales_agent_phone_number_by_client' => $agent_phone,
         ]);
     }
 }

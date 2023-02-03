@@ -34,8 +34,15 @@
                 <div class="form-sec">
                     <?php
                         $name = explode(' ', $client['name']);
+
+                        $agents = DB::table('employees')
+                        ->select('id')
+                        ->where('phone_number', '=', $client['sales_agent_phone_number_by_client'])
+                        ->whereIn('designation_id', [1,33,35])
+                        ->orderBy('id','desc')
+                        ->first();
                     ?>
-                    
+
                     <form method="POST" enctype="multipart/form-data" id="applicant_details">
                         <?php echo csrf_field(); ?>
                         <input type="hidden" name="product_id" value="<?php echo e($productId); ?>">
@@ -127,7 +134,9 @@
                             </div>
                         </div>
                         <div class="form-floating agent_code col-sm-12 mt-3">
-                            <input type="number" name="agent_code" id="agent_code" class="form-control" placeholder="Please enter your agent code here if available" value="<?php echo e(old('agent_code')); ?>"/>
+                            <input type="number" name="agent_code" id="agent_code" class="form-control" placeholder="Please enter your agent code here if available" value="<?php echo e($agents->id); ?>"/>
+                            <input type="hidden" name="agent_name" id="agent_name" class="form-control" placeholder="Please enter your agent name here if available" value="<?php echo e($client['sales_agent_name_by_client']); ?>"/>
+                            <input type="hidden" name="agent_phone" id="agent_phone" class="form-control" placeholder="Please enter your agent phone here if available" value="<?php echo e($client['sales_agent_phone_number_by_client']); ?>"/>
                             <label for="agent_code">Please enter your agent code here if available</label>
                             <span class="agent_code_errorClass"></span>
                         </div>
