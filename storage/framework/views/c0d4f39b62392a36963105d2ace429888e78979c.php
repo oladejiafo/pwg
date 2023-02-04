@@ -29,11 +29,11 @@
 </style>
 <div class="footer" align="right" style="padding:20px; ">
     <hr>
-    &copy {{ date('Y') }} <a style="" href="http://pwggroup.ae" target="_blank">PWG Group</a>. All rights
+    &copy <?php echo e(date('Y')); ?> <a style="" href="http://pwggroup.ae" target="_blank">PWG Group</a>. All rights
     reserved.
 </div>
 
-@if (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) 
+<?php if(in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)): ?> 
 <script>
     //Disable right click
     document.addEventListener('contextmenu', (e) => e.preventDefault());
@@ -54,4 +54,4 @@
             return false;
     };
 </script>
-@endif
+<?php endif; ?><?php /**PATH C:\Users\dejia\OneDrive\Desktop\mygit\pwg_eportal\resources\views/user/footer.blade.php ENDPATH**/ ?>
