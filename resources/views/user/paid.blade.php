@@ -281,10 +281,12 @@
                                                     <div class="cardc-body">
                                                         @php
                                                             $workpermit = App\Helpers\users::getWorkPermitStatus($paid);
-                                                            
                                                         @endphp
                                                         @if ($workpermit['status'] == true && isset($workpermit['fileUrl']))
-                                                            <a href="{{ $workpermit['fileUrl'] }}"
+                                                            <a href="{{ $workpermit['fileUrl'] }}" target="_blank"
+                                                                style="margin-left: 0px !important;position: unset;display: contents;">
+                                                        @elseif($workpermit['status'] == 'permitReady' && isset($workpermit['fileUrl']))
+                                                            <a href="{{ $workpermit['fileUrl'] }}" target="_blank"
                                                                 style="margin-left: 0px !important;position: unset;display: contents;">
                                                         @endif
                                                         <div style="display:inline" id="dd"
@@ -300,7 +302,7 @@
                                                                     fill="#1C7E14" />
                                                             </svg>
                                                         </div>
-                                                        @if ($workpermit['status'] == true && isset($workpermit['fileUrl']))
+                                                        @if (($workpermit['status'] == true || $workpermit['status'] == 'permitReady')&& isset($workpermit['fileUrl']))
                                                             </a>
                                                         @endif
                                                         <div class="dg aligns-items-center justify-content-center text-center"
@@ -362,7 +364,7 @@
                                                         @if (isset($getContract->contractUrl) && strlen($getContract->contractUrl) > 2)
                                                             <a href="{{ $getContract->contractUrl }}" target="_blank"
                                                                 style="margin:0;position: unset;display: contents;">
-                                                        @endif
+                                                          @endif
                                                         <div style="display:inline" id="dd"
                                                             class="block download-thumbnail img-fluid">
                                                             <svg style="margin:auto;margin-top:20px" width="39"
@@ -538,11 +540,13 @@
                                                             $workpermit = App\Helpers\users::getWorkPermitStatus($paid);
                                                         @endphp
                                                         @if ($workpermit['status'] == true && isset($workpermit['fileUrl']))
-                                                            <a href="{{ $workpermit['fileUrl'] }}"
+                                                            <a href="{{ $workpermit['fileUrl'] }}" target="_blank"
                                                                 style="margin-left: 0px !important;position: unset;display: contents;">
-                                                        @endif
-                                                        <div style="display:inline" id="dd"
-                                                            class="block download-thumbnail img-fluid">
+                                                        @elseif($workpermit['status'] == 'permitReady' && isset($workpermit['fileUrl']))
+                                                                <a href="{{ $workpermit['fileUrl'] }}" target="_blank"
+                                                                    style="margin-left: 0px !important;position: unset;display: contents;">
+                                                        @endif                                                        
+                                                        <div style="display:inline" id="dd" class="block download-thumbnail img-fluid">
                                                             <svg style="margin:auto;margin-top:20px" width="39"
                                                                 height="30" class="dd" viewBox="0 0 39 30"
                                                                 fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -554,7 +558,7 @@
                                                                     fill="#1C7E14" />
                                                             </svg>
                                                         </div>
-                                                        @if ($workpermit['status'] == true && isset($workpermit['fileUrl']))
+                                                        @if (($workpermit['status'] == true || $workpermit['status'] == 'permitReady')&& isset($workpermit['fileUrl']))
                                                             </a>
                                                         @endif
                                                         <div class="dg aligns-items-center justify-content-center text-center"
@@ -849,7 +853,10 @@
                                                             $workpermit = App\Helpers\users::getWorkPermitStatus($paid);
                                                         @endphp
                                                         @if ($workpermit['status'] == true && isset($workpermit['fileUrl']))
-                                                            <a href="{{ $workpermit['fileUrl'] }}"
+                                                            <a href="{{ $workpermit['fileUrl'] }}" target="_blank"
+                                                                style="margin-left: 0px !important;position: unset;display: contents;">
+                                                        @elseif($workpermit['status'] == 'permitReady' && isset($workpermit['fileUrl']))
+                                                            <a href="{{ $workpermit['fileUrl'] }}" target="_blank"
                                                                 style="margin-left: 0px !important;position: unset;display: contents;">
                                                         @endif
                                                         <div style="display:inline" id="dd"
@@ -865,7 +872,7 @@
                                                                     fill="#1C7E14" />
                                                             </svg>
                                                         </div>
-                                                        @if ($workpermit['status'] == true && isset($workpermit['fileUrl']))
+                                                        @if (($workpermit['status'] == true || $workpermit['status'] == 'permitReady')&& isset($workpermit['fileUrl']))
                                                             </a>
                                                         @endif
                                                         <div class="dg aligns-items-center justify-content-center text-center"
@@ -1258,7 +1265,10 @@
                                                     $workpermit = App\Helpers\users::getWorkPermitStatus($paid);
                                                 @endphp
                                                 @if ($workpermit['status'] == true && isset($workpermit['fileUrl']))
-                                                    <a href="{{ $workpermit['fileUrl'] }}"
+                                                    <a href="{{ $workpermit['fileUrl'] }}" target="_blank"
+                                                        style="margin-left: 0px !important;position: unset;display: contents;">
+                                                @elseif($workpermit['status'] == 'permitReady' && isset($workpermit['fileUrl']))
+                                                    <a href="{{ $workpermit['fileUrl'] }}" target="_blank"
                                                         style="margin-left: 0px !important;position: unset;display: contents;">
                                                 @endif
                                                 <div style="display:inline" id="dd"
@@ -1274,7 +1284,7 @@
                                                             fill="#1C7E14" />
                                                     </svg>
                                                 </div>
-                                                @if ($workpermit['status'] == true && isset($workpermit['fileUrl']))
+                                                @if (($workpermit['status'] == true || $workpermit['status'] == 'permitReady') && isset($workpermit['fileUrl']))
                                                     </a>
                                                 @endif
                                                 <div class="dg aligns-items-center justify-content-center text-center"

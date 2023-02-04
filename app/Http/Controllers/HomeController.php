@@ -834,24 +834,45 @@ class HomeController extends Controller
 
             if (in_array($apply->application_stage_status, $vals) && (empty($apply->embassy_country) || $apply->embassy_country == null)) {
                 // if ($apply->current_location == "Unites") {
-
-                $validator = Validator::make($request->all(), [
-                    'totaldue' => 'required',
-                    // 'totalpay' => 'numeric|gte:1000|lte:' . $request->totaldue,
-                    'current_location' => 'required',
-                    'embassy_appearance' => 'required',
-                    'amount' => 'numeric|gte:1000|lte:' . $request->totaldue
-
-                ]);
+                if($request->amount > 0){
+                    $validator = Validator::make($request->all(), [
+                        'totaldue' => 'required',
+                        // 'totalpay' => 'numeric|gte:1000|lte:' . $request->totaldue,
+                        'current_location' => 'required',
+                        'embassy_appearance' => 'required',
+                        'amount' => 'numeric|gte:1000|lte:' . $request->totaldue
+    
+                    ]);
+                } else {
+                    $validator = Validator::make($request->all(), [
+                        'totaldue' => 'required',
+                        'totalpay' => 'numeric|gte:1000|lte:' . $request->totaldue,
+                        'current_location' => 'required',
+                        'embassy_appearance' => 'required',
+                    ]);
+                }
+                
                 if ($validator->fails()) {
                     return back()->withErrors($validator)
                         ->withInput();
                 }
             } else {
-                $request->validate([
-                    'totaldue' => 'required',
-                    'totalpay' => 'numeric'
-                ]);
+                if($request->amount > 0){
+                    $validator = Validator::make($request->all(), [
+                        'amount' => 'numeric|gte:1000',
+                        'totaldue' => 'required',
+                        'totalpay' => 'numeric'
+                    ]);
+                } else{
+                    $validator = Validator::make($request->all(), [
+                        'totaldue' => 'required',
+                        'totalpay' => 'numeric'
+                    ]);
+                }
+                if ($validator->fails()) {
+                    return back()->withErrors($validator)
+                        ->withInput();
+                }
             }
             $thisPayment = $request->whichpayment;
             $thisVat = $request->vats;

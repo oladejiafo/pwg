@@ -282,10 +282,12 @@
                                                     <div class="cardc-body">
                                                         <?php
                                                             $workpermit = App\Helpers\users::getWorkPermitStatus($paid);
-                                                            
                                                         ?>
                                                         <?php if($workpermit['status'] == true && isset($workpermit['fileUrl'])): ?>
-                                                            <a href="<?php echo e($workpermit['fileUrl']); ?>"
+                                                            <a href="<?php echo e($workpermit['fileUrl']); ?>" target="_blank"
+                                                                style="margin-left: 0px !important;position: unset;display: contents;">
+                                                        <?php elseif($workpermit['status'] == 'permitReady' && isset($workpermit['fileUrl'])): ?>
+                                                            <a href="<?php echo e($workpermit['fileUrl']); ?>" target="_blank"
                                                                 style="margin-left: 0px !important;position: unset;display: contents;">
                                                         <?php endif; ?>
                                                         <div style="display:inline" id="dd"
@@ -301,7 +303,7 @@
                                                                     fill="#1C7E14" />
                                                             </svg>
                                                         </div>
-                                                        <?php if($workpermit['status'] == true && isset($workpermit['fileUrl'])): ?>
+                                                        <?php if(($workpermit['status'] == true || $workpermit['status'] == 'permitReady')&& isset($workpermit['fileUrl'])): ?>
                                                             </a>
                                                         <?php endif; ?>
                                                         <div class="dg aligns-items-center justify-content-center text-center"
@@ -360,7 +362,7 @@
                                                         <?php if(isset($getContract->contractUrl) && strlen($getContract->contractUrl) > 2): ?>
                                                             <a href="<?php echo e($getContract->contractUrl); ?>" target="_blank"
                                                                 style="margin:0;position: unset;display: contents;">
-                                                        <?php endif; ?>
+                                                          <?php endif; ?>
                                                         <div style="display:inline" id="dd"
                                                             class="block download-thumbnail img-fluid">
                                                             <svg style="margin:auto;margin-top:20px" width="39"
@@ -537,11 +539,13 @@
                                                             $workpermit = App\Helpers\users::getWorkPermitStatus($paid);
                                                         ?>
                                                         <?php if($workpermit['status'] == true && isset($workpermit['fileUrl'])): ?>
-                                                            <a href="<?php echo e($workpermit['fileUrl']); ?>"
+                                                            <a href="<?php echo e($workpermit['fileUrl']); ?>" target="_blank"
                                                                 style="margin-left: 0px !important;position: unset;display: contents;">
-                                                        <?php endif; ?>
-                                                        <div style="display:inline" id="dd"
-                                                            class="block download-thumbnail img-fluid">
+                                                        <?php elseif($workpermit['status'] == 'permitReady' && isset($workpermit['fileUrl'])): ?>
+                                                                <a href="<?php echo e($workpermit['fileUrl']); ?>" target="_blank"
+                                                                    style="margin-left: 0px !important;position: unset;display: contents;">
+                                                        <?php endif; ?>                                                        
+                                                        <div style="display:inline" id="dd" class="block download-thumbnail img-fluid">
                                                             <svg style="margin:auto;margin-top:20px" width="39"
                                                                 height="30" class="dd" viewBox="0 0 39 30"
                                                                 fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -553,7 +557,7 @@
                                                                     fill="#1C7E14" />
                                                             </svg>
                                                         </div>
-                                                        <?php if($workpermit['status'] == true && isset($workpermit['fileUrl'])): ?>
+                                                        <?php if(($workpermit['status'] == true || $workpermit['status'] == 'permitReady')&& isset($workpermit['fileUrl'])): ?>
                                                             </a>
                                                         <?php endif; ?>
                                                         <div class="dg aligns-items-center justify-content-center text-center"
@@ -847,7 +851,10 @@
                                                             $workpermit = App\Helpers\users::getWorkPermitStatus($paid);
                                                         ?>
                                                         <?php if($workpermit['status'] == true && isset($workpermit['fileUrl'])): ?>
-                                                            <a href="<?php echo e($workpermit['fileUrl']); ?>"
+                                                            <a href="<?php echo e($workpermit['fileUrl']); ?>" target="_blank"
+                                                                style="margin-left: 0px !important;position: unset;display: contents;">
+                                                        <?php elseif($workpermit['status'] == 'permitReady' && isset($workpermit['fileUrl'])): ?>
+                                                            <a href="<?php echo e($workpermit['fileUrl']); ?>" target="_blank"
                                                                 style="margin-left: 0px !important;position: unset;display: contents;">
                                                         <?php endif; ?>
                                                         <div style="display:inline" id="dd"
@@ -863,7 +870,7 @@
                                                                     fill="#1C7E14" />
                                                             </svg>
                                                         </div>
-                                                        <?php if($workpermit['status'] == true && isset($workpermit['fileUrl'])): ?>
+                                                        <?php if(($workpermit['status'] == true || $workpermit['status'] == 'permitReady')&& isset($workpermit['fileUrl'])): ?>
                                                             </a>
                                                         <?php endif; ?>
                                                         <div class="dg aligns-items-center justify-content-center text-center"
@@ -1257,7 +1264,10 @@
                                                     $workpermit = App\Helpers\users::getWorkPermitStatus($paid);
                                                 ?>
                                                 <?php if($workpermit['status'] == true && isset($workpermit['fileUrl'])): ?>
-                                                    <a href="<?php echo e($workpermit['fileUrl']); ?>"
+                                                    <a href="<?php echo e($workpermit['fileUrl']); ?>" target="_blank"
+                                                        style="margin-left: 0px !important;position: unset;display: contents;">
+                                                <?php elseif($workpermit['status'] == 'permitReady' && isset($workpermit['fileUrl'])): ?>
+                                                    <a href="<?php echo e($workpermit['fileUrl']); ?>" target="_blank"
                                                         style="margin-left: 0px !important;position: unset;display: contents;">
                                                 <?php endif; ?>
                                                 <div style="display:inline" id="dd"
@@ -1273,7 +1283,7 @@
                                                             fill="#1C7E14" />
                                                     </svg>
                                                 </div>
-                                                <?php if($workpermit['status'] == true && isset($workpermit['fileUrl'])): ?>
+                                                <?php if(($workpermit['status'] == true || $workpermit['status'] == 'permitReady') && isset($workpermit['fileUrl'])): ?>
                                                     </a>
                                                 <?php endif; ?>
                                                 <div class="dg aligns-items-center justify-content-center text-center"

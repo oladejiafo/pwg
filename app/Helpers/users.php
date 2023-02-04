@@ -82,12 +82,11 @@ class users
             $client = new \GuzzleHttp\Client();
             $res = $client->request(
                 'POST',
-                env('ADMIN_URL') . '/api/get-work-permit',
+                config('app.admin_url_local') . '/api/get-work-permit',
                 [
                     'form_params' => $paidDetails,
                 ]
             );
-
             $fileData = $res->getBody()->getContents();
             $file = json_decode($fileData);
             $response = [
@@ -139,18 +138,18 @@ class users
         //     }
         // } else 
         if (strtoupper($paidDetails->first_payment_status) == 'PAID' && !empty($paidDetails->contract)) {
-            
+
             $applicant->contractUrl = (isset($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getFullUrl() : null;
-           
+
             if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                 if (Storage::disk('s3')->exists($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getPath())) {
                     // if(File::exists($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getPath())){
-                        return $applicant;
-                    }
-                } else {
-                    if (File::exists($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getPath())) {
-                        return $applicant;
-                    }
+                    return $applicant;
+                }
+            } else {
+                if (File::exists($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getPath())) {
+                    return $applicant;
+                }
             }
         } else {
             $applicant->contractUrl = "";
@@ -161,13 +160,15 @@ class users
         $response['status'] = false;
         try {
             $file = self::getWorkpermitFile($paidDetails);
-            if(isset($file['FileExist'])){
-                if (strtoupper($paidDetails->first_payment_status) == 'PAID' && strtoupper($paidDetails->submission_payment_status) == 'PAID' && $paidDetails->work_permit_status == "WORK_PERMIT_RECEIVED" && $file['FileExist']) {
+            if (isset($file['FileExist'])) {
+                if (strtoupper($paidDetails->first_payment_status) == 'PAID' && $paidDetails->work_permit_status == "WORK_PERMIT_RECEIVED" && strtoupper($paidDetails->submission_payment_status) != 'PAID' && $file['FileExist']) {
+                    $response['fileUrl'] = Storage::disk('local')->url(pdfBlock::pdfBlock($file['fileUrl']));
+                    $response['message'] = "Download after second payment";
+                    $response['status'] = 'permitReady';
+                } else if (strtoupper($paidDetails->first_payment_status) == 'PAID' && strtoupper($paidDetails->submission_payment_status) == 'PAID' && $paidDetails->work_permit_status == "WORK_PERMIT_RECEIVED" && $file['FileExist']) {
                     $response['message'] = "Download work permit";
                     $response['fileUrl'] = $file['FileUrl'];
                     $response['status'] = true;
-                } else if (strtoupper($paidDetails->first_payment_status) == 'PAID' && $paidDetails->work_permit_status == "WORK_PERMIT_RECEIVED" && strtoupper($paidDetails->submission_payment_status) != 'PAID' && $file['FileExist']) {
-                    $response['message'] = "Download after second payment";
                 } else {
                     $response['message'] = "Work permit not available yet.";
                 }

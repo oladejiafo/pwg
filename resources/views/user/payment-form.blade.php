@@ -688,9 +688,17 @@ $vals=array(0,1,2);
                     document.getElementById("amountLink2").value = vval;
                     let ax = $('#amountLink').text(parseInt(vval).toLocaleString());
                 } else {
+                    if('{{Auth::user()->country_of_residence}}' == "United Arab Emirates"){
+                        var aVat =($('#amount').val()*5)/100;
+                        let vval = parseInt($('#amount').val()) + parseInt(($('#amount').val()*5)/100);
 
-                    document.getElementById("amountLink2").value = $(this).val();
-                    let ax = $('#amountLink').text(parseInt($(this).val()).toLocaleString());
+                        // document.getElementById("amountLink2").value = $(this).val();
+                        document.getElementById("amountLink2").value = vval;
+                        let ax = $('#amountLink').text(parseInt(vval).toLocaleString());
+                    } else {
+                        document.getElementById("amountLink2").value = $(this).val();
+                        let ax = $('#amountLink').text(parseInt($(this).val()).toLocaleString());
+                    }
 
                     // var aVat =($('#amount').val()*5)/100;
                     // let vval = parseInt($('#amount').val()) + parseInt(($('#amount').val()*5)/100);

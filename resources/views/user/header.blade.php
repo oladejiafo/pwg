@@ -103,7 +103,7 @@
                 </a>
               </li> --}}
               <li class="nav-item">
-                <a target="_blank" class="nav-link" href="https://wa.link/iz7ait" title="Click Here To Chat on WhatsAPP">
+                <a target="_blank" class="nav-link" href="https://wa.link/16s7s9" title="Click Here To Chat on WhatsAPP">
                   <!-- <i class="mdi mdi-email" style="width: 30px; height: 30px;"></i> -->
                   <img src="{{asset('user/images/chat_new.svg')}}" width="35px" height="35px" alt="PWG icon3"> <span class="titled"> Chat</span>
                   <span class="count bg-success"></span>
