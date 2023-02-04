@@ -51,7 +51,7 @@
             ctrlShiftKey(e, 'C') ||
             (e.ctrlKey && e.keyCode === 'U'.charCodeAt(0))
         )
-            return false;
+        return false;
     };
 </script>
 @endif
