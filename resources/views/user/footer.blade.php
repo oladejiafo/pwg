@@ -33,7 +33,7 @@
     reserved.
 </div>
 
-@if (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) 
+@if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) 
 <script>
     //Disable right click
     document.addEventListener('contextmenu', (e) => e.preventDefault());
