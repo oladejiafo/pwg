@@ -149,7 +149,8 @@
                                             {{-- <a class="btn btn-secondary" href="#">Already Applied <i class="fa fa-check-circle" style="font-size:18px; color:green"></i></a> --}}
                                             @else
                                             
-                                            <a class="btn btn-secondary" @if(isset($started->destination_id)) onclick="return confirm('You have an active application already. Still want to proceed?');" @endif href="{{ url('package/type', $offer->id) }}">Apply Now</a>
+                                            {{-- <a class="btn btn-secondary" @if(isset($started->destination_id)) onclick="return alert('You have an active application already.');" @endif href="{{ url('package/type', $offer->id) }}">Apply Now</a> --}}
+                                            <a class="btn btn-secondary" @if(isset($started->destination_id)) onclick="toastr.error('You have an active application already.','',{positionClass: 'toast-top-center', closeButton: 'true', width: '400px'})" href="#" @else href="{{ url('package/type', $offer->id) }}" @endif>Apply Now</a>
                                             @endif
                                         </p>
                                     </span>

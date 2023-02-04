@@ -148,7 +148,8 @@
                                             
                                             <?php else: ?>
                                             
-                                            <a class="btn btn-secondary" <?php if(isset($started->destination_id)): ?> onclick="return confirm('You have an active application already. Still want to proceed?');" <?php endif; ?> href="<?php echo e(url('package/type', $offer->id)); ?>">Apply Now</a>
+                                            
+                                            <a class="btn btn-secondary" <?php if(isset($started->destination_id)): ?> onclick="toastr.error('You have an active application already.','',{positionClass: 'toast-top-center', closeButton: 'true', width: '400px'})" href="#" <?php else: ?> href="<?php echo e(url('package/type', $offer->id)); ?>" <?php endif; ?>>Apply Now</a>
                                             <?php endif; ?>
                                         </p>
                                     </span>

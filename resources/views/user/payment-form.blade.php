@@ -256,7 +256,7 @@ $vals=array(0,1,2);
                         @endif
 
                         @php
-                            $diff = ($pays) ? $pays->first_payment_remaining : 0;
+                            $diff = ($pays) ? $pays->first_payment_remaining : 0;  //$pays->first_payment_price - $pays->first_payment_paid
                         @endphp
 
                         @if($diff > 0)
@@ -275,12 +275,17 @@ $vals=array(0,1,2);
 
 
                             <?php
+                                $outsec= $pays->second_payment_price - $pays->second_payment_paid;
+                                $outsub= $pays->submission_payment_price - $pays->submission_payment_paid;
                                 if ($payall == 0 || empty($payall)) {
+
                                  if($pays->first_payment_status !="PAID" || $pays->first_payment_status ==null){
                                    $whichPayment =  "FIRST";
+                                   $outsub=0;
+                                   $outsec=0;
                                 
                                     $payNow = $pdet->first_payment_sub_total;
-                                    if($diff > 0) {
+                                    if($diff > 0 || $pays->first_payment_price > $pays->first_payment_paid) {
                                         $pendMsg = "You have " . $pends . " balance on first payment.";
                                         $payNoww = $pends;
                                         $whichPayment =  "BALANCE_ON_FIRST";
@@ -292,25 +297,39 @@ $vals=array(0,1,2);
 
                                  }
                                  elseif($pays->first_payment_status =="PAID" && $pays->submission_payment_status !="PAID"){
-                                    
-                                    $whichPayment =  "SUBMISSION";
-                                    if ($diff > 0 && $pays->is_first_payment_partially_paid == 1) {
-                                        $payNow = $pdet->submission_payment_sub_total;
-                                        $payNoww = $pdet->submission_payment_sub_total + $pends;
-                                        $pendMsg = ' + ' . $pends . " carried over from previous payment";
-                                    } elseif ($diff < 0 && $pays->is_first_payment_partially_paid == 1) {
-                                        $payNow = $pdet->submission_payment_sub_total;
-                                        $payNoww = $pdet->submission_payment_sub_total - $pends;
-                                        $pendMsg = ' - ' . $pends . " over paid from previous payment";
-                                    } else {
-                                        $payNow = $pdet->submission_payment_sub_total;
-                                        $payNoww = $pdet->submission_payment_sub_total;
-                                        $pendMsg = "";
-                                    }
 
+                                    $outsub= $pays->submission_payment_price - $pays->submission_payment_paid;
+                                    $outsec=0;
+
+                                    $whichPayment =  "SUBMISSION";
+                                        if ($diff > 0 && $pays->is_first_payment_partially_paid == 1) {
+                                            $payNow = $pdet->submission_payment_sub_total;
+                                            $payNoww = $pdet->submission_payment_sub_total + $pends;
+                                            $pendMsg = ' + ' . $pends . " carried over from previous payment";
+                                        } elseif ($diff < 0 && $pays->is_first_payment_partially_paid == 1) {
+                                            $payNow = $pdet->submission_payment_sub_total;
+                                            $payNoww = $pdet->submission_payment_sub_total - $pends;
+                                            $pendMsg = ' - ' . $pends . " over paid from previous payment";
+                                        } else {
+                                            $payNow = $pdet->submission_payment_sub_total;
+                                            $payNoww = $pdet->submission_payment_sub_total;
+                                            $pendMsg = "";
+                                        }
                                  }
+                                 elseif($pays->first_payment_status =="PAID" && $pays->submission_payment_status =="PAID" && $outsub > 0){
+                                    $outsub= $pays->submission_payment_price - $pays->submission_payment_paid;
+                                    $outsec=0;
+
+                                        $pendMsg = "You have " . $outsub . " balance on submission payment.";
+                                        $payNow = $outsub; //$pdet->submission_payment_sub_total;
+                                        $payNoww = $outsub;
+                                        $whichPayment =  "SUBMISSION";
+                                }
                                  elseif($pays->submission_payment_status =="PAID" && $pays->second_payment_status !="PAID"){
-                                    
+
+                                    $outsec= $pays->second_payment_price - $pays->second_payment_paid;
+                                    $outsub=0;
+
                                     $whichPayment =  "SECOND";
                                     if ($diff > 0 && $pays->is_submission_payment_partially_paid == 1) {
                                         $payNow = $pdet->second_payment_sub_total;
@@ -325,6 +344,13 @@ $vals=array(0,1,2);
                                         $payNoww = $pdet->second_payment_sub_total;
                                         $pendMsg = "";
                                     }
+                                    
+                                }
+                                elseif($pays->submission_payment_status =="PAID" && $pays->second_payment_status =="PAID" && $outsec > 0){
+                                        $pendMsg = "You have " . $outsec . " balance on second payment.";
+                                        $payNow = $outsec; //$pdet->submission_payment_sub_total;
+                                        $payNoww = $outsec;
+                                        $whichPayment =  "SECOND";
 
                                  }else {
                                     $whichPayment =  "FIRST";
@@ -475,12 +501,16 @@ $vals=array(0,1,2);
                                                 <div class="left-section col-6">
 
                                                     @if( $whichPayment == "SUBMISSION")
-                                                    <b>Submission Payment</b> @if(strlen($pendMsg)>1) <br>
-                                                    <font style='font-size:11px;color:red'><i fa fa-arrow-up></i>{{-- {{ $pendMsg }} --}} </font> @endif
+                                                    <b>Submission Payment</b> 
+                                                    
                                                     @else
                                                     Submission Payment
                                                     @endif
                                                     <span style="font-size:11px" class="vtt">@if($vat>0)(+ 5% VAT)@endif</span>
+                                                    @if($outsub>1) 
+                                                    <br>
+                                                    <font style='font-size:10px;color:red'><i fa fa-arrow-up></i>  {{ $pendMsg }} </font> 
+                                                    @endif
                                                 </div>
                                                 <div class="right-section col-6" align="right">
 
@@ -506,6 +536,10 @@ $vals=array(0,1,2);
                                                     Second Payment
                                                     @endif
                                                     <span style="font-size:11px" class="vtt">@if($vat>0)(+ 5% VAT)@endif</span>
+                                                    @if($outsec>1) 
+                                                    <br>
+                                                    <font style='font-size:10px;color:red'><i fa fa-arrow-up></i>  {{ $pendMsg }} </font> 
+                                                    @endif
                                                 </div>
                                                 <div class="right-section col-6" align="right">
                                                     @if( $whichPayment ==  "SECOND")

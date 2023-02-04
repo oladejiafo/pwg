@@ -197,7 +197,6 @@ class HomeController extends Controller
                 ->first();
         }
 
-
         $proddet = family_breakdown::where('destination_id', '=', $productId)->where('pricing_plan_type', 'BLUE_COLLAR')->where('status','CURRENT')->get();
         $whiteJobs = family_breakdown::where('destination_id', '=', $productId)->where('pricing_plan_type', 'WHITE_COLLAR')->where('status','CURRENT')->get();
         $canadaOthers = family_breakdown::where('destination_id', '=', $productId)->whereIn('pricing_plan_type', array('EXPRESS_ENTRY', 'STUDY_PERMIT'))->where('status','CURRENT')->get();
@@ -657,6 +656,7 @@ class HomeController extends Controller
                     ->where('applications.client_id', '=', Auth::user()->id)
                     ->where('applications.destination_id', '=', $id)
                     ->where('work_permit_category', $packageType)
+                    ->orderBy('applications.id', 'desc')
                     // ->whereNotIn('status',  ['APPLICATION_COMPLETED','VISA_REFUSED', 'APPLICATION_CANCELLED','REFUNDED'] )
                     ->limit(1)
                     ->first();
@@ -805,11 +805,68 @@ class HomeController extends Controller
     public function addpayment(Request $request)
     {
         try {
-        if (Auth::id()) {
+            if (Auth::id()) {
+    
             session()->forget('info');
-            $amount = $request->totalpay;
 
             $id = Session::get('myproduct_id');
+    
+
+            $complete = DB::table('applications')
+            ->where('client_id', '=', Auth::user()->id)
+            ->orderBy('id', 'desc')
+            ->first();
+
+            if (isset($complete->work_permit_category) && $complete->second_payment_status == 'PENDING') {
+                $packageType = $complete->work_permit_category;
+            } elseif (Session::has('packageType')) {
+                $packageType = Session::get('packageType');
+            } else {
+                $packageType = $complete->work_permit_category;
+            }
+
+           
+            $pdet = DB::table('pricing_plans')
+            ->where('destination_id', '=', $id)
+            ->where('pricing_plan_type', '=', $packageType)
+            ->where('status', 'CURRENT')
+            ->first();
+     
+            if($request->whichpayment == 'FIRST')
+            {
+                if($request->totalpay >= 1000)
+                {
+                    $amount = $request->totalpay;
+                } else {
+                    if($request->vats >0)
+                    {
+                        $amount = $pdet->first_payment_price;
+                    } else {
+                        $amount = $pdet->first_payment_sub_total;
+                    }  
+                }
+            } else if($request->whichpayment == 'SUBMISSION'){
+                if($request->vats >0)
+                {
+                    $amount = $pdet->submission_payment_price;
+                } else {
+                    $amount = $pdet->submission_payment_sub_total;
+                }                
+            } else if($request->whichpayment == 'SECOND'){
+                if($request->vats >0)
+                {
+                    $amount = $pdet->second_payment_price;
+                } else {
+                    $amount = $pdet->second_payment_sub_total;
+                }
+            } else {
+                if($request->vats >0)
+                {
+                    $amount = $pdet->total_price - $pdet->third_payment_price;
+                } else {
+                    $amount = $pdet->sub_total - $pdet->third_payment_sub_total;
+                }                
+            }
 
             $apply = DB::table('applications')
                 ->where('destination_id', '=', $id)
@@ -883,7 +940,7 @@ class HomeController extends Controller
                     $whatsPaid = "PARTIALLY_PAID";
                 }
             } else {
-                $whatsPaid = "PAID";
+                $whatsPaid = "PENDING";//??????
                 $overPay = $request->totalpay - $request->totaldue;
             }
 
@@ -1461,7 +1518,7 @@ class HomeController extends Controller
                         $paym = ucwords(strtolower(str_replace('_', ' ', $paymentDetails['payment_type'])));
 
                         $criteria = $paym . " Payment Completed!";
-                        $message = "You have successfully made your " . $paym . ". Check your receipt on 'My Application'. " . $ems;
+                        $message = "You have successfully made your " . $paym . " Payment. Check your receipt on 'My Application'. " . $ems;
               
 
                         $link = "";

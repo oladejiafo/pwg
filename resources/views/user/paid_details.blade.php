@@ -43,7 +43,7 @@
                                     </div>
                                     <div class="col-md-3" align="left">
                                         <p>
-                                         @if($paid->first_payment_status =='PAID')
+                                         @if($paid->first_payment_status =='PAID' && $paid->first_payment_price == $paid->first_payment_paid)
                                             Status PAID
                                          @elseif($paid->first_payment_status =='PARTIALLY_PAID')
                                             Status PAID PARTIAL   
@@ -55,7 +55,7 @@
                                     </div>
                                     <div class="col-md-6" align="right">
                                         <p>
-                                        @if($paid->first_payment_status =='PAID')
+                                        @if($paid->first_payment_status =='PAID' && $paid->first_payment_price == $paid->first_payment_paid)
 
                                             <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="{{ url('/get/invoice/FIRST')}}">Get Invoice</a>
                                        @else
@@ -86,7 +86,7 @@
                                     </div>
                                     <div class="col-md-3" align="left">
                                         <p>
-                                         @if($paid->submission_payment_status =='PAID')
+                                         @if($paid->submission_payment_status =='PAID' && $paid->submission_payment_price == $paid->submission_payment_paid)
                                             Status PAID
                                          @else
                                             Status PENDING
@@ -98,7 +98,7 @@
                                         <p>
 
                                            
-                                        @if($paid->submission_payment_status =='PAID')
+                                        @if($paid->submission_payment_status =='PAID' && $paid->submission_payment_price == $paid->submission_payment_paid)
 
                                             <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="{{ url('/get/invoice/SUBMISSION')}}">Get Invoice</a>
                                        @else
@@ -129,7 +129,7 @@
                                     </div>
                                     <div class="col-md-3" align="left">
                                         <p>
-                                         @if($paid->second_payment_status =='PAID')
+                                         @if($paid->second_payment_status =='PAID'  && $paid->second_payment_price == $paid->second_payment_paid)
                                             Status PAID
                                          @else
                                             Status PENDING
@@ -141,7 +141,7 @@
                                         <p>
 
                                            
-                                        @if($paid->second_payment_status =='PAID')
+                                        @if($paid->second_payment_status =='PAID' && $paid->second_payment_price == $paid->second_payment_paid)
 
                                             <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="{{ url('/get/invoice/SECOND')}}">Get Invoice</a>
                                        @else
@@ -170,10 +170,10 @@
                     <div class="row" style="font-size:18px">
                         <div style="align-items: left; align:left; float: left; padding-left:40px;padding-right:40px" class="col-12">Your next payment is <b>
 
-                          @if($paid->submission_payment_status =='PAID')                    
+                          @if($paid->submission_payment_status =='PAID' && $paid->submission_payment_price == $paid->submission_payment_paid)                    
                             {{ $pays->second_payment_sub_total }} AED
                             </b>, to be charged for Third Payment.
-                          @elseif($paid->first_payment_status =='PAID')
+                          @elseif($paid->first_payment_status =='PAID' && $paid->first_payment_price == $paid->first_payment_paid)
                             {{ $pays->submission_payment_sub_total }} AED
                             </b>, to be charged for Second Payment.
                           @elseif($paid->first_payment_status !='PAID' && $paid->submission_payment_status !='PAID')
@@ -192,7 +192,6 @@
                     @endif
 
                 </div>
-
 
             </div>
         </div>

@@ -155,7 +155,7 @@
                                         <div class="upper">
                                             <span class="paid-item " href="#">
                                                 <span
-                                                    class="positionAnchor  @if ($paid->first_payment_status == 'PAID') ) watermarked @endif paid-thumbnail">
+                                                    class="positionAnchor  @if ($paid->first_payment_status == 'PAID' && $paid->first_payment_price == $paid->first_payment_paid)  watermarked @endif paid-thumbnail">
                                                     <img src="../user/images/first_payment.svg" height="500px"
                                                         class="img-fluid" alt="PWG Group">
                                                     <span class="title" style="align: center;">
@@ -188,7 +188,7 @@
                                                     @endif
 
                                                     <p>
-                                                        @if ($paid->first_payment_status == 'PAID')
+                                                        @if ($paid->first_payment_status == 'PAID' && $paid->first_payment_price == $paid->first_payment_paid)
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="{{ route('getInvoice', 'FIRST') }}">Get
                                                                 Invoice</a>
@@ -407,7 +407,7 @@
                                         <div class="upper">
                                             <span class="paid-item " href="#">
                                                 <span
-                                                    class="positionAnchor  @if ($paid->first_payment_status == 'PAID') ) watermarked @endif paid-thumbnail">
+                                                    class="positionAnchor  @if ($paid->first_payment_status == 'PAID'  && $paid->first_payment_price == $paid->first_payment_paid)  watermarked @endif paid-thumbnail">
                                                     <img src="../user/images/first_payment.svg" height="500px"
                                                         class="img-fluid" alt="PWG Group">
                                                     <span class="title" style="align: center;">
@@ -442,7 +442,7 @@
                                                     @endif
 
                                                     <p>
-                                                        @if ($paid->first_payment_status == 'PAID')
+                                                        @if ($paid->first_payment_status == 'PAID'  && $paid->first_payment_price == $paid->first_payment_paid)
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="{{ route('getInvoice', 'FIRST') }}">Get
                                                                 Invoice</a>
@@ -659,7 +659,7 @@
                                         <div class="upper">
                                             <span class="paid-item " href="#">
                                                 <span
-                                                    class="positionAnchor  @if ($paid->submission_payment_status == 'PAID') ) watermarked @endif paid-thumbnail">
+                                                    class="positionAnchor  @if ($paid->submission_payment_status == 'PAID'  && $paid->submission_payment_price == $paid->submission_payment_paid) ) watermarked @endif paid-thumbnail">
                                                     <img src="../user/images/submission_payment.svg" height="500px"
                                                         class="img-fluid" alt="PWG Group">
                                                     <span class="title" style="align: center;">
@@ -683,7 +683,7 @@
                                                     </amp>
 
                                                     <p>
-                                                        @if ($paid->submission_payment_status == 'PAID')
+                                                        @if ($paid->submission_payment_status == 'PAID'  && $paid->submission_payment_price == $paid->submission_payment_paid)
                                                             <!-- <a class="btn btn-secondary" target="_blank" href="{{ route('getReceipt', 'SUBMISSION') }}">Get Reciept</a> -->
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="{{ route('getInvoice', 'SUBMISSION') }}">Get
@@ -717,7 +717,7 @@
                                         <div class="upper">
                                             <span class="paid-item " href="#">
                                                 <span
-                                                    class="positionAnchor  @if ($paid->first_payment_status == 'PAID') ) watermarked @endif paid-thumbnail">
+                                                    class="positionAnchor  @if ($paid->first_payment_status == 'PAID' && $paid->first_payment_price == $paid->first_payment_paid)  watermarked @endif paid-thumbnail">
                                                     <img src="../user/images/first_payment.svg" height="500px"
                                                         class="img-fluid" alt="PWG Group">
                                                     <span class="title" style="align: center;">
@@ -752,7 +752,7 @@
                                                     @endif
 
                                                     <p>
-                                                        @if ($paid->first_payment_status == 'PAID')
+                                                        @if ($paid->first_payment_status == 'PAID' && $paid->first_payment_price == $paid->first_payment_paid)
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="{{ route('getInvoice', 'FIRST') }}">Get
                                                                 Invoice</a>
@@ -970,7 +970,7 @@
                                         <div class="upper">
                                             <span class="paid-item " href="#">
                                                 <span
-                                                    class="positionAnchor  @if ($paid->submission_payment_status == 'PAID') ) watermarked @endif paid-thumbnail">
+                                                    class="positionAnchor  @if ($paid->submission_payment_status == 'PAID'  && $paid->submission_payment_price == $paid->submission_payment_paid) ) watermarked @endif paid-thumbnail">
                                                     <img src="../user/images/submission_payment.svg" height="500px"
                                                         class="img-fluid" alt="PWG Group">
                                                     <span class="title" style="align: center;">
@@ -994,7 +994,7 @@
                                                     </amp>
 
                                                     <p>
-                                                        @if ($paid->submission_payment_status == 'PAID')
+                                                        @if ($paid->submission_payment_status == 'PAID'  && $paid->submission_payment_price == $paid->submission_payment_paid)
                                                             <!-- <a class="btn btn-secondary" target="_blank" href="{{ route('getReceipt', 'SUBMISSION') }}">Get Reciept</a> -->
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="{{ route('getInvoice', 'SUBMISSION') }}">Get
@@ -1025,7 +1025,7 @@
                                         <div class="upper">
                                             <span class="paid-item " href="#">
                                                 <span
-                                                    class="positionAnchor  @if ($paid->second_payment_status == 'PAID') ) watermarked @endif paid-thumbnail">
+                                                    class="positionAnchor  @if ($paid->second_payment_status == 'PAID' && $paid->second_payment_price == $paid->second_payment_paid)  watermarked @endif paid-thumbnail">
                                                     <img src="../user/images/second_payment.svg" height="500px"
                                                         class="img-fluid" alt="PWG Group">
                                                     <span class="title" style="align: center;">
@@ -1048,7 +1048,7 @@
                                                     </amp>
 
                                                     <p>
-                                                        @if ($paid->second_payment_status == 'PAID')
+                                                        @if ($paid->second_payment_status == 'PAID' && $paid->second_payment_price == $paid->second_payment_paid)
                                                             <!-- <a class="btn btn-secondary" target="_blank" href="{{ route('getReceipt', 'SECOND') }}">Get Reciept</a> -->
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="{{ route('getInvoice', 'SECOND') }}">Get
@@ -1081,7 +1081,7 @@
                                         <div class="upper">
                                             <span class="paid-item " href="#">
                                                 <span
-                                                    class="positionAnchor  @if ($paid->first_payment_status == 'PAID') ) watermarked @endif paid-thumbnail">
+                                                    class="positionAnchor  @if ($paid->first_payment_status == 'PAID' && $paid->first_payment_price == $paid->first_payment_paid)  watermarked @endif paid-thumbnail">
                                                     <img src="../user/images/first_payment.svg" height="500px"
                                                         class="img-fluid" alt="PWG Group">
                                                     <span class="title" style="align: center;">
@@ -1116,7 +1116,7 @@
                                                     @endif
 
                                                     <p>
-                                                        @if ($paid->first_payment_status == 'PAID')
+                                                        @if ($paid->first_payment_status == 'PAID' && $paid->first_payment_price == $paid->first_payment_paid)
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="{{ route('getInvoice', 'FIRST') }}">Get
                                                                 Invoice</a>
@@ -1205,7 +1205,7 @@
                                         <div class="upper">
                                             <span class="paid-item " href="#">
                                                 <span
-                                                    class="positionAnchor  @if ($paid->submission_payment_status == 'PAID') ) watermarked @endif paid-thumbnail">
+                                                    class="positionAnchor  @if ($paid->submission_payment_status == 'PAID'  && $paid->submission_payment_price == $paid->submission_payment_paid) ) watermarked @endif paid-thumbnail">
                                                     <img src="../user/images/submission_payment.svg" height="500px"
                                                         class="img-fluid" alt="PWG Group">
                                                     <span class="title" style="align: center;">
@@ -1229,7 +1229,7 @@
                                                     </amp>
 
                                                     <p>
-                                                        @if ($paid->submission_payment_status == 'PAID')
+                                                        @if ($paid->submission_payment_status == 'PAID' && $paid->submission_payment_price == $paid->submission_payment_paid)
                                                             <!-- <a class="btn btn-secondary" target="_blank" href="{{ route('getReceipt', 'SUBMISSION') }}">Get Reciept</a> -->
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="{{ route('getInvoice', 'SUBMISSION') }}">Get
@@ -1300,7 +1300,7 @@
 
                                             <span class="paid-item " href="#">
                                                 <span
-                                                    class="positionAnchor  @if ($paid->second_payment_status == 'PAID') ) watermarked @endif paid-thumbnail">
+                                                    class="positionAnchor  @if ($paid->second_payment_status == 'PAID' && $paid->second_payment_price == $paid->second_payment_paid)  watermarked @endif paid-thumbnail">
                                                     <img src="../user/images/second_payment.svg" height="500px"
                                                         class="img-fluid" alt="PWG Group">
                                                     <span class="title" style="align: center;">
@@ -1323,7 +1323,7 @@
                                                     </amp>
 
                                                     <p>
-                                                        @if ($paid->second_payment_status == 'PAID')
+                                                        @if ($paid->second_payment_status == 'PAID' && $paid->second_payment_price == $paid->second_payment_paid)
                                                             <!-- <a class="btn btn-secondary" target="_blank" href="{{ route('getReceipt', 'SECOND') }}">Get Reciept</a> -->
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="{{ route('getInvoice', 'SECOND') }}">Get
@@ -1395,7 +1395,7 @@
                                         <div class="upper">
                                             <span class="paid-item " href="#">
                                                 <span
-                                                    class="positionAnchor  @if ($paid->third_payment_status == 'PAID') ) watermarked @endif paid-thumbnail">
+                                                    class="positionAnchor  @if ($paid->third_payment_status == 'PAID' && $paid->third_payment_price == $paid->third_payment_paid)  watermarked @endif paid-thumbnail">
                                                     <img src="../user/images/salary_deduction.svg" height="500px"
                                                         class="img-fluid" alt="PWG Group">
                                                     <span class="title" style="align: center;">
@@ -1486,15 +1486,15 @@
                                         </div>
                                         <div class="modal-body" style="height:auto">
 
-                                            @if ($paid->second_payment_status == 'PAID')
+                                            @if ($paid->second_payment_status == 'PAID' && $paid->second_payment_price == $paid->second_payment_paid)
                                                 <h4>Congratutaion! <br>You have completed your payments. </h4>
                                                 <p style="font-size:15px">Your embassy appearance date will be
                                                     indicated soon.</p>
-                                            @elseif($paid->submission_payment_status == 'PAID')
+                                            @elseif($paid->submission_payment_status == 'PAID' && $paid->submission_payment_price == $paid->submission_payment_paid)
                                                 <p>Your Application is in progress! </p>
                                                 <p style="font-size:17px">Your third payment is pending. </p>
                                                 <p style="font-size:15px">Your work permit will be uploaded soon.</p>
-                                            @elseif($paid->first_payment_status == 'PAID')
+                                            @elseif($paid->first_payment_status == 'PAID' && $paid->first_payment_price == $paid->first_payment_paid)
                                                 <p>Your Application is in progress! </p>
                                                 <p style="font-size:15px">Your second payment pending.</p>
                                             @else
