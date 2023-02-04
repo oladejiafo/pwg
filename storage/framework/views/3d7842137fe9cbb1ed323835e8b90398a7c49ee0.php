@@ -155,7 +155,7 @@
                                         <div class="upper">
                                             <span class="paid-item " href="#">
                                                 <span
-                                                    class="positionAnchor  <?php if($paid->first_payment_status == 'PAID'): ?> ) watermarked <?php endif; ?> paid-thumbnail">
+                                                    class="positionAnchor  <?php if($paid->first_payment_status == 'PAID' && $paid->first_payment_price == $paid->first_payment_paid): ?>  watermarked <?php endif; ?> paid-thumbnail">
                                                     <img src="../user/images/first_payment.svg" height="500px"
                                                         class="img-fluid" alt="PWG Group">
                                                     <span class="title" style="align: center;">
@@ -189,7 +189,7 @@
                                                     <?php endif; ?>
 
                                                     <p>
-                                                        <?php if($paid->first_payment_status == 'PAID'): ?>
+                                                        <?php if($paid->first_payment_status == 'PAID' && $paid->first_payment_price == $paid->first_payment_paid): ?>
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="<?php echo e(route('getInvoice', 'FIRST')); ?>">Get
                                                                 Invoice</a>
@@ -407,7 +407,7 @@
                                         <div class="upper">
                                             <span class="paid-item " href="#">
                                                 <span
-                                                    class="positionAnchor  <?php if($paid->first_payment_status == 'PAID'): ?> ) watermarked <?php endif; ?> paid-thumbnail">
+                                                    class="positionAnchor  <?php if($paid->first_payment_status == 'PAID'  && $paid->first_payment_price == $paid->first_payment_paid): ?>  watermarked <?php endif; ?> paid-thumbnail">
                                                     <img src="../user/images/first_payment.svg" height="500px"
                                                         class="img-fluid" alt="PWG Group">
                                                     <span class="title" style="align: center;">
@@ -443,7 +443,7 @@
                                                     <?php endif; ?>
 
                                                     <p>
-                                                        <?php if($paid->first_payment_status == 'PAID'): ?>
+                                                        <?php if($paid->first_payment_status == 'PAID'  && $paid->first_payment_price == $paid->first_payment_paid): ?>
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="<?php echo e(route('getInvoice', 'FIRST')); ?>">Get
                                                                 Invoice</a>
@@ -659,7 +659,7 @@
                                         <div class="upper">
                                             <span class="paid-item " href="#">
                                                 <span
-                                                    class="positionAnchor  <?php if($paid->submission_payment_status == 'PAID'): ?> ) watermarked <?php endif; ?> paid-thumbnail">
+                                                    class="positionAnchor  <?php if($paid->submission_payment_status == 'PAID'  && $paid->submission_payment_price == $paid->submission_payment_paid): ?> ) watermarked <?php endif; ?> paid-thumbnail">
                                                     <img src="../user/images/submission_payment.svg" height="500px"
                                                         class="img-fluid" alt="PWG Group">
                                                     <span class="title" style="align: center;">
@@ -684,7 +684,7 @@
                                                     </amp>
 
                                                     <p>
-                                                        <?php if($paid->submission_payment_status == 'PAID'): ?>
+                                                        <?php if($paid->submission_payment_status == 'PAID'  && $paid->submission_payment_price == $paid->submission_payment_paid): ?>
                                                             <!-- <a class="btn btn-secondary" target="_blank" href="<?php echo e(route('getReceipt', 'SUBMISSION')); ?>">Get Reciept</a> -->
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="<?php echo e(route('getInvoice', 'SUBMISSION')); ?>">Get
@@ -718,7 +718,7 @@
                                         <div class="upper">
                                             <span class="paid-item " href="#">
                                                 <span
-                                                    class="positionAnchor  <?php if($paid->first_payment_status == 'PAID'): ?> ) watermarked <?php endif; ?> paid-thumbnail">
+                                                    class="positionAnchor  <?php if($paid->first_payment_status == 'PAID' && $paid->first_payment_price == $paid->first_payment_paid): ?>  watermarked <?php endif; ?> paid-thumbnail">
                                                     <img src="../user/images/first_payment.svg" height="500px"
                                                         class="img-fluid" alt="PWG Group">
                                                     <span class="title" style="align: center;">
@@ -754,7 +754,7 @@
                                                     <?php endif; ?>
 
                                                     <p>
-                                                        <?php if($paid->first_payment_status == 'PAID'): ?>
+                                                        <?php if($paid->first_payment_status == 'PAID' && $paid->first_payment_price == $paid->first_payment_paid): ?>
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="<?php echo e(route('getInvoice', 'FIRST')); ?>">Get
                                                                 Invoice</a>
@@ -972,7 +972,7 @@
                                         <div class="upper">
                                             <span class="paid-item " href="#">
                                                 <span
-                                                    class="positionAnchor  <?php if($paid->submission_payment_status == 'PAID'): ?> ) watermarked <?php endif; ?> paid-thumbnail">
+                                                    class="positionAnchor  <?php if($paid->submission_payment_status == 'PAID'  && $paid->submission_payment_price == $paid->submission_payment_paid): ?> ) watermarked <?php endif; ?> paid-thumbnail">
                                                     <img src="../user/images/submission_payment.svg" height="500px"
                                                         class="img-fluid" alt="PWG Group">
                                                     <span class="title" style="align: center;">
@@ -997,7 +997,7 @@
                                                     </amp>
 
                                                     <p>
-                                                        <?php if($paid->submission_payment_status == 'PAID'): ?>
+                                                        <?php if($paid->submission_payment_status == 'PAID'  && $paid->submission_payment_price == $paid->submission_payment_paid): ?>
                                                             <!-- <a class="btn btn-secondary" target="_blank" href="<?php echo e(route('getReceipt', 'SUBMISSION')); ?>">Get Reciept</a> -->
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="<?php echo e(route('getInvoice', 'SUBMISSION')); ?>">Get
@@ -1028,7 +1028,7 @@
                                         <div class="upper">
                                             <span class="paid-item " href="#">
                                                 <span
-                                                    class="positionAnchor  <?php if($paid->second_payment_status == 'PAID'): ?> ) watermarked <?php endif; ?> paid-thumbnail">
+                                                    class="positionAnchor  <?php if($paid->second_payment_status == 'PAID' && $paid->second_payment_price == $paid->second_payment_paid): ?>  watermarked <?php endif; ?> paid-thumbnail">
                                                     <img src="../user/images/second_payment.svg" height="500px"
                                                         class="img-fluid" alt="PWG Group">
                                                     <span class="title" style="align: center;">
@@ -1052,7 +1052,7 @@
                                                     </amp>
 
                                                     <p>
-                                                        <?php if($paid->second_payment_status == 'PAID'): ?>
+                                                        <?php if($paid->second_payment_status == 'PAID' && $paid->second_payment_price == $paid->second_payment_paid): ?>
                                                             <!-- <a class="btn btn-secondary" target="_blank" href="<?php echo e(route('getReceipt', 'SECOND')); ?>">Get Reciept</a> -->
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="<?php echo e(route('getInvoice', 'SECOND')); ?>">Get
@@ -1085,7 +1085,7 @@
                                         <div class="upper">
                                             <span class="paid-item " href="#">
                                                 <span
-                                                    class="positionAnchor  <?php if($paid->first_payment_status == 'PAID'): ?> ) watermarked <?php endif; ?> paid-thumbnail">
+                                                    class="positionAnchor  <?php if($paid->first_payment_status == 'PAID' && $paid->first_payment_price == $paid->first_payment_paid): ?>  watermarked <?php endif; ?> paid-thumbnail">
                                                     <img src="../user/images/first_payment.svg" height="500px"
                                                         class="img-fluid" alt="PWG Group">
                                                     <span class="title" style="align: center;">
@@ -1121,7 +1121,7 @@
                                                     <?php endif; ?>
 
                                                     <p>
-                                                        <?php if($paid->first_payment_status == 'PAID'): ?>
+                                                        <?php if($paid->first_payment_status == 'PAID' && $paid->first_payment_price == $paid->first_payment_paid): ?>
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="<?php echo e(route('getInvoice', 'FIRST')); ?>">Get
                                                                 Invoice</a>
@@ -1210,7 +1210,7 @@
                                         <div class="upper">
                                             <span class="paid-item " href="#">
                                                 <span
-                                                    class="positionAnchor  <?php if($paid->submission_payment_status == 'PAID'): ?> ) watermarked <?php endif; ?> paid-thumbnail">
+                                                    class="positionAnchor  <?php if($paid->submission_payment_status == 'PAID'  && $paid->submission_payment_price == $paid->submission_payment_paid): ?> ) watermarked <?php endif; ?> paid-thumbnail">
                                                     <img src="../user/images/submission_payment.svg" height="500px"
                                                         class="img-fluid" alt="PWG Group">
                                                     <span class="title" style="align: center;">
@@ -1235,7 +1235,7 @@
                                                     </amp>
 
                                                     <p>
-                                                        <?php if($paid->submission_payment_status == 'PAID'): ?>
+                                                        <?php if($paid->submission_payment_status == 'PAID' && $paid->submission_payment_price == $paid->submission_payment_paid): ?>
                                                             <!-- <a class="btn btn-secondary" target="_blank" href="<?php echo e(route('getReceipt', 'SUBMISSION')); ?>">Get Reciept</a> -->
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="<?php echo e(route('getInvoice', 'SUBMISSION')); ?>">Get
@@ -1309,7 +1309,7 @@
 
                                             <span class="paid-item " href="#">
                                                 <span
-                                                    class="positionAnchor  <?php if($paid->second_payment_status == 'PAID'): ?> ) watermarked <?php endif; ?> paid-thumbnail">
+                                                    class="positionAnchor  <?php if($paid->second_payment_status == 'PAID' && $paid->second_payment_price == $paid->second_payment_paid): ?>  watermarked <?php endif; ?> paid-thumbnail">
                                                     <img src="../user/images/second_payment.svg" height="500px"
                                                         class="img-fluid" alt="PWG Group">
                                                     <span class="title" style="align: center;">
@@ -1333,7 +1333,7 @@
                                                     </amp>
 
                                                     <p>
-                                                        <?php if($paid->second_payment_status == 'PAID'): ?>
+                                                        <?php if($paid->second_payment_status == 'PAID' && $paid->second_payment_price == $paid->second_payment_paid): ?>
                                                             <!-- <a class="btn btn-secondary" target="_blank" href="<?php echo e(route('getReceipt', 'SECOND')); ?>">Get Reciept</a> -->
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="<?php echo e(route('getInvoice', 'SECOND')); ?>">Get
@@ -1405,7 +1405,7 @@
                                         <div class="upper">
                                             <span class="paid-item " href="#">
                                                 <span
-                                                    class="positionAnchor  <?php if($paid->third_payment_status == 'PAID'): ?> ) watermarked <?php endif; ?> paid-thumbnail">
+                                                    class="positionAnchor  <?php if($paid->third_payment_status == 'PAID' && $paid->third_payment_price == $paid->third_payment_paid): ?>  watermarked <?php endif; ?> paid-thumbnail">
                                                     <img src="../user/images/salary_deduction.svg" height="500px"
                                                         class="img-fluid" alt="PWG Group">
                                                     <span class="title" style="align: center;">
@@ -1497,15 +1497,15 @@
                                         </div>
                                         <div class="modal-body" style="height:auto">
 
-                                            <?php if($paid->second_payment_status == 'PAID'): ?>
+                                            <?php if($paid->second_payment_status == 'PAID' && $paid->second_payment_price == $paid->second_payment_paid): ?>
                                                 <h4>Congratutaion! <br>You have completed your payments. </h4>
                                                 <p style="font-size:15px">Your embassy appearance date will be
                                                     indicated soon.</p>
-                                            <?php elseif($paid->submission_payment_status == 'PAID'): ?>
+                                            <?php elseif($paid->submission_payment_status == 'PAID' && $paid->submission_payment_price == $paid->submission_payment_paid): ?>
                                                 <p>Your Application is in progress! </p>
                                                 <p style="font-size:17px">Your third payment is pending. </p>
                                                 <p style="font-size:15px">Your work permit will be uploaded soon.</p>
-                                            <?php elseif($paid->first_payment_status == 'PAID'): ?>
+                                            <?php elseif($paid->first_payment_status == 'PAID' && $paid->first_payment_price == $paid->first_payment_paid): ?>
                                                 <p>Your Application is in progress! </p>
                                                 <p style="font-size:15px">Your second payment pending.</p>
                                             <?php else: ?>
