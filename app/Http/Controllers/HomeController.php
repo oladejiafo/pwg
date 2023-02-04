@@ -825,7 +825,6 @@ class HomeController extends Controller
                 $packageType = $complete->work_permit_category;
             }
 
-           
             $pdet = DB::table('pricing_plans')
             ->where('destination_id', '=', $id)
             ->where('pricing_plan_type', '=', $packageType)
@@ -845,6 +844,8 @@ class HomeController extends Controller
                         $amount = $pdet->first_payment_sub_total;
                     }  
                 }
+            } else if($request->whichpayment == 'BALANCE_ON_FIRST') {
+                    $amount = $request->totalpay;
             } else if($request->whichpayment == 'SUBMISSION'){
                 if($request->vats >0)
                 {
@@ -859,6 +860,18 @@ class HomeController extends Controller
                 } else {
                     $amount = $pdet->second_payment_sub_total;
                 }
+            }else if($request->whichpayment == 'Full-Outstanding Payment'){
+                $amount = $request->totalpay;
+          
+                // if($pays->first_payment_status =="PENDING" && $pays->submission_payment_status =="PENDING" & $pays->second_payment_status =="PENDING") 
+                // {
+                //     if($request->vats >0)
+                //     {
+                //         $amount = ($pdet->sub_total -  $request->discount) * 5/100;
+                //     } else {
+                //         $amount = ($pdet->sub_total - $pdet->third_payment_sub_total)-$request->discount;
+                //     }                
+                // }
             } else {
                 if($request->vats >0)
                 {
@@ -1110,6 +1123,8 @@ class HomeController extends Controller
                         $data->first_payment_paid = $thisPaymentMade; //was remarked
                         $data->first_payment_vat = $thisVat;
                         $data->first_payment_discount = $thisDiscount;
+                    }  elseif ($request->whichpayment == 'BALANCE_ON_FIRST') {
+
                     }  elseif ($request->whichpayment == 'SUBMISSION') {
                         $data->submission_payment_price = $thisPayment;
                         $data->submission_payment_paid = $thisPaymentMade;
@@ -1236,6 +1251,8 @@ class HomeController extends Controller
                         } else {
                             $datas->first_payment_price = $thisPayment;
                         }
+                    } else if ($request->whichpayment == 'BALANCE_ON_FIRST') {
+
                     } elseif ($request->whichpayment == 'SUBMISSION') {
                         $datas->submission_payment_price = $thisPayment;
                         $datas->submission_payment_vat = $thisVat;
@@ -1538,7 +1555,12 @@ class HomeController extends Controller
 
                         $paym = ucwords(strtolower(str_replace('_', ' ', $paymentDetails['payment_type'])));
 
-                        $criteria = $paym . " Payment Completed!";
+                        if($paym == "Full-outstanding Payment")
+                        {
+                            $criteria = $paym . " Completed!";
+                        } else {
+                            $criteria = $paym . " Payment Completed!";
+                        }
                         $message = "You have successfully made your " . $paym . " Payment. Check your receipt on 'My Application'. " . $ems;
               
 
