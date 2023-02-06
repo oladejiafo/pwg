@@ -322,7 +322,7 @@ class Quickbook
 
                 if ($firstPaymentDone) {
                     $remainingPayment = $firstPaymentDone->payable_amount - $firstPaymentDone->paid_amount;
-                    if ($remainingPayment == 0) {
+                    if ($firstPaymentDone->remaining_amount > 0) {
                     } else {
                         self::firstPaymentBalanceDue($paymentType, $apply, $paymentDetails, $customer, $dataService, $remainingPayment);
                     }

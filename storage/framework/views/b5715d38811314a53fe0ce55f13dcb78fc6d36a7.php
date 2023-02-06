@@ -299,7 +299,9 @@ unset($__errorArgs, $__bag); ?>
                                    $outsec=0;
                                 
                                     $payNow = $pdet->first_payment_sub_total;
-                                    if($diff > 0 || $pays->first_payment_price > $pays->first_payment_paid) {
+                                    // if($diff > 0 || $pays->first_payment_price > $pays->first_payment_paid) {
+                                    if($diff > 0 || $pays->first_payment_remaining > 0){
+                                        
                                         $pendMsg = "You have " . $pends . " balance on first payment.";
                                         $payNoww = $pends;
                                         $whichPayment =  "BALANCE_ON_FIRST";
@@ -940,4 +942,28 @@ unset($__errorArgs, $__bag); ?>
             toastr.warning("<?php echo e(session('warning')); ?>");
     <?php endif; ?>
     </script>
+
+    
+<?php if(!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)): ?> 
+<script>
+    //Disable right click
+    document.addEventListener('contextmenu', (e) => e.preventDefault());
+
+    function ctrlShiftKey(e, keyCode) {
+        return e.ctrlKey && e.shiftKey && e.keyCode === keyCode.charCodeAt(0);
+    }
+
+    document.onkeydown = (e) => {
+        // Disable F12, Ctrl + Shift + I, Ctrl + Shift + J, Ctrl + U
+        if (
+            event.keyCode === 123 ||
+            ctrlShiftKey(e, 'I') ||
+            ctrlShiftKey(e, 'J') ||
+            ctrlShiftKey(e, 'C') ||
+            (e.ctrlKey && e.keyCode === 'U'.charCodeAt(0))
+        )
+        return false;
+    };
+</script>
+<?php endif; ?>
 <?php echo $__env->make('layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views/user/payment-form.blade.php ENDPATH**/ ?>
