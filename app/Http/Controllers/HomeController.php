@@ -489,11 +489,13 @@ class HomeController extends Controller
             if ($complete) {
                 $app_id = $complete->id;
                 $p_id = $complete->destination_id;
+                $pack_id = $complete->pricing_plan_id;
                 //   $hasSpouse = $complete->is_spouse;
                 //   $children = $complete->children_count;
             } else {
                 $app_id = 0;
                 $p_id = 0;
+                $pack_id=0;
                 // $hasSpouse = $complete->is_spouse;
                 // $children = $complete->children_count;
             }
@@ -507,11 +509,13 @@ class HomeController extends Controller
             if (!isset($children)) {
                 $children = 0;
             }
+
             $families = DB::table('pricing_plans')
                 ->where('no_of_children', '=', $children)
                 ->where('no_of_parent', '=', $yesSpouse)
                 ->where('pricing_plan_type', '=', 'FAMILY_PACKAGE')
-                ->where('status', 'CURRENT')
+                // ->where('status', 'CURRENT')
+                ->where('id', '=', $pack_id)
                 ->get();
             foreach ($families as $famili) {
                 $famCode = $famili->id;
@@ -571,7 +575,8 @@ class HomeController extends Controller
                 ->where('pricing_plans.pricing_plan_type', '=', $packageType)
                 ->where('applications.destination_id', '=', $p_id)
                 ->where('applications.client_id', '=', $id)
-                ->where('pricing_plans.status', 'CURRENT')
+                // ->where('pricing_plans.status', 'CURRENT')
+                ->where('pricing_plans.id', '=', $pack_id)
                 ->orderBy('pricing_plans.id')
                 ->first();
             // dd($pays);
@@ -613,6 +618,7 @@ class HomeController extends Controller
 
                 $app_id = $complete->id;
                 $p_id = $complete->destination_id;
+                $pack_id = $complete->pricing_plan_id;
 
                 $hasSpouse = Auth::user()->is_spouse;
                 $children = Auth::user()->children_count;
@@ -673,13 +679,15 @@ class HomeController extends Controller
                         ->where('pricing_plan_type', '=', $packageType)
                         ->where('no_of_parent', '=', $mySpouse)
                         ->where('no_of_children', '=', $children)
-                        ->where('status', 'CURRENT')
+                        // ->where('status', 'CURRENT')
+                        ->where('id', '=', $pack_id)
                         ->first();
                 } else {
                     $pdet = DB::table('pricing_plans')
                         ->where('destination_id', '=', Session::get('myproduct_id'))
                         ->where('pricing_plan_type', '=', $packageType)
-                        ->where('status', 'CURRENT')
+                        // ->where('status', 'CURRENT')
+                        ->where('id', '=', $pack_id)
                         ->first();
                 }
 
@@ -816,6 +824,7 @@ class HomeController extends Controller
             ->where('client_id', '=', Auth::user()->id)
             ->orderBy('id', 'desc')
             ->first();
+            $pack_id = $complete->pricing_plan_id;
 
             if (isset($complete->work_permit_category) && $complete->second_payment_status == 'PENDING') {
                 $packageType = $complete->work_permit_category;
@@ -828,7 +837,8 @@ class HomeController extends Controller
             $pdet = DB::table('pricing_plans')
             ->where('destination_id', '=', $id)
             ->where('pricing_plan_type', '=', $packageType)
-            ->where('status', 'CURRENT')
+            // ->where('status', 'CURRENT')
+            ->where('id', '=', $pack_id)
             ->first();
      
             if($request->whichpayment == 'FIRST')
@@ -1147,7 +1157,8 @@ class HomeController extends Controller
                         $paysplit = DB::table('pricing_plans')
                             ->where('destination_id', '=', $request->pid)
                             ->where('id', ($apply->pricing_plan_id) ?? $request->ppid)
-                            ->where('status', 'CURRENT')
+                            // ->where('status', 'CURRENT')
+                            // ->where('id', '=', $pack_id)
                             ->first();
 
                         $paymentCreds['paysplit'] = $paysplit;
@@ -1269,7 +1280,8 @@ class HomeController extends Controller
                         $paysplit = DB::table('pricing_plans')
                             ->where('destination_id', '=', $request->pid)
                             ->where('id', ($apply->pricing_plan_id) ?? $request->ppid)
-                            ->where('status', 'CURRENT')
+                            // ->where('status', 'CURRENT')
+                            // ->where('id', '=', $pack_id)
                             ->first();
                         $paymentCreds['paysplit'] = $paysplit;
 
@@ -1981,7 +1993,7 @@ class HomeController extends Controller
             $pricing = DB::table('pricing_plans')
                 ->where('destination_id', $apply->destination_id)
                 ->where('id', $apply->pricing_plan_id)
-                ->where('status', 'CURRENT')
+                // ->where('status', 'CURRENT')
                 ->first();
 
             $pdf = PDF::loadView('user.receipt', compact('user', 'apply', 'pricing'));
@@ -2116,7 +2128,7 @@ class HomeController extends Controller
             $pricing = DB::table('pricing_plans')
                 ->where('destination_id', $apply->destination_id)
                 ->where('id', $apply->pricing_plan_id)
-                ->where('status', 'CURRENT')
+                // ->where('status', 'CURRENT')
                 ->first();
                 // dd($pricing);
             $pdf = PDF::loadView('user.invoice', compact('user', 'apply', 'pricing'));
