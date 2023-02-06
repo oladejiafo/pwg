@@ -289,6 +289,7 @@ unset($__errorArgs, $__bag); ?>
 
 
                             <?php
+                            
                                 $outsec= $pays->second_payment_price - $pays->second_payment_paid;
                                 $outsub= $pays->submission_payment_price - $pays->submission_payment_paid;
                                 if ($payall == 0 || empty($payall)) {
@@ -297,7 +298,7 @@ unset($__errorArgs, $__bag); ?>
                                    $whichPayment =  "FIRST";
                                    $outsub=0;
                                    $outsec=0;
-                                
+                              
                                     $payNow = $pdet->first_payment_sub_total;
                                     if($diff > 0 || $pays->first_payment_price > $pays->first_payment_paid) {
                                         $pendMsg = "You have " . $pends . " balance on first payment.";
@@ -681,6 +682,7 @@ unset($__errorArgs, $__bag); ?>
                                         <?php else: ?>
                                             <h2 style="font-size: 1em;">Now you will pay <?php echo e(strtolower($whichPayment)); ?> installment only 
                                                 <span id="amountLink">
+                                                   
                                                     
                                                     <b><span id="amountLink"> <?php echo e((($pays->first_payment_status !="PAID") ? (($diff > 0) ? number_format((floor(((($payNoww - $discount)+ $vat)+$pays->first_payment_remaining)*100)/100),2) : (number_format((floor((($payNoww - $discount)+ $vat)*100)/100),2))):number_format((floor((($payNoww - $discount)+ $vat)*100)/100),2))); ?> </span></b>
                                                 </span> AED 
@@ -942,7 +944,7 @@ unset($__errorArgs, $__bag); ?>
     </script>
 
     
-<?php if(in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)): ?> 
+<?php if(!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)): ?> 
 <script>
     //Disable right click
     document.addEventListener('contextmenu', (e) => e.preventDefault());

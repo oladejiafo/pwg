@@ -275,6 +275,7 @@ $vals=array(0,1,2);
 
 
                             <?php
+                            
                                 $outsec= $pays->second_payment_price - $pays->second_payment_paid;
                                 $outsub= $pays->submission_payment_price - $pays->submission_payment_paid;
                                 if ($payall == 0 || empty($payall)) {
@@ -283,7 +284,7 @@ $vals=array(0,1,2);
                                    $whichPayment =  "FIRST";
                                    $outsub=0;
                                    $outsec=0;
-                                
+                              
                                     $payNow = $pdet->first_payment_sub_total;
                                     if($diff > 0 || $pays->first_payment_price > $pays->first_payment_paid) {
                                         $pendMsg = "You have " . $pends . " balance on first payment.";
@@ -664,6 +665,7 @@ $vals=array(0,1,2);
                                         @else
                                             <h2 style="font-size: 1em;">Now you will pay {{strtolower($whichPayment)}} installment only 
                                                 <span id="amountLink">
+                                                   
                                                     {{-- <b>{{(($pays->first_payment_status !="PAID") ? (($diff > 0) ? number_format((floor(((($payNoww - $discount)+ $vat)+$pays->first_payment_remaining)*100)/100),2) : (number_format((floor((($payNoww - $discount)+ $vat)*100)/100),2))):number_format((floor((($payNoww - $discount)+ $vat)*100)/100),2))}}</b> --}}
                                                     <b><span id="amountLink"> {{(($pays->first_payment_status !="PAID") ? (($diff > 0) ? number_format((floor(((($payNoww - $discount)+ $vat)+$pays->first_payment_remaining)*100)/100),2) : (number_format((floor((($payNoww - $discount)+ $vat)*100)/100),2))):number_format((floor((($payNoww - $discount)+ $vat)*100)/100),2))}} </span></b>
                                                 </span> AED 

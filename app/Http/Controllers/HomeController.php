@@ -583,6 +583,7 @@ class HomeController extends Controller
             $paid = DB::table('applications')
                 ->where('applications.destination_id', '=', $p_id)
                 ->where('applications.client_id', '=', $id)
+                // ->where('pricing_plan_id', '=', $pack_id)
                 // ->groupBy('payments.id')
                 ->orderBy('applications.id', 'desc')
                 ->first();
