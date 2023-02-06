@@ -1523,16 +1523,8 @@ class HomeController extends Controller
                         'transaction_id' => $paymentResponse->_id,
                     ]);
                     $monthYear = explode('-', $paymentResponse->paymentMethod->expiry);
-                    $res = cardDetail::updateOrCreate([
-                        'client_id' => Auth::id()
-                    ], [
-                        'card_number' => $paymentResponse->paymentMethod->pan,
-                        'card_holder_name' => $paymentResponse->paymentMethod->cardholderName,
-                        'month' => sprintf("%02d", $monthYear[1]), //$monthYear[1], //sprintf("%02d", $monthYear[1])
-                        'year' =>  $monthYear[0],
-                    ]);
+                    
 
-                    if ($res) {
                         //Update Applicant status in APPPLICANT TABLE
                         $status = applicant::where([
                             ['client_id', '=', Auth::user()->id],
@@ -1547,8 +1539,10 @@ class HomeController extends Controller
                                 $status->save();
                             }
                         }
-                        // Save Payment Info
-                        $card = cardDetail::where('client_id', '=', Auth::user()->id)->first();
+                        Quickbook::updateTokenAccess();
+                        Quickbook::createInvoice($payment);
+                        // // Save Payment Info
+                        // $card = cardDetail::where('client_id', '=', Auth::user()->id)->first();
 
                         // Send Notifications on This Payment ##############
                         $email = Auth::user()->email;
@@ -1602,16 +1596,24 @@ class HomeController extends Controller
                         $dest_name = $dest->name;
                         $payment = $this->getPaymentName();
 
-                        Quickbook::updateTokenAccess();
-                        Quickbook::createInvoice($payment);
+
 
                         $msg = "Awesome! Payment Successful!";
                         Session::forget('paymentCreds');
                         return view('user.payment-success', compact('id'));
-                    } else {
-                        Session::forget('paymentCreds');
-                        return \Redirect::route('payment-fail', $id);
-                    }
+                        // $res = cardDetail::updateOrCreate([
+                        //     'client_id' => Auth::id()
+                        // ], [
+                        //     'card_number' => $paymentResponse->paymentMethod->pan,
+                        //     'card_holder_name' => $paymentResponse->paymentMethod->cardholderName,
+                        //     'month' => sprintf("%02d", $monthYear[1]), //$monthYear[1], //sprintf("%02d", $monthYear[1])
+                        //     'year' =>  $monthYear[0],
+                        // ]);
+                        // if($res){
+                        // } else {
+                        //     Session::forget('paymentCreds');
+                        //     return \Redirect::route('payment-fail', $id);
+                        // }
                 } else {
                     Session::forget('paymentCreds');
                     return \Redirect::route('payment-fail', $id);
