@@ -1115,11 +1115,13 @@
                                                         <amp
                                                             style="display:fixed; align-content: center; text-align:center; font-size:10px !important; color:#ff0000;padding:1px;margin-left: 20px; line-height:100% !important; margin-top: 70px; margin-left:-100px">
                                                             (Outstanding on 1st Payment:
-                                                            {{ $paid->first_payment_remaining }}.)</amp>
+                                                            {{ $paid->first_payment_remaining }}.)
+                                                        </amp>
                                                         <a class="btn" target="_blank"
                                                             href="{{ route('getInvoice', 'FIRST') }}"
                                                             style="display:fixed; align-content: center; text-align:center; font-size:10px !important; top:340px; height:25px; width:150px;margin-left: 25px;">Get
-                                                            Invoice Here</a>
+                                                            Invoice Here
+                                                        </a>
                                                     @endif
 
                                                     <p>

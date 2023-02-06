@@ -20,17 +20,23 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $input)
     {
-        list($agent_name, $agent_phone) = explode(' - ', $input['agent']);
-
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email:rfc,dns', 'max:255', 'unique:clients'],
-            'phone_number' => ['required', 'numeric', 'min:10', 'unique:clients'],
+            'phone_number' => ['required', 'string', 'min:10', 'unique:clients'],
             'signature' => ['string', 'max:255'],
             'password' => $this->passwordRules(),
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
         ])->validate();
-
+            
+        // dd($input['phone_number']);
+        if(isset($input['agent']))
+        {
+            list($agent_name, $agent_phone) = explode(' - ', $input['agent']);
+        } else {
+            $agent_name=''; 
+            $agent_phone='';
+        }
         return User::create([
             'name' => preg_replace("/[^A-Za-z- ]/", '', strip_tags($input['name'])),
             'email' => $input['email'],

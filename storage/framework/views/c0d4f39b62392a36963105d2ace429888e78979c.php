@@ -51,7 +51,7 @@
             ctrlShiftKey(e, 'C') ||
             (e.ctrlKey && e.keyCode === 'U'.charCodeAt(0))
         )
-            return false;
+        return false;
     };
 </script>
 <?php endif; ?><?php /**PATH C:\Users\dejia\OneDrive\Desktop\mygit\pwg_eportal\resources\views/user/footer.blade.php ENDPATH**/ ?>
