@@ -1539,9 +1539,12 @@ class HomeController extends Controller
                                 $status->save();
                             }
                         }
+
+                        $payment = $this->getPaymentName();
+
                         Quickbook::updateTokenAccess();
                         Quickbook::createInvoice($payment);
-                        // // Save Payment Info
+                        // Save Payment Info
                         // $card = cardDetail::where('client_id', '=', Auth::user()->id)->first();
 
                         // Send Notifications on This Payment ##############
@@ -1594,26 +1597,23 @@ class HomeController extends Controller
                         // Notification Ends ############ 
                         $dest = product::find($id);
                         $dest_name = $dest->name;
-                        $payment = $this->getPaymentName();
-
-
 
                         $msg = "Awesome! Payment Successful!";
                         Session::forget('paymentCreds');
                         return view('user.payment-success', compact('id'));
-                        // $res = cardDetail::updateOrCreate([
-                        //     'client_id' => Auth::id()
-                        // ], [
-                        //     'card_number' => $paymentResponse->paymentMethod->pan,
-                        //     'card_holder_name' => $paymentResponse->paymentMethod->cardholderName,
-                        //     'month' => sprintf("%02d", $monthYear[1]), //$monthYear[1], //sprintf("%02d", $monthYear[1])
-                        //     'year' =>  $monthYear[0],
-                        // ]);
-                        // if($res){
-                        // } else {
-                        //     Session::forget('paymentCreds');
-                        //     return \Redirect::route('payment-fail', $id);
-                        // }
+                    // $res = cardDetail::updateOrCreate([
+                    //     'client_id' => Auth::id()
+                    // ], [
+                    //     'card_number' => $paymentResponse->paymentMethod->pan,
+                    //     'card_holder_name' => $paymentResponse->paymentMethod->cardholderName,
+                    //     'month' => sprintf("%02d", $monthYear[1]), //$monthYear[1], //sprintf("%02d", $monthYear[1])
+                    //     'year' =>  $monthYear[0],
+                    // ]);
+                    // if($res){
+                    // } else {
+                    //     Session::forget('paymentCreds');
+                    //     return \Redirect::route('payment-fail', $id);
+                    // }
                 } else {
                     Session::forget('paymentCreds');
                     return \Redirect::route('payment-fail', $id);
