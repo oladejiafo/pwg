@@ -96,7 +96,7 @@ input [type="phone"]
               <label for="Agent" class="form-label">Your Agent Name</label>
             </div>
             <div class="inputs-iconx">
-              <input  name="agent" class="agent form-control" type="text" autocomplete="off" placeholder="Type Your Agent, if you have one..">
+              <input  name="agent" class="agent form-control" type="text" autocomplete="off" placeholder="Type Your Agent" required="">
               {{-- <select name="agent" class="form-control agentInput" id="exampleInputAgent">
                 @if(old('agent'))
                 <option selected>{{old('agent')}}</option>
@@ -223,7 +223,7 @@ input [type="phone"]
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
 
-<script type="text/javascript">
+{{-- <script type="text/javascript">
   var path = "{{ route('autocompleteAgent') }}";
   $('input.agent').typeahead({
       source:  function (str, process) 
@@ -239,5 +239,5 @@ input [type="phone"]
           });
       }
   });
-</script>
+</script> --}}
 @endpush

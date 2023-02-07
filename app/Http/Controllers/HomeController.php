@@ -584,6 +584,7 @@ class HomeController extends Controller
             $paid = DB::table('applications')
                 ->where('applications.destination_id', '=', $p_id)
                 ->where('applications.client_id', '=', $id)
+                // ->where('pricing_plan_id', '=', $pack_id)
                 // ->groupBy('payments.id')
                 ->orderBy('applications.id', 'desc')
                 ->first();
@@ -698,7 +699,7 @@ class HomeController extends Controller
                         ->where('destination_id', $id)
                         ->where('work_permit_category', $packageType)
                         ->first();
-                    // if ($payall == 0 || empty($payall)) {
+                        // if ($payall == 0 || empty($payall)) {
                         if ($pays->first_payment_status != "PAID" || $pays->first_payment_status == null) {
                             if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                                 $originalPdf = Storage::disk(env('MEDIA_DISK'))->url('Applications/Contracts/client_contracts/' . $applicant->contract);

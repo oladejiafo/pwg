@@ -51,6 +51,7 @@ $notifications = DB::table('notifications')
                     <p class="text-muted ellipsis mb-0"  style="width:80%;word-wrap: break-word;font-size:70%;">{{ $notify->message }}</p>
                 @endif
                     <p class="text-muted ellipsis mb-0">{{ $notify->link }}</p>
+                    {{-- <p class="text-muted ellipsis mb-0"><a href="{{ $notify->link }}">Click Here</a></p> --}}
             </div>
         </a>
 

@@ -164,9 +164,9 @@ class ApplicationController extends Controller
                 ->where('destination_id', $request->product_id)
                 ->first();
             $applicant->assigned_agent_id = ($request->agent_code != null) ? strip_tags($request->agent_code) : null;
-
             $applicant->sales_agent_name_by_client = ($request->agent_name != null) ? strip_tags($request->agent_name) : null;
-            $applicant->sales_agent_phone_number_by_client = ($request->agent_phone != null) ? strip_tags($request->agent_phone) : null;
+            // $applicant->sales_agent_phone_number_by_client = ($request->agent_phone != null) ? strip_tags($request->agent_phone) : null;
+            // $applicant->branch_id = ($request->agent_branch_id != null) ? strip_tags($request->agent_branch_id) : null;
             $applicant->save();
         return Response::json(array(
             'status' => true
