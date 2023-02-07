@@ -34,13 +34,27 @@
                 <div class="form-sec">
                     @php
                         $name = explode(' ', $client['name']);
+                       
+                        // $clt_name = explode(' ', strtolower($client['sales_agent_name_by_client']));
 
-                        $agents = DB::table('employees')
-                        ->select('id')
-                        ->where('phone_number', '=', $client['sales_agent_phone_number_by_client'])
-                        ->whereIn('designation_id', [1,33,35])
-                        ->orderBy('id','desc')
-                        ->first();
+                        // $agents = DB::table('employees')
+                        // ->where(DB::raw('lower(name)'), '=', $clt_name[0])
+                        // // ->orWhere(DB::raw('lower(sur_name)'), '=', $clt_name[0])
+                        // ->where(DB::raw('lower(sur_name)'), '=', $clt_name[1])
+                        // // ->orWhere(DB::raw('lower(name)'), '=', $clt_name[1])
+                        // ->whereIn('designation_id', [1,33,35])
+                        // ->orderBy('id','desc')
+                        // ->first();
+                        // if (isset($agents))
+                        // {
+                        //     $agent_id = $agents->id;
+                        //     $agent_branch_id = $agents->branch_id;
+                        //     $agent_phone_number = $agents->phone_number;
+                        // } else {
+                        //     $agent_id = '';
+                        //     $agent_branch_id = '';
+                        //     $agent_phone_number = '';
+                        // }
                     @endphp
 
                     <form method="POST" enctype="multipart/form-data" id="applicant_details">
@@ -54,11 +68,11 @@
                                 <span class="first_name_errorClass"></span>
                             </div>
                             <div class="form-floating col-sm-4 mt-3">
-                                <input type="text" name="middle_name" class="form-control" id="floatingInput" placeholder="Middle Name" value="{{old('middle_name')}}"  autocomplete="off"/>
+                                <input type="text" name="middle_name" class="form-control" id="floatingInput" placeholder="Middle Name" @if(isset($client['middle_name'])) value="{{ $client['middle_name'] }}" @else value="{{old('middle_name')}}" @endif autocomplete="off"/>
                                 <label for="floatingInput">Middle Name</label>
                             </div>
                             <div class="form-floating col-sm-4 mt-3">
-                                <input type="text" name="surname" id="floatingInput" class="form-control surname" @if(count($name) > 1)   value="{{$name[count($name) - 1]}}" @endif placeholder="Surname*"  autocomplete="off"  />
+                                <input type="text" name="surname" id="floatingInput" class="form-control surname" @if(isset($client['sur_name'])) value="{{ $client['sur_name'] }}" @elseif(count($name) > 1) value="{{$name[count($name) - 1]}}" @else value="{{old('surname')}}" @endif placeholder="Surname*"  autocomplete="off"  />
                                 <label for="floatingInput">Surname*</label>
                                 <span class="surname_errorClass"></span>
                             </div>
@@ -79,18 +93,22 @@
 
                         <div class="form-group row mt-4">
                             <div class="form-floating col-sm-4 mt-3 dob">
-                                <input type="text" name="dob" class="form-control datepicker" placeholder="Date of Birth*" value="{{old('dob')}}" id="datepicker" autocomplete="off"  readonly="readonly" />
+                                <input type="text" name="dob" class="form-control datepicker" placeholder="Date of Birth*" @if(isset($client['date_of_birth'])) value="{{ $client['date_of_birth'] }}" @else value="{{old('dob')}}" @endif id="datepicker" autocomplete="off"  readonly="readonly" />
                                 <label for="datepicker">Date of Birth*</label>
                                 <span class="dob_errorClass"></span>
                             </div>
                             <div class="form-floating col-sm-4 mt-3">
-                                <input type="text" name="place_birth" class="form-control place_birth" id="place_birth" placeholder="Place of Birth*" value="{{old('place_birth')}}" autocomplete="off" />
+                                <input type="text" name="place_birth" class="form-control place_birth" id="place_birth" placeholder="Place of Birth*" @if(isset($client['place_of_birth'])) value="{{ $client['place_of_birth'] }}" @else value="{{old('place_birth')}}" @endif autocomplete="off" />
                                 <label for="place_birth">Place of Birth*</label>
                                 <span class="place_birth_errorClass"></span>
                             </div>
                             <div class="form-floating col-sm-4 mt-3">
-                                <select class="form-select form-control country_birth" name="country_birth" id="country_birth" placeholder="Country of Birth*" value="{{old('country_birth')}}"  >
-                                    <option selected disabled>Country of Birth</option>
+                                <select class="form-select form-control country_birth" name="country_birth" id="country_birth" placeholder="Country of Birth*" @if(isset($client['country_of_birth'])) value="{{ $client['country_of_birth'] }}" @else value="{{old('country_birth')}}" @endif >
+                                    @if(isset($client['country_of_birth']))
+                                     <option selected> {{ $client['country_of_birth'] }}</option>
+                                    @else
+                                     <option selected disabled>Country of Birth</option>
+                                    @endif
                                     @foreach (Constant::countries as $key => $item)
                                         <option value="{{$key}}">{{$item}}</option>
                                     @endforeach
@@ -101,8 +119,12 @@
                         </div>
                         <div class="form-group row mt-4">
                             <div class="form-floating col-sm-4 mt-3">
-                                <select class="form-select form-control citizenship" name="citizenship" id="Citizenship" placeholder="Citizenship*" value="{{old('citizenship')}}"  >
-                                    <option selected disabled>Citizenship</option>
+                                <select class="form-select form-control citizenship" name="citizenship" id="Citizenship" placeholder="Citizenship*" @if(isset($client['citizenship'])) value="{{ $client['citizenship'] }}" @else value="{{old('citizenship')}}" @endif >
+                                    @if(isset($client['citizenship']))
+                                     <option selected> {{ $client['citizenship'] }}</option>
+                                    @else
+                                     <option selected disabled>Citizenship</option>
+                                    @endif 
                                     @foreach (Constant::countries as $key => $item)
                                         <option value="{{$key}}">{{$item}}</option>
                                     @endforeach
@@ -111,8 +133,12 @@
                                 <span class="citizenship_errorClass"></span>
                             </div>
                             <div class="form-floating col-sm-4 mt-3">
-                                <select name="sex"  aria-required="true" id="sex" class="form-control form-select sex" >
+                                <select name="sex"  aria-required="true" id="sex" class="form-control form-select sex" @if(isset($client['sex'])) value="{{ $client['sex'] }}" @else value="{{old('sex')}}" @endif>
+                                   @if(isset($client['sex']))
+                                    <option selected> {{ $client['sex'] }}</option>
+                                   @else
                                     <option selected disabled>Sex</option>
+                                   @endif 
                                     <option value="MALE">Male</option>
                                     <option value="FEMALE">Female</option>
                                 </select>
@@ -120,8 +146,12 @@
                                 <span class="sex_errorClass"></span>
                             </div>
                             <div class="form-floating col-sm-4 mt-3">
-                                <select name="civil_status" id="civil_status"  aria-required="true" class="form-control form-select">
+                                <select name="civil_status" id="civil_status"  aria-required="true" class="form-control form-select" @if(isset($client['civil_status'])) value="{{ $client['civil_status'] }}" @else value="{{old('civil_status')}}" @endif>
+                                   @if(isset($client['civil_status']))
+                                    <option selected> {{ $client['civil_status'] }}</option>
+                                   @else
                                     <option selected disabled>Civil Status</option>
+                                   @endif 
                                     <option value="SINGLE">Single</option>
                                     <option value="MARRIED">Married</option>
                                     <option value="SEPARATED">Separated</option>
@@ -134,10 +164,10 @@
                             </div>
                         </div>
                         <div class="form-floating agent_code col-sm-12 mt-3">
-                            <input type="hidden" name="agent_code" id="agent_code" class="form-control" placeholder="Please enter your agent code here if available" /> 
-                            {{-- value="{{ $agents->id }}" --}}
+                            {{-- <input type="hidden" name="agent_code" id="agent_code" class="form-control" placeholder="Please enter your agent code here if available" value="{{ $agent_id }}" />  --}}
                             <input type="hidden" name="agent_name" id="agent_name" class="form-control" placeholder="Please enter your agent name here if available" value="{{ $client['sales_agent_name_by_client'] }}"/>
-                            <input type="hidden" name="agent_phone" id="agent_phone" class="form-control" placeholder="Please enter your agent phone here if available" value="{{ $client['sales_agent_phone_number_by_client'] }}"/>
+                            {{-- <input type="hidden" name="agent_phone" id="agent_phone" class="form-control" placeholder="Please enter your agent phone here if available" value="{{ $agent_phone_number }}"/> --}}
+                            {{-- <input type="hidden" name="agent_branch_id" id="agent_branch_id" class="form-control" placeholder="Please enter your agent branch here if available" value="{{ $agent_branch_id }}"/> --}}
                             <label for="agent_code">Please enter your agent code here if available</label>
                             <span class="agent_code_errorClass"></span>
                         </div>

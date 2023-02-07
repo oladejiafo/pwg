@@ -51,6 +51,7 @@ $notifications = DB::table('notifications')
                     <p class="text-muted ellipsis mb-0"  style="width:80%;word-wrap: break-word;font-size:70%;"><?php echo e($notify->message); ?></p>
                 <?php endif; ?>
                     <p class="text-muted ellipsis mb-0"><?php echo e($notify->link); ?></p>
+                    
             </div>
         </a>
 

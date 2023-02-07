@@ -124,7 +124,7 @@ unset($__errorArgs, $__bag); ?>
               <label for="Agent" class="form-label">Your Agent Name</label>
             </div>
             <div class="inputs-iconx">
-              <input  name="agent" class="agent form-control" type="text" autocomplete="off" placeholder="Type Your Agent, if you have one..">
+              <input  name="agent" class="agent form-control" type="text" autocomplete="off" placeholder="Type Your Agent, if you have one.." required="">
               
               <?php $__errorArgs = ['agent'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');

@@ -29,7 +29,7 @@
                                         SUCCESSFULLY!</h1>
                                     <p style="box-sizing:border-box;font-family:Yantramanav,sans-serif;font-size:15px;line-height:1.5em;margin-top:0;text-align:center">Thank you,</p>
                                     <p style="box-sizing:border-box;font-family:Yantramanav,sans-serif;font-size:15px;line-height:1.5em;margin-top:0;text-align:center">
-                                            You have successfully made your <b style="font-weight: bold">{{ucwords($data['paymentType'])}}</b><br>
+                                            You have successfully made your <b style="font-weight: bold">{{ucwords($data['paymentType'])}}</b> payment<br>
                                             and you can view & download your invoice under <br>
                                             <b>My Applications</b> on our portal.@if(ucwords($data['paymentType']) != 'SECOND') You will be notified when your <br>
                                             @if(ucwords($data['paymentType']) == 'FIRST') work permit is ready. @elseif(ucwords($data['paymentType']) == 'SUBMISSION') embassy appointment is set. @elseif(ucwords($data['paymentType']) == 'Full-Outstanding Payment') work permit & embassy appointment is set. @endif @endif
@@ -41,12 +41,14 @@
                                                     <tbody><tr>
                                                         <td style="box-sizing:border-box;font-family:Yantramanav,sans-serif" align="center">
                                                             <table role="presentation" style="box-sizing:border-box;font-family:Yantramanav,sans-serif" cellspacing="0" cellpadding="0" border="0">
-                                                                <tbody><tr>
-                                                                    <td style="box-sizing:border-box;font-family:Yantramanav,sans-serif">
-                                                                        <a href="{{env('APP_URL')}}/myapplication" class="m_6264836849513322656button" rel="noopener" style="font-size: 20px;font-weight:500;box-sizing:border-box;float:center;border-radius:4px;color:#fff;display:inline-block;overflow:hidden;text-decoration:none;padding:12px;width:200px;text-align:center;background-color:#2ead0c!important;border:1px solid #c4c6cd" target="_blank" >GET INVOICE</a>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody></table>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td style="box-sizing:border-box;font-family:Yantramanav,sans-serif">
+                                                                            <a href="{{env('APP_URL')}}/myapplication" class="m_6264836849513322656button" rel="noopener" style="font-size: 20px;font-weight:500;box-sizing:border-box;float:center;border-radius:4px;color:#fff;display:inline-block;overflow:hidden;text-decoration:none;padding:12px;width:200px;text-align:center;background-color:#2ead0c!important;border:1px solid #c4c6cd" target="_blank" >GET INVOICE</a>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
                                                         </td>
                                                     </tr>
                                                 </tbody></table>

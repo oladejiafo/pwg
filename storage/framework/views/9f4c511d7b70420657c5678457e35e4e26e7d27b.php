@@ -34,13 +34,27 @@
                 <div class="form-sec">
                     <?php
                         $name = explode(' ', $client['name']);
+                       
+                        $clt_name = explode(' ', strtolower($client['sales_agent_name_by_client']));
 
                         $agents = DB::table('employees')
-                        ->select('id')
-                        ->where('phone_number', '=', $client['sales_agent_phone_number_by_client'])
+                        ->where(DB::raw('lower(name)'), '=', $clt_name[0])
+                        // ->orWhere(DB::raw('lower(sur_name)'), '=', $clt_name[0])
+                        ->where(DB::raw('lower(sur_name)'), '=', $clt_name[1])
+                        // ->orWhere(DB::raw('lower(name)'), '=', $clt_name[1])
                         ->whereIn('designation_id', [1,33,35])
                         ->orderBy('id','desc')
                         ->first();
+                        if (isset($agents))
+                        {
+                            $agent_id = $agents->id;
+                            $agent_branch_id = $agents->branch_id;
+                            $agent_phone_number = $agents->phone_number;
+                        } else {
+                            $agent_id = '';
+                            $agent_branch_id = '';
+                            $agent_phone_number = '';                            
+                        }
                     ?>
 
                     <form method="POST" enctype="multipart/form-data" id="applicant_details">
@@ -54,11 +68,11 @@
                                 <span class="first_name_errorClass"></span>
                             </div>
                             <div class="form-floating col-sm-4 mt-3">
-                                <input type="text" name="middle_name" class="form-control" id="floatingInput" placeholder="Middle Name" value="<?php echo e(old('middle_name')); ?>"  autocomplete="off"/>
-                                <label for="floatingInput">Middle Name</label>
+                                <input type="text" name="middle_name" class="form-control" id="floatingInput" placeholder="Middle Name" <?php if(isset($client['middle_name'])): ?> value="<?php echo e($client['middle_name']); ?>" <?php else: ?> value="<?php echo e(old('middle_name')); ?>" <?php endif; ?> autocomplete="off"/>
+                                <label for="floatingInput">Middle Namex</label>
                             </div>
                             <div class="form-floating col-sm-4 mt-3">
-                                <input type="text" name="surname" id="floatingInput" class="form-control surname" <?php if(count($name) > 1): ?>   value="<?php echo e($name[count($name) - 1]); ?>" <?php endif; ?> placeholder="Surname*"  autocomplete="off"  />
+                                <input type="text" name="surname" id="floatingInput" class="form-control surname" <?php if(isset($client['sur_name'])): ?> value="<?php echo e($client['sur_name']); ?>" <?php elseif(count($name) > 1): ?> value="<?php echo e($name[count($name) - 1]); ?>" <?php else: ?> value="<?php echo e(old('surname')); ?>" <?php endif; ?> placeholder="Surname*"  autocomplete="off"  />
                                 <label for="floatingInput">Surname*</label>
                                 <span class="surname_errorClass"></span>
                             </div>
@@ -79,18 +93,22 @@
 
                         <div class="form-group row mt-4">
                             <div class="form-floating col-sm-4 mt-3 dob">
-                                <input type="text" name="dob" class="form-control datepicker" placeholder="Date of Birth*" value="<?php echo e(old('dob')); ?>" id="datepicker" autocomplete="off"  readonly="readonly" />
+                                <input type="text" name="dob" class="form-control datepicker" placeholder="Date of Birth*" <?php if(isset($client['date_of_birth'])): ?> value="<?php echo e($client['date_of_birth']); ?>" <?php else: ?> value="<?php echo e(old('dob')); ?>" <?php endif; ?> id="datepicker" autocomplete="off"  readonly="readonly" />
                                 <label for="datepicker">Date of Birth*</label>
                                 <span class="dob_errorClass"></span>
                             </div>
                             <div class="form-floating col-sm-4 mt-3">
-                                <input type="text" name="place_birth" class="form-control place_birth" id="place_birth" placeholder="Place of Birth*" value="<?php echo e(old('place_birth')); ?>" autocomplete="off" />
+                                <input type="text" name="place_birth" class="form-control place_birth" id="place_birth" placeholder="Place of Birth*" <?php if(isset($client['place_of_birth'])): ?> value="<?php echo e($client['place_of_birth']); ?>" <?php else: ?> value="<?php echo e(old('place_birth')); ?>" <?php endif; ?> autocomplete="off" />
                                 <label for="place_birth">Place of Birth*</label>
                                 <span class="place_birth_errorClass"></span>
                             </div>
                             <div class="form-floating col-sm-4 mt-3">
-                                <select class="form-select form-control country_birth" name="country_birth" id="country_birth" placeholder="Country of Birth*" value="<?php echo e(old('country_birth')); ?>"  >
-                                    <option selected disabled>Country of Birth</option>
+                                <select class="form-select form-control country_birth" name="country_birth" id="country_birth" placeholder="Country of Birth*" <?php if(isset($client['country_of_birth'])): ?> value="<?php echo e($client['country_of_birth']); ?>" <?php else: ?> value="<?php echo e(old('country_birth')); ?>" <?php endif; ?> >
+                                    <?php if(isset($client['country_of_birth'])): ?>
+                                     <option selected> <?php echo e($client['country_of_birth']); ?></option>
+                                    <?php else: ?>
+                                     <option selected disabled>Country of Birth</option>
+                                    <?php endif; ?>
                                     <?php $__currentLoopData = Constant::countries; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <option value="<?php echo e($key); ?>"><?php echo e($item); ?></option>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -101,8 +119,12 @@
                         </div>
                         <div class="form-group row mt-4">
                             <div class="form-floating col-sm-4 mt-3">
-                                <select class="form-select form-control citizenship" name="citizenship" id="Citizenship" placeholder="Citizenship*" value="<?php echo e(old('citizenship')); ?>"  >
-                                    <option selected disabled>Citizenship</option>
+                                <select class="form-select form-control citizenship" name="citizenship" id="Citizenship" placeholder="Citizenship*" <?php if(isset($client['citizenship'])): ?> value="<?php echo e($client['citizenship']); ?>" <?php else: ?> value="<?php echo e(old('citizenship')); ?>" <?php endif; ?> >
+                                    <?php if(isset($client['citizenship'])): ?>
+                                     <option selected> <?php echo e($client['citizenship']); ?></option>
+                                    <?php else: ?>
+                                     <option selected disabled>Citizenship</option>
+                                    <?php endif; ?> 
                                     <?php $__currentLoopData = Constant::countries; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <option value="<?php echo e($key); ?>"><?php echo e($item); ?></option>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -111,8 +133,12 @@
                                 <span class="citizenship_errorClass"></span>
                             </div>
                             <div class="form-floating col-sm-4 mt-3">
-                                <select name="sex"  aria-required="true" id="sex" class="form-control form-select sex" >
+                                <select name="sex"  aria-required="true" id="sex" class="form-control form-select sex" <?php if(isset($client['sex'])): ?> value="<?php echo e($client['sex']); ?>" <?php else: ?> value="<?php echo e(old('sex')); ?>" <?php endif; ?>>
+                                   <?php if(isset($client['sex'])): ?>
+                                    <option selected> <?php echo e($client['sex']); ?></option>
+                                   <?php else: ?>
                                     <option selected disabled>Sex</option>
+                                   <?php endif; ?> 
                                     <option value="MALE">Male</option>
                                     <option value="FEMALE">Female</option>
                                 </select>
@@ -120,8 +146,12 @@
                                 <span class="sex_errorClass"></span>
                             </div>
                             <div class="form-floating col-sm-4 mt-3">
-                                <select name="civil_status" id="civil_status"  aria-required="true" class="form-control form-select">
+                                <select name="civil_status" id="civil_status"  aria-required="true" class="form-control form-select" <?php if(isset($client['civil_status'])): ?> value="<?php echo e($client['civil_status']); ?>" <?php else: ?> value="<?php echo e(old('civil_status')); ?>" <?php endif; ?>>
+                                   <?php if(isset($client['civil_status'])): ?>
+                                    <option selected> <?php echo e($client['civil_status']); ?></option>
+                                   <?php else: ?>
                                     <option selected disabled>Civil Status</option>
+                                   <?php endif; ?> 
                                     <option value="SINGLE">Single</option>
                                     <option value="MARRIED">Married</option>
                                     <option value="SEPARATED">Separated</option>
@@ -134,10 +164,10 @@
                             </div>
                         </div>
                         <div class="form-floating agent_code col-sm-12 mt-3">
-                            <input type="hidden" name="agent_code" id="agent_code" class="form-control" placeholder="Please enter your agent code here if available" /> 
-                            
+                            <input type="hidden" name="agent_code" id="agent_code" class="form-control" placeholder="Please enter your agent code here if available" value="<?php echo e($agent_id); ?>" /> 
                             <input type="hidden" name="agent_name" id="agent_name" class="form-control" placeholder="Please enter your agent name here if available" value="<?php echo e($client['sales_agent_name_by_client']); ?>"/>
-                            <input type="hidden" name="agent_phone" id="agent_phone" class="form-control" placeholder="Please enter your agent phone here if available" value="<?php echo e($client['sales_agent_phone_number_by_client']); ?>"/>
+                            <input type="hidden" name="agent_phone" id="agent_phone" class="form-control" placeholder="Please enter your agent phone here if available" value="<?php echo e($agent_phone_number); ?>"/>
+                            <input type="hidden" name="agent_branch_id" id="agent_branch_id" class="form-control" placeholder="Please enter your agent branch here if available" value="<?php echo e($agent_branch_id); ?>"/>
                             <label for="agent_code">Please enter your agent code here if available</label>
                             <span class="agent_code_errorClass"></span>
                         </div>

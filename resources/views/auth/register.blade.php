@@ -96,7 +96,7 @@ input [type="phone"]
               <label for="Agent" class="form-label">Your Agent Name</label>
             </div>
             <div class="inputs-iconx">
-              <input  name="agent" class="agent form-control" type="text" autocomplete="off" placeholder="Type Your Agent, if you have one..">
+              <input  name="agent" class="agent form-control" type="text" autocomplete="off" placeholder="Type Your Agent" required="">
               {{-- <select name="agent" class="form-control agentInput" id="exampleInputAgent">
                 @if(old('agent'))
                 <option selected>{{old('agent')}}</option>
