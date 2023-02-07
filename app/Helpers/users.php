@@ -10,6 +10,7 @@ use App\Models\Client;
 use Illuminate\Support\Facades\Storage;
 use App\Models\product;
 use App\Models\Applicant;
+use App\Models\QuickbookWebErrorLogger;
 use App\Models\user;
 use Exception;
 use App\Mail\ExceptionMail;
@@ -80,13 +81,23 @@ class users
         ];
         if (strtoupper($paidDetails->first_payment_status) == 'PAID' && $paidDetails->work_permit_status == "WORK_PERMIT_RECEIVED") {
             $client = new \GuzzleHttp\Client();
-            $res = $client->request(
-                'POST',
-                config('app.admin_url_local') . '/api/get-work-permit',
-                [
-                    'form_params' => $paidDetails,
-                ]
-            );
+            if(in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)){
+                $res = $client->request(
+                    'POST',
+                    config('app.admin_url_local') . '/api/get-work-permit',
+                    [
+                        'form_params' => $paidDetails,
+                    ]
+                );
+            } else {
+                $res = $client->request(
+                    'POST',
+                    config('app.admin_url') . '/api/get-work-permit',
+                    [
+                        'form_params' => $paidDetails,
+                    ]
+                );
+            }
             $fileData = $res->getBody()->getContents();
             $file = json_decode($fileData);
             $response = [
@@ -179,5 +190,25 @@ class users
             $response['message'] = "Work Permit not available yet.";
         }
         return $response;
+    }
+
+    public static function webLogger(Exception $exception)
+    {
+        try {
+            $data = [
+                'user_id' => Auth::id(),
+                'controller' => (\Route::getCurrentRoute()) ? \Route::getCurrentRoute()->getActionName() : '',
+                'route' => \Route::currentRouteName(),
+                'message' => $exception->getMessage(),
+                'line_number' => $exception->getLine(),
+                'trace' => $exception->getTraceAsString(),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ];
+            QuickbookWebErrorLogger::insert($data);
+        } catch (Exception $ex) {
+//            throw new Exception($ex->getMessage());
+        }
+
     }
 }

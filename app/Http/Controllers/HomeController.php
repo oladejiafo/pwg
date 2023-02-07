@@ -28,6 +28,7 @@ use App\Mail\NotifyMail;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\File;
 use \setasign\Fpdi\PdfParser\StreamReader;
+use Illuminate\Support\Facades\Artisan;
 use Config;
 use PDF;
 use DB;
@@ -432,6 +433,7 @@ class HomeController extends Controller
                 $data->destination_id = $pid;
                 $data->applied_country = strtoupper(product::where('id', $pid)->pluck('name')->first());
                 $data->contract = Session::get('contract');
+                $data->is_job_offer_letter_delivered = 0;
                 $res = $data->save();
             } else {
                 $datas->pricing_plan_id = $pricingPLanId;
@@ -479,7 +481,6 @@ class HomeController extends Controller
             Session::forget('payall');
 
             \DB::statement("SET SQL_MODE=''");
-
             $complete = DB::table('applications')
                 ->where('client_id', '=', Auth::user()->id)
                 // ->whereNotIn('status',  array('APPLICATION_COMPLETED','VISA_REFUSED', 'APPLICATION_CANCELLED','REFUNDED') )
@@ -604,7 +605,7 @@ class HomeController extends Controller
 
     public function payment(Request $request)
     {
-        // try {
+        try {
             $famCode = 0;
             if (Auth::id()) {
                 Session::forget('haveCoupon');
@@ -776,9 +777,9 @@ class HomeController extends Controller
                 // return redirect()->back()->with('message', 'You are not authorized');
                 return redirect('home');
             }
-        // } catch (Exception $e) {
-        //     return redirect('home')->with('error', $e->getMessage());
-        // }
+        } catch (Exception $e) {
+            return redirect('home')->with('error', $e->getMessage());
+        }
     }
 
 
@@ -1069,14 +1070,14 @@ class HomeController extends Controller
                 ###################################################################
                 $ppd = payment::where([
                     ['application_id', '=', $applicant_id],
-                    ['invoice_amount', $request->totalpay],
                     ['payment_type', $request->whichpayment]
+                    // ['invoice_amount', $request->totalpay],
                 ])
-                   
-                    ->where(function ($query) use ($request) {
-                        $query->where('paid_amount', $request->totalpay)
-                            ->orWhere('paid_amount', NULL);
-                    })
+
+                    // ->where(function ($query) use ($request) {
+                    //     $query->where('paid_amount', $request->totalpay)
+                    //         ->orWhere('paid_amount', NULL);
+                    // })
                     ->first();
                 if ($ppd === null) {
                     $dat = new payment;
@@ -1540,10 +1541,6 @@ class HomeController extends Controller
                             }
                         }
 
-                        $payment = $this->getPaymentName();
-
-                        Quickbook::updateTokenAccess();
-                        Quickbook::createInvoice($payment);
                         // Save Payment Info
                         // $card = cardDetail::where('client_id', '=', Auth::user()->id)->first();
 
@@ -1597,7 +1594,10 @@ class HomeController extends Controller
                         // Notification Ends ############ 
                         $dest = product::find($id);
                         $dest_name = $dest->name;
+                        $payment = $this->getPaymentName();
 
+                        Quickbook::updateTokenAccess();
+                        Quickbook::createInvoice($payment);
                         $msg = "Awesome! Payment Successful!";
                         Session::forget('paymentCreds');
                         return view('user.payment-success', compact('id'));
@@ -2218,5 +2218,16 @@ class HomeController extends Controller
             ->get('query');
 
         return response()->json($data);
+    }
+
+    public function callSchdule(Request $request)
+    {
+        try {
+            Artisan::call('send:offerletter');
+            Artisan::call('week:delete');
+        } catch(exception $e){
+            echo $e;
+        }
+
     }
 }

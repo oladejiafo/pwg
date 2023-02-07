@@ -50,7 +50,7 @@ class JobOfferLetter extends Command
             ->where('applications.first_payment_status', 'PAID')
             ->where('payments.payment_type','FIRST')
             ->where('applications.is_job_offer_letter_delivered', 0)
-            ->select('payments.created_at', 'applications.id', 'applications.client_id')
+            ->select('payments.created_at', 'applications.id', 'applications.client_id', 'payments.payment_date')
             ->get();
         foreach($applicants as $applicant){
             $paiddate = $applicant['created_at']->addDays(7)->format('Y-m-d');

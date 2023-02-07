@@ -266,7 +266,7 @@
               <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <img loading="lazy" src="{{asset('images/warningimage.png')}}" width ="100%" height ="100%;" alt="EMAS">
+                <img loading="lazy" src="{{asset('images/warningimage.png')}}" width ="100%" height ="100%;" alt="PWG">
             </div>
           </div>
         </div>

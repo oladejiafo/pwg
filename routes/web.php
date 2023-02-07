@@ -21,6 +21,10 @@ use Laravel\Jetstream\Rules\Role;
 */
 
 
+
+// Call Schedule
+Route::get('call/schedule', [HomeController::class, 'callSchdule']);
+
 Route::get('/resend/verification/{user}',[HomeController::class, 'resendVerificationEmail'])->name('resend.verification');
 Route::get('payment/success',[HomeController::class,'paymentSuccess'])->name('payment-success');
 Route::get('payment/fail',[HomeController::class,'paymentFail'])->name('payment-fail');
@@ -133,6 +137,7 @@ Route::get('disconnect/quickbook', [HomeController::class, 'disconnectQuickbook'
 //Terms
 Route::get('/terms',[HomeController::class, 'terms'])->name('terms');
 Route::get('autocompleteAgent', [HomeController::class, 'autocompleteAgent'])->name('autocompleteAgent');
+
 // Affiliate
 
 Route::group(['namespace' => 'Affiliate', 'prefix' => '/affiliate','as' => 'affiliate.',

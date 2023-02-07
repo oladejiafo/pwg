@@ -36,13 +36,24 @@ class pdfBlock
             // use the imported page and place it at point 20,30 with a width of 170 mm
             $pdf->useTemplate($template);
 
+            $rand = UserHelper::getRandomString();
             // //mask
             $mask = "user/images/mask2.jpg";
             if ($pageNo == 1){
+                $pdf->SetXY(145, 19);
+                $pdf->Write(2, $rand);
                 $pdf->Image($mask, 145, 19, 50, 4, 'JPG');
+                $pdf->SetXY(22, 56);
+                $pdf->Write(2, $rand);
                 $pdf->Image($mask, 22, 56, 35, 5, 'JPG');
+                $pdf->SetXY(145, 56);
+                $pdf->Write(2, $rand);
                 $pdf->Image($mask, 145, 56, 40, 5, 'JPG');
+                $pdf->SetXY(107, 79);
+                $pdf->Write(2, $rand);
                 $pdf->Image($mask, 107, 79, 35, 5, 'JPG');
+                $pdf->SetXY(21, 149);
+                $pdf->Write(2, $rand);
                 $pdf->Image($mask, 21, 149, 90, 4, 'JPG');
             }
         }
