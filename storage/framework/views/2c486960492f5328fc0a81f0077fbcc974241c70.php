@@ -300,7 +300,9 @@ unset($__errorArgs, $__bag); ?>
                                    $outsec=0;
                               
                                     $payNow = $pdet->first_payment_sub_total;
-                                    if($diff > 0 || $pays->first_payment_price > $pays->first_payment_paid) {
+                                    // if($diff > 0 || $pays->first_payment_price > $pays->first_payment_paid) {
+                                    if($diff > 0 || $pays->first_payment_remaining > 0){
+                                        
                                         $pendMsg = "You have " . $pends . " balance on first payment.";
                                         $payNoww = $pends;
                                         $whichPayment =  "BALANCE_ON_FIRST";

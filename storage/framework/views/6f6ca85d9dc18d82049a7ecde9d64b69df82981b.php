@@ -248,22 +248,6 @@ unset($__errorArgs, $__bag); ?>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
 
-<script type="text/javascript">
-  var path = "<?php echo e(route('autocompleteAgent')); ?>";
-  $('input.agent').typeahead({
-      source:  function (str, process) 
-      {
-        return $.get(path, { str: str }, function (data) {
-          var name = [];
-          $.each(data, function(index, value) {
-            name.push(value.name+' '+ value.sur_name+' - '+ value.phone_number);
-          });
-          // console.log(name);
-              return process(name);
-              // return name;
-          });
-      }
-  });
-</script>
+
 <?php $__env->stopPush(); ?>
 <?php echo $__env->make('layouts.auth', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\dejia\OneDrive\Desktop\mygit\pwg_eportal\resources\views/auth/register.blade.php ENDPATH**/ ?>

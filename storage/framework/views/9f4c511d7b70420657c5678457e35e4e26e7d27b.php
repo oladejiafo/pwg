@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-2">
                     <div class="image my-auto">
-                        <img src="{{asset('images/Icons_applicant_details.svg')}}" width="100%" height="100%" alt="PWG Group">
+                        <img src="<?php echo e(asset('images/Icons_applicant_details.svg')); ?>" width="100%" height="100%" alt="PWG Group">
                     </div>
                 </div>
                 <div class="col-1">
@@ -19,12 +19,12 @@
                 </div>
                 <div class="col-1">
                     <div class="dataCompleted applicantData">
-                        <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="PWG Group approved" >
+                        <img src="<?php echo e(asset('images/Affiliate_Program_Section_completed.svg')); ?>" alt="PWG Group approved" >
                     </div>
                 </div>
                 <div class="col-2 mx-auto my-auto">
                     <div class="down-arrow">
-                        <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%" alt="PWG Group">
+                        <img src="<?php echo e(asset('images/down_arrow.png')); ?>" height="auto" width="25%" alt="PWG Group">
                     </div>
                 </div>
             </div>
@@ -32,7 +32,7 @@
         <div class="row">
             <div id="collapseapplicant" class="collapse">
                 <div class="form-sec">
-                    @php
+                    <?php
                         $name = explode(' ', $client['name']);
 
                         $agents = DB::table('employees')
@@ -41,37 +41,37 @@
                         ->whereIn('designation_id', [1,33,35])
                         ->orderBy('id','desc')
                         ->first();
-                    @endphp
+                    ?>
 
                     <form method="POST" enctype="multipart/form-data" id="applicant_details">
-                        @csrf
-                        <input type="hidden" name="product_id" value="{{$productId}}">
+                        <?php echo csrf_field(); ?>
+                        <input type="hidden" name="product_id" value="<?php echo e($productId); ?>">
                         <input type="hidden" name="applicantCompleted" value="0" class="applicantCompleted">
                         <div class="form-group row mt-4">
                             <div class="form-floating col-sm-4 mt-3">
-                                <input type="text" name="first_name" class="form-control first_name" id="floatingInput" placeholder="First Name*" value="{{$name[0]}}" autocomplete="off"/>
+                                <input type="text" name="first_name" class="form-control first_name" id="floatingInput" placeholder="First Name*" value="<?php echo e($name[0]); ?>" autocomplete="off"/>
                                 <label for="floatingInput">First Name*</label>
                                 <span class="first_name_errorClass"></span>
                             </div>
                             <div class="form-floating col-sm-4 mt-3">
-                                <input type="text" name="middle_name" class="form-control" id="floatingInput" placeholder="Middle Name" value="{{old('middle_name')}}"  autocomplete="off"/>
+                                <input type="text" name="middle_name" class="form-control" id="floatingInput" placeholder="Middle Name" value="<?php echo e(old('middle_name')); ?>"  autocomplete="off"/>
                                 <label for="floatingInput">Middle Name</label>
                             </div>
                             <div class="form-floating col-sm-4 mt-3">
-                                <input type="text" name="surname" id="floatingInput" class="form-control surname" @if(count($name) > 1)   value="{{$name[count($name) - 1]}}" @endif placeholder="Surname*"  autocomplete="off"  />
+                                <input type="text" name="surname" id="floatingInput" class="form-control surname" <?php if(count($name) > 1): ?>   value="<?php echo e($name[count($name) - 1]); ?>" <?php endif; ?> placeholder="Surname*"  autocomplete="off"  />
                                 <label for="floatingInput">Surname*</label>
                                 <span class="surname_errorClass"></span>
                             </div>
                         </div>
                         <div class="form-group row mt-4">
                             <div class="form-floating col-sm-6 mt-3">
-                                <input type="text" name="email" id="floatingInput" class="form-control email" placeholder="Email*" value="{{$client['email']}}" autocomplete="off" />
+                                <input type="text" name="email" id="floatingInput" class="form-control email" placeholder="Email*" value="<?php echo e($client['email']); ?>" autocomplete="off" />
                                 <label for="floatingInput">Email*</label>
                                 <span class="email_errorClass"></span>
                             </div>
                             <div class="form-floating col-sm-6 mt-3">
                                 <input type="hidden" name="phone_number_label" class="form-control phone_number_label" id="phone_number_label" placeholder="Phone Number*" autocomplete="off"/>
-                                <input type="tel" onkeypress="return isNumberKey(event)" name="phone_number" class="form-control phone_number phone" placeholder="Phone Number*" value="{{$client['phone_number']}}" autocomplete="off"  />
+                                <input type="tel" onkeypress="return isNumberKey(event)" name="phone_number" class="form-control phone_number phone" placeholder="Phone Number*" value="<?php echo e($client['phone_number']); ?>" autocomplete="off"  />
                                 <span class="phone_number_errorClass"></span>
                                 <label for="phone_number_label" style="margin-top: -5px !important; margin-left: -5px !important;">Phone Number*</label>
                             </div>
@@ -79,21 +79,21 @@
 
                         <div class="form-group row mt-4">
                             <div class="form-floating col-sm-4 mt-3 dob">
-                                <input type="text" name="dob" class="form-control datepicker" placeholder="Date of Birth*" value="{{old('dob')}}" id="datepicker" autocomplete="off"  readonly="readonly" />
+                                <input type="text" name="dob" class="form-control datepicker" placeholder="Date of Birth*" value="<?php echo e(old('dob')); ?>" id="datepicker" autocomplete="off"  readonly="readonly" />
                                 <label for="datepicker">Date of Birth*</label>
                                 <span class="dob_errorClass"></span>
                             </div>
                             <div class="form-floating col-sm-4 mt-3">
-                                <input type="text" name="place_birth" class="form-control place_birth" id="place_birth" placeholder="Place of Birth*" value="{{old('place_birth')}}" autocomplete="off" />
+                                <input type="text" name="place_birth" class="form-control place_birth" id="place_birth" placeholder="Place of Birth*" value="<?php echo e(old('place_birth')); ?>" autocomplete="off" />
                                 <label for="place_birth">Place of Birth*</label>
                                 <span class="place_birth_errorClass"></span>
                             </div>
                             <div class="form-floating col-sm-4 mt-3">
-                                <select class="form-select form-control country_birth" name="country_birth" id="country_birth" placeholder="Country of Birth*" value="{{old('country_birth')}}"  >
+                                <select class="form-select form-control country_birth" name="country_birth" id="country_birth" placeholder="Country of Birth*" value="<?php echo e(old('country_birth')); ?>"  >
                                     <option selected disabled>Country of Birth</option>
-                                    @foreach (Constant::countries as $key => $item)
-                                        <option value="{{$key}}">{{$item}}</option>
-                                    @endforeach
+                                    <?php $__currentLoopData = Constant::countries; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($key); ?>"><?php echo e($item); ?></option>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </select>
                                 <label for="country_birth">Country of Birth*</label>
                                 <span class="country_birth_errorClass"></span>
@@ -101,11 +101,11 @@
                         </div>
                         <div class="form-group row mt-4">
                             <div class="form-floating col-sm-4 mt-3">
-                                <select class="form-select form-control citizenship" name="citizenship" id="Citizenship" placeholder="Citizenship*" value="{{old('citizenship')}}"  >
+                                <select class="form-select form-control citizenship" name="citizenship" id="Citizenship" placeholder="Citizenship*" value="<?php echo e(old('citizenship')); ?>"  >
                                     <option selected disabled>Citizenship</option>
-                                    @foreach (Constant::countries as $key => $item)
-                                        <option value="{{$key}}">{{$item}}</option>
-                                    @endforeach
+                                    <?php $__currentLoopData = Constant::countries; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($key); ?>"><?php echo e($item); ?></option>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </select>
                                 <label for="Citizenship">Citizenship*</label>
                                 <span class="citizenship_errorClass"></span>
@@ -135,15 +135,15 @@
                         </div>
                         <div class="form-floating agent_code col-sm-12 mt-3">
                             <input type="hidden" name="agent_code" id="agent_code" class="form-control" placeholder="Please enter your agent code here if available" /> 
-                            {{-- value="{{ $agents->id }}" --}}
-                            <input type="hidden" name="agent_name" id="agent_name" class="form-control" placeholder="Please enter your agent name here if available" value="{{ $client['sales_agent_name_by_client'] }}"/>
-                            <input type="hidden" name="agent_phone" id="agent_phone" class="form-control" placeholder="Please enter your agent phone here if available" value="{{ $client['sales_agent_phone_number_by_client'] }}"/>
+                            
+                            <input type="hidden" name="agent_name" id="agent_name" class="form-control" placeholder="Please enter your agent name here if available" value="<?php echo e($client['sales_agent_name_by_client']); ?>"/>
+                            <input type="hidden" name="agent_phone" id="agent_phone" class="form-control" placeholder="Please enter your agent phone here if available" value="<?php echo e($client['sales_agent_phone_number_by_client']); ?>"/>
                             <label for="agent_code">Please enter your agent code here if available</label>
                             <span class="agent_code_errorClass"></span>
                         </div>
                         <div class="form-group row mt-3">
                             <div class="form-floating col-sm-12 mt-3">
-                                <input type="text" class="form-control cvupload"  id="cvupload" placeholder="Upload your cv (PDF only)*" name="cv" value="{{old('cv')}}" readonly required>
+                                <input type="text" class="form-control cvupload"  id="cvupload" placeholder="Upload your cv (PDF only)*" name="cv" value="<?php echo e(old('cv')); ?>" readonly required>
                                 <div class="input-group-btn">
                                     <span class="fileUpload btn">
                                         <span class="upl" id="upload">Choose File</span>
@@ -170,7 +170,7 @@
             <div class="row">
                 <div class="col-2 my-auto">
                     <div class="image">
-                        <img src="{{asset('images/Icons_home_country_details.svg')}}" width="100%" height="100%" alt="PWG Group">
+                        <img src="<?php echo e(asset('images/Icons_home_country_details.svg')); ?>" width="100%" height="100%" alt="PWG Group">
                     </div>
                 </div>
                 <div class="col-1">
@@ -185,12 +185,12 @@
                 </div>
                 <div class="col-1">
                     <div class="dataCompleted homeCountryData">
-                        <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="PWG Group approved" >
+                        <img src="<?php echo e(asset('images/Affiliate_Program_Section_completed.svg')); ?>" alt="PWG Group approved" >
                     </div>
                 </div>
                 <div class="col-2 mx-auto my-auto">
                     <div class="down-arrow">
-                        <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%" alt="PWG Group">
+                        <img src="<?php echo e(asset('images/down_arrow.png')); ?>" height="auto" width="25%" alt="PWG Group">
                     </div>
                 </div>
             </div>
@@ -199,38 +199,38 @@
             <div class="collapse" id="collapseHome">
                 <div class="form-sec">
                     <form method="POST" enctype="multipart/form-data" id="home_country_details">
-                        @csrf
+                        <?php echo csrf_field(); ?>
                         <input type="hidden" name="homeCountryCompleted" value="0" class="homeCountryCompleted">
-                        <input type="hidden" name="product_id" value="{{$productId}}">
+                        <input type="hidden" name="product_id" value="<?php echo e($productId); ?>">
                         <div class="form-group row mt-4">
                             <div class="form-floating col-sm-12 mt-3">
-                                <input type="text" name="passport_number" class="form-control passport_number" id="floatingInput" placeholder=" Passport Number*" value="{{old('passport_number')}}" autocomplete="off"/>
+                                <input type="text" name="passport_number" class="form-control passport_number" id="floatingInput" placeholder=" Passport Number*" value="<?php echo e(old('passport_number')); ?>" autocomplete="off"/>
                                 <label for="floatingInput"> Passport Number*</label>
                                 <span class="passport_number_errorClass"></span>
                             </div>
                         </div>
                         <div class="form-group row mt-4">
                             <div class="form-floating col-sm-6 mt-3">
-                                <input type="text" name="passport_issue" class="form-control passport_issue" id="passport_issue" placeholder="Passport Date of Issue*" value="{{old('passport_issue')}}" autocomplete="off" readonly="readonly"/>
+                                <input type="text" name="passport_issue" class="form-control passport_issue" id="passport_issue" placeholder="Passport Date of Issue*" value="<?php echo e(old('passport_issue')); ?>" autocomplete="off" readonly="readonly"/>
                                 <label for="passport_issue"> Passport Date of Issue*</label>
                                 <span class="passport_issue_errorClass"></span>
                             </div>
                             <div class="form-floating col-sm-6 mt-3">
-                                <input type="text" name="passport_expiry" class="form-control passport_expiry" id="passport_expiry" placeholder="Passport Date of Expiry*" value="{{old('passport_expiry')}}" autocomplete="off" readonly="readonly"/>
+                                <input type="text" name="passport_expiry" class="form-control passport_expiry" id="passport_expiry" placeholder="Passport Date of Expiry*" value="<?php echo e(old('passport_expiry')); ?>" autocomplete="off" readonly="readonly"/>
                                 <label for="passport_expiry">Passport Date of Expiry*</label>
                                 <span class="passport_expiry_errorClass"></span>
                             </div>
                         </div>
                         <div class="form-group row mt-4">
                             <div class="form-floating col-sm-12 mt-3">
-                                <input type="text" name="issued_by" class="form-control issued_by" id="issued_by" placeholder="Issued By(Authority that issued the passport)*" value="{{old('issued_by')}}" autocomplete="off"/>
+                                <input type="text" name="issued_by" class="form-control issued_by" id="issued_by" placeholder="Issued By(Authority that issued the passport)*" value="<?php echo e(old('issued_by')); ?>" autocomplete="off"/>
                                 <label for="issued_by">Issued By(Authority that issued the passport)*</label>
                                 <span class="issued_by_errorClass"></span>
                             </div>
                         </div>
                         <div class="form-group row mt-4">
                             <div class="form-floating col-sm-12 mt-3">
-                                <input type="text" name="passport_copy" class="form-control passport_copy" id="passport_copy" placeholder="Upload Passport Copy*" value="{{old('passport_copy')}}" onclick="showPassportFormat()" autocomplete="off" readonly/>
+                                <input type="text" name="passport_copy" class="form-control passport_copy" id="passport_copy" placeholder="Upload Passport Copy*" value="<?php echo e(old('passport_copy')); ?>" onclick="showPassportFormat()" autocomplete="off" readonly/>
 
                                 <div class="input-group-btn">
                                     <span class="fileUpload btn">
@@ -241,24 +241,29 @@
                                 <label for="passport_copy">Upload Passport Copy*</label>
                                 <span class="passport_copy_errorClass"></span>
                             </div>
-                            {{-- <div class="col-sm-6 mt-3">
-                                <input type="tel" onkeypress="return isNumberKey(event)" name="home_phone_number" id="home_phone_number" class="form-control home_phone_number" placeholder="Phone Number" value="{{old('home_phone_number')}}" autocomplete="off" />
-                            </div> --}}
+                            
                         </div>
                         <div class="form-group row mt-4">
                             <div class="form-floating  col-sm-3 mt-3">
-                                <select class="form-select form-control home_country" name="home_country" placeholder="home_country*" id="home_country" value="{{old('home_country')}}" autocomplete="off">
+                                <select class="form-select form-control home_country" name="home_country" placeholder="home_country*" id="home_country" value="<?php echo e(old('home_country')); ?>" autocomplete="off">
                                     <option selected disabled>Home Country</option>
-                                    @foreach (Constant::countries as $key => $item)
-                                        <option value="{{$key}}">{{$item}}</option>
-                                    @endforeach
+                                    <?php $__currentLoopData = Constant::countries; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($key); ?>"><?php echo e($item); ?></option>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </select>
                                 <label for="home_country">Home Country</label>
                                 <span class="home_country_errorClass"></span>
                             </div>
                             <div class="form-floating col-sm-3 mt-3">
                                 <input type="text" name="state" id="state" class="form-control state" placeholder="State/Province*" autocomplete="off">
-                                @error('state') <span class="error">{{ $message }}</span> @enderror
+                                <?php $__errorArgs = ['state'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <span class="error"><?php echo e($message); ?></span> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 <label for="state">State/Province*</label>
                                 <span class="state_errorClass"></span>
                             </div>
@@ -268,7 +273,7 @@
                                 <span class="city_errorClass"></span>
                             </div>
                             <div class="form-floating  col-sm-3 mt-3">
-                                <input type="integer" name="postal_code" id="postal_code" value="{{old('postal_code')}}" class="form-control postal_code" placeholder="Postal Code*" autocomplete="off">
+                                <input type="integer" name="postal_code" id="postal_code" value="<?php echo e(old('postal_code')); ?>" class="form-control postal_code" placeholder="Postal Code*" autocomplete="off">
                                 <label for="postal_code">Postal Code*</label>
                                 <span class="postal_code_errorClass"></span>
                             </div>
@@ -300,7 +305,7 @@
             <div class="row">
                 <div class="col-2 my-auto">
                     <div class="image">
-                        <img src="{{asset('images/Icons_current_residency_and_work_details.svg')}}" width="100%" height="100%" alt="PWG Group">
+                        <img src="<?php echo e(asset('images/Icons_current_residency_and_work_details.svg')); ?>" width="100%" height="100%" alt="PWG Group">
                     </div>
                 </div>
                 <div class="col-1">
@@ -315,12 +320,12 @@
                 </div>
                 <div class="col-1">
                     <div class="dataCompleted currentCountryData">
-                        <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="PWG Group approved">
+                        <img src="<?php echo e(asset('images/Affiliate_Program_Section_completed.svg')); ?>" alt="PWG Group approved">
                     </div>
                 </div>
                 <div class="col-2 mx-auto my-auto">
                     <div class="down-arrow">
-                        <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
+                        <img src="<?php echo e(asset('images/down_arrow.png')); ?>" height="auto" width="25%">
                     </div>
                 </div>
             </div>
@@ -329,25 +334,17 @@
             <div class="collapse" id="collapseCurrent">
                 <div class="form-sec">
                     <form method="POST" enctype="multipart/form-data" id="current_residency">
-                        @csrf
-                        <input type="hidden" name="product_id" value="{{$productId}}">
+                        <?php echo csrf_field(); ?>
+                        <input type="hidden" name="product_id" value="<?php echo e($productId); ?>">
                         <input type="hidden" name="currentCountryCompleted" value="0" class="currentCountryCompleted">
                         <div class="form-group row mt-4">
-                            {{-- <div class="col-sm-6 mt-3">
-                                <select class="form-select form-control current_country" name="current_country" placeholder="current_country*" value="{{old('current_country')}}"  >
-                                    <option selected disabled>Current Country Are You Living Right Now? *</option>
-                                    @foreach (Constant::countries as $key => $item)
-                                        <option value="{{$key}}">{{$item}}</option>
-                                    @endforeach
-                                </select>
-                                <span class="current_country_errorClass"></span>
-                            </div> --}}
+                            
                             
                         </div>
                         <div class="form-group row mt-4">
                             <div class="form-floating col-sm-4 mt-3">
                                 <input type="hidden" name="current_residence_phone_number_label" class="form-control current_residence_phone_number_label" id="current_residence_phone_number_label" placeholder="Phone Number*" autocomplete="off"/>
-                                <input type="tel" class="form-control" onkeypress="return isNumberKey(event)" id="current_residance_mobile" name='current_residance_mobile' value="{{old('current_residance_mobile')}}" placeholder="Current Residence Mobile Number" autocomplete="off">
+                                <input type="tel" class="form-control" onkeypress="return isNumberKey(event)" id="current_residance_mobile" name='current_residance_mobile' value="<?php echo e(old('current_residance_mobile')); ?>" placeholder="Current Residence Mobile Number" autocomplete="off">
                                 <span class="current_residance_mobile_errorClass"></span>
                                 <label for="current_residence_phone_number_label" style="margin-top: -5px !important; margin-left: -5px !important;">Phone Number*</label>
                             </div>
@@ -385,12 +382,7 @@
                                 <label for="visa_copy">Visa Copy</label>
                             </div>
                         </div>
-                        {{-- <div class="form-group row mt-4">
-                            <div class="col-sm-12 mt-3">
-                                <input type="text" name="current_job" class="form-control" placeholder="Profession As Per Current Job (or on Visa)*" autocomplete="off">
-                                <span class="current_job_errorClass"></span>
-                            </div>
-                        </div> --}}
+                        
                         <div class="form-group row mt-4">
                             <div class="form-floating col-sm-4 mt-3">
                                 <input type="text" name="work_state" class="form-control" id="work_state" placeholder="Work State/Province*" autocomplete="off"/>
@@ -445,7 +437,7 @@
             <div class="row">
                 <div class="col-2 my-auto">
                     <div class="image">
-                        <img src="{{asset('images/Icons_schengen_details.svg')}}" width="100%" height="100%" alt="PWG Group">
+                        <img src="<?php echo e(asset('images/Icons_schengen_details.svg')); ?>" width="100%" height="100%" alt="PWG Group">
                     </div>
                 </div>
                 <div class="col-1">
@@ -454,18 +446,19 @@
                 <div class="col-6 my-auto">
                     <div class="first-heading d-flex justify-content-center">
                         <h3>
-                            {{ __('Schengen Details')}}
+                            <?php echo e(__('Schengen Details')); ?>
+
                         </h3>
                     </div>
                 </div>
                 <div class="col-1">
                     <div class="dataCompleted schengenData">
-                        <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="PWG Group approved">
+                        <img src="<?php echo e(asset('images/Affiliate_Program_Section_completed.svg')); ?>" alt="PWG Group approved">
                     </div>
                 </div>
                 <div class="col-2 mx-auto my-auto">
                     <div class="down-arrow">
-                        <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%" alt="PWG Group">
+                        <img src="<?php echo e(asset('images/down_arrow.png')); ?>" height="auto" width="25%" alt="PWG Group">
                     </div>
                 </div>
             </div>
@@ -474,8 +467,8 @@
             <div class="collapse" id="collapseSchengen">
                 <div class="form-sec">
                     <form method="POST" enctype="multipart/form-data" id="schengen_details">
-                        @csrf
-                        <input type="hidden" name="product_id" value="{{$productId}}">
+                        <?php echo csrf_field(); ?>
+                        <input type="hidden" name="product_id" value="<?php echo e($productId); ?>">
                         <input type="hidden" name="schengenCompleted" value="0" class="schengenCompleted">
                         <div class="form-group row mt-4">
                             <div class="form-floating col-sm-12 mt-3">
@@ -488,11 +481,11 @@
                                 <span class="is_schengen_visa_issued_last_five_year_errorClass"></span>
                             </div>
                         </div>
-                        @php  
+                        <?php  
                             $vall = $client['schengenVisaName'];
                             $sheng = $client['schengenVisaUrl'];
                             $phold = "Image of Schengen Or National Visa Issued During Last 5 Years";
-                        @endphp
+                        ?>
                         <div class="form-group row mt-4 schengen_visa">
                             <div class="form-floating col-sm-12 mt-3" id="schengen_visa">
                                 <input type="text" class="form-control schengen_copy" id="schengen_copy" onclick="showSchengenVisaFormat('applicant')" name="schengen_copy" placeholder="Image of Schengen Or National Visa Issued During Last 5 Years" readonly >
@@ -535,7 +528,7 @@
             <div class="row">
                 <div class="col-2 my-auto">
                     <div class="image">
-                        <img src="{{asset('images/Icons_experience_details.svg')}}" width="100%" height="100%">
+                        <img src="<?php echo e(asset('images/Icons_experience_details.svg')); ?>" width="100%" height="100%">
                     </div>
                 </div>
                 <div class="col-1">
@@ -546,21 +539,20 @@
                         <h3>
                             Experience
                         </h3>
-                        {{-- <div class="dataCompleted experiencenData" v-if="selectedJob.length > 0">
-                            <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="PWG Group approved">
-                        </div> --}}
+                        
                     </div>
                 </div>
                 <div class="col-1"></div>
                 <div class="col-2 mx-auto my-auto">
                     <div class="down-arrow">
-                        <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%" alt="PWG Group">
+                        <img src="<?php echo e(asset('images/down_arrow.png')); ?>" height="auto" width="25%" alt="PWG Group">
                     </div>
                 </div>
             </div>
         </div>
-        <div id="importExperience" data-applicantId="{{$applicant['id']}}" data-dependentId="{{$dependent}}">
-            @include('user.experience')
+        <div id="importExperience" data-applicantId="<?php echo e($applicant['id']); ?>" data-dependentId="<?php echo e($dependent); ?>">
+            <?php echo $__env->make('user.experience', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
         </div>
     </div>
 </div>
+<?php /**PATH C:\Users\dejia\OneDrive\Desktop\mygit\pwg_eportal\resources\views/user/main-applicant-detail.blade.php ENDPATH**/ ?>
