@@ -126,7 +126,6 @@ input [type="phone"]
 @endsection
 @push('custom-scripts')
 
-
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script> -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/css/intlTelInput.min.css" rel="stylesheet"/>
 
@@ -145,7 +144,7 @@ input [type="phone"]
         $('.iconImg, .viewIcon').on('click', function(){
             var passInput=$(".passwordInput");
             if(passInput.attr('type')==='password')
-              {
+            {
                 passInput.attr('type','text');
                 $('.iconImg').hide();
                 $('.viewIcon').show();
@@ -161,7 +160,7 @@ input [type="phone"]
         $('#cofirmation, .confirmation_viewIcon').on('click', function(){
             var passInput=$(".confirmation");
             if(passInput.attr('type')==='password')
-              {
+            {
                 passInput.attr('type','text');
                 $('.confirmation_viewIcon').show();
                 $('#cofirmation').hide();
@@ -223,7 +222,8 @@ input [type="phone"]
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
 
-{{-- <script type="text/javascript">
+{{-- 
+<script type="text/javascript">
   var path = "{{ route('autocompleteAgent') }}";
   $('input.agent').typeahead({
       source:  function (str, process) 
@@ -239,5 +239,6 @@ input [type="phone"]
           });
       }
   });
-</script> --}}
+</script>
+--}}
 @endpush

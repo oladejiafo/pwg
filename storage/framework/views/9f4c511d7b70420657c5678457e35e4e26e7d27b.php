@@ -35,26 +35,26 @@
                     <?php
                         $name = explode(' ', $client['name']);
                        
-                        $clt_name = explode(' ', strtolower($client['sales_agent_name_by_client']));
+                        // $clt_name = explode(' ', strtolower($client['sales_agent_name_by_client']));
 
-                        $agents = DB::table('employees')
-                        ->where(DB::raw('lower(name)'), '=', $clt_name[0])
-                        // ->orWhere(DB::raw('lower(sur_name)'), '=', $clt_name[0])
-                        ->where(DB::raw('lower(sur_name)'), '=', $clt_name[1])
-                        // ->orWhere(DB::raw('lower(name)'), '=', $clt_name[1])
-                        ->whereIn('designation_id', [1,33,35])
-                        ->orderBy('id','desc')
-                        ->first();
-                        if (isset($agents))
-                        {
-                            $agent_id = $agents->id;
-                            $agent_branch_id = $agents->branch_id;
-                            $agent_phone_number = $agents->phone_number;
-                        } else {
-                            $agent_id = '';
-                            $agent_branch_id = '';
-                            $agent_phone_number = '';                            
-                        }
+                        // $agents = DB::table('employees')
+                        // ->where(DB::raw('lower(name)'), '=', $clt_name[0])
+                        // // ->orWhere(DB::raw('lower(sur_name)'), '=', $clt_name[0])
+                        // ->where(DB::raw('lower(sur_name)'), '=', $clt_name[1])
+                        // // ->orWhere(DB::raw('lower(name)'), '=', $clt_name[1])
+                        // ->whereIn('designation_id', [1,33,35])
+                        // ->orderBy('id','desc')
+                        // ->first();
+                        // if (isset($agents))
+                        // {
+                        //     $agent_id = $agents->id;
+                        //     $agent_branch_id = $agents->branch_id;
+                        //     $agent_phone_number = $agents->phone_number;
+                        // } else {
+                        //     $agent_id = '';
+                        //     $agent_branch_id = '';
+                        //     $agent_phone_number = '';
+                        // }
                     ?>
 
                     <form method="POST" enctype="multipart/form-data" id="applicant_details">
@@ -69,7 +69,7 @@
                             </div>
                             <div class="form-floating col-sm-4 mt-3">
                                 <input type="text" name="middle_name" class="form-control" id="floatingInput" placeholder="Middle Name" <?php if(isset($client['middle_name'])): ?> value="<?php echo e($client['middle_name']); ?>" <?php else: ?> value="<?php echo e(old('middle_name')); ?>" <?php endif; ?> autocomplete="off"/>
-                                <label for="floatingInput">Middle Namex</label>
+                                <label for="floatingInput">Middle Name</label>
                             </div>
                             <div class="form-floating col-sm-4 mt-3">
                                 <input type="text" name="surname" id="floatingInput" class="form-control surname" <?php if(isset($client['sur_name'])): ?> value="<?php echo e($client['sur_name']); ?>" <?php elseif(count($name) > 1): ?> value="<?php echo e($name[count($name) - 1]); ?>" <?php else: ?> value="<?php echo e(old('surname')); ?>" <?php endif; ?> placeholder="Surname*"  autocomplete="off"  />
@@ -164,10 +164,10 @@
                             </div>
                         </div>
                         <div class="form-floating agent_code col-sm-12 mt-3">
-                            <input type="hidden" name="agent_code" id="agent_code" class="form-control" placeholder="Please enter your agent code here if available" value="<?php echo e($agent_id); ?>" /> 
+                            
                             <input type="hidden" name="agent_name" id="agent_name" class="form-control" placeholder="Please enter your agent name here if available" value="<?php echo e($client['sales_agent_name_by_client']); ?>"/>
-                            <input type="hidden" name="agent_phone" id="agent_phone" class="form-control" placeholder="Please enter your agent phone here if available" value="<?php echo e($agent_phone_number); ?>"/>
-                            <input type="hidden" name="agent_branch_id" id="agent_branch_id" class="form-control" placeholder="Please enter your agent branch here if available" value="<?php echo e($agent_branch_id); ?>"/>
+                            
+                            
                             <label for="agent_code">Please enter your agent code here if available</label>
                             <span class="agent_code_errorClass"></span>
                         </div>

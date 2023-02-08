@@ -124,7 +124,7 @@ unset($__errorArgs, $__bag); ?>
               <label for="Agent" class="form-label">Your Agent Name</label>
             </div>
             <div class="inputs-iconx">
-              <input  name="agent" class="agent form-control" type="text" autocomplete="off" placeholder="Type Your Agent, if you have one.." required="">
+              <input  name="agent" class="agent form-control" type="text" autocomplete="off" placeholder="Type Your Agent" required="">
               
               <?php $__errorArgs = ['agent'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -151,7 +151,6 @@ unset($__errorArgs, $__bag); ?>
 <?php $__env->stopSection(); ?>
 <?php $__env->startPush('custom-scripts'); ?>
 
-
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script> -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/css/intlTelInput.min.css" rel="stylesheet"/>
 
@@ -170,7 +169,7 @@ unset($__errorArgs, $__bag); ?>
         $('.iconImg, .viewIcon').on('click', function(){
             var passInput=$(".passwordInput");
             if(passInput.attr('type')==='password')
-              {
+            {
                 passInput.attr('type','text');
                 $('.iconImg').hide();
                 $('.viewIcon').show();
@@ -186,7 +185,7 @@ unset($__errorArgs, $__bag); ?>
         $('#cofirmation, .confirmation_viewIcon').on('click', function(){
             var passInput=$(".confirmation");
             if(passInput.attr('type')==='password')
-              {
+            {
                 passInput.attr('type','text');
                 $('.confirmation_viewIcon').show();
                 $('#cofirmation').hide();
