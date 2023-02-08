@@ -38,7 +38,7 @@ class FortifyServiceProvider extends ServiceProvider
             Auth::logout();
             return view('auth.verify-email',compact('id'));
         });
-        Fortify::twoFactorChallengeView(function () {
+        Fortify::twoFactorChallengeView(function () { 
             return view('auth.two-factor-challenge');
         });
         Fortify::createUsersUsing(CreateNewUser::class);
