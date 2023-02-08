@@ -12,6 +12,7 @@
     
     <!--====== Style CSS ======-->
     <link rel="stylesheet" href="../user/assets/css/style.css">
+    <link rel="stylesheet" href="{{ asset('user/css/style.css') }}">
     <link href="{{asset('user/css/products.css')}}" rel="stylesheet">
     <style>
         .banner_bg {
@@ -25,7 +26,7 @@
         background-repeat: no-repeat;
         }
         .col-4 {
-            width: 100% !important;
+            /* width: 100% !important; */
         }
 
         @media (min-width:601px) and (max-width:768px) {
@@ -58,6 +59,7 @@
         @auth
         @else
     <!-- Start Hero Section -->
+{{--
     <div class="hero banner_bg layerd" style="padding-top: 80px; ">
 
         <div class="container-fluid">
@@ -98,8 +100,10 @@
                 </div>
             </div>
             <div class="col-4">
-                <div>
-
+                <div class="static-applicant">
+                    <div class="staticImg">
+                        <img src="{{asset('images/staticApplicant.png')}}" alt="pwg" width="40%" height="40%">
+                    </div>
                 </div>
             </div>
         </div>
