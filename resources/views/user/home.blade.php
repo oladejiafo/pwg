@@ -87,7 +87,7 @@
                 </div>
             </div>
             <div class="col-4">
-                <div class="existing-applicant">
+                <div class="existing-applicant"> 
                     <div class="applicantImg">
                         <img src="{{asset('images/existingApplicant.png')}}" alt="pwg" width="40%" height="40%">
                     </div>
