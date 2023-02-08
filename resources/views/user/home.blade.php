@@ -25,7 +25,7 @@
         background-repeat: no-repeat;
         }
         .col-4 {
-            width: 100% !important;
+            /* width: 100% !important; */
         }
 
         @media (min-width:601px) and (max-width:768px) {
@@ -58,7 +58,7 @@
         @auth
         @else
     <!-- Start Hero Section -->
-    <div class="hero banner_bg layerd" style="padding-top: 80px; ">
+    {{-- <div class="hero banner_bg layerd" style="padding-top: 80px; ">
 
         <div class="container-fluid">
             <div class="row justify-content-between">
@@ -71,6 +71,37 @@
                 </div>
             </div>
 
+        </div>
+    </div> --}}
+    <div class="col-12 banner">
+        <div class="row">
+            <div class="col-4">
+                <div class="new-applicant">
+                    <div class="applicantImg">
+                        <img src="{{asset('images/Applications.png')}}" alt="pwg" width="40%" height="40%">
+                    </div>
+                    <p class="headerFont">NEW APPLICANTS</p>
+                    <p class="subHead">Migration journey  start here.</p>
+                    <p class="headDetails">Get your Europe & Canada Visa <br> from any part of  the world.</p>
+                    <a class="applicantBtn" href="{{route('register')}}">START NOW</a>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="existing-applicant">
+                    <div class="applicantImg">
+                        <img src="{{asset('images/existingApplicant.png')}}" alt="pwg" width="40%" height="40%">
+                    </div>
+                    <p class="headerFont">EXISTING APPLICANTS</p>
+                    <p class="subHead">Migration journey  continues here.</p>
+                    <p class="headDetails">Get your Europe & Canada Visa <br> from any part of  the world.</p>
+                    <a class="applicantBtn" href="{{route('login')}}">START NOW</a>
+                </div>
+            </div>
+            <div class="col-4">
+                <div>
+
+                </div>
+            </div>
         </div>
     </div>
     <!-- End Hero Section -->
@@ -266,7 +297,7 @@
               <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <img loading="lazy" src="{{asset('images/warningimage.png')}}" width ="100%" height ="100%;" alt="EMAS">
+                <img loading="lazy" src="{{asset('images/warningimage.png')}}" width ="100%" height ="100%;" alt="PWG">
             </div>
           </div>
         </div>

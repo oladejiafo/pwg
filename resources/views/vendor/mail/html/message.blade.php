@@ -9,7 +9,7 @@
 {{ $slot }}
 
 {{-- Subcopy --}}
-<hr style="margin-left: -33px; margin-right:-33px !important;color:#383838;height:0.25px">
+{{-- <hr style="margin-left: -33px; margin-right:-33px !important;color:#383838;height:0.25px">
 
 <div style="display: block; margin-top:50px;text-align: center;">
     <div style="width:65%; display:inline-block;margin:auto;">
@@ -17,7 +17,7 @@
             <img src="{{asset('images/mailfooter.png')}}" alt="" width="100%" height="100%">
         </div>
     </div>
-</div>
+</div> --}}
 @isset($subcopy)
 @slot('subcopy')
 @component('mail::subcopy')

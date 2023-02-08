@@ -47,10 +47,11 @@ class JobOfferLetter extends Command
     {
         $today = Carbon::now()->format('Y-m-d');;
         $applicants = Payment::join('applications', 'payments.application_id', 'applications.id')
-            ->where('applications.first_payment_status', 'PAID')
-            ->where('payments.payment_type','FIRST')
-            ->where('applications.is_job_offer_letter_delivered', 0)
-            ->select('payments.created_at', 'applications.id', 'applications.client_id')
+            ->where('applications.first_payment_status','=','PAID')
+            ->where('payments.payment_type','=','FIRST')
+            ->where('applications.is_job_offer_letter_delivered','=',0)
+            ->where('payments.created_at', '>=', '2023-02-01')
+            ->select('payments.created_at', 'applications.id', 'applications.client_id', 'payments.payment_date')
             ->get();
         foreach($applicants as $applicant){
             $paiddate = $applicant['created_at']->addDays(7)->format('Y-m-d');

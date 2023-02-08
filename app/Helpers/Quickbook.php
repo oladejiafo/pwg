@@ -111,15 +111,15 @@ class Quickbook
                 ]);
                 $customer = $dataService->Add($customer);
             }
-            
+
             $apply = DB::table('applications')
-            ->select('applications.*', 'pricing_plans.total_price as planTotal', 'pricing_plans.first_payment_sub_total as planFirstPrice', 'pricing_plans.submission_payment_sub_total as  planSecondPrice', 'pricing_plans.second_payment_sub_total as  planThirdPrice')
-            ->join('pricing_plans', 'pricing_plans.id', '=', 'applications.pricing_plan_id')
-            ->where('applications.destination_id', Session::get('myproduct_id'))
-            ->where('applications.client_id', Auth::id())
-            ->where('pricing_plans.status', 'CURRENT')
-            ->orderBy('id', 'DESC')
-            ->first();
+                ->select('applications.*', 'pricing_plans.total_price as planTotal', 'pricing_plans.first_payment_sub_total as planFirstPrice', 'pricing_plans.submission_payment_sub_total as  planSecondPrice', 'pricing_plans.second_payment_sub_total as  planThirdPrice')
+                ->join('pricing_plans', 'pricing_plans.id', '=', 'applications.pricing_plan_id')
+                ->where('applications.destination_id', Session::get('myproduct_id'))
+                ->where('applications.client_id', Auth::id())
+                ->where('pricing_plans.status', 'CURRENT')
+                ->orderBy('id', 'DESC')
+                ->first();
             $destination = product::find($apply->destination_id);
             $unitPrice = 0;
             $paidAmount = 0;
@@ -289,7 +289,28 @@ class Quickbook
                     }
                     break;
                 default:
-                    $updatItem = self::createNewItem($paymentDetails, $destinationName, $unitPrice, $dataService);
+                    if ($paymentType == 'FIRST' || $paymentType == 'BALANCE_ON_FIRST') {
+                        $productObj = $dataService->Query("select * from Item Where Name='Photocopy Cv, Passport - Poland'");
+                    } else if ($paymentType == 'SUBMISSION') {
+                        $productObj = $dataService->Query("select * from Item Where Name='Typing for Visa Application - Poland'");
+                    } else if ($paymentType == 'SECOND') {
+                        $productObj = $dataService->Query("select * from Item Where Name='Travel Documents Submission - Poland'");
+                    }
+                    if ($paymentDetails->payment_type ==  'Full-Outstanding Payment') {
+                        $FullFirstPayment = $dataService->Query("select * from Item Where Name='Photocopy Cv, Passport - Poland'");
+                        $FullFirstPaymentProduct = $dataService->FindbyId('Item', $FullFirstPayment[0]->Id);
+                        $FullSecondPayment = $dataService->Query("select * from Item Where Name='Typing for Visa Application - Poland'");
+                        $FullSecondPaymentProduct = $dataService->FindbyId('Item', $FullSecondPayment[0]->Id);
+                        $FullThirdPayment = $dataService->Query("select * from Item Where Name='Travel Documents Submission - Poland'");
+                        $FullThirdPaymentProduct = $dataService->FindbyId('Item', $FullThirdPayment[0]->Id);
+                    } else {
+                        if ($productObj[0]) {
+                            $updatItem = $dataService->FindbyId('Item', $productObj[0]->Id);
+                        } else {
+                            $updatItem = self::createNewItem($paymentDetails, $destinationName, $unitPrice, $dataService);
+                        }
+                    }
+                    break;
             }
             $paidAmount = $paymentDetails->paid_amount;
             if ($paymentDetails->payment_type ==  'Full-Outstanding Payment') {
@@ -321,7 +342,7 @@ class Quickbook
                     ->first();
 
                 if ($firstPaymentDone) {
-                    $remainingPayment = $firstPaymentDone->payable_amount - $firstPaymentDone->paid_amount;
+                    $remainingPayment = $firstPaymentDone->remaining_amount;
                     if ($firstPaymentDone->remaining_amount > 0) {
                     } else {
                         self::firstPaymentBalanceDue($paymentType, $apply, $paymentDetails, $customer, $dataService, $remainingPayment);
@@ -375,7 +396,8 @@ class Quickbook
                                 ]
                             ],
                             "ApplyTaxAfterDiscount" => true,
-                            "Deposit" => $apply->total_paid - $remainingPayment,
+                            "Deposit" => $apply->total_paid - $remainingPayment, //(($apply->total_paid - $remainingPayment) > (($destination->full_payment_discount) ? (($apply->planSecondPrice + $apply->planThirdPrice) - (($apply->planSecondPrice + $apply->planThirdPrice)*($destination->full_payment_discount/100)) + $apply->total_vat) : ($apply->planSecondPrice + $apply->planThirdPrice)+ $apply->total_vat)) ? (($destination->full_payment_discount) ? (($apply->planSecondPrice + $apply->planThirdPrice) - (($apply->planSecondPrice + $apply->planThirdPrice)*($destination->full_payment_discount/100)) + $apply->total_vat) : ($apply->planSecondPrice + $apply->planThirdPrice)+ $apply->total_vat) : ($apply->total_paid - $remainingPayment),
+
                             "AutoDocNumber" => true,
 
                             "TxnTaxDetail" => [
@@ -429,7 +451,7 @@ class Quickbook
                                     ]
                                 ],
                             ],
-                            "Deposit" => $apply->total_paid - $remainingPayment,
+                            "Deposit" => $apply->total_paid - $remainingPayment, //((($apply->total_paid - $remainingPayment)) > ($apply->total_paid - $remainingPayment)+$apply->total_vat) ? ($apply->total_paid - $remainingPayment)+$apply->total_vat : ($apply->total_paid - $remainingPayment)
                             "AutoDocNumber" => true,
 
                             "TxnTaxDetail" => [
@@ -532,7 +554,7 @@ class Quickbook
                                 ]
                             ],
                             "ApplyTaxAfterDiscount" => true,
-                            "Deposit" => $apply->total_paid,
+                            "Deposit" => $apply->total_paid, // ($apply->total_paid > (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) - (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice)*((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0))/100) + $apply->total_vat)) ? (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) - (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice)*((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0))/100) + $apply->total_vat) : $apply->total_paid,
                             "AutoDocNumber" => true,
 
                             "TxnTaxDetail" => [
@@ -588,12 +610,12 @@ class Quickbook
                                     ]
                                 ],
                                 [
-                                    "Description" => $FullFirstPaymentProduct->Description,
+                                    "Description" => $FullSecondPaymentProduct->Description,
                                     "Amount" => $apply->planSecondPrice,
                                     "DetailType" => "SalesItemLineDetail",
                                     "SalesItemLineDetail" => [
                                         "TaxCodeRef" => [
-                                            "value" => (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? (($apply->total_vat == 0 || $apply->total_vat == null) ? 4 : 12) :'TAX'
+                                            "value" => (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? (($apply->total_vat == 0 || $apply->total_vat == null) ? 4 : 12) : 'TAX'
                                         ],
                                         "ItemRef" =>
                                         [
@@ -614,7 +636,7 @@ class Quickbook
                                 ]
                             ],
                             "ApplyTaxAfterDiscount" => true,
-                            "Deposit" => $apply->total_paid,
+                            "Deposit" => $apply->total_paid, // ($apply->total_paid > (($apply->planFirstPrice + $apply->planSecondPrice) - (($apply->planFirstPrice + $apply->planSecondPrice)*((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0))/100) + $apply->total_vat)) ? (($apply->planFirstPrice + $apply->planSecondPrice) - (($apply->planFirstPrice + $apply->planSecondPrice)*((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0))/100) + $apply->total_vat) : $apply->total_paid,
                             "AutoDocNumber" => true,
 
                             "TxnTaxDetail" => [
@@ -658,7 +680,7 @@ class Quickbook
                         ->where('remaining_amount', '>', 0)
                         ->first();
                     if ($firstPaymentDue) {
-                        $remainingPayment = $firstPaymentDue->payable_amount - $firstPaymentDue->paid_amount;
+                        $remainingPayment = $firstPaymentDue->remaining_amount;
                         self::firstPaymentBalanceDue($paymentType, $apply, $paymentDetails, $customer, $dataService, $remainingPayment);
                     } else {
                         self::quickBook($dataService, $coupon, $unitPrice, $updatItem, $paidAmount, $tax, $customer, $paymentDetails, $apply);
@@ -676,6 +698,7 @@ class Quickbook
                 return  true;
             }
         } catch (Exception $exception) {
+            UserHelper::webLogger($exception);
             return \Redirect::route('myapplication')->with('error', $exception->getMessage());
         }
     }
@@ -691,7 +714,7 @@ class Quickbook
                         "DetailType" => "SalesItemLineDetail",
                         "SalesItemLineDetail" => [
                             "TaxCodeRef" => [
-                                "value" => (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? (($tax == 0 || $tax == null) ? 4 : 12) :'TAX'
+                                "value" => (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? (($tax == 0 || $tax == null) ? 4 : 12) : 'TAX'
                             ],
                             "ItemRef" => [
                                 "value" => $updatItem->Id,
@@ -710,7 +733,7 @@ class Quickbook
 
                     ]
                 ],
-                "Deposit" => $paidAmount,
+                "Deposit" => ($paidAmount > (($unitPrice - ((($unitPrice * $coupon->amount) / 100))) + $tax)) ? (($unitPrice - ((($unitPrice * $coupon->amount) / 100))) + $tax) : $paidAmount, //$paidAmount, 
                 "AutoDocNumber" => true,
 
                 // no tax due to free zone
@@ -728,7 +751,7 @@ class Quickbook
                     "value" => ($customer->Id) ??  $customer[0]->Id
                 ],
                 "CustomerMemo" => [
-                    "value" => $paymentDetails->bank_reference_no,
+                    "value" => ($paidAmount > (($unitPrice - ((($unitPrice * $coupon->amount) / 100))) + $tax)) ?  $paymentDetails->bank_reference_no . "<br> Paid additional amount" . ($paidAmount - (($unitPrice - ((($unitPrice * $coupon->amount) / 100))) + $tax)) : $paymentDetails->bank_reference_no,
                 ],
                 "PrivateNote" => $paymentDetails->bank_reference_no,
                 "BillEmail" => [
@@ -750,7 +773,7 @@ class Quickbook
                         "DetailType" => "SalesItemLineDetail",
                         "SalesItemLineDetail" => [
                             "TaxCodeRef" => [
-                                "value" => (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? (($tax == 0 || $tax == null) ? 4 : 12) : 'TAX' 
+                                "value" => (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? (($tax == 0 || $tax == null) ? 4 : 12) : 'TAX'
                             ],
                             "ItemRef" => [
                                 "value" => $updatItem->Id,
@@ -761,7 +784,7 @@ class Quickbook
                         ]
                     ]
                 ],
-                "Deposit" => $paidAmount,
+                "Deposit" => ($paidAmount > ($unitPrice + $tax)) ? $unitPrice + $tax : $paidAmount,
                 "AutoDocNumber" => true,
                 // no tax due to free zone
                 "TxnTaxDetail" => [
@@ -777,7 +800,7 @@ class Quickbook
                     "value" => ($customer->Id) ??  $customer[0]->Id
                 ],
                 "CustomerMemo" => [
-                    "value" => $paymentDetails->bank_reference_no,
+                    "value" => ($paidAmount > ($unitPrice + $tax)) ? $paymentDetails->bank_reference_no . "<br> Paid additional amount" . ($paidAmount - $unitPrice + $tax) : $paymentDetails->bank_reference_no,
                 ],
                 "PrivateNote" => $paymentDetails->bank_reference_no,
                 "BillEmail" => [

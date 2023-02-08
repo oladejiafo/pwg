@@ -35,7 +35,7 @@ class Kernel extends ConsoleKernel
         // })->everyMinute();
 
         $schedule->command('week:delete')
-                ->everyMinute();
+                ->daily();
         $schedule->command('reminder:email')
                 ->daily();
         $schedule->command('send:offerletter')
