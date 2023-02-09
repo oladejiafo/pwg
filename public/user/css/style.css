@@ -318,7 +318,8 @@ a.more {
 
 .banner {
   background: #0e0000;
-  padding: 80px 60px 30px 60px;
+  /* padding: 80px 60px 30px 60px; */
+  padding: 80px 5% 80px 5%;
 }
 
 .new-applicant {
@@ -406,9 +407,31 @@ a.more {
 }
 
 
-@media (max-width: 1549px)
+@media (min-width:2300px)
 {
-
+  .new-applicant, .existing-applicant {
+    padding: 60px;
+    height: 650px;
+    max-height: 650px;
+  }
+  .banner {
+    background: #0e0000;
+    padding: 80px 10% 80px 15%;
+  }
+}
+@media (max-width: 1750px)
+{
+  .new-applicant, .existing-applicant {
+    height: 545px;
+    max-height: 545px;
+  }
+}
+@media (max-width: 1550px)
+{
+  .new-applicant, .existing-applicant {
+    height: 540px;
+    max-height: 540px;
+  }
   .headerFont {
     font-size: 24px;
     font-weight: 800;
@@ -521,6 +544,15 @@ a.more {
     font-size: 12px;
   }
 }
+@media (max-width: 820px){
+  .new-applicant, .existing-applicant {
+    padding: 25px 10px;
+  }
+  .headerFont {
+    font-size: 14px;
+    font-weight: 800;
+  }
+}
 @media (max-width: 768px)
 {
   .new-applicant, .existing-applicant {
@@ -538,8 +570,8 @@ a.more {
 {
   .new-applicant, .existing-applicant {
     padding: 40px 20px;
-    height: 510px;
-    max-height: 510px;
+    height: 560px;
+    max-height: 560px;
     margin-block: 20px;
   }
   .headerFont {
@@ -628,6 +660,7 @@ a.more {
     width: 80%;
   }
 }
+
 .btn {
   font-weight: 600;
   padding: 12px 30px;
