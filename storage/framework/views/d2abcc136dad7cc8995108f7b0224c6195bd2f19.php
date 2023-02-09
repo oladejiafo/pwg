@@ -25,7 +25,7 @@
         background-repeat: no-repeat;
         }
         .col-4 {
-            /* width: 100% !important; */
+            width: 100% !important;
         }
 
         @media (min-width:601px) and (max-width:768px) {

@@ -117,6 +117,12 @@
                 @endif
             @endif
         </div>
+
+        {{-- Agent Name --}}
+        <div class="cols col-span-12 sm:col-span-12" style="width:70%; margin: 25px auto">
+            <label for="Agent_Name">Agent Name</label>
+            <x-jet-input id="Agent_Name"  value="{{Auth::user()->sales_agent_name_by_client}}"  type="text" class="mt-1 block w-full"  aria-readonly="" readonly/>
+        </div>
  
         <x-slot name="actions">
         <x-jet-action-message class="mr-3" on="saved">
