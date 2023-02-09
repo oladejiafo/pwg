@@ -406,8 +406,16 @@ a.more {
   background: #FFEFCF !important;
 }
 
+@media (min-width:3500px) and (max-width:4000px)
+{
+  .new-applicant, .existing-applicant {
+    padding: 60px;
+    height: 815px;
+    max-height: 815px;
+  }
 
-@media (min-width:2300px)
+}
+@media (min-width:2300px) and (max-width:3501px)
 {
   .new-applicant, .existing-applicant {
     padding: 60px;
