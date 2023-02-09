@@ -136,8 +136,8 @@ return [
     */
 
     // local
-    'payment_api_key_local' => 'NjMxOTI2ZWUtNjMwZi00YzExLWI1Y2UtMDNkMDZmMDk0YWVkOjgwZTE2MjQ0LThiYTYtNDUxNC05ZjI5LTk1ZDQyMzUxOGMzYQ==',
-    'payment_reference_local' => 'a46ee475-3176-4dcf-a71f-c8f593591db9',
+    'payment_api_key_local' => 'MmM2ODJiOGMtOGFmNS00NzUyLTg2MjUtM2Y5MTg3OWU5YjRlOjViMzhjM2I5LTUyMDItNDBmZi1hNzAyLTFlYTIwZDkwYjhiMQ==',
+    'payment_reference_local' => '15d885ec-682a-4398-89d9-247254d71c18',
     'admin_url_local' => 'http://127.0.0.1:8000',
     //production
     'payment_api_key' => 'MTUxOTZkYjItMmI5YS00YmI0LWFiOGUtMWJhMWEwYzA1MjNiOjE5ODQ3NDYwLTFiM2MtNDY3Mi04MjIxLWUxN2EwOWY3Y2FjZA==',
