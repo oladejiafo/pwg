@@ -180,11 +180,7 @@ $vals=array(0,1,2);
                             <div class="col-lg-6 col-sm-12 mb-3">
                                 <div class="inputs">
                                     <select title="Current Location" class="form-control  current_location form-select" id="current_location" name="current_location" required>
-                                        <?php if(old('current_location')): ?>
-                                        <option selected><?php echo e(old('current_location')); ?></option>
-                                        <?php else: ?>
                                         <option selected disabled>--Current Location--</option>
-                                        <?php endif; ?>
                                         <option value="United Arab Emirates">United Arab Emirates</option>
                                         <?php $__currentLoopData = Constant::countries; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                             <option value="<?php echo e($key); ?>"><?php echo e($item); ?></option>
@@ -205,11 +201,7 @@ unset($__errorArgs, $__bag); ?>
                             <div class="col-lg-6 col-sm-12 mb-3">    
                                 <div class="inputs">
                                     <select title="Embassy Appearance Country" class="form-control  embassy_appearance form-select" id="embassy_appearance" name="embassy_appearance" required="">
-                                        <?php if(old('embassy_appearance')): ?>
-                                        <option selected><?php echo e(old('embassy_appearance')); ?></option>
-                                        <?php else: ?>
                                         <option selected disabled>--Country of Embassy Appearance--</option>
-                                        <?php endif; ?>
                                         <option value="United Arab Emirates">United Arab Emirates</option>
                                         <?php $__currentLoopData = Constant::countries; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                             <option value="<?php echo e($key); ?>"><?php echo e($item); ?></option>

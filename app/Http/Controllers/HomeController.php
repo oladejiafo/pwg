@@ -2226,9 +2226,21 @@ class HomeController extends Controller
         try {
             Artisan::call('send:offerletter');
             Artisan::call('week:delete');
+            Artisan::call('clear:quickbookerror');
         } catch(exception $e){
             echo $e;
         }
 
     }
+
+    public function callQuickbookSchdule()
+    {
+        Artisan::call('quickbook:cron');
+    }
+
+    public function callReminderEmail()
+    {
+        Artisan::call('reminder:email');
+    }
+
 }

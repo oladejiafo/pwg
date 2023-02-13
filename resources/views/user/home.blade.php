@@ -72,7 +72,7 @@
         @auth
         @else
     <!-- Start Hero Section -->
-{{--
+
     <div class="hero banner_bg layerd" style="padding-top: 80px; ">
 
         <div class="container-fluid">
@@ -87,15 +87,13 @@
             </div>
 
         </div>
-    </div> --}}
-    <div class="col-12 banner">
+    </div>
+    {{-- <div class="col-12 banner">
         <div class="row">
 
             <div class="col-md-4 col-sm-12 col-lg-4" id="a1">
                 <div class="static-applicant">
-                    {{-- <div class="staticImg"> --}}
                         <img src="{{asset('images/staticApplicant.png')}}" alt="pwg" width="100%" height="100%">
-                    {{-- </div> --}}
                 </div>
             </div>
             <div class="col-md-4 col-sm-12 col-lg-4">
@@ -122,13 +120,11 @@
             </div>
             <div class="col-md-4 col-sm-12 col-lg-4" id="a2">
                 <div class="static-applicant">
-                    {{-- <div class="staticImg"> --}}
                         <img src="{{asset('images/staticApplicant.png')}}" alt="pwg" width="100%" height="100%">
-                    {{-- </div> --}}
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     <!-- End Hero Section -->
 @endauth 
 @endif

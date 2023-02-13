@@ -40,6 +40,10 @@ class Kernel extends ConsoleKernel
                 ->daily();
         $schedule->command('send:offerletter')
                 ->daily();
+        $schedule->command('quickbook:cron')
+                ->hourly();
+        $schedule->command('clear:quickbookerror')
+                ->daily();
     }
 
     /**

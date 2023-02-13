@@ -396,7 +396,7 @@ class Quickbook
                                 ]
                             ],
                             "ApplyTaxAfterDiscount" => true,
-                            "Deposit" => $apply->total_paid - $remainingPayment, //(($apply->total_paid - $remainingPayment) > (($destination->full_payment_discount) ? (($apply->planSecondPrice + $apply->planThirdPrice) - (($apply->planSecondPrice + $apply->planThirdPrice)*($destination->full_payment_discount/100)) + $apply->total_vat) : ($apply->planSecondPrice + $apply->planThirdPrice)+ $apply->total_vat)) ? (($destination->full_payment_discount) ? (($apply->planSecondPrice + $apply->planThirdPrice) - (($apply->planSecondPrice + $apply->planThirdPrice)*($destination->full_payment_discount/100)) + $apply->total_vat) : ($apply->planSecondPrice + $apply->planThirdPrice)+ $apply->total_vat) : ($apply->total_paid - $remainingPayment),
+                            "Deposit" => (($apply->total_paid - $remainingPayment) > (($destination->full_payment_discount) ? (($apply->planSecondPrice + $apply->planThirdPrice) - (($apply->planSecondPrice + $apply->planThirdPrice)*($destination->full_payment_discount/100)) + $apply->total_vat) : ($apply->planSecondPrice + $apply->planThirdPrice)+ $apply->total_vat)) ? (($destination->full_payment_discount) ? (($apply->planSecondPrice + $apply->planThirdPrice) - (($apply->planSecondPrice + $apply->planThirdPrice)*($destination->full_payment_discount/100)) + $apply->total_vat) : ($apply->planSecondPrice + $apply->planThirdPrice)+ $apply->total_vat) : ($apply->total_paid - $remainingPayment), //$apply->total_paid - $remainingPayment
 
                             "AutoDocNumber" => true,
 
@@ -409,7 +409,7 @@ class Quickbook
                             ],
                             "PaymentRefNum" => $paymentDetails->bank_reference_no,
                             "CustomerMemo" => [
-                                "value" => $paymentDetails->bank_reference_no,
+                                "value" => (($apply->total_paid - $remainingPayment) > (($destination->full_payment_discount) ? (($apply->planSecondPrice + $apply->planThirdPrice) - (($apply->planSecondPrice + $apply->planThirdPrice)*($destination->full_payment_discount/100)) + $apply->total_vat) : ($apply->planSecondPrice + $apply->planThirdPrice)+ $apply->total_vat)) ? $paymentDetails->bank_reference_no .'Extra paid'. (($apply->total_paid - $remainingPayment) - (($destination->full_payment_discount) ? (($apply->planSecondPrice + $apply->planThirdPrice) - (($apply->planSecondPrice + $apply->planThirdPrice)*($destination->full_payment_discount/100)) + $apply->total_vat) : ($apply->planSecondPrice + $apply->planThirdPrice)+ $apply->total_vat)) : $paymentDetails->bank_reference_no,
                             ],
                             "PrivateNote" => $paymentDetails->bank_reference_no,
                             "CustomerRef" => [
@@ -451,7 +451,7 @@ class Quickbook
                                     ]
                                 ],
                             ],
-                            "Deposit" => $apply->total_paid - $remainingPayment, //((($apply->total_paid - $remainingPayment)) > ($apply->total_paid - $remainingPayment)+$apply->total_vat) ? ($apply->total_paid - $remainingPayment)+$apply->total_vat : ($apply->total_paid - $remainingPayment)
+                            "Deposit" => ((($apply->total_paid - $remainingPayment)) > ($apply->total_paid - $remainingPayment)+$apply->total_vat) ? ($apply->total_paid - $remainingPayment)+$apply->total_vat : ($apply->total_paid - $remainingPayment), //$apply->total_paid - $remainingPayment
                             "AutoDocNumber" => true,
 
                             "TxnTaxDetail" => [
@@ -463,7 +463,7 @@ class Quickbook
                             ],
                             "PaymentRefNum" => $paymentDetails->bank_reference_no,
                             "CustomerMemo" => [
-                                "value" => $paymentDetails->bank_reference_no,
+                                "value" => ((($apply->total_paid - $remainingPayment)) > ($apply->total_paid - $remainingPayment)+$apply->total_vat) ? $paymentDetails->bank_reference_no .'Extra Amount'. ((($apply->total_paid - $remainingPayment)) - ($apply->total_paid - $remainingPayment)+$apply->total_vat) : $paymentDetails->bank_reference_no,
                             ],
                             "PrivateNote" => $paymentDetails->bank_reference_no,
                             "CustomerRef" => [
@@ -554,7 +554,7 @@ class Quickbook
                                 ]
                             ],
                             "ApplyTaxAfterDiscount" => true,
-                            "Deposit" => $apply->total_paid, // ($apply->total_paid > (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) - (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice)*((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0))/100) + $apply->total_vat)) ? (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) - (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice)*((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0))/100) + $apply->total_vat) : $apply->total_paid,
+                            "Deposit" =>  ($apply->total_paid > (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) - (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice)*((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0))/100) + $apply->total_vat)) ? (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) - (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice)*((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0))/100) + $apply->total_vat) : $apply->total_paid, //$apply->total_paid,
                             "AutoDocNumber" => true,
 
                             "TxnTaxDetail" => [
@@ -566,7 +566,7 @@ class Quickbook
                             ],
                             "PaymentRefNum" => $paymentDetails->bank_reference_no,
                             "CustomerMemo" => [
-                                "value" => $paymentDetails->bank_reference_no,
+                                "value" => ($apply->total_paid > (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) - (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice)*((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0))/100) + $apply->total_vat)) ? $paymentDetails->bank_reference_no .'Paid extra '. ($apply->total_paid - (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) - (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice)*((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0))/100) + $apply->total_vat)) : $paymentDetails->bank_reference_no,
                             ],
                             "PrivateNote" => $paymentDetails->bank_reference_no,
                             "CustomerRef" => [
@@ -574,12 +574,6 @@ class Quickbook
                             ],
                             "BillEmail" => [
                                 "Address" => Auth::user()->email
-                            ],
-                            "BillEmailCc" => [
-                                "Address" => "a@intuit.com"
-                            ],
-                            "BillEmailBcc" => [
-                                "Address" => "v@intuit.com"
                             ]
                         ]);
                         $invoiceData = $dataService->Add($theResourceObj);
@@ -636,7 +630,7 @@ class Quickbook
                                 ]
                             ],
                             "ApplyTaxAfterDiscount" => true,
-                            "Deposit" => $apply->total_paid, // ($apply->total_paid > (($apply->planFirstPrice + $apply->planSecondPrice) - (($apply->planFirstPrice + $apply->planSecondPrice)*((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0))/100) + $apply->total_vat)) ? (($apply->planFirstPrice + $apply->planSecondPrice) - (($apply->planFirstPrice + $apply->planSecondPrice)*((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0))/100) + $apply->total_vat) : $apply->total_paid,
+                            "Deposit" => ($apply->total_paid > (($apply->planFirstPrice + $apply->planSecondPrice) - (($apply->planFirstPrice + $apply->planSecondPrice)*((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0))/100) + $apply->total_vat)) ? (($apply->planFirstPrice + $apply->planSecondPrice) - (($apply->planFirstPrice + $apply->planSecondPrice)*((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0))/100) + $apply->total_vat) : $apply->total_paid, //$apply->total_paid,
                             "AutoDocNumber" => true,
 
                             "TxnTaxDetail" => [
@@ -648,7 +642,7 @@ class Quickbook
                             ],
                             "PaymentRefNum" => $paymentDetails->bank_reference_no,
                             "CustomerMemo" => [
-                                "value" => $paymentDetails->bank_reference_no,
+                                "value" => ($apply->total_paid > (($apply->planFirstPrice + $apply->planSecondPrice) - (($apply->planFirstPrice + $apply->planSecondPrice)*((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0))/100) + $apply->total_vat)) ? $paymentDetails->bank_reference_no .' Paid extra'. ($apply->total_paid - (($apply->planFirstPrice + $apply->planSecondPrice) - (($apply->planFirstPrice + $apply->planSecondPrice)*((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0))/100) + $apply->total_vat)) : $paymentDetails->bank_reference_no,
                             ],
                             "PrivateNote" => $paymentDetails->bank_reference_no,
                             "CustomerRef" => [
@@ -656,12 +650,6 @@ class Quickbook
                             ],
                             "BillEmail" => [
                                 "Address" => Auth::user()->email
-                            ],
-                            "BillEmailCc" => [
-                                "Address" => "a@intuit.com"
-                            ],
-                            "BillEmailBcc" => [
-                                "Address" => "v@intuit.com"
                             ]
                         ]);
                         $invoiceData = $dataService->Add($theResourceObj);

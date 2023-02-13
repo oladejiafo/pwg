@@ -31,12 +31,14 @@ class NotifyMail extends Mailable
     public function build()
     {
       $title = $this->mailData['title'];
-      $body = $this->mailData['body'];
       if($this->mailData['status'] == "payment"){
         return $this->view('emails.payment-success')->subject($title)->with(['data' => $this->mailData]);
       } else if($this->mailData['status'] == "application"){
         return $this->view('emails.application-submitted')->subject($title)->with(['data' => $this->mailData]);
+      } else if($this->mailData['status'] == "reminder") {
+        return $this->view('emails.Reminder-template')->subject($title)->with(['data' => $this->mailData]);
       } else {
+        $body = $this->mailData['body'];
         return $this->view('emails.notify')->subject($title)->with(['data' => $this->mailData]);
       }
     }
