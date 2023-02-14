@@ -102,7 +102,7 @@
                         <img src="{{asset('images/Applications.png')}}" alt="pwg" width="40%" height="40%">
                     </div>
                     <p class="headerFont">NEW APPLICANTS</p>
-                    <p class="subHead">Migration journey  start here.</p>
+                    <p class="subHead">Migration journey  starts here.</p>
                     <p class="headDetails">Get your Europe & Canada Visa <br> from any part of  the world.</p>
                     <a class="applicantBtn" href="{{route('register')}}">START NOW</a>
                 </div>
@@ -113,7 +113,7 @@
                         <img src="{{asset('images/existingApplicant.png')}}" alt="pwg" width="40%" height="40%">
                     </div>
                     <p class="headerFont">EXISTING APPLICANTS</p>
-                    <p class="subHead">Migration journey  continues here.</p>
+                    <p class="subHead">Migration journey continues here.</p>
                     <p class="headDetails">Get your Europe & Canada Visa <br> from any part of  the world.</p>
                     <a class="applicantBtn" href="{{route('login')}}">START NOW</a>
                 </div>
