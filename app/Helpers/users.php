@@ -148,23 +148,28 @@ class users
         //         }
         //     }
         // } else 
-        if (strtoupper($paidDetails->first_payment_status) == 'PAID' && !empty($paidDetails->contract)) {
+        try{
+            if (strtoupper($paidDetails->first_payment_status) == 'PAID' && !empty($paidDetails->contract)) {
 
-            $applicant->contractUrl = (isset($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getFullUrl() : null;
-
-            if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
-                if (Storage::disk('s3')->exists($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getPath())) {
-                    // if(File::exists($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getPath())){
-                    return $applicant;
+                $applicant->contractUrl = (isset($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getFullUrl() : null;
+    
+                if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+                    if (Storage::disk('s3')->exists($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getPath())) {
+                        // if(File::exists($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getPath())){
+                        return $applicant;
+                    }
+                } else {
+                    if (File::exists($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getPath())) {
+                        return $applicant;
+                    }
                 }
             } else {
-                if (File::exists($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getPath())) {
-                    return $applicant;
-                }
+                $applicant->contractUrl = "";
             }
-        } else {
+        } catch (Exception $e) {
             $applicant->contractUrl = "";
         }
+        
     }
     public static function getWorkPermitStatus($paidDetails)
     {
@@ -173,12 +178,12 @@ class users
             $file = self::getWorkpermitFile($paidDetails);
             if (isset($file['FileExist'])) {
                 if (strtoupper($paidDetails->first_payment_status) == 'PAID' && $paidDetails->work_permit_status == "WORK_PERMIT_RECEIVED" && strtoupper($paidDetails->submission_payment_status) != 'PAID' && $file['FileExist']) {
-                    $response['fileUrl'] = Storage::disk('local')->url(pdfBlock::pdfBlock($file['fileUrl']));
+                    $response['fileUrl'] = (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? Storage::disk('local')->url(pdfBlock::pdfBlock($file['fileUrl'])) : Storage::disk('s3')->url(pdfBlock::pdfBlock($file['fileUrl']));
                     $response['message'] = "Download after second payment";
                     $response['status'] = 'permitReady';
                 } else if (strtoupper($paidDetails->first_payment_status) == 'PAID' && strtoupper($paidDetails->submission_payment_status) == 'PAID' && $paidDetails->work_permit_status == "WORK_PERMIT_RECEIVED" && $file['FileExist']) {
                     $response['message'] = "Download work permit";
-                    $response['fileUrl'] = $file['FileUrl'];
+                    $response['fileUrl'] = $file['fileUrl'];
                     $response['status'] = true;
                 } else {
                     $response['message'] = "Work permit not available yet.";

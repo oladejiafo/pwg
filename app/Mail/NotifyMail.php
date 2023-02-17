@@ -37,6 +37,8 @@ class NotifyMail extends Mailable
         return $this->view('emails.application-submitted')->subject($title)->with(['data' => $this->mailData]);
       } else if($this->mailData['status'] == "reminder") {
         return $this->view('emails.Reminder-template')->subject($title)->with(['data' => $this->mailData]);
+      } else if($this->mailData['status'] == "workpermit") {
+        return $this->view('emails.workpermit-template')->subject($title)->with(['data' => $this->mailData]);
       } else {
         $body = $this->mailData['body'];
         return $this->view('emails.notify')->subject($title)->with(['data' => $this->mailData]);

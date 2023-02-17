@@ -68,7 +68,7 @@ class Quickbook
     }
 
 
-    public static function createInvoice($paymentType)
+    public static function createInvoice($paymentType, $paymentId = null)
     {
         try {
             $dataService = self::connectQucikBook();
@@ -76,7 +76,11 @@ class Quickbook
             $dataService->setLogLocation(public_path() . "/QBLog");
             $customer = $dataService->Query("select * from Customer Where PrimaryEmailAddr='" . Auth::user()->email . "'");
             $dataService->throwExceptionOnError(true);
-            $paymentDetails = PaymentDetails::where('id', Session::get('paymentId'))->first();
+            if(session()->has('paymentId')){
+                $paymentDetails = PaymentDetails::where('id', Session::get('paymentId'))->first();
+            } else if($paymentId) {
+                $paymentDetails = PaymentDetails::where('id', $paymentId)->first();
+            }
             $error = $dataService->getLastError();
             if ($customer) {
                 $customerExist = $dataService->FindbyId('Customer', $customer[0]->Id);
@@ -667,8 +671,8 @@ class Quickbook
                         ->where('invoice_no', '!=', null)
                         ->where('remaining_amount', '>', 0)
                         ->first();
-                    if ($firstPaymentDue) {
-                        $remainingPayment = $firstPaymentDue->remaining_amount;
+                    if ($paymentDetails->payment_type == "BALANCE_ON_FIRST") {
+                        $remainingPayment = $paymentDetails->paid_amount;
                         self::firstPaymentBalanceDue($paymentType, $apply, $paymentDetails, $customer, $dataService, $remainingPayment);
                     } else {
                         self::quickBook($dataService, $coupon, $unitPrice, $updatItem, $paidAmount, $tax, $customer, $paymentDetails, $apply);
@@ -878,6 +882,7 @@ class Quickbook
         ]);
         $resultingObj = $dataService->Add($paymentObj);
         $paymentDetails->invoice_id = $resultingObj->Id;
+        $paymentDetails->invoice_no = $prevInvoice->invoice_no;
         $paymentDetails->save();
     }
 

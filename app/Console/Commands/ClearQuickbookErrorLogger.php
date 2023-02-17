@@ -39,6 +39,6 @@ class ClearQuickbookErrorLogger extends Command
      */
     public function handle()
     {
-        QuickbookWebErrorLogger::where('created_at', '<', Carbon::now()->subDays(10))->delete();
+        QuickbookWebErrorLogger::where('created_at', '<', Carbon::now()->subDays(30))->delete();
     }
 }

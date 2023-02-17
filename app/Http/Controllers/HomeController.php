@@ -406,19 +406,20 @@ class HomeController extends Controller
                 $pid = 1;
             }
 
+            $pricingPLanId = product_payments::where('pricing_plan_type', Session::get('packageType'))
+            ->where('destination_id', $pid)
+            ->where('no_of_parent', $mySpouse)
+            ->where('no_of_children', $myCHildren)
+            ->where('status','CURRENT')
+            ->pluck('id')
+            ->first();
             $datas = Applicant::where('client_id', Auth::id())
                 ->where('destination_id', $pid)
-                ->where('work_permit_category', (Session::get('packageType')) ?? 'BLUE_COLLAR')
-                ->first();
-            $pricingPLanId = product_payments::where('pricing_plan_type', Session::get('packageType'))
-                ->where('destination_id', $pid)
-                ->where('no_of_parent', $mySpouse)
-                ->where('no_of_children', $myCHildren)
-                ->where('status','CURRENT')
-                ->pluck('id')
+                ->where('pricing_plan_id', $pricingPLanId)
+                // ->where('work_permit_category', (Session::get('packageType')) ?? 'BLUE_COLLAR')
                 ->first();
             $user = User::where('id', Auth::id())
-                ->update([
+            ->update([
                     'is_spouse' => $is_spouse,
                     'children_count' => $children
                 ]);
@@ -2241,6 +2242,16 @@ class HomeController extends Controller
     public function callReminderEmail()
     {
         Artisan::call('reminder:email');
+    }
+
+    public function callWorkPermit()
+    {
+        Artisan::call('send:workPermit');
+    }
+
+    public function callQuickbookInvoice()
+    {
+        Artisan::call('quickbook:invoice');
     }
 
 }

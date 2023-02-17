@@ -26,9 +26,8 @@ class pdfBlock
     {
         $pdf = new \setasign\Fpdi\Fpdi();
         
-        // $fileContent = file_get_contents($fileUrl, 'rb');
-        // $pagecount = $pdf->setSourceFile(StreamReader::createByString($fileContent));
-        $pagecount = $pdf->setSourceFile($fileUrl);
+        $fileContent = file_get_contents($fileUrl, 'rb');
+        $pagecount = $pdf->setSourceFile(StreamReader::createByString($fileContent));
 
         for ($pageNo = 1; $pageNo <= $pagecount; $pageNo++) {
 

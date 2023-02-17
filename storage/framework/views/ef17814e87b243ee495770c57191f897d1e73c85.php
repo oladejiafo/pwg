@@ -23,7 +23,7 @@
                             <tbody><tr>
                                 <td style="box-sizing:border-box;font-family:Yantramanav,sans-serif;max-width:100vw;padding:32px">
                                     <div style="box-sizing:border-box;font-family:Yantramanav,sans-serif;width:400px;height:250px;display:block;margin:30px auto">
-                                        <img src="{{asset('images/Work_permit_received.png')}}" alt="" width="100%" height="100%">
+                                        <img src="<?php echo e(asset('images/Work_permit_received.png')); ?>" alt="" width="100%" height="100%">
                                     </div>
                                     <div style="background: linear-gradient(90deg, #104CBA 0%, #0B78D2 76.28%);text-align:center;padding: 20px 5px 20px 5px;color: white;">
                                         <h1 style="box-sizing:border-box;font-family:Yantramanav,sans-serif;color:#fff;font-size:24px;font-weight:bold;margin-top:0;margin-bottom:0;text-align:center;">CONGRATULATIONS</h1>
@@ -43,7 +43,7 @@
                                                             <table role="presentation" style="box-sizing:border-box;font-family:Yantramanav,sans-serif" cellspacing="0" cellpadding="0" border="0">
                                                                 <tbody><tr>
                                                                     <td style="box-sizing:border-box;font-family:Yantramanav,sans-serif">
-                                                                        <a href="{{env('APP_URL')}}/payment_form/{{$data['productId']}}" class="m_6264836849513322656button" rel="noopener" style="font-size: 20px;font-weight:500;box-sizing:border-box;float:left;border-radius:4px;color:#fff;display:inline-block;overflow:hidden;text-decoration:none;padding:12px;width:200px;text-align:center;background-color:#2ead0c!important;border:1px solid #c4c6cd" target="_blank" >PAY NOW</a>
+                                                                        <a href="<?php echo e(env('APP_URL')); ?>/payment_form/<?php echo e($data['productId']); ?>" class="m_6264836849513322656button" rel="noopener" style="font-size: 20px;font-weight:500;box-sizing:border-box;float:left;border-radius:4px;color:#fff;display:inline-block;overflow:hidden;text-decoration:none;padding:12px;width:200px;text-align:center;background-color:#2ead0c!important;border:1px solid #c4c6cd" target="_blank" >PAY NOW</a>
                                                                     </td>
                                                                 </tr>
                                                             </tbody></table>
@@ -61,7 +61,7 @@
                                             width: 23%;
                                             float: right;
                                             margin-right:25px;">
-                                                <img src="{{asset('images/logoo.png')}}" alt="" width="100%" height="100%">
+                                                <img src="<?php echo e(asset('images/logoo.png')); ?>" alt="" width="100%" height="100%">
                                             </div>
                                         </div>
                         
@@ -75,7 +75,7 @@
                                                 color: #383838;
                                                 text-align: left;
                                                 margin-left:25px">
-                                                ©{{ now()->year }} PWG Group <br>
+                                                ©<?php echo e(now()->year); ?> PWG Group <br>
                                                 The Oberoi Centre, Office - 20th Floor<br>
                                                 Business Bay, Dubai, United Arab Emirates<br>
                                             </p>
@@ -101,4 +101,4 @@
         </tr>
         </tbody></table>
     </body>
-</html>
+</html><?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views/emails/workpermit-template.blade.php ENDPATH**/ ?>
