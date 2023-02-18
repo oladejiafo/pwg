@@ -598,7 +598,7 @@ class pdfBlock
         $applicant = Applicant::find($complete->id);
         $originalPdf = null;
         $destination_file = null;
-        $product = Product::find($applicant->destination_id)->name;
+        $product = product::find($applicant->destination_id)->name;
         $productName = strtolower($product);
         $package = $applicant->work_permit_category;
         if ($applicant->second_payment_status == 'PAID') {

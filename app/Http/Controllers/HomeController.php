@@ -1097,7 +1097,7 @@ class HomeController extends Controller
                     Session::put('paymentId', $ppd->id);
 
                     if (isset($request->totalremaining) && $request->totalremaining > 0) {
-                        $ppd->payment_type = "Balance on " . $request->whichpayment;
+                        $ppd->payment_type = $request->whichpayment;
                     } else {
                         $ppd->payment_type = $request->whichpayment;
                     }
