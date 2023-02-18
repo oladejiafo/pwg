@@ -84,6 +84,8 @@ return [
 
     'locale' => 'en',
 
+    'alt_langs' => array ('ar', 'fr'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Fallback Locale
