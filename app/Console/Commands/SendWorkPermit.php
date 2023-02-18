@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Helpers\users as UserHelper;
 use App\Models\Applicant;
 use App\Models\Client;
 use Illuminate\Console\Command;
@@ -53,7 +52,7 @@ class SendWorkPermit extends Command
             ];
             if (strtoupper($applicant->first_payment_status) == 'PAID' && $applicant->work_permit_status == "WORK_PERMIT_RECEIVED") {
                 $client = new \GuzzleHttp\Client();
-                $res = $client->request('POST', config('app.admin_url_local') . '/api/get-work-permit', [
+                $res = $client->request('POST', config('app.admin_url') . '/api/get-work-permit', [
                     'form_params' => [
                         'pricing_plan_id' => $applicant['pricing_plan_id'],
                         'client_id' => $applicant['client_id']
@@ -66,19 +65,19 @@ class SendWorkPermit extends Command
                     'fileUrl' => $file->fileUrl,
                     'FileExist' => $file->status
                 ];
-            }
-            if (isset($response['FileExist'])) {
-                if (strtoupper($applicant->first_payment_status) == 'PAID' && $applicant->work_permit_status == "WORK_PERMIT_RECEIVED" && $response['FileExist']) {
-                    $dataArray = [
-                        'title' => 'Your work permit has been received',
-                        'status' => 'workpermit',
-                        'productId' => $applicant['destination_id'],
-                    ];
-                    $email = Client::find($applicant['client_id'])->email;
-                    Mail::to($email)->send(new NotifyMail($dataArray));
-                    $updateApplicant = Applicant::find($applicant['id']);
-                    $updateApplicant->is_workpermit_delivered = 1;
-                    $updateApplicant->save();
+                if (isset($response['FileExist'])) {
+                    if (strtoupper($applicant->first_payment_status) == 'PAID' && $applicant->work_permit_status == "WORK_PERMIT_RECEIVED" && $response['FileExist']) {
+                        $dataArray = [
+                            'title' => 'Your work permit has been received',
+                            'status' => 'workpermit',
+                            'productId' => $applicant['destination_id'],
+                        ];
+                        $email = Client::find($applicant['client_id'])->email;
+                        Mail::to($email)->send(new NotifyMail($dataArray));
+                        $updateApplicant = Applicant::find($applicant['id']);
+                        $updateApplicant->is_workpermit_delivered = 1;
+                        $updateApplicant->save();
+                    }
                 }
             }
         }
