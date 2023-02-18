@@ -26,9 +26,8 @@ class pdfBlock
     {
         $pdf = new \setasign\Fpdi\Fpdi();
         
-        // $fileContent = file_get_contents($fileUrl, 'rb');
-        // $pagecount = $pdf->setSourceFile(StreamReader::createByString($fileContent));
-        $pagecount = $pdf->setSourceFile($fileUrl);
+        $fileContent = file_get_contents($fileUrl, 'rb');
+        $pagecount = $pdf->setSourceFile(StreamReader::createByString($fileContent));
 
         for ($pageNo = 1; $pageNo <= $pagecount; $pageNo++) {
 
@@ -599,7 +598,7 @@ class pdfBlock
         $applicant = Applicant::find($complete->id);
         $originalPdf = null;
         $destination_file = null;
-        $product = Product::find($applicant->destination_id)->name;
+        $product = product::find($applicant->destination_id)->name;
         $productName = strtolower($product);
         $package = $applicant->work_permit_category;
         if ($applicant->second_payment_status == 'PAID') {

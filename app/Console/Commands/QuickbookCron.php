@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Models\Quickbook as QuickModel;
 use QuickBooksOnline\API\DataService\DataService;
+use App\Helpers\users as UserHelper;
+use App\Constant;
 use Carbon\Carbon;
 use Exception;
 
@@ -45,37 +47,26 @@ class QuickbookCron extends Command
             $quickbook = QuickModel::first();
             $dataService = DataService::Configure(array(
                 'auth_mode' => 'oauth2',
-                'ClientID' => config('services.quickbook.client_id'),
-                'ClientSecret' =>  config('services.quickbook.client_secret'),
-                'RedirectURI' => config('services.quickbook.oauth_redirect_uri'),
-                'scope' => config('services.quickbook.oauth_scope'),
-                'baseUrl' => "development",
-                'refreshTokenKey' => ($quickbook != null) ? $quickbook['refresh_token'] : 'AB11674363956MtY8cdpm5TecAAnYZgVMBCsLjj7QrX1yEXaC3', // Manual Fetch on firt tyme
-                'QBORealmID' => config('services.quickbook.QBORealmID'),
+                'ClientID' => (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.client_id') : config('services.quickbook.client_id'),
+                'ClientSecret' => (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.client_secret') : config('services.quickbook.client_secret'),
+                'RedirectURI' => (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.oauth_redirect_uri') : config('services.quickbook.oauth_redirect_uri'),
+                'scope' => (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.oauth_scope') : config('services.quickbook.oauth_scope'),
+                'accessTokenKey' => $quickbook['access_token'],
+                'refreshTokenKey' => $quickbook['refresh_token'],
+                'QBORealmID' => (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? config('services.quickbook_local.QBORealmID') : config('services.quickbook.QBORealmID'),
+                'baseUrl' => (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? "Development" : "production"
             ));
             $OAuth2LoginHelper = $dataService->getOAuth2LoginHelper();
             $refreshedAccessTokenObj = $OAuth2LoginHelper->refreshToken();
             $dataService->updateOAuth2Token($refreshedAccessTokenObj);
-            if($quickbook){
-                $quickbook->access_token = $refreshedAccessTokenObj->getAccessToken();
-                $quickbook->refresh_token = $refreshedAccessTokenObj->getRefreshToken();
-                $quickbook->refresh_token_expires_in = $refreshedAccessTokenObj->getRefreshTokenExpiresAt();
-                $quickbook->access_token_expires_in =  $refreshedAccessTokenObj->getAccessTokenExpiresAt();
-                $quickbook->realmId = $refreshedAccessTokenObj->getRealmID();
-                $quickbook->save();
-            } else {
-                $quickbook = new QuickModel();
-                $quickbook->access_token = $refreshedAccessTokenObj->getAccessToken();
-                $quickbook->refresh_token = $refreshedAccessTokenObj->getRefreshToken();
-                $quickbook->refresh_token_expires_in = $refreshedAccessTokenObj->getRefreshTokenExpiresAt();
-                $quickbook->access_token_expires_in =  $refreshedAccessTokenObj->getAccessTokenExpiresAt();
-                $quickbook->realmId = $refreshedAccessTokenObj->getRealmID();
-                $quickbook->save();
-            }
-            echo 'accesstoken  update at ' .Carbon::now();
-        } catch(Exception $e) {
-            echo $e->getMessage();
+            $quickbook->access_token = $refreshedAccessTokenObj->getAccessToken();
+            $quickbook->refresh_token = $refreshedAccessTokenObj->getRefreshToken();
+            $quickbook->refresh_token_expires_in = $refreshedAccessTokenObj->getRefreshTokenExpiresAt();
+            $quickbook->access_token_expires_in =  $refreshedAccessTokenObj->getAccessTokenExpiresAt();
+            $quickbook->realmId = $refreshedAccessTokenObj->getRealmID();
+            $quickbook->save();
+        } catch (Exception $e) {
+            UserHelper::webLogger($e);
         }
-    }  
-    
+    }
 }

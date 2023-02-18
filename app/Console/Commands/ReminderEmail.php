@@ -1,14 +1,16 @@
 <?php
 
 namespace App\Console\Commands;
+
 use App\Models\Applicant;
 use App\Models\User;
 use App\Models\payment;
-
+use App\Models\product;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NotifyMail;
 use Carbon\Carbon;
+use DB;
 
 class ReminderEmail extends Command
 {
@@ -43,28 +45,31 @@ class ReminderEmail extends Command
      */
     public function handle()
     {
-        $pending_Reminders = Applicant::where('first_payment_remaining','>',0)->get();
-        
+        $pending_Reminders = Applicant::where('first_payment_remaining', '>', 0)->get();
         $data = [];
+        foreach ($pending_Reminders as $reminder) {
 
-        foreach ($pending_Reminders as $reminder){
-            $pay_info = Payment::where('application_id', $reminder->id)
+            $pay_infox = Payment::where('application_id', $reminder->id)
                 ->where('paid_amount', $reminder->first_payment_paid)
-                ->where('payment_date', '<', Carbon::now()->subDays(15))
+                ->where('created_at', '>=', '2023-02-01')
                 ->first();
 
-            if(isset($pay_info)) 
-            {
+            $date = Carbon::parse($pay_infox->payment_date);
+            $daysToAdd = 7;
+            $startDate = $date->addDays($daysToAdd);
+            $endDate = Carbon::parse($pay_infox->payment_date)->addDays(28);
+            $now = Carbon::now();
+            if (isset($pay_infox) && ($now > $startDate && $now <= $endDate)) {
                 $user = User::where('id', $reminder->client_id)
                     ->first();
-                    
+
                 $client_email = $user->email;
-                $message = "Hello " . $user->name .", Here is an automated reminder about your pending payment of ".$reminder->first_payment_remaining.", that will be due in 5 days time. Kindly login to the PWG Client portal and make payment vian 'My Application' link, so that your VISA application can be processed.";
-
-
+                $productId = $reminder->destination_id;
                 $dataArray = [
-                    'title' => 'Payment Reminder from PWG Group',
-                    'body' => $message,
+                    'product' => product::find($productId)->name,
+                    'title' => 'Payment Reminder',
+                    'productId' => $productId,
+                    'status' => 'reminder'
                 ];
 
                 Mail::to($client_email)->send(new NotifyMail($dataArray));
