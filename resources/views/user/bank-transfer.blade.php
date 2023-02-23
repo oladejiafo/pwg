@@ -188,13 +188,13 @@
 
     </script>
     <script language="javascript" type="text/javascript">
-    changeImage = (evt) => {
-        var output = document.getElementById('output');
-        output.src = URL.createObjectURL(event.target.files[0]);
-        output.onload = function() {
-        URL.revokeObjectURL(output.src) // free memory
+        changeImage = (evt) => {
+            var output = document.getElementById('output');
+            output.src = URL.createObjectURL(event.target.files[0]);
+            output.onload = function() {
+                URL.revokeObjectURL(output.src) // free memory
+            }
         }
-    }
     </script>
 @endpush
 
