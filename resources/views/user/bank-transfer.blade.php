@@ -19,11 +19,46 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-8">
+                            <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+                                <div class="row bankDetails">
+                                    <div class="adcb">
+                                        <ul>
+                                            <li class="bankLogo"><img src="{{asset('images/ADCB-Logo.jpg')}}" alt="PWG ADCB LOGO" width="100%"></li>
+                                            <li><h6>Bank Name: ADCB Bank</h6></li>
+                                            <li><h6>Account Number: 11977082920001</h6></li>
+                                            <li><h6>IBAN: AE500030011977082920001</h6></li>
+                                        </ul>
+                                    </div>
+                                    <div class="eis">
+                                        <ul>
+                                            <li class="bankLogo"><img src="{{asset('images/emirates_islamic.jpg')}}" alt="PWG ADCB LOGO" width="100%"></li>
+                                            <li><h6>Bank Name: Emirates Islamic Bank</h6></li>
+                                            <li><h6>Account Number: 3708431539301</h6></li>
+                                            <li><h6>IBAN: AE780340003708431539301</h6></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                         <div class="form-group row mt-4">
                                             <div class="form-floating mt-3 dob">
+                                                <select class="form-select form-control bank" name="bank" id="bank" placeholder="Destination / Bank*" >
+                                                    <option selected disabled>Destination / Bank* (where you deposited money )</option>
+                                                    <option value="1">Emirates Islamic Bank</option>
+                                                    <option value="2" selected>ADCB Bank</option>
+                                                </select>
+                                                <label for="bank">Destination / Bank*</label>
+                                                @if ($errors->has('bank'))
+                                                    <span class="error">{{ $errors->first('bank') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                        <div class="form-group row mt-4">
+                                            <div class="form-floating mt-3">
                                                 <input type="text" name="datepayment" class="form-control datepayment" placeholder="Date of Payment*" @if(isset($client['payment_date'])) value="{{ $client['payment_date'] }}" @else value="{{old('payment_date')}}" @endif id="payment_date" autocomplete="off" />
                                                 <label for="datepayment">Date of payment*</label>
                                                 @if ($errors->has('datepayment'))
@@ -32,24 +67,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-6">
-                                        <div class="form-group row mt-4">
-                                            <div class="form-floating mt-3">
-                                                <select class="form-select form-control bank" name="bank" id="bank" placeholder="Destination / Bank*" >
-                                                    <option selected disabled>Destination / Bank* (where you deposited money )</option>
-                                                    <option value="1">Emirates Islamic Bank</option>
-                                                    <option value="2" selected>ADCB Bank</option>
-                                                </select>
-                                                <label for="bank">Destination / Bank* (where you deposited money )</label>
-                                                @if ($errors->has('bank'))
-                                                    <span class="error">{{ $errors->first('bank') }}</span>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                         <div class="form-group row mt-4">
                                             <div class="form-floating mt-3">
                                                 <input type="text" name="your_reference" class="form-control your_reference" id="floatingInput" placeholder="Your Reference*" value="" autocomplete="off"/>
@@ -60,11 +80,11 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                         <div class="form-group row mt-4">
                                             <div class="form-floating mt-3">
                                                 <input type="text" name="bank_reference" class="form-control bank_reference" id="floatingInput" placeholder="Bank Reference Number*" value="" autocomplete="off"/>
-                                                <label for="floatingInput">Bank Reference Number*</label>
+                                                <label for="floatingInput">Bank Reference No:*</label>
                                                 @if ($errors->has('bank_reference'))
                                                     <span class="error">{{ $errors->first('bank_reference') }}</span>
                                                 @endif
@@ -73,7 +93,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                         <div class="form-group row mt-4">
                                             <div class="form-floating mt-3">
                                                 <input type="number" name="amount_deposited" pattern="[0-9]+" class="form-control amount_deposited" id="floatingInput" placeholder="Amount Deposited*" value="" autocomplete="off"/>
@@ -84,7 +104,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                         <div class="form-group row mt-4">
                                             <div class="form-floating mt-3">
                                                 <select class="form-select form-control type_payment" name="type_payment" id="type_payment" placeholder="Type of payment*" >
@@ -101,26 +121,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-4">
-                                <div class="row bankDetails">
-                                    <div class="adcb">
-                                        <ul>
-                                            <li class="bankLogo"><img src="{{asset('images/ADCB-Logo.jpg')}}" alt="PWG ADCB LOGO" width="100%"></li>
-                                            <li><h6>Bank Name: ADCB Bank</h6></li>
-                                            <li><h6>Account Number: 11977082920001</h6></li>
-                                            <li><h6>IBAN: AE500030011977082920001</h6></li>
-                                        </ul>
-                                    </div>
-                                    <div class="eis">
-                                        <ul>
-                                            <li class="bankLogo"><img src="{{asset('images/emirates_islamic.jpg')}}" alt="PWG ADCB LOGO" width="100%"></li>
-                                            <li><h6>Bank Name: Emirates Islamic Bank</h6></li>
-                                            <li><h6>Account Number: 11977082920001</h6></li>
-                                            <li><h6>IBAN: AE500030011977082920001</h6></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
+                            
                         </div>
                     </div>  
                     <div class="row">
@@ -134,7 +135,8 @@
                             </div>
                         </div>
                     </div>
-                    <a href="{{route('myapplication')}}" class="cancelBtn">Cancel</a>
+                    <button type="cancel" class="btn cancelBtn" style="float: left;">Cancel</button>
+
                     <button type="submit" class="btn btn-primary submitBtn" style="float: right;">Submit</button>
                 </form>
             </div>
