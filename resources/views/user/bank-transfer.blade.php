@@ -135,8 +135,11 @@
                                     <div class="recieptUploadImage"><img src="{{asset('images/receiptupload.png')}}" alt="PWG Receipt" width="100%"></div>
                                 </label>
                                 <h6 style="text-align: center">Please upload receipt</h6>
-                                <input id='input-file' type='file' />
+                                <input id='input-file' name="imgInp" accept="image/*" type='file' id="imgInp" onchange="changeImage()"/>
+                                <img id="blah" src="#" alt="your image" />
+
                             </div>
+                            <div id="dvPreview"></div>
                         </div>
                     </div>
                     <button type="cancel" class="btn cancelBtn" style="float: left;">Cancel</button>
@@ -150,6 +153,7 @@
 @push('custom-scripts')
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+
     <script>
         $(document).ready(function(){
             $('.adcb').hide();
@@ -176,5 +180,15 @@
                 }
             });
         });
+
+    </script>
+    <script language="javascript" type="text/javascript">
+    changeImage = (evt) => {
+        alert('hete');
+        const [file] = imgInp.files
+        if (file) {
+            blah.src = URL.createObjectURL(file)
+        }
+    }
     </script>
 @endpush
