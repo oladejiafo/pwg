@@ -624,3 +624,8 @@ select {
 .file>label>i {
     padding-right: 5px;
 }
+
+.previewImage {
+    width: 30%;
+    margin: 0 auto;
+}

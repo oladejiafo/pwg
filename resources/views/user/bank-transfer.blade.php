@@ -26,6 +26,7 @@
                                             <li class="bankLogo"><img src="{{asset('images/ADCB-Logo.jpg')}}" alt="PWG ADCB LOGO" width="100%"></li>
                                             <li><h6>Bank Name: ADCB Bank</h6></li>
                                             <li><h6>Branch: BusinessBay Branch</h6></li>
+                                            <li><h6>Account Name :	PWG Visa Services LLC</h6></li>
                                             <li><h6>Account Number: 11977082920001</h6></li>
                                             <li><h6>IBAN: AE500030011977082920001</h6></li>
                                             <li><h6>Swift Code: ADCBAEAA</h6></li>
@@ -36,6 +37,7 @@
                                             <li class="bankLogo"><img src="{{asset('images/emirates_islamic.jpg')}}" alt="PWG ADCB LOGO" width="100%"></li>
                                             <li><h6>Bank Name: Emirates Islamic Bank</h6></li>
                                             <li><h6>Branch: Dubai Mall Branch</h6></li>    
+                                            <li><h6>Account Name :	PWG Visa Services LLC</h6></li>
                                             <li><h6>Account Number: 3708431539301</h6></li>
                                             <li><h6>IBAN: AE780340003708431539301</h6></li>
                                             <li><h6>Swift Code: MEBLAEAD</h6></li>
@@ -135,11 +137,11 @@
                                     <div class="recieptUploadImage"><img src="{{asset('images/receiptupload.png')}}" alt="PWG Receipt" width="100%"></div>
                                 </label>
                                 <h6 style="text-align: center">Please upload receipt</h6>
-                                <input id='input-file' name="imgInp" accept="image/*" type='file' id="imgInp" onchange="changeImage()"/>
-                                <img id="blah" src="#" alt="your image" />
-
+                                <input id='input-file' name="imgInp" accept="image/*" type='file' id="imgInp" onchange="changeImage(event)"/>
                             </div>
-                            <div id="dvPreview"></div>
+                        </div>
+                        <div class="previewImage">
+                            <img id="output" width="100%"/>
                         </div>
                     </div>
                     <button type="cancel" class="btn cancelBtn" style="float: left;">Cancel</button>
@@ -184,10 +186,10 @@
     </script>
     <script language="javascript" type="text/javascript">
     changeImage = (evt) => {
-        alert('hete');
-        const [file] = imgInp.files
-        if (file) {
-            blah.src = URL.createObjectURL(file)
+        var output = document.getElementById('output');
+        output.src = URL.createObjectURL(event.target.files[0]);
+        output.onload = function() {
+        URL.revokeObjectURL(output.src) // free memory
         }
     }
     </script>
