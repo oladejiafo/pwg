@@ -117,6 +117,9 @@ class EnvironmentPathGenerator extends DefaultPathGenerator
             case 'media_collection_submission_payment':
                 $path = 'Applications/PaymentReceipts/Submission/';
                 break;
+            case 'media_collection_second_payment':
+                $path = 'Applications/PaymentReceipts/second/';
+                break;
             case 'media_collection_main_application_hold_letter':
                 $path = 'Applications/ApplicationHoldLetters/';
                 break;

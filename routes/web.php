@@ -142,6 +142,10 @@ Route::get('disconnect/quickbook', [HomeController::class, 'disconnectQuickbook'
 Route::get('/terms',[HomeController::class, 'terms'])->name('terms');
 Route::get('autocompleteAgent', [HomeController::class, 'autocompleteAgent'])->name('autocompleteAgent');
 
+
+// bank transfer
+Route::post('submit/bank/transfer', [HomeController::class, 'submitBankTransfer'])->name('submit.bank.transfer');
+
 // Affiliate
 
 Route::group(['namespace' => 'Affiliate', 'prefix' => '/affiliate','as' => 'affiliate.',

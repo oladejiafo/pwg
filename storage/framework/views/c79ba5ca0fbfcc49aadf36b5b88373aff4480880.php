@@ -9,7 +9,9 @@
                 <h5 style="color:red">Our consultants do NOT accept cash payments- the only acceptable method of payment is bank transfer or deposit with below details :</h5>
             </div>
             <div class="bank-tranfer">
-                <form action="" method="POST" enctype="multipart/form-data">
+                <form action="<?php echo e(route('submit.bank.transfer')); ?>" method="POST" enctype="multipart/form-data">
+                    <?php echo csrf_field(); ?>
+
                     <div class="row">
                         <div class="heading">
                             <div class="first-heading" style="text-align: center">
@@ -115,8 +117,8 @@
                                             <div class="form-floating mt-3">
                                                 <select class="form-select form-control type_payment" name="type_payment" id="type_payment" placeholder="Type of payment*" >
                                                     <option selected disabled>Type of payment*</option>
-                                                    <option value="2">Bank Transfer</option>
-                                                    <option value="3">Bank Deposit</option>
+                                                    <option value="TRANSFER">Bank Transfer</option>
+                                                    <option value="DEPOSIT">Bank Deposit</option>
                                                 </select>
                                                 <label for="type_payment">Type of payment*</label>
                                             </div>
@@ -138,6 +140,9 @@
                                 </label>
                                 <h6 style="text-align: center">Please upload receipt</h6>
                                 <input id='input-file' name="imgInp" accept="image/*" type='file' id="imgInp" onchange="changeImage(event)"/>
+                                <?php if($errors->has('imgInp')): ?>
+                                                <span class="error">Please upload receipt</span>
+                                <?php endif; ?>
                             </div>
                         </div>
                         <div class="previewImage">
@@ -161,7 +166,7 @@
             $('.adcb').hide();
             $('.eis').hide();
             $('.datepayment').datepicker({
-                dateFormat : "dd-mm-yy",
+                dateFormat : "yy-mm-dd",
                 changeMonth: true,
                 changeYear: true,
                 constrainInput: false     

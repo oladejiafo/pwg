@@ -20,16 +20,16 @@
             <div class="forgot-password">
                 <div class="reset">
                     <div class="resetImage">
-                        <img src="<?php echo e(asset('images/Failed_Mark.svg')); ?>" alt="approved">
+                        <img src="<?php echo e(asset('images/reminder.png')); ?>" width="100% " alt="approved">
                     </div>
                     <div class="reset-heading">
-                        Payment unsuccessful !
+                        Payment need to be confirmed!
                     </div>
-                    <div class="subConfirm">We are unable to complete the transaction</div>
+                    <div class="subConfirm">You can continue with applcation submission</div>
                     <div class="sig">
-                        <form action="<?php echo e(route('payment',$id)); ?>" method="GET">
-                            <input type="hidden" name="pid" value="<?php echo e($id); ?>">
-                            <button  style="font-size:20px;" class="btn btn-primary ose">TRY AGAIN</button>
+                        <form action="<?php echo e(url('applicant/details',$id)); ?>" method="GET">
+                                <input type="hidden" name="pid" value="<?php echo e($id); ?>">
+                                <button class="btn btn-primary ose">APPLICATION DETAILS</button>
                         </form>
                     </div>
                 </div>
@@ -37,4 +37,4 @@
         </div>
     </div>
 <?php $__env->stopSection(); ?>
-<?php echo $__env->make('layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\dejia\OneDrive\Desktop\mygit\pwg_eportal\resources\views/user/payment-fail.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views/user/payment-confirm.blade.php ENDPATH**/ ?>
