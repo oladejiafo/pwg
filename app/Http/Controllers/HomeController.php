@@ -854,582 +854,586 @@ class HomeController extends Controller
         try {
             if (Auth::id()) {
     
-            session()->forget('info');
+                session()->forget('info');
 
-            $id = Session::get('myproduct_id');
-    
+                $id = Session::get('myproduct_id');
+        
+                $complete = DB::table('applications')
+                ->where('client_id', '=', Auth::user()->id)
+                ->orderBy('id', 'desc')
+                ->first();
+                $pack_id = $complete->pricing_plan_id;
 
-            $complete = DB::table('applications')
-            ->where('client_id', '=', Auth::user()->id)
-            ->orderBy('id', 'desc')
-            ->first();
-            $pack_id = $complete->pricing_plan_id;
+                if (isset($complete->work_permit_category) && $complete->second_payment_status == 'PENDING') {
+                    $packageType = $complete->work_permit_category;
+                } elseif (Session::has('packageType')) {
+                    $packageType = Session::get('packageType');
+                } else {
+                    $packageType = $complete->work_permit_category;
+                }
 
-            if (isset($complete->work_permit_category) && $complete->second_payment_status == 'PENDING') {
-                $packageType = $complete->work_permit_category;
-            } elseif (Session::has('packageType')) {
-                $packageType = Session::get('packageType');
-            } else {
-                $packageType = $complete->work_permit_category;
-            }
-
-            $pdet = DB::table('pricing_plans')
-            ->where('destination_id', '=', $id)
-            ->where('pricing_plan_type', '=', $packageType)
-            // ->where('status', 'CURRENT')
-            ->where('id', '=', $pack_id)
-            ->first();
-     
-            if($request->whichpayment == 'FIRST')
-            {
-                if($request->totalpay >= 1000)
+                $pdet = DB::table('pricing_plans')
+                ->where('destination_id', '=', $id)
+                ->where('pricing_plan_type', '=', $packageType)
+                // ->where('status', 'CURRENT')
+                ->where('id', '=', $pack_id)
+                ->first();
+        
+                if($request->whichpayment == 'FIRST')
                 {
+                    if($request->totalpay >= 1000)
+                    {
+                        $amount = $request->totalpay;
+                    } else {
+                        if($request->vats >0)
+                        {
+                            $amount = $pdet->first_payment_price;
+                        } else {
+                            $amount = $pdet->first_payment_sub_total;
+                        }  
+                    }
+                } else if($request->whichpayment == 'BALANCE_ON_FIRST') {
+                        $amount = $request->totalpay;
+                } else if($request->whichpayment == 'SUBMISSION'){
+                    if($request->vats >0)
+                    {
+                        $amount = $pdet->submission_payment_price;
+                    } else {
+                        $amount = $pdet->submission_payment_sub_total;
+                    }                
+                } else if($request->whichpayment == 'SECOND'){
+                    if($request->vats >0)
+                    {
+                        $amount = $pdet->second_payment_price;
+                    } else {
+                        $amount = $pdet->second_payment_sub_total;
+                    }
+                }else if($request->whichpayment == 'Full-Outstanding Payment'){
                     $amount = $request->totalpay;
+            
+                    // if($pays->first_payment_status =="PENDING" && $pays->submission_payment_status =="PENDING" & $pays->second_payment_status =="PENDING") 
+                    // {
+                    //     if($request->vats >0)
+                    //     {
+                    //         $amount = ($pdet->sub_total -  $request->discount) * 5/100;
+                    //     } else {
+                    //         $amount = ($pdet->sub_total - $pdet->third_payment_sub_total)-$request->discount;
+                    //     }                
+                    // }
                 } else {
                     if($request->vats >0)
                     {
-                        $amount = $pdet->first_payment_price;
+                        $amount = $pdet->total_price - $pdet->third_payment_price;
                     } else {
-                        $amount = $pdet->first_payment_sub_total;
-                    }  
+                        $amount = $pdet->sub_total - $pdet->third_payment_sub_total;
+                    }                
                 }
-            } else if($request->whichpayment == 'BALANCE_ON_FIRST') {
-                    $amount = $request->totalpay;
-            } else if($request->whichpayment == 'SUBMISSION'){
-                if($request->vats >0)
-                {
-                    $amount = $pdet->submission_payment_price;
+
+                $apply = DB::table('applications')
+                    ->where('destination_id', '=', $id)
+                    // ->whereNotIn('status',  ['APPLICATION_COMPLETED','VISA_REFUSED', 'APPLICATION_CANCELLED','REFUNDED'] )
+                    ->where('client_id', '=', Auth::user()->id)
+                    ->OrderBy('id', "DESC")
+                    ->first();
+
+                /* Newly Added from here*/
+                $destination = Product::find($id);
+                $coupon = DB::table('coupons')
+                    ->where('location', '=', ($apply->embassy_country) ?? $request->embassy_appearance)
+                    ->where('employee_id', '=', $id)
+                    ->where('active_from', '<=', date('Y-m-d'))
+                    ->where('active_until', '>=', date('Y-m-d'))
+                    ->where('active', '=', 1)
+                    ->first();
+                /* Newly added to this point*/
+
+                $applicant_id = $apply->id;
+                $vals = array(0, 1, 2);
+
+                if (in_array($apply->application_stage_status, $vals) && (empty($apply->embassy_country) || $apply->embassy_country == null)) {
+                    // if ($apply->current_location == "Unites") {
+                    if($request->amount > 0){
+                        $validator = Validator::make($request->all(), [
+                            'totaldue' => 'required',
+                            // 'totalpay' => 'numeric|gte:1000|lte:' . $request->totaldue,
+                            'current_location' => 'required',
+                            'embassy_appearance' => 'required',
+                            'amount' => 'numeric|gte:1000|lte:' . $request->totaldue
+        
+                        ]);
+                    } else {
+                        $validator = Validator::make($request->all(), [
+                            'totaldue' => 'required',
+                            'totalpay' => 'numeric|gte:1000|lte:' . $request->totaldue,
+                            'current_location' => 'required',
+                            'embassy_appearance' => 'required',
+                        ]);
+                    }
+                    
+                    if ($validator->fails()) {
+                        return back()->withErrors($validator)
+                            ->withInput();
+                    }
                 } else {
-                    $amount = $pdet->submission_payment_sub_total;
-                }                
-            } else if($request->whichpayment == 'SECOND'){
-                if($request->vats >0)
-                {
-                    $amount = $pdet->second_payment_price;
+                    if($request->amount > 0){
+                        $validator = Validator::make($request->all(), [
+                            'amount' => 'numeric|gte:1000',
+                            'totaldue' => 'required',
+                            'totalpay' => 'numeric'
+                        ]);
+                    } else{
+                        $validator = Validator::make($request->all(), [
+                            'totaldue' => 'required',
+                            'totalpay' => 'numeric'
+                        ]);
+                    }
+                    if ($validator->fails()) {
+                        return back()->withErrors($validator)
+                            ->withInput();
+                    }
+                }
+                $thisPayment = $request->whichpayment;
+                $thisVat = $request->vats;
+                $thisPayment = $request->totaldue;
+                $thisPaymentMade = $request->totalpay;
+                if ($request->discount > 0) {
+                    $thisDiscount = $request->discount;
+                    $thisCode = strip_tags($request->discount_code);
                 } else {
-                    $amount = $pdet->second_payment_sub_total;
+                    $thisDiscount = 0;
+                    $thisCode = '';
                 }
-            }else if($request->whichpayment == 'Full-Outstanding Payment'){
-                $amount = $request->totalpay;
-          
-                // if($pays->first_payment_status =="PENDING" && $pays->submission_payment_status =="PENDING" & $pays->second_payment_status =="PENDING") 
-                // {
-                //     if($request->vats >0)
-                //     {
-                //         $amount = ($pdet->sub_total -  $request->discount) * 5/100;
-                //     } else {
-                //         $amount = ($pdet->sub_total - $pdet->third_payment_sub_total)-$request->discount;
-                //     }                
-                // }
-            } else {
-                if($request->vats >0)
-                {
-                    $amount = $pdet->total_price - $pdet->third_payment_price;
+                $thisDay = date('Y-m-d');
+
+                if ($request->totalpay == null || $request->totalpay == "" || $request->totalpay < 1000) {
+                    $totalpay = 0;
                 } else {
-                    $amount = $pdet->sub_total - $pdet->third_payment_sub_total;
-                }                
-            }
-
-            $apply = DB::table('applications')
-                ->where('destination_id', '=', $id)
-                // ->whereNotIn('status',  ['APPLICATION_COMPLETED','VISA_REFUSED', 'APPLICATION_CANCELLED','REFUNDED'] )
-                ->where('client_id', '=', Auth::user()->id)
-                ->OrderBy('id', "DESC")
-                ->first();
-
-            /* Newly Added from here*/
-            $destination = Product::find($id);
-            $coupon = DB::table('coupons')
-                ->where('location', '=', ($apply->embassy_country) ?? $request->embassy_appearance)
-                ->where('employee_id', '=', $id)
-                ->where('active_from', '<=', date('Y-m-d'))
-                ->where('active_until', '>=', date('Y-m-d'))
-                ->where('active', '=', 1)
-                ->first();
-            /* Newly added to this point*/
-
-            $applicant_id = $apply->id;
-            $vals = array(0, 1, 2);
-
-            if (in_array($apply->application_stage_status, $vals) && (empty($apply->embassy_country) || $apply->embassy_country == null)) {
-                // if ($apply->current_location == "Unites") {
-                if($request->amount > 0){
-                    $validator = Validator::make($request->all(), [
-                        'totaldue' => 'required',
-                        // 'totalpay' => 'numeric|gte:1000|lte:' . $request->totaldue,
-                        'current_location' => 'required',
-                        'embassy_appearance' => 'required',
-                        'amount' => 'numeric|gte:1000|lte:' . $request->totaldue
-    
-                    ]);
-                } else {
-                    $validator = Validator::make($request->all(), [
-                        'totaldue' => 'required',
-                        'totalpay' => 'numeric|gte:1000|lte:' . $request->totaldue,
-                        'current_location' => 'required',
-                        'embassy_appearance' => 'required',
-                    ]);
+                    $totalpay = $request->totalpay;
                 }
-                
-                if ($validator->fails()) {
-                    return back()->withErrors($validator)
-                        ->withInput();
-                }
-            } else {
-                if($request->amount > 0){
-                    $validator = Validator::make($request->all(), [
-                        'amount' => 'numeric|gte:1000',
-                        'totaldue' => 'required',
-                        'totalpay' => 'numeric'
-                    ]);
-                } else{
-                    $validator = Validator::make($request->all(), [
-                        'totaldue' => 'required',
-                        'totalpay' => 'numeric'
-                    ]);
-                }
-                if ($validator->fails()) {
-                    return back()->withErrors($validator)
-                        ->withInput();
-                }
-            }
-            $thisPayment = $request->whichpayment;
-            $thisVat = $request->vats;
-            $thisPayment = $request->totaldue;
-            $thisPaymentMade = $request->totalpay;
-            if ($request->discount > 0) {
-                $thisDiscount = $request->discount;
-                $thisCode = strip_tags($request->discount_code);
-            } else {
-                $thisDiscount = 0;
-                $thisCode = '';
-            }
-            $thisDay = date('Y-m-d');
+                $outstand = $request->totalpay + $thisVat;
 
-            if ($request->totalpay == null || $request->totalpay == "" || $request->totalpay < 1000) {
-                $totalpay = 0;
-            } else {
-                $totalpay = $request->totalpay;
-            }
-            $outstand = $request->totalpay + $thisVat;
-
-            // if ($request->totaldue == $request->totalpay) {
-            if ($request->totaldue == ($request->totalpay + $request->discount)) {
-                $whatsPaid = "PAID";
-            } elseif ($request->totaldue > ($request->totalpay + $request->discount) && ($request->totalpay + $request->discount) >= 1000) {
-                if ($request->totalremaining == ($request->totalpay + $request->discount)) {
+                // if ($request->totaldue == $request->totalpay) {
+                if ($request->totaldue == ($request->totalpay + $request->discount)) {
                     $whatsPaid = "PAID";
-                } else {
-                    $whatsPaid = "PARTIALLY_PAID";
-                }
-            } else {
-                $whatsPaid = "PENDING";//??????
-                $overPay = $request->totalpay - $request->totaldue;
-            }
-
-            $haveSpouse =  Session::get('mySpouse');
-            $kids =  Session::get('myKids');
-
-            $rre = user::where([
-                ['id', '=', Auth::user()->id]
-            ])->first();
-
-            if ($rre === null) {
-            } else {
-                // $rre->country_of_residence =  $request->current_location;
-                $rre->country_of_residence =  (strlen($request->current_location) > 0) ? $request->current_location : $rre->country_of_residence;
-                $rre->save();
-            }
-
-            set_time_limit(0);
-
-            /* OLD ONE
-                $outletRef       = '15d885ec-682a-4398-89d9-247254d71c18'; // config('app.payment_reference'); 
-                $apikey          = "MmM2ODJiOGMtOGFmNS00NzUyLTg2MjUtM2Y5MTg3OWU5YjRlOjViMzhjM2I5LTUyMDItNDBmZi1hNzAyLTFlYTIwZDkwYjhiMQ=="; //config('app.payment_api_key'); 
-
-                // Test URLS 
-                $idServiceURL  = "https://identity.sandbox.ngenius-payments.com/auth/realms/ni/protocol/openid-connect/token";           // set the identity service URL (example only)
-                $txnServiceURL = "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders";
-
-                // LIVE URLS 
-                //$idServiceURL  = "https://identity.ngenius-payments.com/auth/realms/NetworkInternational/protocol/openid-connect/token";           // set the identity service URL (example only)
-                //$txnServiceURL = "https://api-gateway.ngenius-payments.com/transactions/outlets/".$outletRef."/orders"; 
-
-                */
-
-            if (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
-                $outletRef       = config('app.payment_reference_local');
-                $apikey          = config('app.payment_api_key_local');
-                // Test URLS 
-                $idServiceURL  = "https://identity.sandbox.ngenius-payments.com/auth/realms/ni/protocol/openid-connect/token";           // set the identity service URL (example only)
-                $txnServiceURL = "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders";
-            } else {
-                $outletRef       = config('app.payment_reference');
-                $apikey          = config('app.payment_api_key');
-                // LIVE URLS 
-                $idServiceURL  = "https://identity.ngenius-payments.com/auth/realms/NetworkInternational/protocol/openid-connect/token";           // set the identity service URL (example only)
-                $txnServiceURL = "https://api-gateway.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders";
-            }
-
-            $tokenHeaders  = array("Authorization: Basic " . $apikey, "Content-Type: application/x-www-form-urlencoded");
-            $tokenResponse = $this->invokeCurlRequest("POST", $idServiceURL, $tokenHeaders, http_build_query(array('grant_type' => 'client_credentials')));
-            $tokenResponse = json_decode($tokenResponse);
-            $access_token  = $tokenResponse->access_token;
-
-            $order = array();
-            $successUrl = url('/') . '/payment/success';
-            $failUrl =  url('/') . '/payment/fail';
-            $order['action']                        = "PURCHASE";                      // Transaction mode ("AUTH" = authorize only, no automatic settle/capture, "SALE" = authorize + automatic settle/capture)
-            $order['amount']['currencyCode']       = "AED";                           // Payment currency ('AED' only for now)
-            $order['amount']['value']                = floor($amount * 100);              // Minor units (1000 = 10.00 AED)
-            $order['language']                       = "en";                        // Payment page language ('en' or 'ar' only)
-            $order['emailAddress']                    = "pwggroup@pwggroup.pl";
-            $order['billingAddress']['firstName'] = "PWG";
-            $order['billingAddress']['lastName']  = "Group";
-            $order['billingAddress']['address1']  = "The Oberoi Center";
-            $order['billingAddress']['city']        = "Business Bay";
-            $order['billingAddress']['countryCode'] = "UAE";
-            $order['merchantOrderReference'] = time();
-            $order['merchantAttributes']['redirectUrl'] = $successUrl;
-            $order['merchantAttributes']['skipConfirmationPage'] = true;
-            $order['merchantAttributes']['cancelUrl']   = $failUrl;
-            $order['merchantAttributes']['cancelText']  = 'Cancel';
-            $order = json_encode($order);
-            $orderCreateHeaders  = array("Authorization: Bearer " . $access_token, "Content-Type: application/vnd.ni-payment.v2+json", "Accept: application/vnd.ni-payment.v2+json");
-            //$orderCreateResponse = invokeCurlRequest("POST", $txnServiceURL, $orderCreateHeaders, $payment);
-            $orderCreateResponse = $this->invokeCurlRequest("POST", $txnServiceURL, $orderCreateHeaders, $order);
-            $orderCreateResponse = json_decode($orderCreateResponse);
-
-            // $paymentLink 		   = $orderCreateResponse->_links->payment->href; 
-            // return Redirect::to($paymentLink);
-
-            if (isset($orderCreateResponse->_links->payment->href)) {
-
-                ###################################################################
-                $ppd = payment::where([
-                    ['application_id', '=', $applicant_id],
-                    ['payment_type', $request->whichpayment]
-                    // ['invoice_amount', $request->totalpay],
-                ])
-
-                    // ->where(function ($query) use ($request) {
-                    //     $query->where('paid_amount', $request->totalpay)
-                    //         ->orWhere('paid_amount', NULL);
-                    // })
-                    ->first();
-                if ($ppd === null) {
-                    $dat = new payment;
-
-                    $dat->payment_type = $request->whichpayment;
-                    $dat->application_id = $applicant_id;
-                    $dat->payment_date = $thisDay;
-                    $dat->payable_amount = $request->totaldue;
-                    $dat->invoice_amount = $request->totalpay;
-                    // $dat->remaining_amount = (isset($request->totalremaining)) ? $request->totalremaining : NULL;
-                    $dat->remaining_amount = (isset($request->totalremaining)) ? NULL : $request->totaldue - $request->totalpay;
-                    $dat->save();
-                    Session::put('paymentId', $dat->id);
-                } else {
-                    Session::put('paymentId', $ppd->id);
-
-                    if (isset($request->totalremaining) && $request->totalremaining > 0) {
-                        $ppd->payment_type = $request->whichpayment;
+                } elseif ($request->totaldue > ($request->totalpay + $request->discount) && ($request->totalpay + $request->discount) >= 1000) {
+                    if ($request->totalremaining == ($request->totalpay + $request->discount)) {
+                        $whatsPaid = "PAID";
                     } else {
-                        $ppd->payment_type = $request->whichpayment;
+                        $whatsPaid = "PARTIALLY_PAID";
                     }
-                    $ppd->application_id = $applicant_id;
-                    $ppd->payment_date = $thisDay;
-                    $ppd->payable_amount = $request->totaldue;
-                    $ppd->invoice_amount = $request->totalpay;
-                    $ppd->save();
+                } else {
+                    $whatsPaid = "PENDING";//??????
+                    $overPay = $request->totalpay - $request->totaldue;
                 }
 
-                $datas = applicant::where([
-                    ['client_id', '=', Auth::user()->id],
-                    ['destination_id', '=', $request->pid],
-                ])
-                    ->orderBy('id', 'Desc')
-                    ->first();
-                $paymentCreds = [
-                    'whatsPaid' => $whatsPaid,
-                    'thisPayment' => $thisPayment,
-                    'thisPaymentMade' => $thisPaymentMade,
-                    'totalremaining' => $request['totalremaining'],
-                    'whichpayment' => $request['whichpayment'],
-                    'datas' => $datas,
-                    'totalpay' => $request->totalpay,
-                    'discount' => $request->discount
-                ];
-                if ($datas === null) {
-                    $data = new applicant;
-                    if (in_array($apply->application_stage_status, $vals) && (empty($apply->embassy_country) || $apply->embassy_country == null)) {
-                        $data->embassy_country = $request->embassy_appearance;
-                    }
-                    $data->pricing_plan_id = $request->ppid;
+                $haveSpouse =  Session::get('mySpouse');
+                $kids =  Session::get('myKids');
 
-                    if ($request->whichpayment == 'FIRST') {
-                        $data->first_payment_price = $thisPayment; //was remarked
-                        $data->first_payment_paid = $thisPaymentMade; //was remarked
-                        $data->first_payment_vat = $thisVat;
-                        $data->first_payment_discount = $thisDiscount;
-                    }  elseif ($request->whichpayment == 'BALANCE_ON_FIRST') {
+                $rre = user::where([
+                    ['id', '=', Auth::user()->id]
+                ])->first();
 
-                    }  elseif ($request->whichpayment == 'SUBMISSION') {
-                        $data->submission_payment_price = $thisPayment;
-                        $data->submission_payment_paid = $thisPaymentMade;
-                        $data->submission_payment_vat = $thisVat;
-                        $data->submission_payment_discount = $thisDiscount;
-                    } elseif ($request->whichpayment == 'SECOND') {
-                        $data->second_payment_price = $thisPayment;
-                        $data->second_payment_paid = $thisPaymentMade;
-                        $data->second_payment_vat = $thisVat;
-                        $data->second_payment_discount = $thisDiscount;
-                        $data->coupon_code = $thisCode;
-                        $res = $data->save();
+                if ($rre === null) {
+                } else {
+                    // $rre->country_of_residence =  $request->current_location;
+                    $rre->country_of_residence =  (strlen($request->current_location) > 0) ? $request->current_location : $rre->country_of_residence;
+                    $rre->save();
+                }
+
+                set_time_limit(0);
+
+                if($request->payoption == "Bank")
+                {
+                    return view('user.bank-transfer', compact('thisPayment', 'thisPaymentMade', 'whatsPaid'));
+
+                } else {
+                    /* OLD ONE
+                        $outletRef       = '15d885ec-682a-4398-89d9-247254d71c18'; // config('app.payment_reference'); 
+                        $apikey          = "MmM2ODJiOGMtOGFmNS00NzUyLTg2MjUtM2Y5MTg3OWU5YjRlOjViMzhjM2I5LTUyMDItNDBmZi1hNzAyLTFlYTIwZDkwYjhiMQ=="; //config('app.payment_api_key'); 
+
+                        // Test URLS 
+                        $idServiceURL  = "https://identity.sandbox.ngenius-payments.com/auth/realms/ni/protocol/openid-connect/token";           // set the identity service URL (example only)
+                        $txnServiceURL = "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders";
+
+                        // LIVE URLS 
+                        //$idServiceURL  = "https://identity.ngenius-payments.com/auth/realms/NetworkInternational/protocol/openid-connect/token";           // set the identity service URL (example only)
+                        //$txnServiceURL = "https://api-gateway.ngenius-payments.com/transactions/outlets/".$outletRef."/orders"; 
+
+                        */
+
+                    if (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+                        $outletRef       = config('app.payment_reference_local');
+                        $apikey          = config('app.payment_api_key_local');
+                        // Test URLS 
+                        $idServiceURL  = "https://identity.sandbox.ngenius-payments.com/auth/realms/ni/protocol/openid-connect/token";           // set the identity service URL (example only)
+                        $txnServiceURL = "https://api-gateway.sandbox.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders";
                     } else {
+                        $outletRef       = config('app.payment_reference');
+                        $apikey          = config('app.payment_api_key');
+                        // LIVE URLS 
+                        $idServiceURL  = "https://identity.ngenius-payments.com/auth/realms/NetworkInternational/protocol/openid-connect/token";           // set the identity service URL (example only)
+                        $txnServiceURL = "https://api-gateway.ngenius-payments.com/transactions/outlets/" . $outletRef . "/orders";
+                    }
 
-                        // $data->second_payment_status = 'PAID';
-                        $data->total_price = $thisPayment;
-                        $data->total_vat = $thisVat;
-                        $data->total_discount = $thisDiscount;
-                        //Splits
-                        $paysplit = DB::table('pricing_plans')
-                            ->where('destination_id', '=', $request->pid)
-                            ->where('id', ($apply->pricing_plan_id) ?? $request->ppid)
-                            // ->where('status', 'CURRENT')
-                            // ->where('id', '=', $pack_id)
+                    $tokenHeaders  = array("Authorization: Basic " . $apikey, "Content-Type: application/x-www-form-urlencoded");
+                    $tokenResponse = $this->invokeCurlRequest("POST", $idServiceURL, $tokenHeaders, http_build_query(array('grant_type' => 'client_credentials')));
+                    $tokenResponse = json_decode($tokenResponse);
+                    $access_token  = $tokenResponse->access_token;
+
+                    $order = array();
+                    $successUrl = url('/') . '/payment/success';
+                    $failUrl =  url('/') . '/payment/fail';
+                    $order['action']                        = "PURCHASE";                      // Transaction mode ("AUTH" = authorize only, no automatic settle/capture, "SALE" = authorize + automatic settle/capture)
+                    $order['amount']['currencyCode']       = "AED";                           // Payment currency ('AED' only for now)
+                    $order['amount']['value']                = floor($amount * 100);              // Minor units (1000 = 10.00 AED)
+                    $order['language']                       = "en";                        // Payment page language ('en' or 'ar' only)
+                    $order['emailAddress']                    = "pwggroup@pwggroup.pl";
+                    $order['billingAddress']['firstName'] = "PWG";
+                    $order['billingAddress']['lastName']  = "Group";
+                    $order['billingAddress']['address1']  = "The Oberoi Center";
+                    $order['billingAddress']['city']        = "Business Bay";
+                    $order['billingAddress']['countryCode'] = "UAE";
+                    $order['merchantOrderReference'] = time();
+                    $order['merchantAttributes']['redirectUrl'] = $successUrl;
+                    $order['merchantAttributes']['skipConfirmationPage'] = true;
+                    $order['merchantAttributes']['cancelUrl']   = $failUrl;
+                    $order['merchantAttributes']['cancelText']  = 'Cancel';
+                    $order = json_encode($order);
+                    $orderCreateHeaders  = array("Authorization: Bearer " . $access_token, "Content-Type: application/vnd.ni-payment.v2+json", "Accept: application/vnd.ni-payment.v2+json");
+                    //$orderCreateResponse = invokeCurlRequest("POST", $txnServiceURL, $orderCreateHeaders, $payment);
+                    $orderCreateResponse = $this->invokeCurlRequest("POST", $txnServiceURL, $orderCreateHeaders, $order);
+                    $orderCreateResponse = json_decode($orderCreateResponse);
+
+                    // $paymentLink 		   = $orderCreateResponse->_links->payment->href; 
+                    // return Redirect::to($paymentLink);
+
+                    if (isset($orderCreateResponse->_links->payment->href)) {
+
+                        ###################################################################
+                        $ppd = payment::where([
+                            ['application_id', '=', $applicant_id],
+                            ['payment_type', $request->whichpayment]
+                            // ['invoice_amount', $request->totalpay],
+                        ])
+
+                            // ->where(function ($query) use ($request) {
+                            //     $query->where('paid_amount', $request->totalpay)
+                            //         ->orWhere('paid_amount', NULL);
+                            // })
                             ->first();
+                        if ($ppd === null) {
+                            $dat = new payment;
 
-                        $paymentCreds['paysplit'] = $paysplit;
-
-                        if (isset($paysplit)) {
-                            //First Split
-
-
-                            if ($thisDiscount > 0) {
-                                // $firstDisc = ($request->third_p * $destination->full_payment_discount) / 100;
-                                $firstDisc = $request->first_p * (Session::get('discountapplied') == 1) ?  $coupon->amount / 100 : $destination->full_payment_discount / 100;
-
-                                // $firstVat = (($request->first_p - $firstDisc) * 5) / 100;
-                            } else {
-                                $firstDisc = ($request->first_p * ((Session::get('discountapplied') == 1) ? $coupon->amount : 0)) / 100;
-                                // $firstVat = (($request->first_p )* 5) / 100;
-                            }
-
-                            if (isset($thisVat) && $thisVat > 0) {
-                                $firstVat = ($paysplit->first_payment_price * 5) / 100;
-                            } else {
-                                $firstVat = 0;
-                            }
-                            $paymentCreds['firstVat'] = $firstVat;
-
-                            // $data->first_payment_price = $paysplit->first_payment_price + $firstVat;
-                            $data->first_payment_price = ($paysplit->first_payment_price - $firstDisc) + $firstVat;
-                            $paymentCreds['paysplit']->first_payment_price = ($paysplit->first_payment_price - $firstDisc) + $firstVat;
-                            $data->first_payment_vat = $firstVat;
-                            $data->first_payment_discount = $firstDisc;
-
-                            //Second Split
-                            if ($thisDiscount > 0) {
-                                // $secondDisc = ($request->second_p * $destination->full_payment_discount) / 100;
-                                $secondDisc = ($request->second_p * ((Session::get('discountapplied') == 1) ? ($coupon->amount) : $destination->full_payment_discount)) / 100;
-                                // $secondVat = (($request->second_p - $secondDisc) * 5) / 100;
-                            } else {
-                                $secondDisc = ($request->second_p * ((Session::get('discountapplied') == 1) ? $coupon->amount : 0)) / 100;
-                                // $secondVat = ($request->second_p * 5) / 100;
-                            }
-                            if (isset($thisVat) && $thisVat > 0) {
-                                // $secondVat = ($paysplit->submission_payment_price * 5) / 100;
-                                $secondVat = (($request->second_p - $secondDisc) * 5) / 100;
-                            } else {
-                                $secondVat = 0;
-                            }
-                            $paymentCreds['secondVat'] = $secondVat;
-
-                            // $data->submission_payment_price = $paysplit->submission_payment_price  + $secondVat;
-                            $data->submission_payment_price = ($paysplit->submission_payment_price - $secondDisc) + $secondVat;
-                            $paymentCreds['paysplit']->submission_payment_price = ($paysplit->submission_payment_price - $secondDisc) + $secondVat;
-
-                            $data->submission_payment_vat = $secondVat;
-                            $data->submission_payment_discount = $secondDisc;
-
-                            //Third Split
-                            if ($thisDiscount > 0) {
-                                // $thirdDisc = ($request->third_p * $destination->full_payment_discount) / 100;
-                                $thirdDisc = ($request->third_p * ((Session::get('discountapplied') == 1) ? ($coupon->amount) : $destination->full_payment_discount)) / 100;
-                            } else {
-                                $thirdDisc = ($request->third_p * ((Session::get('discountapplied') == 1) ? $coupon->amount : 0)) / 100;
-
-                                // $thirdVat = ($request->third_p * 5) / 100;
-                            }
-                            if (isset($thisVat) && $thisVat > 0) {
-                                // $thirdVat = ($paysplit->second_payment_price * 5) / 100;
-
-                                $thirdVat = (($request->third_p - $thirdDisc) * 5) / 100;
-                            } else {
-                                $thirdVat = 0;
-                            }
-                            $paymentCreds['thirdVat'] = $thirdVat;
-
-                            // $data->second_payment_price = $paysplit->second_payment_price + $thirdVat;
-                            $data->second_payment_price = ($paysplit->second_payment_price - $thirdDisc) + $thirdVat;
-                            $paymentCreds['paysplit']->second_payment_price = ($paysplit->second_payment_price - $thirdDisc) + $thirdVat;
-
-                            $data->second_payment_vat = $thirdVat;
-                            $data->second_payment_discount = $thirdDisc;
-                        }
-                    }
-
-                    $data->coupon_code = $thisCode;
-                    // $data->application_stage_status = 2;
-
-                    $res = $data->save();
-                } else {
-                    if (in_array($apply->application_stage_status, $vals) && (empty($apply->embassy_country) || $apply->embassy_country == null)) {
-                        $datas->embassy_country = $request->embassy_appearance;
-                    }
-                    $datas->pricing_plan_id = $request->ppid;
-
-                    if ($request->whichpayment == 'FIRST') {
-                        $datas->first_payment_price = $thisPayment;
-                        // $datas->first_payment_paid = $thisPaymentMade;
-
-                        $datas->first_payment_vat = $thisVat;
-                        $datas->first_payment_discount = $thisDiscount;
-
-                        if (isset($request->totalremaining) && $request->totalremaining > 0) {
+                            $dat->payment_type = $request->whichpayment;
+                            $dat->application_id = $applicant_id;
+                            $dat->payment_date = $thisDay;
+                            $dat->payable_amount = $request->totaldue;
+                            $dat->invoice_amount = $request->totalpay;
+                            // $dat->remaining_amount = (isset($request->totalremaining)) ? $request->totalremaining : NULL;
+                            $dat->remaining_amount = (isset($request->totalremaining)) ? NULL : $request->totaldue - $request->totalpay;
+                            $dat->save();
+                            Session::put('paymentId', $dat->id);
                         } else {
-                            $datas->first_payment_price = $thisPayment;
-                        }
-                    } else if ($request->whichpayment == 'BALANCE_ON_FIRST') {
+                            Session::put('paymentId', $ppd->id);
 
-                    } elseif ($request->whichpayment == 'SUBMISSION') {
-                        $datas->submission_payment_price = $thisPayment;
-                        $datas->submission_payment_vat = $thisVat;
-                        $datas->submission_payment_discount = $thisDiscount;
-                    } elseif ($request->whichpayment == 'SECOND') {
-                        $datas->second_payment_price = $thisPayment;
-                        $datas->second_payment_vat = $thisVat;
-                        $datas->second_payment_discount = $thisDiscount;
-                    } else {
-                        $datas->total_price = $thisPayment;
-                        $datas->total_vat = $thisVat;
-                        $datas->total_discount = $thisDiscount;
-                        //Splits
-                        $paysplit = DB::table('pricing_plans')
-                            ->where('destination_id', '=', $request->pid)
-                            ->where('id', ($apply->pricing_plan_id) ?? $request->ppid)
-                            // ->where('status', 'CURRENT')
-                            // ->where('id', '=', $pack_id)
+                            if (isset($request->totalremaining) && $request->totalremaining > 0) {
+                                $ppd->payment_type = $request->whichpayment;
+                            } else {
+                                $ppd->payment_type = $request->whichpayment;
+                            }
+                            $ppd->application_id = $applicant_id;
+                            $ppd->payment_date = $thisDay;
+                            $ppd->payable_amount = $request->totaldue;
+                            $ppd->invoice_amount = $request->totalpay;
+                            $ppd->save();
+                        }
+
+                        $datas = applicant::where([
+                            ['client_id', '=', Auth::user()->id],
+                            ['destination_id', '=', $request->pid],
+                        ])
+                            ->orderBy('id', 'Desc')
                             ->first();
-                        $paymentCreds['paysplit'] = $paysplit;
+                        $paymentCreds = [
+                            'whatsPaid' => $whatsPaid,
+                            'thisPayment' => $thisPayment,
+                            'thisPaymentMade' => $thisPaymentMade,
+                            'totalremaining' => $request['totalremaining'],
+                            'whichpayment' => $request['whichpayment'],
+                            'datas' => $datas,
+                            'totalpay' => $request->totalpay,
+                            'discount' => $request->discount
+                        ];
+                        if ($datas === null) {
+                            $data = new applicant;
+                            if (in_array($apply->application_stage_status, $vals) && (empty($apply->embassy_country) || $apply->embassy_country == null)) {
+                                $data->embassy_country = $request->embassy_appearance;
+                            }
+                            $data->pricing_plan_id = $request->ppid;
 
-                        if (isset($paysplit)) {
-                            //First Split
-                            $firstDisc = 0;
-                            if ($thisDiscount > 0) {
-                                // $firstDisc = ($request->first_p * $destination->full_payment_discount) / 100;
-                                $firstDisc = ($request->first_p * ((Session::get('discountapplied') == 1) ? ($coupon->amount) : $destination->full_payment_discount)) / 100;
+                            if ($request->whichpayment == 'FIRST') {
+                                $data->first_payment_price = $thisPayment; //was remarked
+                                $data->first_payment_paid = $thisPaymentMade; //was remarked
+                                $data->first_payment_vat = $thisVat;
+                                $data->first_payment_discount = $thisDiscount;
+                            }  elseif ($request->whichpayment == 'BALANCE_ON_FIRST') {
 
-                                // $firstVat = (($request->first_p - $firstDisc) * 5) / 100;
+                            }  elseif ($request->whichpayment == 'SUBMISSION') {
+                                $data->submission_payment_price = $thisPayment;
+                                $data->submission_payment_paid = $thisPaymentMade;
+                                $data->submission_payment_vat = $thisVat;
+                                $data->submission_payment_discount = $thisDiscount;
+                            } elseif ($request->whichpayment == 'SECOND') {
+                                $data->second_payment_price = $thisPayment;
+                                $data->second_payment_paid = $thisPaymentMade;
+                                $data->second_payment_vat = $thisVat;
+                                $data->second_payment_discount = $thisDiscount;
+                                $data->coupon_code = $thisCode;
+                                $res = $data->save();
                             } else {
-                                $firstDisc = ($request->first_p * ((Session::get('discountapplied') == 1) ? $coupon->amount : 0)) / 100;
 
-                                // $firstVat = ($request->first_p * 5) / 100;
+                                // $data->second_payment_status = 'PAID';
+                                $data->total_price = $thisPayment;
+                                $data->total_vat = $thisVat;
+                                $data->total_discount = $thisDiscount;
+                                //Splits
+                                $paysplit = DB::table('pricing_plans')
+                                    ->where('destination_id', '=', $request->pid)
+                                    ->where('id', ($apply->pricing_plan_id) ?? $request->ppid)
+                                    // ->where('status', 'CURRENT')
+                                    // ->where('id', '=', $pack_id)
+                                    ->first();
+
+                                $paymentCreds['paysplit'] = $paysplit;
+
+                                if (isset($paysplit)) {
+                                    //First Split
+
+
+                                    if ($thisDiscount > 0) {
+                                        // $firstDisc = ($request->third_p * $destination->full_payment_discount) / 100;
+                                        $firstDisc = $request->first_p * (Session::get('discountapplied') == 1) ?  $coupon->amount / 100 : $destination->full_payment_discount / 100;
+
+                                        // $firstVat = (($request->first_p - $firstDisc) * 5) / 100;
+                                    } else {
+                                        $firstDisc = ($request->first_p * ((Session::get('discountapplied') == 1) ? $coupon->amount : 0)) / 100;
+                                        // $firstVat = (($request->first_p )* 5) / 100;
+                                    }
+
+                                    if (isset($thisVat) && $thisVat > 0) {
+                                        $firstVat = ($paysplit->first_payment_price * 5) / 100;
+                                    } else {
+                                        $firstVat = 0;
+                                    }
+                                    $paymentCreds['firstVat'] = $firstVat;
+
+                                    // $data->first_payment_price = $paysplit->first_payment_price + $firstVat;
+                                    $data->first_payment_price = ($paysplit->first_payment_price - $firstDisc) + $firstVat;
+                                    $paymentCreds['paysplit']->first_payment_price = ($paysplit->first_payment_price - $firstDisc) + $firstVat;
+                                    $data->first_payment_vat = $firstVat;
+                                    $data->first_payment_discount = $firstDisc;
+
+                                    //Second Split
+                                    if ($thisDiscount > 0) {
+                                        // $secondDisc = ($request->second_p * $destination->full_payment_discount) / 100;
+                                        $secondDisc = ($request->second_p * ((Session::get('discountapplied') == 1) ? ($coupon->amount) : $destination->full_payment_discount)) / 100;
+                                        // $secondVat = (($request->second_p - $secondDisc) * 5) / 100;
+                                    } else {
+                                        $secondDisc = ($request->second_p * ((Session::get('discountapplied') == 1) ? $coupon->amount : 0)) / 100;
+                                        // $secondVat = ($request->second_p * 5) / 100;
+                                    }
+                                    if (isset($thisVat) && $thisVat > 0) {
+                                        // $secondVat = ($paysplit->submission_payment_price * 5) / 100;
+                                        $secondVat = (($request->second_p - $secondDisc) * 5) / 100;
+                                    } else {
+                                        $secondVat = 0;
+                                    }
+                                    $paymentCreds['secondVat'] = $secondVat;
+
+                                    // $data->submission_payment_price = $paysplit->submission_payment_price  + $secondVat;
+                                    $data->submission_payment_price = ($paysplit->submission_payment_price - $secondDisc) + $secondVat;
+                                    $paymentCreds['paysplit']->submission_payment_price = ($paysplit->submission_payment_price - $secondDisc) + $secondVat;
+
+                                    $data->submission_payment_vat = $secondVat;
+                                    $data->submission_payment_discount = $secondDisc;
+
+                                    //Third Split
+                                    if ($thisDiscount > 0) {
+                                        // $thirdDisc = ($request->third_p * $destination->full_payment_discount) / 100;
+                                        $thirdDisc = ($request->third_p * ((Session::get('discountapplied') == 1) ? ($coupon->amount) : $destination->full_payment_discount)) / 100;
+                                    } else {
+                                        $thirdDisc = ($request->third_p * ((Session::get('discountapplied') == 1) ? $coupon->amount : 0)) / 100;
+
+                                        // $thirdVat = ($request->third_p * 5) / 100;
+                                    }
+                                    if (isset($thisVat) && $thisVat > 0) {
+                                        // $thirdVat = ($paysplit->second_payment_price * 5) / 100;
+
+                                        $thirdVat = (($request->third_p - $thirdDisc) * 5) / 100;
+                                    } else {
+                                        $thirdVat = 0;
+                                    }
+                                    $paymentCreds['thirdVat'] = $thirdVat;
+
+                                    // $data->second_payment_price = $paysplit->second_payment_price + $thirdVat;
+                                    $data->second_payment_price = ($paysplit->second_payment_price - $thirdDisc) + $thirdVat;
+                                    $paymentCreds['paysplit']->second_payment_price = ($paysplit->second_payment_price - $thirdDisc) + $thirdVat;
+
+                                    $data->second_payment_vat = $thirdVat;
+                                    $data->second_payment_discount = $thirdDisc;
+                                }
                             }
-                            if (isset($thisVat) && $thisVat > 0) {
-                                //$firstVat = ($paysplit->first_payment_price * 5) / 100;
-                                $firstVat = (($request->first_p - $firstDisc) * 5) / 100;
+
+                            $data->coupon_code = $thisCode;
+                            // $data->application_stage_status = 2;
+
+                            $res = $data->save();
+                        } else {
+                            if (in_array($apply->application_stage_status, $vals) && (empty($apply->embassy_country) || $apply->embassy_country == null)) {
+                                $datas->embassy_country = $request->embassy_appearance;
+                            }
+                            $datas->pricing_plan_id = $request->ppid;
+
+                            if ($request->whichpayment == 'FIRST') {
+                                $datas->first_payment_price = $thisPayment;
+                                // $datas->first_payment_paid = $thisPaymentMade;
+
+                                $datas->first_payment_vat = $thisVat;
+                                $datas->first_payment_discount = $thisDiscount;
+
+                                if (isset($request->totalremaining) && $request->totalremaining > 0) {
+                                } else {
+                                    $datas->first_payment_price = $thisPayment;
+                                }
+                            } else if ($request->whichpayment == 'BALANCE_ON_FIRST') {
+
+                            } elseif ($request->whichpayment == 'SUBMISSION') {
+                                $datas->submission_payment_price = $thisPayment;
+                                $datas->submission_payment_vat = $thisVat;
+                                $datas->submission_payment_discount = $thisDiscount;
+                            } elseif ($request->whichpayment == 'SECOND') {
+                                $datas->second_payment_price = $thisPayment;
+                                $datas->second_payment_vat = $thisVat;
+                                $datas->second_payment_discount = $thisDiscount;
                             } else {
-                                $firstVat = 0;
+                                $datas->total_price = $thisPayment;
+                                $datas->total_vat = $thisVat;
+                                $datas->total_discount = $thisDiscount;
+                                //Splits
+                                $paysplit = DB::table('pricing_plans')
+                                    ->where('destination_id', '=', $request->pid)
+                                    ->where('id', ($apply->pricing_plan_id) ?? $request->ppid)
+                                    // ->where('status', 'CURRENT')
+                                    // ->where('id', '=', $pack_id)
+                                    ->first();
+                                $paymentCreds['paysplit'] = $paysplit;
+
+                                if (isset($paysplit)) {
+                                    //First Split
+                                    $firstDisc = 0;
+                                    if ($thisDiscount > 0) {
+                                        // $firstDisc = ($request->first_p * $destination->full_payment_discount) / 100;
+                                        $firstDisc = ($request->first_p * ((Session::get('discountapplied') == 1) ? ($coupon->amount) : $destination->full_payment_discount)) / 100;
+
+                                        // $firstVat = (($request->first_p - $firstDisc) * 5) / 100;
+                                    } else {
+                                        $firstDisc = ($request->first_p * ((Session::get('discountapplied') == 1) ? $coupon->amount : 0)) / 100;
+
+                                        // $firstVat = ($request->first_p * 5) / 100;
+                                    }
+                                    if (isset($thisVat) && $thisVat > 0) {
+                                        //$firstVat = ($paysplit->first_payment_price * 5) / 100;
+                                        $firstVat = (($request->first_p - $firstDisc) * 5) / 100;
+                                    } else {
+                                        $firstVat = 0;
+                                    }
+                                    $paymentCreds['firstVat'] = $firstVat;
+
+                                    // $datas->first_payment_price = $paysplit->first_payment_price + $firstVat;
+                                    $datas->first_payment_price = ($apply->first_payment_price > 0) ? $apply->first_payment_price : ($paysplit->first_payment_price - $firstDisc) + $firstVat;
+                                    $paymentCreds['paysplit']->first_payment_price = ($apply->first_payment_price) ?? ($paysplit->first_payment_price - $firstDisc) + $firstVat;
+
+                                    $datas->first_payment_vat = ($apply->first_payment_vat) ?? $firstVat;
+                                    $datas->first_payment_discount = $firstDisc;
+                                    $secondVat = 0;
+                                    $secondDisc = 0;
+                                    //Second Split
+                                    if ($thisDiscount > 0) {
+                                        // $secondDisc = ($request->second_p * $destination->full_payment_discount) / 100;
+                                        $secondDisc = ($request->second_p * ((Session::get('discountapplied') == 1) ? ($coupon->amount) : $destination->full_payment_discount)) / 100;
+
+                                        // $secondVat = (($request->second_p - $secondDisc) * 5) / 100;
+                                    } else {
+                                        $secondDisc = ($request->second_p * ((Session::get('discountapplied') == 1) ? $coupon->amount : 0)) / 100;
+
+                                        // $secondVat = ($request->second_p * 5) / 100;
+                                    }
+                                    if (isset($thisVat) && $thisVat > 0) {
+                                        //$secondVat = ($paysplit->submission_payment_price * 5) / 100;
+                                        $secondVat = (($request->second_p - $secondDisc) * 5) / 100;
+                                    }
+                                    // $datas->submission_payment_price = $paysplit->submission_payment_price + $secondVat;
+                                    $datas->submission_payment_price = ($apply->submission_payment_price > 0) ? ($apply->first_payment_price) : ($paysplit->submission_payment_price - $secondDisc) + $secondVat;
+                                    $paymentCreds['paysplit']->submission_payment_price = ($apply->submission_payment_price) ?? ($paysplit->submission_payment_price - $secondDisc) + $secondVat;
+
+                                    $datas->submission_payment_vat = ($apply->submission_payment_vat) ?? $secondVat;
+                                    $datas->submission_payment_discount = $secondDisc;
+                                    $paymentCreds['secondVat'] = $secondVat;
+                                    $thirdVat = 0;
+                                    $thirdDisc = 0;
+                                    //Third Split
+                                    if ($thisDiscount > 0) {
+                                        $thirdDisc = ($request->third_p * ((Session::get('discountapplied') == 1) ? ($coupon->amount) : $destination->full_payment_discount)) / 100;
+
+                                        // $thirdDisc = ($request->third_p * $destination->full_payment_discount) / 100;
+                                        // $thirdVat = (($request->third_p - $thirdDisc) * 5) / 100;
+
+                                    } else {
+                                        $thirdDisc = ($request->third_p * ((Session::get('discountapplied') == 1) ? $coupon->amount : 0)) / 100;
+                                        // $thirdVat = ($request->third_p * 5) / 100;
+                                    }
+                                    if (isset($thisVat) && $thisVat > 0) {
+                                        //$thirdVat = ($paysplit->second_payment_price * 5) / 100;
+                                        $thirdVat = (($request->third_p - $thirdDisc) * 5) / 100;
+                                    }
+                                    // $datas->second_payment_price = $paysplit->second_payment_price + $thirdVat;
+                                    $datas->second_payment_price = ($paysplit->second_payment_price - $thirdDisc) + $thirdVat;
+                                    $paymentCreds['paysplit']->second_payment_price = ($paysplit->second_payment_price - $thirdDisc) + $thirdVat;
+
+                                    $datas->second_payment_vat = $thirdVat;
+                                    $datas->second_payment_discount = $thirdDisc;
+                                    $paymentCreds['thirdVat'] = $thirdVat;
+                                }
                             }
-                            $paymentCreds['firstVat'] = $firstVat;
+                            $datas->coupon_code = $thisCode;
+                            // $datas->application_stage_status = 2;
 
-                            // $datas->first_payment_price = $paysplit->first_payment_price + $firstVat;
-                            $datas->first_payment_price = ($apply->first_payment_price > 0) ? $apply->first_payment_price : ($paysplit->first_payment_price - $firstDisc) + $firstVat;
-                            $paymentCreds['paysplit']->first_payment_price = ($apply->first_payment_price) ?? ($paysplit->first_payment_price - $firstDisc) + $firstVat;
+                            $res = $datas->save();
 
-                            $datas->first_payment_vat = ($apply->first_payment_vat) ?? $firstVat;
-                            $datas->first_payment_discount = $firstDisc;
-                            $secondVat = 0;
-                            $secondDisc = 0;
-                            //Second Split
-                            if ($thisDiscount > 0) {
-                                // $secondDisc = ($request->second_p * $destination->full_payment_discount) / 100;
-                                $secondDisc = ($request->second_p * ((Session::get('discountapplied') == 1) ? ($coupon->amount) : $destination->full_payment_discount)) / 100;
-
-                                // $secondVat = (($request->second_p - $secondDisc) * 5) / 100;
-                            } else {
-                                $secondDisc = ($request->second_p * ((Session::get('discountapplied') == 1) ? $coupon->amount : 0)) / 100;
-
-                                // $secondVat = ($request->second_p * 5) / 100;
-                            }
-                            if (isset($thisVat) && $thisVat > 0) {
-                                //$secondVat = ($paysplit->submission_payment_price * 5) / 100;
-                                $secondVat = (($request->second_p - $secondDisc) * 5) / 100;
-                            }
-                            // $datas->submission_payment_price = $paysplit->submission_payment_price + $secondVat;
-                            $datas->submission_payment_price = ($apply->submission_payment_price > 0) ? ($apply->first_payment_price) : ($paysplit->submission_payment_price - $secondDisc) + $secondVat;
-                            $paymentCreds['paysplit']->submission_payment_price = ($apply->submission_payment_price) ?? ($paysplit->submission_payment_price - $secondDisc) + $secondVat;
-
-                            $datas->submission_payment_vat = ($apply->submission_payment_vat) ?? $secondVat;
-                            $datas->submission_payment_discount = $secondDisc;
-                            $paymentCreds['secondVat'] = $secondVat;
-                            $thirdVat = 0;
-                            $thirdDisc = 0;
-                            //Third Split
-                            if ($thisDiscount > 0) {
-                                $thirdDisc = ($request->third_p * ((Session::get('discountapplied') == 1) ? ($coupon->amount) : $destination->full_payment_discount)) / 100;
-
-                                // $thirdDisc = ($request->third_p * $destination->full_payment_discount) / 100;
-                                // $thirdVat = (($request->third_p - $thirdDisc) * 5) / 100;
-
-                            } else {
-                                $thirdDisc = ($request->third_p * ((Session::get('discountapplied') == 1) ? $coupon->amount : 0)) / 100;
-                                // $thirdVat = ($request->third_p * 5) / 100;
-                            }
-                            if (isset($thisVat) && $thisVat > 0) {
-                                //$thirdVat = ($paysplit->second_payment_price * 5) / 100;
-                                $thirdVat = (($request->third_p - $thirdDisc) * 5) / 100;
-                            }
-                            // $datas->second_payment_price = $paysplit->second_payment_price + $thirdVat;
-                            $datas->second_payment_price = ($paysplit->second_payment_price - $thirdDisc) + $thirdVat;
-                            $paymentCreds['paysplit']->second_payment_price = ($paysplit->second_payment_price - $thirdDisc) + $thirdVat;
-
-                            $datas->second_payment_vat = $thirdVat;
-                            $datas->second_payment_discount = $thirdDisc;
-                            $paymentCreds['thirdVat'] = $thirdVat;
+                            // $paymentId = payment::where([
+                            //             ['payment_type', '=', $request->whichpayment],
+                            //             ['application_id', '=', $applicant_id],
+                            //         ])
+                            //         ->pluck('id')
+                            //         ->first();
+                            // Session::put('paymentId', $paymentId);
                         }
+
+                        ###########################################################################
+
+                        $paymentLink  = $orderCreateResponse->_links->payment->href;
+                        Session::put('paymentCreds', $paymentCreds);
+                        return Redirect::to($paymentLink);
+                    } else {
+                        Session::forget('paymentCreds');
+                        return redirect()->back()->with('failed', $orderCreateResponse->errors[0]->message);
                     }
-                    $datas->coupon_code = $thisCode;
-                    // $datas->application_stage_status = 2;
-
-                    $res = $datas->save();
-
-                    // $paymentId = payment::where([
-                    //             ['payment_type', '=', $request->whichpayment],
-                    //             ['application_id', '=', $applicant_id],
-                    //         ])
-                    //         ->pluck('id')
-                    //         ->first();
-                    // Session::put('paymentId', $paymentId);
-                }
-
-                ###########################################################################
-
-                $paymentLink  = $orderCreateResponse->_links->payment->href;
-                Session::put('paymentCreds', $paymentCreds);
-                return Redirect::to($paymentLink);
+               }
             } else {
                 Session::forget('paymentCreds');
-                return redirect()->back()->with('failed', $orderCreateResponse->errors[0]->message);
+                // return redirect()->back()->with('failed', 'You are not authorized');
+                return redirect('home');
             }
-            // }
-        } else {
-            Session::forget('paymentCreds');
-            // return redirect()->back()->with('failed', 'You are not authorized');
-            return redirect('home');
-        }
 
         } catch (Exception $e) {
             return redirect('myapplication')->with($e->getMessage());

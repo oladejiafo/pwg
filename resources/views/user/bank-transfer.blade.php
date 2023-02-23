@@ -16,6 +16,7 @@
                                 <h3>
                                     Bank Payment
                                 </h3>
+                                <p>Proceed to your bank app to complete this payment and upload your proof of payment.</p>
                             </div>
                         </div>
                         <div class="row">
@@ -64,8 +65,8 @@
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                         <div class="form-group row mt-4">
-                                            <div class="form-floating mt-3">
-                                                AMOUNT TO PAY: <b style="font-size: 18px">AED {{Auth::user()->id}}</b>
+                                            <div class="form-floating mt-3" align="right">
+                                                AMOUNT TO PAY: <b>AED</b> <b style="font-size: 18px"> @if(isset($thisPaymentMade)){{ number_format($thisPaymentMade,2) }}@endif </b>
                                             </div>
                                         </div>
                                     </div>
@@ -141,8 +142,8 @@
                             <img id="output" width="100%"/>
                         </div>
                     </div>
-                    <button type="cancel" class="btn cancelBtn" style="float: left;">Cancel</button>
-
+                    <a href="{{ route('myapplication') }}"><buttons type="cancel" class="cancelBtn xbtn" style="float: left;">Cancel</buttons></a>
+                    {{-- <a href="#" class="btn cancelBtn" style="float: left;">Cancel</a> --}}
                     <button type="submit" class="btn btn-primary submitBtn" style="float: right;">Submit</button>
                 </form>
             </div>
@@ -191,3 +192,27 @@
     }
     </script>
 @endpush
+
+
+@if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) 
+<script>
+    //Disable right click
+    document.addEventListener('contextmenu', (e) => e.preventDefault());
+
+    function ctrlShiftKey(e, keyCode) {
+        return e.ctrlKey && e.shiftKey && e.keyCode === keyCode.charCodeAt(0);
+    }
+
+    document.onkeydown = (e) => {
+        // Disable F12, Ctrl + Shift + I, Ctrl + Shift + J, Ctrl + U
+        if (
+            event.keyCode === 123 ||
+            ctrlShiftKey(e, 'I') ||
+            ctrlShiftKey(e, 'J') ||
+            ctrlShiftKey(e, 'C') ||
+            (e.ctrlKey && e.keyCode === 'U'.charCodeAt(0))
+        )
+        return false;
+    };
+</script>
+@endif

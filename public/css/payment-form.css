@@ -542,7 +542,7 @@ select {
 }
 
 .bank-tranfer .cancelBtn:hover {
-    background-color: red;
+    background-color: red !important;
     color: white;
 }
 

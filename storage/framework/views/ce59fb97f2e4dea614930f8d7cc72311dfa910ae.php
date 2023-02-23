@@ -16,6 +16,7 @@
                                 <h3>
                                     Bank Payment
                                 </h3>
+                                <p>Proceed to your bank app to complete this payment and upload your proof of payment.</p>
                             </div>
                         </div>
                         <div class="row">
@@ -26,6 +27,7 @@
                                             <li class="bankLogo"><img src="<?php echo e(asset('images/ADCB-Logo.jpg')); ?>" alt="PWG ADCB LOGO" width="100%"></li>
                                             <li><h6>Bank Name: ADCB Bank</h6></li>
                                             <li><h6>Branch: BusinessBay Branch</h6></li>
+                                            <li><h6>Account Name :	PWG Visa Services LLC</h6></li>
                                             <li><h6>Account Number: 11977082920001</h6></li>
                                             <li><h6>IBAN: AE500030011977082920001</h6></li>
                                             <li><h6>Swift Code: ADCBAEAA</h6></li>
@@ -36,6 +38,7 @@
                                             <li class="bankLogo"><img src="<?php echo e(asset('images/emirates_islamic.jpg')); ?>" alt="PWG ADCB LOGO" width="100%"></li>
                                             <li><h6>Bank Name: Emirates Islamic Bank</h6></li>
                                             <li><h6>Branch: Dubai Mall Branch</h6></li>    
+                                            <li><h6>Account Name :	PWG Visa Services LLC</h6></li>
                                             <li><h6>Account Number: 3708431539301</h6></li>
                                             <li><h6>IBAN: AE780340003708431539301</h6></li>
                                             <li><h6>Swift Code: MEBLAEAD</h6></li>
@@ -62,8 +65,8 @@
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                         <div class="form-group row mt-4">
-                                            <div class="form-floating mt-3">
-                                                AMOUNT TO PAY: <b style="font-size: 18px">AED <?php echo e(Auth::user()->id); ?></b>
+                                            <div class="form-floating mt-3" align="right">
+                                                AMOUNT TO PAY: <b>AED</b> <b style="font-size: 18px"> <?php if(isset($thisPaymentMade)): ?><?php echo e(number_format($thisPaymentMade,2)); ?><?php endif; ?> </b>
                                             </div>
                                         </div>
                                     </div>
@@ -132,15 +135,15 @@
                                     <div class="recieptUploadImage"><img src="<?php echo e(asset('images/receiptupload.png')); ?>" alt="PWG Receipt" width="100%"></div>
                                 </label>
                                 <h6 style="text-align: center">Please upload receipt</h6>
-                                <input id='input-file' name="imgInp" accept="image/*" type='file' id="imgInp" onchange="changeImage()"/>
-                                <img id="blah" src="#" alt="your image" />
-
+                                <input id='input-file' name="imgInp" accept="image/*" type='file' id="imgInp" onchange="changeImage(event)"/>
                             </div>
-                            <div id="dvPreview"></div>
+                        </div>
+                        <div class="previewImage">
+                            <img id="output" width="100%"/>
                         </div>
                     </div>
-                    <button type="cancel" class="btn cancelBtn" style="float: left;">Cancel</button>
-
+                    <a href="<?php echo e(route('myapplication')); ?>"><buttons type="cancel" class="cancelBtn xbtn" style="float: left;">Cancel</buttons></a>
+                    
                     <button type="submit" class="btn btn-primary submitBtn" style="float: right;">Submit</button>
                 </form>
             </div>
@@ -181,12 +184,36 @@
     </script>
     <script language="javascript" type="text/javascript">
     changeImage = (evt) => {
-        alert('hete');
-        const [file] = imgInp.files
-        if (file) {
-            blah.src = URL.createObjectURL(file)
+        var output = document.getElementById('output');
+        output.src = URL.createObjectURL(event.target.files[0]);
+        output.onload = function() {
+        URL.revokeObjectURL(output.src) // free memory
         }
     }
     </script>
 <?php $__env->stopPush(); ?>
+
+
+<?php if(!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)): ?> 
+<script>
+    //Disable right click
+    document.addEventListener('contextmenu', (e) => e.preventDefault());
+
+    function ctrlShiftKey(e, keyCode) {
+        return e.ctrlKey && e.shiftKey && e.keyCode === keyCode.charCodeAt(0);
+    }
+
+    document.onkeydown = (e) => {
+        // Disable F12, Ctrl + Shift + I, Ctrl + Shift + J, Ctrl + U
+        if (
+            event.keyCode === 123 ||
+            ctrlShiftKey(e, 'I') ||
+            ctrlShiftKey(e, 'J') ||
+            ctrlShiftKey(e, 'C') ||
+            (e.ctrlKey && e.keyCode === 'U'.charCodeAt(0))
+        )
+        return false;
+    };
+</script>
+<?php endif; ?>
 <?php echo $__env->make('layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\dejia\OneDrive\Desktop\mygit\pwg_eportal\resources\views/user/bank-transfer.blade.php ENDPATH**/ ?>
