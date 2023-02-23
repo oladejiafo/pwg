@@ -17,7 +17,7 @@
 <?php $__env->startSection('content'); ?>
     <div class="login">
         <div class="container">
-            <div class="forgot-password">
+            <div class="forgot-password" style="height:65%">
                 <div class="reset">
                     <div class="resetImage">
                         <img src="<?php echo e(asset('images/reminder.png')); ?>" width="100% " alt="approved">
@@ -25,7 +25,7 @@
                     <div class="reset-heading">
                         Payment need to be confirmed!
                     </div>
-                    <div class="subConfirm">You can continue with applcation submission</div>
+                    <div class="subConfirm">You can continue with application submission</div>
                     <div class="sig">
                         <form action="<?php echo e(url('applicant/details',$id)); ?>" method="GET">
                                 <input type="hidden" name="pid" value="<?php echo e($id); ?>">

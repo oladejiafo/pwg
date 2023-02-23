@@ -17,7 +17,7 @@
 @section('content')
     <div class="login">
         <div class="container">
-            <div class="forgot-password">
+            <div class="forgot-password" style="height:65%">
                 <div class="reset">
                     <div class="resetImage">
                         <img src="{{asset('images/reminder.png')}}" width="100% " alt="approved">

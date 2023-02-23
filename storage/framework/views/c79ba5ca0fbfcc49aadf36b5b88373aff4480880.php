@@ -11,7 +11,8 @@
             <div class="bank-tranfer">
                 <form action="<?php echo e(route('submit.bank.transfer')); ?>" method="POST" enctype="multipart/form-data">
                     <?php echo csrf_field(); ?>
-
+                    <input type="hidden" name='paymentId' value="<?php echo e($paymentId); ?>">
+                    <input type="hidden" name="productId" value="<?php echo e($productId); ?>">
                     <div class="row">
                         <div class="heading">
                             <div class="first-heading" style="text-align: center">
@@ -188,13 +189,13 @@
 
     </script>
     <script language="javascript" type="text/javascript">
-    changeImage = (evt) => {
-        var output = document.getElementById('output');
-        output.src = URL.createObjectURL(event.target.files[0]);
-        output.onload = function() {
-        URL.revokeObjectURL(output.src) // free memory
+        changeImage = (evt) => {
+            var output = document.getElementById('output');
+            output.src = URL.createObjectURL(event.target.files[0]);
+            output.onload = function() {
+                URL.revokeObjectURL(output.src) // free memory
+            }
         }
-    }
     </script>
 <?php $__env->stopPush(); ?>
 

@@ -11,7 +11,8 @@
             <div class="bank-tranfer">
                 <form action="{{route('submit.bank.transfer')}}" method="POST" enctype="multipart/form-data">
                     @csrf
-
+                    <input type="hidden" name='paymentId' value="{{$paymentId}}">
+                    <input type="hidden" name="productId" value="{{$productId}}">
                     <div class="row">
                         <div class="heading">
                             <div class="first-heading" style="text-align: center">
