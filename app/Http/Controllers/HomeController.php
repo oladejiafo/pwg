@@ -103,7 +103,7 @@ class HomeController extends Controller
     public function index()
     {
         
-        // return view('user.bank-transfer');
+        return view('user.bank-transfer');
         pdfBlock::pdfBlock('pdf/workpermittemplate.pdf');
         if (Auth::id()) {
             $started = DB::table('applications')
