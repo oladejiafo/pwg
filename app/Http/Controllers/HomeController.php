@@ -716,7 +716,7 @@ class HomeController extends Controller
                             if (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                                 $signatureUrl = ltrim($signatureUrl, $signatureUrl[0]);
                             }
-                            $result = pdfBlock::attachSignature($originalPdf, $signatureUrl, $data, $paymentType, $applicant);
+                            // $result = pdfBlock::attachSignature($originalPdf, $signatureUrl, $data, $paymentType, $applicant);
                         } 
                     //     elseif ($pays->first_payment_status == "PAID" && $pays->submission_payment_status != "PAID") {
                     //         $originalPdf = (isset($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getUrl() : null;
@@ -782,6 +782,7 @@ class HomeController extends Controller
                 return redirect('home');
             }
         } catch (Exception $e) {
+            // dd($e);
             return redirect('home')->with('error', $e->getMessage());
         }
     }
@@ -1573,7 +1574,6 @@ class HomeController extends Controller
                         }
                         $message = "You have successfully made your " . $paym . " Payment. Check your receipt on 'My Application'. " . $ems;
               
-
                         $link = "";
 
                         $dataArray = [
