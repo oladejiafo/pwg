@@ -852,6 +852,7 @@ class HomeController extends Controller
     public function addpayment(Request $request)
     {
         try {
+            
             if (Auth::id()) {
     
                 session()->forget('info');
