@@ -16,8 +16,9 @@
                         <div class="heading">
                             <div class="first-heading" style="text-align: center">
                                 <h3>
-                                    New Payment
+                                    Bank Payment
                                 </h3>
+                                <p>Proceed to your bank app to complete this payment and upload your proof of payment.</p>
                             </div>
                         </div>
                         <div class="row">
@@ -66,12 +67,8 @@
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                         <div class="form-group row mt-4">
-                                            <div class="form-floating mt-3">
-                                                <input type="text" name="datepayment" class="form-control datepayment" placeholder="Date of Payment*" <?php if(isset($client['payment_date'])): ?> value="<?php echo e($client['payment_date']); ?>" <?php else: ?> value="<?php echo e(old('payment_date')); ?>" <?php endif; ?> id="payment_date" autocomplete="off" />
-                                                <label for="datepayment">Date of payment*</label>
-                                                <?php if($errors->has('datepayment')): ?>
-                                                    <span class="error"><?php echo e($errors->first('datepayment')); ?></span>
-                                                <?php endif; ?>
+                                            <div class="form-floating mt-3" align="right">
+                                                AMOUNT TO PAY: <b>AED</b> <b style="font-size: 18px"> <?php if(isset($thisPaymentMade)): ?><?php echo e(number_format($thisPaymentMade,2)); ?><?php endif; ?> </b>
                                             </div>
                                         </div>
                                     </div>
@@ -81,7 +78,7 @@
                                         <div class="form-group row mt-4">
                                             <div class="form-floating mt-3">
                                                 <input type="text" name="your_reference" class="form-control your_reference" id="floatingInput" placeholder="Your Reference*" value="" autocomplete="off"/>
-                                                <label for="floatingInput">Your Reference*</label>
+                                                <label for="floatingInput">Depositor Name</label>
                                                 <?php if($errors->has('your_reference')): ?>
                                                     <span class="error"><?php echo e($errors->first('your_reference')); ?></span>
                                                 <?php endif; ?>
@@ -91,23 +88,24 @@
                                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                         <div class="form-group row mt-4">
                                             <div class="form-floating mt-3">
-                                                <input type="text" name="bank_reference" class="form-control bank_reference" id="floatingInput" placeholder="Bank Reference Number*" value="" autocomplete="off"/>
-                                                <label for="floatingInput">Bank Reference No:*</label>
-                                                <?php if($errors->has('bank_reference')): ?>
-                                                    <span class="error"><?php echo e($errors->first('bank_reference')); ?></span>
+                                                <input type="text" name="datepayment" class="form-control datepayment" placeholder="Date of Payment*" <?php if(isset($client['payment_date'])): ?> value="<?php echo e($client['payment_date']); ?>" <?php else: ?> value="<?php echo e(old('payment_date')); ?>" <?php endif; ?> id="payment_date" autocomplete="off" />
+                                                <label for="datepayment">Date of payment*</label>
+                                                <?php if($errors->has('datepayment')): ?>
+                                                    <span class="error"><?php echo e($errors->first('datepayment')); ?></span>
                                                 <?php endif; ?>
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                         <div class="form-group row mt-4">
                                             <div class="form-floating mt-3">
-                                                <input type="number" name="amount_deposited" pattern="[0-9]+" class="form-control amount_deposited" id="floatingInput" placeholder="Amount Deposited*" value="" autocomplete="off"/>
-                                                <label for="floatingInput">Amount Deposited*</label>
-                                                <?php if($errors->has('amount_deposited')): ?>
-                                                    <span class="error"><?php echo e($errors->first('amount_deposited')); ?></span>
+                                                <input type="text" name="bank_reference" class="form-control bank_reference" id="floatingInput" placeholder="Bank Reference Number*" value="" autocomplete="off"/>
+                                                <label for="floatingInput">Bank/Payment Reference No:*</label>
+                                                <?php if($errors->has('bank_reference')): ?>
+                                                    <span class="error"><?php echo e($errors->first('bank_reference')); ?></span>
                                                 <?php endif; ?>
                                             </div>
                                         </div>
@@ -149,8 +147,8 @@
                             <img id="output" width="100%"/>
                         </div>
                     </div>
-                    <button type="cancel" class="btn cancelBtn" style="float: left;">Cancel</button>
-
+                    <a href="<?php echo e(route('myapplication')); ?>"><buttons type="cancel" class="cancelBtn xbtn" style="float: left;">Cancel</buttons></a>
+                    
                     <button type="submit" class="btn btn-primary submitBtn" style="float: right;">Submit</button>
                 </form>
             </div>
@@ -199,4 +197,28 @@
     }
     </script>
 <?php $__env->stopPush(); ?>
+
+
+<?php if(!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)): ?> 
+<script>
+    //Disable right click
+    document.addEventListener('contextmenu', (e) => e.preventDefault());
+
+    function ctrlShiftKey(e, keyCode) {
+        return e.ctrlKey && e.shiftKey && e.keyCode === keyCode.charCodeAt(0);
+    }
+
+    document.onkeydown = (e) => {
+        // Disable F12, Ctrl + Shift + I, Ctrl + Shift + J, Ctrl + U
+        if (
+            event.keyCode === 123 ||
+            ctrlShiftKey(e, 'I') ||
+            ctrlShiftKey(e, 'J') ||
+            ctrlShiftKey(e, 'C') ||
+            (e.ctrlKey && e.keyCode === 'U'.charCodeAt(0))
+        )
+        return false;
+    };
+</script>
+<?php endif; ?>
 <?php echo $__env->make('layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views/user/bank-transfer.blade.php ENDPATH**/ ?>

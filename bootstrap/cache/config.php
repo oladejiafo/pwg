@@ -10,6 +10,11 @@
     'admin_url_local' => 'http://127.0.0.1:8000',
     'timezone' => 'Asia/Dubai',
     'locale' => 'en',
+    'alt_langs' => 
+    array (
+      0 => 'ar',
+      1 => 'fr',
+    ),
     'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
     'key' => 'base64:RK4k8KXHyBXYhSqf8Qi0Iz+sZANzuIpPpE4hp58JLJc=',
