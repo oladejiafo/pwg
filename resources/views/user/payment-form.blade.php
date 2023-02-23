@@ -689,17 +689,35 @@ $vals=array(0,1,2);
                         <input type="hidden" name="first_p" value="{{$pdet->first_payment_sub_total}}">
                         <input type="hidden" name="second_p" value="{{$pdet->submission_payment_sub_total}}">
                         <input type="hidden" name="third_p" value="{{$pdet->second_payment_sub_total}}">
-                    
+
                         <div class="form-group row mt-4" style="margin-bottom: 70px">
+                            <p>
+                               <ul align="center" class="payoption" style="display:inline; margin:0 auto; widthx: 70%; margin-bottom: -30px;margin-top:10px">
+                                   <li style="margin:10px;">
+                                       <b style="color:black">Click a Payment Options:</b>
+                                   </li>
+                                   <li style="margin:10px;">
+                                       <input type="radio" id="card" name="payoption" checked value="Card" required> 
+                                       <label for="card"><i class="fa fa-credit-card ico"></i> Card</label>
+                                   </li>
+                                   <li style="margin:10px">
+                                       <input type="radio" id="bank" name="payoption" value="Bank" required> 
+                                       <label for="bank"><i class="fa fa-exchange"></i> Bank</label>
+                                   </li>
+                               </ul>
+
+                           </p>
                             <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
                                 <button type="submit" class="btn btn-primary submitBtn">Continue</button>
                                 <p style="font-size:11px; text-align:center;color:green">You will be redirected to a secured payment page!</p>
                             </div>
+                            
                         </div>
                     </form>
             </div>
 @endsection
 @push('custom-scripts')
+
 <script>
     $(document).ready(function(){
 
