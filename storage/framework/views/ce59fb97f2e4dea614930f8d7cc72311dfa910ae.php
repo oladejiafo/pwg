@@ -1,8 +1,8 @@
-@extends('layouts.master')
-<link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
-<link href="{{asset('css/payment-form.css')}}" rel="stylesheet">
 
-@section('content')
+<link href="<?php echo e(asset('user/css/bootstrap.min.css')); ?>" rel="stylesheet">
+<link href="<?php echo e(asset('css/payment-form.css')); ?>" rel="stylesheet">
+
+<?php $__env->startSection('content'); ?>
     <div class="container">
         <div class="col-12">
             <div class="bankInfo">
@@ -23,7 +23,7 @@
                                 <div class="row bankDetails">
                                     <div class="adcb">
                                         <ul>
-                                            <li class="bankLogo"><img src="{{asset('images/ADCB-Logo.jpg')}}" alt="PWG ADCB LOGO" width="100%"></li>
+                                            <li class="bankLogo"><img src="<?php echo e(asset('images/ADCB-Logo.jpg')); ?>" alt="PWG ADCB LOGO" width="100%"></li>
                                             <li><h6>Bank Name: ADCB Bank</h6></li>
                                             <li><h6>Branch: BusinessBay Branch</h6></li>
                                             <li><h6>Account Number: 11977082920001</h6></li>
@@ -33,7 +33,7 @@
                                     </div>
                                     <div class="eis">
                                         <ul>
-                                            <li class="bankLogo"><img src="{{asset('images/emirates_islamic.jpg')}}" alt="PWG ADCB LOGO" width="100%"></li>
+                                            <li class="bankLogo"><img src="<?php echo e(asset('images/emirates_islamic.jpg')); ?>" alt="PWG ADCB LOGO" width="100%"></li>
                                             <li><h6>Bank Name: Emirates Islamic Bank</h6></li>
                                             <li><h6>Branch: Dubai Mall Branch</h6></li>    
                                             <li><h6>Account Number: 3708431539301</h6></li>
@@ -54,16 +54,16 @@
                                                     <option value="2" selected>ADCB Bank</option>
                                                 </select>
                                                 <label for="bank">Destination / Bank*</label>
-                                                @if ($errors->has('bank'))
-                                                    <span class="error">{{ $errors->first('bank') }}</span>
-                                                @endif
+                                                <?php if($errors->has('bank')): ?>
+                                                    <span class="error"><?php echo e($errors->first('bank')); ?></span>
+                                                <?php endif; ?>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                         <div class="form-group row mt-4">
                                             <div class="form-floating mt-3">
-                                                AMOUNT TO PAY: <b style="font-size: 18px">AED {{Auth::user()->id}}</b>
+                                                AMOUNT TO PAY: <b style="font-size: 18px">AED <?php echo e(Auth::user()->id); ?></b>
                                             </div>
                                         </div>
                                     </div>
@@ -74,20 +74,20 @@
                                             <div class="form-floating mt-3">
                                                 <input type="text" name="your_reference" class="form-control your_reference" id="floatingInput" placeholder="Your Reference*" value="" autocomplete="off"/>
                                                 <label for="floatingInput">Depositor Name</label>
-                                                @if ($errors->has('your_reference'))
-                                                    <span class="error">{{ $errors->first('your_reference') }}</span>
-                                                @endif
+                                                <?php if($errors->has('your_reference')): ?>
+                                                    <span class="error"><?php echo e($errors->first('your_reference')); ?></span>
+                                                <?php endif; ?>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                         <div class="form-group row mt-4">
                                             <div class="form-floating mt-3">
-                                                <input type="text" name="datepayment" class="form-control datepayment" placeholder="Date of Payment*" @if(isset($client['payment_date'])) value="{{ $client['payment_date'] }}" @else value="{{old('payment_date')}}" @endif id="payment_date" autocomplete="off" />
+                                                <input type="text" name="datepayment" class="form-control datepayment" placeholder="Date of Payment*" <?php if(isset($client['payment_date'])): ?> value="<?php echo e($client['payment_date']); ?>" <?php else: ?> value="<?php echo e(old('payment_date')); ?>" <?php endif; ?> id="payment_date" autocomplete="off" />
                                                 <label for="datepayment">Date of payment*</label>
-                                                @if ($errors->has('datepayment'))
-                                                    <span class="error">{{ $errors->first('datepayment') }}</span>
-                                                @endif
+                                                <?php if($errors->has('datepayment')): ?>
+                                                    <span class="error"><?php echo e($errors->first('datepayment')); ?></span>
+                                                <?php endif; ?>
                                             </div>
                                         </div>
                                     </div>
@@ -99,9 +99,9 @@
                                             <div class="form-floating mt-3">
                                                 <input type="text" name="bank_reference" class="form-control bank_reference" id="floatingInput" placeholder="Bank Reference Number*" value="" autocomplete="off"/>
                                                 <label for="floatingInput">Bank/Payment Reference No:*</label>
-                                                @if ($errors->has('bank_reference'))
-                                                    <span class="error">{{ $errors->first('bank_reference') }}</span>
-                                                @endif
+                                                <?php if($errors->has('bank_reference')): ?>
+                                                    <span class="error"><?php echo e($errors->first('bank_reference')); ?></span>
+                                                <?php endif; ?>
                                             </div>
                                         </div>
                                     </div>
@@ -115,9 +115,9 @@
                                                 </select>
                                                 <label for="type_payment">Type of payment*</label>
                                             </div>
-                                            @if ($errors->has('type_payment'))
-                                                <span class="error">{{ $errors->first('type_payment') }}</span>
-                                            @endif
+                                            <?php if($errors->has('type_payment')): ?>
+                                                <span class="error"><?php echo e($errors->first('type_payment')); ?></span>
+                                            <?php endif; ?>
                                         </div>
                                     </div>
                                 </div>
@@ -129,7 +129,7 @@
                         <div class="recieptUpload">
                             <div class='file file--uploading'>
                                 <label for='input-file'>
-                                    <div class="recieptUploadImage"><img src="{{asset('images/receiptupload.png')}}" alt="PWG Receipt" width="100%"></div>
+                                    <div class="recieptUploadImage"><img src="<?php echo e(asset('images/receiptupload.png')); ?>" alt="PWG Receipt" width="100%"></div>
                                 </label>
                                 <h6 style="text-align: center">Please upload receipt</h6>
                                 <input id='input-file' name="imgInp" accept="image/*" type='file' id="imgInp" onchange="changeImage()"/>
@@ -146,8 +146,8 @@
             </div>
         </div>
     </div>
-@endsection
-@push('custom-scripts')
+<?php $__env->stopSection(); ?>
+<?php $__env->startPush('custom-scripts'); ?>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 
@@ -188,4 +188,5 @@
         }
     }
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
+<?php echo $__env->make('layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\dejia\OneDrive\Desktop\mygit\pwg_eportal\resources\views/user/bank-transfer.blade.php ENDPATH**/ ?>

@@ -95,6 +95,7 @@ Route::post('update/password', [ResetPasswordController::class, 'updateCurrentPa
 
 //Payments
 Route::get('payment_form/{id}',[HomeController::class,'payment'])->name('payment');
+Route::get('bank',[HomeController::class,'bank'])->name('bank');
 Route::post('/add_payment', [HomeController::class,'addpayment']);
 
 // Applicant

@@ -53,8 +53,8 @@ $message = $__bag->first($__errorArgs[0]); ?> <span class="error"><?php echo e($
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
-                <img src="<?php echo e(asset('images/Eye_Icon.png')); ?>" alt=img class="hiddenIcon">
-                <img src="<?php echo e(asset('images/view_password.svg')); ?>" alt=img class="viewIcon">
+                <img src="<?php echo e(asset('images/Eye_Icon.png')); ?>" alt="pwg img" class="hiddenIcon">
+                <img src="<?php echo e(asset('images/view_password.svg')); ?>" alt="pwg img" class="viewIcon">
               </div>
             </div>
             

@@ -787,6 +787,39 @@ class HomeController extends Controller
         }
     }
 
+    public function bank()
+    {
+            if (Auth::id()) {
+                Session::forget('haveCoupon');
+                Session::forget('myDiscount');
+
+                $complete = DB::table('applications')
+                    ->where('client_id', '=', Auth::user()->id)
+                    // ->whereNotIn('status',  ['APPLICATION_COMPLETED','VISA_REFUSED', 'APPLICATION_CANCELLED','REFUNDED'] )
+                    ->orderBy('id', 'desc')
+                    ->first();
+
+                $app_id = $complete->id;
+                $p_id = $complete->destination_id;
+                $pack_id = $complete->pricing_plan_id;
+
+                // $pays = DB::table('applications')
+                //     ->select('applications.pricing_plan_id', 'applications.total_price', 'applications.total_paid', 'applications.first_payment_status', 'applications.submission_payment_status', 'applications.second_payment_status', 'first_payment_price', 'first_payment_paid', 'first_payment_remaining', 'is_first_payment_partially_paid', 'submission_payment_price', 'submission_payment_paid', 'submission_payment_remaining', 'second_payment_price', 'second_payment_paid', 'second_payment_remaining')
+                //     ->where('applications.client_id', '=', Auth::user()->id)
+                //     ->where('applications.destination_id', '=', $id)
+                //     ->where('work_permit_category', $packageType)
+                //     ->orderBy('applications.id', 'desc')
+                //     // ->whereNotIn('status',  ['APPLICATION_COMPLETED','VISA_REFUSED', 'APPLICATION_CANCELLED','REFUNDED'] )
+                //     ->limit(1)
+                //     ->first();
+
+                return view('user.bank-transfer');
+            } else {
+                // return redirect()->back()->with('message', 'You are not authorized');
+                return redirect('user.payment-form');
+            }
+       
+    }
 
     public static function invokeCurlRequest($type, $url, $headers, $post)
     {
