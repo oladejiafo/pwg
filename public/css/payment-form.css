@@ -99,8 +99,7 @@ body {
 }
 
 
-@media (max-width:800px)
-{
+@media (max-width:800px) {
     .payment-form {
         margin-bottom: 40px;
         padding: 40px 50px 40px 50px;
@@ -407,7 +406,7 @@ select {
         width: 90%;
         margin: 0 auto;
         padding: 30px 15px 70px 15px;
-        
+
     }
 
     .payment-form input [type="text"],
@@ -454,3 +453,138 @@ select {
 }
 
 @media only screen and (max-width: 1024px) and (min-width: 986px) {}
+
+/* Bank Transfer */
+
+.bank-tranfer {
+    font-family: TT Norms Pro;
+    width: 100%;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    margin: 0 auto;
+    background-color: #ffffff;
+    margin-bottom: 420px;
+    color: #636466;
+    padding: 40px 70px 70px 70px;
+}
+
+.bankInfo {
+    margin: 120px 0px 70px 0px;
+}
+
+.bankInfo h5 {
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.bank-tranfer ul {
+    list-style-type: none;
+    /* Remove bullets */
+    padding: 0;
+    /* Remove padding */
+    margin: 0;
+    /* Remove margins */
+}
+
+.bankDetails {
+    margin-top: 2.3rem;
+}
+
+.recieptUpload {
+    margin: 0 auto;
+    margin-bottom: 20px;
+}
+
+.recieptUploadImage {
+    width: 10%;
+    margin: 0 auto;
+    padding: 8% 0 2% 0;
+    cursor: pointer;
+}
+
+.bankDetails li h6 {
+    font-weight: 700;
+}
+
+.bank-tranfer .cancelBtn:hover {
+    background-color: red;
+    color: white;
+}
+
+.bank-tranfer .cancelBtn {
+    color: #000;
+    background: none;
+    border-color: #C4C6CD;
+    border-radius: 10px;
+    border-width: thin;
+    border-style: solid;
+    font-weight: 600;
+    padding: 12px 30px;
+}
+
+.file--uploading>label {
+    color: hsl(48, 100%, 67%);
+    border-color: hsl(48, 100%, 67%);
+}
+
+.file--uploading>label>i {
+    animation: pulse 5s infinite;
+}
+
+.file--uploading>label:hover {
+    /* border-color: hsl(48, 100%, 67%);
+    background-color: hsl(48, 100%, 96%); */
+}
+
+.recieptUpload:hover .file--uploading>label, .recieptUpload:hover{
+    background-color: hsl(48, 100%, 96%);
+}
+
+.file--uploading>label:active {
+    background-color: hsl(48, 100%, 67%);
+}
+
+.file {
+    /* position: relative;
+    display: flex; */
+    margin-top: 0px !important;
+    margin-left: 0px !important;
+    justify-content: center;
+    align-items: center;
+}
+
+.file>input[type='file'] {
+    display: none
+}
+
+.file>label {
+    font-size: 1rem;
+    font-weight: 300;
+    cursor: pointer;
+    outline: 0;
+    user-select: none;
+    border-radius: 4px;
+    border-width: 1px;
+    background-color: hsl(0, 0%, 100%);
+    color: hsl(0, 0%, 29%);
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.file>label:hover {
+    border-color: hsl(0, 0%, 21%);
+}
+
+.file>label:active {
+    background-color: hsl(0, 0%, 96%);
+}
+
+.file>label>i {
+    padding-right: 5px;
+}

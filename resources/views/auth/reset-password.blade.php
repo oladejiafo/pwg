@@ -15,7 +15,7 @@
         <div class="forgot-password" style="height: auto;">
             <div class="reset">
                 <div class="resetImage">
-                    <img src="{{asset('images/Approved.svg')}}" alt="approved">
+                    <img src="{{asset('images/Approved.svg')}}" alt="PWG Group approved">
                 </div>
                 <div class="reset-heading">
                     Reset your password
@@ -37,16 +37,16 @@
                             <div class="inputs-icon"> 
                                 <input type="password" class="form-control passwordInput" aria-describedby="emailHelp" autocomplete="off" placeholder="New password" name="password" value="{{old('password')}}" required>
                                 @error('password') <span class="error">{{ $message }}</span> @enderror
-                                <img src="{{asset('images/Eye_Icon.png')}}" alt=img class="iconImg">
-                                <img src="{{asset('images/view_password.svg')}}" alt=img class="viewIcon">
+                                <img src="{{asset('images/Eye_Icon.png')}}" alt="PWG Group" class="iconImg">
+                                <img src="{{asset('images/view_password.svg')}}" alt="PWG Group" class="viewIcon">
                             </div>            
                         </div>
                         <div class="mb-3">
                             <div class="inputs-icon"> 
                                 <input type="password" class="form-control confirmation" aria-describedby="emailHelp" autocomplete="off" placeholder="Confirm password" name="password_confirmation" value="{{old('password_confirmation')}}"  required>
                                 @error('password_confirmation') <span class="error">{{ $message }}</span> @enderror
-                                <img src="{{asset('images/Eye_Icon.png')}}" alt=img id="cofirmation">
-                                <img src="{{asset('images/view_password.svg')}}" alt=img class="confirmation_viewIcon">
+                                <img src="{{asset('images/Eye_Icon.png')}}" alt="PWG Group" id="cofirmation">
+                                <img src="{{asset('images/view_password.svg')}}" alt="PWG Group" class="confirmation_viewIcon">
                             </div>            
                         </div>
                         <button type="submit" class="btn btn-primary submitBtn">Reset Password</button>

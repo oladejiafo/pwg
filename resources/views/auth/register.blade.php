@@ -77,8 +77,8 @@ input [type="phone"]
             </div>
             <div class="inputs-icon">
               <input type="password" class="form-control passwordInput" id="exampleInputPassword1" name="password" autocomplete="off" required>
-              <img src="{{asset('images/Eye_Icon.png')}}" alt=img class="iconImg">
-              <img src="{{asset('images/view_password.svg')}}" alt=img class="viewIcon">
+              <img src="{{asset('images/Eye_Icon.png')}}" alt="pwg img" class="iconImg">
+              <img src="{{asset('images/view_password.svg')}}" alt="pwg img" class="viewIcon">
               @error('password') <span class="error">{{ $message }}</span> @enderror
             </div>
           </div>
@@ -86,8 +86,8 @@ input [type="phone"]
             <div class="label"><label for="email1" class="form-label">Confirm Password</label></div>
             <div class="inputs-icon">
               <input type="password" class="form-control confirmation" name="password_confirmation" aria-describedby="emailHelp" autocomplete="off" required>
-              <img src="{{asset('images/Eye_Icon.png')}}" alt=img id="cofirmation">
-              <img src="{{asset('images/view_password.svg')}}" alt=img class="confirmation_viewIcon">
+              <img src="{{asset('images/Eye_Icon.png')}}" alt="pwg img" id="cofirmation">
+              <img src="{{asset('images/view_password.svg')}}" alt="pwg img" class="confirmation_viewIcon">
               @error('password') <span class="error">{{ $message }}</span> @enderror
             </div>
           </div>

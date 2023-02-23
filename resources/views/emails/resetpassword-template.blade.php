@@ -24,7 +24,7 @@
                             <tbody><tr>
                                 <td style="box-sizing:border-box;font-family:Yantramanav,sans-serif;max-width:100vw;padding:32px">
                                     <div style="box-sizing:border-box;font-family:Yantramanav,sans-serif;width:400px;height:250px;display:block;margin:30px auto">
-                                        <img src="{{asset('images/resetpassword.png')}}" alt="" width="100%" height="100%">
+                                        <img src="{{asset('images/resetpassword.png')}}" alt="PWG Group" width="100%" height="100%">
                                     </div>
                                     <h1 style="box-sizing:border-box;font-family:Yantramanav,sans-serif;color:#3d4852;font-size:24px;font-weight:bold;margin-top:0;text-align:left">Reset Password</h1>
                                     <p style="box-sizing:border-box;font-family:Yantramanav,sans-serif;font-size:15px;line-height:1.5em;margin-top:0;text-align:left">You are receiving this email because we received a <b style="font-weight: bold">password reset</b> request for your <b style="font-weight: bold">PWG Client</b> account.</p>
@@ -56,7 +56,7 @@
                                             height: 51px;
                                             width: 23%;
                                             float: right;margin-right:15px;">
-                                                <img src="{{asset('images/logoo.png')}}" alt="" width="100%" height="100%">
+                                                <img src="{{asset('images/logoo.png')}}" alt="PWG Group" width="100%" height="100%">
                                             </div>
                                         </div>
                         
