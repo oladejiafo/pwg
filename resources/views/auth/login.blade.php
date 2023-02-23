@@ -39,8 +39,8 @@
               <div class="inputs-icon">
                 <input type="password" class="form-control passwordInput" name="password" value="{{ old('password') }}" id="exampleInputPassword1" autocomplete="off" required autofocus>
                 @error('password') <span class="error">{{ $message }}</span> @enderror
-                <img src="{{asset('images/Eye_Icon.png')}}" alt=img class="hiddenIcon">
-                <img src="{{asset('images/view_password.svg')}}" alt=img class="viewIcon">
+                <img src="{{asset('images/Eye_Icon.png')}}" alt="pwg img" class="hiddenIcon">
+                <img src="{{asset('images/view_password.svg')}}" alt="pwg img" class="viewIcon">
               </div>
             </div>
             

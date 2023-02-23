@@ -25,7 +25,7 @@
                             <tr>
                                 <td>
                                     <div style="box-sizing:border-box;font-family:Yantramanav,sans-serif;height: 80%;width: 11%; margin: 30px auto 10px auto;">
-                                        <img src="{{asset('images/logoo.png')}}" alt="" width="100%" height="100%">
+                                        <img src="{{asset('images/logoo.png')}}" alt="PWG Group" width="100%" height="100%">
                                     </div>
                                     <p style="text-align: center">We are for people</p>
                                 </td>
@@ -33,7 +33,7 @@
                             <tr>
                                 <td style="box-sizing:border-box;font-family:Yantramanav,sans-serif;max-width:100vw;padding:0 32px 32px 32px">
                                     <div style="box-sizing:border-box;font-family:Yantramanav,sans-serif;width:400px;height:250px;display:block;margin:30px auto">
-                                        <img src="{{asset('images/reminder.png')}}" alt="" width="100%" height="100%">
+                                        <img src="{{asset('images/reminder.png')}}" alt="PWG Group" width="100%" height="100%">
                                     </div>
                                     <h1 style="box-sizing:border-box;font-family:Yantramanav,sans-serif;color:#3d4852;font-size:24px;font-weight:bold;margin-top:0;text-align:left">Payment Reminder</h1>
                                     <p style="box-sizing:border-box;font-family:Yantramanav,sans-serif;font-size:15px;line-height:1.5em;margin-top:0;text-align:left">Dear Applicant,</p>
@@ -68,7 +68,7 @@
                                             width: 23%;
                                             float: right;
                                             margin-right:25px;">
-                                                <img src="{{asset('images/logoo.png')}}" alt="" width="100%" height="100%">
+                                                <img src="{{asset('images/logoo.png')}}" alt="PWG Group" width="100%" height="100%">
                                             </div>
                                         </div>
                         

@@ -14,17 +14,13 @@ use QuickBooksOnline\API\Facades\Item;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\users as UserHelper;
-use App\Models\User;
 use App\Models\product;
-use App\Models\Applicant;
 use App\Models\Quickbook as QuickModel;
 use App\Models\payment as PaymentDetails;
 use App\Constant;
 use Carbon\Carbon;
 use Session;
 use DB;
-use App\Mail\ExceptionMail;
-use Mail;
 use PhpParser\Node\Stmt\Switch_;
 
 class Quickbook
@@ -346,7 +342,6 @@ class Quickbook
                 if ($firstPaymentDone) {
                     $remainingPayment = $firstPaymentDone->remaining_amount;
                     if ($firstPaymentDone->remaining_amount > 0) {
-                    } else {
                         self::firstPaymentBalanceDue($paymentType, $apply, $paymentDetails, $customer, $dataService, $remainingPayment);
                     }
                     if ($apply->second_payment_price > 0) {

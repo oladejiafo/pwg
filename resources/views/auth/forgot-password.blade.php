@@ -17,7 +17,7 @@
         <div class="forgot-password">
             <div class="reset">
                 <div class="resetImage">
-                    <img src="{{asset('images/forgot_password.svg')}}" alt="forgot password">
+                    <img src="{{asset('images/forgot_password.svg')}}" alt="forgot password pwg">
                 </div>
                 <div class="reset-heading">
                     It’s okay to reset your password

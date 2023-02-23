@@ -23,7 +23,7 @@
                             <tbody><tr>
                                 <td style="box-sizing:border-box;font-family:Yantramanav,sans-serif;max-width:100vw;padding:32px">
                                     <div style="box-sizing:border-box;font-family:Yantramanav,sans-serif;width:400px;height:250px;display:block;margin:30px auto">
-                                        <img src="{{asset('images/Work_permit_received.png')}}" alt="" width="100%" height="100%">
+                                        <img src="{{asset('images/Work_permit_received.png')}}" alt="PWG Group" width="100%" height="100%">
                                     </div>
                                     <div style="background: linear-gradient(90deg, #104CBA 0%, #0B78D2 76.28%);text-align:center;padding: 20px 5px 20px 5px;color: white;">
                                         <h1 style="box-sizing:border-box;font-family:Yantramanav,sans-serif;color:#fff;font-size:24px;font-weight:bold;margin-top:0;margin-bottom:0;text-align:center;">CONGRATULATIONS</h1>
@@ -61,7 +61,7 @@
                                             width: 23%;
                                             float: right;
                                             margin-right:25px;">
-                                                <img src="{{asset('images/logoo.png')}}" alt="" width="100%" height="100%">
+                                                <img src="{{asset('images/logoo.png')}}" alt="PWG Group" width="100%" height="100%">
                                             </div>
                                         </div>
                         

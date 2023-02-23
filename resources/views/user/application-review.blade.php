@@ -156,7 +156,7 @@
                                 <div class="row">
                                     <div class="col-2">
                                         <div class="image my-auto">
-                                            <img src="{{asset('images/Icons_applicant_details.svg')}}" width="70%" height="100px">
+                                            <img src="{{asset('images/Icons_applicant_details.svg')}}" alt="PWG Group" width="70%" height="100px">
                                         </div>
                                     </div>
                                     <div class="col-1">
@@ -172,7 +172,7 @@
                                     <div class="col-1"></div>
                                     <div class="col-2 mx-auto my-auto">
                                         <div class="down-arrow">
-                                            <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
+                                            <img src="{{asset('images/down_arrow.png')}}" alt="PWG Group" height="auto" width="25%">
                                         </div>
                                     </div>
                                 </div>
@@ -302,7 +302,7 @@
                                 <div class="row">
                                     <div class="col-2 my-auto">
                                         <div class="image">
-                                            <img src="{{asset('images/Icons_home_country_details.svg')}}" width="70%" height="100px">
+                                            <img src="{{asset('images/Icons_home_country_details.svg')}}" alt="PWG Group" width="70%" height="100px">
                                         </div>
                                     </div>
                                     <div class="col-1">
@@ -318,7 +318,7 @@
                                     <div class="col-1"></div>
                                     <div class="col-2 mx-auto my-auto">
                                         <div class="down-arrow">
-                                            <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
+                                            <img src="{{asset('images/down_arrow.png')}}" alt="PWG Group" height="auto" width="25%">
                                         </div>
                                     </div>
                                 </div>
@@ -426,7 +426,7 @@
                                 <div class="row">
                                     <div class="col-2 my-auto">
                                         <div class="image">
-                                            <img src="{{asset('images/Icons_current_residency_and_work_details.svg')}}" width="70%" height="100px">
+                                            <img src="{{asset('images/Icons_current_residency_and_work_details.svg')}}" alt="PWG Group" width="70%" height="100px">
                                         </div>
                                     </div>
                                     <div class="col-1">
@@ -442,7 +442,7 @@
                                     <div class="col-1"></div>
                                     <div class="col-2 mx-auto my-auto">
                                         <div class="down-arrow">
-                                            <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
+                                            <img src="{{asset('images/down_arrow.png')}}" alt="PWG Group" height="auto" width="25%">
                                         </div>
                                     </div>
                                 </div>
@@ -567,7 +567,7 @@
                                 <div class="row">
                                     <div class="col-2 my-auto">
                                         <div class="image">
-                                            <img src="{{asset('images/Icons_schengen_details.svg')}}" width="70%" height="100px">
+                                            <img src="{{asset('images/Icons_schengen_details.svg')}}" alt="PWG Group" width="70%" height="100px">
                                         </div>
                                     </div>
                                     <div class="col-1">
@@ -583,7 +583,7 @@
                                     <div class="col-1"></div>
                                     <div class="col-2 mx-auto my-auto">
                                         <div class="down-arrow">
-                                            <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
+                                            <img src="{{asset('images/down_arrow.png')}}" alt="PWG Group" height="auto" width="25%">
                                         </div>
                                     </div>
                                 </div>
@@ -674,7 +674,7 @@
                                 <div class="row">
                                     <div class="col-2 my-auto">
                                         <div class="image">
-                                            <img src="{{asset('images/Icons_experience_details.svg')}}" width="70%" height="100px">
+                                            <img src="{{asset('images/Icons_experience_details.svg')}}" alt="PWG Group" width="70%" height="100px">
                                         </div>
                                     </div>
                                     <div class="col-1">
@@ -690,7 +690,7 @@
                                     <div class="col-1"></div>
                                     <div class="col-2 mx-auto my-auto">
                                         <div class="down-arrow">
-                                            <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%">
+                                            <img src="{{asset('images/down_arrow.png')}}" alt="PWG Group" height="auto" width="25%">
                                         </div>
                                     </div>
                                 </div>
@@ -732,7 +732,7 @@
                                                         </div>
                                                         <div class="col-1 mx-auto my-auto">
                                                             <div class="down-arrow" data-bs-toggle="collapse" :data-bs-target="'#collapseExperience'+data.id" aria-expanded="false" :aria-controls="'collapseExperience'+data.id">
-                                                                <img src="{{asset('images/down_arrow.png')}}" height="auto" class="exp-image">
+                                                                <img src="{{asset('images/down_arrow.png')}}" alt="PWG Group" height="auto" class="exp-image">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -777,7 +777,7 @@
                                                         </div>
                                                         <div class="col-1 mx-auto my-auto">
                                                             <div class="down-arrow" data-bs-toggle="collapse" :data-bs-target="'#collapseExperience'+index" aria-expanded="false" :aria-controls="'collapseExperience'+index">
-                                                                <img src="{{asset('images/down_arrow.png')}}" height="auto" class="exp-image">
+                                                                <img src="{{asset('images/down_arrow.png')}}" alt="PWG Group" height="auto" class="exp-image">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -791,7 +791,7 @@
                                                                 </div>
                                                                 <div class="col-1 mx-auto my-auto">
                                                                     <div class="down-arrow" data-bs-toggle="collapse" :data-bs-target="'#collapseExperienceTwo'+index+indexTwo" aria-expanded="false" :aria-controls="'collapseExperienceTwo'+index+indexTwo">
-                                                                        <img src="{{asset('images/down_arrow.png')}}" height="auto" class="exp-image">
+                                                                        <img src="{{asset('images/down_arrow.png')}}" alt="PWG Group" height="auto" class="exp-image">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -805,7 +805,7 @@
                                                                         </div>
                                                                         <div class="col-1 mx-auto my-auto">
                                                                             <div class="down-arrow" data-bs-toggle="collapse" :data-bs-target="'#collapseExperienceThree'+index+indexTwo+indexThree" aria-expanded="false" :aria-controls="'collapseExperienceThree'+index+indexTwo+indexThree">
-                                                                                <img src="{{asset('images/down_arrow.png')}}" height="auto" class="exp-image">
+                                                                                <img src="{{asset('images/down_arrow.png')}}" alt="PWG Group" height="auto" class="exp-image">
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -819,7 +819,7 @@
                                                                                 </div>
                                                                                 <div class="col-1 mx-auto my-auto">
                                                                                     <div class="down-arrow" data-bs-toggle="collapse" :data-bs-target="'#collapseExperienceFour'+index+indexTwo+indexThree+indexFour" aria-expanded="false" :aria-controls="'collapseExperienceFour'+index+indexTwo+indexThree+indexFour">
-                                                                                        <img src="{{asset('images/down_arrow.png')}}" height="auto" class="exp-image">
+                                                                                        <img src="{{asset('images/down_arrow.png')}}" alt="PWG Group" height="auto" class="exp-image">
                                                                                     </div>
                                                                                 </div>
                                                                             </div>

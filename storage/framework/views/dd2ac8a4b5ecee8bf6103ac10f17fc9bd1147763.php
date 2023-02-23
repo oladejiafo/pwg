@@ -91,8 +91,8 @@ unset($__errorArgs, $__bag); ?>
             </div>
             <div class="inputs-icon">
               <input type="password" class="form-control passwordInput" id="exampleInputPassword1" name="password" autocomplete="off" required>
-              <img src="<?php echo e(asset('images/Eye_Icon.png')); ?>" alt=img class="iconImg">
-              <img src="<?php echo e(asset('images/view_password.svg')); ?>" alt=img class="viewIcon">
+              <img src="<?php echo e(asset('images/Eye_Icon.png')); ?>" alt="pwg img" class="iconImg">
+              <img src="<?php echo e(asset('images/view_password.svg')); ?>" alt="pwg img" class="viewIcon">
               <?php $__errorArgs = ['password'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -107,8 +107,8 @@ unset($__errorArgs, $__bag); ?>
             <div class="label"><label for="email1" class="form-label">Confirm Password</label></div>
             <div class="inputs-icon">
               <input type="password" class="form-control confirmation" name="password_confirmation" aria-describedby="emailHelp" autocomplete="off" required>
-              <img src="<?php echo e(asset('images/Eye_Icon.png')); ?>" alt=img id="cofirmation">
-              <img src="<?php echo e(asset('images/view_password.svg')); ?>" alt=img class="confirmation_viewIcon">
+              <img src="<?php echo e(asset('images/Eye_Icon.png')); ?>" alt="pwg img" id="cofirmation">
+              <img src="<?php echo e(asset('images/view_password.svg')); ?>" alt="pwg img" class="confirmation_viewIcon">
               <?php $__errorArgs = ['password'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :

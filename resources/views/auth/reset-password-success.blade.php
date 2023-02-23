@@ -4,7 +4,7 @@
         <div class="forgot-password" style="width: 450px;">
             <div class="reset">
                 <div class="resetImage">
-                    <img src="{{asset('images/Approved.svg')}}" alt="approved">
+                    <img src="{{asset('images/Approved.svg')}}" alt="PWG Group approved">
                 </div>
                 <div class="reset-heading">
                     Woohoo !
