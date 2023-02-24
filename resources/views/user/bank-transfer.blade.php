@@ -19,7 +19,7 @@
                                 <h3>
                                     Bank Payment
                                 </h3>
-                                <p>Proceed to your bank app to complete this payment and upload your proof of payment.</p>
+                                <p>Proceed to your bank APP to complete this payment and upload your proof of payment.</p>
                             </div>
                         </div>
                         <div class="row">
@@ -137,7 +137,7 @@
                                 <label for='input-file'>
                                     <div class="recieptUploadImage"><img src="{{asset('images/receiptupload.png')}}" alt="PWG Receipt" width="100%"></div>
                                 </label>
-                                <h6 style="text-align: center">Please upload receipt</h6>
+                                <h6 style="text-align: center">Please upload receipt/proof of payment</h6>
                                 <input id='input-file' name="imgInp" accept="image/*" type='file' id="imgInp" onchange="changeImage(event)"/>
                                 @if ($errors->has('imgInp'))
                                                 <span class="error">Please upload receipt</span>
