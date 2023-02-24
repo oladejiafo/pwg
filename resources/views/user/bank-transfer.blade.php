@@ -173,6 +173,9 @@
             if($('#bank').val() == 2){
                 $('.adcb').show();
                 $('.eis').hide();
+            } else if($('#bank').val() == 1) {
+                $('.eis').show();
+                $('.adcb').hide();
             }
             
             $('#bank').on("change", function () {

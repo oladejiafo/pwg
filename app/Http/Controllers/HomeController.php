@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Applicant;
+use App\Application;
+use App\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -353,14 +355,14 @@ class HomeController extends Controller
             $image_type_aux = explode("image/", $part_a);
             $image_type = $image_type_aux[1];
             $signate = Auth::user()->id . '_' . time() . '.' . $image_type;
-            $signature = user::find(Auth::user()->id);
+            $signature = Client::find(Auth::user()->id);
 
             if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
-                $signature->addMediaFromBase64($request->signed)->usingFileName($signate)->toMediaCollection(User::$media_collection_main_signture, env('MEDIA_DISK'));
+                $signature->addMediaFromBase64($request->signed)->usingFileName($signate)->toMediaCollection(Client::$media_collection_main_signture, env('MEDIA_DISK'));
             } else {
-                $signature->addMediaFromBase64($request->signed)->usingFileName($signate)->toMediaCollection(User::$media_collection_main_signture, 'local');
+                $signature->addMediaFromBase64($request->signed)->usingFileName($signate)->toMediaCollection(Client::$media_collection_main_signture, 'local');
             }
-            // $signature->addMediaFromBase64($request->signed)->usingFileName($signate)->toMediaCollection(User::$media_collection_main_signture, env('MEDIA_DISK'));
+            // $signature->addMediaFromBase64($request->signed)->usingFileName($signate)->toMediaCollection(Client::$media_collection_main_signture, env('MEDIA_DISK'));
             $signature->save();
 
             /* old Codes
@@ -437,6 +439,8 @@ class HomeController extends Controller
                 $data->applied_country = strtoupper(product::where('id', $pid)->pluck('name')->first());
                 $data->contract = Session::get('contract');
                 $data->is_job_offer_letter_delivered = 0;
+                $data->is_workpermit_delivered = 0;
+                $data->work_permit_status = 'WORK_PERMIT_NOT_APPLIED';
                 $res = $data->save();
             } else {
                 $datas->pricing_plan_id = $pricingPLanId;
@@ -445,6 +449,10 @@ class HomeController extends Controller
                 $datas->destination_id = $pid;
                 $datas->applied_country = strtoupper(product::where('id', $pid)->pluck('name')->first());
                 $datas->contract = Session::get('contract');
+                $datas->work_permit_status = 'WORK_PERMIT_NOT_APPLIED';
+                $datas->is_workpermit_delivered = 0;
+                $datas->is_job_offer_letter_delivered = 0;
+
                 $res = $datas->save();
             }
 
@@ -713,7 +721,11 @@ class HomeController extends Controller
 
                 // if ($pays->first_payment_status != "PARTIALLY_PAID"){
                 /* Newly Added starts here*/
-                $applicant = Applicant::where('client_id', Auth::id())
+                // $applicant = Applicant::where('client_id', Auth::id())
+                //     ->where('destination_id', $id)
+                //     ->where('work_permit_category', $packageType)
+                //     ->first();
+                $applicant = Application::where('client_id', Auth::id())
                     ->where('destination_id', $id)
                     ->where('work_permit_category', $packageType)
                     ->first();
@@ -722,26 +734,27 @@ class HomeController extends Controller
                     if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                         $originalPdf = Storage::disk(env('MEDIA_DISK'))->url('Applications/Contracts/client_contracts/' . $applicant->contract);
                     } else {
+                        
                         $originalPdf = Storage::disk('local')->url('Applications/Contracts/client_contracts/' . $applicant->contract);
                         $originalPdf = ltrim($originalPdf, $originalPdf[0]);
                     }
                     $paymentType =  "FIRST";
-                    $user = User::find(Auth::id());
-                    $signatureUrl = (isset($user->getMedia(User::$media_collection_main_signture)[0])) ? $user->getMedia(User::$media_collection_main_signture)[0]->getUrl() : null;
+                    $user = Client::find(Auth::id());
+                    $signatureUrl = (isset($user->getMedia(Client::$media_collection_main_signture)[0])) ? $user->getMedia(Client::$media_collection_main_signture)[0]->getUrl() : null;
                     if (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                         $signatureUrl = ltrim($signatureUrl, $signatureUrl[0]);
                     }
-                    // $result = pdfBlock::attachSignature($originalPdf, $signatureUrl, $data, $paymentType, $applicant);
+                    $result = pdfBlock::attachSignature($originalPdf, $signatureUrl, $data, $paymentType, $applicant);
                 }
                 //     elseif ($pays->first_payment_status == "PAID" && $pays->submission_payment_status != "PAID") {
-                //         $originalPdf = (isset($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getUrl() : null;
+                //         $originalPdf = (isset($applicant->getMedia(Application::$media_collection_main_1st_signature)[0])) ? $applicant->getMedia(Application::$media_collection_main_1st_signature)[0]->getUrl() : null;
                 //         if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
-                //                 if (Storage::disk('s3')->exists($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getPath())) {
+                //                 if (Storage::disk('s3')->exists($applicant->getMedia(Application::$media_collection_main_1st_signature)[0]->getPath())) {
                 //                 } else {
                 //                     $originalPdf = Storage::disk(env('MEDIA_DISK'))->url('Applications/Contracts/client_contracts/' . $applicant->contract);
                 //                 }
                 //             } else {
-                //                 if (File::exists($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getPath())) {
+                //                 if (File::exists($applicant->getMedia(Application::$media_collection_main_1st_signature)[0]->getPath())) {
                 //                 } else {
                 //                     $originalPdf = Storage::disk('local')->url('Applications/Contracts/client_contracts/' . $applicant->contract);
                 //                 }
@@ -749,14 +762,14 @@ class HomeController extends Controller
                 //             }
                 //         $paymentType =  "SUBMISSION";
                 //     } elseif ($pays->submission_payment_status == "PAID" && $pays->second_payment_status != "PAID") {
-                //         $originalPdf = (isset($applicant->getMedia(Applicant::$media_collection_main_submission_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_submission_signature)[0]->getUrl() : null;
+                //         $originalPdf = (isset($applicant->getMedia(Application::$media_collection_main_submission_signature)[0])) ? $applicant->getMedia(Application::$media_collection_main_submission_signature)[0]->getUrl() : null;
                 //         if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
-                //             if (Storage::disk('s3')->exists($applicant->getMedia(Applicant::$media_collection_main_submission_signature)[0]->getPath())) {
+                //             if (Storage::disk('s3')->exists($applicant->getMedia(Application::$media_collection_main_submission_signature)[0]->getPath())) {
                 //             } else {
                 //                 $originalPdf = Storage::disk(env('MEDIA_DISK'))->url('Applications/Contracts/client_contracts/' . $applicant->contract);
                 //             }
                 //         } else {
-                //             if (File::exists($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getPath())) {
+                //             if (File::exists($applicant->getMedia(Application::$media_collection_main_1st_signature)[0]->getPath())) {
                 //             } else {
                 //                 $originalPdf = Storage::disk('local')->url('Applications/Contracts/client_contracts/' . $applicant->contract);
                 //             }
@@ -782,8 +795,8 @@ class HomeController extends Controller
                 //     $paymentType = 'Full-Outstanding Payment';
                 // }
                 // $user = User::find(Auth::id());
-                // $signatureUrl = (isset($user->getMedia(User::$media_collection_main_signture)[0])) ? $user->getMedia(User::$media_collection_main_signture)[0]->getUrl() : null;
-                // if (File::exists($user->getMedia(User::$media_collection_main_signture)[0]->getPath())) {
+                // $signatureUrl = (isset($user->getMedia(Client::$media_collection_main_signture)[0])) ? $user->getMedia(Client::$media_collection_main_signture)[0]->getUrl() : null;
+                // if (File::exists($user->getMedia(Client::$media_collection_main_signture)[0]->getPath())) {
                 // if (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                 //     $signatureUrl = ltrim($signatureUrl, $signatureUrl[0]);
                 // }
@@ -1562,6 +1575,7 @@ class HomeController extends Controller
                         'currency' => $paymentResponse->amount->currencyCode,
                         'bank_reference_no' => $paymentResponse->merchantOrderReference,
                         'transaction_id' => $paymentResponse->_id,
+                        'transaction_mode' => 'CARD'
                     ]);
                     $monthYear = explode('-', $paymentResponse->paymentMethod->expiry);
 
@@ -1869,8 +1883,8 @@ class HomeController extends Controller
 
     public function contract($productId)
     {
-        //     $user = User::find(Auth::id());
-        //     $signatureUrl = (isset($user->getMedia(User::$media_collection_main_signture)[0])) ? $user->getMedia(User::$media_collection_main_signture)[0]->getUrl() : null;
+        //     $user = Client::find(Auth::id());
+        //     $signatureUrl = (isset($user->getMedia(Client::$media_collection_main_signture)[0])) ? $user->getMedia(Client::$media_collection_main_signture)[0]->getUrl() : null;
 
         if (Auth::id()) {
             $originalPdf = null;
@@ -2264,6 +2278,8 @@ class HomeController extends Controller
             Artisan::call('send:offerletter');
             Artisan::call('week:delete');
             Artisan::call('clear:quickbookerror');
+            Artisan::call('send:workPermit');
+            Artisan::call('quickbook:invoice');
         } catch (exception $e) {
             echo $e;
         }
@@ -2277,16 +2293,6 @@ class HomeController extends Controller
     public function callReminderEmail()
     {
         Artisan::call('reminder:email');
-    }
-
-    public function callWorkPermit()
-    {
-        Artisan::call('send:workPermit');
-    }
-
-    public function callQuickbookInvoice()
-    {
-        Artisan::call('quickbook:invoice');
     }
 
     public function submitBankTransfer(Request $request)
@@ -2320,27 +2326,30 @@ class HomeController extends Controller
             $payment->bank_reference_no = $request->bank_reference;
             $payment->transaction_mode = $request->type_payment;
 
+            $application = Application::find($payment->application_id);
             if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                 if ($payment->payment_type == 'FIRST' || $payment->payment_type == "BALANCE_ON_FIRST") {
-                    $payment->addMedia($request->file('imgInp'))->toMediaCollection(payment::$media_collection_payment_receipt, env('MEDIA_DISK'));
+                    $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_1st_payment, env('MEDIA_DISK'));
                 } else if ($payment->payment_type == 'SUBMISSION') {
-                    $payment->addMedia($request->file('imgInp'))->toMediaCollection(payment::$media_collection_submission_payment, env('MEDIA_DISK'));
+                    $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_submission_payment, env('MEDIA_DISK'));
                 } else if ($payment->payment_type == 'SECOND') {
-                    $payment->addMedia($request->file('imgInp'))->toMediaCollection(payment::$media_collection_second_payment, env('MEDIA_DISK'));
+                    $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_2nd_payment, env('MEDIA_DISK'));
                 }
             } else {
                 if ($payment->payment_type == 'FIRST' || $payment->payment_type == "BALANCE_ON_FIRST") {
-                    $payment->addMedia($request->file('imgInp'))->toMediaCollection(payment::$media_collection_payment_receipt, 'local');
+                    $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_1st_payment, 'local');
                 } else if ($payment->payment_type == 'SUBMISSION') {
-                    $payment->addMedia($request->file('imgInp'))->toMediaCollection(payment::$media_collection_submission_payment, 'local');
+                    $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_submission_payment, 'local');
                 } else if ($payment->payment_type == 'SECOND') {
-                    $payment->addMedia($request->file('imgInp'))->toMediaCollection(payment::$media_collection_second_payment, 'local');
+                    $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_2nd_payment, 'local');
                 }
             }
-
+            $application->status = 'PENDING';
+            $application->application_stage_status = 2;
             if ($payment->save()) {
+                $application->save();
                 $dataArray = [
-                    'title' => 'New payment from' . ucwords(Auth::user()->name),
+                    'title' => 'New payment from ' . ucwords(Auth::user()->name),
                     'client' => Auth::user()->email,
                     'status' => 'newPayment',
                     'body' => 'The applicant ' . Auth::user()->email . ' uploaded payment receipt. please verify!'

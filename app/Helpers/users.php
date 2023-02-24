@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Application;
 use Codedge\Fpdf\Fpdf\Fpdf;
 use setasign\Fpdi\Fpdi;
 use setasign\Fpdi\PdfReader;
@@ -110,40 +111,40 @@ class users
 
     public static function getContract($paidDetails)
     {
-        $applicant = Applicant::find($paidDetails->id);
+        $applicant = Application::find($paidDetails->id);
         // if (strtoupper($paidDetails->third_payment_status) == 'PAID' && !empty($paidDetails->contract)) {
-        //     $applicant->contractUrl = (isset($applicant->getMedia(Applicant::$media_collection_main_3rd_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_3rd_signature)[0]->getFullUrl() : null;
+        //     $applicant->contractUrl = (isset($applicant->getMedia(Application::$media_collection_main_3rd_signature)[0])) ? $applicant->getMedia(Application::$media_collection_main_3rd_signature)[0]->getFullUrl() : null;
         //     if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
-        //         if (Storage::disk('s3')->exists($applicant->getMedia(Applicant::$media_collection_main_3rd_signature)[0]->getPath())) {
-        //             // if(File::exists($applicant->getMedia(Applicant::$media_collection_main_3rd_signature)[0]->getPath())){
+        //         if (Storage::disk('s3')->exists($applicant->getMedia(Application::$media_collection_main_3rd_signature)[0]->getPath())) {
+        //             // if(File::exists($applicant->getMedia(Application::$media_collection_main_3rd_signature)[0]->getPath())){
         //             return $applicant;
         //         }
         //     } else {
-        //         if (File::exists($applicant->getMedia(Applicant::$media_collection_main_3rd_signature)[0]->getPath())) {
+        //         if (File::exists($applicant->getMedia(Application::$media_collection_main_3rd_signature)[0]->getPath())) {
         //             return $applicant;
         //         }
         //     }
         // } else if (strtoupper($paidDetails->second_payment_status) == 'PAID' && !empty($paidDetails->contract)) {
-        //     $applicant->contractUrl = (isset($applicant->getMedia(Applicant::$media_collection_main_2nd_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_2nd_signature)[0]->getFullUrl() : null;
+        //     $applicant->contractUrl = (isset($applicant->getMedia(Application::$media_collection_main_2nd_signature)[0])) ? $applicant->getMedia(Application::$media_collection_main_2nd_signature)[0]->getFullUrl() : null;
         //     if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
-        //         if (Storage::disk('s3')->exists($applicant->getMedia(Applicant::$media_collection_main_2nd_signature)[0]->getPath())) {
-        //             // if(File::exists($applicant->getMedia(Applicant::$media_collection_main_2nd_signature)[0]->getPath())){
+        //         if (Storage::disk('s3')->exists($applicant->getMedia(Application::$media_collection_main_2nd_signature)[0]->getPath())) {
+        //             // if(File::exists($applicant->getMedia(Application::$media_collection_main_2nd_signature)[0]->getPath())){
         //             return $applicant;
         //         }
         //     } else {
-        //         if (File::exists($applicant->getMedia(Applicant::$media_collection_main_2nd_signature)[0]->getPath())) {
+        //         if (File::exists($applicant->getMedia(Application::$media_collection_main_2nd_signature)[0]->getPath())) {
         //             return $applicant;
         //         }
         //     }
         // } else if (strtoupper($paidDetails->submission_payment_status) == 'PAID' && !empty($paidDetails->contract)) {
-        //     $applicant->contractUrl = (isset($applicant->getMedia(Applicant::$media_collection_main_submission_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_submission_signature)[0]->getFullUrl() : null;
+        //     $applicant->contractUrl = (isset($applicant->getMedia(Application::$media_collection_main_submission_signature)[0])) ? $applicant->getMedia(Application::$media_collection_main_submission_signature)[0]->getFullUrl() : null;
         //     if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
-        //         if (Storage::disk('s3')->exists($applicant->getMedia(Applicant::$media_collection_main_submission_signature)[0]->getPath())) {
-        //             // if(File::exists($applicant->getMedia(Applicant::$media_collection_main_submission_signature)[0]->getPath())){
+        //         if (Storage::disk('s3')->exists($applicant->getMedia(Application::$media_collection_main_submission_signature)[0]->getPath())) {
+        //             // if(File::exists($applicant->getMedia(Application::$media_collection_main_submission_signature)[0]->getPath())){
         //             return $applicant;
         //         }
         //     } else {
-        //         if (File::exists($applicant->getMedia(Applicant::$media_collection_main_submission_signature)[0]->getPath())) {
+        //         if (File::exists($applicant->getMedia(Application::$media_collection_main_submission_signature)[0]->getPath())) {
         //             return $applicant;
         //         }
         //     }
@@ -151,15 +152,15 @@ class users
         try{
             if (strtoupper($paidDetails->first_payment_status) == 'PAID' && !empty($paidDetails->contract)) {
 
-                $applicant->contractUrl = (isset($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getFullUrl() : null;
+                $applicant->contractUrl = (isset($applicant->getMedia(Application::$media_collection_main_1st_signature)[0])) ? $applicant->getMedia(Application::$media_collection_main_1st_signature)[0]->getFullUrl() : null;
     
                 if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
-                    if (Storage::disk('s3')->exists($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getPath())) {
-                        // if(File::exists($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getPath())){
+                    if (Storage::disk('s3')->exists($applicant->getMedia(Application::$media_collection_main_1st_signature)[0]->getPath())) {
+                        // if(File::exists($applicant->getMedia(Application::$media_collection_main_1st_signature)[0]->getPath())){
                         return $applicant;
                     }
                 } else {
-                    if (File::exists($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getPath())) {
+                    if (File::exists($applicant->getMedia(Application::$media_collection_main_1st_signature)[0]->getPath())) {
                         return $applicant;
                     }
                 }
