@@ -868,7 +868,11 @@
                                             @if($client['is_spouse'] != null || $client['children_count'] != null) 
                                                 <button type="submit" class="btn btn-primary submitBtn applicantNext">  Next </button>
                                             @else
-                                                <button type="submit" class="btn btn-primary submitBtn applicantReview">  Submit <i class="fa fa-spinner fa-spin applicantReviewSpin"></i></button>
+                                                @if($applicant->first_payment_status == "PAID")
+                                                    <button type="submit" class="btn btn-primary submitBtn applicantReview">  Submit <i class="fa fa-spinner fa-spin applicantReviewSpin"></i></button>
+                                                @else 
+                                                    <h5>You can submit the review once the payment got confirmed!</h5>
+                                                @endif
                                             @endif
                                         </div>
                                     </div>
@@ -1596,7 +1600,11 @@
                                     <div class="form-group row mt-4">
                                         <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
                                             @if($client['is_spouse'] != null && $client['children_count'] == null)
-                                                <button type="submit" class="btn btn-primary submitBtn dependentReview">Submit <i class="fa fa-spinner fa-spin dependentReviewSpin"></i></button>
+                                                @if($applicant->first_payment_status == "PAID")
+                                                    <button type="submit" class="btn btn-primary submitBtn dependentReview">Submit <i class="fa fa-spinner fa-spin dependentReviewSpin"></i></button>
+                                                @else 
+                                                    <h5>You can submit the review once the payment got confirmed!</h5>
+                                                @endif
                                             @else 
                                                 <button type="submit" class="btn btn-primary submitBtn dependentNext">Next</button>
                                             @endif
@@ -1691,7 +1699,11 @@
                                             <div class="form-group row mt-4">
                                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
                                                     @if($key+1 ==  $client['children_count'])
-                                                        <button type="submit" class="btn btn-primary submitBtn submitChild">Submit <i class="fa fa-spinner fa-spin childReviewSpin"></i></button>  
+                                                        @if($applicant->first_payment_status == "PAID")
+                                                            <button type="submit" class="btn btn-primary submitBtn submitChild">Submit <i class="fa fa-spinner fa-spin childReviewSpin"></i></button>  
+                                                        @else 
+                                                            <h5>You can submit the review once the payment got confirmed!</h5>
+                                                        @endif
                                                     @else 
                                                         <button type="button" class="btn btn-primary submitBtn collapsechild{{$key+2}}" data-bs-toggle="collapse" data-bs-target="#collapsechild{{$key+2}}" aria-expanded="false" aria-controls="collapsechild{{$key+2}}">Ammend</button>  
                                                     @endif

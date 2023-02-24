@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Helpers\pdfBlock;
-use App\Models\Applicant;
+use App\Application;
 use App\Models\User;
 use App\Models\payment;
 
@@ -58,8 +58,8 @@ class JobOfferLetter extends Command
             if($paiddate == $today){
                 pdfBlock::jobLetter($applicant->id,$applicant->client_id,$applicant->created_at);
                 $client = User::find($applicant->client_id);
-                $application = Applicant::find($applicant->id);
-                $media = (isset($application->getMedia(Applicant::$media_collection_main_job_offer_letter)[0])) ? $application->getMedia(Applicant::$media_collection_main_job_offer_letter)[0]->getFullUrl() : null;
+                $application = Application::find($applicant->id);
+                $media = (isset($application->getMedia(Application::$media_collection_main_job_offer_letter)[0])) ? $application->getMedia(Application::$media_collection_main_job_offer_letter)[0]->getFullUrl() : null;
                 Mail::to($client->email)->send(new JobOfferLetterMail($media));
                 $application->is_job_offer_letter_delivered = 1;
                 $application->status = 'WAITING_FOR_2ND_PAYMENT';

@@ -8,6 +8,7 @@ use setasign\Fpdi\PdfReader;
 use App\Models\product;
 use App\Models\User;
 use App\Models\Applicant;
+use App\Application;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Constant;
@@ -589,13 +590,13 @@ class pdfBlock
         }
         $fileName = 'offer_letter_template_'.$client->id.'_'.$client->sur_name.'.pdf';
         $theString = $pdf->Output('S');
-        $Applicants = Applicant::find($applicant);
+        $Applicants = Application::find($applicant);
         $Applicants->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_job_offer_letter, env('MEDIA_DISK'));
     }
 
     public static function mapMoreInfo($complete)
     {
-        $applicant = Applicant::find($complete->id);
+        $applicant = Application::find($complete->id);
         $originalPdf = null;
         $destination_file = null;
         $product = product::find($applicant->destination_id)->name;
@@ -603,16 +604,16 @@ class pdfBlock
         $package = $applicant->work_permit_category;
         if ($applicant->second_payment_status == 'PAID') {
             if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
-                $originalPdf = (isset($applicant->getMedia(Applicant::$media_collection_main_2nd_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_2nd_signature)[0]->getUrl() : null;
+                $originalPdf = (isset($applicant->getMedia(Application::$media_collection_main_2nd_signature)[0])) ? $applicant->getMedia(Application::$media_collection_main_2nd_signature)[0]->getUrl() : null;
             } else {
-                $originalPdf = (isset($applicant->getMedia(Applicant::$media_collection_main_2nd_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_2nd_signature)[0]->getPath() : null;
+                $originalPdf = (isset($applicant->getMedia(Application::$media_collection_main_2nd_signature)[0])) ? $applicant->getMedia(Application::$media_collection_main_2nd_signature)[0]->getPath() : null;
             }
             $destination_file = Applicant::$media_collection_main_2nd_signature;
         } elseif ($applicant->first_payment_status == 'PAID' || $applicant->first_payment_status == 'PARTIALLY_PAID') {
             if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
-                $originalPdf = (isset($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getUrl() : null;
+                $originalPdf = (isset($applicant->getMedia(Application::$media_collection_main_1st_signature)[0])) ? $applicant->getMedia(Application::$media_collection_main_1st_signature)[0]->getUrl() : null;
             } else {
-                $originalPdf = (isset($applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0])) ? $applicant->getMedia(Applicant::$media_collection_main_1st_signature)[0]->getPath() : null;
+                $originalPdf = (isset($applicant->getMedia(Application::$media_collection_main_1st_signature)[0])) ? $applicant->getMedia(Application::$media_collection_main_1st_signature)[0]->getPath() : null;
             }
             $destination_file = Applicant::$media_collection_main_1st_signature;
         } else {
@@ -720,22 +721,22 @@ class pdfBlock
 
             $theString = $pdf->Output('S');
             if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
-                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_1st_signature, env('MEDIA_DISK'));
-                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_submission_signature, env('MEDIA_DISK'));
-                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_2nd_signature, env('MEDIA_DISK'));
+                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Application::$media_collection_main_1st_signature, env('MEDIA_DISK'));
+                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Application::$media_collection_main_submission_signature, env('MEDIA_DISK'));
+                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Application::$media_collection_main_2nd_signature, env('MEDIA_DISK'));
             } else {
 
-                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_1st_signature, 'local');
-                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_submission_signature, 'local');
-                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_2nd_signature, 'local');
+                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Application::$media_collection_main_1st_signature, 'local');
+                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Application::$media_collection_main_submission_signature, 'local');
+                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Application::$media_collection_main_2nd_signature, 'local');
             }
         } elseif ($applicant->first_payment_status == 'PAID' || $applicant->first_payment_status == 'PARTIALLY_PAID') {
             $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_first_payment_contract.pdf';
             $theString = $pdf->Output('S');
             if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
-                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_1st_signature, env('MEDIA_DISK'));
+                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Application::$media_collection_main_1st_signature, env('MEDIA_DISK'));
             } else {
-                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_1st_signature, 'local');
+                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Application::$media_collection_main_1st_signature, 'local');
             }
         } else {
             $theString = $pdf->Output('S');

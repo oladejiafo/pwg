@@ -21,15 +21,11 @@ class payment extends Model implements HasMedia
         'paid_amount'
     ];
 
-    public static $media_collection_payment_receipt = 'client_collection_signature';
-    public static $media_collection_submission_payment = 'client_collection_submission_payment';
-    public static $media_collection_second_payment = 'client_collection_second_payment';
+    public static $media_collection_payment_receipt = 'media_collection_payment_receipt';
 
 
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('media_collection_payment_receipt');
-        $this->addMediaCollection('media_collection_submission_payment');
-        $this->addMediaCollection('media_collection_second_payment');
     }
 }
