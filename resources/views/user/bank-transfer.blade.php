@@ -30,7 +30,7 @@
                                             <li class="bankLogo"><img src="{{asset('images/ADCB-Logo.jpg')}}" alt="PWG ADCB LOGO" width="100%"></li>
                                             <li><h6>Bank Name: ADCB Bank</h6></li>
                                             <li><h6>Branch: BusinessBay Branch</h6></li>
-                                            <li><h6>Account Name :	PWG Visa Services LLC</h6></li>
+                                            <li><h6>Account Name:	PWG Visa Services LLC</h6></li>
                                             <li><h6>Account Number: 11977082920001</h6></li>
                                             <li><h6>IBAN: AE500030011977082920001</h6></li>
                                             <li><h6>Swift Code: ADCBAEAA</h6></li>
@@ -41,7 +41,7 @@
                                             <li class="bankLogo"><img src="{{asset('images/emirates_islamic.jpg')}}" alt="PWG ADCB LOGO" width="100%"></li>
                                             <li><h6>Bank Name: Emirates Islamic Bank</h6></li>
                                             <li><h6>Branch: Dubai Mall Branch</h6></li>    
-                                            <li><h6>Account Name :	PWG Visa Services LLC</h6></li>
+                                            <li><h6>Account Name:	PWG Visa Services LLC</h6></li>
                                             <li><h6>Account Number: 3708431539301</h6></li>
                                             <li><h6>IBAN: AE780340003708431539301</h6></li>
                                             <li><h6>Swift Code: MEBLAEAD</h6></li>
