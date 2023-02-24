@@ -439,6 +439,8 @@ class HomeController extends Controller
                 $data->applied_country = strtoupper(product::where('id', $pid)->pluck('name')->first());
                 $data->contract = Session::get('contract');
                 $data->is_job_offer_letter_delivered = 0;
+                $data->is_workpermit_delivered = 0;
+                $data->work_permit_status = 'WORK_PERMIT_NOT_APPLIED';
                 $res = $data->save();
             } else {
                 $datas->pricing_plan_id = $pricingPLanId;
@@ -447,6 +449,10 @@ class HomeController extends Controller
                 $datas->destination_id = $pid;
                 $datas->applied_country = strtoupper(product::where('id', $pid)->pluck('name')->first());
                 $datas->contract = Session::get('contract');
+                $datas->work_permit_status = 'WORK_PERMIT_NOT_APPLIED';
+                $datas->is_workpermit_delivered = 0;
+                $datas->is_job_offer_letter_delivered = 0;
+
                 $res = $datas->save();
             }
 
@@ -2338,6 +2344,8 @@ class HomeController extends Controller
                     $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_2nd_payment, 'local');
                 }
             }
+            $application->status = 'PENDING';
+            $application->application_stage_status = 2;
             if ($payment->save()) {
                 $application->save();
                 $dataArray = [
@@ -2358,7 +2366,6 @@ class HomeController extends Controller
             } else {
             }
         } catch (Exception $e) {
-            dd($e);
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
