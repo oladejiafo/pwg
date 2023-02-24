@@ -556,6 +556,21 @@ class HomeController extends Controller
                 ->orderBy('id', 'desc')
                 ->first();
 
+            $paym = DB::table('payments')
+                ->where('application_id', '=', $app_id)
+                ->whereIn('transaction_mode',   array('TRANSFER','DEPOSIT'))
+                ->where('invoice_amount', '>', 0)
+                ->where(function($query) {
+                    $query->where('paid_amount', '=', 0)
+                        ->orWhereNull('paid_amount');
+                })
+                // ->where('paid_amount', '=', 0)
+                // ->orWhereNull('paid_amount')
+                ->orderBy('id', 'desc')
+                ->first();
+
+            // dd($paym);
+
             if (isset($due)) {
                 $date = Carbon::parse($due->payment_date);
                 $daysToAdd = 14;
@@ -601,7 +616,7 @@ class HomeController extends Controller
                 ->first();
 
             $authUrl = '';
-            return view('user.myapplication', compact('paid', 'pays', 'prod', 'authUrl', 'dueDay'));
+            return view('user.myapplication', compact('paid', 'pays', 'prod', 'authUrl', 'dueDay','paym'));
         } else {
             return redirect('home');
         }
