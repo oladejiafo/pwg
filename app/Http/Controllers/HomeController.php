@@ -459,7 +459,7 @@ class HomeController extends Controller
             if ($signature) {
                 Session::put('payall', $request->payall);
                 Session::put('infox', 'Signature is Successful!');
-                Session::put('infox_sub', 'Proceed to application'); 
+                Session::put('infox_sub', 'Proceed to application');
                 return true;
             } else {
                 Session::put('failed', 'Oppss! Something went wrong.');
@@ -566,9 +566,9 @@ class HomeController extends Controller
 
             $paym = DB::table('payments')
                 ->where('application_id', '=', $app_id)
-                ->whereIn('transaction_mode',   array('TRANSFER','DEPOSIT'))
+                ->whereIn('transaction_mode',   array('TRANSFER', 'DEPOSIT'))
                 ->where('invoice_amount', '>', 0)
-                ->where(function($query) {
+                ->where(function ($query) {
                     $query->where('paid_amount', '=', 0)
                         ->orWhereNull('paid_amount');
                 })
@@ -624,7 +624,7 @@ class HomeController extends Controller
                 ->first();
 
             $authUrl = '';
-            return view('user.myapplication', compact('paid', 'pays', 'prod', 'authUrl', 'dueDay','paym'));
+            return view('user.myapplication', compact('paid', 'pays', 'prod', 'authUrl', 'dueDay', 'paym'));
         } else {
             return redirect('home');
         }
@@ -734,7 +734,7 @@ class HomeController extends Controller
                     if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                         $originalPdf = Storage::disk(env('MEDIA_DISK'))->url('Applications/Contracts/client_contracts/' . $applicant->contract);
                     } else {
-                        
+
                         $originalPdf = Storage::disk('local')->url('Applications/Contracts/client_contracts/' . $applicant->contract);
                         $originalPdf = ltrim($originalPdf, $originalPdf[0]);
                     }
@@ -2327,6 +2327,9 @@ class HomeController extends Controller
             $payment->transaction_mode = $request->type_payment;
 
             $application = Application::find($payment->application_id);
+            $application->status = 'PENDING';
+            $application->application_stage_status = 2;
+            $temp = $request->file('imgInp');
             if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                 if ($payment->payment_type == 'FIRST' || $payment->payment_type == "BALANCE_ON_FIRST") {
                     $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_1st_payment, env('MEDIA_DISK'));
@@ -2335,6 +2338,12 @@ class HomeController extends Controller
                 } else if ($payment->payment_type == 'SECOND') {
                     $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_2nd_payment, env('MEDIA_DISK'));
                 }
+                $application->save();
+                $applicationImg = Application::find($payment->application_id);
+                $url =  $applicationImg->getMedia(Application::$media_collection_main_1st_payment)[0]->getPath();
+                $payment->addMedia($url) //starting method
+                    ->preservingOriginal() //middle method
+                    ->toMediaCollection(Payment::$media_collection_payment_receipt, env('MEDIA_DISK'));
             } else {
                 if ($payment->payment_type == 'FIRST' || $payment->payment_type == "BALANCE_ON_FIRST") {
                     $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_1st_payment, 'local');
@@ -2343,11 +2352,15 @@ class HomeController extends Controller
                 } else if ($payment->payment_type == 'SECOND') {
                     $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_2nd_payment, 'local');
                 }
-            }
-            $application->status = 'PENDING';
-            $application->application_stage_status = 2;
-            if ($payment->save()) {
                 $application->save();
+
+                $applicationImg = Application::find($payment->application_id);
+                $url =  $applicationImg->getMedia(Application::$media_collection_main_1st_payment)[0]->getPath();
+                $payment->addMedia($url) //starting method
+                    ->preservingOriginal() //middle method
+                    ->toMediaCollection(Payment::$media_collection_payment_receipt, 'local');
+            }
+            if ($payment->save()) {
                 $dataArray = [
                     'title' => 'New payment from ' . ucwords(Auth::user()->name),
                     'client' => Auth::user()->email,
@@ -2364,8 +2377,10 @@ class HomeController extends Controller
                 $id = $request->productId;
                 return view('user.payment-confirm', compact('id'));
             } else {
+                return view('user.payment-confirm', compact('id'))->with('error', 'Something went wrong! Please try again');
             }
         } catch (Exception $e) {
+            dd($e);
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
