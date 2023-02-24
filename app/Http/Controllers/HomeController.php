@@ -459,7 +459,7 @@ class HomeController extends Controller
             if ($signature) {
                 Session::put('payall', $request->payall);
                 Session::put('infox', 'Signature is Successful!');
-                Session::put('infox_sub', 'Proceed to application');
+                Session::put('infox_sub', 'Proceed to application'); 
                 return true;
             } else {
                 Session::put('failed', 'Oppss! Something went wrong.');
