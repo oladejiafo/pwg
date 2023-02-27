@@ -144,7 +144,6 @@
     <?php endif; ?>
 
     <div class="card-body paid-section" style="background-color:#444C64;">
-
         <div class="carousel" id="carouselThree" data-ride="carousel">
             <div class="outer scroll-pane" id="container">
                 <div class="container-fluid text-center">
@@ -200,8 +199,15 @@
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="<?php echo e(route('getInvoice', 'FIRST')); ?>">Get
                                                                 Invoice</a>
-                                                        <?php elseif($paid->first_payment_status == 'PENDING' && $paid->first_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && ($paym->payment_type=="FIRST" || $paym->payment_type =="BALANCE_ON_FIRST"))): ?>
-                                                            <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
+                                                        <?php elseif(isset($paym)): ?>
+                                                            <?php if(($paid->first_payment_status == 'PENDING') && $paid->first_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && ($paym->payment_type=="FIRST" || $paym->payment_type == "BALANCE_ON_FIRST")) || ($paym->payment_type == "BALANCE_ON_FIRST" && $paid->first_payment_status == 'PARTIALLY_PAID'  && (isset($paym->transaction_mode) && $paid->first_payment_verified_by_cfo == 0))): ?>
+                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
+                                                            <?php else: ?>
+                                                                <form action="<?php echo e(route('payment', $prod->id)); ?>"
+                                                                    method="GET">
+                                                                    <button class="btn btn-secondary">Pay Now</button>
+                                                                </form>
+                                                            <?php endif; ?>
                                                         <?php else: ?>
                                                             <form action="<?php echo e(route('payment', $prod->id)); ?>"
                                                                 method="GET">
@@ -456,8 +462,15 @@
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="<?php echo e(route('getInvoice', 'FIRST')); ?>">Get
                                                                 Invoice</a>
-                                                        <?php elseif($paid->first_payment_status == 'PENDING' && $paid->first_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && ($paym->payment_type=="FIRST" || $pay->payment_type == "BALANCE_ON_FIRST"))): ?>
-                                                            <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
+                                                        <?php elseif(isset($paym)): ?>
+                                                            <?php if(($paid->first_payment_status == 'PENDING') && $paid->first_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && ($paym->payment_type=="FIRST" || $paym->payment_type == "BALANCE_ON_FIRST")) || ($paym->payment_type == "BALANCE_ON_FIRST" && $paid->first_payment_status == 'PARTIALLY_PAID'  && (isset($paym->transaction_mode) && $paid->first_payment_verified_by_cfo == 0))): ?>
+                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
+                                                            <?php else: ?>
+                                                                <form action="<?php echo e(route('payment', $prod->id)); ?>"
+                                                                    method="GET">
+                                                                    <button class="btn btn-secondary">Pay Now</button>
+                                                                </form>
+                                                            <?php endif; ?>
                                                         <?php else: ?>
                                                             <form action="<?php echo e(route('payment', $prod->id)); ?>"
                                                                 method="GET">
@@ -700,8 +713,25 @@
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="<?php echo e(route('getInvoice', 'SUBMISSION')); ?>">Get
                                                                 Invoice</a>
-                                                        <?php elseif($paid->submission_payment_status == 'PENDING' && $paid->submission_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && $paym->payment_type=="SUBMISSION")): ?>
-                                                            <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
+                                                        <?php elseif(isset($paym)): ?>
+                                                            <?php if($paid->submission_payment_status == 'PENDING' && $paid->submission_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && $paym->payment_type=="SUBMISSION")): ?>
+                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
+                                                            <?php else: ?>
+                                                                <?php if($paid->application_stage_status != 5): ?>
+                                                                    <button class="btn btn-secondary toastrDefaultError"
+                                                                        onclick="toastr.error('Your application process not completed!')">Pay
+                                                                        Now</button>
+                                                                <?php elseif($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0): ?>
+                                                                    <button class="btn btn-secondary toastrDefaultError"
+                                                                    onclick="toastr.error('Your previous payment is being verified!')">Pay
+                                                                    Now</button>
+                                                                <?php else: ?>
+                                                                    <form action="<?php echo e(route('payment', $prod->id)); ?>"
+                                                                        method="GET">
+                                                                        <button class="btn btn-secondary">Pay Now</button>
+                                                                    </form>
+                                                                <?php endif; ?>
+                                                            <?php endif; ?>
                                                         <?php else: ?>
                                                             <?php if($paid->application_stage_status != 5): ?>
                                                                 <button class="btn btn-secondary toastrDefaultError"
@@ -775,8 +805,15 @@
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="<?php echo e(route('getInvoice', 'FIRST')); ?>">Get
                                                                 Invoice</a>
-                                                        <?php elseif($paid->first_payment_status == 'PENDING' && $paid->first_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && ($paym->payment_type=="FIRST" || $paym->payment_type =="BALANCE_ON_FIRST"))): ?>
-                                                            <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
+                                                        <?php elseif(isset($paym)): ?>
+                                                                <?php if(($paid->first_payment_status == 'PENDING') && $paid->first_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && ($paym->payment_type=="FIRST" || $paym->payment_type == "BALANCE_ON_FIRST")) || ($paym->payment_type == "BALANCE_ON_FIRST" && $paid->first_payment_status == 'PARTIALLY_PAID'  && (isset($paym->transaction_mode) && $paid->first_payment_verified_by_cfo == 0))): ?>
+                                                                    <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
+                                                                <?php else: ?>
+                                                                    <form action="<?php echo e(route('payment', $prod->id)); ?>"
+                                                                        method="GET">
+                                                                        <button class="btn btn-secondary">Pay Now</button>
+                                                                    </form>
+                                                                <?php endif; ?>
                                                         <?php else: ?>
                                                             <form action="<?php echo e(route('payment', $prod->id)); ?>"
                                                                 method="GET">
@@ -1021,8 +1058,26 @@
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="<?php echo e(route('getInvoice', 'SUBMISSION')); ?>">Get
                                                                 Invoice</a>
-                                                        <?php elseif($paid->submission_payment_status == 'PENDING' && $paid->submission_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && $paym->payment_type=="SUBMISSION")): ?>
-                                                            <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
+                                                        <?php elseif(isset($paym)): ?>
+                                                            <?php if($paid->submission_payment_status == 'PENDING' && $paid->submission_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && $paym->payment_type=="SUBMISSION")): ?>
+                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
+                                                            <?php else: ?>
+                                                                <?php if($paid->application_stage_status != 5): ?>
+                                                                    <button class="btn btn-secondary toastrDefaultError"
+                                                                        onclick="toastr.error('Your application process not completed!')">Pay
+                                                                        Now</button>
+                                                                <?php elseif($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0): ?>
+                                                                    <button class="btn btn-secondary toastrDefaultError"
+                                                                    onclick="toastr.error('Your previous payment is being verified!')">Pay
+                                                                    Now</button>
+                                                                <?php else: ?>
+                                                                    <form action="<?php echo e(route('payment', $prod->id)); ?>"
+                                                                        method="GET">
+                                                                        <button class="btn btn-secondary">Pay Now</button>
+                                                                    </form>
+                                                                <?php endif; ?>
+
+                                                            <?php endif; ?>
                                                         <?php else: ?>
                                                             <?php if($paid->application_stage_status != 5): ?>
                                                                 <button class="btn btn-secondary toastrDefaultError"
@@ -1082,8 +1137,25 @@
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="<?php echo e(route('getInvoice', 'SECOND')); ?>">Get
                                                                 Invoice</a>
-                                                        <?php elseif($paid->second_payment_status == 'PENDING' && $paid->second_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && $paym->payment_type=="SECOND")): ?>
-                                                            <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
+                                                        <?php elseif(isset($paym)): ?>
+                                                            <?php if($paid->second_payment_status == 'PENDING' && $paid->second_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && $paym->payment_type=="SECOND")): ?>
+                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
+                                                            <?php else: ?>
+                                                                <?php if($paid->application_stage_status != 5): ?>
+                                                                    <button class="btn btn-secondary toastrDefaultError"
+                                                                        onclick="toastr.error('Your application process not completed!')">Pay
+                                                                        Now</button>
+                                                                <?php elseif($paid->submission_payment_status != "PAID" && $paid->submission_payment_verified_by_cfo == 0): ?>
+                                                                    <button class="btn btn-secondary toastrDefaultError"
+                                                                    onclick="toastr.error('Your previous payment is being verified!')">Pay
+                                                                    Now</button>
+                                                                <?php else: ?>
+                                                                    <form action="<?php echo e(route('payment', $prod->id)); ?>"
+                                                                        method="GET">
+                                                                        <button class="btn btn-secondary">Pay Now</button>
+                                                                    </form>
+                                                                <?php endif; ?>
+                                                            <?php endif; ?>
                                                         <?php else: ?>
                                                             <?php if($paid->application_stage_status != 5): ?>
                                                                 <button class="btn btn-secondary toastrDefaultError"
@@ -1158,8 +1230,15 @@
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="<?php echo e(route('getInvoice', 'FIRST')); ?>">Get
                                                                 Invoice</a>
-                                                        <?php elseif(($paid->first_payment_status == 'PENDING') && $paid->first_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && ($paym->payment_type=="FIRST" || $paym->payment_type == "BALANCE_ON_FIRST")) || ($paym->payment_type == "BALANCE_ON_FIRST" && $paid->first_payment_status == 'PARTIALLY_PAID'  && (isset($paym->transaction_mode) && $paid->first_payment_verified_by_cfo == 0))): ?>
-                                                            <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
+                                                        <?php elseif(isset($paym)): ?>
+                                                            <?php if(($paid->first_payment_status == 'PENDING') && $paid->first_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && ($paym->payment_type=="FIRST" || $paym->payment_type == "BALANCE_ON_FIRST")) || ($paym->payment_type == "BALANCE_ON_FIRST" && $paid->first_payment_status == 'PARTIALLY_PAID'  && (isset($paym->transaction_mode) && $paid->first_payment_verified_by_cfo == 0))): ?>
+                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
+                                                            <?php else: ?> 
+                                                            <form action="<?php echo e(route('payment', $prod->id)); ?>"
+                                                                method="GET">
+                                                                <button class="btn btn-secondary">Pay Now</button>
+                                                            </form>
+                                                            <?php endif; ?>
                                                         <?php else: ?>
                                                             <form action="<?php echo e(route('payment', $prod->id)); ?>"
                                                                 method="GET">
@@ -1275,8 +1354,25 @@
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="<?php echo e(route('getInvoice', 'SUBMISSION')); ?>">Get
                                                                 Invoice</a>
-                                                        <?php elseif($paid->submission_payment_status == 'PENDING' && $paid->submission_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && $paym->payment_type=="SUBMISSION")): ?>
-                                                            <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
+                                                        <?php elseif(isset($paym)): ?>
+                                                            <?php if($paid->submission_payment_status == 'PENDING' && $paid->submission_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && $paym->payment_type=="SUBMISSION")): ?>
+                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
+                                                            <?php else: ?> 
+                                                                <?php if($paid->application_stage_status != 5): ?>
+                                                                <button class="btn btn-secondary toastrDefaultError"
+                                                                    onclick="toastr.error('Your application process not completed!')">Pay
+                                                                    Now</button>
+                                                                <?php elseif($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0): ?>
+                                                                    <button class="btn btn-secondary toastrDefaultError"
+                                                                    onclick="toastr.error('Your first payment is being verified!')">Pay
+                                                                    Now</button>
+                                                                <?php else: ?>
+                                                                    <form action="<?php echo e(route('payment', $prod->id)); ?>"
+                                                                        method="GET">
+                                                                        <button class="btn btn-secondary">Pay Now</button>
+                                                                    </form>
+                                                                <?php endif; ?>
+                                                            <?php endif; ?>
                                                         <?php else: ?>
                                                             <?php if($paid->application_stage_status != 5): ?>
                                                                 <button class="btn btn-secondary toastrDefaultError"
@@ -1379,8 +1475,25 @@
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="<?php echo e(route('getInvoice', 'SECOND')); ?>">Get
                                                                 Invoice</a>
-                                                        <?php elseif($paid->second_payment_status == 'PENDING' && $paid->second_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && $paym->payment_type=="SECOND")): ?>
-                                                            <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
+                                                        <?php elseif(isset($paym)): ?>
+                                                            <?php if($paid->second_payment_status == 'PENDING' && $paid->second_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && $paym->payment_type=="SECOND")): ?>
+                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
+                                                            <?php else: ?>    
+                                                                <?php if($paid->application_stage_status != 5): ?>
+                                                                    <button class="btn btn-secondary toastrDefaultError"
+                                                                        onclick="toastr.error('Your application process not completed!')">Pay
+                                                                        Now</button>
+                                                                <?php elseif($paid->submission_payment_status != "PAID" && $paid->submission_payment_verified_by_cfo == 0): ?>
+                                                                    <button class="btn btn-secondary toastrDefaultError"
+                                                                    onclick="toastr.error('Your previous payment is being verified!')">Pay
+                                                                    Now</button>
+                                                                <?php else: ?>
+                                                                    <form action="<?php echo e(route('payment', $prod->id)); ?>"
+                                                                        method="GET">
+                                                                        <button class="btn btn-secondary">Pay Now</button>
+                                                                    </form>
+                                                                <?php endif; ?>        
+                                                            <?php endif; ?>
                                                         <?php else: ?>
                                                             <?php if($paid->application_stage_status != 5): ?>
                                                                 <button class="btn btn-secondary toastrDefaultError"
@@ -1592,7 +1705,7 @@
                                 </div>
                             </div>
                             <!-- Modal Ends -->
-                            <!-- End Column  -->
+
                         </ul>
                     </div>
                 </div>
@@ -1625,6 +1738,13 @@
                     <button class="btn btn-secondary toastrDefaultError"
                         style="border-width:thin; width:250px; height:60px; font-size:32px; font-weight:bold"
                         onclick="toastr.error('Your application process not completed!')">Pay All Now</button>
+                <?php elseif(($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0) || ($paid->submission_payment_status != "PAID" && $paid->submission_payment_verified_by_cfo == 0)): ?>
+                    <button class="btn btn-secondary toastrDefaultError"
+                        style="border-width:thin; width:250px; height:60px; font-size:32px; font-weight:bold" 
+                        onclick="toastr.error('Your previous payment being verified!')">
+                        Pay All Now
+                    </button>
+                    
                 <?php else: ?>
                     <form action="<?php echo e(route('payment', $ppd)); ?>" method="GET">
                         <input type="hidden" name="pid" value="<?php echo e($ppd); ?>">

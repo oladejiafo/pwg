@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Models\payment;
+use App\payment;
 use App\Helpers\Quickbook;
 use App\Helpers\users as UserHelper;
 use App\Models\Applicant;

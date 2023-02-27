@@ -14,7 +14,7 @@ use App\Models\User;
 use App\Models\promo;
 use App\Models\product;
 use App\Models\product_payments;
-use App\Models\payment;
+use App\payment;
 use App\Models\product_details;
 use App\Models\family_breakdown;
 use App\Models\notifications;
@@ -577,7 +577,6 @@ class HomeController extends Controller
                 ->orderBy('id', 'desc')
                 ->first();
 
-            // dd($paym);
 
             if (isset($due)) {
                 $date = Carbon::parse($due->payment_date);

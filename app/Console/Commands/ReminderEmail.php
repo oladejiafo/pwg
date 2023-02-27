@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Applicant;
 use App\Models\User;
-use App\Models\payment;
+use App\payment;
 use App\Models\product;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;

@@ -198,8 +198,15 @@
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="{{ route('getInvoice', 'FIRST') }}">Get
                                                                 Invoice</a>
-                                                        @elseif($paid->first_payment_status == 'PENDING' && $paid->first_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && ($paym->payment_type=="FIRST" || $paym->payment_type =="BALANCE_ON_FIRST")))
-                                                            <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
+                                                        @elseif(isset($paym))
+                                                            @if(($paid->first_payment_status == 'PENDING') && $paid->first_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && ($paym->payment_type=="FIRST" || $paym->payment_type == "BALANCE_ON_FIRST")) || ($paym->payment_type == "BALANCE_ON_FIRST" && $paid->first_payment_status == 'PARTIALLY_PAID'  && (isset($paym->transaction_mode) && $paid->first_payment_verified_by_cfo == 0)))
+                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
+                                                            @else
+                                                                <form action="{{ route('payment', $prod->id) }}"
+                                                                    method="GET">
+                                                                    <button class="btn btn-secondary">Pay Now</button>
+                                                                </form>
+                                                            @endif
                                                         @else
                                                             <form action="{{ route('payment', $prod->id) }}"
                                                                 method="GET">
@@ -456,8 +463,15 @@
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="{{ route('getInvoice', 'FIRST') }}">Get
                                                                 Invoice</a>
-                                                        @elseif($paid->first_payment_status == 'PENDING' && $paid->first_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && ($paym->payment_type=="FIRST" || $pay->payment_type == "BALANCE_ON_FIRST")))
-                                                            <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
+                                                        @elseif(isset($paym))
+                                                            @if(($paid->first_payment_status == 'PENDING') && $paid->first_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && ($paym->payment_type=="FIRST" || $paym->payment_type == "BALANCE_ON_FIRST")) || ($paym->payment_type == "BALANCE_ON_FIRST" && $paid->first_payment_status == 'PARTIALLY_PAID'  && (isset($paym->transaction_mode) && $paid->first_payment_verified_by_cfo == 0)))
+                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
+                                                            @else
+                                                                <form action="{{ route('payment', $prod->id) }}"
+                                                                    method="GET">
+                                                                    <button class="btn btn-secondary">Pay Now</button>
+                                                                </form>
+                                                            @endif
                                                         @else
                                                             <form action="{{ route('payment', $prod->id) }}"
                                                                 method="GET">
@@ -702,8 +716,25 @@
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="{{ route('getInvoice', 'SUBMISSION') }}">Get
                                                                 Invoice</a>
-                                                        @elseif($paid->submission_payment_status == 'PENDING' && $paid->submission_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && $paym->payment_type=="SUBMISSION"))
-                                                            <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
+                                                        @elseif(isset($paym))
+                                                            @if($paid->submission_payment_status == 'PENDING' && $paid->submission_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && $paym->payment_type=="SUBMISSION"))
+                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
+                                                            @else
+                                                                @if ($paid->application_stage_status != 5)
+                                                                    <button class="btn btn-secondary toastrDefaultError"
+                                                                        onclick="toastr.error('Your application process not completed!')">Pay
+                                                                        Now</button>
+                                                                @elseif($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0)
+                                                                    <button class="btn btn-secondary toastrDefaultError"
+                                                                    onclick="toastr.error('Your previous payment is being verified!')">Pay
+                                                                    Now</button>
+                                                                @else
+                                                                    <form action="{{ route('payment', $prod->id) }}"
+                                                                        method="GET">
+                                                                        <button class="btn btn-secondary">Pay Now</button>
+                                                                    </form>
+                                                                @endif
+                                                            @endif
                                                         @else
                                                             @if ($paid->application_stage_status != 5)
                                                                 <button class="btn btn-secondary toastrDefaultError"
@@ -776,8 +807,15 @@
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="{{ route('getInvoice', 'FIRST') }}">Get
                                                                 Invoice</a>
-                                                        @elseif($paid->first_payment_status == 'PENDING' && $paid->first_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && ($paym->payment_type=="FIRST" || $paym->payment_type =="BALANCE_ON_FIRST")))
-                                                            <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
+                                                        @elseif(isset($paym))
+                                                                @if(($paid->first_payment_status == 'PENDING') && $paid->first_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && ($paym->payment_type=="FIRST" || $paym->payment_type == "BALANCE_ON_FIRST")) || ($paym->payment_type == "BALANCE_ON_FIRST" && $paid->first_payment_status == 'PARTIALLY_PAID'  && (isset($paym->transaction_mode) && $paid->first_payment_verified_by_cfo == 0)))
+                                                                    <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
+                                                                @else
+                                                                    <form action="{{ route('payment', $prod->id) }}"
+                                                                        method="GET">
+                                                                        <button class="btn btn-secondary">Pay Now</button>
+                                                                    </form>
+                                                                @endif
                                                         @else
                                                             <form action="{{ route('payment', $prod->id) }}"
                                                                 method="GET">
@@ -1024,8 +1062,26 @@
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="{{ route('getInvoice', 'SUBMISSION') }}">Get
                                                                 Invoice</a>
-                                                        @elseif($paid->submission_payment_status == 'PENDING' && $paid->submission_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && $paym->payment_type=="SUBMISSION"))
-                                                            <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
+                                                        @elseif(isset($paym))
+                                                            @if($paid->submission_payment_status == 'PENDING' && $paid->submission_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && $paym->payment_type=="SUBMISSION"))
+                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
+                                                            @else
+                                                                @if ($paid->application_stage_status != 5)
+                                                                    <button class="btn btn-secondary toastrDefaultError"
+                                                                        onclick="toastr.error('Your application process not completed!')">Pay
+                                                                        Now</button>
+                                                                @elseif($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0)
+                                                                    <button class="btn btn-secondary toastrDefaultError"
+                                                                    onclick="toastr.error('Your previous payment is being verified!')">Pay
+                                                                    Now</button>
+                                                                @else
+                                                                    <form action="{{ route('payment', $prod->id) }}"
+                                                                        method="GET">
+                                                                        <button class="btn btn-secondary">Pay Now</button>
+                                                                    </form>
+                                                                @endif
+
+                                                            @endif
                                                         @else
                                                             @if ($paid->application_stage_status != 5)
                                                                 <button class="btn btn-secondary toastrDefaultError"
@@ -1084,8 +1140,25 @@
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="{{ route('getInvoice', 'SECOND') }}">Get
                                                                 Invoice</a>
-                                                        @elseif($paid->second_payment_status == 'PENDING' && $paid->second_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && $paym->payment_type=="SECOND"))
-                                                            <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
+                                                        @elseif(isset($paym))
+                                                            @if($paid->second_payment_status == 'PENDING' && $paid->second_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && $paym->payment_type=="SECOND"))
+                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
+                                                            @else
+                                                                @if ($paid->application_stage_status != 5)
+                                                                    <button class="btn btn-secondary toastrDefaultError"
+                                                                        onclick="toastr.error('Your application process not completed!')">Pay
+                                                                        Now</button>
+                                                                @elseif($paid->submission_payment_status != "PAID" && $paid->submission_payment_verified_by_cfo == 0)
+                                                                    <button class="btn btn-secondary toastrDefaultError"
+                                                                    onclick="toastr.error('Your previous payment is being verified!')">Pay
+                                                                    Now</button>
+                                                                @else
+                                                                    <form action="{{ route('payment', $prod->id) }}"
+                                                                        method="GET">
+                                                                        <button class="btn btn-secondary">Pay Now</button>
+                                                                    </form>
+                                                                @endif
+                                                            @endif
                                                         @else
                                                             @if ($paid->application_stage_status != 5)
                                                                 <button class="btn btn-secondary toastrDefaultError"
@@ -1159,8 +1232,15 @@
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="{{ route('getInvoice', 'FIRST') }}">Get
                                                                 Invoice</a>
-                                                        @elseif(($paid->first_payment_status == 'PENDING') && $paid->first_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && ($paym->payment_type=="FIRST" || $paym->payment_type == "BALANCE_ON_FIRST")) || ($paym->payment_type == "BALANCE_ON_FIRST" && $paid->first_payment_status == 'PARTIALLY_PAID'  && (isset($paym->transaction_mode) && $paid->first_payment_verified_by_cfo == 0)))
-                                                            <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
+                                                        @elseif(isset($paym))
+                                                            @if(($paid->first_payment_status == 'PENDING') && $paid->first_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && ($paym->payment_type=="FIRST" || $paym->payment_type == "BALANCE_ON_FIRST")) || ($paym->payment_type == "BALANCE_ON_FIRST" && $paid->first_payment_status == 'PARTIALLY_PAID'  && (isset($paym->transaction_mode) && $paid->first_payment_verified_by_cfo == 0)))
+                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
+                                                            @else 
+                                                            <form action="{{ route('payment', $prod->id) }}"
+                                                                method="GET">
+                                                                <button class="btn btn-secondary">Pay Now</button>
+                                                            </form>
+                                                            @endif
                                                         @else
                                                             <form action="{{ route('payment', $prod->id) }}"
                                                                 method="GET">
@@ -1275,8 +1355,25 @@
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="{{ route('getInvoice', 'SUBMISSION') }}">Get
                                                                 Invoice</a>
-                                                        @elseif($paid->submission_payment_status == 'PENDING' && $paid->submission_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && $paym->payment_type=="SUBMISSION"))
-                                                            <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
+                                                        @elseif(isset($paym))
+                                                            @if($paid->submission_payment_status == 'PENDING' && $paid->submission_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && $paym->payment_type=="SUBMISSION"))
+                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
+                                                            @else 
+                                                                @if ($paid->application_stage_status != 5)
+                                                                <button class="btn btn-secondary toastrDefaultError"
+                                                                    onclick="toastr.error('Your application process not completed!')">Pay
+                                                                    Now</button>
+                                                                @elseif($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0)
+                                                                    <button class="btn btn-secondary toastrDefaultError"
+                                                                    onclick="toastr.error('Your first payment is being verified!')">Pay
+                                                                    Now</button>
+                                                                @else
+                                                                    <form action="{{ route('payment', $prod->id) }}"
+                                                                        method="GET">
+                                                                        <button class="btn btn-secondary">Pay Now</button>
+                                                                    </form>
+                                                                @endif
+                                                            @endif
                                                         @else
                                                             @if ($paid->application_stage_status != 5)
                                                                 <button class="btn btn-secondary toastrDefaultError"
@@ -1378,8 +1475,25 @@
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="{{ route('getInvoice', 'SECOND') }}">Get
                                                                 Invoice</a>
-                                                        @elseif($paid->second_payment_status == 'PENDING' && $paid->second_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && $paym->payment_type=="SECOND"))
-                                                            <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
+                                                        @elseif(isset($paym))
+                                                            @if($paid->second_payment_status == 'PENDING' && $paid->second_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && $paym->payment_type=="SECOND"))
+                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
+                                                            @else    
+                                                                @if ($paid->application_stage_status != 5)
+                                                                    <button class="btn btn-secondary toastrDefaultError"
+                                                                        onclick="toastr.error('Your application process not completed!')">Pay
+                                                                        Now</button>
+                                                                @elseif($paid->submission_payment_status != "PAID" && $paid->submission_payment_verified_by_cfo == 0)
+                                                                    <button class="btn btn-secondary toastrDefaultError"
+                                                                    onclick="toastr.error('Your previous payment is being verified!')">Pay
+                                                                    Now</button>
+                                                                @else
+                                                                    <form action="{{ route('payment', $prod->id) }}"
+                                                                        method="GET">
+                                                                        <button class="btn btn-secondary">Pay Now</button>
+                                                                    </form>
+                                                                @endif        
+                                                            @endif
                                                         @else
                                                             @if ($paid->application_stage_status != 5)
                                                                 <button class="btn btn-secondary toastrDefaultError"
