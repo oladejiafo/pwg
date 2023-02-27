@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use App\Helpers\pdfBlock;
 use App\Application;
 use App\Models\User;
-use App\Models\payment;
+use App\payment;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
