@@ -2367,8 +2367,8 @@ class HomeController extends Controller
                 }
                 $application->save();
                 $applicationImg = Application::find($payment->application_id);
-                $url =  $applicationImg->getMedia(Application::$media_collection_main_1st_payment)[0]->getPath();
-                $payment->addMedia($url) //starting method
+                $url =  $applicationImg->getMedia(Application::$media_collection_main_1st_payment)[0]->getFullUrl();
+                $payment->addMediaFromUrl($url) //starting method
                     ->preservingOriginal() //middle method
                     ->toMediaCollection(Payment::$media_collection_payment_receipt, env('MEDIA_DISK'));
             } else {
