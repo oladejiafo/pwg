@@ -1624,7 +1624,7 @@
                     <button class="btn btn-secondary toastrDefaultError"
                         style="border-width:thin; width:250px; height:60px; font-size:32px; font-weight:bold"
                         onclick="toastr.error('Your application process not completed!')">Pay All Now</button>
-                <?php elseif($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0): ?>
+                <?php elseif(($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0) || ($paid->submission_payment_status != "PAID" && $paid->submission_payment_verified_by_cfo == 0)): ?>
                     <button class="btn btn-secondary toastrDefaultError"
                         style="border-width:thin; width:250px; height:60px; font-size:32px; font-weight:bold" 
                         onclick="toastr.error('Your previous payment being verified!')">
