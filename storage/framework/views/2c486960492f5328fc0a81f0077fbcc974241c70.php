@@ -1,8 +1,8 @@
-@extends('layouts.master')
-<link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
+
+<link href="<?php echo e(asset('user/css/bootstrap.min.css')); ?>" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-<link href="{{asset('css/payment-form.css')}}" rel="stylesheet">
-<link href="{{asset('css/alert.css')}}" rel="stylesheet">
+<link href="<?php echo e(asset('css/payment-form.css')); ?>" rel="stylesheet">
+<link href="<?php echo e(asset('css/alert.css')); ?>" rel="stylesheet">
 
 <!-- <script src="https://paypage-uat.ngenius-payments.com/hosted-sessions/sdk.js"></script> -->
 <style>
@@ -38,9 +38,9 @@
 </script>
 <script src="https://paypage.sandbox.ngenius-payments.com/hosted-sessions/sdk.js"></script>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 
-@php
+<?php
 if(Session::has('payall'))
 {
     $payall = Session::get('payall');
@@ -54,19 +54,19 @@ $completed = DB::table('applications')
 ->where('client_id', '=', Auth::user()->id)
 ->orderBy('id','desc')
 ->first();
-@endphp
+?>
 
-@if($completed)
-    @php
+<?php if($completed): ?>
+    <?php
         $levels = $completed->application_stage_status;
         $app_id= $completed->id;
-    @endphp
-@else
+    ?>
+<?php else: ?>
     <script>window.location = "/home";</script>
-@endif
+<?php endif; ?>
 
 
-@php
+<?php
 
 if(Session::has('myproduct_id'))
 {
@@ -75,61 +75,61 @@ $pid = Session::get('myproduct_id');
 $pid = $app_id;
 }
 $vals=array(0,1,2);
-@endphp
+?>
 
 
-@if(Session::has('infox'))
+<?php if(Session::has('infox')): ?>
     <script type="text/javascript">
-     toastr.success("{{ session('infox') }}", '', { closeButton: false, timeOut: 4000, progressBar: true, enableHtml: true });
+     toastr.success("<?php echo e(session('infox')); ?>", '', { closeButton: false, timeOut: 4000, progressBar: true, enableHtml: true });
     </script>
-    @php 
+    <?php 
      Session::forget('infox');
-    @endphp
-@endif
+    ?>
+<?php endif; ?>
 
 
 <div class="container">
     <div class="col-12">
         <!-- Check if application completed, then exclude the other processes link and allow for subsequent payments only -->
         
-        @if($levels == '5')
+        <?php if($levels == '5'): ?>
           <!-- Show Nothing -->
-        @else
+        <?php else: ?>
           <div class="row">
             <div class="wizard bg-white">
                 <div class="row">
                     <div class="tabs d-flex justify-content-center">
 
                         <div class="wrapper">
-                            <a href="{{ url('payment_form', $pid)}}" class="wrapper-link">
+                            <a href="<?php echo e(url('payment_form', $pid)); ?>" class="wrapper-link">
                                 <div class="round-active round2 m-2">1</div>
                             </a>
                             <div class="col-2 round-title">Payment <br> Details</div>
                         </div>
                         <div class="linear"></div>
                         
-                        @if ($levels == '5' || $levels == '4' || $levels == '3' || $levels == '2')
+                        <?php if($levels == '5' || $levels == '4' || $levels == '3' || $levels == '2'): ?>
 	                        <!-- <div class="wrapper">
-	                            <a href="{{route('applicant', $pid)}}">
+	                            <a href="<?php echo e(route('applicant', $pid)); ?>">
 	                                <div class="round3 m-2">2</div>
 	                            </a>
 	                            <div class="col-2 round-title">Application <br> Details</div>
 	                        </div>
 	                        <div class="linear"></div> -->
 	                        <div class="wrapper">
-	                            <a href="{{route('applicant.details', $pid)}}" class="wrapper-link">
+	                            <a href="<?php echo e(route('applicant.details', $pid)); ?>" class="wrapper-link">
 	                                <div class="round4 m-2">2</div>
 	                            </a>
 	                            <div class="col-2 round-title">Applicant <br> Details</div>
 	                        </div>
 	                        <div class="linear"></div>
 	                        <div class="wrapper">
-	                            <a href="{{url('applicant/review', $pid)}}" class="wrapper-link">
+	                            <a href="<?php echo e(url('applicant/review', $pid)); ?>" class="wrapper-link">
 	                                <div class="round5 m-2">3</div>
 	                            </a>
 	                            <div class="col-2 round-title">Application <br> Review</div>
 	                        </div>
-                        @else
+                        <?php else: ?>
 	                        <!-- <div class="wrapper">
 	                            <a href="#" onclick="return alert('You have to complete Payment first');">
 	                                <div class="round3 m-2">2</div>
@@ -151,14 +151,14 @@ $vals=array(0,1,2);
 	                            </a>
 	                            <div class="col-2 round-title">Application <br> Review</div>
 	                        </div>
-                        @endif
+                        <?php endif; ?>
                     </div>
                 </div>
               </div>
-        @endif
+        <?php endif; ?>
 
             <!-- Main Module Begins here -->
-            <div class="payment-form" @if($levels == '5') style="margin-top: 150px" @endif>
+            <div class="payment-form" <?php if($levels == '5'): ?> style="margin-top: 150px" <?php endif; ?>>
                 <div class="heading">
                     <div class="first-heading">
                         <h3>
@@ -171,8 +171,8 @@ $vals=array(0,1,2);
                     </div> -->
                 </div>
                 <div class="form-sec discountForm">
-                <form method="POST" action="{{ url('add_payment') }}">
-                    @csrf
+                <form method="POST" action="<?php echo e(url('add_payment')); ?>">
+                    <?php echo csrf_field(); ?>
                     <!-- col-lg-6 col-md-6 col-12 offset-md-3 offset-lg-3 -->
 
                         <div align="center" style="background-color: #F0F3F4;padding: 30px">
@@ -194,52 +194,52 @@ $vals=array(0,1,2);
 
                         </div>
 
-                        @if(session()->has('myDiscount') && session()->has('haveCoupon') && session()->get('haveCoupon')==1)
-                            @php                               
+                        <?php if(session()->has('myDiscount') && session()->has('haveCoupon') && session()->get('haveCoupon')==1): ?>
+                            <?php                               
                                 $promo = session()->get('myDiscount')
-                            @endphp
-                        @else
-                            @php
+                            ?>
+                        <?php else: ?>
+                            <?php
                                 $promo =0
-                            @endphp
-                        @endif
+                            ?>
+                        <?php endif; ?>
                       
-                        @if(isset($pdet))
-                            @php
+                        <?php if(isset($pdet)): ?>
+                            <?php
                                 // $first_pay = $pdet->first_payment_price;
                                 $first_pay = $pdet->first_payment_sub_total;
                                 $second_pay = $pdet->submission_payment_sub_total;
                                 $third_pay = $pdet->second_payment_sub_total;
 
                                 $tot_pay = $first_pay + $second_pay + $third_pay;
-                            @endphp
-                        @else 
-                            @php
+                            ?>
+                        <?php else: ?> 
+                            <?php
                                 $first_pay = 0;
                                 $second_pay = 0;
                                 $third_pay = 0;
 
                                 $tot_pay = 0;
-                            @endphp
-                        @endif
+                            ?>
+                        <?php endif; ?>
 
-                        @php
+                        <?php
                             $diff = ($pays) ? $pays->first_payment_remaining : 0;  //$pays->first_payment_price - $pays->first_payment_paid
-                        @endphp
+                        ?>
 
-                        @if($diff > 0)
-                            @php
+                        <?php if($diff > 0): ?>
+                            <?php
                                 $pends = ($pays) ? $pays->first_payment_remaining : 0 ;
-                            @endphp
-                        @elseif($diff < 0) 
-                            @php
+                            ?>
+                        <?php elseif($diff < 0): ?> 
+                            <?php
                                 $pends= ($pays) ? $pays->first_payment_paid - $pays->first_payment_sub_total : 0;
-                            @endphp
-                        @else
-                            @php
+                            ?>
+                        <?php else: ?>
+                            <?php
                                 $pends=0;
-                            @endphp
-                        @endif
+                            ?>
+                        <?php endif; ?>
 
 
                             <?php
@@ -446,82 +446,85 @@ $vals=array(0,1,2);
                                             <div class="total-sec row mt-3">
                                                 <div class="left-section col-6">
 
-                                                    @if($whichPayment  == "FIRST")
+                                                    <?php if($whichPayment  == "FIRST"): ?>
 
                                                     <b>First Payment</b> 
-                                                    @else
+                                                    <?php else: ?>
                                                     First Payment
 
-                                                    @endif
-                                                    <span style="font-size:11px" class="vtt">@if($vat>0)(+ 5% VAT)@endif</span>
-                                                    @if($pends>1) 
+                                                    <?php endif; ?>
+                                                    <span style="font-size:11px" class="vtt"><?php if($vat>0): ?>(+ 5% VAT)<?php endif; ?></span>
+                                                    <?php if($pends>1): ?> 
                                                     <br>
-                                                    <font style='font-size:10px;color:red'><i fa fa-arrow-up></i>  {{ $pendMsg }} </font> 
-                                                    @endif
+                                                    <font style='font-size:10px;color:red'><i fa fa-arrow-up></i>  <?php echo e($pendMsg); ?> </font> 
+                                                    <?php endif; ?>
                                                 </div>
                                                 <div class="right-section col-6" align="right">
-                                                    @if($whichPayment == "FIRST")
+                                                    <?php if($whichPayment == "FIRST"): ?>
                                                   
-                                                    <b>{{number_format($first_pay,2)}}</b>
+                                                    <b><?php echo e(number_format($first_pay,2)); ?></b>
 
-                                                    @else
-                                                    {{number_format($first_pay,2)}}
-                                                    @endif
+                                                    <?php else: ?>
+                                                    <?php echo e(number_format($first_pay,2)); ?>
+
+                                                    <?php endif; ?>
                                                     <span style="font-size:11px">AED</span>
                                                 </div>
                                             </div>
                                             <div class="total-sec row mt-3">
                                                 <div class="left-section col-6">
 
-                                                    @if( $whichPayment == "SUBMISSION")
+                                                    <?php if( $whichPayment == "SUBMISSION"): ?>
                                                     <b>Submission Payment</b> 
                                                     
-                                                    @else
+                                                    <?php else: ?>
                                                     Submission Payment
-                                                    @endif
-                                                    <span style="font-size:11px" class="vtt">@if($vat>0)(+ 5% VAT)@endif</span>
-                                                    @if($outsub>1) 
+                                                    <?php endif; ?>
+                                                    <span style="font-size:11px" class="vtt"><?php if($vat>0): ?>(+ 5% VAT)<?php endif; ?></span>
+                                                    <?php if($outsub>1): ?> 
                                                     <br>
-                                                    <font style='font-size:10px;color:red'><i fa fa-arrow-up></i>  {{ $pendMsg }} </font> 
-                                                    @endif
+                                                    <font style='font-size:10px;color:red'><i fa fa-arrow-up></i>  <?php echo e($pendMsg); ?> </font> 
+                                                    <?php endif; ?>
                                                 </div>
                                                 <div class="right-section col-6" align="right">
 
-                                                    @if( $whichPayment ==  "SUBMISSION")
+                                                    <?php if( $whichPayment ==  "SUBMISSION"): ?>
                                                     
-                                                    <b>{{number_format($second_pay,2)}}</b>
+                                                    <b><?php echo e(number_format($second_pay,2)); ?></b>
 
-                                                    @else
-                                                    {{number_format($second_pay,2)}}
-                                                    @endif
+                                                    <?php else: ?>
+                                                    <?php echo e(number_format($second_pay,2)); ?>
+
+                                                    <?php endif; ?>
                                                     <span style="font-size:11px">AED</span>
 
                                                 </div>
                                             </div>
                                             <div class="total-sec row mt-3">
                                                 <div class="left-section col-6">
-                                                    @if( $whichPayment ==  "SECOND")
+                                                    <?php if( $whichPayment ==  "SECOND"): ?>
                                                     
-                                                    <b>Second Payment</b> @if(strlen($pendMsg)>1) <br>
+                                                    <b>Second Payment</b> <?php if(strlen($pendMsg)>1): ?> <br>
 
-                                                    <font style='font-size:11px;color:red'><i fa fa-arrow-up></i>{{-- {{ $pendMsg }}--}} </font> @endif
-                                                    @else
+                                                    <font style='font-size:11px;color:red'><i fa fa-arrow-up></i> </font> <?php endif; ?>
+                                                    <?php else: ?>
                                                     Second Payment
-                                                    @endif
-                                                    <span style="font-size:11px" class="vtt">@if($vat>0)(+ 5% VAT)@endif</span>
-                                                    @if($outsec>1) 
+                                                    <?php endif; ?>
+                                                    <span style="font-size:11px" class="vtt"><?php if($vat>0): ?>(+ 5% VAT)<?php endif; ?></span>
+                                                    <?php if($outsec>1): ?> 
                                                     <br>
-                                                    <font style='font-size:10px;color:red'><i fa fa-arrow-up></i>  {{ $pendMsg }} </font> 
-                                                    @endif
+                                                    <font style='font-size:10px;color:red'><i fa fa-arrow-up></i>  <?php echo e($pendMsg); ?> </font> 
+                                                    <?php endif; ?>
                                                 </div>
                                                 <div class="right-section col-6" align="right">
-                                                    @if( $whichPayment ==  "SECOND")
+                                                    <?php if( $whichPayment ==  "SECOND"): ?>
                                                     
-                                                    <b>{{number_format($third_pay,2)}}</b>
+                                                    <b><?php echo e(number_format($third_pay,2)); ?></b>
 
-                                                    @else
-                                                    {{number_format($third_pay,2)}}
-                                                    @endif
+                                                    <?php else: ?>
+                                                    <?php echo e(number_format($third_pay,2)); ?>
+
+                                                    <?php endif; ?>
                                                     <span style="font-size:11px">AED</span>
                                                 </div>
                                             </div>
@@ -548,124 +551,124 @@ $vals=array(0,1,2);
                                                     ?> 
                                                    
 
-                                                    @if(isset($ttot) && $ttot > 0)
-                                                    {{ $ttot }}
-                                                    @else
-                                                    {{ isset($tot_pay) ? number_format($tot_pay,2) : '' }}
-                                                    {{-- {{number_format($data->unit_price,2)}} --}}
-                                                    @endif
+                                                    <?php if(isset($ttot) && $ttot > 0): ?>
+                                                    <?php echo e($ttot); ?>
+
+                                                    <?php else: ?>
+                                                    <?php echo e(isset($tot_pay) ? number_format($tot_pay,2) : ''); ?>
+
+                                                    
+                                                    <?php endif; ?>
                                                     <span style="font-size:11px">AED</span>
                                                 </div>
                                             </div>
 
-                                            @if($payall==1 && isset($discount) && $discount>0)
+                                            <?php if($payall==1 && isset($discount) && $discount>0): ?>
                                             <div class="total-sec row mt-3 showDiscount">
                                                 <div class="left-section col-6">
-                                                     Full Payment Discount (<span id="discountPercent">-{{($discountPercent) ? $discountPercent : ''}}</span>)
+                                                     Full Payment Discount (<span id="discountPercent">-<?php echo e(($discountPercent) ? $discountPercent : ''); ?></span>)
                                                 </div>
                                                 <div class="right-section col-6" align="right">
                                               
-                                                    <span id="discountValue">{{number_format($discount,2)}} </span>
+                                                    <span id="discountValue"><?php echo e(number_format($discount,2)); ?> </span>
                                                     <span style="font-size:11px" id="discountVal">AED</span>
-                                                    <input type="hidden" name="discount" id="myDiscount" value="{{$discount}}">
+                                                    <input type="hidden" name="discount" id="myDiscount" value="<?php echo e($discount); ?>">
                                                     <input type="hidden" name="discountCode" id="myDiscountCode" value="">
                                                     
                                                 </div>
                                                 
                                             </div>
-                                            @else
+                                            <?php else: ?>
                                             <div class="total-sec row mt-3 showDiscount" id ="showDiscount">
                                                 <div class="left-section col-6">
                                                
-                                                      Discount (<span id="discountPercent">{{(isset($discountPercent)) ? $discountPercent : ''}} </span>)
+                                                      Discount (<span id="discountPercent"><?php echo e((isset($discountPercent)) ? $discountPercent : ''); ?> </span>)
                                                     
                                                 </div>
                                                 <div class="right-section col-6" align="right">
                                               
-                                                    <span id="discountValue">{{number_format($discount,2)}} </span>
+                                                    <span id="discountValue"><?php echo e(number_format($discount,2)); ?> </span>
                                                     <span style="font-size:11px" id="discountVal">AED</span>
-                                                    <input type="hidden" name="discount" id="myDiscount" value="{{$discount}}">
+                                                    <input type="hidden" name="discount" id="myDiscount" value="<?php echo e($discount); ?>">
                                                     <input type="hidden" name="discountCode" id="myDiscountCode" value="">
                                                     
                                                 </div>
                                                 
                                             </div>
-                                            @endif
-                                            @if(isset($vat) && $vat>0)
+                                            <?php endif; ?>
+                                            <?php if(isset($vat) && $vat>0): ?>
                                             <div class="total-sec row mt-3 showVat" id="showVat">
                                                 <div class="left-section col-6">
-                                                     VAT (+ 5% of {{$whichPayment}})
+                                                     VAT (+ 5% of <?php echo e($whichPayment); ?>)
                                                 </div>
                                                 <div class="right-section col-6" align="right">
-                                                    <span id="vatt">{{number_format($vat,2)}} </span>
+                                                    <span id="vatt"><?php echo e(number_format($vat,2)); ?> </span>
                                                     <span style="font-size:11px">AED</span>
                                                 </div>
                                             </div>
-                                            @endif
-                                            <input type="hidden" name="vats" id="vats" value="{{$vat}}">
+                                            <?php endif; ?>
+                                            <input type="hidden" name="vats" id="vats" value="<?php echo e($vat); ?>">
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-12">
-                                        @if($whichPayment =="FIRST" && ($diff == 0 || empty($diff)))
+                                        <?php if($whichPayment =="FIRST" && ($diff == 0 || empty($diff))): ?>
                                           <div class="partial" style="height: 100%;">
-                                            <p>Pay {{strtolower($whichPayment)}} installment in partial</p>
+                                            <p>Pay <?php echo e(strtolower($whichPayment)); ?> installment in partial</p>
                                             <input type="text" class="form-control" name="amount" id="amount" placeholder="Enter partial payment" style="text-align:left !important" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');">
-                                            {{-- @if($errors->has('totalpay'))
-                                              <div class="error">{{ $errors->first('totalpay') }}</div>
-                                            @endif  --}}
-                                            @if($errors->has('amount'))
-                                              <div class="error">{{ $errors->first('amount') }}</div>
-                                            @endif 
-                                            <p>Minimum amount of <b> 1,000 AED</b><span style="font-size:11px" class="vtt"> @if($vat>0)(+ 5% VAT)@endif</span></p>
+                                            
+                                            <?php if($errors->has('amount')): ?>
+                                              <div class="error"><?php echo e($errors->first('amount')); ?></div>
+                                            <?php endif; ?> 
+                                            <p>Minimum amount of <b> 1,000 AED</b><span style="font-size:11px" class="vtt"> <?php if($vat>0): ?>(+ 5% VAT)<?php endif; ?></span></p>
                                         
                                             <p><b>Remaining amount to be paid in 7 days</b></p>
                                           </div>
-                                        @endif
+                                        <?php endif; ?>
                                     </div>
                                     <div class="partial-total-sec">
 
-                                        @if($diff > 0 && $payall ==0) 
+                                        <?php if($diff > 0 && $payall ==0): ?> 
                                             <h2 style="font-size: 1em;">Now you will pay the balance on first installment only 
-                                                <b>{{ number_format((floor($pends * 100)/100),2) }}</b> AED 
+                                                <b><?php echo e(number_format((floor($pends * 100)/100),2)); ?></b> AED 
                                                 <span style="font-size:11px;opacity:0.6" id="amountText">
-                                                    @if($vat>0) (VAT inclusive @if($discount>0) ,less Discount  @endif) @endif
+                                                    <?php if($vat>0): ?> (VAT inclusive <?php if($discount>0): ?> ,less Discount  <?php endif; ?>) <?php endif; ?>
                                                 </span>
                                             </h2>
-                                            <input type="hidden" id="amountLink2" name="totalpay" value="{{  round($payNoww, 2) }}">
-                                            <input type="hidden" id="totaldue" name="totaldue" value="{{ round(($payNow + $vat),2) }}">
-                                            <input type="hidden" name="totalremaining" value="{{round($pends,2)}}">
-                                        @else
-                                            <h2 style="font-size: 1em;">Now you will pay {{strtolower($whichPayment)}} installment only 
+                                            <input type="hidden" id="amountLink2" name="totalpay" value="<?php echo e(round($payNoww, 2)); ?>">
+                                            <input type="hidden" id="totaldue" name="totaldue" value="<?php echo e(round(($payNow + $vat),2)); ?>">
+                                            <input type="hidden" name="totalremaining" value="<?php echo e(round($pends,2)); ?>">
+                                        <?php else: ?>
+                                            <h2 style="font-size: 1em;">Now you will pay <?php echo e(strtolower($whichPayment)); ?> installment only 
                                                 <span id="amountLink">
                                                    
-                                                    {{-- <b>{{(($pays->first_payment_status !="PAID") ? (($diff > 0) ? number_format((floor(((($payNoww - $discount)+ $vat)+$pays->first_payment_remaining)*100)/100),2) : (number_format((floor((($payNoww - $discount)+ $vat)*100)/100),2))):number_format((floor((($payNoww - $discount)+ $vat)*100)/100),2))}}</b> --}}
-                                                    <b><span id="amountLink"> {{(($pays->first_payment_status !="PAID") ? (($diff > 0) ? number_format((floor(((($payNoww - $discount)+ $vat)+$pays->first_payment_remaining)*100)/100),2) : (number_format((floor((($payNoww - $discount)+ $vat)*100)/100),2))):number_format((floor((($payNoww - $discount)+ $vat)*100)/100),2))}} </span></b>
+                                                    
+                                                    <b><span id="amountLink"> <?php echo e((($pays->first_payment_status !="PAID") ? (($diff > 0) ? number_format((floor(((($payNoww - $discount)+ $vat)+$pays->first_payment_remaining)*100)/100),2) : (number_format((floor((($payNoww - $discount)+ $vat)*100)/100),2))):number_format((floor((($payNoww - $discount)+ $vat)*100)/100),2))); ?> </span></b>
                                                 </span> AED 
                                                 <span style="font-size:11px;opacity:0.6"  id="amountText">
-                                                    @if($vat>0) 
-                                                     (<span id="vt">VAT inclusive</span> @if($discount>0) ,less Discount  @endif) 
-                                                    @else 
-                                                     @if($discount>0) 
+                                                    <?php if($vat>0): ?> 
+                                                     (<span id="vt">VAT inclusive</span> <?php if($discount>0): ?> ,less Discount  <?php endif; ?>) 
+                                                    <?php else: ?> 
+                                                     <?php if($discount>0): ?> 
                                                       (less Discount)  
-                                                     @endif 
-                                                    @endif
+                                                     <?php endif; ?> 
+                                                    <?php endif; ?>
                                                 </span>
                                             </h2>
-                                            {{-- <input type="hidden" id="amountLink2" name="totalpay" value="{{ round((($payNoww - $discount)+ $vat),2) }}"> --}}
-                                            <input type="hidden" id="amountLink2" name="totalpay" value="{{(($pays->first_payment_status !="PAID") ? (($diff > 0) ? (round(((($payNoww - $discount)+ $vat)+$pays->first_payment_remaining),2)) : round((($payNoww - $discount)+ $vat),2)):round((($payNoww - $discount)+ $vat),2))}}">
-                                            <input type="hidden" id="totaldue" name="totaldue" value="{{round((($payNoww - $discount) + $vat),2) }}">
-                                        @endif
+                                            
+                                            <input type="hidden" id="amountLink2" name="totalpay" value="<?php echo e((($pays->first_payment_status !="PAID") ? (($diff > 0) ? (round(((($payNoww - $discount)+ $vat)+$pays->first_payment_remaining),2)) : round((($payNoww - $discount)+ $vat),2)):round((($payNoww - $discount)+ $vat),2))); ?>">
+                                            <input type="hidden" id="totaldue" name="totaldue" value="<?php echo e(round((($payNoww - $discount) + $vat),2)); ?>">
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </div>
 
-                        <input type="hidden" name="pid" value="{{$data->id}}">
-                        <input type="hidden" name="ppid" value="{{(isset($pdet->id))?$pdet->id:''}}">
-                        <input type="hidden" name="uid" value="{{Auth::user()->id}}">
-                        <input type="hidden" name="whichpayment" value="{{ ($whichPayment) ? $whichPayment : 'FIRST' }}">
-                        <input type="hidden" name="first_p" value="{{$pdet->first_payment_sub_total}}">
-                        <input type="hidden" name="second_p" value="{{$pdet->submission_payment_sub_total}}">
-                        <input type="hidden" name="third_p" value="{{$pdet->second_payment_sub_total}}">
+                        <input type="hidden" name="pid" value="<?php echo e($data->id); ?>">
+                        <input type="hidden" name="ppid" value="<?php echo e((isset($pdet->id))?$pdet->id:''); ?>">
+                        <input type="hidden" name="uid" value="<?php echo e(Auth::user()->id); ?>">
+                        <input type="hidden" name="whichpayment" value="<?php echo e(($whichPayment) ? $whichPayment : 'FIRST'); ?>">
+                        <input type="hidden" name="first_p" value="<?php echo e($pdet->first_payment_sub_total); ?>">
+                        <input type="hidden" name="second_p" value="<?php echo e($pdet->submission_payment_sub_total); ?>">
+                        <input type="hidden" name="third_p" value="<?php echo e($pdet->second_payment_sub_total); ?>">
 
                         <div class="form-group row mt-4" style="margin-bottom: 70px">
                             <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
@@ -675,8 +678,8 @@ $vals=array(0,1,2);
                         </div>
                     </form>
             </div>
-@endsection
-@push('custom-scripts')
+<?php $__env->stopSection(); ?>
+<?php $__env->startPush('custom-scripts'); ?>
 
 <script>
     $(document).ready(function(){
@@ -697,7 +700,7 @@ $vals=array(0,1,2);
                     document.getElementById("amountLink2").value = vval;
                     let ax = $('#amountLink').text(parseInt(vval).toLocaleString());
                 } else {
-                    // if('{{Auth::user()->country_of_residence}}' == "United Arab Emirates"){
+                    // if('<?php echo e(Auth::user()->country_of_residence); ?>' == "United Arab Emirates"){
                     //     var aVat =($('#amount').val()*5)/100;
                     //     let vval = parseInt($('#amount').val()) + parseInt(($('#amount').val()*5)/100);
 
@@ -727,10 +730,10 @@ $vals=array(0,1,2);
             var vat = $('#vats').val();
             var $this = $(this); 
             $.ajax({ 
-                url: '{{ route("getPromo") }} ',
+                url: '<?php echo e(route("getPromo")); ?> ',
                 method: 'POST',
                 data: {
-                    "_token": "{{ csrf_token() }}",
+                    "_token": "<?php echo e(csrf_token()); ?>",
                     "discount_code" : $('#discount_code').val(),
                     "totaldue" : $('#totaldue').val(),
                     'paynow' : paynow,
@@ -797,7 +800,7 @@ $vals=array(0,1,2);
         $('.current_location').change(function(){
             var $this = $(this);
             var paynow = <?php echo $payNoww; ?>;            
-            var discount = '{{$discount}}';
+            var discount = '<?php echo e($discount); ?>';
             var amtx = (paynow - discount);
             var vt =(amtx*5)/100;
             $('#amount').val('');
@@ -845,10 +848,10 @@ $vals=array(0,1,2);
 
             var $this = $(this); 
             $.ajax({ 
-                url: '{{ route("checkPromo") }} ',
+                url: '<?php echo e(route("checkPromo")); ?> ',
                 method: 'POST',
                 data: {
-                    "_token": "{{ csrf_token() }}",
+                    "_token": "<?php echo e(csrf_token()); ?>",
                     "embassy_appearance" : $('#embassy_appearance').val()
                 }
             }).done( function (response) {
@@ -867,40 +870,40 @@ $vals=array(0,1,2);
 
 
 </script>
-@endpush
-<script src="{{asset('js/alert.js')}}"></script>
+<?php $__env->stopPush(); ?>
+<script src="<?php echo e(asset('js/alert.js')); ?>"></script>
 <script type="text/javascript" src="/path/to/toastr.js"></script>
 <script>
-    @if(Session::has('message'))
+    <?php if(Session::has('message')): ?>
         toastr.options =
         {
             "closeButton" : true,
             "progressBar" : true
         }
-            toastr.success("{{ session('message') }}");
-    @endif
+            toastr.success("<?php echo e(session('message')); ?>");
+    <?php endif; ?>
 
-    @if(Session::has('error'))
+    <?php if(Session::has('error')): ?>
         toastr.options =
         {
             "closeButton" : true,
             "progressBar" : true
         }
-            toastr.error("{{ session('error') }}");
-    @endif
+            toastr.error("<?php echo e(session('error')); ?>");
+    <?php endif; ?>
 
-    @if(Session::has('warning'))
+    <?php if(Session::has('warning')): ?>
         toastr.options =
         {
             "closeButton" : true,
             "progressBar" : true
         }
-            toastr.warning("{{ session('warning') }}");
-    @endif
+            toastr.warning("<?php echo e(session('warning')); ?>");
+    <?php endif; ?>
     </script>
 
     
-@if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) 
+<?php if(!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)): ?> 
 <script>
     //Disable right click
     document.addEventListener('contextmenu', (e) => e.preventDefault());
@@ -921,4 +924,5 @@ $vals=array(0,1,2);
         return false;
     };
 </script>
-@endif
+<?php endif; ?>
+<?php echo $__env->make('layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\dejia\OneDrive\Desktop\mygit\pwg_eportal\resources\views/user/payment-form.blade.php ENDPATH**/ ?>

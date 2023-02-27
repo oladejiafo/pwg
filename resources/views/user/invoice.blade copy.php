@@ -54,7 +54,7 @@
                     <div class="col-lg-3" style="width:24%;display: inline-block; background-color:#eee;height:40px; opacity: 0.7">Amount Due <br>{{number_format($user->payable_amount-$user->paid_amount,2)}}</div>
                    </b>
                 </div>
-                @if(Auth::user()->country_of_residence == "United Arab Emirates")
+                <!-- @if(Auth::user()->country_of_residence == "United Arab Emirates") -->
                     <div class="row">
                         <div class="col-12" align="center" style="border-bottom:1px solid #ccc;margin:20px;margin-top:5px;margin-bottom:5px;padding-bottom:-15px; height:12px;width:90%;font-size:9px !important;">
                             <b>VAT SUMMARY</b>
@@ -74,7 +74,7 @@
                     <div class="col" style="width:30%;display: inline-block;height:15px; opacity: 0.7;font-size:11px">{{number_format($thisVat,2)}}</div>
                     <div class="col" style="width:30%;display: inline-block;height:15px; opacity: 0.7;font-size:11px">{{number_format($thisAmt,2)}}</div>
                     </div>
-                @endif
+                <!-- @endif -->
   
 
                 @if($discounted > 0)
@@ -108,6 +108,7 @@ if(Auth::user()->country_of_residence == "United Arab Emirates")
 } else {
     $vatP = 0;
 }
+$vatP = $pricing->total_price * 5/100;
 $totalP = $pricing->total_price;
 $total = $totalP + $vatP;
 @endphp

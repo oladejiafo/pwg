@@ -685,8 +685,19 @@ class HomeController extends Controller
 
                 $data = product::find(Session::get('myproduct_id'));
 
+                $paym = DB::table('payments')
+                ->where('application_id', '=', $app_id)
+                ->whereIn('transaction_mode',   array('TRANSFER','DEPOSIT'))
+                ->where('invoice_amount', '>', 0)
+                ->where(function($query) {
+                    $query->where('paid_amount', '=', 0)
+                        ->orWhereNull('paid_amount');
+                })
+                ->orderBy('id', 'desc')
+                ->first();
+            //   dd($paym);
                 $pays = DB::table('applications')
-                    ->select('applications.pricing_plan_id', 'applications.total_price', 'applications.total_paid', 'applications.first_payment_status', 'applications.submission_payment_status', 'applications.second_payment_status', 'first_payment_price', 'first_payment_paid', 'first_payment_remaining', 'is_first_payment_partially_paid', 'submission_payment_price', 'submission_payment_paid', 'submission_payment_remaining', 'second_payment_price', 'second_payment_paid', 'second_payment_remaining')
+                    ->select('applications.pricing_plan_id', 'applications.total_price', 'applications.total_paid', 'applications.first_payment_status', 'applications.submission_payment_status', 'applications.second_payment_status', 'first_payment_price', 'first_payment_paid', 'first_payment_remaining', 'is_first_payment_partially_paid', 'submission_payment_price', 'submission_payment_paid', 'submission_payment_remaining', 'second_payment_price', 'second_payment_paid', 'second_payment_remaining','first_payment_verified_by_cfo')
                     ->where('applications.client_id', '=', Auth::user()->id)
                     ->where('applications.destination_id', '=', $id)
                     ->where('work_permit_category', $packageType)
@@ -695,8 +706,8 @@ class HomeController extends Controller
                     ->limit(1)
                     ->first();
 
-
-                if (!$pays) {
+                   
+                if(!$pays) {
                     return redirect('home');
                     die();
                 }
@@ -718,7 +729,7 @@ class HomeController extends Controller
                         ->where('id', '=', $pack_id)
                         ->first();
                 }
-
+               
                 // if ($pays->first_payment_status != "PARTIALLY_PAID"){
                 /* Newly Added starts here*/
                 // $applicant = Applicant::where('client_id', Auth::id())
@@ -729,8 +740,10 @@ class HomeController extends Controller
                     ->where('destination_id', $id)
                     ->where('work_permit_category', $packageType)
                     ->first();
+                   
                 // if ($payall == 0 || empty($payall)) {
-                if ($pays->first_payment_status != "PAID" || $pays->first_payment_status == null) {
+                if ($pays->first_payment_status != "PAID" || $pays->first_payment_status == null) 
+                {    
                     if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                         $originalPdf = Storage::disk(env('MEDIA_DISK'))->url('Applications/Contracts/client_contracts/' . $applicant->contract);
                     } else {
@@ -740,11 +753,13 @@ class HomeController extends Controller
                     }
                     $paymentType =  "FIRST";
                     $user = Client::find(Auth::id());
+                    
                     $signatureUrl = (isset($user->getMedia(Client::$media_collection_main_signture)[0])) ? $user->getMedia(Client::$media_collection_main_signture)[0]->getUrl() : null;
                     if (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                         $signatureUrl = ltrim($signatureUrl, $signatureUrl[0]);
                     }
-                    $result = pdfBlock::attachSignature($originalPdf, $signatureUrl, $data, $paymentType, $applicant);
+
+                    // $result = pdfBlock::attachSignature($originalPdf, $signatureUrl, $data, $paymentType, $applicant);
                 }
                 //     elseif ($pays->first_payment_status == "PAID" && $pays->submission_payment_status != "PAID") {
                 //         $originalPdf = (isset($applicant->getMedia(Application::$media_collection_main_1st_signature)[0])) ? $applicant->getMedia(Application::$media_collection_main_1st_signature)[0]->getUrl() : null;
@@ -804,7 +819,8 @@ class HomeController extends Controller
                 // }
                 /* Newly added endss here*/
                 // }
-                return view('user.payment-form', compact('data', 'pdet', 'pays', 'payall'));
+
+                return view('user.payment-form', compact('data', 'pdet', 'pays', 'payall','paym'));
             } else {
                 // return redirect()->back()->with('message', 'You are not authorized');
                 return redirect('home');
@@ -818,8 +834,6 @@ class HomeController extends Controller
     public function bank()
     {
         if (Auth::id()) {
-            Session::forget('haveCoupon');
-            Session::forget('myDiscount');
 
             $complete = DB::table('applications')
                 ->where('client_id', '=', Auth::user()->id)
@@ -970,8 +984,8 @@ class HomeController extends Controller
                         $validator = Validator::make($request->all(), [
                             'totaldue' => 'required',
                             // 'totalpay' => 'numeric|gte:1000|lte:' . $request->totaldue,
-                            'current_location' => 'required',
-                            'embassy_appearance' => 'required',
+                            // 'current_location' => 'required',
+                            // 'embassy_appearance' => 'required',
                             'amount' => 'numeric|gte:1000|lte:' . $request->totaldue
 
                         ]);
@@ -979,8 +993,8 @@ class HomeController extends Controller
                         $validator = Validator::make($request->all(), [
                             'totaldue' => 'required',
                             'totalpay' => 'numeric|gte:1000|lte:' . $request->totaldue,
-                            'current_location' => 'required',
-                            'embassy_appearance' => 'required',
+                            // 'current_location' => 'required',
+                            // 'embassy_appearance' => 'required',
                         ]);
                     }
 
@@ -1428,7 +1442,7 @@ class HomeController extends Controller
                     }
 
                     ###########################################################################
-                    if ($request->payoption == "Bank") {
+                    if ($request->payoption == "Transfer" || $request->payoption == "Deposit") {
 
                         // return view('user.bank-transfer', compact('thisPayment', 'thisPaymentMade', 'whatsPaid'));
                         return redirect('bank');
