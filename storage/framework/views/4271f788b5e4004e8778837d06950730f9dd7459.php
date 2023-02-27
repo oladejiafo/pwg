@@ -144,7 +144,6 @@
     <?php endif; ?>
 
     <div class="card-body paid-section" style="background-color:#444C64;">
-
         <div class="carousel" id="carouselThree" data-ride="carousel">
             <div class="outer scroll-pane" id="container">
                 <div class="container-fluid text-center">
@@ -1592,7 +1591,7 @@
                                 </div>
                             </div>
                             <!-- Modal Ends -->
-                            <!-- End Column  -->
+
                         </ul>
                     </div>
                 </div>
@@ -1625,6 +1624,13 @@
                     <button class="btn btn-secondary toastrDefaultError"
                         style="border-width:thin; width:250px; height:60px; font-size:32px; font-weight:bold"
                         onclick="toastr.error('Your application process not completed!')">Pay All Now</button>
+                <?php elseif($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0): ?>
+                    <button class="btn btn-secondary toastrDefaultError"
+                        style="border-width:thin; width:250px; height:60px; font-size:32px; font-weight:bold" 
+                        onclick="toastr.error('Your previous payment being verified!')">
+                        Pay All Now
+                    </button>
+                    
                 <?php else: ?>
                     <form action="<?php echo e(route('payment', $ppd)); ?>" method="GET">
                         <input type="hidden" name="pid" value="<?php echo e($ppd); ?>">
