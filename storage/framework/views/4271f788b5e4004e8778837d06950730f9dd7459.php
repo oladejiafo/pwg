@@ -1157,7 +1157,7 @@
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="<?php echo e(route('getInvoice', 'FIRST')); ?>">Get
                                                                 Invoice</a>
-                                                        <?php elseif($paid->first_payment_status == 'PENDING' && $paid->first_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && ($paym->payment_type=="FIRST" || $paym->payment_type == "BALANCE_ON_FIRST"))): ?>
+                                                        <?php elseif(($paid->first_payment_status == 'PENDING') && $paid->first_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && ($paym->payment_type=="FIRST" || $paym->payment_type == "BALANCE_ON_FIRST")) || ($paym->payment_type == "BALANCE_ON_FIRST" && $paid->first_payment_status == 'PARTIALLY_PAID'  && (isset($paym->transaction_mode) && $paid->first_payment_verified_by_cfo == 0))): ?>
                                                             <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
                                                         <?php else: ?>
                                                             <form action="<?php echo e(route('payment', $prod->id)); ?>"
