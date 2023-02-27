@@ -271,7 +271,9 @@ class ApplicationController extends Controller
             'work_state' => 'required',
             'work_city' => 'required',
             'work_postal_code' => 'required',
-            'work_street' => 'required'
+            'work_street' => 'required',
+            'current_location' => 'required',
+            'embassy_appearance' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -314,7 +316,17 @@ class ApplicationController extends Controller
         $client->company_name = $request->company_name;
         $client->employer_phone_number = $request->employer_phone;
         $client->employer_email = $request->employer_email;
+        $client->country_of_residence = $request->current_location;
+        // $client->embassy_appearance = $request->embassy_appearance;
+        
         $client->save();
+
+        $applicant = Applicant::where('client_id', Auth::id())
+        ->where('destination_id', $request->product_id)
+        ->first();
+        $applicant->embassy_country = $request->embassy_appearance;
+        $applicant->save();
+
         return Response::json(array('status' => true), 200);
     }
 
