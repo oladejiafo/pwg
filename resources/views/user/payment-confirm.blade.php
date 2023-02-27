@@ -25,6 +25,7 @@
                     <div class="reset-heading">
                         Payment need to be confirmed!
                     </div>
+                    <div class="subConfirm">Our Finance department will verify your payment and once done you will be able to download your invoice</div>
                     <div class="subConfirm">You can continue with application submission</div>
                     <div class="sig">
                         <form action="{{ url('applicant/details',$id) }}" method="GET">

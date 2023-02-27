@@ -175,62 +175,24 @@ $vals=array(0,1,2);
                     <?php echo csrf_field(); ?>
                     <!-- col-lg-6 col-md-6 col-12 offset-md-3 offset-lg-3 -->
 
-                    <?php if(in_array($levels, $vals) && (empty($completed->embassy_country) || $completed->embassy_country == null || Auth::user()->country_of_residence == null)): ?> 
-                        <div class="row ">
-                            <div class="col-lg-6 col-sm-12 mb-3">
-                                <div class="inputs">
-                                    <select title="Current Location" class="form-control  current_location form-select" id="current_location" name="current_location" required>
-                                        <option selected disabled>--Current Location--</option>
-                                        <option value="United Arab Emirates">United Arab Emirates</option>
-                                        <?php $__currentLoopData = Constant::countries; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <option value="<?php echo e($key); ?>"><?php echo e($item); ?></option>
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                    </select>
-                                </div>
-                                <?php $__errorArgs = ['current_location'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                    <div class="error"><?php echo e($message); ?></div>
-                                <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                            </div>
-                            <div class="col-lg-6 col-sm-12 mb-3">    
-                                <div class="inputs">
-                                    <select title="Embassy Appearance Country" class="form-control  embassy_appearance form-select" id="embassy_appearance" name="embassy_appearance" required="">
-                                        <option selected disabled>--Country of Embassy Appearance--</option>
-                                        <option value="United Arab Emirates">United Arab Emirates</option>
-                                        <?php $__currentLoopData = Constant::countries; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                            <option value="<?php echo e($key); ?>"><?php echo e($item); ?></option>
-                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                    </select>
-                                </div>
-                                <?php $__errorArgs = ['embassy_appearance'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> <span class="error"><?php echo e($message); ?></span> <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                            </div>
-                        </div>
-                        <div class="row" id="discount" style="text-align: center;">
-                            <div class="mb-3">    
-                                <div class="inputs">
-                                    <input type="text" class="form-control dicount_code" name="discount_code" id="discount_code" aria-describedby="emailHelp" autocomplete="off" placeholder="Enter Discount Code, if any">
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-12 mb-3" style="display:block; margin: 0 auto;">
-                                <button type="button" class="btn btn-primary dicountBtn" id="dicountBtn" >APPLY CODE</button>
-                            </div>
-                        </div>
-                    <hr>
-                <?php endif; ?>
+                        <div align="center" style="background-color: #F0F3F4;padding: 30px">
+                            <div><b style="color:black">Choose a Payment Method:</b></div>
+                            <ul align="center" class="payoption" style="display:inline; margin:0 auto; margin-bottomx: -30px;margin-top:10px">
+                                <li style="margin:10px;">
+                                    <input type="radio" id="card" name="payoption" checked value="Card" required> 
+                                    <label for="card"><i class="fa fa-credit-card ico"></i> Card Payment</label>
+                                </li>
+                                <li style="margin:10px">
+                                    <input type="radio" id="transfer" name="payoption" value="Transfer" required> 
+                                    <label for="transfer"><i class="fa fa-exchange"></i> Bank Transfer</label>
+                                </li>
+                                <li style="margin:10px">
+                                    <input type="radio" id="deposit" name="payoption" value="Deposit" required> 
+                                    <label for="deposit"><i class="far fa-money-bill-alt" aria-hidden="true"></i> Bank Deposit</label>
+                                </li>
+                            </ul>
 
+                        </div>
 
                         <?php if(session()->has('myDiscount') && session()->has('haveCoupon') && session()->get('haveCoupon')==1): ?>
                             <?php                               
@@ -286,7 +248,8 @@ unset($__errorArgs, $__bag); ?>
                                 $outsub= $pays->submission_payment_price - $pays->submission_payment_paid;
                                 if ($payall == 0 || empty($payall)) {
 
-                                 if($pays->first_payment_status !="PAID" || $pays->first_payment_status ==null){
+                                 if(($pays->first_payment_status !="PAID" || $pays->first_payment_status ==null)){
+                                    //    && (isset($paym->transaction_mode) && $paym->transaction_mode != "TRANSFER" && ($paym->payment_type !="FIRST" || $paym->payment_type != "BALANCE_ON_FIRST"))
                                    $whichPayment =  "FIRST";
                                    $outsub=0;
                                    $outsec=0;
@@ -464,13 +427,13 @@ unset($__errorArgs, $__bag); ?>
                                 // $payNow = 0;
                                 $vatPercent = '5%';
 
-                                if(Auth::user()->country_of_residence == "United Arab Emirates" || Auth::user()->country_of_residence ==null)
-                                {
-                                  $vat = (($payNow - $discount) * 5) / 100;
-                                } else {
-                                    $vat = 0;
-                                }
-                                // $vat = (($payNow - $discount) * 5) / 100;
+                                // if(Auth::user()->country_of_residence == "United Arab Emirates" || Auth::user()->country_of_residence ==null)
+                                // {
+                                //   $vat = (($payNow - $discount) * 5) / 100;
+                                // } else {
+                                //     $vat = 0;
+                                // }
+                                $vat = (($payNow - $discount) * 5) / 100;
 
                                 $totalPay = round((($payNow - $discount) + $vat),2);
                                 // $payNoww = $payNow =$second_pay = 10;
@@ -708,27 +671,10 @@ unset($__errorArgs, $__bag); ?>
                         <input type="hidden" name="third_p" value="<?php echo e($pdet->second_payment_sub_total); ?>">
 
                         <div class="form-group row mt-4" style="margin-bottom: 70px">
-                            <p>
-                               <ul align="center" class="payoption" style="display:inline; margin:0 auto; widthx: 70%; margin-bottom: -30px;margin-top:10px">
-                                   <li style="margin:10px;">
-                                       <b style="color:black">Click a Payment Options:</b>
-                                   </li>
-                                   <li style="margin:10px;">
-                                       <input type="radio" id="card" name="payoption" checked value="Card" required> 
-                                       <label for="card"><i class="fa fa-credit-card ico"></i> Card</label>
-                                   </li>
-                                   <li style="margin:10px">
-                                       <input type="radio" id="bank" name="payoption" value="Bank" required> 
-                                       <label for="bank"><i class="fa fa-exchange"></i> Bank</label>
-                                   </li>
-                               </ul>
-
-                           </p>
                             <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
                                 <button type="submit" class="btn btn-primary submitBtn">Continue</button>
                                 <p style="font-size:11px; text-align:center;color:green">You will be redirected to a secured payment page!</p>
                             </div>
-                            
                         </div>
                     </form>
             </div>
@@ -754,23 +700,23 @@ unset($__errorArgs, $__bag); ?>
                     document.getElementById("amountLink2").value = vval;
                     let ax = $('#amountLink').text(parseInt(vval).toLocaleString());
                 } else {
-                    if('<?php echo e(Auth::user()->country_of_residence); ?>' == "United Arab Emirates"){
-                        var aVat =($('#amount').val()*5)/100;
-                        let vval = parseInt($('#amount').val()) + parseInt(($('#amount').val()*5)/100);
+                    // if('<?php echo e(Auth::user()->country_of_residence); ?>' == "United Arab Emirates"){
+                    //     var aVat =($('#amount').val()*5)/100;
+                    //     let vval = parseInt($('#amount').val()) + parseInt(($('#amount').val()*5)/100);
 
-                        // document.getElementById("amountLink2").value = $(this).val();
-                        document.getElementById("amountLink2").value = vval;
-                        let ax = $('#amountLink').text(parseInt(vval).toLocaleString());
-                    } else {
-                        document.getElementById("amountLink2").value = $(this).val();
-                        let ax = $('#amountLink').text(parseInt($(this).val()).toLocaleString());
-                    }
+                    //     // document.getElementById("amountLink2").value = $(this).val();
+                    //     document.getElementById("amountLink2").value = vval;
+                    //     let ax = $('#amountLink').text(parseInt(vval).toLocaleString());
+                    // } else {
+                    //     document.getElementById("amountLink2").value = $(this).val();
+                    //     let ax = $('#amountLink').text(parseInt($(this).val()).toLocaleString());
+                    // }
 
-                    // var aVat =($('#amount').val()*5)/100;
-                    // let vval = parseInt($('#amount').val()) + parseInt(($('#amount').val()*5)/100);
+                    var aVat =($('#amount').val()*5)/100;
+                    let vval = parseInt($('#amount').val()) + parseInt(($('#amount').val()*5)/100);
 
-                    // document.getElementById("amountLink2").value = vval;
-                    // let ax = $('#amountLink').text(parseInt(vval).toLocaleString());
+                    document.getElementById("amountLink2").value = vval;
+                    let ax = $('#amountLink').text(parseInt(vval).toLocaleString());
                 }                
                 
             } else {
@@ -873,28 +819,28 @@ unset($__errorArgs, $__bag); ?>
               $('.vtt').text("(+ 5% VAT)");
             } else {
                 
-              document.getElementById("amountLink2").value = amtx.toFixed(2);
-              $('#amountLink').text(parseFloat(Math.floor(amtx *100)/100).toLocaleString('en')); //= amtx;
-              document.getElementById("totaldue").value = Math.floor(amtx * 100)/100;
-              $('#showVat').hide();
-              //   $('#vt').hide();
-              $('#vatt').html(0);
-              $('#vats').val(0);
-              $('#vt').text("No VAT");
-              $('.vtt').text("");
+            //   document.getElementById("amountLink2").value = amtx.toFixed(2);
+            //   $('#amountLink').text(parseFloat(Math.floor(amtx *100)/100).toLocaleString('en')); //= amtx;
+            //   document.getElementById("totaldue").value = Math.floor(amtx * 100)/100;
+            //   $('#showVat').hide();
+            //   //   $('#vt').hide();
+            //   $('#vatt').html(0);
+            //   $('#vats').val(0);
+            //   $('#vt').text("No VAT");
+            //   $('.vtt').text("");
 
 
-            //   document.getElementById("amountLink2").value = Math.floor((amtx + (amtx*5/100)) *100)/100;
-            //   $('#amountLink').text(parseFloat(Math.floor((amtx + (amtx*5/100)) * 100)/100).toLocaleString('en')); //= amtx + (amtx*5/100);
-            //   document.getElementById("totaldue").value = Math.floor((amtx + (amtx*5/100)) *100)/100;
+              document.getElementById("amountLink2").value = Math.floor((amtx + (amtx*5/100)) *100)/100;
+              $('#amountLink').text(parseFloat(Math.floor((amtx + (amtx*5/100)) * 100)/100).toLocaleString('en')); //= amtx + (amtx*5/100);
+              document.getElementById("totaldue").value = Math.floor((amtx + (amtx*5/100)) *100)/100;
 
-            //   var nf = Intl.NumberFormat(); 
-            //   $('#vatt').html(nf.format(vt));
+              var nf = Intl.NumberFormat(); 
+              $('#vatt').html(nf.format(vt));
  
-            //   $('#vats').val(Math.floor(vt * 100)/100);
-            //   $('#showVat').show();
-            //   $('#vt').text("VAT Inclusive");
-            //   $('.vtt').text("(+ 5% VAT)");
+              $('#vats').val(Math.floor(vt * 100)/100);
+              $('#showVat').show();
+              $('#vt').text("VAT Inclusive");
+              $('.vtt').text("(+ 5% VAT)");
             }
 
         });

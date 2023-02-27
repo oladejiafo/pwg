@@ -16,7 +16,7 @@
 									<div class="content-block">
 										<h1>Hi, </h1>
 																					
-										<p><	 <?php echo e($data['body']); ?></p>
+										<p> <?php echo e($data['body']); ?></p>
 									</div>
 								</td>
 							</tr>

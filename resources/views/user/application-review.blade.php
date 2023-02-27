@@ -288,7 +288,7 @@
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                                    <button type="button" class="btn btn-primary submitBtn applicantDetails">Ammend</button>
+                                                    <button type="button" class="btn btn-primary submitBtn applicantDetails">Edit</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -412,7 +412,7 @@
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                                    <button type="submit" class="btn btn-primary submitBtn homeCountryDetails">Ammend</button>
+                                                    <button type="submit" class="btn btn-primary submitBtn homeCountryDetails">Edit</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -553,7 +553,7 @@
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                                    <button type="submit" class="btn btn-primary submitBtn">Ammend</button>
+                                                    <button type="submit" class="btn btn-primary submitBtn">Edit</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -660,7 +660,7 @@
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                                    <button type="submit" class="btn btn-primary submitBtn">Ammend</button>
+                                                    <button type="submit" class="btn btn-primary submitBtn">Edit</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -1017,7 +1017,7 @@
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                                    <button type="submit" class="btn btn-primary submitBtn spouseApplicantDetails" >Ammend</button>
+                                                    <button type="submit" class="btn btn-primary submitBtn spouseApplicantDetails" >Edit</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -1143,7 +1143,7 @@
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                                    <button type="submit" class="btn btn-primary submitBtn homeCountryDetails" >Ammend</button>
+                                                    <button type="submit" class="btn btn-primary submitBtn homeCountryDetails" >Edit</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -1285,7 +1285,7 @@
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                                    <button type="submit" class="btn btn-primary submitBtn collapseSpouseCurrent" >Ammend</button>
+                                                    <button type="submit" class="btn btn-primary submitBtn collapseSpouseCurrent" >Edit</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -1387,7 +1387,7 @@
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                                    <button type="submit" class="btn btn-primary submitBtn collapseSpouseSchengen" data-bs-toggle="collapse" data-bs-target="#collapseSpouseExperience" aria-expanded="false" aria-controls="collapseSpouseExperience">Ammend</button>
+                                                    <button type="submit" class="btn btn-primary submitBtn collapseSpouseSchengen" data-bs-toggle="collapse" data-bs-target="#collapseSpouseExperience" aria-expanded="false" aria-controls="collapseSpouseExperience">Edit</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -1695,7 +1695,7 @@
                                                             <button type="submit" class="btn btn-primary submitBtn submitChild">Submit <i class="fa fa-spinner fa-spin childReviewSpin"></i></button>  
                                                         
                                                     @else 
-                                                        <button type="button" class="btn btn-primary submitBtn collapsechild{{$key+2}}" data-bs-toggle="collapse" data-bs-target="#collapsechild{{$key+2}}" aria-expanded="false" aria-controls="collapsechild{{$key+2}}">Ammend</button>  
+                                                        <button type="button" class="btn btn-primary submitBtn collapsechild{{$key+2}}" data-bs-toggle="collapse" data-bs-target="#collapsechild{{$key+2}}" aria-expanded="false" aria-controls="collapsechild{{$key+2}}">Edit</button>  
                                                     @endif
                                                 </div>
                                             </div>

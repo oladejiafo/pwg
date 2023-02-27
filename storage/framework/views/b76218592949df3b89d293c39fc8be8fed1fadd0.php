@@ -288,7 +288,7 @@
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                                    <button type="button" class="btn btn-primary submitBtn applicantDetails">Ammend</button>
+                                                    <button type="button" class="btn btn-primary submitBtn applicantDetails">Edit</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -417,7 +417,7 @@ unset($__errorArgs, $__bag); ?>
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                                    <button type="submit" class="btn btn-primary submitBtn homeCountryDetails">Ammend</button>
+                                                    <button type="submit" class="btn btn-primary submitBtn homeCountryDetails">Edit</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -552,7 +552,7 @@ unset($__errorArgs, $__bag); ?>
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                                    <button type="submit" class="btn btn-primary submitBtn">Ammend</button>
+                                                    <button type="submit" class="btn btn-primary submitBtn">Edit</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -659,7 +659,7 @@ unset($__errorArgs, $__bag); ?>
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                                    <button type="submit" class="btn btn-primary submitBtn">Ammend</button>
+                                                    <button type="submit" class="btn btn-primary submitBtn">Edit</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -867,11 +867,7 @@ unset($__errorArgs, $__bag); ?>
                                             <?php if($client['is_spouse'] != null || $client['children_count'] != null): ?> 
                                                 <button type="submit" class="btn btn-primary submitBtn applicantNext">  Next </button>
                                             <?php else: ?>
-                                                <?php if($applicant->first_payment_status == "PAID"): ?>
-                                                    <button type="submit" class="btn btn-primary submitBtn applicantReview">  Submit <i class="fa fa-spinner fa-spin applicantReviewSpin"></i></button>
-                                                <?php else: ?> 
-                                                    <h5>You can submit the review once the payment got confirmed!</h5>
-                                                <?php endif; ?>
+                                                <button type="submit" class="btn btn-primary submitBtn applicantReview">  Submit <i class="fa fa-spinner fa-spin applicantReviewSpin"></i></button>
                                             <?php endif; ?>
                                         </div>
                                     </div>
@@ -1020,7 +1016,7 @@ unset($__errorArgs, $__bag); ?>
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                                    <button type="submit" class="btn btn-primary submitBtn spouseApplicantDetails" >Ammend</button>
+                                                    <button type="submit" class="btn btn-primary submitBtn spouseApplicantDetails" >Edit</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -1144,7 +1140,7 @@ unset($__errorArgs, $__bag); ?>
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                                    <button type="submit" class="btn btn-primary submitBtn homeCountryDetails" >Ammend</button>
+                                                    <button type="submit" class="btn btn-primary submitBtn homeCountryDetails" >Edit</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -1281,7 +1277,7 @@ unset($__errorArgs, $__bag); ?>
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                                    <button type="submit" class="btn btn-primary submitBtn collapseSpouseCurrent" >Ammend</button>
+                                                    <button type="submit" class="btn btn-primary submitBtn collapseSpouseCurrent" >Edit</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -1383,7 +1379,7 @@ unset($__errorArgs, $__bag); ?>
                                             </div>
                                             <div class="form-group row mt-4">
                                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                                    <button type="submit" class="btn btn-primary submitBtn collapseSpouseSchengen" data-bs-toggle="collapse" data-bs-target="#collapseSpouseExperience" aria-expanded="false" aria-controls="collapseSpouseExperience">Ammend</button>
+                                                    <button type="submit" class="btn btn-primary submitBtn collapseSpouseSchengen" data-bs-toggle="collapse" data-bs-target="#collapseSpouseExperience" aria-expanded="false" aria-controls="collapseSpouseExperience">Edit</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -1592,11 +1588,8 @@ unset($__errorArgs, $__bag); ?>
                                     <div class="form-group row mt-4">
                                         <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
                                             <?php if($client['is_spouse'] != null && $client['children_count'] == null): ?>
-                                                <?php if($applicant->first_payment_status == "PAID"): ?>
+                                                
                                                     <button type="submit" class="btn btn-primary submitBtn dependentReview">Submit <i class="fa fa-spinner fa-spin dependentReviewSpin"></i></button>
-                                                <?php else: ?> 
-                                                    <h5>You can submit the review once the payment got confirmed!</h5>
-                                                <?php endif; ?>
                                             <?php else: ?> 
                                                 <button type="submit" class="btn btn-primary submitBtn dependentNext">Next</button>
                                             <?php endif; ?>
@@ -1718,13 +1711,10 @@ unset($__errorArgs, $__bag); ?>
                                             <div class="form-group row mt-4">
                                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
                                                     <?php if($key+1 ==  $client['children_count']): ?>
-                                                        <?php if($applicant->first_payment_status == "PAID"): ?>
                                                             <button type="submit" class="btn btn-primary submitBtn submitChild">Submit <i class="fa fa-spinner fa-spin childReviewSpin"></i></button>  
-                                                        <?php else: ?> 
-                                                            <h5>You can submit the review once the payment got confirmed!</h5>
-                                                        <?php endif; ?>
+                                                        
                                                     <?php else: ?> 
-                                                        <button type="button" class="btn btn-primary submitBtn collapsechild<?php echo e($key+2); ?>" data-bs-toggle="collapse" data-bs-target="#collapsechild<?php echo e($key+2); ?>" aria-expanded="false" aria-controls="collapsechild<?php echo e($key+2); ?>">Ammend</button>  
+                                                        <button type="button" class="btn btn-primary submitBtn collapsechild<?php echo e($key+2); ?>" data-bs-toggle="collapse" data-bs-target="#collapsechild<?php echo e($key+2); ?>" aria-expanded="false" aria-controls="collapsechild<?php echo e($key+2); ?>">Edit</button>  
                                                     <?php endif; ?>
                                                 </div>
                                             </div>

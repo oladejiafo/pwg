@@ -29,7 +29,7 @@
                                         <ul>
                                             <li><h6>Bank Name: ADCB Bank</h6></li>
                                             <li><h6>Branch: BusinessBay Branch</h6></li>
-                                            <li><h6>Account Name :	PWG Visa Services LLC</h6></li>
+                                            <li><h6>Account Name:	PWG Visa Services LLC</h6></li>
                                             <li><h6>Account Number: 11977082920001</h6></li>
                                             <li><h6>IBAN: AE500030011977082920001</h6></li>
                                             <li><h6>Swift Code: ADCBAEAA</h6></li>
@@ -110,8 +110,9 @@
                         <div class="previewImage">
                             <img id="output" width="100%"/>
                         </div>
-                    </div>
-                    <a href="<?php echo e(route('myapplication')); ?>"><buttons type="cancel" class="cancelBtn xbtn" style="float: left;">Cancel</buttons></a>
+                    </div> 
+  
+                    <a href="<?php echo e(url()->previous()); ?>"><buttons type="cancel" class="cancelBtn xbtn" style="float: left;">Cancel</buttons></a>
                     
                     <button type="submit" class="btn btn-primary submitBtn" style="float: right;">Submit</button>
                 </form>

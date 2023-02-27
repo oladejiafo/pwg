@@ -16,7 +16,7 @@
 									<div class="content-block">
 										<h1>Hi, </h1>
 																					
-										<p><	 {{ $data['body'] }}</p>
+										<p> {{ $data['body'] }}</p>
 									</div>
 								</td>
 							</tr>
