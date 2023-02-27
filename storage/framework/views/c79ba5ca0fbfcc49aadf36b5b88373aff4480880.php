@@ -27,7 +27,7 @@
                                 <div class="row bankDetails">
                                     <div class="adcb">
                                         <ul>
-                                            <li><h6>Bank Name: ADCB Bank</h6></li>
+                                            <li><h4>Bank Name: <b>ADCB Bank</b></h4></li>
                                             <li><h6>Branch: BusinessBay Branch</h6></li>
                                             <li><h6>Account Name:	PWG Visa Services LLC</h6></li>
                                             <li><h6>Account Number: 11977082920001</h6></li>

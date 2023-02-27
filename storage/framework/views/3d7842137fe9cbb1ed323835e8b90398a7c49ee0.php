@@ -126,10 +126,17 @@
             </span>
             <?php if(isset($type) && $type == 'Pay'): ?>
                 <span align="right" class="col-md-2 col-sm-12" style="display:inline-block;float: right">
+
+                <?php if($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0): ?>
+                    <button class="toastrDefaultError"  style="border-radius: 10px;background-color:#800000; color:#fff; border-color:#fff"
+                    onclick="toastr.error('Your previous payment is being verified!')">Pay
+                    Now</button>
+                <?php else: ?>
                     <form action="<?php echo e(route('payment', $prod->id)); ?>" method="GET">
                         <button style="border-radius: 10px;background-color:#800000; color:#fff; border-color:#fff">Pay
-                            Now</button>
+                        Now</button>
                     </form>
+                <?php endif; ?>
                 </span>
             <?php endif; ?>
         </div>
@@ -700,6 +707,10 @@
                                                                 <button class="btn btn-secondary toastrDefaultError"
                                                                     onclick="toastr.error('Your application process not completed!')">Pay
                                                                     Now</button>
+                                                            <?php elseif($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0): ?>
+                                                                <button class="btn btn-secondary toastrDefaultError"
+                                                                onclick="toastr.error('Your previous payment is being verified!')">Pay
+                                                                Now</button>
                                                             <?php else: ?>
                                                                 <form action="<?php echo e(route('payment', $prod->id)); ?>"
                                                                     method="GET">
@@ -1017,6 +1028,10 @@
                                                                 <button class="btn btn-secondary toastrDefaultError"
                                                                     onclick="toastr.error('Your application process not completed!')">Pay
                                                                     Now</button>
+                                                            <?php elseif($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0): ?>
+                                                                <button class="btn btn-secondary toastrDefaultError"
+                                                                onclick="toastr.error('Your previous payment is being verified!')">Pay
+                                                                Now</button>
                                                             <?php else: ?>
                                                                 <form action="<?php echo e(route('payment', $prod->id)); ?>"
                                                                     method="GET">
@@ -1074,6 +1089,10 @@
                                                                 <button class="btn btn-secondary toastrDefaultError"
                                                                     onclick="toastr.error('Your application process not completed!')">Pay
                                                                     Now</button>
+                                                            <?php elseif($paid->submission_payment_status != "PAID" && $paid->submission_payment_verified_by_cfo == 0): ?>
+                                                                <button class="btn btn-secondary toastrDefaultError"
+                                                                onclick="toastr.error('Your previous payment is being verified!')">Pay
+                                                                Now</button>
                                                             <?php else: ?>
                                                                 <form action="<?php echo e(route('payment', $prod->id)); ?>"
                                                                     method="GET">
@@ -1139,7 +1158,7 @@
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="<?php echo e(route('getInvoice', 'FIRST')); ?>">Get
                                                                 Invoice</a>
-                                                        <?php elseif($paid->first_payment_status == 'PENDING' && $paid->first_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && ($paym->payment_type=="FIRST" || $paym->payment_type == "BALANCE_ON_FIRST"))): ?>
+                                                        <?php elseif(($paid->first_payment_status == 'PENDING') && $paid->first_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && ($paym->payment_type=="FIRST" || $paym->payment_type == "BALANCE_ON_FIRST")) || ($paym->payment_type == "BALANCE_ON_FIRST" && $paid->first_payment_status == 'PARTIALLY_PAID'  && (isset($paym->transaction_mode) && $paid->first_payment_verified_by_cfo == 0))): ?>
                                                             <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
                                                         <?php else: ?>
                                                             <form action="<?php echo e(route('payment', $prod->id)); ?>"
@@ -1263,6 +1282,10 @@
                                                                 <button class="btn btn-secondary toastrDefaultError"
                                                                     onclick="toastr.error('Your application process not completed!')">Pay
                                                                     Now</button>
+                                                            <?php elseif($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0): ?>
+                                                                <button class="btn btn-secondary toastrDefaultError"
+                                                                onclick="toastr.error('Your first payment is being verified!')">Pay
+                                                                Now</button>
                                                             <?php else: ?>
                                                                 <form action="<?php echo e(route('payment', $prod->id)); ?>"
                                                                     method="GET">
@@ -1363,6 +1386,10 @@
                                                                 <button class="btn btn-secondary toastrDefaultError"
                                                                     onclick="toastr.error('Your application process not completed!')">Pay
                                                                     Now</button>
+                                                            <?php elseif($paid->submission_payment_status != "PAID" && $paid->submission_payment_verified_by_cfo == 0): ?>
+                                                                <button class="btn btn-secondary toastrDefaultError"
+                                                                onclick="toastr.error('Your previous payment is being verified!')">Pay
+                                                                Now</button>
                                                             <?php else: ?>
                                                                 <form action="<?php echo e(route('payment', $prod->id)); ?>"
                                                                     method="GET">
