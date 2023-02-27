@@ -1160,7 +1160,7 @@
                                                             <a class="btn btn-secondary" target="_blank"
                                                                 href="{{ route('getInvoice', 'FIRST') }}">Get
                                                                 Invoice</a>
-                                                        @elseif($paid->first_payment_status == 'PENDING' && $paid->first_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && ($paym->payment_type=="FIRST" || $paym->payment_type == "BALANCE_ON_FIRST")))
+                                                        @elseif(($paid->first_payment_status == 'PENDING') && $paid->first_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && ($paym->payment_type=="FIRST" || $paym->payment_type == "BALANCE_ON_FIRST")) || ($paym->payment_type == "BALANCE_ON_FIRST" && $paid->first_payment_status == 'PARTIALLY_PAID'  && (isset($paym->transaction_mode) && $paid->first_payment_verified_by_cfo == 0)))
                                                             <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
                                                         @else
                                                             <form action="{{ route('payment', $prod->id) }}"

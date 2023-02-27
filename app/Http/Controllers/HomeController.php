@@ -2428,7 +2428,6 @@ class HomeController extends Controller
                 ];
                 if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                     Mail::to(env('FINANCE_ACCOUNTANT'))->send(new NotifyMail($dataArray));
-                    Mail::to(env('FINANCE_CFO'))->send(new NotifyMail($dataArray));
                 } else {
                     Mail::to('shamshera.hamza@pwggroup.pl')->send(new NotifyMail($dataArray));
                 }

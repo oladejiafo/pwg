@@ -372,6 +372,38 @@ unset($__errorArgs, $__bag); ?>
                             
                         </div>
                         <div class="form-group row mt-4">
+                            <div class="form-floating col-lg-6 col-sm-12 mt-3">
+                                
+                                    <select title="Current Location" class="form-control  current_location form-select" id="current_location" name="current_location" required>
+                                        <option selected disabled>--Current Location*--</option>
+                                        <option value="United Arab Emirates">United Arab Emirates</option>
+                                        <?php $__currentLoopData = Constant::countries; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($key); ?>"><?php echo e($item); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </select>
+                                
+                                <label for="current_location">Current Location*</label>
+                                <span class="current_location_errorClass"></span>
+                                
+                            </div>
+                            
+                            <div class="form-floating col-lg-6 col-sm-12 mt-3">    
+                                
+                                    <select title="Embassy Appearance Country" class="form-control  embassy_appearance form-select" id="embassy_appearance" placeholder="Country of Embassy Appearance*" name="embassy_appearance" required="">
+                                        <option selected disabled>--Country of Embassy Appearance*--</option>
+                                        <option value="United Arab Emirates">United Arab Emirates</option>
+                                        <?php $__currentLoopData = Constant::countries; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($key); ?>"><?php echo e($item); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    </select>
+                                
+                                <label for="embassy_appearance">Country of Embassy Appearance*</label>
+                                <span class="embassy_appearance_errorClass"></span>
+                                
+                            </div>
+
+                        </div>
+                        <div class="form-group row mt-4">
                             <div class="form-floating col-sm-4 mt-3">
                                 <input type="hidden" name="current_residence_phone_number_label" class="form-control current_residence_phone_number_label" id="current_residence_phone_number_label" placeholder="Phone Number*" autocomplete="off"/>
                                 <input type="tel" class="form-control" onkeypress="return isNumberKey(event)" id="current_residance_mobile" name='current_residance_mobile' value="<?php echo e(old('current_residance_mobile')); ?>" placeholder="Current Residence Mobile Number" autocomplete="off">
