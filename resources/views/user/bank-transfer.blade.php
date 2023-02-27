@@ -147,8 +147,9 @@
                         <div class="previewImage">
                             <img id="output" width="100%"/>
                         </div>
-                    </div>
-                    <a href="{{ route('myapplication') }}"><buttons type="cancel" class="cancelBtn xbtn" style="float: left;">Cancel</buttons></a>
+                    </div> 
+  
+                    <a href="{{  url()->previous()  }}"><buttons type="cancel" class="cancelBtn xbtn" style="float: left;">Cancel</buttons></a>
                     {{-- <a href="#" class="btn cancelBtn" style="float: left;">Cancel</a> --}}
                     <button type="submit" class="btn btn-primary submitBtn" style="float: right;">Submit</button>
                 </form>

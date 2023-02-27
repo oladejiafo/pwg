@@ -742,8 +742,8 @@ class HomeController extends Controller
                     ->first();
                    
                 // if ($payall == 0 || empty($payall)) {
-                if ($pays->first_payment_status != "PAID" || $pays->first_payment_status == null) {
-                    
+                if ($pays->first_payment_status != "PAID" || $pays->first_payment_status == null) 
+                {    
                     if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                         $originalPdf = Storage::disk(env('MEDIA_DISK'))->url('Applications/Contracts/client_contracts/' . $applicant->contract);
                     } else {
@@ -756,10 +756,9 @@ class HomeController extends Controller
                     
                     $signatureUrl = (isset($user->getMedia(Client::$media_collection_main_signture)[0])) ? $user->getMedia(Client::$media_collection_main_signture)[0]->getUrl() : null;
                     if (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
-                        // $signatureUrl = ltrim($signatureUrl, $signatureUrl[0]);
-                    
+                        $signatureUrl = ltrim($signatureUrl, $signatureUrl[0]);
                     }
-                   
+
                     // $result = pdfBlock::attachSignature($originalPdf, $signatureUrl, $data, $paymentType, $applicant);
                 }
                 //     elseif ($pays->first_payment_status == "PAID" && $pays->submission_payment_status != "PAID") {
@@ -835,8 +834,6 @@ class HomeController extends Controller
     public function bank()
     {
         if (Auth::id()) {
-            Session::forget('haveCoupon');
-            Session::forget('myDiscount');
 
             $complete = DB::table('applications')
                 ->where('client_id', '=', Auth::user()->id)
@@ -987,8 +984,8 @@ class HomeController extends Controller
                         $validator = Validator::make($request->all(), [
                             'totaldue' => 'required',
                             // 'totalpay' => 'numeric|gte:1000|lte:' . $request->totaldue,
-                            'current_location' => 'required',
-                            'embassy_appearance' => 'required',
+                            // 'current_location' => 'required',
+                            // 'embassy_appearance' => 'required',
                             'amount' => 'numeric|gte:1000|lte:' . $request->totaldue
 
                         ]);
@@ -996,8 +993,8 @@ class HomeController extends Controller
                         $validator = Validator::make($request->all(), [
                             'totaldue' => 'required',
                             'totalpay' => 'numeric|gte:1000|lte:' . $request->totaldue,
-                            'current_location' => 'required',
-                            'embassy_appearance' => 'required',
+                            // 'current_location' => 'required',
+                            // 'embassy_appearance' => 'required',
                         ]);
                     }
 
@@ -1445,7 +1442,7 @@ class HomeController extends Controller
                     }
 
                     ###########################################################################
-                    if ($request->payoption == "Bank") {
+                    if ($request->payoption == "Transfer" || $request->payoption == "Deposit") {
 
                         // return view('user.bank-transfer', compact('thisPayment', 'thisPaymentMade', 'whatsPaid'));
                         return redirect('bank');
