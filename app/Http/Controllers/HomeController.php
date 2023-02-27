@@ -568,10 +568,10 @@ class HomeController extends Controller
                 ->where('application_id', '=', $app_id)
                 ->whereIn('transaction_mode',   array('TRANSFER', 'DEPOSIT'))
                 ->where('invoice_amount', '>', 0)
-                ->where(function ($query) {
-                    $query->where('paid_amount', '=', 0)
-                        ->orWhereNull('paid_amount');
-                })
+                // ->where(function ($query) {
+                //     $query->where('paid_amount', '=', 0)
+                //         ->orWhereNull('paid_amount');
+                // })
                 // ->where('paid_amount', '=', 0)
                 // ->orWhereNull('paid_amount')
                 ->orderBy('id', 'desc')
@@ -2317,7 +2317,7 @@ class HomeController extends Controller
                 return back()->withErrors($validator)
                     ->withInput();
             }
-
+            $applicationImg = null;
             $paymentId = $request->paymentId;
 
             $payment = Payment::find($paymentId);
@@ -2325,11 +2325,16 @@ class HomeController extends Controller
             $payment->payment_date = $request->datepayment;
             $payment->bank_reference_no = $request->bank_reference;
             $payment->transaction_mode = $request->type_payment;
-
+            $payment->paid_amount = $request->invoice_amount;
+            $payment-> is_sucess_mail_delivered = 1;
+            
             $application = Application::find($payment->application_id);
             $application->status = 'PENDING';
+            
             $application->application_stage_status = 2;
-            $temp = $request->file('imgInp');
+            $paysplit = DB::table('pricing_plans')
+                                ->where('id', $application->pricing_plan_id)
+                                ->first();
             if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                 if ($payment->payment_type == 'FIRST' || $payment->payment_type == "BALANCE_ON_FIRST") {
                     $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_1st_payment, env('MEDIA_DISK'));
@@ -2338,12 +2343,18 @@ class HomeController extends Controller
                 } else if ($payment->payment_type == 'SECOND') {
                     $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_2nd_payment, env('MEDIA_DISK'));
                 }
+                if($payment->payment_type == 'FIRST'){
+                    $application->first_payment_remaining =  $application->first_payment_price - $payment->invoice_amount;
+                } else if($payment->payment_type == "BALANCE_ON_FIRST"){
+                    $application->first_payment_remaining =  $application->first_payment_remaining - $payment->invoice_amount;
+                }
                 $application->save();
                 $applicationImg = Application::find($payment->application_id);
                 $url =  $applicationImg->getMedia(Application::$media_collection_main_1st_payment)[0]->getPath();
                 $payment->addMedia($url) //starting method
                     ->preservingOriginal() //middle method
                     ->toMediaCollection(Payment::$media_collection_payment_receipt, env('MEDIA_DISK'));
+                
             } else {
                 if ($payment->payment_type == 'FIRST' || $payment->payment_type == "BALANCE_ON_FIRST") {
                     $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_1st_payment, 'local');
@@ -2351,6 +2362,11 @@ class HomeController extends Controller
                     $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_submission_payment, 'local');
                 } else if ($payment->payment_type == 'SECOND') {
                     $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_2nd_payment, 'local');
+                }
+                if($payment->payment_type == 'FIRST'){
+                    $application->first_payment_remaining =  $application->first_payment_price - $payment->invoice_amount;
+                } else if($payment->payment_type == "BALANCE_ON_FIRST"){
+                    $application->first_payment_remaining =  $application->first_payment_remaining - $payment->invoice_amount;
                 }
                 $application->save();
 
@@ -2360,6 +2376,33 @@ class HomeController extends Controller
                     ->preservingOriginal() //middle method
                     ->toMediaCollection(Payment::$media_collection_payment_receipt, 'local');
             }
+            if ($payment->payment_type == 'FIRST') {
+                $application->first_payment_paid = $payment->invoice_amount;
+                $application->first_payment_remaining = $application->first_payment_price - $payment->invoice_amount;
+            } else if($payment->payment_type == 'BALANCE_ON_FIRST'){
+                $application->first_payment_paid = $application->first_payment_paid + $payment->invoice_amount;
+                $application->first_payment_remaining = $application->first_payment_price - ($application->first_payment_paid + $payment->invoice_amount);
+
+            } elseif ($payment->payment_type == 'SUBMISSION') {
+                $application->submission_payment_paid = $payment->invoice_amount; // add in payment success
+            } elseif ($payment->payment_type == 'SECOND') {
+                $application->second_payment_paid = $payment->invoice_amount; // add in payment success
+            } else {
+                $application->total_paid = $payment->invoice_amount; // add in payment success
+                // $application->status = 'WAITING_FOR_EMBASSY_APPEARANCE'; // add in payment success
+                // if ($paysplit) {
+                    // $application->first_payment_paid = $paymentCreds['paysplit']->first_payment_price + $paymentCreds['firstVat']; // add in payment success
+                    $application->first_payment_paid = ($application->first_payment_price) ?? $paysplit->first_payment_price; // add in payment success
+
+                    // $application->submission_payment_paid = $paysplit->submission_payment_price + $paymentCreds['secondVat']; // add in payment success
+                    $application->submission_payment_paid = ($application->submission_payment_price) ?? $paysplit->submission_payment_price; // add in payment success
+
+                    // $application->second_payment_paid = $paysplit->second_payment_price + $paymentCreds['thirdVat']; // add in payment success
+                    $application->second_payment_paid = $paysplit->second_payment_price; // add in payment success
+                // }
+                $application->status = 'DOCUMENT_SUBMITTED'; // add in payment success
+            }
+            $application->save();
             if ($payment->save()) {
                 $dataArray = [
                     'title' => 'New payment from ' . ucwords(Auth::user()->name),
@@ -2380,7 +2423,6 @@ class HomeController extends Controller
                 return view('user.payment-confirm', compact('id'))->with('error', 'Something went wrong! Please try again');
             }
         } catch (Exception $e) {
-            dd($e);
             return redirect()->back()->with('error', $e->getMessage());
         }
     }

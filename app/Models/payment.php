@@ -18,7 +18,8 @@ class payment extends Model implements HasMedia
         'currency',
         'transaction_id',
         'bank_reference_no',
-        'paid_amount'
+        'paid_amount',
+        'is_sucess_mail_delivered'
     ];
 
     public static $media_collection_payment_receipt = 'media_collection_payment_receipt';

@@ -27,24 +27,12 @@
                                 <div class="row bankDetails">
                                     <div class="adcb">
                                         <ul>
-                                            <li class="bankLogo"><img src="{{asset('images/ADCB-Logo.jpg')}}" alt="PWG ADCB LOGO" width="100%"></li>
                                             <li><h6>Bank Name: ADCB Bank</h6></li>
                                             <li><h6>Branch: BusinessBay Branch</h6></li>
                                             <li><h6>Account Name :	PWG Visa Services LLC</h6></li>
                                             <li><h6>Account Number: 11977082920001</h6></li>
                                             <li><h6>IBAN: AE500030011977082920001</h6></li>
                                             <li><h6>Swift Code: ADCBAEAA</h6></li>
-                                        </ul>
-                                    </div>
-                                    <div class="eis">
-                                        <ul>
-                                            <li class="bankLogo"><img src="{{asset('images/emirates_islamic.jpg')}}" alt="PWG ADCB LOGO" width="100%"></li>
-                                            <li><h6>Bank Name: Emirates Islamic Bank</h6></li>
-                                            <li><h6>Branch: Dubai Mall Branch</h6></li>    
-                                            <li><h6>Account Name :	PWG Visa Services LLC</h6></li>
-                                            <li><h6>Account Number: 3708431539301</h6></li>
-                                            <li><h6>IBAN: AE780340003708431539301</h6></li>
-                                            <li><h6>Swift Code: MEBLAEAD</h6></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -54,22 +42,20 @@
                                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                         <div class="form-group row mt-4">
                                             <div class="form-floating mt-3 dob">
-                                                <select class="form-select form-control bank" name="bank" id="bank" placeholder="Destination / Bank*" >
-                                                    <option selected disabled>Destination / Bank* (where you deposited money )</option>
-                                                    <option value="1">Emirates Islamic Bank</option>
-                                                    <option value="2" selected>ADCB Bank</option>
-                                                </select>
-                                                <label for="bank">Destination / Bank*</label>
-                                                @if ($errors->has('bank'))
-                                                    <span class="error">{{ $errors->first('bank') }}</span>
+                                                <input type="text" name="bank_reference" class="form-control bank_reference" id="floatingInput" placeholder="Bank Reference Number*" value="" autocomplete="off"/>
+                                                <label for="floatingInput">Bank/Payment Reference No:*</label>
+                                                @if ($errors->has('bank_reference'))
+                                                    <span class="error">{{ $errors->first('bank_reference') }}</span>
                                                 @endif
                                             </div>
                                         </div>
                                     </div>
+                                    <input type="hidden" name="bank" class="form-select form-control bank" value="2">
                                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                         <div class="form-group row mt-4">
-                                            <div class="form-floating mt-3" align="right">
+                                            <div class="form-floating mt-3" align="left">
                                                 AMOUNT TO PAY: <b>AED</b> <b style="font-size: 18px"> @if(isset($thisPaymentMade)){{ number_format($thisPaymentMade,2) }}@endif </b>
+                                                <input type="hidden" name="invoice_amount" value="{{$thisPaymentMade}}"/>
                                             </div>
                                         </div>
                                     </div>
@@ -99,19 +85,10 @@
                                     </div>
 
                                 </div>
-                                <div class="row">
-                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                        <div class="form-group row mt-4">
-                                            <div class="form-floating mt-3">
-                                                <input type="text" name="bank_reference" class="form-control bank_reference" id="floatingInput" placeholder="Bank Reference Number*" value="" autocomplete="off"/>
-                                                <label for="floatingInput">Bank/Payment Reference No:*</label>
-                                                @if ($errors->has('bank_reference'))
-                                                    <span class="error">{{ $errors->first('bank_reference') }}</span>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <input name="type_payment" value="TRANSFER" type="hidden" />
+                                {{-- <div class="row"> --}}
+                                    
+                                    {{-- <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                         <div class="form-group row mt-4">
                                             <div class="form-floating mt-3">
                                                 <select class="form-select form-control type_payment" name="type_payment" id="type_payment" placeholder="Type of payment*" >
@@ -125,8 +102,8 @@
                                                 <span class="error">{{ $errors->first('type_payment') }}</span>
                                             @endif
                                         </div>
-                                    </div>
-                                </div>
+                                    </div> --}}
+                                {{-- </div> --}}
                             </div>
                             
                         </div>
@@ -162,31 +139,11 @@
 
     <script>
         $(document).ready(function(){
-            $('.adcb').hide();
-            $('.eis').hide();
             $('.datepayment').datepicker({
                 dateFormat : "yy-mm-dd",
                 changeMonth: true,
                 changeYear: true,
                 constrainInput: false     
-            });
-            if($('#bank').val() == 2){
-                $('.adcb').show();
-                $('.eis').hide();
-            } else if($('#bank').val() == 1) {
-                $('.eis').show();
-                $('.adcb').hide();
-            }
-            
-            $('#bank').on("change", function () {
-                if($('#bank').val() == 2){
-                    $('.adcb').show();
-                    $('.eis').hide();
-                }
-                if($('#bank').val() == 1){
-                    $('.eis').show();
-                    $('.adcb').hide();
-                }
             });
         });
 

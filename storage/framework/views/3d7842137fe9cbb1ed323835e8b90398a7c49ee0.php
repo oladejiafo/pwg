@@ -176,7 +176,7 @@
                                                         <br>Package
                                                     </amp>
 
-                                                    <?php if($paid->first_payment_remaining > 0 && $paid->first_payment_status != 'PAID'): ?>
+                                                    <?php if($paid->first_payment_remaining > 0 && $paid->first_payment_status == 'PARTIALLY_PAID'): ?>
                                                         <br>
                                                         <amp
                                                             style="display:fixed; align-content: center; text-align:center; font-size:10px !important; color:#ff0000;padding:1px;margin-left: 20px; line-height:100% !important; margin-top: 70px; margin-left:-100px">
@@ -432,7 +432,7 @@
                                                         <br>Package
                                                     </amp>
 
-                                                    <?php if($paid->first_payment_remaining > 0 && $paid->first_payment_status != 'PAID'): ?>
+                                                    <?php if($paid->first_payment_remaining > 0 && $paid->first_payment_status == 'PARTIALLY_PAID'): ?>
                                                         <br>
                                                         <amp
                                                             style="display:fixed; align-content: center; text-align:center; font-size:10px !important; color:#ff0000;padding:1px;margin-left: 20px; line-height:100% !important; margin-top: 70px; margin-left:-100px">
@@ -747,7 +747,7 @@
                                                         <br>Package
                                                     </amp>
 
-                                                    <?php if($paid->first_payment_remaining > 0 && $paid->first_payment_status != 'PAID'): ?>
+                                                    <?php if($paid->first_payment_remaining > 0 && $paid->first_payment_status == 'PARTIALLY_PAID'): ?>
                                                         <br>
                                                         <amp
                                                             style="display:fixed; align-content: center; text-align:center; font-size:10px !important; color:#ff0000;padding:1px;margin-left: 20px; line-height:100% !important; margin-top: 70px; margin-left:-100px">
@@ -1120,7 +1120,7 @@
                                                         <br>Package
                                                     </amp>
 
-                                                    <?php if($paid->first_payment_remaining > 0 && $paid->first_payment_status != 'PAID'): ?>
+                                                    <?php if($paid->first_payment_remaining > 0 && $paid->first_payment_status == 'PARTIALLY_PAID'): ?>
                                                         <br>
                                                         <amp
                                                             style="display:fixed; align-content: center; text-align:center; font-size:10px !important; color:#ff0000;padding:1px;margin-left: 20px; line-height:100% !important; margin-top: 70px; margin-left:-100px">
