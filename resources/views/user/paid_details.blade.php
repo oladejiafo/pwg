@@ -102,25 +102,21 @@
                                     </div>
                                     <div class="col-md-6" align="right">
                                         <p>
-
-                                           
-                                       @if($paid->submission_payment_status =='PAID' && $paid->submission_payment_price == $paid->submission_payment_paid)
-                                            <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="{{ url('/get/invoice/SECOND')}}">Get Invoice</a>
-                                       @else
-                                        @if($paid->application_stage_status != 5)
-                                            <button class="btn btn-secondary toastrDefaultError" style="font-weight:700" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           
-                                        @elseif($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0)
-                                            <button class="btn btn-secondary toastrDefaultError"  style="font-weight:700"
-                                            onclick="toastr.error('Your previous payment is being verified!')">Pay
-                                            Now</button>
-                                        @else
-                                            <form action="{{ route('payment',$prod->id) }}" method="GET">
-                                                <button class="btn btn-secondary" style="font-weight:700">Pay Now</button>
-                                            </form>
-                                        @endif
-
-                                       @endif
-
+                                            @if($paid->submission_payment_status =='PAID' && $paid->submission_payment_price == $paid->submission_payment_paid)
+                                                    <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="{{ url('/get/invoice/SECOND')}}">Get Invoice</a>
+                                            @else
+                                                @if($paid->application_stage_status != 5)
+                                                    <button class="btn btn-secondary toastrDefaultError" style="font-weight:700" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           
+                                                @elseif($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0)
+                                                    <button class="btn btn-secondary toastrDefaultError"  style="font-weight:700"
+                                                    onclick="toastr.error('Your previous payment is being verified!')">Pay
+                                                    Now</button>
+                                                @else
+                                                    <form action="{{ route('payment',$prod->id) }}" method="GET">
+                                                        <button class="btn btn-secondary" style="font-weight:700">Pay Now</button>
+                                                    </form>
+                                                @endif
+                                            @endif
                                         </p>
                                     </div>
                                 </div>

@@ -102,25 +102,21 @@
                                     </div>
                                     <div class="col-md-6" align="right">
                                         <p>
-
-                                           
-                                       <?php if($paid->submission_payment_status =='PAID' && $paid->submission_payment_price == $paid->submission_payment_paid): ?>
-                                            <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="<?php echo e(url('/get/invoice/SECOND')); ?>">Get Invoice</a>
-                                       <?php else: ?>
-                                        <?php if($paid->application_stage_status != 5): ?>
-                                            <button class="btn btn-secondary toastrDefaultError" style="font-weight:700" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           
-                                        <?php elseif($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0): ?>
-                                            <button class="btn btn-secondary toastrDefaultError"  style="font-weight:700"
-                                            onclick="toastr.error('Your previous payment is being verified!')">Pay
-                                            Now</button>
-                                        <?php else: ?>
-                                            <form action="<?php echo e(route('payment',$prod->id)); ?>" method="GET">
-                                                <button class="btn btn-secondary" style="font-weight:700">Pay Now</button>
-                                            </form>
-                                        <?php endif; ?>
-
-                                       <?php endif; ?>
-
+                                            <?php if($paid->submission_payment_status =='PAID' && $paid->submission_payment_price == $paid->submission_payment_paid): ?>
+                                                    <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="<?php echo e(url('/get/invoice/SECOND')); ?>">Get Invoice</a>
+                                            <?php else: ?>
+                                                <?php if($paid->application_stage_status != 5): ?>
+                                                    <button class="btn btn-secondary toastrDefaultError" style="font-weight:700" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           
+                                                <?php elseif($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0): ?>
+                                                    <button class="btn btn-secondary toastrDefaultError"  style="font-weight:700"
+                                                    onclick="toastr.error('Your previous payment is being verified!')">Pay
+                                                    Now</button>
+                                                <?php else: ?>
+                                                    <form action="<?php echo e(route('payment',$prod->id)); ?>" method="GET">
+                                                        <button class="btn btn-secondary" style="font-weight:700">Pay Now</button>
+                                                    </form>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
                                         </p>
                                     </div>
                                 </div>
