@@ -126,10 +126,17 @@
             </span>
             @if (isset($type) && $type == 'Pay')
                 <span align="right" class="col-md-2 col-sm-12" style="display:inline-block;float: right">
+
+                @if($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0)
+                    <button class="toastrDefaultError"  style="border-radius: 10px;background-color:#800000; color:#fff; border-color:#fff"
+                    onclick="toastr.error('Your previous payment is being verified!')">Pay
+                    Now</button>
+                @else
                     <form action="{{ route('payment', $prod->id) }}" method="GET">
                         <button style="border-radius: 10px;background-color:#800000; color:#fff; border-color:#fff">Pay
-                            Now</button>
+                        Now</button>
                     </form>
+                @endif
                 </span>
             @endif
         </div>
@@ -703,6 +710,10 @@
                                                                 <button class="btn btn-secondary toastrDefaultError"
                                                                     onclick="toastr.error('Your application process not completed!')">Pay
                                                                     Now</button>
+                                                            @elseif($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0)
+                                                                <button class="btn btn-secondary toastrDefaultError"
+                                                                onclick="toastr.error('Your previous payment is being verified!')">Pay
+                                                                Now</button>
                                                             @else
                                                                 <form action="{{ route('payment', $prod->id) }}"
                                                                     method="GET">
@@ -1021,6 +1032,10 @@
                                                                 <button class="btn btn-secondary toastrDefaultError"
                                                                     onclick="toastr.error('Your application process not completed!')">Pay
                                                                     Now</button>
+                                                            @elseif($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0)
+                                                                <button class="btn btn-secondary toastrDefaultError"
+                                                                onclick="toastr.error('Your previous payment is being verified!')">Pay
+                                                                Now</button>
                                                             @else
                                                                 <form action="{{ route('payment', $prod->id) }}"
                                                                     method="GET">
@@ -1077,6 +1092,10 @@
                                                                 <button class="btn btn-secondary toastrDefaultError"
                                                                     onclick="toastr.error('Your application process not completed!')">Pay
                                                                     Now</button>
+                                                            @elseif($paid->submission_payment_status != "PAID" && $paid->submission_payment_verified_by_cfo == 0)
+                                                                <button class="btn btn-secondary toastrDefaultError"
+                                                                onclick="toastr.error('Your previous payment is being verified!')">Pay
+                                                                Now</button>
                                                             @else
                                                                 <form action="{{ route('payment', $prod->id) }}"
                                                                     method="GET">
@@ -1264,6 +1283,10 @@
                                                                 <button class="btn btn-secondary toastrDefaultError"
                                                                     onclick="toastr.error('Your application process not completed!')">Pay
                                                                     Now</button>
+                                                            @elseif($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0)
+                                                                <button class="btn btn-secondary toastrDefaultError"
+                                                                onclick="toastr.error('Your first payment is being verified!')">Pay
+                                                                Now</button>
                                                             @else
                                                                 <form action="{{ route('payment', $prod->id) }}"
                                                                     method="GET">
@@ -1363,6 +1386,10 @@
                                                                 <button class="btn btn-secondary toastrDefaultError"
                                                                     onclick="toastr.error('Your application process not completed!')">Pay
                                                                     Now</button>
+                                                            @elseif($paid->submission_payment_status != "PAID" && $paid->submission_payment_verified_by_cfo == 0)
+                                                                <button class="btn btn-secondary toastrDefaultError"
+                                                                onclick="toastr.error('Your previous payment is being verified!')">Pay
+                                                                Now</button>
                                                             @else
                                                                 <form action="{{ route('payment', $prod->id) }}"
                                                                     method="GET">

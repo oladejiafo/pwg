@@ -17,7 +17,7 @@
 <?php $__env->startSection('content'); ?>
     <div class="login">
         <div class="container">
-            <div class="forgot-password" style="height:65%">
+            <div class="forgot-password" >
                 <div class="reset">
                     <div class="resetImage">
                         <img src="<?php echo e(asset('images/reminder.png')); ?>" width="100% " alt="approved">
