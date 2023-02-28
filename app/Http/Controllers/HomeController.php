@@ -47,8 +47,6 @@ class HomeController extends Controller
     {
         if (Auth::id()) {
             $client = User::find(Auth::id());
-            // if ($client->email_verified_at) { // Use on production 
-
             if (session('prod_id')) {
                 $id = Session::get('prod_id');
 
@@ -85,10 +83,6 @@ class HomeController extends Controller
 
                 return view('user.home', compact('package', 'promo', 'started'));
             }
-            // } else {
-            //     Auth::logout();
-            //     return view('auth.verify-email');
-            // }
         } else {
             Session::flush();
             // $package = DB::table('destinations')->orderBy(DB::raw('FIELD(name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
@@ -741,11 +735,10 @@ class HomeController extends Controller
                     ->first();
 
                 // if ($payall == 0 || empty($payall)) {
-                if ($pays->first_payment_status != "PAID" || $pays->first_payment_status == null) {
+                if (($pays->first_payment_status != "PAID" || $pays->first_payment_status == null) || (Storage::disk('s3')->exists($applicant->getMedia(Application::$media_collection_main_1st_signature)[0]->getPath()))) {
                     if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                         $originalPdf = Storage::disk(env('MEDIA_DISK'))->url('Applications/Contracts/client_contracts/' . $applicant->contract);
                     } else {
-
                         $originalPdf = Storage::disk('local')->url('Applications/Contracts/client_contracts/' . $applicant->contract);
                         $originalPdf = ltrim($originalPdf, $originalPdf[0]);
                     }
@@ -756,8 +749,7 @@ class HomeController extends Controller
                     if (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                         $signatureUrl = ltrim($signatureUrl, $signatureUrl[0]);
                     }
-
-                    // $result = pdfBlock::attachSignature($originalPdf, $signatureUrl, $data, $paymentType, $applicant);
+                    $result = pdfBlock::attachSignature($originalPdf, $signatureUrl, $data, $paymentType, $applicant);
                 }
                 //     elseif ($pays->first_payment_status == "PAID" && $pays->submission_payment_status != "PAID") {
                 //         $originalPdf = (isset($applicant->getMedia(Application::$media_collection_main_1st_signature)[0])) ? $applicant->getMedia(Application::$media_collection_main_1st_signature)[0]->getUrl() : null;
@@ -1000,9 +992,10 @@ class HomeController extends Controller
                 //             ->withInput();
                 //     }
                 // } else {
+                    $payLimit = $request->totaldue - $request->vats;
                     if ($request->amount > 0) {
                         $validator = Validator::make($request->all(), [
-                            'amount' => 'numeric|gte:1000',
+                            'amount' => 'numeric|gte:1000|lte:' . $payLimit,
                             'totaldue' => 'required',
                             'totalpay' => 'numeric'
                         ]);

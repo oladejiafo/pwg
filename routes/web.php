@@ -58,7 +58,7 @@ Route::middleware([
 
 Route::get('/',[HomeController::class, 'index']);
 
-Route::get('/home', [HomeController::class, 'redirect'] )->middleware(['auth', 'verified'])->name('redirect');
+Route::get('/home', [HomeController::class, 'redirect'] )->name('redirect');
 
 // Route::get('/signup', [HomeController::class, 'signup'] );
 
