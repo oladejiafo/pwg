@@ -4,7 +4,7 @@ body {
 }
 
 .paid-application {
-  margin-top: 150px !important;
+  margin-top: 80px !important;
 }
 
 .earn .p {
@@ -178,8 +178,8 @@ body {
 
 .paid-section .outer {
   width: 100%;
-  margin-top: 5%;
-  margin-bottom: 5%;
+  /* margin-top: 5%; */
+  /* margin-bottom: 5%; */
   overflow: hidden;
   white-space: nowrap;
   padding-bottom: 1em;

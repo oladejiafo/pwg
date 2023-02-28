@@ -100,7 +100,6 @@ class HomeController extends Controller
 
     public function index()
     {
-
         pdfBlock::pdfBlock('pdf/workpermittemplate.pdf');
         if (Auth::id()) {
             $started = DB::table('applications')

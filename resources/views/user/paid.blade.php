@@ -110,9 +110,9 @@
 <link rel="stylesheet" href="../user/assets/css/style.css">
 
 <div class="card d-flex aligns-items-center justify-content-center text-center paid-application">
-    <div class="card-header" style="background-color:white;">My Applications
+    {{-- <div class="card-header" style="background-color:white;">My Applications --}}
         {{-- <button class="btn btn-primary" href="#" onclick="OAuthCode('{{$authUrl}}')">Connect to Quickbook</button> --}}
-    </div>
+    {{-- </div> --}}
     @if (isset($msg) && strlen($msg) > 2)
         <div class="row pay-info" style="background-color: {{ $color }}; float:left;border-radius:5px">
             <span class="col-md-1 col-sm-12 fa-stack fa-2x" style="display:inline-block;margin-left:1%;height: 80px;">
@@ -126,17 +126,16 @@
             </span>
             @if (isset($type) && $type == 'Pay')
                 <span align="right" class="col-md-2 col-sm-12" style="display:inline-block;float: right">
-
-                @if($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0)
-                    <button class="toastrDefaultError"  style="border-radius: 10px;background-color:#800000; color:#fff; border-color:#fff"
-                    onclick="toastr.error('Your previous payment is being verified!')">Pay
-                    Now</button>
-                @else
-                    <form action="{{ route('payment', $prod->id) }}" method="GET">
-                        <button style="border-radius: 10px;background-color:#800000; color:#fff; border-color:#fff">Pay
+                    @if($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0)
+                        <button class="toastrDefaultError"  style="border-radius: 10px;background-color:#800000; color:#fff; border-color:#fff"
+                        onclick="toastr.error('Your previous payment is being verified!')">Pay
                         Now</button>
-                    </form>
-                @endif
+                    @else
+                        <form action="{{ route('payment', $prod->id) }}" method="GET">
+                            <button style="border-radius: 10px;background-color:#800000; color:#fff; border-color:#fff">Pay
+                            Now</button>
+                        </form>
+                    @endif
                 </span>
             @endif
         </div>
@@ -1261,6 +1260,11 @@
                                                 @php
                                                     $ptype = $ptype . ' Package';
                                                 @endphp
+                                                @if($ptype == "Blue Collar Package")
+                                                    @php
+                                                        $ptype = 'Individual Package';
+                                                    @endphp
+                                                @endif
                                             @endif
                                         @else
                                             @php
@@ -1745,7 +1749,8 @@
                         $paid->application_stage_status != 5)
                     <button class="btn btn-secondary toastrDefaultError"
                         style="border-width:thin; width:250px; height:60px; font-size:32px; font-weight:bold"
-                        onclick="toastr.error('Your application process not completed!')">Pay All Now</button>
+                        onclick="toastr.error('Your application process not completed!')">
+                        Pay All Now</button>
                 @elseif(($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0) || ($paid->submission_payment_status != "PAID" && $paid->submission_payment_verified_by_cfo == 0))
                     <button class="btn btn-secondary toastrDefaultError"
                         style="border-width:thin; width:250px; height:60px; font-size:32px; font-weight:bold" 
@@ -1758,8 +1763,8 @@
                         <input type="hidden" name="pid" value="{{ $ppd }}">
                         <input type="hidden" name="payall" value="1">
                         <button class="btn btn-secondary"
-                            style="border-width:thin; width:250px; height:60px; font-size:32px; font-weight:bold">Pay
-                            All Now</button>
+                            style="border-width:thin; width:250px; height:60px; font-size:32px; font-weight:bold">
+                            Pay All Now</button>
                     </form>
                 @endif
             </p>

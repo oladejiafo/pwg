@@ -73,7 +73,7 @@
         @else
     <!-- Start Hero Section -->
 
-    <div class="hero banner_bg layerd" style="padding-top: 80px; ">
+    {{-- <div class="hero banner_bg layerd" style="padding-top: 80px; ">
 
         <div class="container-fluid">
             <div class="row justify-content-between">
@@ -87,7 +87,7 @@
             </div>
 
         </div>
-    </div>
+    </div> --}}
     {{-- <div class="col-12 banner">
         <div class="row">
 
@@ -183,7 +183,6 @@
                                             <p style="font-size:20px">{{$offer->slogan}}</p>
                                         </span>
 
-                                        
                                         <p style="font-size:12px">@if($offer->name == "Canada" || $offer->name == "Germany") Full Payment Price @else First Installment Payment From @endif</p>
 
                                         <strong class="product-price">  {{number_format($offer->first_payment_sub_total,2)}} {{$offer->currency}}</strong>

@@ -63,13 +63,13 @@ $cXamount=0;
 
 @endif
 
-    <div class="container" style="margin-top: 150px;">
+    <div class="container" style="margin-top: 120px;">
         <div class="col-12">
             <div class="package">
                 <div class="header">
                     <h3>{{$data->name}} Package Types</h3>
                     <div class="bottoom-title">
-                        <p>We’ve got you covered</p>
+                        <p>We've got you covered</p>
                     </div>
                 </div>
                 
@@ -99,7 +99,7 @@ $cXamount=0;
                                 <img class="selected" style="width:30px" src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="PWG Group approved">
                             </div>
                                 <img src="{{asset('images/yellowWhiteCollar.svg')}}" alt="PWG Group">
-                                <h6>Blue Collar Package</h6>
+                                <h6>Individual Package</h6>
                                 <p class="amountSection"><span class="amount">{{number_format($blue_cost,0)}}</span><b style="font-size:15px">AED</b>
                                     <br>
                                     <span style="font-size: 10px">Total Package Amount</span>
@@ -146,7 +146,7 @@ $cXamount=0;
 
 
 
-                        @if($whiteJobs->first())
+                        {{-- @if($whiteJobs->first())
                         @foreach($whiteJobs as $whiteJob)
                         @if ($loop->first)
                         
@@ -161,9 +161,9 @@ $cXamount=0;
                         @php                                   
                             $whiteJob_cost = 0
                             @endphp
-                        @endif
+                        @endif --}}
 
-                       @if(isset($whiteJob_cost) && $whiteJob_cost > 0)
+                       {{-- @if(isset($whiteJob_cost) && $whiteJob_cost > 0)
                        <div class="col-xs-12 col-md-4" style="display:inline-block;">
                         <div class="package-type  white-collar">                            
                             <div class="content">
@@ -187,10 +187,11 @@ $cXamount=0;
                             </div>
                         </div>
                         </div>
-                        @endif
+                        @endif --}}
 
 
-                    @if($famdet)
+
+                        @if($famdet)
                         <!-- <style>
                             .package-typed {
                                 align-items: center;
@@ -277,7 +278,7 @@ $cXamount=0;
                        </div>
                        @endif
 
-                       @if(isset($whiteJob_cost) && $whiteJob_cost == 0)
+                       {{-- @if(isset($whiteJob_cost) && $whiteJob_cost == 0)
                         
                         <script>
                             $(document).ready(function(){
@@ -285,9 +286,9 @@ $cXamount=0;
                         </script>
                         @else     
                        
-                       @endif
-                       <div class="white-desc">
-                             {{-- @include('user.white-collar-packge') --}}
+                       @endif --}}
+                       {{-- <div class="white-desc">
+                          
                         
                             <div class="form-group row" style="margin-top: -120px"> 
                                 <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
@@ -300,7 +301,7 @@ $cXamount=0;
                                 </form>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="family-desc">
 
