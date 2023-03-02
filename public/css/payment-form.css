@@ -16,11 +16,24 @@ body {
     margin-left: auto;
     margin-right: auto;
     margin: 0 auto;
-    background-color: #ffffff;
-    margin-bottom: 40px;
+    /* background-color: #ffffff; */
+    /* margin-bottom: 40px; */
     color: #636466;
     padding: 40px 150px 70px 150px;
 }
+
+.contractImg {
+    width: 33%;
+    height: 36%;
+    margin: 0 auto;
+}
+
+
+.contract {
+    background-color: #ffffff;
+    margin: 0 auto;
+    /* padding: 20px 50px; */
+  }
 
 .payment-form h3 {
     font-family: TT Norms Pro;
@@ -503,7 +516,7 @@ select {
     margin-right: auto;
     margin: 0 auto;
     background-color: #ffffff;
-    margin-bottom: 420px;
+    /* margin-bottom: 420px; */
     color: #636466;
     padding: 40px 70px 70px 70px;
 }
