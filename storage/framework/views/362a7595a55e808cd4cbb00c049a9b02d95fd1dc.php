@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 
-@include('user/header')
+<?php echo $__env->make('user/header', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
     <!-- bootstrap core css -->
-    <link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="<?php echo e(asset('user/css/bootstrap.min.css')); ?>" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
     <!--====== Line Icons CSS ======-->
@@ -12,8 +12,8 @@
     
     <!--====== Style CSS ======-->
     <link rel="stylesheet" href="../user/assets/css/style.css">
-    <link rel="stylesheet" href="{{ asset('user/css/style.css') }}">
-    <link href="{{asset('user/css/products.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="<?php echo e(asset('user/css/style.css')); ?>">
+    <link href="<?php echo e(asset('user/css/products.css')); ?>" rel="stylesheet">
     <style>
         .banner_bg {
         width: 100%;
@@ -66,74 +66,24 @@
 
 <body>
 
-@if(Route::has('login'))
+<?php if(Route::has('login')): ?>
 
 
-        @auth
-        @else
+        <?php if(auth()->guard()->check()): ?>
+        <?php else: ?>
     <!-- Start Hero Section -->
 
-    {{-- <div class="hero banner_bg layerd" style="padding-top: 80px; ">
-
-        <div class="container-fluid">
-            <div class="row justify-content-between">
-                <div class="col-md-12">
-                    <div class="intro-excerpt">
-                        <h1 id="headerTitle">Your Migration Journey Starts Here</h1>
-                        <p id="headerText" class="mb-4">Get your Europe & Canada Visa from any part of the world.</p>
-                        <p><a href="{{route('login')}}" id="headerBtn" class="btn btn-hero">START NOW</a></p>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div> --}}
-    {{-- <div class="col-12 banner">
-        <div class="row">
-
-            <div class="col-md-4 col-sm-12 col-lg-4" id="a1">
-                <div class="static-applicant">
-                        <img src="{{asset('images/staticApplicant.png')}}" alt="pwg" width="100%" height="100%">
-                </div>
-            </div>
-            <div class="col-md-4 col-sm-12 col-lg-4">
-                <div class="new-applicant">
-                    <div class="applicantImg">
-                        <img src="{{asset('images/Applications.png')}}" alt="pwg" width="40%" height="40%">
-                    </div>
-                    <p class="headerFont">NEW APPLICANTS</p>
-                    <p class="subHead">Migration journey  starts here.</p>
-                    <p class="headDetails">Get your Europe & Canada Visa <br> from any part of  the world.</p>
-                    <a class="applicantBtn" href="{{route('register')}}">START NOW</a>
-                </div>
-            </div>
-            <div class="col-md-4 col-sm-12 col-lg-4">
-                <div class="existing-applicant"> 
-                    <div class="applicantImg">
-                        <img src="{{asset('images/existingApplicant.png')}}" alt="pwg" width="40%" height="40%">
-                    </div>
-                    <p class="headerFont">EXISTING APPLICANTS</p>
-                    <p class="subHead">Migration journey continues here.</p>
-                    <p class="headDetails">Get your Europe & Canada Visa <br> from any part of  the world.</p>
-                    <a class="applicantBtn" href="{{route('login')}}">START NOW</a>
-                </div>
-            </div>
-            <div class="col-md-4 col-sm-12 col-lg-4" id="a2">
-                <div class="static-applicant">
-                        <img src="{{asset('images/staticApplicant.png')}}" alt="pwg" width="100%" height="100%">
-                </div>
-            </div>
-        </div>
-    </div> --}}
+    
+    
     <!-- End Hero Section -->
-@endauth 
-@endif
+<?php endif; ?> 
+<?php endif; ?>
 
     <!-- Start Product Section -->
     <div class="product-section">
 
-        @if(Route::has('login'))
-        @auth
+        <?php if(Route::has('login')): ?>
+        <?php if(auth()->guard()->check()): ?>
        <div class="carousel" id="carouselThree"  data-ride="carousel" style="margin-block:20px ;">
 
           <div class="outer  scroll-pane" id="container">
@@ -141,10 +91,10 @@
                 <div class="row" >
 
                     <ul>
-                        @foreach($package as $offer)
+                        <?php $__currentLoopData = $package; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $offer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 
-                            @if($promo->first())
-                                @foreach($promo as $prom)
+                            <?php if($promo->first()): ?>
+                                <?php $__currentLoopData = $promo; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $prom): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <?php
                                         if($prom->discount_percent >0 && $prom->product_id == $offer->id)
                                         { 
@@ -155,13 +105,13 @@
                                             $offer_discount_msg = '-';
                                         }
                                     ?>
-                                @endforeach
-                            @else 
-                                @php
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            <?php else: ?> 
+                                <?php
                                     $icon = '';
                                     $offer_discount_msg = '-'; 
-                                @endphp
-                            @endif
+                                ?>
+                            <?php endif; ?>
 
                         <!-- Start Column  -->
                         <li>
@@ -169,47 +119,46 @@
                                 <span class="product-item item-hints" href="#">
                                     <span class="positionAnchor hint"  data-position="1">
 
-                                        <!-- <img src="../user/images/{{$offer->image}}" style="height:458px" class="img-fluid product-thumbnail home_img" alt="PWG Group"> -->
+                                        <!-- <img src="../user/images/<?php echo e($offer->image); ?>" style="height:458px" class="img-fluid product-thumbnail home_img" alt="PWG Group"> -->
 
-                                        {{-- <div class="home-img"> --}}
-                                            <img src="../user/images/{{$offer->image}}" width="100%" class="img-fluid product-thumbnail home_img" alt="PWG Group">
-                                        {{-- </div> --}}
+                                        
+                                            <img src="../user/images/<?php echo e($offer->image); ?>" width="100%" class="img-fluid product-thumbnail home_img" alt="PWG Group">
+                                        
 
                                         <div class="hint-content do--split-children">
-                                            <p>{{$offer->description}}</p>
+                                            <p><?php echo e($offer->description); ?></p>
                                         </div>
                                         <span class="bottom">
-                                            <h3 class="product-title intro-excerpt" style="font-size: 35px; color:aliceblue">{{ucfirst($offer->name)}}</h3>
-                                            <p style="font-size:20px">{{$offer->slogan}}</p>
+                                            <h3 class="product-title intro-excerpt" style="font-size: 35px; color:aliceblue"><?php echo e(ucfirst($offer->name)); ?></h3>
+                                            <p style="font-size:20px"><?php echo e($offer->slogan); ?></p>
                                         </span>
 
-                                        <p style="font-size:12px">@if($offer->name == "Canada" || $offer->name == "Germany") Full Payment Price @else First Installment Payment From @endif</p>
+                                        <p style="font-size:12px"><?php if($offer->name == "Canada" || $offer->name == "Germany"): ?> Full Payment Price <?php else: ?> First Installment Payment From <?php endif; ?></p>
 
-                                        <strong class="product-price">  {{number_format($offer->first_payment_sub_total,2)}} {{$offer->currency}}</strong>
+                                        <strong class="product-price">  <?php echo e(number_format($offer->first_payment_sub_total,2)); ?> <?php echo e($offer->currency); ?></strong>
 
-                                        {{-- <p style="font-size:12px">Starting from </p>
-
-                                        <strong class="product-price">  {{number_format($offer->unit_price,2)}} {{$offer->currency}}</strong> --}}
+                                        
                                         <p> 
-                                            <i class="{{$icon}}"></i> {{$offer_discount_msg}}
+                                            <i class="<?php echo e($icon); ?>"></i> <?php echo e($offer_discount_msg); ?>
+
                                         </p>
                                         <p>
                                             
-                                            @if(isset($started) && $offer->id == $started->destination_id)
+                                            <?php if(isset($started) && $offer->id == $started->destination_id): ?>
                                             <a class="btn btn-secondary" href="#"><span class="done">Already Applied</span><span class="doned">Applied</span> <i class="fa fa-check-circle" style="font-size:18px; color:green"></i></a>
-                                            {{-- <a class="btn btn-secondary" href="#">Already Applied <i class="fa fa-check-circle" style="font-size:18px; color:green"></i></a> --}}
-                                            @else
                                             
-                                            {{-- <a class="btn btn-secondary" @if(isset($started->destination_id)) onclick="return alert('You have an active application already.');" @endif href="{{ url('package/type', $offer->id) }}">Apply Now</a> --}}
-                                            <a class="btn btn-secondary" @if(isset($started->destination_id)) onclick="toastr.error('You have an active application already.','',{positionClass: 'toast-top-center', closeButton: 'true', width: '400px'})" href="#" @else href="{{ url('package/type', $offer->id) }}" @endif>Apply Now</a>
-                                            @endif
+                                            <?php else: ?>
+                                            
+                                            
+                                            <a class="btn btn-secondary" <?php if(isset($started->destination_id)): ?> onclick="toastr.error('You have an active application already.','',{positionClass: 'toast-top-center', closeButton: 'true', width: '400px'})" href="#" <?php else: ?> href="<?php echo e(url('package/type', $offer->id)); ?>" <?php endif; ?>>Apply Now</a>
+                                            <?php endif; ?>
                                         </p>
                                     </span>
                                 </span>
                             </div>
                         </li>
                         <!-- End Column  -->
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
                     </ul>
 
@@ -227,16 +176,16 @@
         </div>
 
        </div>
-        <!-- @include('user.earning') -->
+        <!-- <?php echo $__env->make('user.earning', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?> -->
 
-        @else
+        <?php else: ?>
 
         <div class="container-fluid text-center">
 
             <div class="row">
-              @foreach($package as $offer)
-                @if($promo->first())
-                    @foreach($promo as $prom)
+              <?php $__currentLoopData = $package; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $offer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <?php if($promo->first()): ?>
+                    <?php $__currentLoopData = $promo; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $prom): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <?php
 
                             if($prom->discount_percent >0 && $prom->product_id == $offer->id)
@@ -250,55 +199,54 @@
                             }
                                                 
                         ?>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
-                @else 
-                    @php
+                <?php else: ?> 
+                    <?php
                         $icon = '';
                         $offer_discount_msg = '-'; 
-                    @endphp
-                @endif
+                    ?>
+                <?php endif; ?>
                 <!-- Start Column  -->
                 <div class="col-sm-12 col-xs-12 col-lg-4 cellContainer destinationView">
                     <span class="product-item item-hints" href="#">
                         <span class="positionAnchor hint"  data-position="1">
 
-                            <!-- <img src="../user/images/{{$offer->image}}" style="height:458px" class="img-fluid product-thumbnail home_img" alt="PWG Group"> -->
+                            <!-- <img src="../user/images/<?php echo e($offer->image); ?>" style="height:458px" class="img-fluid product-thumbnail home_img" alt="PWG Group"> -->
 
-                            {{-- <div class="home-img"> --}}
-                                <img src="../user/images/{{$offer->image}}" width="100%"  class="img-fluid product-thumbnail home_img" alt="PWG Group">
-                            {{-- </div> --}}
+                            
+                                <img src="../user/images/<?php echo e($offer->image); ?>" width="100%"  class="img-fluid product-thumbnail home_img" alt="PWG Group">
+                            
 
                             <div class="hint-content do--split-children">
-                              <p>{{$offer->description}}</p>
+                              <p><?php echo e($offer->description); ?></p>
                             </div>
                             <span class="bottom">
-                                <h3 class="product-title intro-excerpt" style="font-size: 35px; color:aliceblue">{{ucfirst($offer->name)}}</h3>
-                                <p style="font-size:20px">{{$offer->slogan}}</p>
+                                <h3 class="product-title intro-excerpt" style="font-size: 35px; color:aliceblue"><?php echo e(ucfirst($offer->name)); ?></h3>
+                                <p style="font-size:20px"><?php echo e($offer->slogan); ?></p>
                             </span>
-                            {{-- <p style="font-size:12px">Starting from </p>
-                            <strong class="product-price">{{number_format($offer->unit_price,2)}} {{$offer->currency}}</strong> --}}
+                            
 
-                            <p style="font-size:12px">@if($offer->name == "Canada" || $offer->name == "Germany") Full Payment Price @else First Installment Payment From @endif</p>
-                            <strong class="product-price">{{number_format($offer->first_payment_sub_total,2)}} {{$offer->currency}}</strong>
+                            <p style="font-size:12px"><?php if($offer->name == "Canada" || $offer->name == "Germany"): ?> Full Payment Price <?php else: ?> First Installment Payment From <?php endif; ?></p>
+                            <strong class="product-price"><?php echo e(number_format($offer->first_payment_sub_total,2)); ?> <?php echo e($offer->currency); ?></strong>
                             <p>
-                                <i class="{{$icon}}"></i> {{$offer_discount_msg}} 
+                                <i class="<?php echo e($icon); ?>"></i> <?php echo e($offer_discount_msg); ?> 
                             </p>
                             <p>
-                                @if(Route::has('login'))
-                                    @auth
-                                    <a class="btn btn-secondary" href="{{ url('package/type', $offer->id) }}">Apply Now</a>
-                                @else
-                                    <a class="btn btn-secondary" href="{{ url('register') }}">Apply Now</a>
-                                    @endauth
-                                @endif
-                                {{-- <a class="btn btn-secondary" href="{{ url('package/type', $offer->id) }}">Apply Now</a> --}}
+                                <?php if(Route::has('login')): ?>
+                                    <?php if(auth()->guard()->check()): ?>
+                                    <a class="btn btn-secondary" href="<?php echo e(url('package/type', $offer->id)); ?>">Apply Now</a>
+                                <?php else: ?>
+                                    <a class="btn btn-secondary" href="<?php echo e(url('register')); ?>">Apply Now</a>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                                
                             </p>
                         </span>
                     </span>
                 </div>
                 <!-- End Column  -->
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 <div class="col-4 cellContainer">
                     <span class="product-itemx" href="#">
                         <span class="positionAnchorx" data-position="1">
@@ -313,8 +261,8 @@
                 </div>
             </div>
         </div>
-        @endauth
-        @endif
+        <?php endif; ?>
+        <?php endif; ?>
 
     </div>
     <div class="modal fade" id="formatModal" tabindex="-1" aria-labelledby="formatModalLabel" aria-hidden="true">
@@ -324,12 +272,12 @@
               <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <img loading="lazy" src="{{asset('images/warningimage.png')}}" width ="100%" height ="100%;" alt="EMAS">
+                <img loading="lazy" src="<?php echo e(asset('images/warningimage.png')); ?>" width ="100%" height ="100%;" alt="EMAS">
             </div>
           </div>
         </div>
     </div>
-    @include('user/footer')
+    <?php echo $__env->make('user/footer', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
     <!-- End Product Section -->
 
 
@@ -386,41 +334,41 @@ function sideScroll(element,direction,speed,distance,step){
 </script>
 <script>
     $(document).ready(function() {
-    @if(Session::has('message'))
+    <?php if(Session::has('message')): ?>
     toastr.options =
     {
     "closeButton" : true,
     "progressBar" : true
     }
-    toastr.success("{{ session('message') }}");
-    @endif
+    toastr.success("<?php echo e(session('message')); ?>");
+    <?php endif; ?>
     
-    @if(Session::has('error'))
+    <?php if(Session::has('error')): ?>
     toastr.options =
     {
     "closeButton" : true,
     "progressBar" : true
     }
-    toastr.error("{{ session('error') }}");
-    @php Session::forget('error'); @endphp
-    @endif
+    toastr.error("<?php echo e(session('error')); ?>");
+    <?php Session::forget('error'); ?>
+    <?php endif; ?>
     
-    @if(Session::has('info'))
+    <?php if(Session::has('info')): ?>
     toastr.options =
     {
     "closeButton" : true,
     "progressBar" : true
     }
-    toastr.info("{{ session('info') }}");
-    @endif
+    toastr.info("<?php echo e(session('info')); ?>");
+    <?php endif; ?>
     
-    @if(Session::has('warning'))
+    <?php if(Session::has('warning')): ?>
     toastr.options =
     {
     "closeButton" : true,
     "progressBar" : true
     }
-    toastr.warning("{{ session('warning') }}");
-    @endif
+    toastr.warning("<?php echo e(session('warning')); ?>");
+    <?php endif; ?>
     }); 
-   </script>
+   </script><?php /**PATH C:\Users\dejia\OneDrive\Desktop\mygit\pwg_eportal\resources\views/user/home.blade.php ENDPATH**/ ?>
