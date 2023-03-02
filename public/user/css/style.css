@@ -2577,8 +2577,9 @@ iframe img {
   align-items: center;
   background: #FFFFFF;
   box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.04);
-  border-radius: 26px;
-  height: 400px;
+  border-radius: 0 0 26px 26px;
+  /* height: 400px; */
+  height: auto;
   cursor: pointer;
 }
 
@@ -2587,8 +2588,8 @@ iframe img {
 }
 
 .package .content {
-  margin: 10px;
-  padding: 46px;
+  /* margin: 10px; */
+  padding: 20px;
   align-content: center;
   align-items: center;
   text-align: center;
@@ -2606,6 +2607,10 @@ iframe img {
   margin-bottom: 20px;
   color: #636466;
   padding: 40px 150px 70px 150px;
+}
+
+.package {
+  padding: 40px 30px;
 }
 
 .package h3,
@@ -2632,8 +2637,8 @@ iframe img {
 .package .amount,
 .package .Famamount {
   font-family: 'TT Norms Pro';
-  font-weight: bolder;
-  font-size: 47px;
+  /* font-weight: bolder; */
+  /* font-size: 47px; */
 
 }
 
@@ -2643,11 +2648,10 @@ iframe img {
 
 .package .header {
   font-weight: bold;
-  margin-right: 80px;
+  /* margin-right: 80px; */
 }
 
-.invoice-later .switch,
-.package .switch {
+.invoice-later .switch {
   position: relative;
   display: inline-block;
   width: 60px;
@@ -2656,12 +2660,29 @@ iframe img {
   margin-left: 35px;
 }
 
+.package .switch {
+  position: relative;
+  display: inline-block;
+  width:60px;
+  height: 30px;
+  margin-right: 30px;
+  margin-left: 15px;
+}
+
+.package .family-desc h4,
+.package .family-desc .bottoom-title {
+  padding: 0 125px;
+}
+.package .family-desc {
+  margin-top: -65px;
+}
+
 .invoice-later .switch input,
 .package .switch input {
   opacity: 0;
   width: 0;
   height: 0;
-  margin-top: 20px;
+  margin-top: 15px;
 }
 
 .invoice-later .slider,
@@ -2720,32 +2741,37 @@ iframe img {
 
 .children-sec,
 .partner-sec {
-  margin-top: 60px;
+  margin-top: 10px;
+  padding: 0 50px;
 }
 
 .family-desc .children {
   list-style-type: none;
-  margin: 25px 0 0 0;
+  /* margin: 25px 0 0 0; */
   padding: 0;
-  margin-top: -33px;
-  margin-left: 195px;
+  /* margin-top: -33px;
+  margin-left: 195px; */
 }
 
+.family-desc .children ul {
+  display: inline-block;
+}
 .family-desc .children li {
   float: left;
   margin: 0 14px 0 0;
-  width: 73px;
-  height: 32px;
-  position: relative;
+  width: 30px;
+  height: 20px;
+  /* position: relative; */
   list-style-type: none;
   text-align: center;
+  display: inline;
 }
 
 
 .children label,
 .children input {
-  display: block;
-  position: absolute;
+  /* display: inline-block; */
+  /* position: absolute; */
   top: 0;
   left: 0;
   right: 0;
@@ -2765,10 +2791,18 @@ iframe img {
 
 .children label {
   border: 1px solid #CCC;
+  font-size: 10px;
+  width:50px;
   border-radius: 16px;
   cursor: pointer;
   z-index: 90;
 }
+
+
+
+/* .children ul li { list-style: none; display: inline; }
+.children ul li:after { content: " \00b7"; }
+.children ul li:last-child:after { content: none; } */
 
 .children label:hover {
   background: #FAE008;
@@ -3113,8 +3147,8 @@ iframe img {
 
   .package .switch {
     margin-right: 0px;
-    width: 53px;
-    height: 32px;
+    width: 50px;
+    height: 30px;
     margin-left: 10px;
   }
 

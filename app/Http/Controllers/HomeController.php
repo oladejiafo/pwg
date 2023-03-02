@@ -58,8 +58,10 @@ class HomeController extends Controller
                 $ppay = product_payments::where('destination_id', '=', $id)->where('pricing_plan_type', '=', Session::get('packageType'))->where('status', 'CURRENT')->first();
                 // $proddet = product_details::where('product_id', '=', $id)->get();
 
+                // $payall = Session::put('payall', 0);
                 session()->forget('prod_id');
-                return view('user.package', compact('data', 'ppay', 'promo'));
+                // return view('user.contract', compact('id'));
+                return view('user.package-type', compact('data', 'ppay', 'promo'));
                 //   return \Redirect::route('product', $idd);
 
             } else {
@@ -201,7 +203,7 @@ class HomeController extends Controller
                 ->orderBy('sub_total', 'asc')
                 ->first();
         }
-
+// dd($famdet);
         $proddet = family_breakdown::where('destination_id', '=', $productId)->where('pricing_plan_type', 'BLUE_COLLAR')->where('status', 'CURRENT')->get();
         $whiteJobs = family_breakdown::where('destination_id', '=', $productId)->where('pricing_plan_type', 'WHITE_COLLAR')->where('status', 'CURRENT')->get();
         $canadaOthers = family_breakdown::where('destination_id', '=', $productId)->whereIn('pricing_plan_type', array('EXPRESS_ENTRY', 'STUDY_PERMIT'))->where('status', 'CURRENT')->get();

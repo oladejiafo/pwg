@@ -285,7 +285,14 @@
                                 <i class="{{$icon}}"></i> {{$offer_discount_msg}} 
                             </p>
                             <p>
-                                <a class="btn btn-secondary" href="{{ url('package/type', $offer->id) }}">Apply Now</a>
+                                @if(Route::has('login'))
+                                    @auth
+                                    <a class="btn btn-secondary" href="{{ url('package/type', $offer->id) }}">Apply Now</a>
+                                @else
+                                    <a class="btn btn-secondary" href="{{ url('register') }}">Apply Now</a>
+                                    @endauth
+                                @endif
+                                {{-- <a class="btn btn-secondary" href="{{ url('package/type', $offer->id) }}">Apply Now</a> --}}
                             </p>
                         </span>
                     </span>

@@ -133,7 +133,6 @@
                                             <p style="font-size:20px"><?php echo e($offer->slogan); ?></p>
                                         </span>
 
-                                        
                                         <p style="font-size:12px"><?php if($offer->name == "Canada" || $offer->name == "Germany"): ?> Full Payment Price <?php else: ?> First Installment Payment From <?php endif; ?></p>
 
                                         <strong class="product-price">  <?php echo e(number_format($offer->first_payment_sub_total,2)); ?> <?php echo e($offer->currency); ?></strong>
@@ -234,7 +233,14 @@
                                 <i class="<?php echo e($icon); ?>"></i> <?php echo e($offer_discount_msg); ?> 
                             </p>
                             <p>
-                                <a class="btn btn-secondary" href="<?php echo e(url('package/type', $offer->id)); ?>">Apply Now</a>
+                                <?php if(Route::has('login')): ?>
+                                    <?php if(auth()->guard()->check()): ?>
+                                    <a class="btn btn-secondary" href="<?php echo e(url('package/type', $offer->id)); ?>">Apply Now</a>
+                                <?php else: ?>
+                                    <a class="btn btn-secondary" href="<?php echo e(url('register')); ?>">Apply Now</a>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                                
                             </p>
                         </span>
                     </span>

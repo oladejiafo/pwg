@@ -65,14 +65,15 @@ $cXamount=0;
 
     <div class="container" style="margin-top: 120px;">
         <div class="col-12">
-            <div class="package">
+            <div align="center" class="package">
                 <div class="header">
-                    <h3><?php echo e($data->name); ?> Package Types</h3>
+                    
+                    <h2>CHOOSE YOUR PACKAGE</h2>
                     <div class="bottoom-title">
-                        <p>We've got you covered</p>
+                        <p>To start your journey to Poland, please select the package that best suits you</p>
                     </div>
                 </div>
-                
+                <br>
                 <div class="row" style="margin-left:auto; margin-right:auto; text-align:center;justify-content: center; display: flex;">
                 
                       <?php if($proddet->first()): ?>
@@ -81,7 +82,8 @@ $cXamount=0;
                     
                             <?php 
                             // $blue_cost = $prdet->total_price
-                            $blue_cost = $prdet->sub_total - $prdet->third_payment_sub_total
+                            // $blue_cost = $prdet->sub_total - $prdet->third_payment_sub_total
+                            $blue_cost = $prdet->first_payment_sub_total
                             ?> 
 
                             <?php endif; ?>
@@ -91,235 +93,335 @@ $cXamount=0;
                             $blue_cost = 0
                             ?>
                         <?php endif; ?>
+                        <style>
+                            .package-type ul {
+                              list-style: none;
+                            }
+                            
+                           .package-type ul li {
+                               font-size: 14px;
+                               /* align-items: left; */
+                               position: relative;
+                        
+                            }
+                           
+                            .package-type ul li::marker {
+                              content: "";
+                              display: inline-block; 
+                            }
+                            .package-type .indpackage ul li::before {
+                                position: absolute;
+                                content: "✓";
+                                display: block;
+                                width: 25px;
+                                height: 25px;
+                                top: 5px;
+                                left: 5px;
+                                background: #FACB08;
+                                margin-bottom: 0 !important;
+                                font-weight: bold;
+                                color: #000;
+                            }
 
-                    <div class="col-xs-6 col-md-4" style="display:inline-block;">
-                        <div class="package-type blue-collar">
+                            .package-type .fampackage ul li::before {
+                                position: absolute;
+                                content: "✓";
+                                display: block;
+                                width: 25px;
+                                height: 25px;
+                                top: 5px;
+                                left: 5px;
+                                background: #E10930;
+                                margin-bottom: 0 !important;
+                                font-weight: bold;
+                                color: #000;
+                            }
+                            
+                            </style>
+                    <div class="col-sm-10 col-md-5 col-lg-5" style="display:inline-block;">
+                        <img src="<?php echo e(asset('user/images/individual.png')); ?>" width="100%" alt="PWG Group">
+                        <div class="package-type blue-collar" data-bs-toggle="modal" data-bs-target="#individualModal">
                             <div class="content">
-                            <div class="dataCompletedx" id="blueSelect">
-                                <img class="selected" style="width:30px" src="<?php echo e(asset('images/Affiliate_Program_Section_completed.svg')); ?>" alt="PWG Group approved">
-                            </div>
-                                <img src="<?php echo e(asset('images/yellowWhiteCollar.svg')); ?>" alt="PWG Group">
-                                <h6>Individual Package</h6>
-                                <p class="amountSection"><span class="amount"><?php echo e(number_format($blue_cost,0)); ?></span><b style="font-size:15px">AED</b>
-                                    <br>
-                                    <span style="font-size: 10px">Total Package Amount</span>
-                                </p>
+                                <div>
+                                    <div class="row" style="padding:0 5%">
+                                        <?php $blue_cost_old = $blue_cost*1.2995; $blue_save= $blue_cost_old - $blue_cost;?>
+                                        <div class="col-5" align="right"><b>PROMO PRICE</b> <br> <b><span style="font-size:12px">AED</span> <span style="font-size:18px"><?php echo e(number_format($blue_cost,0)); ?></span></b></div>
+                                        <div class="col-2" align="center" style="padding:0 5px; border-left: 2px solid rgb(57, 127, 184); height: 52px;transform: translateX(50%);"><b></b></div>
+                                        <div class="col-5" align="left"><b>REGULAR PRICE</b> <br> <span style="font-size:12px">AED</span> <span style="font-size:18px"><del><?php echo e(number_format($blue_cost_old,0)); ?></del></span></div>
+                                    </div>
+                                    <div class="row" style="padding:0 5%; margin:3px 0 10px 0">
+                                        <div class="col-5" style="background: #000; border-radius:30px 0 0 30px;color:#fff; font-size:10px;font-weight:600; padding-block: 5px">SAVE AED <?php echo e($blue_save); ?></div>
+                                        <div class="col-7" style="background: #FACB08; border-radius:0 30px 30px 0;color:#000; font-size:10px; font-weight:600; padding-block: 5px">SALES ENDS 7 DAYS</div>
+                                    </div>
+                                    <div class="row" style="border-block: 1px solid #000;padding:5px; margin:15px">
+                                        <div class="col"><b>INDIVIDUAL PACKAGE</b></div>
+                                    </div>
+                                    <div class="indpackage">
+                                        <ul>
+                                            <li><div style="text-align: left;margin-left: 35px">Flexible working hours</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Attractive job market</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Low cost of living</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Legal employment</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Health insurance</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Respect of your rights</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Free airport transfer</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">No company ban</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Salary on time</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Free regeneration meal</div></li>
+                                        </ul>
+                                        <div style="text-align: left;margin-block:15px; margin-left: 35px"><i class="fa fa-star" style="color:#FACB08;font-size: 25px;"></i><b style="font-size: 18px;margin-left: 15px;">BONUS:</b> Salary deduction on the last payment of selected package.</div>
+                                    </div>
+                                    <div>
+                                        <button type="submit" class="btn btn-primary" style="width: 100%;font-size: 24px;background: #FACB08">APPLY NOW</button>
+                                    </div>
+                                </div>
+                              
                             </div>
                         </div>
                     </div>
                     
-                    <?php if(isset($canada) && $data->name == "Canada" && $canada->is_active==1): ?>
-                    <div class="col-xs-12 col-md-4" style="display:inline-block;">
-                        <div class="package-type  study-permit">                            
+                    <?php if($famdet): ?>
+
+                    <div class="col-sm-10 col-md-5 col-lg-5" style="display:inline-block;">
+                        <img src="<?php echo e(asset('user/images/family.png')); ?>" width="100%" alt="PWG Group">
+                        <div class="package-type family-package" data-bs-toggle="modal" data-bs-target="#familyModal">
+
                             <div class="content">
-                             <div class="dataCompletedx" id="studySelect">
-                                <img class="selected" style="width:30px" src="<?php echo e(asset('images/Affiliate_Program_Section_completed.svg')); ?>" alt="PWG Group approved">
-                             </div>
-                                <img src="<?php echo e(asset('images/yellowBlueCollar.svg')); ?>" alt="PWG Group">
-
-                                <h6><?php echo e($cSname); ?> Package</h6>
-                                <p class="amountSection"><span class="amount"><?php echo e(($cSamount > 0) ? number_format($cSamount,0) : 0); ?></span><b style="font-size:15px">AED</b>
-                                    <br>
-                                    <span style="font-size: 10px">Total Package Amount</span>
-                                </p>
-                                    
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-md-4" style="display:inline-block;">
-                        <div class="package-type  express-entry">                            
-                            <div class="content">
-                             <div class="dataCompletedx" id="expressSelect">
-                                <img class="selected" style="width:30px" src="<?php echo e(asset('images/Affiliate_Program_Section_completed.svg')); ?>" alt="PWG Group approved">
-                             </div>
-                                <img src="<?php echo e(asset('images/yellowFamily.svg')); ?>" alt="PWG Group">
-
-                                <h6><?php echo e($cXname); ?> </h6>
-                                <p class="amountSection"><span class="amount"><?php echo e(($cXamount > 0) ? number_format($cXamount,0) : 0); ?></span><b style="font-size:15px">AED</b> 
-                                    <br>
-                                    <span style="font-size: 10px">Total Package Amount</span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <?php endif; ?>
-
-
-
-                        
-
-                       
-
-
-
-                        <?php if($famdet): ?>
-                        <!-- <style>
-                            .package-typed {
-                                align-items: center;
-                                background: #FFFFFF;
-                                box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.04);
-                                border-radius: 26px;
-                                height: 400px;
-                            }
-                        </style> -->
-                      <div class="col-xs-12 col-md-4" style="display:inline-block;">
-
-                        <div class="package-type family-package">
-                            <div class="content">
-                            <div class="dataCompletedx" id="familySelect">
-                                <img class="selected" style="width:30px" src="<?php echo e(asset('images/Affiliate_Program_Section_completed.svg')); ?>"  alt="PWG Group approved">
-                            </div>
-                                <img src="<?php echo e(asset('images/yellowFamily.svg')); ?>" alt="PWG Group">
-                                <h6>Family Package</h6>
-                                
-                                <p class="amountSection"><span class="Famamount"><?php echo e(($famdet) ?  number_format(($famdet['sub_total']),0) : 0); ?></span><b style="font-size:15px">AED</b>
-                                    <br>
-                                    <span style="font-size: 10px">Total Package Amount</span>
-                                </p>
-                                   <?php if(!$famdet): ?>
-                                   <p style="font-size: 14px">
-                                     Package Not Available 
-                                   </p> 
-                                   <?php endif; ?>
-                            </div>
-                        </div>
-                    </div>
-                    <?php endif; ?>
-                    <p style="font-size:11px; color:#ccc">Click on a package to select</p>
-                    </div>
-
-                <div class="row">
-                    <div class="package-desc">
-                        <div class="blue-desc">
-                            
-                           
-                            <div class="form-group row" style="margin-top: -120px;"> 
-                                <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                <form method="POST" action="<?php echo e(url('product')); ?>">
-                                    <?php echo csrf_field(); ?>
-                                    <input type="hidden" name="cost" value="<?php echo e($blue_cost); ?>">
-                                   
-                                     <input type="hidden" value="BLUE_COLLAR" name="myPack">
-                                    <!-- <a class="btn btn-primary" href="<?php echo e(url('product')); ?>" style="width: 100%;font-size: 24px;">Continue</a> -->
-                                    <button type="submit" class="btn btn-primary" style="width: 100%;font-size: 24px;">Continue</button>
-                                </form>
-                                </div>
-                            </div>
-                        </div>
-                     
-                       <?php if($data->name == "Canada" && isset($canada) && $canada->is_active==1): ?>
-                        <div class="study-desc">
-                        
-                            <div class="form-group row" style="margin-top: -120px"> 
-                                <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                                <form method="POST" action="<?php echo e(url('product')); ?>">
-                                    <?php echo csrf_field(); ?>
-                                    <input type="hidden" name="cost" value="<?php echo e($cSamount); ?>">
-                                    <input type="hidden" value="<?php echo e($cSname); ?>" name="myPack">
-                                    <!-- <a class="btn btn-primary" href="<?php echo e(url('product')); ?>" style="width: 100%;font-size: 24px;">Continue</a> -->
-                                    <button type="submit" class="btn btn-primary" style="width: 100%;font-size: 24px;">Continue</button>
-                                </form>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="express-desc">
-                        
-                         <div class="form-group row" style="margin-top: -120px"> 
-                            <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                            <form method="POST" action="<?php echo e(url('product')); ?>">
-                                <?php echo csrf_field(); ?>
-                                <input type="hidden" name="cost" value="<?php echo e($cXamount); ?>">
-                                <input type="hidden" value="<?php echo e($cXname); ?>" name="myPack">
-                                <!-- <a class="btn btn-primary" href="<?php echo e(url('product')); ?>" style="width: 100%;font-size: 24px;">Continue</a> -->
-                                <button type="submit" class="btn btn-primary" style="width: 100%;font-size: 24px;">Continue</button>
-                            </form>
-                            </div>
-                        </div>
-                       </div>
-                       <?php endif; ?>
-
-                       
-                       
-
-                        <div class="family-desc">
-
-                            <div class="header">
-                                <h4>Dependants Details</h4>
-                                <div class="bottoom-title">
-                                    <p>Please add details about your dependants here</p>
-                                </div>
-                            </div>
-
-                            <form method="POST" action="<?php echo e(url('product')); ?>">
-                           
-                                <?php echo csrf_field(); ?>
-                              
-                                <input type="hidden" name="productId" value="<?php echo e($productId); ?>">
-                                <input type="hidden" class="hiddenFamAmount" name="cost" value="<?php echo e(($famdet) ?  number_format($famdet['sub_total']) : 0); ?>">
-                                <input type="hidden" value="FAMILY_PACKAGE" name="myPack">
-                                <input type="hidden" value="<?php echo e(($famdet) ? $famdet->id : 0); ?>" name="fam_id">
-
-                                <div class="partner-sec">
-                                <?php $XYZ = Session::get('mySpouse'); ?>
-                                    <p style="height: 13px"><span class="header"> Partner/Spouse</span>
-                                        Yes
-                                        <label class="switch">
-                                            <input type="radio" id="mySpouse" name="spouse" <?php if($XYZ == 'yes' ): ?> checked="checked" <?php endif; ?>  onclick="handleClick(this);" value="yes">
-                                            <span class="slider round"></span>
-                                        </label>
-                                        
-                                        No<label class="switch">
-                                            <input type="radio" id="mySpouse" name="spouse" <?php if($XYZ == 'no' || $XYZ == null): ?> checked="checked" <?php endif; ?> onclick="handleClick(this);" value="no">
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </p>
-
-                                    <p>Is your spouse/partner accompanying you?</p>
-                                </div>
-
-                                <?php $ABC = Session::get('myKids'); ?>
-
-                                <div class="children-sec">
-                                    <p style="height: 13px">
-                                        <span class="header"> Children</span>
-                                        <ul class="children">
-                                            
-                                            <li>
-                                                <input type="radio" id="one" name="children" <?php if($ABC == 1 || $ABC==null ): ?> checked="checked" <?php endif; ?> onclick="handleKids(this);" value="1"/>
-                                                <label for="one">One</label>
-                                            </li>
-                                            <li>
-                                                <input type="radio" id="two" name="children" <?php if($ABC == 2 ): ?> checked="checked" <?php endif; ?> onclick="handleKids(this);" value="2" />
-                                                <label for="two">Two</label>
-                                            </li>
-                                            <li>
-                                                <input type="radio" id="three" name="children" <?php if($ABC == 3 ): ?> checked="checked" <?php endif; ?> onclick="handleKids(this);" value="3" />
-                                                <label for="three">Three</label>
-                                            </li>
-                                            <li>
-                                                <input type="radio" id="four" name="children" <?php if($ABC == 4 ): ?> checked="checked" <?php endif; ?> onclick="handleKids(this);" value="4" />
-                                                <label for="four">Four</label>
-                                            </li>
-                                            
+                                <div>
+                                    <div class="row" style="padding:0 5%">
+                                        <?php if(isset($famdet)): ?> 
+                                            <?php 
+                                                $famdet_cost_old = $famdet['first_payment_sub_total']*1.2995; 
+                                                $famdet_save= $famdet_cost_old - $famdet['first_payment_sub_total'];
+                                            ?>
+                                        <?php endif; ?>
+                                        <div class="col-5" align="right"><b>PROMO PRICE</b> <br> <b><span style="font-size:12px">AED</span> <span style="font-size:18px"><?php echo e(number_format($famdet['first_payment_sub_total'],0)); ?></span></b></div>
+                                        <div class="col-2" align="center" style="padding:0 5px; border-left: 2px solid rgb(57, 127, 184); height: 52px;transform: translateX(50%);"><b></b></div>
+                                        <div class="col-5" align="left"><b>REGULAR PRICE</b> <br> <span style="font-size:12px">AED</span> <span style="font-size:18px"><del><?php echo e(number_format($famdet_cost_old,0)); ?></del></span></div>
+                                    </div>
+                                    <div class="row" style="padding:0 5%; margin:3px 0 10px 0">
+                                        <div class="col-5" style="background: #000; border-radius:30px 0 0 30px;color:#fff; font-size:10px;font-weight:600; padding-block: 5px">SAVE AED <?php echo e($famdet_save); ?></div>
+                                        <div class="col-7" style="background: #FACB08; border-radius:0 30px 30px 0;color:#000; font-size:10px; font-weight:600; padding-block: 5px">SALES ENDS 7 DAYS</div>
+                                    </div>
+                                    <div class="row" style="border-block: 1px solid #000;padding:5px; margin:15px">
+                                        <div class="col"><b>FAMILY PACKAGE</b></div>
+                                    </div>
+                                    <div class="fampackage">
+                                        <ul>
+                                            <li><div style="text-align: left;margin-left: 35px">Access to Free Education</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Family benefits</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Low cost of living</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Legal employment</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Health insurance</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Respect of your rights</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Free airport transfer</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">No company ban</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Salary on time</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Right to family reunification</div></li>
                                         </ul>
-                                    </p>
-                                </div>
-
-                                <div class="form-group row" style="margin-top: 140px"> 
-                                    <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-12">
-                                        <button type="submit" class="btn btn-primary" style="width: 100%;font-size: 24px;">Continue</button>
+                                        <div style="text-align: left;margin-block:15px; margin-left: 35px"><i class="fa fa-star" style="color:#E10930;font-size: 25px;"></i><b style="font-size: 18px;margin-left: 15px;">BONUS:</b> Salary deduction on the last payment of selected package.</div>
+                                    </div>
+                                    <div>
+                                        <button type="submit" class="btn btn-primary" style="width: 100%;font-size: 24px;background: #E10930">APPLY NOW</button>
                                     </div>
                                 </div>
-                            </form>
-
+                              
+                            </div>
                         </div>
                     </div>
-                </div>
+                    <?php endif; ?>
+               
+                    </div>
+                                
+                    <!-- Individual Modal -->
+                    <div class="modal fade" id="individualModal" tabindex="-1" aria-labelledby="individualModalLabel" aria-hidden="true">
+                        <div class="modal-dialog row">
+                            <div class="modal-content col-4" style="border-radius: 15px">
+                                <div class="modal-headerx" align="center">
+                                    <div><img src="<?php echo e(asset('user/images/individual_icon.png')); ?>" width="30%" style="margin-top:25px;margin-bottom:5px" alt="PWG Group"></div>
+                                    <h5 class="modal-title" id="individualModalLabel">INDIVIDUAL PACKAGE</h5>
+                                    
+                                </div>
+                                <div class="modal-body" style="height:auto">
+                                    
+                                    <div class="row" style="padding:5px 5%; margin:3px 0 10px 0">
+                                        <div class="col-5" style="background: #000; border-radius:30px 0 0 30px;color:#fff; font-size:10px;font-weight:600; padding-block: 5px">SAVE AED <?php echo e($blue_save); ?></div>
+                                        <div class="col-7" style="background: #FACB08; border-radius:0 30px 30px 0;color:#000; font-size:10px; font-weight:600; padding-block: 5px">WHEN YOU PAY IN FULL</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12" style="border-top:0px solid rgb(57, 127, 184)"></div>
+                                    </div>
+                                    <div class="row" style="padding:10px 5%">
+                                        
+                                        <?php $blue_cost_old = $blue_cost*1.2995; $blue_save= $blue_cost_old - $blue_cost;?>
+                                        <div class="col-5" align="right"><span style="font-size:10px;;color:#000"><b>PROMO PRICE</b></span> <br> <b><span style="font-size:12px">AED</span> <span style="font-size:22px;color:#000"><?php echo e(number_format($blue_cost,0)); ?></span></b></div>
+                                        <div class="col-1" align="center" style="padding:0 3px; border-left: 0px solid rgb(57, 127, 184); height: 52px;transform: translateX(50%);"><b></b></div>
+                                        <div class="col-6" align="right" style="padding-right:15%"><span style="font-size:10px;color:#000"><b>REGULAR PRICE</b></span> <br> <span style="font-size:12px;color:#E10930">AED</span> <span style="font-size:22px;color:#E10930"><del><?php echo e(number_format($blue_cost_old,0)); ?></del></span></div>
+                                    </div>
+                                    <?php if(Route::has('login')): ?>
+                                        <?php if(auth()->guard()->check()): ?>
+                                        <form action="<?php echo e(url('contract', $data->id)); ?>" method="GET">
+                                    <?php else: ?>
+                                        <form action="<?php echo e(url('register')); ?>">
+                                            <?php Session::put('prod_id', $data->id); ?>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                            
+                                    <?php echo csrf_field(); ?>
+                                    <input type="hidden" name="cost" value="<?php echo e($blue_cost); ?>">
+                                    <input type="hidden" name="blue_id" value="<?php echo e($prdet->id); ?>">
+                                
+                                    <input type="hidden" value="BLUE_COLLAR" name="myPack">
+                                    <div class="form-groupx row" style=" margin:0 auto;"> 
+                                        <div class="col-lg-12 col-md-12 col-sm-12" style="display:inline-block;">
+                                            <button class="btn btn-secondary se2" id="buy" value="1" name="payall"  style="width:80%;border-radius:5px; margin-block:3px; border: 0px solid #fff; background:#FACB08">FULL PAYMENT</button>
+                                            <?php
+                                            if($data->full_payment_discount > 0) {
+                                            ?>
+                                            
+                                            <?php
+                                            }
+                                            ?>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12" style="display:inline-block;">
+                                            <button class="btn btn-secondary" id="buy" value="0" name="payall" style="width:80%; border-radius:5px;margin-block:3px">PAY INSTALLMENTS</button>
+                                        </div>
+
+                                            <p align="center" style="font-size: 11px">
+                                                <i>By continuing, you have accepted our <a target="_blank" href="<?php echo e(route('terms')); ?>"  style="color:#000;margin:0;font-size: 15px"><u>Terms & Conditions</u></a></i>
+                                            </p>
+                                    </div>
+                                </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Individual Modal Ends -->
+                    <?php if($famdet): ?>
+                    <!-- Family Modal -->
+                    <div class="modal fade" id="familyModal" tabindex="-1" aria-labelledby="familyModalLabel" aria-hidden="true">
+                        <div class="modal-dialog row">
+                            <div class="modal-content col-4" style="border-radius: 15px">
+                                <div class="modal-headerx" align="center">
+                                    <div><img src="<?php echo e(asset('user/images/family_icon.png')); ?>" width="30%" style="margin-top:25px;margin-bottom:5px" alt="PWG Group"></div>
+                                    <h5 class="modal-title" id="familyModalLabel">FAMILY PACKAGE</h5>
+                                    
+                                </div>
+                                <div class="modal-body" style="height:auto">
+                                    <p style="font-size: 18px">Dependants Details</p>
+                                    <p style="font-size: 12px;margin-top:-10px">Please add details about your Dependants</p>
+                                    <?php if(Route::has('login')): ?>
+                                    <?php if(auth()->guard()->check()): ?>
+                                    <form action="<?php echo e(url('contract', $data->id)); ?>" method="GET">
+                                    <?php else: ?>
+                                    <form action="<?php echo e(url('register')); ?>">
+                                        <?php Session::put('prod_id', $data->id); ?>
+                                    <?php endif; ?>
+                                    <?php endif; ?>
+
+                                    <input type="hidden" value="<?php echo e($data->id); ?>">
+                                    <?php echo csrf_field(); ?>
+
+                                    <input type="hidden" name="productId" value="<?php echo e($productId); ?>">
+                                    <input type="hidden" class="hiddenFamAmount" name="cost" value="<?php echo e(($famdet) ?  number_format($famdet['first_payment_sub_total']) : 0); ?>">
+                                    <input type="hidden" value="FAMILY_PACKAGE" name="myPack">
+                                    <input type="hidden" value="<?php echo e(($famdet) ? $famdet->id : 0); ?>" name="fam_id">
+
+                                    <div class="partner-sec">
+                                        <?php $XYZ = Session::get('mySpouse'); ?>
+                                        <p style="font-size: 12px">Is your spouse/partner accompanying you?</p>
+                                        <p style="height: 13px; padding: 15px 30px;font-size: 12px;margin-top:-25px; margin-bottom:25px">
+                                            Yes
+                                            <label class="switch">
+                                                <input type="radio" id="mySpouse" name="spouse" <?php if($XYZ == 'yes' ): ?> checked="checked" <?php endif; ?>  onclick="handleClick(this);" value="yes">
+                                                <span class="slider round"></span>
+                                            </label>
+                                            
+                                            No
+                                            <label class="switch">
+                                                <input type="radio" id="mySpouse" name="spouse" <?php if($XYZ == 'no' || $XYZ == null): ?> checked="checked" <?php endif; ?> onclick="handleClick(this);" value="no">
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </p>
+                                    </div>
+
+                                    <?php $ABC = Session::get('myKids'); ?>
+
+                                    <div class="children-sec">
+                                        <p style="height: 13px">
+                                            <p style="font-size: 12px;margin-bottom:-15px;margin-top:-10px">How many children will be accompanying you?</p>
+                                            <div class=" row children">
+                                                <div class="col-2">
+                                                    <input type="radio" id="none" name="children" <?php if($ABC == 0 || $ABC==null ): ?> checked="checked" <?php endif; ?>  onclick="handleKids(this);" value="0"/>
+                                                    <label for="none">None</label>
+                                                </div>
+                                                <div class="col-2">
+                                                    <input type="radio" id="one" name="children" <?php if($ABC == 1 || $ABC==null ): ?> checked="checked" <?php endif; ?> onclick="handleKids(this);" value="1"/>
+                                                    <label for="one">One</label>
+                                                </div>
+                                                <div class="col-2">
+                                                    <input type="radio" id="two" name="children" <?php if($ABC == 2 ): ?> checked="checked" <?php endif; ?> onclick="handleKids(this);" value="2" />
+                                                    <label for="two">Two</label>
+                                                </div>
+                                                <div class="col-2">
+                                                    <input type="radio" id="three" name="children" <?php if($ABC == 3 ): ?> checked="checked" <?php endif; ?> onclick="handleKids(this);" value="3" />
+                                                    <label for="three">Three</label>
+                                                </div>
+                                                <div class="col-2">
+                                                    <input type="radio" id="four" name="children" <?php if($ABC == 4 ): ?> checked="checked" <?php endif; ?> onclick="handleKids(this);" value="4" />
+                                                    <label for="four">Four</label>
+                                                </div>
+                                            </div>
+                                        </p>
+                                    </div>
+
+                                    <div class="row" style="padding:15px 5%; margin:3px 0 10px 0">
+                                        <div class="col-5" style="background: #000; border-radius:30px 0 0 30px;color:#fff; font-size:10px;font-weight:600; padding-block: 5px;">SAVE AED <span class="Famamount_save"><?php echo e($famdet_save); ?></span></div>
+                                        <div class="col-7" style="background: #FACB08; border-radius:0 30px 30px 0;color:#000; font-size:10px; font-weight:600; padding-block: 5px;">WHEN YOU PAY IN FULL</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12" style="border-top:0px solid rgb(57, 127, 184)"></div>
+                                    </div>
+                                    <div class="row" style="padding:10px 5%">
+                                        
+                                        <?php $blue_cost_old = $blue_cost*1.2995; $blue_save= $blue_cost_old - $blue_cost;?>
+                                        <div class="col-5" align="right"><span style="font-size:10px;;color:#000"><b>PROMO PRICE</b></span> <br> <b><span style="font-size:12px">AED</span> <span style="font-size:22px;color:#000" class="Famamount"><?php echo e(number_format($famdet['first_payment_sub_total'],0)); ?></span></b></div>
+                                        <div class="col-1" align="center" style="padding:0 3px; border-left: 0px solid rgb(57, 127, 184); height: 52px;transform: translateX(50%);"><b></b></div>
+                                        <div class="col-6" align="right" style="padding-right:15%"><span style="font-size:10px;color:#000"><b>REGULAR PRICE</b></span> <br> <span style="font-size:12px;color:#E10930">AED</span> <del style="font-size:22px;color:#E10930"><span style="font-size:22px;color:#E10930" class="Famamount_old"><?php echo e(number_format($famdet_cost_old,0)); ?></span></del></div>
+                                    </div>
+
+                                    <div class="form-groupx row" style=" margin:0 auto;"> 
+                                        <div class="col-lg-12 col-md-12 col-sm-12" style="display:inline-block;">
+                                            <button class="btn btn-secondary se2" id="buy" value="1" name="payall"  style="width:80%;border-radius:5px; margin-block:3px; border: 0px solid #fff; background:#FACB08">FULL PAYMENT</button>
+                                            <?php
+                                            if($data->full_payment_discount > 0) {
+                                            ?>
+                                            
+                                            <?php
+                                            }
+                                            ?>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12" style="display:inline-block;">
+                                            <button class="btn btn-secondary" id="buy" value="0" name="payall" style="width:80%; border-radius:5px;margin-block:3px">PAY INSTALLMENTS</button>
+                                        </div>
+
+                                            <p align="center" style="font-size: 11px">
+                                                <i>By continuing, you have accepted our <a target="_blank" href="<?php echo e(route('terms')); ?>"  style="color:#000;margin:0;font-size: 15px"><u>Terms & Conditions</u></a></i>
+                                            </p>
+                                    </div>
+                                </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Family Modal Ends -->
+                    <?php endif; ?>
             </div>
         </div>
 
     </div>
+
+
 
 <?php $__env->stopSection(); ?>
 <?php $__env->startPush('custom-scripts'); ?>
@@ -498,8 +600,12 @@ function getCost(kidd, parents)
         url: "<?php echo e(route('packageType',$productId)); ?>",
         data: {kid : kidd, parents: parents , response : 1}, 
         success: function (data) {
-            $('.Famamount').text(parseFloat(data.sub_total).toLocaleString());
-            $('.hiddenFamAmount').val(data.sub_total);
+            let vallu = (data.first_payment_sub_total*1.2995)-(data.first_payment_sub_total);
+            
+            $('.Famamount').text(parseFloat(data.first_payment_sub_total).toLocaleString());
+            $('.Famamount_old').text(parseFloat(data.first_payment_sub_total*1.2995).toLocaleString());
+            $('.Famamount_save').text(parseFloat(vallu).toLocaleString());
+            $('.hiddenFamAmount').val(data.first_payment_sub_total);
         },
         errror: function (error) {
         }
