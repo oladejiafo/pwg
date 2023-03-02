@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Helpers\users as UserHelper;
 use App\Models\product;
 use App\Models\Quickbook as QuickModel;
-use App\Models\payment as PaymentDetails;
+use App\payment as PaymentDetails;
 use App\Constant;
 use Carbon\Carbon;
 use Session;
@@ -785,7 +785,7 @@ class Quickbook
                     "value" => ($customer->Id) ??  $customer[0]->Id
                 ],
                 "CustomerMemo" => [
-                    "value" => ($paidAmount > ($unitPrice + $tax)) ? $paymentDetails->bank_reference_no . "<br> Paid additional amount" . ($paidAmount - $unitPrice + $tax) : $paymentDetails->bank_reference_no,
+                    "value" => ($paidAmount > ($unitPrice + $tax)) ? $paymentDetails->bank_reference_no . "<br> Paid additional amount" . ($paidAmount - ($unitPrice + $tax)) : $paymentDetails->bank_reference_no,
                 ],
                 "PrivateNote" => $paymentDetails->bank_reference_no,
                 "BillEmail" => [
@@ -1630,7 +1630,7 @@ class Quickbook
                     "value" => ($customer->Id) ??  $customer[0]->Id
                 ],
                 "CustomerMemo" => [
-                    "value" => ($paidAmount > ($unitPrice + $tax)) ? $paymentDetails->bank_reference_no . "<br> Paid additional amount" . ($paidAmount - $unitPrice + $tax) : $paymentDetails->bank_reference_no,
+                    "value" => ($paidAmount > ($unitPrice + $tax)) ? $paymentDetails->bank_reference_no . "<br> Paid additional amount" . ($paidAmount - ($unitPrice + $tax)) : $paymentDetails->bank_reference_no,
                 ],
                 "TxnDate" => $paymentDetails->payment_date,
                 "DueDate" => $paymentDetails->payment_date,

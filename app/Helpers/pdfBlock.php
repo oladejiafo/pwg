@@ -494,9 +494,9 @@ class pdfBlock
         // if ($paymentType == 'FIRST') {
             $theString = $pdf->Output('S');
             if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
-                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_1st_signature, env('MEDIA_DISK'));
+                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Application::$media_collection_main_1st_signature, env('MEDIA_DISK'));
             } else {
-                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_1st_signature, 'local');
+                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Application::$media_collection_main_1st_signature, 'local');
             }
             $applicant->contract_1st_signature_status = 'SIGNED';
             $applicant->contract_1st_signature_at = Carbon::now();
@@ -504,9 +504,9 @@ class pdfBlock
         // if ($paymentType == 'SUBMISSION') {
         //     $theString = $pdf->Output('S');
         //     if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
-        //         $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_submission_signature, env('MEDIA_DISK'));
+        //         $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Application::$media_collection_main_submission_signature, env('MEDIA_DISK'));
         //     } else {
-        //         $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_submission_signature, 'local');
+        //         $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Application::$media_collection_main_submission_signature, 'local');
         //     }
         //     $applicant->contract_submission_signature_status = 'SIGNED';
         //     $applicant->contract_submission_signature_at = Carbon::now();
@@ -515,9 +515,9 @@ class pdfBlock
         // if ($paymentType == 'SECOND') {
         //     $theString = $pdf->Output('S');
         //     if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
-        //         $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_2nd_signature, env('MEDIA_DISK'));
+        //         $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Application::$media_collection_main_2nd_signature, env('MEDIA_DISK'));
         //     } else {
-        //         $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_2nd_signature, 'local');
+        //         $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Application::$media_collection_main_2nd_signature, 'local');
         //     }
         //     $applicant->contract_2nd_signature_status = 'SIGNED';
         //     $applicant->contract_2nd_signature_at = Carbon::now();
@@ -526,14 +526,14 @@ class pdfBlock
         // if ($paymentType == 'Full-Outstanding Payment') {
         //     $theString = $pdf->Output('S');
         //     if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
-        //         $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_1st_signature, env('MEDIA_DISK'));
-        //         $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_submission_signature, env('MEDIA_DISK'));
-        //         $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_2nd_signature, env('MEDIA_DISK'));
+        //         $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Application::$media_collection_main_1st_signature, env('MEDIA_DISK'));
+        //         $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Application::$media_collection_main_submission_signature, env('MEDIA_DISK'));
+        //         $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Application::$media_collection_main_2nd_signature, env('MEDIA_DISK'));
         //     } else {
 
-        //         $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_1st_signature, 'local');
-        //         $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_submission_signature, 'local');
-        //         $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_2nd_signature, 'local');
+        //         $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Application::$media_collection_main_1st_signature, 'local');
+        //         $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Application::$media_collection_main_submission_signature, 'local');
+        //         $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Application::$media_collection_main_2nd_signature, 'local');
         //     }
         //     $applicant->contract_1st_signature_status = 'SIGNED';
         //     $applicant->contract_submission_signature_status = 'SIGNED';
@@ -591,7 +591,7 @@ class pdfBlock
         $fileName = 'offer_letter_template_'.$client->id.'_'.$client->sur_name.'.pdf';
         $theString = $pdf->Output('S');
         $Applicants = Application::find($applicant);
-        $Applicants->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Applicant::$media_collection_main_job_offer_letter, env('MEDIA_DISK'));
+        $Applicants->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Application::$media_collection_main_job_offer_letter, env('MEDIA_DISK'));
     }
 
     public static function mapMoreInfo($complete)
