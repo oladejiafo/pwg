@@ -46,22 +46,30 @@ class HomeController extends Controller
     public function redirect()
     {
         if (Auth::id()) {
+
             $client = User::find(Auth::id());
-            if (session('prod_id')) {
+            
+            $complete = DB::table('applications')
+            ->where('client_id', '=', Auth::user()->id)
+            ->orderBy('id', 'desc')
+            ->first();
+
+            if (Session::has('prod_id')) {
                 $id = Session::get('prod_id');
 
                 $data = product::find($id);
 
                 $promo = promo::where('employee_id', '=', $id)->where('active_until', '>=', date('Y-m-d'))->get();
                 $ppay = product_payments::where('destination_id', '=', $id)->where('pricing_plan_type', '=', Session::get('packageType'))->where('status', 'CURRENT')->first();
-                // $proddet = product_details::where('product_id', '=', $id)->get();
-
-                // $payall = Session::put('payall', 0);
+              
                 session()->forget('prod_id');
-                // return view('user.contract', compact('id'));
-                return view('user.package-type', compact('data', 'ppay', 'promo'));
-                //   return \Redirect::route('product', $idd);
+               
+                // return view('user.package-type', compact('data', 'ppay', 'id'));
+               
+                return \Redirect::route('packageType', $id);
 
+            } elseif(isset($complete) && $complete->destination_id > 0 && $complete->destination_id != null) {
+                return \Redirect::route('myapplication');
             } else {
                 $started = DB::table('applications')
                     ->select('pricing_plan_id', 'destination_id', 'client_id', 'first_payment_status', 'status')
@@ -197,7 +205,7 @@ class HomeController extends Controller
                 ->orderBy('sub_total', 'asc')
                 ->first();
         }
-// dd($famdet);
+
         $proddet = family_breakdown::where('destination_id', '=', $productId)->where('pricing_plan_type', 'BLUE_COLLAR')->where('status', 'CURRENT')->get();
         $whiteJobs = family_breakdown::where('destination_id', '=', $productId)->where('pricing_plan_type', 'WHITE_COLLAR')->where('status', 'CURRENT')->get();
         $canadaOthers = family_breakdown::where('destination_id', '=', $productId)->whereIn('pricing_plan_type', array('EXPRESS_ENTRY', 'STUDY_PERMIT'))->where('status', 'CURRENT')->get();
@@ -257,83 +265,6 @@ class HomeController extends Controller
 
     public function signature(Request $request, $id)
     {
-        /* Old Codes
-        try {
-            if (Auth::id()) {
-                // Session::put('myproduct_id', $id);
-                Session::put('mypay_option', $request->payall);
-                $pid  = Session::get('myproduct_id');
-                $data = product::find($id);
-                $datas = Applicant::where('client_id', Auth::id())
-                    ->where('destination_id', $pid)
-                    ->where('work_permit_category', (Session::get('packageType')) ?? 'BLUE_COLLAR')
-                    ->first();
-                if (Session::has('myproduct_id')) {
-                    $pid  = Session::get('myproduct_id');
-                } else {
-                    $pid = 1;
-                }
-                $appliedCountry = Product::find($pid);
-                $pdet = null;
-                if(Session::get('packageType') =="FAMILY_PACKAGE")
-                    {
-                        if (Session::get('mySpouse') == "yes") {
-                            $mySpouse = 2;
-                        } else {
-                            $mySpouse = 1;
-                        }
-            
-                        if (Session::get('myKids') == 0 || Session::get('myKids') == "none" || Session::get('myKids') == 5 || Session::get('myKids') == null) {
-            
-                            $children = 1;
-                        } else {
-                            $children = Session::get('myKids');
-                        }
-                        $pdet = DB::table('pricing_plans')
-                        ->where('destination_id', '=', Session::get('myproduct_id'))
-                        ->where('pricing_plan_type', '=', Session::get('packageType'))
-                        ->where('no_of_parent', '=', $mySpouse)
-                        ->where('no_of_children', '=', $children)
-                                                    ->where('status', 'CURRENT')
-                        ->first();
-                } else {
-                    $pdet = DB::table('pricing_plans')
-                        ->where('destination_id', '=', Session::get('myproduct_id'))
-                        ->where('pricing_plan_type', '=', Session::get('packageType'))
-                                                    ->where('status', 'CURRENT')
-                        ->first();
-                }
-                if ($datas === null) {
-                    $data = new applicant();
-                    $data->client_id = Auth::id();
-                    $data->destination_id = $pid;
-                    $data->work_permit_category = (Session::get('packageType')) ?? 'BLUE_COLLAR';
-                    $data->application_stage_status = 1;
-                    $data->applied_country = $appliedCountry->name;
-                    $data->pricing_plan_id = $pdet->id;
-                    $data->contract = $request->contract;
-    
-                    $res = $data->save();
-                } else {
-                    $datas->work_permit_category =  (Session::get('packageType')) ?? 'BLUE_COLLAR';
-                    $datas->application_stage_status = 1;
-                    $datas->destination_id = $pid;
-                    $datas->applied_country = $appliedCountry->name;
-                    $datas->contract = $request->contract;
-                    $datas->pricing_plan_id = $pdet->id;
-                    $res = $datas->save();
-                }
-                return view('user.signature', compact('data'));
-            } else {
-                // return redirect()->back()->with('message', 'You are not authorized');
-                return redirect('home');
-            }
-        } catch (Exception $e) {
-            return redirect('home')->with('info', $e->getMessage());
-        }
-
-        */
-
         if (Auth::id()) {
             Session::put('mypay_option', $request->payall);
             $data = product::find($id);

@@ -3,41 +3,212 @@
 <link href="{{asset('user/css/products.css')}}" rel="stylesheet">
 
 <style>
-  .selected path {
-    fill: #000;
-  }
+    .package-type ul {
+      list-style: none;
+    }
+    
+    .package-type ul li {
+       font-size: 14px;
+       /* align-items: left; */
+       position: relative;
+
+    }
+   
+    .package-type ul li::marker {
+      content: "";
+      display: inline-block; 
+    }
+    .package-type .indpackage ul li::before {
+        position: absolute;
+        content: "✓";
+        display: block;
+        width: 25px;
+        height: 25px;
+        top: 5px;
+        left: 5px;
+        background: #FACB08;
+        margin-bottom: 0 !important;
+        font-weight: bold;
+        color: #000;
+    }
+
+    .package-type .fampackage ul li::before {
+        position: absolute;
+        content: "✓";
+        display: block;
+        width: 25px;
+        height: 25px;
+        top: 5px;
+        left: 5px;
+        background: #E10930;
+        margin-bottom: 0 !important;
+        font-weight: bold;
+        color: #000;
+    }
+    
+    .selected path {
+        fill: #000;
+    }
+
+    .package-type .price
+    {
+        padding:0 5%;
+    }
+    .package-type .saved {
+        padding:0 5%; 
+        margin:3px 0 10px 0;
+    }
+   
+    @media (max-width: 1100px)
+    {
+        .package-type .price
+        {
+            padding:0;
+        }   
+        .package-type .promo {
+            padding: 0px
+        }
+        .package-type .line {
+            padding: 0px
+        }
+        .package-type .regular {
+            padding: 0px
+        }
+        .package-type .saved {
+            padding:0; 
+            margin:3px 0 10px 0;
+        }
+    }
 
 
-@media (max-width:800px)
-{
-    .package {
-        padding: 20px 5% !important;
+    @media (max-width:800px)
+    {
+        .package {
+            padding: 20px 5% !important;
+        }
+        h3 {
+            font-size: 25px !important;
+            text-align: center !important;
+        }
+        p {
+            text-align: center;
+            font-size: 20px;
+        }
+        .package-type{
+            margin: 0px 0px 50px 0px;
+            /* width: 100%; */
+            padding: 0px !important;
+            /* height: 350px; */
+        }
+        .package-type img {
+        width:100px; 
+        /* height:120px; */
+        }
     }
-    h3 {
-        font-size: 25px !important;
-        text-align: center !important;
+    @media (max-width: 600px)
+    {
+        .package-type .line {
+            width: 2%;
+        }
+        .package-type .promo {
+            width: 47%;
+        }
+        .package-type .regular {
+            width: 47%;
+        }                            
     }
-    p {
-        text-align: center;
-        font-size: 20px;
+
+    @media (max-width:360px) {
+        .fampackage ul,
+        .indpackage ul {
+            padding: 0px;
+        }
+        .fampackage .bonus,
+        .indpackage .bonus {
+            padding: 0px;
+            margin-left: 0px !important;
+        }
+
+        .package-type .saved .col-5,
+        .package-type .saved .col-7 {
+            font-size: 12px !important;            
+        }
+        .package {
+            padding: 20px 0% !important;
+            width: 100% !important;
+        }
+
+        .package .switch {
+            width: 60px !important;
+        }
+        .children label {
+            width: 40px !important;
+        }
+
+        #familymodal .price {
+            padding: 10px 0px !important
+        }
+
+        #familymodal .separator {
+            width: 1%;
+        }
+        #familymodal .promos {
+            width: 47%;
+        }
+        #familymodal .actual {
+            width: 47%;
+            padding-right: 0px !important;
+        }    
     }
-    .package-type{
-        margin: 20px;
-        /* width: 100%; */
-        padding: 0px !important;
-        /* height: 350px; */
+
+    @media (max-width:280px) {
+        .fampackage ul,
+        .indpackage ul {
+            padding: 0px;
+        }
+        .fampackage .bonus,
+        .indpackage .bonus {
+            padding: 0px;
+            margin-left: 0px !important;
+        }
+
+        .package-type .saved .col-5,
+        .package-type .saved .col-7 {
+            font-size: 12px !important;            
+        }
+        .package {
+            padding: 20px 0% !important;
+            width: 100% !important;
+        }
+        .package-type .price {
+            font-size: 12px !important;
+        }
+        .package .header h2 {
+            font-size: 35px;
+        }
+        .package .header p{
+            font-size: 15px !important;
+        }
+        .package-type {
+            height: 800px !important;
+            max-height: 800px !important;
+            margin-bottom: 50px !important;
+        }
+        .btn.btn-secondary {
+            width: 90% !important;
+            font-size: 10px !important;
+        }
+        .familymodal .saved {
+            padding: 0px !important; 
+        }
     }
-    .package-type img {
-    width:100px; 
-    /* height:120px; */
- }
-}
+
 </style>
 
 
 @section('content')
 
-@if($canadaOthers->first())
+{{-- @if($canadaOthers->first())
 
 @php 
 $cSamount=0;
@@ -61,7 +232,7 @@ $cXamount=0;
 
 @endforeach
 
-@endif
+@endif --}}
 
     <div class="container" style="margin-top: 100px;">
         <div class="col-12">
@@ -93,64 +264,20 @@ $cXamount=0;
                             $blue_cost = 0
                             @endphp
                         @endif
-                        <style>
-                            .package-type ul {
-                              list-style: none;
-                            }
-                            
-                           .package-type ul li {
-                               font-size: 14px;
-                               /* align-items: left; */
-                               position: relative;
-                        
-                            }
-                           
-                            .package-type ul li::marker {
-                              content: "";
-                              display: inline-block; 
-                            }
-                            .package-type .indpackage ul li::before {
-                                position: absolute;
-                                content: "✓";
-                                display: block;
-                                width: 25px;
-                                height: 25px;
-                                top: 5px;
-                                left: 5px;
-                                background: #FACB08;
-                                margin-bottom: 0 !important;
-                                font-weight: bold;
-                                color: #000;
-                            }
-
-                            .package-type .fampackage ul li::before {
-                                position: absolute;
-                                content: "✓";
-                                display: block;
-                                width: 25px;
-                                height: 25px;
-                                top: 5px;
-                                left: 5px;
-                                background: #E10930;
-                                margin-bottom: 0 !important;
-                                font-weight: bold;
-                                color: #000;
-                            }
-                            
-                            </style>
-                    <div class="col-sm-10 col-md-5 col-lg-5" style="display:inline-block;">
+                       
+                    <div class="col-sm-10 col-md-6 col-lg-5" style="display:inline-block;">
                         <img src="{{asset('user/images/individual.png')}}" width="100%" alt="PWG Group">
                         <div class="package-type blue-collar" data-bs-toggle="modal" data-bs-target="#individualModal">
                             <div class="content">
                                 <div>
-                                    <div class="row" style="padding:0 5%">
+                                    <div class="row price">
                                         @php $blue_cost_old = $blue_cost*1.2995; $blue_save= $blue_cost_old - $blue_cost;@endphp
-                                        <div class="col-5" align="right"><b>PROMO PRICE</b> <br> <b><span style="font-size:12px">AED</span> <span style="font-size:18px">{{number_format($blue_cost,0)}}</span></b></div>
-                                        <div class="col-2" align="center" style="padding:0 5px; border-left: 2px solid rgb(57, 127, 184); height: 52px;transform: translateX(50%);"><b></b></div>
-                                        <div class="col-5" align="left"><b>REGULAR PRICE</b> <br> <span style="font-size:12px">AED</span> <span style="font-size:18px"><del>{{number_format($blue_cost_old,0)}}</del></span></div>
+                                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 promo" align="right"><b>PROMO PRICE</b> <br> <b><span style="font-size:12px">AED</span> <span style="font-size:18px">{{number_format($blue_cost,0)}}</span></b></div>
+                                        <div class="col-lg-2 col-md-2 col-sm-1 col-xs-1 line" align="center" style="padding:0 5px; border-left: 2px solid rgb(57, 127, 184); height: 52px;transform: translateX(50%);"><b></b></div>
+                                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 regular" align="left"><b>REGULAR PRICE</b> <br> <span style="font-size:12px">AED</span> <span style="font-size:18px"><del>{{number_format($blue_cost_old,0)}}</del></span></div>
                                     </div>
-                                    <div class="row" style="padding:0 5%; margin:3px 0 10px 0">
-                                        <div class="col-5" style="background: #000; border-radius:30px 0 0 30px;color:#fff; font-size:10px;font-weight:600; padding-block: 5px">SAVE AED {{$blue_save}}</div>
+                                    <div class="row saved">
+                                        <div class="col-5" style="background: #000; border-radius:30px 0 0 30px;color:#fff; font-size:10px;font-weight:600; padding-block: 5px">SAVE AED {{number_format($blue_save,0)}}</div>
                                         <div class="col-7" style="background: #FACB08; border-radius:0 30px 30px 0;color:#000; font-size:10px; font-weight:600; padding-block: 5px">SALES ENDS 7 DAYS</div>
                                     </div>
                                     <div class="row" style="border-block: 1px solid #000;padding:5px; margin:15px">
@@ -169,7 +296,7 @@ $cXamount=0;
                                             <li><div style="text-align: left;margin-left: 35px">Salary on time</div></li>
                                             <li><div style="text-align: left;margin-left: 35px">Free regeneration meal</div></li>
                                         </ul>
-                                        <div style="text-align: left;margin-block:15px; margin-left: 35px"><i class="fa fa-star" style="color:#FACB08;font-size: 25px;"></i><b style="font-size: 18px;margin-left: 15px;">BONUS:</b> Salary deduction on the last payment of selected package.</div>
+                                        <div class="bonus" style="text-align: left;margin-block:15px; margin-left: 35px"><i class="fa fa-star" style="color:#FACB08;font-size: 25px;"></i><b style="font-size: 18px;margin-left: 15px;">BONUS:</b> Salary deduction on the last payment of selected package.</div>
                                     </div>
                                     <div>
                                         <button type="submit" class="btn btn-primary" style="width: 100%;font-size: 24px;background: #FACB08">APPLY NOW</button>
@@ -182,25 +309,25 @@ $cXamount=0;
                     
                     @if($famdet)
 
-                    <div class="col-sm-10 col-md-5 col-lg-5" style="display:inline-block;">
+                    <div class="col-sm-10 col-md-6 col-lg-5" style="display:inline-block;">
                         <img src="{{asset('user/images/family.png')}}" width="100%" alt="PWG Group">
                         <div class="package-type family-package" data-bs-toggle="modal" data-bs-target="#familyModal">
 
                             <div class="content">
                                 <div>
-                                    <div class="row" style="padding:0 5%">
+                                    <div class="row price" style="padding:0 5%">
                                         @if(isset($famdet)) 
                                             @php 
                                                 $famdet_cost_old = $famdet['first_payment_sub_total']*1.2995; 
                                                 $famdet_save= $famdet_cost_old - $famdet['first_payment_sub_total'];
                                             @endphp
                                         @endif
-                                        <div class="col-5" align="right"><b>PROMO PRICE</b> <br> <b><span style="font-size:12px">AED</span> <span style="font-size:18px">{{number_format($famdet['first_payment_sub_total'],0)}}</span></b></div>
-                                        <div class="col-2" align="center" style="padding:0 5px; border-left: 2px solid rgb(57, 127, 184); height: 52px;transform: translateX(50%);"><b></b></div>
-                                        <div class="col-5" align="left"><b>REGULAR PRICE</b> <br> <span style="font-size:12px">AED</span> <span style="font-size:18px"><del>{{number_format($famdet_cost_old,0)}}</del></span></div>
+                                        <div class="col-lg-5 col-md-5 col-sm-5 promo" align="right"><b>PROMO PRICE</b> <br> <b><span style="font-size:12px">AED</span> <span style="font-size:18px">{{number_format($famdet['first_payment_sub_total'],0)}}</span></b></div>
+                                        <div class="col-lg-2 col-md-2 col-sm-1 line" align="center" style="padding:0 5px; border-left: 2px solid rgb(57, 127, 184); height: 52px;transform: translateX(50%);"><b></b></div>
+                                        <div class="col-lg-5 col-md-5 col-sm-6 regular" align="left"><b>REGULAR PRICE</b> <br> <span style="font-size:12px">AED</span> <span style="font-size:18px"><del>{{number_format($famdet_cost_old,0)}}</del></span></div>
                                     </div>
-                                    <div class="row" style="padding:0 5%; margin:3px 0 10px 0">
-                                        <div class="col-5" style="background: #000; border-radius:30px 0 0 30px;color:#fff; font-size:10px;font-weight:600; padding-block: 5px">SAVE AED {{$famdet_save}}</div>
+                                    <div class="row saved">
+                                        <div class="col-5" style="background: #000; border-radius:30px 0 0 30px;color:#fff; font-size:10px;font-weight:600; padding-block: 5px">SAVE AED {{number_format($famdet_save,0)}}</div>
                                         <div class="col-7" style="background: #FACB08; border-radius:0 30px 30px 0;color:#000; font-size:10px; font-weight:600; padding-block: 5px">SALES ENDS 7 DAYS</div>
                                     </div>
                                     <div class="row" style="border-block: 1px solid #000;padding:5px; margin:15px">
@@ -219,7 +346,7 @@ $cXamount=0;
                                             <li><div style="text-align: left;margin-left: 35px">Salary on time</div></li>
                                             <li><div style="text-align: left;margin-left: 35px">Right to family reunification</div></li>
                                         </ul>
-                                        <div style="text-align: left;margin-block:15px; margin-left: 35px"><i class="fa fa-star" style="color:#E10930;font-size: 25px;"></i><b style="font-size: 18px;margin-left: 15px;">BONUS:</b> Salary deduction on the last payment of selected package.</div>
+                                        <div class="bonus" style="text-align: left;margin-block:15px; margin-left: 35px"><i class="fa fa-star" style="color:#E10930;font-size: 25px;"></i><b style="font-size: 18px;margin-left: 15px;">BONUS:</b> Salary deduction on the last payment of selected package.</div>
                                     </div>
                                     <div>
                                         <button type="submit" class="btn btn-primary" style="width: 100%;font-size: 24px;background: #E10930">APPLY NOW</button>
@@ -245,7 +372,7 @@ $cXamount=0;
                                 <div class="modal-body" style="height:auto">
                                     
                                     <div class="row" style="padding:5px 5%; margin:3px 0 10px 0">
-                                        <div class="col-5" style="background: #000; border-radius:30px 0 0 30px;color:#fff; font-size:10px;font-weight:600; padding-block: 5px">SAVE AED {{$blue_save}}</div>
+                                        <div class="col-5" style="background: #000; border-radius:30px 0 0 30px;color:#fff; font-size:10px;font-weight:600; padding-block: 5px">SAVE AED {{number_format($blue_save,0)}}</div>
                                         <div class="col-7" style="background: #FACB08; border-radius:0 30px 30px 0;color:#000; font-size:10px; font-weight:600; padding-block: 5px">WHEN YOU PAY IN FULL</div>
                                     </div>
                                     <div class="row">
@@ -375,19 +502,19 @@ $cXamount=0;
                                         </p>
                                     </div>
 
-                                    <div class="row" style="padding:15px 5%; margin:3px 0 10px 0">
-                                        <div class="col-5" style="background: #000; border-radius:30px 0 0 30px;color:#fff; font-size:10px;font-weight:600; padding-block: 5px;">SAVE AED <span class="Famamount_save">{{$famdet_save}}</span></div>
+                                    <div class="row saved" style="padding:15px 5%; margin:3px 0 10px 0">
+                                        <div class="col-5" style="background: #000; border-radius:30px 0 0 30px;color:#fff; font-size:10px;font-weight:600; padding-block: 5px;">SAVE AED <span class="Famamount_save">{{number_format($famdet_save,0)}}</span></div>
                                         <div class="col-7" style="background: #FACB08; border-radius:0 30px 30px 0;color:#000; font-size:10px; font-weight:600; padding-block: 5px;">WHEN YOU PAY IN FULL</div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12" style="border-top:0px solid rgb(57, 127, 184)"></div>
                                     </div>
-                                    <div class="row" style="padding:10px 5%">
+                                    <div class="row price" style="padding:10px 5%">
                                         
                                         @php $blue_cost_old = $blue_cost*1.2995; $blue_save= $blue_cost_old - $blue_cost;@endphp
-                                        <div class="col-5" align="right"><span style="font-size:10px;;color:#000"><b>PROMO PRICE</b></span> <br> <b><span style="font-size:12px">AED</span> <span style="font-size:22px;color:#000" class="Famamount">{{number_format($famdet['first_payment_sub_total'],0)}}</span></b></div>
-                                        <div class="col-1" align="center" style="padding:0 3px; border-left: 0px solid rgb(57, 127, 184); height: 52px;transform: translateX(50%);"><b></b></div>
-                                        <div class="col-6" align="right" style="padding-right:15%"><span style="font-size:10px;color:#000"><b>REGULAR PRICE</b></span> <br> <span style="font-size:12px;color:#E10930">AED</span> <del style="font-size:22px;color:#E10930"><span style="font-size:22px;color:#E10930" class="Famamount_old">{{number_format($famdet_cost_old,0)}}</span></del></div>
+                                        <div class="col-5 promos" align="right"><span style="font-size:10px;;color:#000"><b>PROMO PRICE</b></span> <br> <b><span style="font-size:12px">AED</span> <span style="font-size:22px;color:#000" class="Famamount">{{number_format($famdet['first_payment_sub_total'],0)}}</span></b></div>
+                                        <div class="col-1 separator" align="center" style="padding:0 3px; border-left: 0px solid rgb(57, 127, 184); height: 52px;transform: translateX(50%);"><b></b></div>
+                                        <div class="col-6 actual" align="right" style="padding-right:15%"><span style="font-size:10px;color:#000"><b>REGULAR PRICE</b></span> <br> <span style="font-size:12px;color:#E10930">AED</span> <del style="font-size:22px;color:#E10930"><span style="font-size:22px;color:#E10930" class="Famamount_old">{{number_format($famdet_cost_old,0)}}</span></del></div>
                                     </div>
 
                                     <div class="form-groupx row" style=" margin:0 auto;"> 
