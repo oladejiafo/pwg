@@ -387,7 +387,7 @@ $cXamount=0;
                                     </div>
                                     @if(Route::has('login'))
                                         @auth
-                                        <form action="{{ url('contract', $data->id) }}" method="GET">
+                                        <form action="{{ url('payment_form', $data->id) }}" method="GET">
                                     @else
                                         <form action="{{ url('register') }}">
                                             @php Session::put('prod_id', $data->id); @endphp
@@ -397,6 +397,7 @@ $cXamount=0;
                                     @csrf
                                     <input type="hidden" name="cost" value="{{$blue_cost}}">
                                     <input type="hidden" name="blue_id" value="{{$prdet->id}}">
+                                    <input type="hidden" name="pr_id" value="{{$data->id}}">
                                 
                                     <input type="hidden" value="BLUE_COLLAR" name="myPack">
                                     <div class="form-groupx row" style=" margin:0 auto;"> 
@@ -435,18 +436,19 @@ $cXamount=0;
                                     {{-- <button type="button" style="float:right; font-size:11px; width:20px;height:20px" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> --}}
                                 </div>
                                 <div class="modal-body" style="height:auto">
-                                    <p style="font-size: 18px">Dependants Details</p>
+                                    <p style="font-size: 18px">Dependants Details </p>
                                     <p style="font-size: 12px;margin-top:-10px">Please add details about your Dependants</p>
                                     @if(Route::has('login'))
                                     @auth
-                                    <form action="{{ url('contract', $data->id) }}" method="GET">
+                                    <form action="{{ url('payment_form', $data->id) }}" method="GET">
                                     @else
                                     <form action="{{ url('register') }}">
                                         @php Session::put('prod_id', $data->id); @endphp
                                     @endauth
                                     @endif
 
-                                    <input type="hidden" value="{{$data->id}}">
+                                    {{-- <input type="hidden" value="{{$data->id}}"> --}}
+                                    <input type="hidden" name="pr_id" value="{{$data->id}}">
                                     @csrf
 
                                     <input type="hidden" name="productId" value="{{$productId}}">
