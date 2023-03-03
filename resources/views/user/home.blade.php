@@ -278,9 +278,9 @@
                             </span>
                             {{-- <p style="font-size:12px">Starting from </p>
                             <strong class="product-price">{{number_format($offer->unit_price,2)}} {{$offer->currency}}</strong> --}}
-
+                            
                             <p style="font-size:12px">@if($offer->name == "Canada" || $offer->name == "Germany") Full Payment Price @else First Installment Payment From @endif</p>
-                            <strong class="product-price">{{number_format($offer->first_payment_sub_total,2)}} {{$offer->currency}}</strong>
+                            <strong class="product-price"> {{number_format($offer->first_payment_sub_total,2)}} {{$offer->currency}}</strong>
                             <p>
                                 <i class="{{$icon}}"></i> {{$offer_discount_msg}} 
                             </p>
@@ -289,8 +289,13 @@
                                     @auth
                                     <a class="btn btn-secondary" href="{{ url('package/type', $offer->id) }}">Apply Now</a>
                                 @else
-                                    <a class="btn btn-secondary" href="{{ url('register') }}">Apply Now</a>
+                                {{-- <form action="{{ url('register') }}"> --}}
+                                    <?php //$prod_id =$offer->id; ?>
+                                    {{-- @php Session::put('prod_id', $offer->id); @endphp --}}
+                                    {{-- <input type="hidden" name="prod_id" value="{{$offer->id}}"> --}}
+                                    <a class="btn btn-secondary" href="{{ url('register?pid='. $offer->id) }}">Apply Now</a>
                                     @endauth
+                                {{-- </form> --}}
                                 @endif
                                 {{-- <a class="btn btn-secondary" href="{{ url('package/type', $offer->id) }}">Apply Now</a> --}}
                             </p>
