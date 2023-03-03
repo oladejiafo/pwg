@@ -1,4 +1,4 @@
-@extends('layouts.master')
+ @extends('layouts.master')
 <link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 <link href="{{asset('css/payment-form.css')}}" rel="stylesheet">
@@ -28,7 +28,7 @@
 @else
     @php $levels=0; @endphp
     {{-- <script>window.location = "/home";</script> --}}
-@endif
+@endif 
 
 <div class="container">
     <div class="col-12">        
@@ -83,16 +83,19 @@
             <div class="contract-signature">
                 <div class="row">
                     <div class="col-6">
-                        <div class="contract">
+                        <div class="contract d-flex align-items-center justify-content-center my-col">
                             <div class="contractImg">
-                                <img src="{{asset('images/contract.png')}}" width="100%" heightx="100%">
+                                <img src="{{asset('images/contract.png')}}" width="100%" height="100%">
+                            </div>
+                            <div class="contractSubHead">
                                 <h6>CONTRACT</h6>
                                 <p>Please review the contract carefully</p>
                             </div>
                         </div>
+                        <button class="btn btn-primary ">ZOOM TO REVIEW</button>
                     </div>
                     <div class="col-6">
-                      
+                        <div class="my-col">
                             <form enctype="multipart/form-data" id="signatureSubmit">
                                 @csrf
                                 <input type="hidden" name="pid" value="{{$data->id}}">
@@ -102,12 +105,20 @@
                                     <div class="signature-pad--body">
                                         <canvas id="sig"></canvas>
                                     </div>
-
+                
                                     <div class="signature-pad--footer">                              
                                         <div class="signature-pad--actions">
+                                            <div class="col-6">
+
+                                                <button type="button" class="btn btn-primary clear" id="clear" data-action="clear">CLEAR</button>
+                                            </div>
+                                            <div class="col-6">
+                                                <!-- <button type="submit" id="sigBtn" data-action="savePNG" class="btn btn-primary">SUBMIT</button> -->
+                                                <button type="button" id="sigBtn" data-action="save-png" class="btn btn-primary button save">SUBMIT</button>
+                                            </div>
                                         </div>
                                     </div>
-
+                                    
                                     <div class="toast-container"></div>
                                 </div>
                             </form>
@@ -634,12 +645,11 @@
                                 </form>
                        
                     </div>
-                </div></div>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
+</div> 
 
 @endsection
 @push('custom-scripts')

@@ -23,7 +23,7 @@ body {
 }
 
 .contractImg {
-    width: 33%;
+    width: 27%;
     height: 36%;
     margin: 0 auto;
 }
@@ -32,8 +32,44 @@ body {
 .contract {
     background-color: #ffffff;
     margin: 0 auto;
-    /* padding: 20px 50px; */
-  }
+    width: 100%;
+    padding: 50px 0px;
+}
+
+.contract-signature button{
+    border: 2px solid #FFFFFF !important;
+    border-radius: 0px !important;
+}
+
+.my-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.my-col>* {
+    flex: 1;
+}
+
+
+.contractSubHead {
+    margin: 0 auto;
+}
+
+.contractSubHead h6 {
+    text-align: center;
+    font-weight: 700;
+    font-size: 28px;
+    color: #000;
+    line-height: 33px;
+}
+
+.contractSubHead p {
+    font-weight: 300;
+    font-size: 10px;
+    line-height: 12px;
+    color: #000000;
+    text-align: center;
+}
 
 .payment-form h3 {
     font-family: TT Norms Pro;
@@ -390,15 +426,13 @@ select {
 }
 
 
-.payoption input[type="radio"] 
-{
+.payoption input[type="radio"] {
     opacity: 0.01;
     z-index: 100;
 }
 
 .payoption input[type="radio"]:checked+label,
-.Checked+label 
-{
+.Checked+label {
     background: #FAE008;
     border: none;
 }
@@ -420,11 +454,12 @@ select {
     background: #FAE008;
     border: none;
 }
+
 .payoption li {
     display: inline;
 }
 
-@media (max-width: 850px){
+@media (max-width: 850px) {
     .payoption li {
         display: block;
     }
@@ -589,7 +624,8 @@ select {
     background-color: hsl(48, 100%, 96%); */
 }
 
-.recieptUpload:hover .file--uploading>label, .recieptUpload:hover{
+.recieptUpload:hover .file--uploading>label,
+.recieptUpload:hover {
     background-color: hsl(48, 100%, 96%);
 }
 

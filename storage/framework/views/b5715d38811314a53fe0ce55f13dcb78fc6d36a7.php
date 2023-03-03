@@ -81,32 +81,44 @@
             <div class="contract-signature">
                 <div class="row">
                     <div class="col-6">
-                        <div class="contract">
+                        <div class="contract d-flex align-items-center justify-content-center my-col">
                             <div class="contractImg">
                                 <img src="<?php echo e(asset('images/contract.png')); ?>" width="100%" height="100%">
+                            </div>
+                            <div class="contractSubHead">
                                 <h6>CONTRACT</h6>
                                 <p>Please review the contract carefully</p>
                             </div>
                         </div>
+                        <button class="btn btn-primary ">ZOOM TO REVIEW</button>
                     </div>
                     <div class="col-6">
-                        <div>
+                        <div class="my-col">
                             <form enctype="multipart/form-data" id="signatureSubmit">
                                 <?php echo csrf_field(); ?>
                                 <input type="hidden" name="pid" value="<?php echo e($data->id); ?>">
                                 <input type="hidden" name="user_id" value="<?php echo e(Auth::user()->id); ?>">
                                 <input type="hidden" name="payall" value="<?php echo e($payall); ?>">
                                 <div id="signature-pad" class="signature-pad">
-                                <div class="signature-pad--body">
-                                    <canvas id="sig"></canvas>
-                                </div>
-            
-                                <div class="signature-pad--footer">                              
-                                    <div class="signature-pad--actions">
+                                    <div class="signature-pad--body">
+                                        <canvas id="sig"></canvas>
                                     </div>
+                
+                                    <div class="signature-pad--footer">                              
+                                        <div class="signature-pad--actions">
+                                            <div class="col-6">
+
+                                                <button type="button" class="btn btn-primary clear" id="clear" data-action="clear">CLEAR</button>
+                                            </div>
+                                            <div class="col-6">
+                                                <!-- <button type="submit" id="sigBtn" data-action="savePNG" class="btn btn-primary">SUBMIT</button> -->
+                                                <button type="button" id="sigBtn" data-action="save-png" class="btn btn-primary button save">SUBMIT</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="toast-container"><div>
                                 </div>
-                                
-                                <div class="toast-container"><div>
                             </form>
                         </div>
                     </div>
