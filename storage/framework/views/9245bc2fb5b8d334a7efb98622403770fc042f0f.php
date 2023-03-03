@@ -210,7 +210,7 @@
 
 
 
-    <div class="container" style="margin-top: 120px;">
+    <div class="container" style="margin-top: 100px;">
         <div class="col-12">
             <div align="center" class="package">
                 <div class="header">
@@ -363,7 +363,7 @@
                                     </div>
                                     <?php if(Route::has('login')): ?>
                                         <?php if(auth()->guard()->check()): ?>
-                                        <form action="<?php echo e(url('contract', $data->id)); ?>" method="GET">
+                                        <form action="<?php echo e(url('payment_form', $data->id)); ?>" method="GET">
                                     <?php else: ?>
                                         <form action="<?php echo e(url('register')); ?>">
                                             <?php Session::put('prod_id', $data->id); ?>
@@ -373,6 +373,7 @@
                                     <?php echo csrf_field(); ?>
                                     <input type="hidden" name="cost" value="<?php echo e($blue_cost); ?>">
                                     <input type="hidden" name="blue_id" value="<?php echo e($prdet->id); ?>">
+                                    <input type="hidden" name="pr_id" value="<?php echo e($data->id); ?>">
                                 
                                     <input type="hidden" value="BLUE_COLLAR" name="myPack">
                                     <div class="form-groupx row" style=" margin:0 auto;"> 
@@ -411,18 +412,19 @@
                                     
                                 </div>
                                 <div class="modal-body" style="height:auto">
-                                    <p style="font-size: 18px">Dependants Details</p>
+                                    <p style="font-size: 18px">Dependants Details </p>
                                     <p style="font-size: 12px;margin-top:-10px">Please add details about your Dependants</p>
                                     <?php if(Route::has('login')): ?>
                                     <?php if(auth()->guard()->check()): ?>
-                                    <form action="<?php echo e(url('contract', $data->id)); ?>" method="GET">
+                                    <form action="<?php echo e(url('payment_form', $data->id)); ?>" method="GET">
                                     <?php else: ?>
                                     <form action="<?php echo e(url('register')); ?>">
                                         <?php Session::put('prod_id', $data->id); ?>
                                     <?php endif; ?>
                                     <?php endif; ?>
 
-                                    <input type="hidden" value="<?php echo e($data->id); ?>">
+                                    
+                                    <input type="hidden" name="pr_id" value="<?php echo e($data->id); ?>">
                                     <?php echo csrf_field(); ?>
 
                                     <input type="hidden" name="productId" value="<?php echo e($productId); ?>">
