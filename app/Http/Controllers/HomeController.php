@@ -405,12 +405,14 @@ class HomeController extends Controller
                 $pid = 1;
             }
 
-            $pricingPLan = product_payments::where('pricing_plan_type', Session::get('packageType'))
-                ->where('destination_id', $pid)
-                ->where('no_of_parent', $mySpouse)
-                ->where('no_of_children', $myCHildren)
-                ->where('status', 'CURRENT')
-                ->first();
+            // $pricingPLan = product_payments::where('pricing_plan_type', Session::get('packageType'))
+            //     ->where('destination_id', $pid)
+            //     ->where('no_of_parent', $mySpouse)
+            //     ->where('no_of_children', $myCHildren)
+            //     ->where('status', 'CURRENT')
+            //     ->first();
+            $pricingPLan = product_payments::where('id', 97)->first();
+                
             $datas = Applicant::where('client_id', Auth::id())
                 ->where('destination_id', $pid)
                 ->where('pricing_plan_id', $pricingPLan->id)
@@ -764,7 +766,7 @@ class HomeController extends Controller
                     ->first();
 
                 // if ($payall == 0 || empty($payall)) {
-                if (($pays->first_payment_status != "PAID" || $pays->first_payment_status == null) || ((!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? (Storage::disk('s3')->exists($applicant->getMedia(Application::$media_collection_main_1st_signature)[0]->getPath())) : null)) {
+                if (($pays->first_payment_status != "PAID" || $pays->first_payment_status == null) || ((!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? (Storage::disk('s3')->exists($applicant->getMedia(Application::$media_collection_main_1st_signature)[0]->getPath()) == false) : null)) {
                     if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                         $originalPdf = Storage::disk(env('MEDIA_DISK'))->url('Applications/Contracts/client_contracts/' . $applicant->contract);
                     } else {
