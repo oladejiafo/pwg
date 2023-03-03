@@ -234,7 +234,7 @@ $cXamount=0;
 
 @endif --}}
 
-    <div class="container" style="margin-top: 120px;">
+    <div class="container" style="margin-top: 100px;">
         <div class="col-12">
             <div align="center" class="package">
                 <div class="header">
