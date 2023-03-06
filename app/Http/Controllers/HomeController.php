@@ -46,30 +46,20 @@ class HomeController extends Controller
     public function redirect()
     {
         if (Auth::id()) {
-
             $client = User::find(Auth::id());
-            
-            $complete = DB::table('applications')
-            ->where('client_id', '=', Auth::user()->id)
-            ->orderBy('id', 'desc')
-            ->first();
-
-            if (Session::has('prod_id')) {
+            if (session('prod_id')) {
                 $id = Session::get('prod_id');
 
                 $data = product::find($id);
 
                 $promo = promo::where('employee_id', '=', $id)->where('active_until', '>=', date('Y-m-d'))->get();
                 $ppay = product_payments::where('destination_id', '=', $id)->where('pricing_plan_type', '=', Session::get('packageType'))->where('status', 'CURRENT')->first();
-              
-                session()->forget('prod_id');
-               
-                // return view('user.package-type', compact('data', 'ppay', 'id'));
-               
-                return \Redirect::route('packageType', $id);
+                // $proddet = product_details::where('product_id', '=', $id)->get();
 
-            } elseif(isset($complete) && $complete->destination_id > 0 && $complete->destination_id != null) {
-                return \Redirect::route('myapplication');
+                session()->forget('prod_id');
+                return view('user.package', compact('data', 'ppay', 'promo'));
+                //   return \Redirect::route('product', $idd);
+
             } else {
                 $started = DB::table('applications')
                     ->select('pricing_plan_id', 'destination_id', 'client_id', 'first_payment_status', 'status')
@@ -265,6 +255,83 @@ class HomeController extends Controller
 
     public function signature(Request $request, $id)
     {
+        /* Old Codes
+        try {
+            if (Auth::id()) {
+                // Session::put('myproduct_id', $id);
+                Session::put('mypay_option', $request->payall);
+                $pid  = Session::get('myproduct_id');
+                $data = product::find($id);
+                $datas = Applicant::where('client_id', Auth::id())
+                    ->where('destination_id', $pid)
+                    ->where('work_permit_category', (Session::get('packageType')) ?? 'BLUE_COLLAR')
+                    ->first();
+                if (Session::has('myproduct_id')) {
+                    $pid  = Session::get('myproduct_id');
+                } else {
+                    $pid = 1;
+                }
+                $appliedCountry = Product::find($pid);
+                $pdet = null;
+                if(Session::get('packageType') =="FAMILY_PACKAGE")
+                    {
+                        if (Session::get('mySpouse') == "yes") {
+                            $mySpouse = 2;
+                        } else {
+                            $mySpouse = 1;
+                        }
+            
+                        if (Session::get('myKids') == 0 || Session::get('myKids') == "none" || Session::get('myKids') == 5 || Session::get('myKids') == null) {
+            
+                            $children = 1;
+                        } else {
+                            $children = Session::get('myKids');
+                        }
+                        $pdet = DB::table('pricing_plans')
+                        ->where('destination_id', '=', Session::get('myproduct_id'))
+                        ->where('pricing_plan_type', '=', Session::get('packageType'))
+                        ->where('no_of_parent', '=', $mySpouse)
+                        ->where('no_of_children', '=', $children)
+                                                    ->where('status', 'CURRENT')
+                        ->first();
+                } else {
+                    $pdet = DB::table('pricing_plans')
+                        ->where('destination_id', '=', Session::get('myproduct_id'))
+                        ->where('pricing_plan_type', '=', Session::get('packageType'))
+                                                    ->where('status', 'CURRENT')
+                        ->first();
+                }
+                if ($datas === null) {
+                    $data = new applicant();
+                    $data->client_id = Auth::id();
+                    $data->destination_id = $pid;
+                    $data->work_permit_category = (Session::get('packageType')) ?? 'BLUE_COLLAR';
+                    $data->application_stage_status = 1;
+                    $data->applied_country = $appliedCountry->name;
+                    $data->pricing_plan_id = $pdet->id;
+                    $data->contract = $request->contract;
+    
+                    $res = $data->save();
+                } else {
+                    $datas->work_permit_category =  (Session::get('packageType')) ?? 'BLUE_COLLAR';
+                    $datas->application_stage_status = 1;
+                    $datas->destination_id = $pid;
+                    $datas->applied_country = $appliedCountry->name;
+                    $datas->contract = $request->contract;
+                    $datas->pricing_plan_id = $pdet->id;
+                    $res = $datas->save();
+                }
+                return view('user.signature', compact('data'));
+            } else {
+                // return redirect()->back()->with('message', 'You are not authorized');
+                return redirect('home');
+            }
+        } catch (Exception $e) {
+            return redirect('home')->with('info', $e->getMessage());
+        }
+
+        */
+
         if (Auth::id()) {
             Session::put('mypay_option', $request->payall);
             $data = product::find($id);
@@ -336,14 +403,12 @@ class HomeController extends Controller
                 $pid = 1;
             }
 
-            // $pricingPLan = product_payments::where('pricing_plan_type', Session::get('packageType'))
-            //     ->where('destination_id', $pid)
-            //     ->where('no_of_parent', $mySpouse)
-            //     ->where('no_of_children', $myCHildren)
-            //     ->where('status', 'CURRENT')
-            //     ->first();
-            $pricingPLan = product_payments::where('id', 97)->first();
-                
+            $pricingPLan = product_payments::where('pricing_plan_type', Session::get('packageType'))
+                ->where('destination_id', $pid)
+                ->where('no_of_parent', $mySpouse)
+                ->where('no_of_children', $myCHildren)
+                ->where('status', 'CURRENT')
+                ->first();
             $datas = Applicant::where('client_id', Auth::id())
                 ->where('destination_id', $pid)
                 ->where('pricing_plan_id', $pricingPLan->id)
@@ -588,7 +653,6 @@ class HomeController extends Controller
 
     public function payment(Request $request)
     {
-   
         try {
             $famCode = 0;
             if (Auth::id()) {
@@ -601,43 +665,29 @@ class HomeController extends Controller
                     ->orderBy('id', 'desc')
                     ->first();
 
-                if(isset($complete))
-                {
                 $app_id = $complete->id;
                 $p_id = $complete->destination_id;
                 $pack_id = $complete->pricing_plan_id;
+
+                $hasSpouse = Auth::user()->is_spouse;
+                $children = Auth::user()->children_count;
+                if ($hasSpouse == 1) {
+                    $yesSpouse = 2;
+                    $mySpouse = 2;
                 } else {
-                    $app_id = null;
-                    $p_id = $request->pr_id;
-                    if(isset($request->blue_id))
-                    {
-                        $pack_id = $request->blue_id;
-                    } else {
-                        $pack_id = $request->fam_id;
-                    }
-                    
+                    $yesSpouse = 1;
+                    $mySpouse = 1;
                 }
 
 
-                // $hasSpouse = Auth::user()->is_spouse;
-                // $children = Auth::user()->children_count;
-                // if ($hasSpouse == 1) {
-                //     $yesSpouse = 2;
-                //     $mySpouse = 2;
-                // } else {
-                //     $yesSpouse = 1;
-                //     $mySpouse = 1;
-                // }
+                if (session()->get('myproduct_id')) {
+                } else if (isset($request->id)) {
+                    Session::put('myproduct_id', $request->id);
+                } else {
+                    Session::put('myproduct_id', $p_id);
+                }
 
-
-                // if (session()->get('myproduct_id')) {
-                // } else if (isset($request->id)) {
-                //     Session::put('myproduct_id', $request->id);
-                // } else {
-                //     Session::put('myproduct_id', $p_id);
-                // }
-
-                // $id = Session::get('myproduct_id');
+                $id = Session::get('myproduct_id');
 
                 if (Session::has('payall')) {
                     $payall = Session::get('payall'); //$request->payall;
@@ -646,15 +696,15 @@ class HomeController extends Controller
                 } else {
                     $payall = 0;
                 }
-                // if (isset($complete->work_permit_category) && $complete->second_payment_status == 'PENDING') {
-                //     $packageType = $complete->work_permit_category;
-                // } elseif (Session::has('packageType')) {
-                //     $packageType = Session::get('packageType');
-                // } else {
-                //     $packageType = $complete->work_permit_category;
-                // }
+                if (isset($complete->work_permit_category) && $complete->second_payment_status == 'PENDING') {
+                    $packageType = $complete->work_permit_category;
+                } elseif (Session::has('packageType')) {
+                    $packageType = Session::get('packageType');
+                } else {
+                    $packageType = $complete->work_permit_category;
+                }
 
-                $data = product::find($p_id);
+                $data = product::find(Session::get('myproduct_id'));
 
                 $paym = DB::table('payments')
                     ->where('application_id', '=', $app_id)
@@ -669,36 +719,36 @@ class HomeController extends Controller
                 $pays = DB::table('applications')
                     ->select('applications.pricing_plan_id', 'applications.total_price', 'applications.total_paid', 'applications.first_payment_status', 'applications.submission_payment_status', 'applications.second_payment_status', 'first_payment_price', 'first_payment_paid', 'first_payment_remaining', 'is_first_payment_partially_paid', 'submission_payment_price', 'submission_payment_paid', 'submission_payment_remaining', 'second_payment_price', 'second_payment_paid', 'second_payment_remaining', 'first_payment_verified_by_cfo')
                     ->where('applications.client_id', '=', Auth::user()->id)
-                    ->where('applications.destination_id', '=', $p_id)
+                    ->where('applications.destination_id', '=', $id)
+                    ->where('work_permit_category', $packageType)
                     ->orderBy('applications.id', 'desc')
                     // ->whereNotIn('status',  ['APPLICATION_COMPLETED','VISA_REFUSED', 'APPLICATION_CANCELLED','REFUNDED'] )
                     ->limit(1)
                     ->first();
 
 
-                // if (!$pays) {
-                //     return redirect('home');
-                //     die();
-                // }
+                if (!$pays) {
+                    return redirect('home');
+                    die();
+                }
 
-                // if ($packageType == "FAMILY_PACKAGE") {
-                //     $pdet = DB::table('pricing_plans')
-                //         ->where('destination_id', '=', Session::get('myproduct_id'))
-                //         ->where('pricing_plan_type', '=', $packageType)
-                //         ->where('no_of_parent', '=', $mySpouse)
-                //         ->where('no_of_children', '=', $children)
-                //         // ->where('status', 'CURRENT')
-                //         ->where('id', '=', $pack_id)
-                //         ->first();
-                // } else {
+                if ($packageType == "FAMILY_PACKAGE") {
                     $pdet = DB::table('pricing_plans')
-                        // ->where('destination_id', '=', Session::get('myproduct_id'))
-                        // ->where('pricing_plan_type', '=', $packageType)
+                        ->where('destination_id', '=', Session::get('myproduct_id'))
+                        ->where('pricing_plan_type', '=', $packageType)
+                        ->where('no_of_parent', '=', $mySpouse)
+                        ->where('no_of_children', '=', $children)
                         // ->where('status', 'CURRENT')
                         ->where('id', '=', $pack_id)
                         ->first();
-                        // dd($pdet);
-                // }
+                } else {
+                    $pdet = DB::table('pricing_plans')
+                        ->where('destination_id', '=', Session::get('myproduct_id'))
+                        ->where('pricing_plan_type', '=', $packageType)
+                        // ->where('status', 'CURRENT')
+                        ->where('id', '=', $pack_id)
+                        ->first();
+                }
 
                 // if ($pays->first_payment_status != "PARTIALLY_PAID"){
                 /* Newly Added starts here*/
@@ -707,14 +757,12 @@ class HomeController extends Controller
                 //     ->where('work_permit_category', $packageType)
                 //     ->first();
                 $applicant = Application::where('client_id', Auth::id())
-                    ->where('destination_id', $p_id)
-                    // ->where('work_permit_category', $packageType)
+                    ->where('destination_id', $id)
+                    ->where('work_permit_category', $packageType)
                     ->first();
 
-                if(isset($applicant))
-                {
                 // if ($payall == 0 || empty($payall)) {
-                if (($pays->first_payment_status != "PAID" || $pays->first_payment_status == null) || ((!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? (Storage::disk('s3')->exists($applicant->getMedia(Application::$media_collection_main_1st_signature)) == false) : null)) {
+                if (($pays->first_payment_status != "PAID" || $pays->first_payment_status == null)) {
                     if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                         $originalPdf = Storage::disk(env('MEDIA_DISK'))->url('Applications/Contracts/client_contracts/' . $applicant->contract);
                     } else {
@@ -729,36 +777,121 @@ class HomeController extends Controller
                         $signatureUrl = ltrim($signatureUrl, $signatureUrl[0]);
                     }
                     $result = pdfBlock::attachSignature($originalPdf, $signatureUrl, $data, $paymentType, $applicant);
-                }}
-               
+                }
+
+                if (in_array($pays->first_payment_status, ["PARTIALLY_PAID", "PAID"]) && ((!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? (Storage::disk('s3')->exists($applicant->getMedia(Application::$media_collection_main_1st_signature)[0]->getPath())) : null)) {
+                } else {
+                    if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+                        $originalPdf = Storage::disk(env('MEDIA_DISK'))->url('Applications/Contracts/client_contracts/' . $applicant->contract);
+                    } else {
+                        $originalPdf = Storage::disk('local')->url('Applications/Contracts/client_contracts/' . $applicant->contract);
+                        $originalPdf = ltrim($originalPdf, $originalPdf[0]);
+                    }
+                    $paymentType =  "FIRST";
+                    $user = Client::find(Auth::id());
+
+                    $signatureUrl = (isset($user->getMedia(Client::$media_collection_main_signture)[0])) ? $user->getMedia(Client::$media_collection_main_signture)[0]->getUrl() : null;
+                    if (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+                        $signatureUrl = ltrim($signatureUrl, $signatureUrl[0]);
+                    }
+                    $result = pdfBlock::attachSignature($originalPdf, $signatureUrl, $data, $paymentType, $applicant);
+                }
+                //     elseif ($pays->first_payment_status == "PAID" && $pays->submission_payment_status != "PAID") {
+                //         $originalPdf = (isset($applicant->getMedia(Application::$media_collection_main_1st_signature)[0])) ? $applicant->getMedia(Application::$media_collection_main_1st_signature)[0]->getUrl() : null;
+                //         if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+                //                 if (Storage::disk('s3')->exists($applicant->getMedia(Application::$media_collection_main_1st_signature)[0]->getPath())) {
+                //                 } else {
+                //                     $originalPdf = Storage::disk(env('MEDIA_DISK'))->url('Applications/Contracts/client_contracts/' . $applicant->contract);
+                //                 }
+                //             } else {
+                //                 if (File::exists($applicant->getMedia(Application::$media_collection_main_1st_signature)[0]->getPath())) {
+                //                 } else {
+                //                     $originalPdf = Storage::disk('local')->url('Applications/Contracts/client_contracts/' . $applicant->contract);
+                //                 }
+                //                 $originalPdf = ltrim($originalPdf, $originalPdf[0]);
+                //             }
+                //         $paymentType =  "SUBMISSION";
+                //     } elseif ($pays->submission_payment_status == "PAID" && $pays->second_payment_status != "PAID") {
+                //         $originalPdf = (isset($applicant->getMedia(Application::$media_collection_main_submission_signature)[0])) ? $applicant->getMedia(Application::$media_collection_main_submission_signature)[0]->getUrl() : null;
+                //         if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+                //             if (Storage::disk('s3')->exists($applicant->getMedia(Application::$media_collection_main_submission_signature)[0]->getPath())) {
+                //             } else {
+                //                 $originalPdf = Storage::disk(env('MEDIA_DISK'))->url('Applications/Contracts/client_contracts/' . $applicant->contract);
+                //             }
+                //         } else {
+                //             if (File::exists($applicant->getMedia(Application::$media_collection_main_1st_signature)[0]->getPath())) {
+                //             } else {
+                //                 $originalPdf = Storage::disk('local')->url('Applications/Contracts/client_contracts/' . $applicant->contract);
+                //             }
+                //             $originalPdf = ltrim($originalPdf, $originalPdf[0]);
+                //         }
+                //         $paymentType =  "SECOND";
+                //     } else {
+                //         if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+                //             $originalPdf = Storage::disk(env('MEDIA_DISK'))->url('Applications/Contracts/client_contracts/' . $applicant->contract);
+                //         } else {
+                //             $originalPdf = Storage::disk('local')->url('Applications/Contracts/client_contracts/' . $applicant->contract);
+                //             $originalPdf = ltrim($originalPdf, $originalPdf[0]);
+                //         }
+                //         $paymentType =  "FIRST";
+                //     }
+                // } else {
+                //     if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+                //         $originalPdf = Storage::disk(env('MEDIA_DISK'))->url('Applications/Contracts/client_contracts/' . $applicant->contract);
+                //     } else {
+                //         $originalPdf = Storage::disk('local')->url('Applications/Contracts/client_contracts/' . $applicant->contract);
+                //         $originalPdf = ltrim($originalPdf, $originalPdf[0]);
+                //     }
+                //     $paymentType = 'Full-Outstanding Payment';
+                // }
+                // $user = User::find(Auth::id());
+                // $signatureUrl = (isset($user->getMedia(Client::$media_collection_main_signture)[0])) ? $user->getMedia(Client::$media_collection_main_signture)[0]->getUrl() : null;
+                // if (File::exists($user->getMedia(Client::$media_collection_main_signture)[0]->getPath())) {
+                // if (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+                //     $signatureUrl = ltrim($signatureUrl, $signatureUrl[0]);
+                // }
+                // $result = pdfBlock::attachSignature($originalPdf, $signatureUrl, $data, $paymentType, $applicant);
+                // }
+                /* Newly added endss here*/
+                // }
                 return view('user.payment-form', compact('data', 'pdet', 'pays', 'payall', 'paym'));
             } else {
                 // return redirect()->back()->with('message', 'You are not authorized');
                 return redirect('home');
             }
         } catch (Exception $e) {
-            // dd($e);
+            dd($e);
             return redirect('home')->with('error', $e->getMessage());
         }
     }
 
-    public function bank()
+    public function bank($ptype = null)
     {
-        if (Auth::id()) {
+        if (Auth::id() && $ptype != null) {
 
-            $complete = DB::table('applications')
+            $application = DB::table('applications')
                 ->where('client_id', '=', Auth::user()->id)
                 // ->whereNotIn('status',  ['APPLICATION_COMPLETED','VISA_REFUSED', 'APPLICATION_CANCELLED','REFUNDED'] )
                 ->orderBy('id', 'desc')
                 ->first();
 
-            $app_id = $complete->id;
-            $productId = $complete->destination_id;
-            $pack_id = $complete->pricing_plan_id;
+            $app_id = $application->id;
+            $productId = $application->destination_id;
+            $pack_id = $application->pricing_plan_id;
+            $paymentType = $ptype;
 
-            $paymentId = session::get('paymentId');
-            $thisPaymentMade = Payment::find($paymentId)->invoice_amount;
-            return view('user.bank-transfer', compact('productId', 'paymentId', 'thisPaymentMade'));
+            // $paymentId = session::get('paymentId');
+            // $thisPaymentMade = Payment::find($paymentId)->invoice_amount;
+            $amount = 0;
+            if (in_array($paymentType, ['FIRST', 'BALANCE_ON_FIRST'])) {
+                $amount = $application->first_payment_remaining;
+            } else if ($paymentType == 'SUBMISSION') {
+                $amount = $application->submission_payment_remaining;
+            } else if ($paymentType == 'SECOND') {
+                $amount = $application->third_payment_remaining;
+            }
+
+            return view('user.bank-transfer', compact('productId', 'app_id', 'paymentType', 'amount'));
         } else {
             // return redirect()->back()->with('message', 'You are not authorized');
             return redirect('user.payment-form');
@@ -827,7 +960,6 @@ class HomeController extends Controller
                 $pdet = DB::table('pricing_plans')
                     ->where('id', $pack_id)
                     ->first();
-
                 if ($request->whichpayment == 'FIRST') {
                     if ($request->totalpay >= 1000) {
                         $amount = $request->totalpay;
@@ -846,12 +978,16 @@ class HomeController extends Controller
                     } else {
                         $amount = $pdet->submission_payment_sub_total;
                     }
+                } else if ($request->whichpayment == 'BALANCE_ON_SUBMISSION') {
+                    $amount = $request->totalpay;
                 } else if ($request->whichpayment == 'SECOND') {
                     if ($request->vats > 0) {
                         $amount = $pdet->second_payment_price;
                     } else {
                         $amount = $pdet->second_payment_sub_total;
                     }
+                } else if ($request->whichpayment == 'BALANCE_ON_SECOND') {
+                    $amount = $request->totalpay;
                 } else if ($request->whichpayment == 'Full-Outstanding Payment') {
                     $amount = $request->totalpay;
 
@@ -934,7 +1070,11 @@ class HomeController extends Controller
                     return back()->withErrors($validator)
                         ->withInput();
                 }
-                // }
+                if ($request->payoption == "Transfer" || $request->payoption == "Deposit") {
+
+                    // return view('user.bank-transfer', compact('thisPayment', 'thisPaymentMade', 'whatsPaid'));
+                    return \Redirect::route('bank', $request->whichpayment);
+                }
                 $thisPayment = $request->whichpayment;
                 $thisVat = $request->vats;
                 $thisPayment = $request->totaldue;
@@ -956,19 +1096,20 @@ class HomeController extends Controller
                 $outstand = $request->totalpay + $thisVat;
 
                 // if ($request->totaldue == $request->totalpay) {
+                // dd(($request->totaldue > ($request->totalpay + $request->discount)) && (($request->totalpay + $request->discount) >= 1000));
                 if ($request->totaldue == ($request->totalpay + $request->discount)) {
                     $whatsPaid = "PAID";
-                } elseif ($request->totaldue > ($request->totalpay + $request->discount) && ($request->totalpay + $request->discount) >= 1000) {
+                    // } elseif (($request->totaldue > ($request->totalpay + $request->discount)) && (($request->totalpay + $request->discount) >= 1000)) {
+                } elseif (($request->totaldue > ($request->totalpay + $request->discount)) || (($request->totalpay + $request->discount) >= 1000)) {
                     if ($request->totalremaining == ($request->totalpay + $request->discount)) {
                         $whatsPaid = "PAID";
                     } else {
-                        $whatsPaid = "PARTIALLY_PAID";
+                        $whatsPaid = ($request->whichpayment == 'FIRST') ? "PARTIALLY_PAID" : "PAID";
                     }
                 } else {
                     $whatsPaid = "PENDING"; //??????
                     $overPay = $request->totalpay - $request->totaldue;
                 }
-
                 $haveSpouse =  Session::get('mySpouse');
                 $kids =  Session::get('myKids');
 
@@ -1122,6 +1263,7 @@ class HomeController extends Controller
                             // $data->submission_payment_paid = $thisPaymentMade;
                             $data->submission_payment_vat = $thisVat;
                             $data->submission_payment_discount = $thisDiscount;
+                        } elseif ($request->whichpayment == 'BALANCE_ON_SUBMISSION') {
                         } elseif ($request->whichpayment == 'SECOND') {
                             $data->second_payment_price = $thisPayment;
                             // $data->second_payment_paid = $thisPaymentMade;
@@ -1129,12 +1271,15 @@ class HomeController extends Controller
                             $data->second_payment_discount = $thisDiscount;
                             $data->coupon_code = $thisCode;
                             $res = $data->save();
+                        } elseif ($request->whichpayment == 'BALANCE_ON_SECOND') {
                         } else {
                             // $data->second_payment_status = 'PAID';
                             $data->total_price = $thisPayment + $pdet->third_payment_price;
-                            $data->total_vat = $thisVat;
-                            $data->total_discount = $thisDiscount;
                             $data->total_remaining = $thisPayment + $pdet->third_payment_price;
+                            $data->total_vat = $thisVat;
+
+                            $data->total_discount = $thisDiscount;
+                            // $data->total_remaining = $thisPayment + $pdet->third_payment_price;
                             //Splits
                             $paysplit = DB::table('pricing_plans')
                                 ->where('destination_id', '=', $request->pid)
@@ -1169,10 +1314,11 @@ class HomeController extends Controller
                                 // $data->first_payment_price = $paysplit->first_payment_price + $firstVat;
                                 // $data->first_payment_price = ($paysplit->first_payment_price - $firstDisc) + $firstVat;
                                 // $paymentCreds['paysplit']->first_payment_price = ($paysplit->first_payment_price - $firstDisc) + $firstVat;
-                                $data->first_payment_price = $data->first_payment_remaining = $paymentCreds['paysplit']->first_payment_price = ($paysplit->first_payment_sub_total - $firstDisc) + $firstVat;
+                                $data->first_payment_price =  $paymentCreds['paysplit']->first_payment_price = ($paysplit->first_payment_sub_total - $firstDisc) + $firstVat;
+                                // $data->first_payment_remaining = 
                                 $data->first_payment_vat = $firstVat;
                                 $data->first_payment_discount = $firstDisc;
-
+                                $secondDisc = 0;
                                 //Second Split
                                 if ($thisDiscount > 0) {
                                     // $secondDisc = ($request->second_p * $destination->full_payment_discount) / 100;
@@ -1189,6 +1335,7 @@ class HomeController extends Controller
                                     $secondVat = 0;
                                 }
                                 $paymentCreds['secondVat'] = $secondVat;
+
 
                                 // $data->submission_payment_price = $paysplit->submission_payment_price  + $secondVat;
                                 // $data->submission_payment_price = ($paysplit->submission_payment_price - $secondDisc) + $secondVat;
@@ -1253,15 +1400,31 @@ class HomeController extends Controller
                             // $datas->submission_payment_price = $thisPayment;
                             // $datas->submission_payment_vat = $thisVat;
                             $datas->submission_payment_discount = $thisDiscount;
+                        } elseif ($request->whichpayment == 'BALANCE_ON_SUBMISSION') {
                         } elseif ($request->whichpayment == 'SECOND') {
                             // $datas->second_payment_price = $thisPayment;
                             // $datas->second_payment_vat = $thisVat;
                             $datas->second_payment_discount = $thisDiscount;
+                        } elseif ($request->whichpayment == 'BALANCE_ON_SECOND') {
                         } else {
-                            $datas->total_price = (in_array($datas->first_payment_status, ['PAID', 'PARTIALLY_PAID'])) ? ($datas->first_payment_paid + $thisPayment + $pdet->third_payment_price)  : $thisPayment + $pdet->third_payment_price;
-                            $datas->total_vat = $thisVat;
+                            if (in_array($datas->first_payment_status, ['PAID', 'PARTIALLY_PAID'])) {
+                                if (in_array($datas->submission_payment_status, ['PAID', 'PARTIALLY_PAID'])) {
+                                    $datas->total_price = $datas->first_payment_paid +  $datas->submission_payment_paid + $thisPayment + $pdet->third_payment_price;
+                                } else {
+                                    $datas->total_price = $datas->first_payment_paid + $thisPayment + $pdet->third_payment_price;
+                                }
+                            } else {
+                                $datas->total_price = $thisPayment + $pdet->third_payment_price;
+                            }
+                            // $datas->total_price = (in_array($datas->first_payment_status, ['PAID', 'PARTIALLY_PAID'])) ? ($datas->first_payment_paid + $thisPayment + $pdet->third_payment_price)  : $thisPayment + $pdet->third_payment_price;
+                            if ($datas->submission_payment_status == 'PARTIALLY_PAID') {
+                                $datas->total_vat = $datas->first_payment_vat + $datas->submission_payment_vat + $datas->third_payment_vat + $thisVat;
+                            } else {
+                                $datas->total_vat = $thisVat;
+                            }
+                            // $datas->total_vat = $thisVat;
                             $datas->total_discount = $thisDiscount;
-                            $datas->total_remaining = $thisPayment + $pdet->third_payment_price;
+                            // $datas->total_remaining = $thisPayment + $pdet->third_payment_price;
                             //Splits
                             $paysplit = DB::table('pricing_plans')
                                 ->where('destination_id', '=', $request->pid)
@@ -1296,8 +1459,8 @@ class HomeController extends Controller
                                 // $datas->first_payment_price = ($apply->first_payment_price > 0) ? $apply->first_payment_price : ($paysplit->first_payment_price - $firstDisc) + $firstVat;
                                 // $paymentCreds['paysplit']->first_payment_price = ($apply->first_payment_price) ?? ($paysplit->first_payment_price - $firstDisc) + $firstVat;
                                 if ($datas->first_payment_status == 'PENDING') {
-                                    $paymentCreds['paysplit']->first_payment_price = $datas->first_payment_remaining = $datas->first_payment_price = ($datas->first_payment_sub_total - $firstDisc) + $firstVat;
-
+                                    $paymentCreds['paysplit']->first_payment_price =  $datas->first_payment_price = ($datas->first_payment_sub_total - $firstDisc) + $firstVat;
+                                    // $datas->first_payment_remaining =
                                     // $datas->first_payment_vat = ($apply->first_payment_vat) ?? $firstVat;
                                     $datas->first_payment_vat = $firstVat;
                                     $datas->first_payment_discount = $firstDisc;
@@ -1322,14 +1485,18 @@ class HomeController extends Controller
                                 // $datas->submission_payment_price = $paysplit->submission_payment_price + $secondVat;
                                 // $datas->submission_payment_price = ($apply->submission_payment_price > 0) ? ($apply->first_payment_price) : ($paysplit->submission_payment_price - $secondDisc) + $secondVat;
                                 // $paymentCreds['paysplit']->submission_payment_price = ($apply->submission_payment_price) ?? ($paysplit->submission_payment_price - $secondDisc) + $secondVat;
+                                if ($datas->submission_payment_status == 'PENDING') {
 
-                                $paymentCreds['paysplit']->submission_payment_price = $datas->submission_payment_price = $datas->submission_payment_remaining = ($datas->submission_payment_sub_total - $secondDisc) + $secondVat;
+                                    $paymentCreds['paysplit']->submission_payment_price = $datas->submission_payment_price = ($datas->submission_payment_sub_total - $secondDisc) + $secondVat;
+                                    // $datas->submission_payment_remaining = ($datas->submission_payment_remaining > 0) ? ($datas->submission_payment_remaining) : ($datas->submission_payment_sub_total - $secondDisc) + $secondVat;
 
-                                // $datas->submission_payment_vat = ($apply->submission_payment_vat) ?? $secondVat;
-                                $datas->submission_payment_vat = $secondVat;
+                                    // $datas->submission_payment_vat = ($apply->submission_payment_vat) ?? $secondVat;
+                                    $datas->submission_payment_vat = $secondVat;
 
-                                $datas->submission_payment_discount = $secondDisc;
+                                    $datas->submission_payment_discount = $secondDisc;
+                                }
                                 $paymentCreds['secondVat'] = $secondVat;
+
                                 $thirdVat = 0;
                                 $thirdDisc = 0;
                                 //Third Split
@@ -1350,7 +1517,8 @@ class HomeController extends Controller
                                 // $datas->second_payment_price = $paysplit->second_payment_price + $thirdVat;
                                 // $datas->second_payment_price = ($paysplit->second_payment_price - $thirdDisc) + $thirdVat;
                                 // $paymentCreds['paysplit']->second_payment_price = ($paysplit->second_payment_price - $thirdDisc) + $thirdVat;
-                                $datas->second_payment_remaining = $datas->second_payment_price = $paymentCreds['paysplit']->second_payment_price = ($datas->second_payment_sub_total - $thirdDisc) + $thirdVat;
+                                $datas->second_payment_price = $paymentCreds['paysplit']->second_payment_price = ($datas->second_payment_sub_total - $thirdDisc) + $thirdVat;
+                                // $datas->second_payment_remaining = ($datas->second_payment_remaining > 0) ? ($datas->second_payment_remaining) : ($datas->second_payment_sub_total - $secondDisc) + $secondVat;
 
                                 $datas->second_payment_vat = $thirdVat;
                                 $datas->second_payment_discount = $thirdDisc;
@@ -1442,13 +1610,12 @@ class HomeController extends Controller
                     ])
                         ->orderBy('id', 'DESC')
                         ->first();
-
                     if ($paymentCreds['whichpayment'] == 'FIRST' || $paymentCreds['whichpayment'] == 'BALANCE_ON_FIRST') {
                         $data->first_payment_status = $paymentCreds['whatsPaid'];
                         if ($paymentCreds['whatsPaid'] == 'PARTIALLY_PAID') { // add in payment success
-                            $data->first_payment_remaining =  $paymentCreds['thisPayment'] - $paymentCreds['thisPaymentMade']; // add in payment success
+                            // $data->first_payment_remaining =  $paymentCreds['thisPayment'] - $paymentCreds['thisPaymentMade']; // add in payment success
                             // $data->first_payment_remaining =  ($paymentCreds['thisPayment'] + $paymentCreds['discount']) - $paymentCreds['thisPaymentMade'];
-
+                            $data->first_payment_remaining = $data->first_payment_price - $paymentCreds['totalpay'];
                             $data->is_first_payment_partially_paid = 1; // add in payment success
                             $data->status = 'WAITING_FOR_BALANCE_ON_FIRST_PAYMENT'; // add in payment success
                             $data->first_payment_paid = $paymentCreds['totalpay'];
@@ -1469,9 +1636,13 @@ class HomeController extends Controller
                         $data->first_payment_price = $paymentCreds['thisPayment']; // add in payment success
                         //     $data->first_payment_paid = $paymentCreds['thisPaymentMade']; // add in payment success
                         // }
-                    } elseif ($paymentCreds['whichpayment'] == 'SUBMISSION') {
-                        $data->submission_payment_paid = $paymentCreds['thisPaymentMade']; // add in payment success
-                        $data->submission_payment_status = $paymentCreds['whatsPaid'];  // add in payment success
+                    } elseif ($paymentCreds['whichpayment'] == 'SUBMISSION' || $paymentCreds['whichpayment'] == 'BALANCE_ON_SUBMISSION') {
+                        // if($paymentCreds['whichpayment'] == 'BALANCE_ON_SUBMISSION'){
+                        //     $data->submission_payment_remaining = 0;
+
+                        // } else {
+                        $data->submission_payment_paid = $data->submission_payment_paid + $paymentCreds['thisPaymentMade']; // add in payment success
+                        $data->submission_payment_status = ($paymentCreds['whichpayment'] == 'BALANCE_ON_SUBMISSION') ? "PAID" : $paymentCreds['whatsPaid'];  // add in payment success
                         if ($data->work_permit_status == "WORK_PERMIT_RECEIVED") {
                             $data->status = 'WAITING_FOR_EMBASSY_APPEARANCE';  // add in payment success
                         }
@@ -1481,13 +1652,19 @@ class HomeController extends Controller
                         $data->submission_payment_remaining = 0;
                         $data->submission_payment_verified_by_accountant = 1;
                         $data->submission_payment_verified_by_cfo = 1;
-                    } elseif ($paymentCreds['whichpayment'] == 'SECOND') {
-                        $data->second_payment_paid = $paymentCreds['thisPaymentMade']; // add in payment success
+                        $data->is_submission_payment_partially_paid = 0; // add in payment success
+                        // }
+                    } elseif ($paymentCreds['whichpayment'] == 'SECOND' || $paymentCreds['whichpayment'] == 'BALANCE_ON_SECOND') {
+                        $data->second_payment_paid = $data->second_payment_paid + $paymentCreds['thisPaymentMade']; // add in payment success
                         $data->second_payment_status = $paymentCreds['whatsPaid']; // add in payment success
-                        $data->status = 'APPLICATION_COMPLETED'; // add in payment success
+                        if ($data->work_permit_status == "WAITING_FOR_EMBASSY_APPEARANCE") {
+                            $data->status = 'WAITING_FOR_VISA';  // add in payment success
+                        }
                         if ($paymentCreds['whatsPaid'] == 'PARTIALLY_PAID') { // add in payment success
                             $data->is_second_payment_partially_paid = 1; // add in payment success
-                        } // add in payment success
+                        } else {
+                            $data->is_second_payment_partially_paid = 0; // add in payment success
+                        }
                         $data->second_payment_remaining = 0;
                         $data->second_payment_verified_by_accountant = 1;
                         $data->second_payment_verified_by_cfo = 1;
@@ -1517,17 +1694,24 @@ class HomeController extends Controller
                         $data->submission_payment_verified_by_cfo = 1;
                         $data->second_payment_verified_by_accountant = 1;
                         $data->second_payment_verified_by_cfo = 1;
+
+                        $data->is_first_payment_partially_paid = 0;
+                        $data->is_submission_payment_partially_paid = 0;
+                        $data->is_second_payment_partially_paid = 0;
+
                         $data->status = 'DOCUMENTS_SUBMITTED'; // add in payment success
                     }
+                    $data->total_remaining = ($data->total_price - $data->total_paid) - $paymentCreds['thisPaymentMade'];
                     $data->total_paid = $data->total_paid + $paymentCreds['thisPaymentMade'];
-                    $data->total_remaining = $data->total_remaining - $paymentCreds['thisPaymentMade'];
+                    // $data->total_remaining = $data->total_remaining - $paymentCreds['thisPaymentMade'];
                     $data->save();
                     $paymentDetails->update([
+                        'bank_id' => 8,
                         'paid_amount' => $paymentCreds['totalpay'],
                         'currency' => $paymentResponse->amount->currencyCode,
                         'bank_reference_no' => $paymentResponse->merchantOrderReference,
                         'transaction_id' => $paymentResponse->_id,
-                        'transaction_mode' => 'CARD'
+                        'transaction_mode' => 'CARD',
                     ]);
                     $monthYear = explode('-', $paymentResponse->paymentMethod->expiry);
 
@@ -2044,6 +2228,8 @@ class HomeController extends Controller
             }
             $paymentDetails =  $paymentDetailsBasedType;
         }
+        return self::getInvoiceDevelop($paymentDetails->payment_type);
+
         // dd($paymentDetails);
         if ($paymentDetails->payment_type == 'Full-Outstanding Payment') {
             $filename = Auth::user()->name . '-' . $paymentDetails->payment_type . '-' . "Invoice.pdf";
@@ -2276,17 +2462,17 @@ class HomeController extends Controller
                     ->withInput();
             }
             $applicationImg = null;
-            $paymentId = $request->paymentId;
+            // $paymentId = $request->paymentId;
 
-            $payment = Payment::find($paymentId);
-            $payment->bank_id = $request->bank;
-            $payment->payment_date = $request->datepayment;
-            $payment->bank_reference_no = $request->bank_reference;
-            $payment->transaction_mode = $request->type_payment;
-            $payment->paid_amount = $request->invoice_amount;
-            $payment->is_sucess_mail_delivered = 1;
-
-            $application = Application::find($payment->application_id);
+            // $payment = Payment::find($paymentId);
+            // $payment->bank_id = $request->bank;
+            // $payment->payment_date = $request->datepayment;
+            // $payment->bank_reference_no = $request->bank_reference;
+            // $payment->transaction_mode = $request->type_payment;
+            // $payment->paid_amount = $request->invoice_amount;
+            // $payment->is_sucess_mail_delivered = 1;
+            Payment::where('application_id', $request->applicationId)->where('payment_type', $request->paymentType)->where('invoice_no', NULL)->where('bank_reference_no', NULL)->delete();
+            $application = Application::find($request->applicationId);
             $application->status = ($application->status) ?? 'DOCUMENT_SUBMITTED'; // add in payment success
 
             $application->application_stage_status = ($application->application_stage_status == 5) ? 5 : 2;
@@ -2295,132 +2481,137 @@ class HomeController extends Controller
                 ->first();
             if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                 $url = null;
-                if ($payment->payment_type == 'FIRST' || $payment->payment_type == "BALANCE_ON_FIRST") {
+                if ($request->paymentType == 'FIRST' || $request->paymentType == "BALANCE_ON_FIRST") {
                     $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_1st_payment, env('MEDIA_DISK'));
-                    if ($payment->payment_type == 'FIRST') {
-                        $application->first_payment_remaining =  $application->first_payment_price - $payment->invoice_amount;
-                    } else if ($payment->payment_type == "BALANCE_ON_FIRST") {
-                        $application->first_payment_remaining =  $application->first_payment_remaining - $payment->invoice_amount;
-                    }
+                    $application->first_payment_txn_mode = ($application->is_first_payment_partially_paid == 1) ? 'BALANCE_TRANSFER' : 'TRANSFER';
                     $application->save();
-                    $applicationImg = Application::find($payment->application_id);
+                    $applicationImg = Application::find($request->applicationId);
                     $url =  $applicationImg->getMedia(Application::$media_collection_main_1st_payment)[0]->getFullUrl();
-                } else if ($payment->payment_type == 'SUBMISSION') {
+                } else if ($request->paymentType == 'SUBMISSION') {
                     $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_submission_payment, env('MEDIA_DISK'));
+                    $application->submission_payment_txn_mode = ($application->is_first_payment_partially_paid == 1) ? 'BALANCE_TRANSFER' : 'TRANSFER';
                     $application->save();
-                    $applicationImg = Application::find($payment->application_id);
+                    $applicationImg = Application::find($request->applicationId);
                     $url =  $applicationImg->getMedia(Application::$media_collection_submission_payment)[0]->getFullUrl();
-                } else if ($payment->payment_type == 'SECOND') {
+                } else if ($request->paymentType == 'SECOND') {
                     $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_2nd_payment, env('MEDIA_DISK'));
+                    $application->second_payment_txn_mode = ($application->is_first_payment_partially_paid == 1) ? 'BALANCE_TRANSFER' : 'TRANSFER';
                     $application->save();
-                    $applicationImg = Application::find($payment->application_id);
+                    $applicationImg = Application::find($request->applicationId);
                     $url =  $applicationImg->getMedia(Application::$media_collection_main_2nd_payment)[0]->getFullUrl();
                 } else {
                     if (in_array($application->first_payment_stage_status, ['PAID', 'PARTIALLY_PAID'])) {
                         $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_submission_payment, env('MEDIA_DISK'));
                         $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_2nd_payment, env('MEDIA_DISK'));
+                        $application->submission_payment_txn_mode = 'TRANSFER';
+                        $application->second_payment_txn_mode = 'TRANSFER';
                         $application->save();
-                        $applicationImg = Application::find($payment->application_id);
+                        $applicationImg = Application::find($request->applicationId);
                         $url =  $applicationImg->getMedia(Application::$media_collection_main_2nd_payment)[0]->getFullUrl();
                     } else {
                         $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_1st_payment, env('MEDIA_DISK'));
                         $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_submission_payment, env('MEDIA_DISK'));
                         $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_2nd_payment, env('MEDIA_DISK'));
+                        $application->first_payment_txn_mode = 'TRANSFER';
+                        $application->submission_payment_txn_mode = 'TRANSFER';
+                        $application->second_payment_txn_mode = 'TRANSFER';
                         $application->save();
-                        $applicationImg = Application::find($payment->application_id);
+                        $applicationImg = Application::find($request->applicationId);
                         $url =  $applicationImg->getMedia(Application::$media_collection_main_2nd_payment)[0]->getFullUrl();
                     }
                 }
 
-                $payment->addMediaFromUrl($url) //starting method
-                    ->preservingOriginal() //middle method
-                    ->toMediaCollection(Payment::$media_collection_payment_receipt, env('MEDIA_DISK'));
+                // $payment->addMediaFromUrl($url) //starting method
+                //     ->preservingOriginal() //middle method
+                //     ->toMediaCollection(Payment::$media_collection_payment_receipt, env('MEDIA_DISK'));
             } else {
                 $url = null;
-                if ($payment->payment_type == 'FIRST' || $payment->payment_type == "BALANCE_ON_FIRST") {
+                if ($request->paymentType == 'FIRST' || $request->paymentType == "BALANCE_ON_FIRST") {
+                    $application->first_payment_txn_mode = ($application->is_first_payment_partially_paid == 1) ? 'BALANCE_TRANSFER' : 'TRANSFER';
                     $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_1st_payment, 'local');
-                    if ($payment->payment_type == 'FIRST') {
-                        $application->first_payment_remaining =  $application->first_payment_price - $payment->invoice_amount;
-                    } else if ($payment->payment_type == "BALANCE_ON_FIRST") {
-                        $application->first_payment_remaining =  $application->first_payment_remaining - $payment->invoice_amount;
-                    }
                     $application->save();
-                    $applicationImg = Application::find($payment->application_id);
+                    $applicationImg = Application::find($request->applicationId);
                     $url =  $applicationImg->getMedia(Application::$media_collection_main_1st_payment)[0]->getPath();
-                } else if ($payment->payment_type == 'SUBMISSION') {
+                } else if ($request->paymentType == 'SUBMISSION') {
+                    $application->submission_payment_txn_mode = ($application->is_submission_payment_partially_paid == 1) ? 'BALANCE_TRANSFER' : 'TRANSFER';
                     $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_submission_payment, 'local');
                     $application->save();
-                    $applicationImg = Application::find($payment->application_id);
+                    $applicationImg = Application::find($request->applicationId);
                     $url =  $applicationImg->getMedia(Application::$media_collection_submission_payment)[0]->getPath();
-                } else if ($payment->payment_type == 'SECOND') {
+                } else if ($request->paymentType == 'SECOND') {
+                    $application->second_payment_txn_mode = ($application->is_second_payment_partially_paid == 1) ? 'BALANCE_TRANSFER' : 'TRANSFER';;
                     $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_2nd_payment, 'local');
                     $application->save();
-                    $applicationImg = Application::find($payment->application_id);
+                    $applicationImg = Application::find($request->applicationId);
                     $url =  $applicationImg->getMedia(Application::$media_collection_main_2nd_payment)[0]->getPath();
                 } else {
                     if (in_array($application->first_payment_stage_status, ['PAID', 'PARTIALLY_PAID'])) {
                         $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_submission_payment, 'local');
+                        $application->submission_payment_txn_mode = 'TRANSFER';
+                        $application->second_payment_txn_mode = 'TRANSFER';
                         $application->save();
                         $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_2nd_payment, 'local');
-                        $applicationImg = Application::find($payment->application_id);
+                        $applicationImg = Application::find($request->applicationId);
                         $url =  $applicationImg->getMedia(Application::$media_collection_submission_payment)[0]->getPath();
                     } else {
+                        $application->first_payment_txn_mode = 'TRANSFER';
+                        $application->submission_payment_txn_mode = 'TRANSFER';
+                        $application->second_payment_txn_mode = 'TRANSFER';
                         $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_1st_payment, 'local');
                         $application->save();
-                        $applicationImg = Application::find($payment->application_id);
+                        $applicationImg = Application::find($request->applicationId);
                         $url =  $applicationImg->getMedia(Application::$media_collection_main_1st_payment)[0]->getPath();
                         $application->addMedia($url)->preservingOriginal()->toMediaCollection(Application::$media_collection_submission_payment, 'local');
                         $application->addMedia($url)->preservingOriginal()->toMediaCollection(Application::$media_collection_main_2nd_payment, 'local');
                     }
                 }
 
-                $payment->addMedia($url) //starting method
-                    ->preservingOriginal() //middle method
-                    ->toMediaCollection(Payment::$media_collection_payment_receipt, 'local');
+                // $payment->addMedia($url) //starting method
+                //     ->preservingOriginal() //middle method
+                //     ->toMediaCollection(Payment::$media_collection_payment_receipt, 'local');
             }
-            if ($payment->payment_type == 'FIRST') {
-                $application->first_payment_paid = $payment->invoice_amount;
-                $application->first_payment_remaining = $application->first_payment_price - $payment->invoice_amount;
-            } else if ($payment->payment_type == 'BALANCE_ON_FIRST') {
-                $application->first_payment_paid = $application->first_payment_paid + $payment->invoice_amount;
-                $application->first_payment_remaining = $application->first_payment_price - ($application->first_payment_paid + $payment->invoice_amount);
-            } elseif ($payment->payment_type == 'SUBMISSION') {
-                $application->submission_payment_paid = $payment->invoice_amount; // add in payment success
-                $application->submission_payment_remaining = $application->submission_payment_price - $payment->invoice_amount;
-            } elseif ($payment->payment_type == 'SECOND') {
-                $application->second_payment_paid = $payment->invoice_amount; // add in payment success
-                $application->second_payment_remaining = $application->second_payment_price - $payment->invoice_amount;
-            } else {
-                $application->first_payment_paid = ($application->first_payment_price) ?? $paysplit->first_payment_price; // add in payment success
-                $application->first_payment_remaining = 0;
-                $application->submission_payment_paid = ($application->submission_payment_price) ?? $paysplit->submission_payment_price; // add in payment success
-                $application->submission_payment_remaining = 0;
-                $application->second_payment_paid = ($application->second_payment_price) ?? $paysplit->second_payment_price; // add in payment success
-                $application->second_payment_remaining = 0;
-            }
-            $application->total_paid = $application->total_paid + $payment->invoice_amount;
-            $application->total_remaining = $application->total_remaining - $payment->invoice_amount;
+            // if ($request->paymentType == 'FIRST') {
+            //     $application->first_payment_paid = $payment->invoice_amount;
+            //     $application->first_payment_remaining = $application->first_payment_price - $payment->invoice_amount;
+            // } else if ($request->paymentType == 'BALANCE_ON_FIRST') {
+            //     $application->first_payment_paid = $application->first_payment_paid + $payment->invoice_amount;
+            //     $application->first_payment_remaining = $application->first_payment_remaining -  $payment->invoice_amount;
+            // } elseif ($request->paymentType == 'SUBMISSION') {
+            //     $application->submission_payment_paid = $payment->invoice_amount; // add in payment success
+            //     $application->submission_payment_remaining = $application->submission_payment_price - $payment->invoice_amount;
+            // } elseif ($request->paymentType == 'SECOND') {
+            //     $application->second_payment_paid = $payment->invoice_amount; // add in payment success
+            //     $application->second_payment_remaining = $application->second_payment_price - $payment->invoice_amount;
+            // } else {
+            //     $application->first_payment_paid = ($application->first_payment_price) ?? $paysplit->first_payment_price; // add in payment success
+            //     $application->first_payment_remaining = 0;
+            //     $application->submission_payment_paid = ($application->submission_payment_price) ?? $paysplit->submission_payment_price; // add in payment success
+            //     $application->submission_payment_remaining = 0;
+            //     $application->second_payment_paid = ($application->second_payment_price) ?? $paysplit->second_payment_price; // add in payment success
+            //     $application->second_payment_remaining = 0;
+            // }
+            // $application->total_paid = $application->total_paid + $payment->invoice_amount;
+            // $application->total_remaining = $application->total_remaining - $payment->invoice_amount;
             $application->save();
-            if ($payment->save()) {
-                $dataArray = [
-                    'title' => 'New payment from ' . ucwords(Auth::user()->name),
-                    'client' => Auth::user()->email,
-                    'status' => 'newPayment',
-                    'body' => 'The applicant ' . Auth::user()->email . ' uploaded payment receipt. please verify!'
-                ];
-                if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
-                    Mail::to(env('FINANCE_ACCOUNTANT'))->send(new NotifyMail($dataArray));
-                } else {
-                    Mail::to('shamshera.hamza@pwggroup.pl')->send(new NotifyMail($dataArray));
-                }
-
-                $id = $request->productId;
-                return view('user.payment-confirm', compact('id'));
+            // if ($payment->save()) {
+            $dataArray = [
+                'title' => 'New payment from ' . ucwords(Auth::user()->name),
+                'client' => Auth::user()->email,
+                'status' => 'newPayment',
+                'body' => 'The applicant ' . Auth::user()->email . ' uploaded payment receipt. please verify!'
+            ];
+            if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+                Mail::to(env('FINANCE_ACCOUNTANT'))->send(new NotifyMail($dataArray));
             } else {
-                return view('user.payment-confirm', compact('id'))->with('error', 'Something went wrong! Please try again');
+                Mail::to('shamshera.hamza@pwggroup.pl')->send(new NotifyMail($dataArray));
             }
+
+            $id = $request->productId;
+            return view('user.payment-confirm', compact('id'));
+            // } else {
+            //     return view('user.payment-confirm', compact('id'))->with('error', 'Something went wrong! Please try again');
+            // }
         } catch (Exception $e) {
-            dd($e);
             return redirect()->back()->with('error', $e->getMessage());
         }
     }

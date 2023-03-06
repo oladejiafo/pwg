@@ -43,11 +43,13 @@
                                     </div>
                                     <div class="col-md-3" align="left">
                                         <p>
-                                         @if($paid->first_payment_status =='PAID' && $paid->first_payment_price == $paid->first_payment_paid)
+                                         {{-- @if($paid->first_payment_status =='PAID' && $paid->first_payment_price == $paid->first_payment_paid) --}}
+                                         @if($paid->first_payment_status =='PAID' && $paid->first_payment_remaining == 0)
+
                                             Status PAID
                                          @elseif($paid->first_payment_status =='PARTIALLY_PAID')
                                             Status PAID PARTIAL
-                                         @elseif($paid->first_payment_status == 'PENDING' && $paid->first_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && ($paym->payment_type=="FIRST" || $paym->payment_type == "BALANCE_ON_FIRST")))
+                                         @elseif($paid->first_payment_status == 'PENDING' && $paid->first_payment_verified_by_cfo == 0 && $paid->first_payment_txn_mode == "TRANSFER")
                                             Status Being Verified
                                          @else
                                             Status PENDING
@@ -57,7 +59,9 @@
                                     </div>
                                     <div class="col-md-6" align="right">
                                         <p>
-                                        @if($paid->first_payment_status =='PAID' && $paid->first_payment_price == $paid->first_payment_paid)
+                                        {{-- @if($paid->first_payment_status =='PAID' && $paid->first_payment_price == $paid->first_payment_paid) --}}
+                                        @if($paid->first_payment_status =='PAID' && $paid->first_payment_remaining == 0)
+
 
                                             <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="{{ url('/get/invoice/FIRST')}}">Get Invoice</a>
                                        @else
@@ -66,7 +70,7 @@
                                         {{-- @elseif($paid->first_payment_status == 'PENDING' && $paid->first_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && ($paym->payment_type=="FIRST" || $paym->payment_type == "BALANCE_ON_FIRST")))
                                             <button class="btn btn-secondary" style="font-size:18px;color:#000;font-weight:700" disabled>Being Verified..</button> --}}
                                         @elseif(isset($paym))
-                                            @if(($paid->first_payment_status == 'PENDING') && $paid->first_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && ($paym->payment_type=="FIRST" || $paym->payment_type == "BALANCE_ON_FIRST")) || ($paym->payment_type == "BALANCE_ON_FIRST" && $paid->first_payment_status == 'PARTIALLY_PAID'  && (isset($paym->transaction_mode) && $paid->first_payment_verified_by_cfo == 0)))
+                                            @if(($paid->first_payment_status == 'PENDING') && $paid->first_payment_verified_by_cfo == 0 && $paid->first_payment_txn_mode == 'TRANSFER')
                                                 <button class="btn btn-secondary" style="font-size:18px;color:#000;font-weight:700" disabled>Being Verified..</button>
                                             @else 
                                             <form action="{{ route('payment', $prod->id) }}"
@@ -99,9 +103,11 @@
                                     </div>
                                     <div class="col-md-3" align="left">
                                         <p>
-                                         @if($paid->submission_payment_status =='PAID' && $paid->submission_payment_price == $paid->submission_payment_paid)
+                                         {{-- @if($paid->submission_payment_status =='PAID' && $paid->submission_payment_price == $paid->submission_payment_paid) --}}
+                                         @if($paid->submission_payment_status =='PAID' && $paid->submission_payment_remaining == 0)
+
                                             Status PAID
-                                        @elseif($paid->submission_payment_status == 'PENDING' && $paid->submission_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && $paym->payment_type=="SUBMISSION"))
+                                        @elseif($paid->submission_payment_status == 'PENDING' && $paid->submission_payment_verified_by_cfo == 0 && $paid->submission_payment_txn_mode == 'TRANSFER')
                                             Status Being Verified
                                         @else
                                             Status PENDING
@@ -111,7 +117,9 @@
                                     </div>
                                     <div class="col-md-6" align="right">
                                         <p>
-                                            @if($paid->submission_payment_status =='PAID' && $paid->submission_payment_price == $paid->submission_payment_paid)
+                                            {{-- @if($paid->submission_payment_status =='PAID' && $paid->submission_payment_price == $paid->submission_payment_paid) --}}
+                                            @if($paid->submission_payment_status =='PAID' && $paid->submission_payment_remaining == 0)
+
                                                     <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="{{ url('/get/invoice/SECOND')}}">Get Invoice</a>
                                             @else
                                                 @if($paid->application_stage_status != 5)
@@ -149,9 +157,11 @@
                                     </div>
                                     <div class="col-md-3" align="left">
                                         <p>
-                                         @if($paid->second_payment_status =='PAID'  && $paid->second_payment_price == $paid->second_payment_paid)
+                                         {{-- @if($paid->second_payment_status =='PAID'  && $paid->second_payment_price == $paid->second_payment_paid) --}}
+                                         @if($paid->second_payment_status =='PAID'  && $paid->second_payment_remaining == 0)
+
                                             Status PAID
-                                        @elseif($paid->second_payment_status == 'PENDING' && $paid->second_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && $paym->payment_type=="SECOND"))
+                                        @elseif($paid->second_payment_status == 'PENDING' && $paid->second_payment_verified_by_cfo == 0 && $paid->second_payment_txn_mode == 'TRANSFER')
                                             Status Being Verified
                                         @else
                                             Status PENDING
@@ -162,7 +172,9 @@
                                     <div class="col-md-6" align="right">
                                         <p>
 
-                                        @if($paid->second_payment_status =='PAID' && $paid->second_payment_price == $paid->second_payment_paid)
+                                        {{-- @if($paid->second_payment_status =='PAID' && $paid->second_payment_price == $paid->second_payment_paid) --}}
+                                        @if($paid->second_payment_status =='PAID' && $paid->second_payment_remaining == 0)
+
                                             <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="{{ url('/get/invoice/SECOND')}}">Get Invoice</a>
                                        @else
                                         @if($paid->application_stage_status != 5)
@@ -199,10 +211,12 @@
                     <div class="row" style="font-size:18px">
                         <div style="align-items: left; align:left; float: left; padding-left:40px;padding-right:40px" class="col-12">Your next payment is <b>
 
-                          @if($paid->submission_payment_status =='PAID' && $paid->submission_payment_price == $paid->submission_payment_paid)                    
+                          {{-- @if($paid->submission_payment_status =='PAID' && $paid->submission_payment_price == $paid->submission_payment_paid)                     --}}
+                          @if($paid->submission_payment_status =='PAID' && $paid->submission_payment_remaining = 0)                    
                             {{ $pays->second_payment_sub_total }} AED
                             </b>, to be charged for Third Payment.
-                          @elseif($paid->first_payment_status =='PAID' && $paid->first_payment_price == $paid->first_payment_paid)
+                          {{-- @elseif($paid->first_payment_status =='PAID' && $paid->first_payment_price == $paid->first_payment_paid) --}}
+                          @elseif($paid->first_payment_status =='PAID' && $paid->first_payment_remaining == 0)
                             {{ $pays->submission_payment_sub_total }} AED
                             </b>, to be charged for Second Payment.
                           @elseif($paid->first_payment_status !='PAID' && $paid->submission_payment_status !='PAID')
