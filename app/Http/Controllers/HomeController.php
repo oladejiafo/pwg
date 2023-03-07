@@ -2219,7 +2219,6 @@ class HomeController extends Controller
                 ->where('payment_type', $ptype)
                 ->orderBy('id', 'DESC')
                 ->first();
-            // dd($apply->id);
             if ($paymentDetailsBasedType) {
             } else {
                 $paymentDetailsBasedType  =  Payment::where('application_id', $apply->id)
@@ -2228,9 +2227,7 @@ class HomeController extends Controller
             }
             $paymentDetails =  $paymentDetailsBasedType;
         }
-        return self::getInvoiceDevelop($paymentDetails->payment_type);
 
-        // dd($paymentDetails);
         if ($paymentDetails->payment_type == 'Full-Outstanding Payment') {
             $filename = Auth::user()->name . '-' . $paymentDetails->payment_type . '-' . "Invoice.pdf";
             $invoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);

@@ -81,7 +81,8 @@
         @endphp
     @endif
 @endif
-@if ($paid->first_payment_remaining > 0 && strtoupper($paid->first_payment_status) != 'PAID')
+{{-- @if ($paid->first_payment_remaining > 0 && strtoupper($paid->first_payment_status) != 'PAID') --}}
+@if ($paid->first_payment_paid > 0 && $paid->first_payment_remaining > 0 && strtoupper($paid->first_payment_status) == 'PARTIALLY_PAID')
     @php
         $type = 'Pay';
         $color = '#800000';
@@ -94,7 +95,7 @@
             $msg = ' You have an outstanding payment of ' . number_format($paid->first_payment_remaining, 2) . ' AED on your first payment, due in ' . $dueDay . ' days ';
         } elseif ($dueDay == 0) {
             $msg = ' You have an outstanding payment of ' . number_format($paid->first_payment_remaining, 2) . ' AED on your first payment, due today! ';
-        } elseif ($dueDay < 0) {
+        } elseif ($dueDay < 0 && $dueDay != null) {
             $msg = ' You have an outstanding payment of ' . number_format($paid->first_payment_remaining, 2) . ' AED on your first payment. It was due ' .( -1 * $dueDay) . ' days ago';
         } else {
             $msg = ' You have an outstanding payment of ' . number_format($paid->first_payment_remaining, 2) . ' AED on your first payment.';
@@ -127,7 +128,7 @@
             @if (isset($type) && $type == 'Pay')
                 <span align="right" class="col-md-2 col-sm-12" style="display:inline-block;float: right">
 
-                @if($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0)
+                @if($paid->first_payment_paid > 0 && $paid->first_payment_status != "PAID" && $paid->is_first_payment_partially_paid == 0)
                     <button class="toastrDefaultError"  style="border-radius: 10px;background-color:#800000; color:#fff; border-color:#fff"
                     onclick="toastr.error('Your previous payment is being verified!')">Pay
                     Now</button>
@@ -1840,7 +1841,7 @@
                     <button class="btn btn-secondary toastrDefaultError"
                         style="border-width:thin; width:250px; height:60px; font-size:32px; font-weight:bold"
                         onclick="toastr.error('Your application process not completed!')">Pay All Now</button>
-                @elseif(($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0) ) //|| ($paid->submission_payment_status != "PAID" && $paid->submission_payment_verified_by_cfo == 0)
+                @elseif(($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0)  || ($paid->submission_payment_status != "PAID" && $paid->submission_payment_verified_by_cfo == 0))
                     <button class="btn btn-secondary toastrDefaultError"
                         style="border-width:thin; width:250px; height:60px; font-size:32px; font-weight:bold" 
                         onclick="toastr.error('Your previous payment being verified!')">
