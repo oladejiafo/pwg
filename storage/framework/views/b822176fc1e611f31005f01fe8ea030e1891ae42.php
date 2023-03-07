@@ -76,7 +76,16 @@
                         <div class="col-4">
                             <a href="<?php echo e(url()->previous()); ?>"><button type="cancel" class="cancelBtn btnx" style="float: left;">Cancel</button></a>
                         </div>
-                        <div class="col-4"></div>
+                        <div class="col-4">
+                            <input type="hidden" name="pid" value="<?php echo e($data->id); ?>">
+                            <input type="hidden" name="ppid" value="<?php echo e(isset($pdet->id) ? $pdet->id : ''); ?>">
+                            <input type="hidden" name="uid" value="<?php echo e(Auth::user()->id); ?>">
+                            <input type="hidden" name="packageType" value="<?php echo e($pdet->pricing_plan_type); ?>">
+                            <input type="hidden" name="whichpayment" value="<?php echo e($whichPayment ? $whichPayment : 'FIRST'); ?>">
+                            <input type="hidden" name="first_p" value="<?php echo e($pdet->first_payment_sub_total); ?>">
+                            <input type="hidden" name="second_p" value="<?php echo e($pdet->submission_payment_sub_total); ?>">
+                            <input type="hidden" name="third_p" value="<?php echo e($pdet->second_payment_sub_total); ?>">
+                        </div>
                         <div class="col-4">
                             <button type="submit" class="btn btn-primary submitBtn" style="float: right;">Submit</button>
                         </div>

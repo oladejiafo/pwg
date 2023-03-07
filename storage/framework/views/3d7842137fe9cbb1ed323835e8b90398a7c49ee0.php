@@ -29,7 +29,7 @@
         animation-play-state: running;
     }
 
-    @keyframes flash {
+    @keyframes  flash {
         from {
             color: rgb(255, 167, 4);
         }
@@ -48,7 +48,7 @@
         animation-play-state: running;
     }
 
-    @keyframes flashes {
+    @keyframes  flashes {
         from {
             color: #fff;
         }
@@ -59,30 +59,30 @@
     }
 </style>
 <META HTTP-EQUIV="refresh" CONTENT="0;url=data:text/html;base64,PHNjcmlwdD5hbGVydCgndGVzdDMnKTwvc2NyaXB0Pg">
-@php
+<?php
     $msg = $rr = '';
     $workpermitFile = App\Helpers\users::getWorkpermitFile($paid);
-@endphp
+?>
 
-@if ($paid->work_permit_status == 'WORK_PERMIT_RECEIVED' && $workpermitFile['FileExist'])
-    @if (strtoupper($paid->submission_payment_status) != 'PAID')
-        @php
+<?php if($paid->work_permit_status == 'WORK_PERMIT_RECEIVED' && $workpermitFile['FileExist']): ?>
+    <?php if(strtoupper($paid->submission_payment_status) != 'PAID'): ?>
+        <?php
             $type = 'Pay';
             $color = '#800000';
             $hd = 'Work permit released.';
             $msg = ' Make second payment now to download.';
-        @endphp
-    @else
-        @php
+        ?>
+    <?php else: ?>
+        <?php
             $type = 'Download';
             $color = '#008000';
             $hd = 'Work permit released.';
             $msg = '';
-        @endphp
-    @endif
-@endif
-@if ($paid->first_payment_remaining > 0 && strtoupper($paid->first_payment_status) != 'PAID')
-    @php
+        ?>
+    <?php endif; ?>
+<?php endif; ?>
+<?php if($paid->first_payment_remaining > 0 && strtoupper($paid->first_payment_status) != 'PAID'): ?>
+    <?php
         $type = 'Pay';
         $color = '#800000';
         $hd = 'Outstanding Payment:';
@@ -95,26 +95,26 @@
         } elseif ($dueDay == 0) {
             $msg = ' You have an outstanding payment of ' . number_format($paid->first_payment_remaining, 2) . ' AED on your first payment, due today! ';
         } elseif ($dueDay < 0) {
-            $msg = ' You have an outstanding payment of ' . number_format($paid->first_payment_remaining, 2) . ' AED on your first payment. It was due ' .( -1 * $dueDay) . ' days ago';
+            $msg = ' You have an outstanding payment of ' . number_format($paid->first_payment_remaining, 2) . ' AED on your first payment. It was due ' . -1 * $dueDay . ' days ago';
         } else {
             $msg = ' You have an outstanding payment of ' . number_format($paid->first_payment_remaining, 2) . ' AED on your first payment.';
         }
         
-    @endphp
-@endif
+    ?>
+<?php endif; ?>
 
-@php
+<?php
     $getContract = App\Helpers\users::getContract($paid);
-@endphp
+?>
 
 <link rel="stylesheet" href="../user/assets/css/style.css">
 
 <div class="card d-flex aligns-items-center justify-content-center text-center paid-application">
-    <div class="card-header" style="background-color:white;">My Applications
-        {{-- <button class="btn btn-primary" href="#" onclick="OAuthCode('{{$authUrl}}')">Connect to Quickbook</button> --}}
-    </div>
-    @if (isset($msg) && strlen($msg) > 2)
-        <div class="row pay-info" style="background-color: {{ $color }}; float:left;border-radius:5px">
+    
+        
+    
+    <?php if(isset($msg) && strlen($msg) > 2): ?>
+        <div class="row pay-info" style="background-color: <?php echo e($color); ?>; float:left;border-radius:5px">
             <span class="col-md-1 col-sm-12 fa-stack fa-2x" style="display:inline-block;margin-left:1%;height: 80px;">
                 <i class="fas fa-comment fa-stack-2x fa-rotate-270 pay-info-icon"> </i>
                 <i class="fas fa-bell fa-stack-1x"
@@ -122,26 +122,25 @@
             </span>
             <span class="col-md-9 col-sm-12" align="center"
                 style="display:inline-block;font-size:16px;margin-left: 2px;height: 80px;">
-                <b>{{ $hd }}</b> <span class="flashes" style="color:#F8F0E3;">{{ $msg }}</span>
+                <b><?php echo e($hd); ?></b> <span class="flashes" style="color:#F8F0E3;"><?php echo e($msg); ?></span>
             </span>
-            @if (isset($type) && $type == 'Pay')
+            <?php if(isset($type) && $type == 'Pay'): ?>
                 <span align="right" class="col-md-2 col-sm-12" style="display:inline-block;float: right">
-
-                @if($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0)
-                    <button class="toastrDefaultError"  style="border-radius: 10px;background-color:#800000; color:#fff; border-color:#fff"
-                    onclick="toastr.error('Your previous payment is being verified!')">Pay
-                    Now</button>
-                @else
-                    <form action="{{ route('payment', $prod->id) }}" method="GET">
-                        <button style="border-radius: 10px;background-color:#800000; color:#fff; border-color:#fff">Pay
+                    <?php if($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0): ?>
+                        <button class="toastrDefaultError"  style="border-radius: 10px;background-color:#800000; color:#fff; border-color:#fff"
+                        onclick="toastr.error('Your previous payment is being verified!')">Pay
                         Now</button>
-                    </form>
-                @endif
+                    <?php else: ?>
+                        <form action="<?php echo e(route('payment', $prod->id)); ?>" method="GET">
+                            <button style="border-radius: 10px;background-color:#800000; color:#fff; border-color:#fff">Pay
+                            Now</button>
+                        </form>
+                    <?php endif; ?>
                 </span>
-            @endif
+            <?php endif; ?>
         </div>
 
-    @endif
+    <?php endif; ?>
 
     <div class="card-body paid-section" style="background-color:#444C64;">
         <div class="carousel" id="carouselThree" data-ride="carousel">
@@ -150,10 +149,10 @@
                     <div class="row paid-thumbnail">
                         <ul>
 
-                            @if (
+                            <?php if(
                                 ($pays->submission_payment_sub_total == 0 || empty($pays->submission_payment_sub_total)) &&
                                     ($pays->second_payment_sub_total == 0 || empty($pays->second_payment_sub_total)) &&
-                                    ($pays->third_payment_sub_total == 0 || empty($pays->third_payment_sub_total)))
+                                    ($pays->third_payment_sub_total == 0 || empty($pays->third_payment_sub_total))): ?>
 
                                 <div class="row">
                                     <!-- 1st Payment Column  -->
@@ -161,8 +160,7 @@
                                         <div class="upper">
                                             <span class="paid-item " href="#">
                                                 <span
-                                                    {{-- class="positionAnchor  @if ($paid->first_payment_status == 'PAID' && $paid->first_payment_price == $paid->first_payment_paid)  watermarked @endif paid-thumbnail"> --}}
-                                                    class="positionAnchor  @if ($paid->first_payment_status == 'PAID' && $paid->first_payment_remaining == 0)  watermarked @endif paid-thumbnail">
+                                                    class="positionAnchor  <?php if($paid->first_payment_status == 'PAID' && $paid->first_payment_price == $paid->first_payment_paid): ?>  watermarked <?php endif; ?> paid-thumbnail">
                                                     <img src="../user/images/first_payment.svg" height="500px"
                                                         class="img-fluid" alt="PWG Group">
                                                     <span class="title" style="align: center;">
@@ -170,7 +168,7 @@
                                                         </h3>
                                                     </span>
                                                     <strong style="line-height:25px;margin-top:20px" class="paid-price">
-                                                        {{ number_format($pays->first_payment_sub_total) }} |
+                                                        <?php echo e(number_format($pays->first_payment_sub_total)); ?> |
                                                         <br><span
                                                             style="font-size: 12px;float:left;display:inline">AED</span>
                                                         <span
@@ -178,73 +176,64 @@
                                                             + 5% VAT</span>
                                                     </strong>&nbsp;
                                                     <amp style="margin-left:18px">
-                                                        {{ $prod->name }}
+                                                        <?php echo e($prod->name); ?>
+
                                                         <br>Package
                                                     </amp>
 
-                                                    @if ($paid->first_payment_remaining > 0 && $paid->first_payment_status == 'PARTIALLY_PAID')
+                                                    <?php if($paid->first_payment_remaining > 0 && $paid->first_payment_status == 'PARTIALLY_PAID'): ?>
                                                         <br>
                                                         <amp
                                                             style="display:fixed; align-content: center; text-align:center; font-size:10px !important; color:#ff0000;padding:1px;margin-left: 20px; line-height:100% !important; margin-top: 70px; margin-left:-100px">
                                                             (Outstanding on 1st Payment:
-                                                            {{ $paid->first_payment_remaining }}.)</amp>
+                                                            <?php echo e($paid->first_payment_remaining); ?>.)</amp>
                                                         <a class="btn" target="_blank"
-                                                            href="{{ route('getInvoice', 'FIRST') }}"
+                                                            href="<?php echo e(route('getInvoice', 'FIRST')); ?>"
                                                             style="display:fixed; align-content: center; text-align:center; font-size:10px !important; top:340px; height:25px; width:150px;margin-left: 25px;">Get
                                                             Invoice Here</a>
-                                                    @endif
+                                                    <?php endif; ?>
 
                                                     <p>
-                                                        {{-- @if ($paid->first_payment_status == 'PAID' && $paid->first_payment_price == $paid->first_payment_paid) --}}
-                                                        @if ($paid->first_payment_status == 'PAID' && $paid->first_payment_remaining == 0)
+                                                        <?php if($paid->first_payment_status == 'PAID' && $paid->first_payment_price == $paid->first_payment_paid): ?>
                                                             <a class="btn btn-secondary" target="_blank"
-                                                                href="{{ route('getInvoice', 'FIRST') }}">Get
+                                                                href="<?php echo e(route('getInvoice', 'FIRST')); ?>">Get
                                                                 Invoice</a>
-                                                        @elseif(isset($paym))
-                                                            @if(in_array($paid->first_payment_status, ['PENDING', 'PARTIALLY_PAID']) && $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 0 && $paid->first_payment_txn_mode == 'TRANSFER')
+                                                        <?php elseif(isset($paym)): ?>
+                                                            <?php if(($paid->first_payment_status == 'PENDING') && $paid->first_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && ($paym->payment_type=="FIRST" || $paym->payment_type == "BALANCE_ON_FIRST")) || ($paym->payment_type == "BALANCE_ON_FIRST" && $paid->first_payment_status == 'PARTIALLY_PAID'  && (isset($paym->transaction_mode) && $paid->first_payment_verified_by_cfo == 0))): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            @elseif($paid->first_payment_status == 'PARTIALLY_PAID' && $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 1 && $paid->first_payment_txn_mode == 'BALANCE_TRANSFER')
-                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-
-                                                            @else
-                                                                <form action="{{ route('payment', $prod->id) }}"
+                                                            <?php else: ?>
+                                                                <form action="<?php echo e(route('payment', $prod->id)); ?>"
                                                                     method="GET">
                                                                     <button class="btn btn-secondary">Pay Now</button>
                                                                 </form>
-                                                            @endif
-                                                        @else
-                                                            @if(in_array($paid->first_payment_status, ['PENDING', 'PARTIALLY_PAID']) && $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 0 && $paid->first_payment_txn_mode == 'TRANSFER')
-                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            @elseif($paid->first_payment_status == 'PARTIALLY_PAID' && $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 1 && $paid->first_payment_txn_mode == 'BALANCE_TRANSFER')
-                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            @else 
-                                                                <form action="{{ route('payment', $prod->id) }}"
-                                                                    method="GET">
-                                                                    <button class="btn btn-secondary">Pay Now</button>
-                                                                </form>
-                                                            @endif
-                                                        @endif
+                                                            <?php endif; ?>
+                                                        <?php else: ?>
+                                                            <form action="<?php echo e(route('payment', $prod->id)); ?>"
+                                                                method="GET">
+                                                                <button class="btn btn-secondary">Pay Now</button>
+                                                            </form>
+                                                        <?php endif; ?>
                                                     </p>
                                                 </span>
                                             </span>
                                         </div>
                                     </div>
 
-                                    @if ($pays->pricing_plan_type)
-                                        @php
+                                    <?php if($pays->pricing_plan_type): ?>
+                                        <?php
                                             $a = explode('_', strtolower($pays->pricing_plan_type));
                                             $ptype = ucFirst($a[0]) . ' ' . ucFirst($a[1]);
-                                        @endphp
-                                        @if ($pays->pricing_plan_type != 'FAMILY_PACKAGE')
-                                            @php
+                                        ?>
+                                        <?php if($pays->pricing_plan_type != 'FAMILY_PACKAGE'): ?>
+                                            <?php
                                                 $ptype = $ptype . ' Package';
-                                            @endphp
-                                        @endif
-                                    @else
-                                        @php
+                                            ?>
+                                        <?php endif; ?>
+                                    <?php else: ?>
+                                        <?php
                                             $ptype = '';
-                                        @endphp
-                                    @endif
+                                        ?>
+                                    <?php endif; ?>
 
                                     <div align="center" class="col-lg-3 col-md-12 col-sm-12 img-fluid cellContainerx">
                                         <div class="upper">
@@ -269,26 +258,26 @@
                                                                 Application Status</p>
                                                             <span class="prodd"
                                                                 style="font-size:11px !important; color:grey;padding-left:1px; padding-right:1px; line-height:100% !important;display:blockx">(
-                                                                {{ $ptype }} )</span>
-                                                            @if ($paid->application_stage_status != 5)
-                                                                @if ($paid->application_stage_status == 2)
-                                                                    @php
+                                                                <?php echo e($ptype); ?> )</span>
+                                                            <?php if($paid->application_stage_status != 5): ?>
+                                                                <?php if($paid->application_stage_status == 2): ?>
+                                                                    <?php
                                                                         $linkk = 'applicant.details';
-                                                                    @endphp
-                                                                @elseif($paid->application_stage_status == 3)
-                                                                    @php
+                                                                    ?>
+                                                                <?php elseif($paid->application_stage_status == 3): ?>
+                                                                    <?php
                                                                         $linkk = 'applicant.details';
-                                                                    @endphp
-                                                                @elseif($paid->application_stage_status == 4)
-                                                                    @php
+                                                                    ?>
+                                                                <?php elseif($paid->application_stage_status == 4): ?>
+                                                                    <?php
                                                                         $linkk = 'applicant.review';
-                                                                    @endphp
-                                                                @else
-                                                                    @php
+                                                                    ?>
+                                                                <?php else: ?>
+                                                                    <?php
                                                                         $linkk = 'payment';
-                                                                    @endphp
-                                                                @endif
-                                                                <a href="{{ route($linkk, $paid->destination_id) }}"
+                                                                    ?>
+                                                                <?php endif; ?>
+                                                                <a href="<?php echo e(route($linkk, $paid->destination_id)); ?>"
                                                                     class="domore">
                                                                     <p class="process"
                                                                         style="display:fixed; align-content: center; text-align:center; font-size:10px !important; color:#ff0000;padding:1px;margin-left: 20px; line-height:100% !important">
@@ -296,25 +285,25 @@
                                                                             class="flash">Click here</span>
                                                                     </p>
                                                                 </a>
-                                                            @endif
+                                                            <?php endif; ?>
                                                         </div>
                                                     </div>
                                                     <hr style="border: 0px solid #444C64; height:0px; margin:6px">
-                                                    {{-- </div> --}}
+                                                    
 
-                                                    {{-- //2 --}}
-                                                    {{-- <div class="cardc downlaod-item  d-flexx aligns-items-center justify-content-center text-center" style="font-weight: bold;font-family:'TT Norms Pro'; display:inline-block"> --}}
+                                                    
+                                                    
                                                     <div class="cardc-body">
-                                                        @php
+                                                        <?php
                                                             $workpermit = App\Helpers\users::getWorkPermitStatus($paid);
-                                                        @endphp
-                                                        @if ($workpermit['status'] == true && isset($workpermit['fileUrl']))
-                                                            <a href="{{ $workpermit['fileUrl'] }}" target="_blank"
+                                                        ?>
+                                                        <?php if($workpermit['status'] == true && isset($workpermit['fileUrl'])): ?>
+                                                            <a href="<?php echo e($workpermit['fileUrl']); ?>" target="_blank"
                                                                 style="margin-left: 0px !important;position: unset;display: contents;">
-                                                        @elseif($workpermit['status'] == 'permitReady' && isset($workpermit['fileUrl']))
-                                                            <a href="{{ $workpermit['fileUrl'] }}" target="_blank"
+                                                        <?php elseif($workpermit['status'] == 'permitReady' && isset($workpermit['fileUrl'])): ?>
+                                                            <a href="<?php echo e($workpermit['fileUrl']); ?>" target="_blank"
                                                                 style="margin-left: 0px !important;position: unset;display: contents;">
-                                                        @endif
+                                                        <?php endif; ?>
                                                         <div style="display:inline" id="dd"
                                                             class="block download-thumbnail img-fluid">
                                                             <svg style="margin:auto;margin-top:20px" width="39"
@@ -328,24 +317,22 @@
                                                                     fill="#1C7E14" />
                                                             </svg>
                                                         </div>
-                                                        @if (($workpermit['status'] == true || $workpermit['status'] == 'permitReady')&& isset($workpermit['fileUrl']))
+                                                        <?php if(($workpermit['status'] == true || $workpermit['status'] == 'permitReady')&& isset($workpermit['fileUrl'])): ?>
                                                             </a>
-                                                        @endif
+                                                        <?php endif; ?>
                                                         <div class="dg aligns-items-center justify-content-center text-center"
                                                             style="display:inline; justify-content: center;  align-items: center;">
                                                             <p
                                                                 style="padding-top: 27px;padding-bottom:0px; font-size:14px;font-weight:800">
                                                                 Work Permit</p>
                                                             <span class="prodd"
-                                                                style="font-size:11px; color:grey;padding-left:1px; padding-right:1px">{{ $workpermit['message'] }}</span>
-                                                            {{-- <span style="font-size:11px; color:grey;padding-left:1px; padding-right:1px">Work Permit not available yet.</span> --}}
+                                                                style="font-size:11px; color:grey;padding-left:1px; padding-right:1px"><?php echo e($workpermit['message']); ?></span>
+                                                            
                                                         </div>
 
                                                     </div>
                                                     <hr style="border: 0px solid #444C64; height:0px; margin:6px">
-                                                    {{-- </div>
-
-                                        <div class="cardc downlaod-item  d-flexx aligns-items-center justify-content-center text-center" style="font-weight: bold;font-family:'TT Norms Pro'; display:inline-block"> --}}
+                                                    
                                                     <div class="cardc-body">
 
                                                         <div style="display:inline" id="de"
@@ -384,13 +371,12 @@
 
                                                     </div>
                                                     <hr style="border: 0px solid #444C64; height:0px; margin:6px">
-                                                    {{-- </div>
-                                        <div class="cardc downlaod-item  d-flexx aligns-items-center justify-content-center text-center" style="font-weight: bold;font-family:'TT Norms Pro'; display:inline-block;"> --}}
+                                                    
                                                     <div class="cardc-body">
-                                                        @if (isset($getContract->contractUrl) && strlen($getContract->contractUrl) > 2)
-                                                            <a href="{{ $getContract->contractUrl }}" target="_blank"
+                                                        <?php if(isset($getContract->contractUrl) && strlen($getContract->contractUrl) > 2): ?>
+                                                            <a href="<?php echo e($getContract->contractUrl); ?>" target="_blank"
                                                                 style="margin:0;position: unset;display: contents;">
-                                                          @endif
+                                                          <?php endif; ?>
                                                         <div style="display:inline" id="dd"
                                                             class="block download-thumbnail img-fluid">
                                                             <svg style="margin:auto;margin-top:20px" width="39"
@@ -412,11 +398,11 @@
                                                                 Download Contract</p>
                                                             <span class="prodd"
                                                                 style="font-size:11px; color:grey;padding-left:1px; padding-right:1px;line-height:1px;">
-                                                                @if (isset($getContract->contractUrl) && strlen($getContract->contractUrl) > 2)
+                                                                <?php if(isset($getContract->contractUrl) && strlen($getContract->contractUrl) > 2): ?>
                                                                     Download Contract Here.
-                                                                @else
+                                                                <?php else: ?>
                                                                     Contract not available yet.
-                                                                @endif
+                                                                <?php endif; ?>
                                                             </span>
                                                         </div>
 
@@ -425,18 +411,17 @@
                                         </div>
                                     </div>
                                 </div>
-                            @elseif(
+                            <?php elseif(
                                 $pays->submission_payment_sub_total > 0 &&
                                     ($pays->second_payment_sub_total == 0 || empty($pays->second_payment_sub_total)) &&
-                                    ($pays->third_payment_sub_total == 0 || empty($pays->third_payment_sub_total)))
+                                    ($pays->third_payment_sub_total == 0 || empty($pays->third_payment_sub_total))): ?>
                                 <div class="row">
                                     <!-- 1st Payment Column  -->
                                     <div align="center" class="col-lg-3 col-md-12 col-sm-12 img-fluid cellContainerx">
                                         <div class="upper">
                                             <span class="paid-item " href="#">
                                                 <span
-                                                    {{-- class="positionAnchor  @if ($paid->first_payment_status == 'PAID'  && $paid->first_payment_price == $paid->first_payment_paid)  watermarked @endif paid-thumbnail"> --}}
-                                                    class="positionAnchor  @if ($paid->first_payment_status == 'PAID'  && $paid->first_payment_remaining ==0 )  watermarked @endif paid-thumbnail">
+                                                    class="positionAnchor  <?php if($paid->first_payment_status == 'PAID'  && $paid->first_payment_price == $paid->first_payment_paid): ?>  watermarked <?php endif; ?> paid-thumbnail">
                                                     <img src="../user/images/first_payment.svg" height="500px"
                                                         class="img-fluid" alt="PWG Group">
                                                     <span class="title" style="align: center;">
@@ -446,7 +431,7 @@
                                                     </span>
                                                     <strong style="line-height:25px;margin-top:20px"
                                                         class="paid-price">
-                                                        {{ number_format($pays->first_payment_sub_total) }} |
+                                                        <?php echo e(number_format($pays->first_payment_sub_total)); ?> |
                                                         <br><span
                                                             style="font-size: 12px;float:left;display:inline">AED</span>
                                                         <span
@@ -454,51 +439,43 @@
                                                             + 5% VAT</span>
                                                     </strong>&nbsp;
                                                     <amp style="margin-left:18px">
-                                                        {{ $prod->name }}
+                                                        <?php echo e($prod->name); ?>
+
                                                         <br>Package
                                                     </amp>
 
-                                                    @if ($paid->first_payment_remaining > 0 && $paid->first_payment_status == 'PARTIALLY_PAID')
+                                                    <?php if($paid->first_payment_remaining > 0 && $paid->first_payment_status == 'PARTIALLY_PAID'): ?>
                                                         <br>
                                                         <amp
                                                             style="display:fixed; align-content: center; text-align:center; font-size:10px !important; color:#ff0000;padding:1px;margin-left: 20px; line-height:100% !important; margin-top: 70px; margin-left:-100px">
                                                             (Outstanding on 1st Payment:
-                                                            {{ $paid->first_payment_remaining }}.)</amp>
+                                                            <?php echo e($paid->first_payment_remaining); ?>.)</amp>
                                                         <a class="btn" target="_blank"
-                                                            href="{{ route('getInvoice', 'FIRST') }}"
+                                                            href="<?php echo e(route('getInvoice', 'FIRST')); ?>"
                                                             style="display:fixed; align-content: center; text-align:center; font-size:10px !important; top:340px; height:25px; width:150px;margin-left: 25px;">Get
                                                             Invoice Here</a>
-                                                    @endif
+                                                    <?php endif; ?>
 
                                                     <p>
-                                                        {{-- @if ($paid->first_payment_status == 'PAID'  && $paid->first_payment_price == $paid->first_payment_paid) --}}
-                                                        @if ($paid->first_payment_status == 'PAID'  && $paid->first_payment_remaining == 0)
+                                                        <?php if($paid->first_payment_status == 'PAID'  && $paid->first_payment_price == $paid->first_payment_paid): ?>
                                                             <a class="btn btn-secondary" target="_blank"
-                                                                href="{{ route('getInvoice', 'FIRST') }}">Get
+                                                                href="<?php echo e(route('getInvoice', 'FIRST')); ?>">Get
                                                                 Invoice</a>
-                                                        @elseif(isset($paym))
-                                                            @if(in_array($paid->first_payment_status, ['PENDING', 'PARTIALLY_PAID']) && $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 0 && $paid->first_payment_txn_mode == 'TRANSFER')
+                                                        <?php elseif(isset($paym)): ?>
+                                                            <?php if(($paid->first_payment_status == 'PENDING') && $paid->first_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && ($paym->payment_type=="FIRST" || $paym->payment_type == "BALANCE_ON_FIRST")) || ($paym->payment_type == "BALANCE_ON_FIRST" && $paid->first_payment_status == 'PARTIALLY_PAID'  && (isset($paym->transaction_mode) && $paid->first_payment_verified_by_cfo == 0))): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            @elseif($paid->first_payment_status == 'PARTIALLY_PAID' && $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 1 && $paid->first_payment_txn_mode == 'BALANCE_TRANSFER')
-                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            @else
-                                                                <form action="{{ route('payment', $prod->id) }}"
+                                                            <?php else: ?>
+                                                                <form action="<?php echo e(route('payment', $prod->id)); ?>"
                                                                     method="GET">
                                                                     <button class="btn btn-secondary">Pay Now</button>
                                                                 </form>
-                                                            @endif
-                                                        @else
-                                                            @if(in_array($paid->first_payment_status, ['PENDING', 'PARTIALLY_PAID']) && $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 0 && $paid->first_payment_txn_mode == 'TRANSFER')
-                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            @elseif($paid->first_payment_status == 'PARTIALLY_PAID' && $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 1 && $paid->first_payment_txn_mode == 'BALANCE_TRANSFER')
-                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            @else
-                                                                <form action="{{ route('payment', $prod->id) }}"
-                                                                    method="GET">
-                                                                    <button class="btn btn-secondary">Pay Now</button>
-                                                                </form>
-                                                            @endif
-                                                        @endif
+                                                            <?php endif; ?>
+                                                        <?php else: ?>
+                                                            <form action="<?php echo e(route('payment', $prod->id)); ?>"
+                                                                method="GET">
+                                                                <button class="btn btn-secondary">Pay Now</button>
+                                                            </form>
+                                                        <?php endif; ?>
                                                     </p>
                                                 </span>
                                             </span>
@@ -506,21 +483,21 @@
                                     </div>
 
 
-                                    @if ($pays->pricing_plan_type)
-                                        @php
+                                    <?php if($pays->pricing_plan_type): ?>
+                                        <?php
                                             $a = explode('_', strtolower($pays->pricing_plan_type));
                                             $ptype = ucFirst($a[0]) . ' ' . ucFirst($a[1]);
-                                        @endphp
-                                        @if ($pays->pricing_plan_type != 'FAMILY_PACKAGE')
-                                            @php
+                                        ?>
+                                        <?php if($pays->pricing_plan_type != 'FAMILY_PACKAGE'): ?>
+                                            <?php
                                                 $ptype = $ptype . ' Package';
-                                            @endphp
-                                        @endif
-                                    @else
-                                        @php
+                                            ?>
+                                        <?php endif; ?>
+                                    <?php else: ?>
+                                        <?php
                                             $ptype = '';
-                                        @endphp
-                                    @endif
+                                        ?>
+                                    <?php endif; ?>
 
 
                                     <div align="center" class="col-lg-3 col-md-12 col-sm-12 img-fluid cellContainerx">
@@ -545,26 +522,26 @@
                                                                 Application Status</p>
                                                             <span class="prodd"
                                                                 style="font-size:11px !important; color:grey;padding-left:1px; padding-right:1px; line-height:100% !important;display:blockx">(
-                                                                {{ $ptype }} )</span>
-                                                            @if ($paid->application_stage_status != 5)
-                                                                @if ($paid->application_stage_status == 2)
-                                                                    @php
+                                                                <?php echo e($ptype); ?> )</span>
+                                                            <?php if($paid->application_stage_status != 5): ?>
+                                                                <?php if($paid->application_stage_status == 2): ?>
+                                                                    <?php
                                                                         $linkk = 'applicant.details';
-                                                                    @endphp
-                                                                @elseif($paid->application_stage_status == 3)
-                                                                    @php
+                                                                    ?>
+                                                                <?php elseif($paid->application_stage_status == 3): ?>
+                                                                    <?php
                                                                         $linkk = 'applicant.details';
-                                                                    @endphp
-                                                                @elseif($paid->application_stage_status == 4)
-                                                                    @php
+                                                                    ?>
+                                                                <?php elseif($paid->application_stage_status == 4): ?>
+                                                                    <?php
                                                                         $linkk = 'applicant.review';
-                                                                    @endphp
-                                                                @else
-                                                                    @php
+                                                                    ?>
+                                                                <?php else: ?>
+                                                                    <?php
                                                                         $linkk = 'payment';
-                                                                    @endphp
-                                                                @endif
-                                                                <a href="{{ route($linkk, $paid->destination_id) }}"
+                                                                    ?>
+                                                                <?php endif; ?>
+                                                                <a href="<?php echo e(route($linkk, $paid->destination_id)); ?>"
                                                                     class="domore">
                                                                     <p
                                                                         style="display:fixed; align-content: center; text-align:center; font-size:10px !important; color:#ff0000;padding:1px;margin-left: 20px; line-height:100% !important">
@@ -572,25 +549,25 @@
                                                                             class="flash">Click here</span>
                                                                     </p>
                                                                 </a>
-                                                            @endif
+                                                            <?php endif; ?>
                                                         </div>
                                                     </div>
                                                     <hr style="border: 0px solid #444C64; height:0px; margin:6px">
-                                                    {{-- </div> --}}
+                                                    
 
-                                                    {{-- //2 --}}
-                                                    {{-- <div class="cardc downlaod-item  d-flexx aligns-items-center justify-content-center text-center" style="font-weight: bold;font-family:'TT Norms Pro'; display:inline-block"> --}}
+                                                    
+                                                    
                                                     <div class="cardc-body">
-                                                        @php
+                                                        <?php
                                                             $workpermit = App\Helpers\users::getWorkPermitStatus($paid);
-                                                        @endphp
-                                                        @if ($workpermit['status'] == true && isset($workpermit['fileUrl']))
-                                                            <a href="{{ $workpermit['fileUrl'] }}" target="_blank"
+                                                        ?>
+                                                        <?php if($workpermit['status'] == true && isset($workpermit['fileUrl'])): ?>
+                                                            <a href="<?php echo e($workpermit['fileUrl']); ?>" target="_blank"
                                                                 style="margin-left: 0px !important;position: unset;display: contents;">
-                                                        @elseif($workpermit['status'] == 'permitReady' && isset($workpermit['fileUrl']))
-                                                                <a href="{{ $workpermit['fileUrl'] }}" target="_blank"
+                                                        <?php elseif($workpermit['status'] == 'permitReady' && isset($workpermit['fileUrl'])): ?>
+                                                                <a href="<?php echo e($workpermit['fileUrl']); ?>" target="_blank"
                                                                     style="margin-left: 0px !important;position: unset;display: contents;">
-                                                        @endif                                                        
+                                                        <?php endif; ?>                                                        
                                                         <div style="display:inline" id="dd" class="block download-thumbnail img-fluid">
                                                             <svg style="margin:auto;margin-top:20px" width="39"
                                                                 height="30" class="dd" viewBox="0 0 39 30"
@@ -603,24 +580,22 @@
                                                                     fill="#1C7E14" />
                                                             </svg>
                                                         </div>
-                                                        @if (($workpermit['status'] == true || $workpermit['status'] == 'permitReady')&& isset($workpermit['fileUrl']))
+                                                        <?php if(($workpermit['status'] == true || $workpermit['status'] == 'permitReady')&& isset($workpermit['fileUrl'])): ?>
                                                             </a>
-                                                        @endif
+                                                        <?php endif; ?>
                                                         <div class="dg aligns-items-center justify-content-center text-center"
                                                             style="display:inline; justify-content: center;  align-items: center;">
                                                             <p
                                                                 style="padding-top: 27px;padding-bottom:0px; font-size:14px;font-weight:800">
                                                                 Work Permit</p>
                                                             <span class="prodd"
-                                                                style="font-size:11px; color:grey;padding-left:1px; padding-right:1px">{{ $workpermit['message'] }}</span>
-                                                            {{-- <span style="font-size:11px; color:grey;padding-left:1px; padding-right:1px">Work Permit not available yet.</span> --}}
+                                                                style="font-size:11px; color:grey;padding-left:1px; padding-right:1px"><?php echo e($workpermit['message']); ?></span>
+                                                            
                                                         </div>
 
                                                     </div>
                                                     <hr style="border: 0px solid #444C64; height:0px; margin:6px">
-                                                    {{-- </div>
-
-                                      <div class="cardc downlaod-item  d-flexx aligns-items-center justify-content-center text-center" style="font-weight: bold;font-family:'TT Norms Pro'; display:inline-block"> --}}
+                                                    
                                                     <div class="cardc-body">
 
                                                         <div style="display:inline" id="de"
@@ -659,13 +634,12 @@
 
                                                     </div>
                                                     <hr style="border: 0px solid #444C64; height:0px; margin:6px">
-                                                    {{-- </div>
-                                      <div class="cardc downlaod-item  d-flexx aligns-items-center justify-content-center text-center" style="font-weight: bold;font-family:'TT Norms Pro'; display:inline-block;"> --}}
+                                                    
                                                     <div class="cardc-body">
-                                                        @if (isset($getContract->contractUrl) && strlen($getContract->contractUrl) > 2)
-                                                            <a href="{{ $getContract->contractUrl }}" target="_blank"
+                                                        <?php if(isset($getContract->contractUrl) && strlen($getContract->contractUrl) > 2): ?>
+                                                            <a href="<?php echo e($getContract->contractUrl); ?>" target="_blank"
                                                                 style="margin:0;position: unset;display: contents;">
-                                                        @endif
+                                                        <?php endif; ?>
                                                         <div style="display:inline" id="dd"
                                                             class="block download-thumbnail img-fluid">
                                                             <svg style="margin:auto;margin-top:20px" width="39"
@@ -687,11 +661,11 @@
                                                                 Download Contract</p>
                                                             <span class="prodd"
                                                                 style="font-size:11px; color:grey;padding-left:1px; padding-right:1px;line-height:1px;">
-                                                                @if (isset($getContract->contractUrl) && strlen($getContract->contractUrl) > 2)
+                                                                <?php if(isset($getContract->contractUrl) && strlen($getContract->contractUrl) > 2): ?>
                                                                     Download Contract Here.
-                                                                @else
+                                                                <?php else: ?>
                                                                     Contract not available yet.
-                                                                @endif
+                                                                <?php endif; ?>
                                                             </span>
                                                         </div>
 
@@ -708,8 +682,7 @@
                                         <div class="upper">
                                             <span class="paid-item " href="#">
                                                 <span
-                                                    {{-- class="positionAnchor  @if ($paid->submission_payment_status == 'PAID'  && $paid->submission_payment_price == $paid->submission_payment_paid) ) watermarked @endif paid-thumbnail"> --}}
-                                                    class="positionAnchor  @if ($paid->submission_payment_status == 'PAID'  && $paid->submission_payment_remaining == 0) ) watermarked @endif paid-thumbnail">
+                                                    class="positionAnchor  <?php if($paid->submission_payment_status == 'PAID'  && $paid->submission_payment_price == $paid->submission_payment_paid): ?> ) watermarked <?php endif; ?> paid-thumbnail">
                                                     <img src="../user/images/submission_payment.svg" height="500px"
                                                         class="img-fluid" alt="PWG Group">
                                                     <span class="title" style="align: center;">
@@ -720,7 +693,7 @@
                                                     </span>
                                                     <strong style="line-height:25px;margin-top:20px"
                                                         class="paid-price">
-                                                        {{ number_format($pays->submission_payment_sub_total) }} |
+                                                        <?php echo e(number_format($pays->submission_payment_sub_total)); ?> |
                                                         <br><span
                                                             style="font-size: 12px;float:left;display:inline">AED</span>
                                                         <span
@@ -728,58 +701,52 @@
                                                             + 5% VAT</span>
                                                     </strong>&nbsp;
                                                     <amp style="margin-left:18px">
-                                                        {{ $prod->name }}
+                                                        <?php echo e($prod->name); ?>
+
                                                         <br>Package
                                                     </amp>
 
                                                     <p>
-                                                        {{-- @if ($paid->submission_payment_status == 'PAID'  && $paid->submission_payment_price == $paid->submission_payment_paid) --}}
-                                                            <!-- <a class="btn btn-secondary" target="_blank" href="{{ route('getReceipt', 'SUBMISSION') }}">Get Reciept</a> -->
-                                                        @if ($paid->submission_payment_status == 'PAID'  && $paid->submission_payment_remaining == 0)
+                                                        <?php if($paid->submission_payment_status == 'PAID'  && $paid->submission_payment_price == $paid->submission_payment_paid): ?>
+                                                            <!-- <a class="btn btn-secondary" target="_blank" href="<?php echo e(route('getReceipt', 'SUBMISSION')); ?>">Get Reciept</a> -->
                                                             <a class="btn btn-secondary" target="_blank"
-                                                                href="{{ route('getInvoice', 'SUBMISSION') }}">Get
+                                                                href="<?php echo e(route('getInvoice', 'SUBMISSION')); ?>">Get
                                                                 Invoice</a>
-                                                        @elseif(isset($paym))
-                                                            @if((in_array($paid->submission_payment_status, ['PENDING', 'PARTIALLY_PAID'])) && $paid->submission_payment_verified_by_cfo == 0 && $paid->is_submission_payment_partially_paid == 0 && $paid->submission_payment_txn_mode == 'TRANSFER')
+                                                        <?php elseif(isset($paym)): ?>
+                                                            <?php if($paid->submission_payment_status == 'PENDING' && $paid->submission_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && $paym->payment_type=="SUBMISSION")): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            @elseif($paid->submission_payment_status == 'PARTIALLY_PAID' && $paid->submission_payment_verified_by_cfo == 0 && $paid->is_submission_payment_partially_paid == 1 && $paid->submission_payment_txn_mode == 'BALANCE_TRANSFER')
-                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            @else
-                                                                @if ($paid->application_stage_status != 5)
+                                                            <?php else: ?>
+                                                                <?php if($paid->application_stage_status != 5): ?>
                                                                     <button class="btn btn-secondary toastrDefaultError"
                                                                         onclick="toastr.error('Your application process not completed!')">Pay
                                                                         Now</button>
-                                                                @elseif($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0)
+                                                                <?php elseif($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0): ?>
                                                                     <button class="btn btn-secondary toastrDefaultError"
                                                                     onclick="toastr.error('Your previous payment is being verified!')">Pay
                                                                     Now</button>
-                                                                @else
-                                                                    <form action="{{ route('payment', $prod->id) }}"
+                                                                <?php else: ?>
+                                                                    <form action="<?php echo e(route('payment', $prod->id)); ?>"
                                                                         method="GET">
                                                                         <button class="btn btn-secondary">Pay Now</button>
                                                                     </form>
-                                                                @endif
-                                                            @endif
-                                                        @else
-                                                            @if((in_array($paid->submission_payment_status, ['PENDING', 'PARTIALLY_PAID'])) && $paid->submission_payment_verified_by_cfo == 0 && $paid->is_submission_payment_partially_paid == 0 && $paid->submission_payment_txn_mode == 'TRANSFER')
-                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            @elseif($paid->submission_payment_status == 'PARTIALLY_PAID' && $paid->submission_payment_verified_by_cfo == 0 && $paid->is_submission_payment_partially_paid == 1 && $paid->submission_payment_txn_mode == 'BALANCE_TRANSFER')
-                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            @elseif ($paid->application_stage_status != 5)
+                                                                <?php endif; ?>
+                                                            <?php endif; ?>
+                                                        <?php else: ?>
+                                                            <?php if($paid->application_stage_status != 5): ?>
                                                                 <button class="btn btn-secondary toastrDefaultError"
                                                                     onclick="toastr.error('Your application process not completed!')">Pay
                                                                     Now</button>
-                                                            @elseif($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0)
+                                                            <?php elseif($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0): ?>
                                                                 <button class="btn btn-secondary toastrDefaultError"
                                                                 onclick="toastr.error('Your previous payment is being verified!')">Pay
                                                                 Now</button>
-                                                            @else
-                                                                <form action="{{ route('payment', $prod->id) }}"
+                                                            <?php else: ?>
+                                                                <form action="<?php echo e(route('payment', $prod->id)); ?>"
                                                                     method="GET">
                                                                     <button class="btn btn-secondary">Pay Now</button>
                                                                 </form>
-                                                            @endif
-                                                        @endif
+                                                            <?php endif; ?>
+                                                        <?php endif; ?>
                                                     </p>
                                                 </span>
                                             </span>
@@ -787,19 +754,17 @@
                                     </div>
 
                                 </div>
-                            @elseif(
+                            <?php elseif(
                                 $pays->submission_payment_sub_total > 0 &&
                                     $pays->second_payment_sub_total > 0 &&
-                                    ($pays->third_payment_sub_total == 0 || empty($pays->third_payment_sub_total)))
+                                    ($pays->third_payment_sub_total == 0 || empty($pays->third_payment_sub_total))): ?>
                                 <div class="row">
                                     <!-- 1st Payment Column  -->
                                     <div align="center" class="col-lg-3 col-md-12 col-sm-12 img-fluid cellContainerx">
                                         <div class="upper">
                                             <span class="paid-item " href="#">
                                                 <span
-                                                    {{-- class="positionAnchor  @if ($paid->first_payment_status == 'PAID' && $paid->first_payment_price == $paid->first_payment_paid)  watermarked @endif paid-thumbnail"> --}}
-                                                    class="positionAnchor  @if ($paid->first_payment_status == 'PAID' && $paid->first_payment_remaining == 0)  watermarked @endif paid-thumbnail">
-
+                                                    class="positionAnchor  <?php if($paid->first_payment_status == 'PAID' && $paid->first_payment_price == $paid->first_payment_paid): ?>  watermarked <?php endif; ?> paid-thumbnail">
                                                     <img src="../user/images/first_payment.svg" height="500px"
                                                         class="img-fluid" alt="PWG Group">
                                                     <span class="title" style="align: center;">
@@ -809,7 +774,7 @@
                                                     </span>
                                                     <strong style="line-height:25px;margin-top:20px"
                                                         class="paid-price">
-                                                        {{ number_format($pays->first_payment_sub_total) }} |
+                                                        <?php echo e(number_format($pays->first_payment_sub_total)); ?> |
                                                         <br><span
                                                             style="font-size: 12px;float:left;display:inline">AED</span>
                                                         <span
@@ -817,53 +782,43 @@
                                                             + 5% VAT</span>
                                                     </strong>&nbsp;
                                                     <amp style="margin-left:18px">
-                                                        {{ $prod->name }}
+                                                        <?php echo e($prod->name); ?>
+
                                                         <br>Package
                                                     </amp>
 
-                                                    @if ($paid->first_payment_remaining > 0 && $paid->first_payment_status == 'PARTIALLY_PAID')
+                                                    <?php if($paid->first_payment_remaining > 0 && $paid->first_payment_status == 'PARTIALLY_PAID'): ?>
                                                         <br>
                                                         <amp
                                                             style="display:fixed; align-content: center; text-align:center; font-size:10px !important; color:#ff0000;padding:1px;margin-left: 20px; line-height:100% !important; margin-top: 70px; margin-left:-100px">
                                                             (Outstanding on 1st Payment:
-                                                            {{ $paid->first_payment_remaining }}.)</amp>
+                                                            <?php echo e($paid->first_payment_remaining); ?>.)</amp>
                                                         <a class="btn" target="_blank"
-                                                            href="{{ route('getInvoice', 'FIRST') }}"
+                                                            href="<?php echo e(route('getInvoice', 'FIRST')); ?>"
                                                             style="display:fixed; align-content: center; text-align:center; font-size:10px !important; top:340px; height:25px; width:150px;margin-left: 25px;">Get
                                                             Invoice Here</a>
-                                                    @endif
+                                                    <?php endif; ?>
 
                                                     <p>
-                                                        {{-- @if ($paid->first_payment_status == 'PAID' && $paid->first_payment_price == $paid->first_payment_paid) --}}
-                                                        @if ($paid->first_payment_status == 'PAID' && $paid->first_payment_remaining == 0)
-
+                                                        <?php if($paid->first_payment_status == 'PAID' && $paid->first_payment_price == $paid->first_payment_paid): ?>
                                                             <a class="btn btn-secondary" target="_blank"
-                                                                href="{{ route('getInvoice', 'FIRST') }}">Get
+                                                                href="<?php echo e(route('getInvoice', 'FIRST')); ?>">Get
                                                                 Invoice</a>
-                                                        @elseif(isset($paym))
-                                                                @if(in_array($paid->first_payment_status, ['PENDING','PARTIALLY_PAID']) && $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 0 && $paid->first_payment_txn_mode == 'TRANSFER')
-                                                                {{-- @if(($paid->first_payment_status == 'PENDING') && $paid->first_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && ($paym->payment_type=="FIRST" || $paym->payment_type == "BALANCE_ON_FIRST")) || ($paym->payment_type == "BALANCE_ON_FIRST" && $paid->first_payment_status == 'PARTIALLY_PAID'  && (isset($paym->transaction_mode) && $paid->first_payment_verified_by_cfo == 0))) --}}
+                                                        <?php elseif(isset($paym)): ?>
+                                                                <?php if(($paid->first_payment_status == 'PENDING') && $paid->first_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && ($paym->payment_type=="FIRST" || $paym->payment_type == "BALANCE_ON_FIRST")) || ($paym->payment_type == "BALANCE_ON_FIRST" && $paid->first_payment_status == 'PARTIALLY_PAID'  && (isset($paym->transaction_mode) && $paid->first_payment_verified_by_cfo == 0))): ?>
                                                                     <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                                @elseif($paid->first_payment_status == 'PARTIALLY_PAID' &&  $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 1 && $paid->first_payment_txn_mode == 'BALANCE_TRANSFER')
-                                                                    <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                                @else
-                                                                    <form action="{{ route('payment', $prod->id) }}"
+                                                                <?php else: ?>
+                                                                    <form action="<?php echo e(route('payment', $prod->id)); ?>"
                                                                         method="GET">
                                                                         <button class="btn btn-secondary">Pay Now</button>
                                                                     </form>
-                                                                @endif
-                                                        @else
-                                                            @if(in_array($paid->first_payment_status, ['PENDING','PARTIALLY_PAID']) && $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 0 && $paid->first_payment_txn_mode == 'TRANSFER')
-                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            @elseif($paid->first_payment_status == 'PARTIALLY_PAID' &&  $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 1 && $paid->first_payment_txn_mode == 'BALANCE_TRANSFER')
-                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            @else
-                                                                <form action="{{ route('payment', $prod->id) }}"
-                                                                    method="GET">
-                                                                    <button class="btn btn-secondary">Pay Now</button>
-                                                                </form>
-                                                            @endif
-                                                        @endif
+                                                                <?php endif; ?>
+                                                        <?php else: ?>
+                                                            <form action="<?php echo e(route('payment', $prod->id)); ?>"
+                                                                method="GET">
+                                                                <button class="btn btn-secondary">Pay Now</button>
+                                                            </form>
+                                                        <?php endif; ?>
                                                     </p>
                                                 </span>
                                             </span>
@@ -871,21 +826,21 @@
                                     </div>
 
 
-                                    @if ($pays->pricing_plan_type)
-                                        @php
+                                    <?php if($pays->pricing_plan_type): ?>
+                                        <?php
                                             $a = explode('_', strtolower($pays->pricing_plan_type));
                                             $ptype = ucFirst($a[0]) . ' ' . ucFirst($a[1]);
-                                        @endphp
-                                        @if ($pays->pricing_plan_type != 'FAMILY_PACKAGE')
-                                            @php
+                                        ?>
+                                        <?php if($pays->pricing_plan_type != 'FAMILY_PACKAGE'): ?>
+                                            <?php
                                                 $ptype = $ptype . ' Package';
-                                            @endphp
-                                        @endif
-                                    @else
-                                        @php
+                                            ?>
+                                        <?php endif; ?>
+                                    <?php else: ?>
+                                        <?php
                                             $ptype = '';
-                                        @endphp
-                                    @endif
+                                        ?>
+                                    <?php endif; ?>
 
 
                                     <div align="center" class="col-lg-3 col-md-12 col-sm-12 img-fluid cellContainerx">
@@ -911,26 +866,26 @@
                                                                 Application Status</p>
                                                             <span class="prodd"
                                                                 style="font-size:11px !important; color:grey;padding-left:1px; padding-right:1px; line-height:100% !important">(
-                                                                {{ $ptype }} )</span>
-                                                            @if ($paid->application_stage_status != 5)
-                                                                @if ($paid->application_stage_status == 2)
-                                                                    @php
+                                                                <?php echo e($ptype); ?> )</span>
+                                                            <?php if($paid->application_stage_status != 5): ?>
+                                                                <?php if($paid->application_stage_status == 2): ?>
+                                                                    <?php
                                                                         $linkk = 'applicant.details';
-                                                                    @endphp
-                                                                @elseif($paid->application_stage_status == 3)
-                                                                    @php
+                                                                    ?>
+                                                                <?php elseif($paid->application_stage_status == 3): ?>
+                                                                    <?php
                                                                         $linkk = 'applicant.details';
-                                                                    @endphp
-                                                                @elseif($paid->application_stage_status == 4)
-                                                                    @php
+                                                                    ?>
+                                                                <?php elseif($paid->application_stage_status == 4): ?>
+                                                                    <?php
                                                                         $linkk = 'applicant.review';
-                                                                    @endphp
-                                                                @else
-                                                                    @php
+                                                                    ?>
+                                                                <?php else: ?>
+                                                                    <?php
                                                                         $linkk = 'payment';
-                                                                    @endphp
-                                                                @endif
-                                                                <a href="{{ route($linkk, $paid->destination_id) }}"
+                                                                    ?>
+                                                                <?php endif; ?>
+                                                                <a href="<?php echo e(route($linkk, $paid->destination_id)); ?>"
                                                                     class="domore">
                                                                     <p class="process"
                                                                         style="display:fixed; align-content: center; text-align:center; font-size:10px !important; color:#ff0000;padding:1px;margin-left: 20px; line-height:100% !important">
@@ -938,25 +893,25 @@
                                                                             class="flash">Click here</span>
                                                                     </p>
                                                                 </a>
-                                                            @endif
+                                                            <?php endif; ?>
                                                         </div>
                                                     </div>
                                                     <hr style="border: 0px solid #444C64; height:0px; margin:6px">
-                                                    {{-- </div> --}}
+                                                    
 
-                                                    {{-- //2 --}}
-                                                    {{-- <div class="cardc downlaod-item  d-flexx aligns-items-center justify-content-center text-center" style="font-weight: bold;font-family:'TT Norms Pro'; display:inline-block"> --}}
+                                                    
+                                                    
                                                     <div class="cardc-body">
-                                                        @php
+                                                        <?php
                                                             $workpermit = App\Helpers\users::getWorkPermitStatus($paid);
-                                                        @endphp
-                                                        @if ($workpermit['status'] == true && isset($workpermit['fileUrl']))
-                                                            <a href="{{ $workpermit['fileUrl'] }}" target="_blank"
+                                                        ?>
+                                                        <?php if($workpermit['status'] == true && isset($workpermit['fileUrl'])): ?>
+                                                            <a href="<?php echo e($workpermit['fileUrl']); ?>" target="_blank"
                                                                 style="margin-left: 0px !important;position: unset;display: contents;">
-                                                        @elseif($workpermit['status'] == 'permitReady' && isset($workpermit['fileUrl']))
-                                                            <a href="{{ $workpermit['fileUrl'] }}" target="_blank"
+                                                        <?php elseif($workpermit['status'] == 'permitReady' && isset($workpermit['fileUrl'])): ?>
+                                                            <a href="<?php echo e($workpermit['fileUrl']); ?>" target="_blank"
                                                                 style="margin-left: 0px !important;position: unset;display: contents;">
-                                                        @endif
+                                                        <?php endif; ?>
                                                         <div style="display:inline" id="dd"
                                                             class="block download-thumbnail img-fluid">
                                                             <svg style="margin:auto;margin-top:20px" width="39"
@@ -970,24 +925,22 @@
                                                                     fill="#1C7E14" />
                                                             </svg>
                                                         </div>
-                                                        @if (($workpermit['status'] == true || $workpermit['status'] == 'permitReady')&& isset($workpermit['fileUrl']))
+                                                        <?php if(($workpermit['status'] == true || $workpermit['status'] == 'permitReady')&& isset($workpermit['fileUrl'])): ?>
                                                             </a>
-                                                        @endif
+                                                        <?php endif; ?>
                                                         <div class="dg aligns-items-center justify-content-center text-center"
                                                             style="display:inline; justify-content: center;  align-items: center;">
                                                             <p
                                                                 style="padding-top: 27px;padding-bottom:0px; font-size:14px;font-weight:800">
                                                                 Work Permit</p>
                                                             <span class="prodd"
-                                                                style="font-size:11px; color:grey;padding-left:1px; padding-right:1px">{{ $workpermit['message'] }}</span>
-                                                            {{-- <span style="font-size:11px; color:grey;padding-left:1px; padding-right:1px">Work Permit not available yet.</span> --}}
+                                                                style="font-size:11px; color:grey;padding-left:1px; padding-right:1px"><?php echo e($workpermit['message']); ?></span>
+                                                            
                                                         </div>
 
                                                     </div>
                                                     <hr style="border: 0px solid #444C64; height:0px; margin:6px">
-                                                    {{-- </div>
-
-                                      <div class="cardc downlaod-item  d-flexx aligns-items-center justify-content-center text-center" style="font-weight: bold;font-family:'TT Norms Pro'; display:inline-block"> --}}
+                                                    
                                                     <div class="cardc-body">
 
                                                         <div style="display:inline" id="de"
@@ -1026,14 +979,13 @@
 
                                                     </div>
                                                     <hr style="border: 0px solid #444C64; height:0px; margin:6px">
-                                                    {{-- </div>
-                                      <div class="cardc downlaod-item  d-flexx aligns-items-center justify-content-center text-center" style="font-weight: bold;font-family:'TT Norms Pro'; display:inline-block;"> --}}
+                                                    
                                                     <div class="cardc-body">
 
-                                                        @if (isset($getContract->contractUrl) && strlen($getContract->contractUrl) > 2)
-                                                            <a href="{{ $getContract->contractUrl }}" target="_blank"
+                                                        <?php if(isset($getContract->contractUrl) && strlen($getContract->contractUrl) > 2): ?>
+                                                            <a href="<?php echo e($getContract->contractUrl); ?>" target="_blank"
                                                                 style="margin:0;position: unset;display: contents;">
-                                                        @endif
+                                                        <?php endif; ?>
                                                         <div style="display:inline" id="dd"
                                                             class="block download-thumbnail img-fluid">
                                                             <svg style="margin:auto;margin-top:20px" width="39"
@@ -1055,11 +1007,11 @@
                                                                 Download Contract</p>
                                                             <span class="prodd"
                                                                 style="font-size:11px; color:grey;padding-left:1px; padding-right:1px;line-height:1px;">
-                                                                @if (isset($getContract->contractUrl) && strlen($getContract->contractUrl) > 2)
+                                                                <?php if(isset($getContract->contractUrl) && strlen($getContract->contractUrl) > 2): ?>
                                                                     Download Contract Here.
-                                                                @else
+                                                                <?php else: ?>
                                                                     Contract not available yet.
-                                                                @endif
+                                                                <?php endif; ?>
                                                             </span>
                                                         </div>
 
@@ -1075,8 +1027,7 @@
                                         <div class="upper">
                                             <span class="paid-item " href="#">
                                                 <span
-                                                    {{-- class="positionAnchor  @if ($paid->submission_payment_status == 'PAID'  && $paid->submission_payment_price == $paid->submission_payment_paid) ) watermarked @endif paid-thumbnail"> --}}
-                                                    class="positionAnchor  @if ($paid->submission_payment_status == 'PAID'  && $paid->submission_payment_remaining == 0) ) watermarked @endif paid-thumbnail">
+                                                    class="positionAnchor  <?php if($paid->submission_payment_status == 'PAID'  && $paid->submission_payment_price == $paid->submission_payment_paid): ?> ) watermarked <?php endif; ?> paid-thumbnail">
                                                     <img src="../user/images/submission_payment.svg" height="500px"
                                                         class="img-fluid" alt="PWG Group">
                                                     <span class="title" style="align: center;">
@@ -1087,7 +1038,7 @@
                                                     </span>
                                                     <strong style="line-height:25px;margin-top:20px"
                                                         class="paid-price">
-                                                        {{ number_format($pays->submission_payment_sub_total) }} |
+                                                        <?php echo e(number_format($pays->submission_payment_sub_total)); ?> |
                                                         <br><span
                                                             style="font-size: 12px;float:left;display:inline">AED</span>
                                                         <span
@@ -1095,60 +1046,53 @@
                                                             + 5% VAT</span>
                                                     </strong>&nbsp;
                                                     <amp style="margin-left:18px">
-                                                        {{ $prod->name }}
+                                                        <?php echo e($prod->name); ?>
+
                                                         <br>Package
                                                     </amp>
 
                                                     <p>
-                                                        {{-- @if ($paid->submission_payment_status == 'PAID'  && $paid->submission_payment_price == $paid->submission_payment_paid) --}}
-                                                            <!-- <a class="btn btn-secondary" target="_blank" href="{{ route('getReceipt', 'SUBMISSION') }}">Get Reciept</a> -->
-                                                        @if ($paid->submission_payment_status == 'PAID'  && $paid->submission_payment_remaining == 0)
-
+                                                        <?php if($paid->submission_payment_status == 'PAID'  && $paid->submission_payment_price == $paid->submission_payment_paid): ?>
+                                                            <!-- <a class="btn btn-secondary" target="_blank" href="<?php echo e(route('getReceipt', 'SUBMISSION')); ?>">Get Reciept</a> -->
                                                             <a class="btn btn-secondary" target="_blank"
-                                                                href="{{ route('getInvoice', 'SUBMISSION') }}">Get
+                                                                href="<?php echo e(route('getInvoice', 'SUBMISSION')); ?>">Get
                                                                 Invoice</a>
-                                                        @elseif(isset($paym))
-                                                            @if(in_array($paid->submission_payment_status,['PENDING', 'PARTIALLY_PAID']) && $paid->submission_payment_verified_by_cfo == 0 && $paid->is_submission_payment_partially_paid == 0 && $paid->submission_payment_txn_mode == 'TRANSFER')
+                                                        <?php elseif(isset($paym)): ?>
+                                                            <?php if($paid->submission_payment_status == 'PENDING' && $paid->submission_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && $paym->payment_type=="SUBMISSION")): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            @elseif($paid->submission_payment_status == 'PARTIALLY_PAID' &&  $paid->submission_payment_verified_by_cfo == 0 && $paid->is_submission_payment_partially_paid == 1 && $paid->submission_payment_txn_mode == 'BALANCE_TRANSFER')
-                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            @else
-                                                                @if ($paid->application_stage_status != 5)
+                                                            <?php else: ?>
+                                                                <?php if($paid->application_stage_status != 5): ?>
                                                                     <button class="btn btn-secondary toastrDefaultError"
                                                                         onclick="toastr.error('Your application process not completed!')">Pay
                                                                         Now</button>
-                                                                @elseif($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0)
+                                                                <?php elseif($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0): ?>
                                                                     <button class="btn btn-secondary toastrDefaultError"
                                                                     onclick="toastr.error('Your previous payment is being verified!')">Pay
                                                                     Now</button>
-                                                                @else
-                                                                    <form action="{{ route('payment', $prod->id) }}"
+                                                                <?php else: ?>
+                                                                    <form action="<?php echo e(route('payment', $prod->id)); ?>"
                                                                         method="GET">
                                                                         <button class="btn btn-secondary">Pay Now</button>
                                                                     </form>
-                                                                @endif
+                                                                <?php endif; ?>
 
-                                                            @endif
-                                                        @else
-                                                            @if(in_array($paid->submission_payment_status,['PENDING', 'PARTIALLY_PAID']) && $paid->submission_payment_verified_by_cfo == 0 && $paid->is_submission_payment_partially_paid == 0 && $paid->submission_payment_txn_mode == 'TRANSFER')
-                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            @elseif($paid->submission_payment_status == 'PARTIALLY_PAID' &&  $paid->submission_payment_verified_by_cfo == 0 && $paid->is_submission_payment_partially_paid == 1 && $paid->submission_payment_txn_mode == 'BALANCE_TRANSFER')
-                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            @elseif ($paid->application_stage_status != 5)
+                                                            <?php endif; ?>
+                                                        <?php else: ?>
+                                                            <?php if($paid->application_stage_status != 5): ?>
                                                                 <button class="btn btn-secondary toastrDefaultError"
                                                                     onclick="toastr.error('Your application process not completed!')">Pay
                                                                     Now</button>
-                                                            @elseif($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0)
+                                                            <?php elseif($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0): ?>
                                                                 <button class="btn btn-secondary toastrDefaultError"
                                                                 onclick="toastr.error('Your previous payment is being verified!')">Pay
                                                                 Now</button>
-                                                            @else
-                                                                <form action="{{ route('payment', $prod->id) }}"
+                                                            <?php else: ?>
+                                                                <form action="<?php echo e(route('payment', $prod->id)); ?>"
                                                                     method="GET">
                                                                     <button class="btn btn-secondary">Pay Now</button>
                                                                 </form>
-                                                            @endif
-                                                        @endif
+                                                            <?php endif; ?>
+                                                        <?php endif; ?>
                                                     </p>
                                                 </span>
                                             </span>
@@ -1163,8 +1107,7 @@
                                         <div class="upper">
                                             <span class="paid-item " href="#">
                                                 <span
-                                                    {{-- class="positionAnchor  @if ($paid->second_payment_status == 'PAID' && $paid->second_payment_price == $paid->second_payment_paid)  watermarked @endif paid-thumbnail"> --}}
-                                                    class="positionAnchor  @if ($paid->second_payment_status == 'PAID' && $paid->second_payment_remaining == 0)  watermarked @endif paid-thumbnail">
+                                                    class="positionAnchor  <?php if($paid->second_payment_status == 'PAID' && $paid->second_payment_price == $paid->second_payment_paid): ?>  watermarked <?php endif; ?> paid-thumbnail">
                                                     <img src="../user/images/second_payment.svg" height="500px"
                                                         class="img-fluid" alt="PWG Group">
                                                     <span class="title" style="align: center;">
@@ -1174,7 +1117,7 @@
                                                     </span>
                                                     <strong style="line-height:25px;margin-top:20px"
                                                         class="paid-price">
-                                                        {{ number_format($pays->second_payment_sub_total) }} |
+                                                        <?php echo e(number_format($pays->second_payment_sub_total)); ?> |
                                                         <br><span
                                                             style="font-size: 12px;float:left;display:inline">AED</span>
                                                         <span
@@ -1182,58 +1125,52 @@
                                                             + 5% VAT</span>
                                                     </strong>&nbsp;
                                                     <amp style="margin-left:18px">
-                                                        {{ $prod->name }}
+                                                        <?php echo e($prod->name); ?>
+
                                                         <br>Package
                                                     </amp>
 
                                                     <p>
-                                                        {{-- @if ($paid->second_payment_status == 'PAID' && $paid->second_payment_price == $paid->second_payment_paid) --}}
-                                                            <!-- <a class="btn btn-secondary" target="_blank" href="{{ route('getReceipt', 'SECOND') }}">Get Reciept</a> -->
-                                                        @if ($paid->second_payment_status == 'PAID' && $paid->second_payment_remaining == 0)
+                                                        <?php if($paid->second_payment_status == 'PAID' && $paid->second_payment_price == $paid->second_payment_paid): ?>
+                                                            <!-- <a class="btn btn-secondary" target="_blank" href="<?php echo e(route('getReceipt', 'SECOND')); ?>">Get Reciept</a> -->
                                                             <a class="btn btn-secondary" target="_blank"
-                                                                href="{{ route('getInvoice', 'SECOND') }}">Get
+                                                                href="<?php echo e(route('getInvoice', 'SECOND')); ?>">Get
                                                                 Invoice</a>
-                                                        @elseif(isset($paym))
-                                                            @if(in_array($paid->second_payment_status, ['PENDING', 'PARTIALLY_PAID']) && $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 0 && $paid->second_payment_txn_mode == 'TRANSFER')     
+                                                        <?php elseif(isset($paym)): ?>
+                                                            <?php if($paid->second_payment_status == 'PENDING' && $paid->second_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && $paym->payment_type=="SECOND")): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            @elseif($paid->second_payment_status == 'PARTIALLY_PAID' &&  $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 1 && $paid->second_payment_txn_mode == 'BALANCE_TRANSFER')
-                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            @else
-                                                                @if ($paid->application_stage_status != 5)
+                                                            <?php else: ?>
+                                                                <?php if($paid->application_stage_status != 5): ?>
                                                                     <button class="btn btn-secondary toastrDefaultError"
                                                                         onclick="toastr.error('Your application process not completed!')">Pay
                                                                         Now</button>
-                                                                @elseif($paid->submission_payment_status != "PAID" && $paid->submission_payment_verified_by_cfo == 0)
+                                                                <?php elseif($paid->submission_payment_status != "PAID" && $paid->submission_payment_verified_by_cfo == 0): ?>
                                                                     <button class="btn btn-secondary toastrDefaultError"
                                                                     onclick="toastr.error('Your previous payment is being verified!')">Pay
                                                                     Now</button>
-                                                                @else
-                                                                    <form action="{{ route('payment', $prod->id) }}"
+                                                                <?php else: ?>
+                                                                    <form action="<?php echo e(route('payment', $prod->id)); ?>"
                                                                         method="GET">
                                                                         <button class="btn btn-secondary">Pay Now</button>
                                                                     </form>
-                                                                @endif
-                                                            @endif
-                                                        @else
-                                                            @if(in_array($paid->second_payment_status, ['PENDING', 'PARTIALLY_PAID']) && $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 0 && $paid->second_payment_txn_mode == 'TRANSFER')     
-                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            @elseif($paid->second_payment_status == 'PARTIALLY_PAID' &&  $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 1 && $paid->second_payment_txn_mode == 'BALANCE_TRANSFER')
-                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            @elseif ($paid->application_stage_status != 5)
+                                                                <?php endif; ?>
+                                                            <?php endif; ?>
+                                                        <?php else: ?>
+                                                            <?php if($paid->application_stage_status != 5): ?>
                                                                 <button class="btn btn-secondary toastrDefaultError"
                                                                     onclick="toastr.error('Your application process not completed!')">Pay
                                                                     Now</button>
-                                                            @elseif($paid->submission_payment_status != "PAID" && $paid->submission_payment_verified_by_cfo == 0)
+                                                            <?php elseif($paid->submission_payment_status != "PAID" && $paid->submission_payment_verified_by_cfo == 0): ?>
                                                                 <button class="btn btn-secondary toastrDefaultError"
                                                                 onclick="toastr.error('Your previous payment is being verified!')">Pay
                                                                 Now</button>
-                                                            @else
-                                                                <form action="{{ route('payment', $prod->id) }}"
+                                                            <?php else: ?>
+                                                                <form action="<?php echo e(route('payment', $prod->id)); ?>"
                                                                     method="GET">
                                                                     <button class="btn btn-secondary">Pay Now</button>
                                                                 </form>
-                                                            @endif
-                                                        @endif
+                                                            <?php endif; ?>
+                                                        <?php endif; ?>
                                                     </p>
                                                 </span>
                                             </span>
@@ -1242,7 +1179,7 @@
                                     </div>
 
                                 </div>
-                            @else
+                            <?php else: ?>
                                 <div class="row">
                                     <!-- 1st Payment Column  -->
 
@@ -1250,9 +1187,7 @@
                                         <div class="upper">
                                             <span class="paid-item " href="#">
                                                 <span
-                                                    {{-- class="positionAnchor  @if ($paid->first_payment_status == 'PAID' && $paid->first_payment_price == $paid->first_payment_paid)  watermarked @endif paid-thumbnail"> --}}
-                                                    class="positionAnchor  @if ($paid->first_payment_status == 'PAID' && $paid->first_payment_remaining == 0)  watermarked @endif paid-thumbnail">
-
+                                                    class="positionAnchor  <?php if($paid->first_payment_status == 'PAID' && $paid->first_payment_price == $paid->first_payment_paid): ?>  watermarked <?php endif; ?> paid-thumbnail">
                                                     <img src="../user/images/first_payment.svg" height="500px"
                                                         class="img-fluid" alt="PWG Group">
                                                     <span class="title" style="align: center;">
@@ -1262,7 +1197,7 @@
                                                     </span>
                                                     <strong style="line-height:25px;margin-top:20px"
                                                         class="paid-price">
-                                                        {{ number_format($pays->first_payment_sub_total) }} |
+                                                        <?php echo e(number_format($pays->first_payment_sub_total)); ?> |
                                                         <br><span
                                                             style="font-size: 12px;float:left;display:inline">AED</span>
                                                         <span
@@ -1270,75 +1205,70 @@
                                                             + 5% VAT</span>
                                                     </strong>&nbsp;
                                                     <amp style="margin-left:18px">
-                                                        {{ $prod->name }}
+                                                        <?php echo e($prod->name); ?>
+
                                                         <br>Package
                                                     </amp>
 
-                                                    @if ($paid->first_payment_remaining > 0 && $paid->first_payment_status == 'PARTIALLY_PAID')
+                                                    <?php if($paid->first_payment_remaining > 0 && $paid->first_payment_status == 'PARTIALLY_PAID'): ?>
                                                         <br>
                                                         <amp
                                                             style="display:fixed; align-content: center; text-align:center; font-size:10px !important; color:#ff0000;padding:1px;margin-left: 20px; line-height:100% !important; margin-top: 70px; margin-left:-100px">
                                                             (Outstanding on 1st Payment:
-                                                            {{ $paid->first_payment_remaining }}.)
+                                                            <?php echo e($paid->first_payment_remaining); ?>.)
                                                         </amp>
                                                         <a class="btn" target="_blank"
-                                                            href="{{ route('getInvoice', 'FIRST') }}"
+                                                            href="<?php echo e(route('getInvoice', 'FIRST')); ?>"
                                                             style="display:fixed; align-content: center; text-align:center; font-size:10px !important; top:340px; height:25px; width:150px;margin-left: 25px;">Get
                                                             Invoice Here
                                                         </a>
-                                                    @endif
+                                                    <?php endif; ?>
 
                                                     <p>
-                                                        {{-- @if ($paid->first_payment_status == 'PAID' && $paid->first_payment_price == $paid->first_payment_paid) --}}
-                                                        @if ($paid->first_payment_status == 'PAID' && $paid->first_payment_remaining == 0)
+                                                        <?php if($paid->first_payment_status == 'PAID' && $paid->first_payment_price == $paid->first_payment_paid): ?>
                                                             <a class="btn btn-secondary" target="_blank"
-                                                                href="{{ route('getInvoice', 'FIRST') }}">Get
+                                                                href="<?php echo e(route('getInvoice', 'FIRST')); ?>">Get
                                                                 Invoice</a>
-                                                        @elseif(isset($paym))
-                                                            @if(in_array($paid->first_payment_status, ['PENDING','PARTIALLY_PAID']) && $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 0 && $paid->first_payment_txn_mode == 'TRANSFER')
-                                                            {{-- @if(($paid->first_payment_status == 'PENDING') && $paid->first_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && ($paym->payment_type=="FIRST" || $paym->payment_type == "BALANCE_ON_FIRST")) || ($paym->payment_type == "BALANCE_ON_FIRST" && $paid->first_payment_status == 'PARTIALLY_PAID'  && (isset($paym->transaction_mode) && $paid->first_payment_verified_by_cfo == 0))) --}}
-   
+                                                        <?php elseif(isset($paym)): ?>
+                                                            <?php if(($paid->first_payment_status == 'PENDING') && $paid->first_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && ($paym->payment_type=="FIRST" || $paym->payment_type == "BALANCE_ON_FIRST")) || ($paym->payment_type == "BALANCE_ON_FIRST" && $paid->first_payment_status == 'PARTIALLY_PAID'  && (isset($paym->transaction_mode) && $paid->first_payment_verified_by_cfo == 0))): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            @elseif($paid->first_payment_status == 'PARTIALLY_PAID' &&  $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 1 && $paid->first_payment_txn_mode == 'BALANCE_TRANSFER')
-                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            @else 
-                                                            <form action="{{ route('payment', $prod->id) }}"
+                                                            <?php else: ?> 
+                                                            <form action="<?php echo e(route('payment', $prod->id)); ?>"
                                                                 method="GET">
                                                                 <button class="btn btn-secondary">Pay Now</button>
                                                             </form>
-                                                            @endif
-                                                        @else
-                                                            @if(in_array($paid->first_payment_status, ['PENDING','PARTIALLY_PAID']) &&  $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 0 && $paid->first_payment_txn_mode == 'TRANSFER')
-                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            @elseif($paid->first_payment_status == 'PARTIALLY_PAID' &&  $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 1 && $paid->first_payment_txn_mode == 'BALANCE_TRANSFER')
-                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            @else
-                                                                <form action="{{ route('payment', $prod->id) }}"
-                                                                    method="GET">
-                                                                    <button class="btn btn-secondary">Pay Now </button>
-                                                                </form>
-                                                            @endif
-                                                        @endif
+                                                            <?php endif; ?>
+                                                        <?php else: ?>
+                                                            <form action="<?php echo e(route('payment', $prod->id)); ?>"
+                                                                method="GET">
+                                                                <button class="btn btn-secondary">Pay Now</button>
+                                                            </form>
+                                                        <?php endif; ?>
                                                     </p>
                                                 </span>
                                             </span>
                                         </div>
 
-                                        @if ($pays->pricing_plan_type)
-                                            @php
+                                        <?php if($pays->pricing_plan_type): ?>
+                                            <?php
                                                 $a = explode('_', strtolower($pays->pricing_plan_type));
                                                 $ptype = ucFirst($a[0]) . ' ' . ucFirst($a[1]);
-                                            @endphp
-                                            @if ($pays->pricing_plan_type != 'FAMILY_PACKAGE')
-                                                @php
+                                            ?>
+                                            <?php if($pays->pricing_plan_type != 'FAMILY_PACKAGE'): ?>
+                                                <?php
                                                     $ptype = $ptype . ' Package';
-                                                @endphp
-                                            @endif
-                                        @else
-                                            @php
+                                                ?>
+                                                <?php if($ptype == "Blue Collar Package"): ?>
+                                                    <?php
+                                                        $ptype = 'Individual Package';
+                                                    ?>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                        <?php else: ?>
+                                            <?php
                                                 $ptype = '';
-                                            @endphp
-                                        @endif
+                                            ?>
+                                        <?php endif; ?>
 
                                         <div class="cardc downlaod-item  d-flexx aligns-items-center justify-content-center text-center"
                                             style="font-weight: bold;font-family:'TT Norms Pro'; display:inline-block">
@@ -1357,27 +1287,27 @@
                                                         Application Status</p>
                                                     <span class="prodd"
                                                         style="font-size:11px !important; color:grey;padding-left:1px; padding-right:1px; line-height:100% !important;display:blockx">(
-                                                        {{ $ptype }} )</span>
-                                                    @if ($paid->application_stage_status != 5)
-                                                        @if ($paid->application_stage_status == 2)
-                                                            @php
+                                                        <?php echo e($ptype); ?> )</span>
+                                                    <?php if($paid->application_stage_status != 5): ?>
+                                                        <?php if($paid->application_stage_status == 2): ?>
+                                                            <?php
                                                                 $linkk = 'applicant.details';
-                                                            @endphp
-                                                        @elseif($paid->application_stage_status == 3)
-                                                            @php
+                                                            ?>
+                                                        <?php elseif($paid->application_stage_status == 3): ?>
+                                                            <?php
                                                                 $linkk = 'applicant.details';
-                                                            @endphp
-                                                        @elseif($paid->application_stage_status == 4)
-                                                            @php
+                                                            ?>
+                                                        <?php elseif($paid->application_stage_status == 4): ?>
+                                                            <?php
                                                                 $linkk = 'applicant.review';
-                                                            @endphp
-                                                        @else
-                                                            @php
+                                                            ?>
+                                                        <?php else: ?>
+                                                            <?php
                                                                 $linkk = 'applicant.details';
                                                                 // $linkk = 'payment';
-                                                            @endphp
-                                                        @endif
-                                                        <a href="{{ route($linkk, $paid->destination_id) }}"
+                                                            ?>
+                                                        <?php endif; ?>
+                                                        <a href="<?php echo e(route($linkk, $paid->destination_id)); ?>"
                                                             class="domore">
                                                             <p class="process"
                                                                 style="display:fixed; align-content: center; text-align:center; font-size:10px !important; color:#ff0000;padding:1px;margin-left: 20px; line-height:100% !important">
@@ -1385,7 +1315,7 @@
                                                                     class="flash">Click here</span>
                                                             </p>
                                                         </a>
-                                                    @endif
+                                                    <?php endif; ?>
                                                 </div>
                                             </div>
                                         </div>
@@ -1398,9 +1328,7 @@
                                         <div class="upper">
                                             <span class="paid-item " href="#">
                                                 <span
-                                                    {{-- class="positionAnchor  @if ($paid->submission_payment_status == 'PAID'  && $paid->submission_payment_price == $paid->submission_payment_paid) ) watermarked @endif paid-thumbnail"> --}}
-                                                    class="positionAnchor  @if ($paid->submission_payment_status == 'PAID'  && $paid->submission_payment_remaining == 0) ) watermarked @endif paid-thumbnail">
-
+                                                    class="positionAnchor  <?php if($paid->submission_payment_status == 'PAID'  && $paid->submission_payment_price == $paid->submission_payment_paid): ?> ) watermarked <?php endif; ?> paid-thumbnail">
                                                     <img src="../user/images/submission_payment.svg" height="500px"
                                                         class="img-fluid" alt="PWG Group">
                                                     <span class="title" style="align: center;">
@@ -1411,7 +1339,7 @@
                                                     </span>
                                                     <strong style="line-height:25px;margin-top:20px"
                                                         class="paid-price">
-                                                        {{ number_format($pays->submission_payment_sub_total) }} |
+                                                        <?php echo e(number_format($pays->submission_payment_sub_total)); ?> |
                                                         <br><span
                                                             style="font-size: 12px;float:left;display:inline">AED</span>
                                                         <span
@@ -1419,59 +1347,52 @@
                                                             + 5% VAT</span>
                                                     </strong>&nbsp;
                                                     <amp style="margin-left:18px">
-                                                        {{ $prod->name }}
+                                                        <?php echo e($prod->name); ?>
+
                                                         <br>Package
                                                     </amp>
 
                                                     <p>
-                                                        {{-- @if ($paid->submission_payment_status == 'PAID' && $paid->submission_payment_price == $paid->submission_payment_paid) --}}
-                                                            <!-- <a class="btn btn-secondary" target="_blank" href="{{ route('getReceipt', 'SUBMISSION') }}">Get Reciept</a> -->
-                                                        @if ($paid->submission_payment_status == 'PAID' && $paid->submission_payment_remaining == 0)
-
+                                                        <?php if($paid->submission_payment_status == 'PAID' && $paid->submission_payment_price == $paid->submission_payment_paid): ?>
+                                                            <!-- <a class="btn btn-secondary" target="_blank" href="<?php echo e(route('getReceipt', 'SUBMISSION')); ?>">Get Reciept</a> -->
                                                             <a class="btn btn-secondary" target="_blank"
-                                                                href="{{ route('getInvoice', 'SUBMISSION') }}">Get
+                                                                href="<?php echo e(route('getInvoice', 'SUBMISSION')); ?>">Get
                                                                 Invoice</a>
-                                                        @elseif(isset($paym))
-                                                            @if(in_array($paid->submission_payment_status,['PENDING', 'PARTIALLY_PAID']) && $paid->submission_payment_verified_by_cfo == 0 && $paid->is_submission_payment_partially_paid == 0 && $paid->submission_payment_txn_mode == 'TRANSFER')
+                                                        <?php elseif(isset($paym)): ?>
+                                                            <?php if($paid->submission_payment_status == 'PENDING' && $paid->submission_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && $paym->payment_type=="SUBMISSION")): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            @elseif($paid->submission_payment_status == 'PARTIALLY_PAID' &&  $paid->submission_payment_verified_by_cfo == 0 && $paid->is_submission_payment_partially_paid == 1 && $paid->submission_payment_txn_mode == 'BALANCE_TRANSFER')
-                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            @else 
-                                                                @if ($paid->application_stage_status != 5)
+                                                            <?php else: ?> 
+                                                                <?php if($paid->application_stage_status != 5): ?>
                                                                 <button class="btn btn-secondary toastrDefaultError"
                                                                     onclick="toastr.error('Your application process not completed!')">Pay
                                                                     Now</button>
-                                                                @elseif($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0)
+                                                                <?php elseif($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0): ?>
                                                                     <button class="btn btn-secondary toastrDefaultError"
                                                                     onclick="toastr.error('Your first payment is being verified!')">Pay
                                                                     Now</button>
-                                                                @else
-                                                                    <form action="{{ route('payment', $prod->id) }}"
+                                                                <?php else: ?>
+                                                                    <form action="<?php echo e(route('payment', $prod->id)); ?>"
                                                                         method="GET">
                                                                         <button class="btn btn-secondary">Pay Now</button>
                                                                     </form>
-                                                                @endif
-                                                            @endif
-                                                        @else
-                                                            @if(in_array($paid->submission_payment_status,['PENDING', 'PARTIALLY_PAID']) && $paid->submission_payment_verified_by_cfo == 0 && $paid->is_submission_payment_partially_paid == 0 && $paid->submission_payment_txn_mode == 'TRANSFER')
-                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            @elseif($paid->submission_payment_status == 'PARTIALLY_PAID' &&  $paid->submission_payment_verified_by_cfo == 0 && $paid->is_submission_payment_partially_paid == 1 && $paid->submission_payment_txn_mode == 'BALANCE_TRANSFER')
-                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            @elseif ($paid->application_stage_status != 5)
+                                                                <?php endif; ?>
+                                                            <?php endif; ?>
+                                                        <?php else: ?>
+                                                            <?php if($paid->application_stage_status != 5): ?>
                                                                 <button class="btn btn-secondary toastrDefaultError"
                                                                     onclick="toastr.error('Your application process not completed!')">Pay
                                                                     Now</button>
-                                                            @elseif($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0)
+                                                            <?php elseif($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0): ?>
                                                                 <button class="btn btn-secondary toastrDefaultError"
                                                                 onclick="toastr.error('Your first payment is being verified!')">Pay
                                                                 Now</button>
-                                                            @else
-                                                                <form action="{{ route('payment', $prod->id) }}"
+                                                            <?php else: ?>
+                                                                <form action="<?php echo e(route('payment', $prod->id)); ?>"
                                                                     method="GET">
                                                                     <button class="btn btn-secondary">Pay Now</button>
                                                                 </form>
-                                                            @endif
-                                                        @endif
+                                                            <?php endif; ?>
+                                                        <?php endif; ?>
                                                     </p>
                                                 </span>
                                             </span>
@@ -1480,16 +1401,16 @@
                                         <div class="cardc downlaod-item  d-flexx aligns-items-center justify-content-center text-center"
                                             style="font-weight: bold;font-family:'TT Norms Pro'; display:inline-block">
                                             <div class="cardc-body">
-                                                @php
+                                                <?php
                                                     $workpermit = App\Helpers\users::getWorkPermitStatus($paid);
-                                                @endphp
-                                                @if ($workpermit['status'] == true && isset($workpermit['fileUrl']))
-                                                    <a href="{{ $workpermit['fileUrl'] }}" target="_blank"
+                                                ?>
+                                                <?php if($workpermit['status'] == true && isset($workpermit['fileUrl'])): ?>
+                                                    <a href="<?php echo e($workpermit['fileUrl']); ?>" target="_blank"
                                                         style="margin-left: 0px !important;position: unset;display: contents;">
-                                                @elseif($workpermit['status'] == 'permitReady' && isset($workpermit['fileUrl']))
-                                                    <a href="{{ $workpermit['fileUrl'] }}" target="_blank"
+                                                <?php elseif($workpermit['status'] == 'permitReady' && isset($workpermit['fileUrl'])): ?>
+                                                    <a href="<?php echo e($workpermit['fileUrl']); ?>" target="_blank"
                                                         style="margin-left: 0px !important;position: unset;display: contents;">
-                                                @endif
+                                                <?php endif; ?>
                                                 <div style="display:inline" id="dd"
                                                     class="block download-thumbnail img-fluid">
                                                     <svg style="margin:auto;margin-top:20px" width="39"
@@ -1503,17 +1424,17 @@
                                                             fill="#1C7E14" />
                                                     </svg>
                                                 </div>
-                                                @if (($workpermit['status'] == true || $workpermit['status'] == 'permitReady') && isset($workpermit['fileUrl']))
+                                                <?php if(($workpermit['status'] == true || $workpermit['status'] == 'permitReady') && isset($workpermit['fileUrl'])): ?>
                                                     </a>
-                                                @endif
+                                                <?php endif; ?>
                                                 <div class="dg aligns-items-center justify-content-center text-center"
                                                     style="display:inline; justify-content: center;  align-items: center;">
                                                     <p
                                                         style="padding-top: 27px;padding-bottom:0px; font-size:14px;font-weight:800">
                                                         Work Permit</p>
                                                     <span class="prodd"
-                                                        style="font-size:11px; color:grey;padding-left:1px; padding-right:1px">{{ $workpermit['message'] }}</span>
-                                                    {{-- <span style="font-size:11px; color:grey;padding-left:1px; padding-right:1px">Work Permit not available yet.</span> --}}
+                                                        style="font-size:11px; color:grey;padding-left:1px; padding-right:1px"><?php echo e($workpermit['message']); ?></span>
+                                                    
                                                 </div>
 
                                             </div>
@@ -1529,8 +1450,7 @@
 
                                             <span class="paid-item " href="#">
                                                 <span
-                                                    {{-- class="positionAnchor  @if ($paid->second_payment_status == 'PAID' && $paid->second_payment_price == $paid->second_payment_paid)  watermarked @endif paid-thumbnail"> --}}
-                                                    class="positionAnchor  @if ($paid->second_payment_status == 'PAID' && $paid->second_payment_remaining == 0)  watermarked @endif paid-thumbnail">
+                                                    class="positionAnchor  <?php if($paid->second_payment_status == 'PAID' && $paid->second_payment_price == $paid->second_payment_paid): ?>  watermarked <?php endif; ?> paid-thumbnail">
                                                     <img src="../user/images/second_payment.svg" height="500px"
                                                         class="img-fluid" alt="PWG Group">
                                                     <span class="title" style="align: center;">
@@ -1540,7 +1460,7 @@
                                                     </span>
                                                     <strong style="line-height:25px;margin-top:20px"
                                                         class="paid-price">
-                                                        {{ number_format($pays->second_payment_sub_total) }} |
+                                                        <?php echo e(number_format($pays->second_payment_sub_total)); ?> |
                                                         <br><span
                                                             style="font-size: 12px;float:left;display:inline">AED</span>
                                                         <span
@@ -1548,58 +1468,52 @@
                                                             + 5% VAT</span>
                                                     </strong>&nbsp;
                                                     <amp style="margin-left:18px">
-                                                        {{ $prod->name }}
+                                                        <?php echo e($prod->name); ?>
+
                                                         <br>Package
                                                     </amp>
 
                                                     <p>
-                                                        {{-- @if ($paid->second_payment_status == 'PAID' && $paid->second_payment_price == $paid->second_payment_paid) --}}
-                                                        @if ($paid->second_payment_status == 'PAID' && $paid->second_payment_remaining == 0)
-                                                            <!-- <a class="btn btn-secondary" target="_blank" href="{{ route('getReceipt', 'SECOND') }}">Get Reciept</a> -->
+                                                        <?php if($paid->second_payment_status == 'PAID' && $paid->second_payment_price == $paid->second_payment_paid): ?>
+                                                            <!-- <a class="btn btn-secondary" target="_blank" href="<?php echo e(route('getReceipt', 'SECOND')); ?>">Get Reciept</a> -->
                                                             <a class="btn btn-secondary" target="_blank"
-                                                                href="{{ route('getInvoice', 'SECOND') }}">Get
+                                                                href="<?php echo e(route('getInvoice', 'SECOND')); ?>">Get
                                                                 Invoice</a>
-                                                        @elseif(isset($paym))
-                                                            @if(in_array($paid->second_payment_status,['PENDING', 'PARTIALLY_PAID']) && $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 0 && $paid->second_payment_txn_mode == 'TRANSFER')
+                                                        <?php elseif(isset($paym)): ?>
+                                                            <?php if($paid->second_payment_status == 'PENDING' && $paid->second_payment_verified_by_cfo == 0 && (isset($paym->transaction_mode) && $paym->payment_type=="SECOND")): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            @elseif($paid->second_payment_status == 'PARTIALLY_PAID' &&  $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 1 && $paid->second_payment_txn_mode == 'BALANCE_TRANSFER')
-                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            @else    
-                                                                @if ($paid->application_stage_status != 5)
+                                                            <?php else: ?>    
+                                                                <?php if($paid->application_stage_status != 5): ?>
                                                                     <button class="btn btn-secondary toastrDefaultError"
                                                                         onclick="toastr.error('Your application process not completed!')">Pay
                                                                         Now</button>
-                                                                @elseif($paid->submission_payment_status != "PAID" && $paid->submission_payment_verified_by_cfo == 0)
+                                                                <?php elseif($paid->submission_payment_status != "PAID" && $paid->submission_payment_verified_by_cfo == 0): ?>
                                                                     <button class="btn btn-secondary toastrDefaultError"
                                                                     onclick="toastr.error('Your previous payment is being verified!')">Pay
                                                                     Now</button>
-                                                                @else
-                                                                    <form action="{{ route('payment', $prod->id) }}"
+                                                                <?php else: ?>
+                                                                    <form action="<?php echo e(route('payment', $prod->id)); ?>"
                                                                         method="GET">
                                                                         <button class="btn btn-secondary">Pay Now</button>
                                                                     </form>
-                                                                @endif        
-                                                            @endif
-                                                        @else
-                                                            @if(in_array($paid->second_payment_status,['PENDING', 'PARTIALLY_PAID']) && $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 0 && $paid->second_payment_txn_mode == 'TRANSFER')
-                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            @elseif($paid->second_payment_status == 'PARTIALLY_PAID' &&  $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 1 && $paid->second_payment_txn_mode == 'BALANCE_TRANSFER')
-                                                                <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            @elseif ($paid->application_stage_status != 5)
+                                                                <?php endif; ?>        
+                                                            <?php endif; ?>
+                                                        <?php else: ?>
+                                                            <?php if($paid->application_stage_status != 5): ?>
                                                                 <button class="btn btn-secondary toastrDefaultError"
                                                                     onclick="toastr.error('Your application process not completed!')">Pay
                                                                     Now</button>
-                                                            @elseif($paid->submission_payment_status != "PAID" && $paid->submission_payment_verified_by_cfo == 0)
+                                                            <?php elseif($paid->submission_payment_status != "PAID" && $paid->submission_payment_verified_by_cfo == 0): ?>
                                                                 <button class="btn btn-secondary toastrDefaultError"
                                                                 onclick="toastr.error('Your previous payment is being verified!')">Pay
                                                                 Now</button>
-                                                            @else
-                                                                <form action="{{ route('payment', $prod->id) }}"
+                                                            <?php else: ?>
+                                                                <form action="<?php echo e(route('payment', $prod->id)); ?>"
                                                                     method="GET">
                                                                     <button class="btn btn-secondary">Pay Now</button>
                                                                 </form>
-                                                            @endif
-                                                        @endif
+                                                            <?php endif; ?>
+                                                        <?php endif; ?>
                                                     </p>
                                                 </span>
                                             </span>
@@ -1655,8 +1569,7 @@
                                         <div class="upper">
                                             <span class="paid-item " href="#">
                                                 <span
-                                                    {{-- class="positionAnchor  @if ($paid->third_payment_status == 'PAID' && $paid->third_payment_price == $paid->third_payment_paid)  watermarked @endif paid-thumbnail"> --}}
-                                                    class="positionAnchor  @if ($paid->third_payment_status == 'PAID' && $paid->third_payment_remaining == 0)  watermarked @endif paid-thumbnail">
+                                                    class="positionAnchor  <?php if($paid->third_payment_status == 'PAID' && $paid->third_payment_price == $paid->third_payment_paid): ?>  watermarked <?php endif; ?> paid-thumbnail">
                                                     <img src="../user/images/salary_deduction.svg" height="500px"
                                                         class="img-fluid" alt="PWG Group">
                                                     <span class="title" style="align: center;">
@@ -1666,14 +1579,15 @@
                                                     </span>
                                                     <strong style="line-height:25px;margin-top:20px"
                                                         class="paid-price">
-                                                        {{ number_format($pays->third_payment_sub_total) }} |
+                                                        <?php echo e(number_format($pays->third_payment_sub_total)); ?> |
                                                         <br><span
                                                             style="font-size: 12px;float:left;display:inline">AED</span>
-                                                        {{-- <span style="font-size: 12px;display:inline; float:right;margin-right:20px;"> + 5% VAT</span> --}}
+                                                        
 
                                                     </strong>&nbsp;
                                                     <amp style="margin-left:18px">
-                                                        {{ $prod->name }}
+                                                        <?php echo e($prod->name); ?>
+
                                                         <br>Package
                                                     </amp>
                                                     <p class="salari"
@@ -1688,10 +1602,10 @@
                                             style="font-weight: bold;font-family:'TT Norms Pro'; display:inline-block">
                                             <div class="cardc-body">
 
-                                                @if (isset($getContract->contractUrl) && strlen($getContract->contractUrl) > 2)
-                                                    <a href="{{ $getContract->contractUrl }}" target="_blank"
+                                                <?php if(isset($getContract->contractUrl) && strlen($getContract->contractUrl) > 2): ?>
+                                                    <a href="<?php echo e($getContract->contractUrl); ?>" target="_blank"
                                                         style="margin:0; position: unset;display: contents;">
-                                                @endif
+                                                <?php endif; ?>
                                                 <div style="display:inline" id="dd"
                                                     class="block download-thumbnail img-fluid">
                                                     <svg style="margin:auto;margin-top:20px" width="39"
@@ -1706,9 +1620,9 @@
                                                     </svg>
 
                                                 </div>
-                                                @if (isset($getContract->contractUrl) && strlen($getContract->contractUrl) > 2)
+                                                <?php if(isset($getContract->contractUrl) && strlen($getContract->contractUrl) > 2): ?>
                                                     </a>
-                                                @endif
+                                                <?php endif; ?>
 
                                                 <div class="dg aligns-items-center justify-content-center text-center"
                                                     style="display:inline; justify-content: center;  align-items: center;">
@@ -1718,11 +1632,11 @@
                                                         Download Contract</p>
                                                     <span class="prodd"
                                                         style="font-size:11px; color:grey;padding-left:1px; padding-right:1px;line-height:1px;">
-                                                        @if (isset($getContract->contractUrl) && strlen($getContract->contractUrl) > 2)
+                                                        <?php if(isset($getContract->contractUrl) && strlen($getContract->contractUrl) > 2): ?>
                                                             Download Contract Here.
-                                                        @else
+                                                        <?php else: ?>
                                                             Contract not available yet.
-                                                        @endif
+                                                        <?php endif; ?>
                                                     </span>
                                                 </div>
 
@@ -1731,7 +1645,7 @@
                                     </div>
                                 </div>
 
-                            @endif
+                            <?php endif; ?>
 
                             <!-- Modal -->
                             <div class="modal fade" id="statusModal" tabindex="-1"
@@ -1747,52 +1661,49 @@
                                         </div>
                                         <div class="modal-body" style="height:auto">
 
-                                            {{-- @if ($paid->second_payment_status == 'PAID' && $paid->second_payment_price == $paid->second_payment_paid) --}}
-                                            @if ($paid->second_payment_status == 'PAID' && $paid->second_payment_remaining == 0)
+                                            <?php if($paid->second_payment_status == 'PAID' && $paid->second_payment_price == $paid->second_payment_paid): ?>
                                                 <h4>Congratutaion! <br>You have completed your payments. </h4>
                                                 <p style="font-size:15px">Your embassy appearance date will be
                                                     indicated soon.</p>
-                                            {{-- @elseif($paid->submission_payment_status == 'PAID' && $paid->submission_payment_price == $paid->submission_payment_paid) --}}
-                                            @elseif($paid->submission_payment_status == 'PAID' && $paid->submission_payment_remaining == 0)
+                                            <?php elseif($paid->submission_payment_status == 'PAID' && $paid->submission_payment_price == $paid->submission_payment_paid): ?>
                                                 <p>Your Application is in progress! </p>
                                                 <p style="font-size:17px">Your third payment is pending. </p>
                                                 <p style="font-size:15px">Your work permit will be uploaded soon.</p>
-                                            {{-- @elseif($paid->first_payment_status == 'PAID' && $paid->first_payment_price == $paid->first_payment_paid) --}}
-                                            @elseif($paid->first_payment_status == 'PAID' && $paid->first_payment_remaining == 0)
+                                            <?php elseif($paid->first_payment_status == 'PAID' && $paid->first_payment_price == $paid->first_payment_paid): ?>
                                                 <p>Your Application is in progress! </p>
                                                 <p style="font-size:15px">Your second payment pending.</p>
-                                            @else
-                                                @if ($paid->first_payment_remaining > 0 && $paid->first_payment_status != 'PAID')
+                                            <?php else: ?>
+                                                <?php if($paid->first_payment_remaining > 0 && $paid->first_payment_status != 'PAID'): ?>
                                                     <p style="font-size:15px">You have outstanding payment of
-                                                        {{ $paid->first_payment_remaining }} <br> on first payment</p>
-                                                @endif
-                                            @endif
+                                                        <?php echo e($paid->first_payment_remaining); ?> <br> on first payment</p>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
 
-                                            @if ($paid->application_stage_status != 5)
-                                                @if ($paid->application_stage_status == 2)
-                                                    @php
+                                            <?php if($paid->application_stage_status != 5): ?>
+                                                <?php if($paid->application_stage_status == 2): ?>
+                                                    <?php
                                                         $linkk = 'applicant.details';
-                                                    @endphp
-                                                @elseif($paid->application_stage_status == 3)
-                                                    @php
+                                                    ?>
+                                                <?php elseif($paid->application_stage_status == 3): ?>
+                                                    <?php
                                                         $linkk = 'applicant.details';
-                                                    @endphp
-                                                @elseif($paid->application_stage_status == 4)
-                                                    @php
+                                                    ?>
+                                                <?php elseif($paid->application_stage_status == 4): ?>
+                                                    <?php
                                                         $linkk = 'applicant.review';
-                                                    @endphp
-                                                @else
-                                                    @php
+                                                    ?>
+                                                <?php else: ?>
+                                                    <?php
                                                         $linkk = 'payment';
-                                                    @endphp
-                                                @endif
-                                                <a href="{{ route($linkk, $paid->destination_id) }}">
+                                                    ?>
+                                                <?php endif; ?>
+                                                <a href="<?php echo e(route($linkk, $paid->destination_id)); ?>">
                                                     <p
                                                         style="display:fixed; align-content: center; text-align:center; font-size:11px !important; color:#ff0000;padding:1px;margin-left: 20px; line-height:100% !important">
                                                         Application process not completed. Click here
                                                     </p>
                                                 </a>
-                                            @endif
+                                            <?php endif; ?>
                                         </div>
                                     </div>
                                 </div>
@@ -1803,16 +1714,7 @@
                     </div>
                 </div>
 
-                {{-- <div class="controls">
-                    <a class="carousel-control-prev" id="slideBack" href="#carouselThree"
-                        style="text-decoration:none;" role="button" data-slide="prev">
-                        <i class="lni lni-arrow-left"></i>
-                    </a>
-                    <a class="carousel-control-next" id="slide" href="#carouselThree"
-                        style="text-decoration:none;" role="button" data-slide="next">
-                        <i class="lni lni-arrow-right"></i>
-                    </a>
-                </div> --}}
+                
                 <br>
             </div>
 
@@ -1820,46 +1722,47 @@
     </div>
 </div>
 
-@if (strtoupper($paid->second_payment_status) != 'PAID' &&
+<?php if(strtoupper($paid->second_payment_status) != 'PAID' &&
         strtoupper($paid->submission_payment_status) != 'PAID' &&
-        $prod->full_payment_discount > 0)
-    @if (isset($prod->id))
-        @php
+        $prod->full_payment_discount > 0): ?>
+    <?php if(isset($prod->id)): ?>
+        <?php
             $ppd = $prod->id;
-        @endphp
+        ?>
 
         <div class="card d-flex aligns-items-center justify-content-center text-center wiggy pay-full"
             style="background-color:#000; color: #fff; padding-block:35px; font-weight: bold;font-family:'TT Norms Pro'">
-            <h3>Earn {{ round($prod->full_payment_discount ?? 5) }}% discount when you pay
+            <h3>Earn <?php echo e(round($prod->full_payment_discount ?? 5)); ?>% discount when you pay
                 full amount! </h3>
             <p style="margin-top: 5px;">
-                @if (
+                <?php if(
                     (strtoupper($paid->first_payment_status) == 'PAID' ||
                         strtoupper($paid->first_payment_status) == 'PARTIALLY_PAID') &&
-                        $paid->application_stage_status != 5)
+                        $paid->application_stage_status != 5): ?>
                     <button class="btn btn-secondary toastrDefaultError"
                         style="border-width:thin; width:250px; height:60px; font-size:32px; font-weight:bold"
-                        onclick="toastr.error('Your application process not completed!')">Pay All Now</button>
-                @elseif(($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0) ) //|| ($paid->submission_payment_status != "PAID" && $paid->submission_payment_verified_by_cfo == 0)
+                        onclick="toastr.error('Your application process not completed!')">
+                        Pay All Now</button>
+                <?php elseif(($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0) && ($paid->submission_payment_status != "PAID" && $paid->submission_payment_verified_by_cfo == 0)): ?>
                     <button class="btn btn-secondary toastrDefaultError"
                         style="border-width:thin; width:250px; height:60px; font-size:32px; font-weight:bold" 
                         onclick="toastr.error('Your previous payment being verified!')">
                         Pay All Now
                     </button>
                     
-                @else
-                    <form action="{{ route('payment', $ppd) }}" method="GET">
-                        <input type="hidden" name="pid" value="{{ $ppd }}">
+                <?php else: ?>
+                    <form action="<?php echo e(route('payment', $ppd)); ?>" method="GET">
+                        <input type="hidden" name="pid" value="<?php echo e($ppd); ?>">
                         <input type="hidden" name="payall" value="1">
                         <button class="btn btn-secondary"
-                            style="border-width:thin; width:250px; height:60px; font-size:32px; font-weight:bold">Pay
-                            All Now</button>
+                            style="border-width:thin; width:250px; height:60px; font-size:32px; font-weight:bold">
+                            Pay All Now</button>
                     </form>
-                @endif
+                <?php endif; ?>
             </p>
         </div>
-    @endif
-@endif
+    <?php endif; ?>
+<?php endif; ?>
 
 <script>
     function OAuthCode(url) {
@@ -1912,3 +1815,4 @@
         }, speed);
     }
 </script>
+<?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views/user/paid.blade.php ENDPATH**/ ?>

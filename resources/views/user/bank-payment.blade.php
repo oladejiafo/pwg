@@ -96,7 +96,16 @@
                         <div class="col-4">
                             <a href="{{  url()->previous()  }}"><button type="cancel" class="cancelBtn btnx" style="float: left;">Cancel</button></a>
                         </div>
-                        <div class="col-4"></div>
+                        <div class="col-4">
+                            <input type="hidden" name="pid" value="{{ $data->id }}">
+                            <input type="hidden" name="ppid" value="{{ isset($pdet->id) ? $pdet->id : '' }}">
+                            <input type="hidden" name="uid" value="{{ Auth::user()->id }}">
+                            <input type="hidden" name="packageType" value="{{$pdet->pricing_plan_type}}">
+                            <input type="hidden" name="whichpayment" value="{{ $whichPayment ? $whichPayment : 'FIRST' }}">
+                            <input type="hidden" name="first_p" value="{{ $pdet->first_payment_sub_total }}">
+                            <input type="hidden" name="second_p" value="{{ $pdet->submission_payment_sub_total }}">
+                            <input type="hidden" name="third_p" value="{{ $pdet->second_payment_sub_total }}">
+                        </div>
                         <div class="col-4">
                             <button type="submit" class="btn btn-primary submitBtn" style="float: right;">Submit</button>
                         </div>

@@ -126,6 +126,14 @@
                         </div>
                     </div> 
   
+                    <input type="hidden" name="pid" value="{{ $data->id }}">
+                    <input type="hidden" name="ppid" value="{{ isset($pdet->id) ? $pdet->id : '' }}">
+                    <input type="hidden" name="uid" value="{{ Auth::user()->id }}">
+                    <input type="hidden" name="whichpayment" value="{{ $whichPayment ? $whichPayment : 'FIRST' }}">
+                    <input type="hidden" name="first_p" value="{{ $pdet->first_payment_sub_total }}">
+                    <input type="hidden" name="second_p" value="{{ $pdet->submission_payment_sub_total }}">
+                    <input type="hidden" name="third_p" value="{{ $pdet->second_payment_sub_total }}">
+                    
                     <a href="{{  url()->previous()  }}"><buttons type="cancel" class="cancelBtn xbtn" style="float: left;">Cancel</buttons></a>
                     {{-- <a href="#" class="btn cancelBtn" style="float: left;">Cancel</a> --}}
                     <button type="submit" class="btn btn-primary submitBtn" style="float: right;">Submit</button>
