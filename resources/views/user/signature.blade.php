@@ -100,40 +100,36 @@
 
     $(document).ready(function() {
 
-      
-  savePNGButton.addEventListener("click", () => {
-  if (signaturePad.isEmpty()) {
-    toastr.error("Please provide a signature.");
-    // console.log('Error')
-  } else {
-    const dataURL = signaturePad.toDataURL();
-    // download(dataURL, "signature.png");
+        
+    savePNGButton.addEventListener("click", () => {
+      if (signaturePad.isEmpty()) {
+        toastr.error("Please provide a signature.");
+      } else {
+        const dataURL = signaturePad.toDataURL();
 
-    $.ajax({
-      type: 'POST',
-      url: "{{ url('upload_signature') }}",
-      data: {
-        "_token": "{{ csrf_token() }}",
-        signed: dataURL,
-        payall: '{{$payall}}',
-        response: 1
-      },
-      success: function(data) {
-        console.log(data);
-        if (data) {
-          location.href = "{{url('payment_form')}}/" + '{{$data->id}}';
+        $.ajax({
+          type: 'POST',
+          url: "{{ url('upload_signature') }}",
+          data: {
+            "_token": "{{ csrf_token() }}",
+            signed: dataURL,
+            payall: '{{$payall}}',
+            response: 1
+          },
+          success: function(data) {
+            console.log(data);
+            if (data) {
+              location.href = "{{url('payment_form')}}/" + '{{$data->id}}';
 
-        } else {
-          alert('Something went wrong');
-        }
+            } else {
+              alert('Something went wrong');
+            }
 
-      },
-      error: function(error) {}
+          },
+          error: function(error) {}
+        });
+      }
     });
-
-    // console.log("correct")
-  }
-});
 
       // ############////////
       // $("#signatureSubmit").submit(function(e) {

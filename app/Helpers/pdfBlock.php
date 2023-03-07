@@ -500,6 +500,9 @@ class pdfBlock
             }
             $applicant->contract_1st_signature_status = 'SIGNED';
             $applicant->contract_1st_signature_at = Carbon::now();
+            $applicant->contract_1st_signature_verified_by_accountant = 1;
+            $applicant->contract_1st_signature_verified = 1;            
+            
         // // }
         // if ($paymentType == 'SUBMISSION') {
         //     $theString = $pdf->Output('S');
