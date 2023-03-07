@@ -19,7 +19,7 @@ body {
     /* background-color: #ffffff; */
     /* margin-bottom: 40px; */
     color: #636466;
-    padding: 40px 150px 70px 150px;
+    padding: 40px 50px 40px 50px;
 }
 
 .contractImg {
@@ -356,6 +356,22 @@ body {
     width: 100%;
 }
 
+.bank-transfer button {
+    height: 60px;
+    border: 1px solid #F6F6F6;
+    background: #F6F6F6;
+    padding: 10px;
+    font-family: TT Norms Pro;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 43px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: #606060;
+    margin-top: 0px;
+    width: 200px;
+}
+
 .form-check {
     padding: 0.5em;
 }
@@ -438,13 +454,13 @@ select {
 }
 
 .payoption label {
-    border: 1px solid #CCC;
-    border-radius: 10px;
+    border: 1px solid #f7f5f5;
+    /* border-radius: 10px; */
     font-weight: bold;
-    width: 150px;
-    height: 40px;
+    width: 250px;
+    height: 60px;
     margin: auto;
-    padding: 5px;
+    padding: 15px;
     cursor: pointer;
     background: #fff;
     z-index: 90;
@@ -553,11 +569,12 @@ select {
     background-color: #ffffff;
     /* margin-bottom: 420px; */
     color: #636466;
-    padding: 40px 70px 70px 70px;
+    padding: 20px 20px 20px 20px;
 }
 
 .bankInfo {
-    margin: 120px 0px 70px 0px;
+    margin: 50px 0px 20px 0px;
+    text-align: center;
 }
 
 .bankInfo h5 {
@@ -581,6 +598,7 @@ select {
 .recieptUpload {
     margin: 0 auto;
     margin-bottom: 20px;
+    min-height: 40%;
 }
 
 .recieptUploadImage {
@@ -591,7 +609,8 @@ select {
 }
 
 .bankDetails li h6 {
-    font-weight: 700;
+    /* font-weight: 700; */
+    font-size: 12px;
 }
 
 .bank-tranfer .cancelBtn:hover {
@@ -607,7 +626,6 @@ select {
     border-width: thin;
     border-style: solid;
     font-weight: 600;
-    padding: 12px 30px;
 }
 
 .file--uploading>label {
@@ -678,6 +696,7 @@ select {
 }
 
 .previewImage {
-    width: 30%;
-    margin: 0 auto;
+    width: 70%;
+    height: auto;
+    margin: 50px auto;
 }

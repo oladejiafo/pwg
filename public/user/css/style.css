@@ -2009,7 +2009,7 @@ textarea {
 .tabs {
   display: flex;
   align-items: center;
-  margin-top: 5rem;
+  margin-top: 0.5rem;
 
 }
 
@@ -2316,6 +2316,9 @@ html .ui-button.ui-state-disabled:active {
 .wizard {
   margin-top: 30px;
   padding: 1rem;
+  margin-left: 50px;
+  margin-right: 50px;  
+  background-color: FFF;
 }
 
 .wizard-details {

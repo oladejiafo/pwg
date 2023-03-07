@@ -291,27 +291,6 @@ class HomeController extends Controller
             // $signature->addMediaFromBase64($request->signed)->usingFileName($signate)->toMediaCollection(Client::$media_collection_main_signture, env('MEDIA_DISK'));
             $signature->save();
 
-            /* old Codes
-            if (Session::get('mySpouse') == "yes") {
-                $is_spouse = 1;
-            } else {
-                $is_spouse = 0;
-            }
-
-            if (Session::has('myKids')) {
-                $children = Session::get('myKids');
-            } else {
-                $children = 0;
-            }
-
-            User::where('id', Auth::id())
-                ->update([
-                    'is_spouse' => $is_spouse,
-                    'children_count' => $children
-                ]);
-            */
-
-
             $myCHildren = $mySpouse = null;
             $is_spouse = $children = 0;
             if (Session::get('packageType') == 'FAMILY_PACKAGE') {
@@ -336,13 +315,13 @@ class HomeController extends Controller
                 $pid = 1;
             }
 
-            // $pricingPLan = product_payments::where('pricing_plan_type', Session::get('packageType'))
-            //     ->where('destination_id', $pid)
-            //     ->where('no_of_parent', $mySpouse)
-            //     ->where('no_of_children', $myCHildren)
-            //     ->where('status', 'CURRENT')
-            //     ->first();
-            $pricingPLan = product_payments::where('id', 97)->first();
+            $pricingPLan = product_payments::where('pricing_plan_type', Session::get('packageType'))
+                ->where('destination_id', $pid)
+                ->where('no_of_parent', $mySpouse)
+                ->where('no_of_children', $myCHildren)
+                ->where('status', 'CURRENT')
+                ->first();
+            // $pricingPLan = product_payments::where('id', 97)->first();
                 
             $datas = Applicant::where('client_id', Auth::id())
                 ->where('destination_id', $pid)
@@ -1390,7 +1369,7 @@ class HomeController extends Controller
                 return redirect('home');
             }
         } catch (Exception $e) {
-            dd($e);
+            // dd($e);
             return redirect('myapplication')->with($e->getMessage());
         }
     }
