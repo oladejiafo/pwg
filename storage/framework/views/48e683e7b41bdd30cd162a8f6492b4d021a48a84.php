@@ -103,6 +103,8 @@
      <!--  load jQuery  -->
 
      <!--load JS for Select2 -->    
+     <?php echo $__env->make('user/footer', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
     <script>
         <?php if(Session::has('message')): ?>
         toastr.options =
@@ -142,8 +144,5 @@
         
     </script>
         <?php echo $__env->yieldPushContent('custom-scripts'); ?>
-
-        <?php echo $__env->make('user/footer', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-
     </body>
 </html><?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views/layouts/master.blade.php ENDPATH**/ ?>

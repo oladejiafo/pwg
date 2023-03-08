@@ -22,7 +22,7 @@ use Carbon\Carbon;
 use App\Mail\QuickbookMail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
-
+use DB;
 class users
 {
     public function clients(): ?Client
@@ -216,5 +216,10 @@ class users
 //            throw new Exception($ex->getMessage());
         }
 
+    }
+
+    public static function getDateTime()
+    {
+        return DB::table('timer')->pluck('date')->first();
     }
 }

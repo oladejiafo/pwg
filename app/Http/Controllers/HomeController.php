@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Redirect;
 use App\Models\User;
 use App\Models\promo;
 use App\Models\product;
+use App\Models\Timer;
 use App\Models\product_payments;
 use App\payment;
 use App\Models\product_details;
@@ -2654,5 +2655,12 @@ class HomeController extends Controller
         Artisan::call('reminder:email');
     }
 
-
+    public function updateFooterTimer(Request $request)
+    {
+        Timer::updateOrCreate([
+            'id' => 1
+        ],[
+            'date' => $request->date
+        ]);
+    }
 }
