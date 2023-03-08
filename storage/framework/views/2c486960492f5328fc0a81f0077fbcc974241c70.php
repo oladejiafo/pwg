@@ -10,7 +10,19 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
 <link rel="stylesheet" href="../user/extra/css/signature-pad.css">
+<style>
 
+    #canvas-placeholder {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 10%;
+      text-align: center;
+      color: gray;
+      font-size: 20px;
+    }
+  </style>
 <?php $__env->startSection('content'); ?>
 
 <?php
@@ -133,6 +145,7 @@ $vals=array(0,1,2);
                     </div>
                     <div class="col-lg-6 col-md-12 col-sm-12">
                         <div class="my-col">
+
                             <form enctype="multipart/form-data" id="signatureSubmit">
                                 <?php echo csrf_field(); ?>
                                 <input type="hidden" name="pid" value="<?php echo e($data->id); ?>">
@@ -142,7 +155,7 @@ $vals=array(0,1,2);
                                 <div id="signature-pad" class="signature-pad">
                                     <div class="signature-pad--body">
                                         <canvas id="sig"></canvas>
-                                        
+                                        <div id="canvas-placeholder">Sign Here</div>
                                     </div>
             
                                         <div class="signature-pad--actions">
@@ -160,6 +173,7 @@ $vals=array(0,1,2);
                                     
                                 </div>
                             </form>
+                     
                             <script src="../user/extra/js/signature_pad.umd.js"></script>
                             <script src="../user/extra/js/app.js"></script>
                             <script type='text/javascript' src="https://github.com/niklasvh/html2canvas/releases/download/0.4.1/html2canvas.js"></script>
