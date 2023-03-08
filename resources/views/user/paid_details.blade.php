@@ -132,8 +132,7 @@
                                                         <form action="{{ route('payment',$prod->id) }}" method="GET">
                                                             <button class="btn btn-secondary" style="font-weight:700">Pay Now</button>
                                                         </form>
-                                                    @endif                                                    Now</button>
-
+                                                    @endif
                                                 @else
                                                     <form action="{{ route('payment',$prod->id) }}" method="GET">
                                                         <button class="btn btn-secondary" style="font-weight:700">Pay Now</button>
