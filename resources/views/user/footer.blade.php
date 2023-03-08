@@ -61,7 +61,13 @@
 </style>
 @php $timer = App\Helpers\users::getDateTime();@endphp
 <script>
-    var countDownDate = new Date("{{$timer}}").getTime();
+    
+    if("{{$timer}}"){
+        var countDownDate = new Date("{{$timer}}").getTime();
+    } else {
+        var date = new Date();
+        var countDownDate = date.setTime(date.getTime() + (7 * 24 * 60 * 60 * 1000));
+    }
     
     // Update the count down every 1 second
     var x = setInterval(function() {
