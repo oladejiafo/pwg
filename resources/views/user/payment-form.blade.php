@@ -19,7 +19,7 @@
       width: 100%;
       height: 10%;
       text-align: center;
-      color: gray;
+      color: rgb(196, 193, 193);
       font-size: 20px;
     }
   </style>
@@ -230,7 +230,7 @@ $vals=array(0,1,2);
                     </div>
                 </div>
             </div>
-            <div class="row" style="background-color: #Fff;paddingx: 30px; margin-top:5px">
+            <div class="row" style="background-color: #Fff;padding: 30px; margin-top:5px;--bs-gutter-x: 0px;">
                 <div class="col-12">
                     
                     <div classx="form-sec discountForm">
