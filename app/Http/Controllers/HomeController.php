@@ -922,6 +922,7 @@ class HomeController extends Controller
             $user = Client::find(Auth::id());
 
             $signatureUrl = (isset($user->getMedia(Client::$media_collection_main_signture)[0])) ? $user->getMedia(Client::$media_collection_main_signture)[0]->getUrl() : null;
+            
             if (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                 $signatureUrl = ltrim($signatureUrl, $signatureUrl[0]);
             }
@@ -940,7 +941,11 @@ class HomeController extends Controller
                 session()->forget('info');
 
                 Session::put('packageType', $request->packageType);
-
+                $user = Client::find(Auth::id());
+                $signatureUrl = (isset($user->getMedia(Client::$media_collection_main_signture)[0])) ? $user->getMedia(Client::$media_collection_main_signture)[0]->getUrl() : null;
+                if($signatureUrl == null){
+                    return back()->with('failed', 'Oppss! Please provide signature.');
+                }
                 // //Call Create Contract Function
                 // self::createContract($request->pid);
                 
@@ -1574,7 +1579,6 @@ class HomeController extends Controller
                 return redirect('home');
             }
         } catch (Exception $e) {
-            dd($e);
             return redirect('myapplication')->with($e->getMessage());
         }
     }
@@ -1594,7 +1598,11 @@ class HomeController extends Controller
                 return back()->withErrors($validator)
                     ->withInput();
             }
-
+            $user = Client::find(Auth::id());
+            $signatureUrl = (isset($user->getMedia(Client::$media_collection_main_signture)[0])) ? $user->getMedia(Client::$media_collection_main_signture)[0]->getUrl() : null;
+            if($signatureUrl == null){
+                return back()->with('failed', 'Oppss! Please provide signature.');
+            }
             Session::put('packageType', $request->packageType);
 
             // //Call Create Contract Function
@@ -1725,7 +1733,6 @@ class HomeController extends Controller
             //     return view('user.payment-confirm', compact('id'))->with('error', 'Something went wrong! Please try again');
             // }
         } catch (Exception $e) {
-            dd($e);
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
@@ -1921,7 +1928,7 @@ class HomeController extends Controller
                         $dat->payable_amount = ($paymentCreds['whichpayment'] == 'BALANCE_ON_FIRST') ? $paymentCreds['totalpay'] : $paymentCreds['totaldue'];
                         $dat->invoice_amount = $paymentCreds['totalpay'];
 
-                        $dat->bank_id = 8;
+                        $dat->bank_id = '8';
                         $dat->payment_verified_by_cfo =1;
                         $dat->paid_amount = $paymentCreds['totalpay'];
                         $dat->currency = $paymentResponse->amount->currencyCode;
@@ -1973,7 +1980,7 @@ class HomeController extends Controller
 
                     if ((isset($ppd) && ($ppd['payment_type'] == "FIRST" || $ppd['payment_type'] == "BALANCE_ON_FIRST")) || (isset($dat) && ($dat['payment_type'] == "FIRST" || $dat['payment_type'] == "BALANCE_ON_FIRST"))) {
                         $ems = "";
-                    } else if ($paymentDetails['payment_type'] == "SUBMISSION") {
+                    } else if ($ppd['payment_type'] == "SUBMISSION") {
                         $ems = " You will be notified when your Work Permit is ready.";
                     } else {
                         $ems = " You will be notified when your embassy appearance date is set.";
@@ -2462,8 +2469,6 @@ class HomeController extends Controller
             }
             $paymentDetails =  $paymentDetailsBasedType;
         }
-        return self::getInvoiceDevelop($paymentDetails->payment_type);
-
         // dd($paymentDetails);
         if ($paymentDetails->payment_type == 'Full-Outstanding Payment') {
             $filename = Auth::user()->name . '-' . $paymentDetails->payment_type . '-' . "Invoice.pdf";
