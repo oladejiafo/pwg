@@ -1,8 +1,8 @@
-@extends('layouts.master')
-<link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
+
+<link href="<?php echo e(asset('user/css/bootstrap.min.css')); ?>" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-<link href="{{asset('css/payment-form.css')}}" rel="stylesheet">
-<link href="{{asset('css/alert.css')}}" rel="stylesheet">
+<link href="<?php echo e(asset('css/payment-form.css')); ?>" rel="stylesheet">
+<link href="<?php echo e(asset('css/alert.css')); ?>" rel="stylesheet">
 <link rel="stylesheet" href="../user/extra/css/signature-pad.css">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
 
@@ -23,9 +23,9 @@
       font-size: 20px;
     }
   </style>
-@section('content')
+<?php $__env->startSection('content'); ?>
 
-@php
+<?php
 if(Session::has('payall'))
 {
     $payall = Session::get('payall');
@@ -39,20 +39,20 @@ $completed = DB::table('applications')
 ->where('client_id', '=', Auth::user()->id)
 ->orderBy('id','desc')
 ->first();
-@endphp
+?>
 
 
-@if($completed)
-    @php
+<?php if($completed): ?>
+    <?php
         $levels = $completed->application_stage_status;
         $app_id= $completed->id;
-    @endphp
-@else
-    @php $levels=0; @endphp
-    {{-- <script>window.location = "/home";</script> --}}
-@endif 
+    ?>
+<?php else: ?>
+    <?php $levels=0; ?>
+    
+<?php endif; ?> 
 
-@php
+<?php
 
 if(Session::has('myproduct_id'))
 {
@@ -61,101 +61,54 @@ $pid = Session::get('myproduct_id');
 $pid = $app_id;
 }
 $vals=array(0,1,2);
-@endphp
+?>
 
 
-@if(Session::has('infox'))
+<?php if(Session::has('infox')): ?>
     <script type="text/javascript">
-     toastr.success("{{ session('infox') }}", '', { closeButton: false, timeOut: 4000, progressBar: true, enableHtml: true });
+     toastr.success("<?php echo e(session('infox')); ?>", '', { closeButton: false, timeOut: 4000, progressBar: true, enableHtml: true });
     </script>
-    @php 
+    <?php 
      Session::forget('infox');
-    @endphp
-@endif
+    ?>
+<?php endif; ?>
 
 
 <div class="container">
     <div class="col-12">
         <!-- Check if application completed, then exclude the other processes link and allow for subsequent payments only -->
         
-        {{-- @if($levels == '5')
-          <!-- Show Nothing -->
-        @else
-        <div class="wizard" style="margin-left: 40px;margin-right: 40px;">
-            <div class="row">
-                <div class="tabs d-flex justify-content-center">
-                    <div class="wrapper">
-                        <a href="{{ url('payment_form', $pid)}}" class="wrapper-link">
-                            <div class="round-active round2 m-2">1</div>
-                        </a>
-                        <div class="col-2 round-title">Payment <br> Details</div>
-                    </div>
-                    <div class="linear"></div>
-                    
-                    @if ($levels == '5' || $levels == '4' || $levels == '3' || $levels == '2')
-                        <div class="wrapper">
-                            <a href="{{route('applicant.details', $pid)}}" class="wrapper-link">
-                                <div class="round4 m-2">2</div>
-                            </a>
-                            <div class="col-2 round-title">Applicant <br> Details</div>
-                        </div>
-                        <div class="linear"></div>
-                        <div class="wrapper">
-                            <a href="{{url('applicant/review', $pid)}}" class="wrapper-link">
-                                <div class="round5 m-2">3</div>
-                            </a>
-                            <div class="col-2 round-title">Application <br> Review</div>
-                        </div>
-                    @else
-                        <div class="wrapper">
-                            <a href="#" onclick="toastr.error('You have to complete Payment first');" class="wrapper-link toastrDefaultError">
-                                <div class="round4 m-2">2</div>
-                            </a>
-                            <div class="col-2 round-title">Applicant <br> Details</div>
-                        </div>
-                        <div class="linear"></div>
-                        <div class="wrapper">
-                            <a href="#" onclick="toastr.error('You have to complete Payment first');"  class="wrapper-link toastrDefaultError">
-                                <div class="round5 m-2">3</div>
-                            </a>
-                            <div class="col-2 round-title">Application <br> Review</div>
-                        </div>
-                    @endif
-                </div>
-            </div>
-        </div>
-
-        @endif --}}
+        
         <div class="payment-form">
-            @if($levels == '5')
+            <?php if($levels == '5'): ?>
             <!-- Show Nothing -->
-          @else
+          <?php else: ?>
           <div class="wizard" style="margin-bottom: 30px;">
               <div class="row">
                   <div class="tabs d-flex justify-content-center">
                       <div class="wrapper">
-                          <a href="{{ url('payment_form', $pid)}}" class="wrapper-link">
+                          <a href="<?php echo e(url('payment_form', $pid)); ?>" class="wrapper-link">
                               <div class="round-active round2 m-2">1</div>
                           </a>
                           <div class="col-2 round-title">Payment <br> Details</div>
                       </div>
                       <div class="linear"></div>
                       
-                      @if ($levels == '5' || $levels == '4' || $levels == '3' || $levels == '2')
+                      <?php if($levels == '5' || $levels == '4' || $levels == '3' || $levels == '2'): ?>
                           <div class="wrapper">
-                              <a href="{{route('applicant.details', $pid)}}" class="wrapper-link">
+                              <a href="<?php echo e(route('applicant.details', $pid)); ?>" class="wrapper-link">
                                   <div class="round4 m-2">2</div>
                               </a>
                               <div class="col-2 round-title">Applicant <br> Details</div>
                           </div>
                           <div class="linear"></div>
                           <div class="wrapper">
-                              <a href="{{url('applicant/review', $pid)}}" class="wrapper-link">
+                              <a href="<?php echo e(url('applicant/review', $pid)); ?>" class="wrapper-link">
                                   <div class="round5 m-2">3</div>
                               </a>
                               <div class="col-2 round-title">Application <br> Review</div>
                           </div>
-                      @else
+                      <?php else: ?>
                           <div class="wrapper">
                               <a href="#" onclick="toastr.error('You have to complete Payment first');" class="wrapper-link toastrDefaultError">
                                   <div class="round4 m-2">2</div>
@@ -169,19 +122,19 @@ $vals=array(0,1,2);
                               </a>
                               <div class="col-2 round-title">Application <br> Review</div>
                           </div>
-                      @endif
+                      <?php endif; ?>
                   </div>
               </div>
           </div>
   
-          @endif
+          <?php endif; ?>
             <div class="contract-signature">
                 
                 <div class="row">
                     <div class="col-lg-6 col-md-12 col-sm-12">
                         <div class="contract d-flex align-items-center justify-content-center my-col">
                             <div class="contractImg">
-                                <img src="{{asset('images/contract.png')}}" width="100%" height="100%">
+                                <img src="<?php echo e(asset('images/contract.png')); ?>" width="100%" height="100%">
                             </div>
                             <div class="contractSubHead">
                                 <h6>CONTRACT</h6>
@@ -194,11 +147,11 @@ $vals=array(0,1,2);
                         <div class="my-col">
 
                             <form enctype="multipart/form-data" id="signatureSubmit">
-                                @csrf
-                                <input type="hidden" name="pid" value="{{ $data->id }}">
-                                <input type="hidden" name="ppid" value="{{ isset($pdet->id) ? $pdet->id : '' }}">
-                                <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
-                                <input type="hidden" name="payall" value="{{$payall}}">
+                                <?php echo csrf_field(); ?>
+                                <input type="hidden" name="pid" value="<?php echo e($data->id); ?>">
+                                <input type="hidden" name="ppid" value="<?php echo e(isset($pdet->id) ? $pdet->id : ''); ?>">
+                                <input type="hidden" name="user_id" value="<?php echo e(Auth::user()->id); ?>">
+                                <input type="hidden" name="payall" value="<?php echo e($payall); ?>">
                                 <div id="signature-pad" class="signature-pad">
                                     <div class="signature-pad--body">
                                         <canvas id="sig"></canvas>
@@ -217,14 +170,14 @@ $vals=array(0,1,2);
                                         </div>
              
                                     
-                                    {{-- <div class="toast-container"></div> --}}
+                                    
                                 </div>
                             </form>
                      
                             <script src="../user/extra/js/signature_pad.umd.js"></script>
                             <script src="../user/extra/js/app.js"></script>
                             <script type='text/javascript' src="https://github.com/niklasvh/html2canvas/releases/download/0.4.1/html2canvas.js"></script>
-                            <script src="{{asset('js/alert.js')}}"></script>
+                            <script src="<?php echo e(asset('js/alert.js')); ?>"></script>
                           
                         </div>
                     </div>
@@ -239,66 +192,66 @@ $vals=array(0,1,2);
                                 <div align="left" class="row payoption" style="--bs-gutter-x:0px;display:fles; width:98%; margin:0 auto; margin-bottomx: -30px;margin-top:10px">
                                     <div class="col-4" style="margin-left:-10px;display:inline-block;" align: left> 
                                         <input type="radio" id="card" name="payoption" checked value="Card" required> 
-                                        <label for="card"><img src="{{asset('user/images/card_pay.png')}}" height="30px"> <span class="brk">Card Payment</span></label>
+                                        <label for="card"><img src="<?php echo e(asset('user/images/card_pay.png')); ?>" height="30px"> <span class="brk">Card Payment</span></label>
                                     </div>
                                     <div class="col-4" style="margin-left:0px;display:inline-block;">
                                         <input type="radio" id="transfer" name="payoption" value="Transfer" required> 
-                                        <label for="transfer"><img src="{{asset('user/images/transfer_pay.png')}}" height="30px"> <span class="brk">Bank Transfer</span></label>
+                                        <label for="transfer"><img src="<?php echo e(asset('user/images/transfer_pay.png')); ?>" height="30px"> <span class="brk">Bank Transfer</span></label>
                                     </div>
                                     <div class="col-4" style="margin-left:0px;display:inline-block;">
                                         <input type="radio" id="deposit" name="payoption" value="Deposit" required> 
-                                        <label for="deposit"><img src="{{asset('user/images/deposit_pay.png')}}" height="30px"> <span class="brk">Bank Deposit</span></label>
+                                        <label for="deposit"><img src="<?php echo e(asset('user/images/deposit_pay.png')); ?>" height="30px"> <span class="brk">Bank Deposit</span></label>
                                     </div>
                                 </div>
     
                             </div>
                            
-                            @if (session()->has('myDiscount') && session()->has('haveCoupon') && session()->get('haveCoupon') == 1)
-                                @php
+                            <?php if(session()->has('myDiscount') && session()->has('haveCoupon') && session()->get('haveCoupon') == 1): ?>
+                                <?php
                                     $promo = session()->get('myDiscount');
-                                @endphp
-                            @else
-                                @php
+                                ?>
+                            <?php else: ?>
+                                <?php
                                     $promo = 0;
-                                @endphp
-                            @endif
+                                ?>
+                            <?php endif; ?>
 
-                            @if (isset($pdet))
-                                @php
+                            <?php if(isset($pdet)): ?>
+                                <?php
                                 
                                     $first_pay = $pdet->first_payment_sub_total;
                                     $second_pay = $pdet->submission_payment_sub_total;
                                     $third_pay = $pdet->second_payment_sub_total;
                                     
                                     $tot_pay = $first_pay + $second_pay + $third_pay;
-                                @endphp
-                            @else
-                                @php
+                                ?>
+                            <?php else: ?>
+                                <?php
                                     $first_pay = 0;
                                     $second_pay = 0;
                                     $third_pay = 0;
                                     
                                     $tot_pay = 0;
-                                @endphp
-                            @endif
+                                ?>
+                            <?php endif; ?>
 
-                            @php
+                            <?php
                                 $diff = $pays ? $pays->first_payment_remaining : 0; //$pays->first_payment_price - $pays->first_payment_paid
-                            @endphp
+                            ?>
 
-                            @if ($diff > 0)
-                                @php
+                            <?php if($diff > 0): ?>
+                                <?php
                                     $pends = $pays ? $pays->first_payment_remaining : 0;
-                                @endphp
-                            @elseif($diff < 0)
-                                @php
+                                ?>
+                            <?php elseif($diff < 0): ?>
+                                <?php
                                     $pends = $pays ? $pays->first_payment_paid - $pays->first_payment_sub_total : 0;
-                                @endphp
-                            @else
-                                @php
+                                ?>
+                            <?php else: ?>
+                                <?php
                                     $pends = 0;
-                                @endphp
-                            @endif
+                                ?>
+                            <?php endif; ?>
 
 
                             <?php
@@ -397,22 +350,9 @@ $vals=array(0,1,2);
                                 }
                                 $discount = 0;
                             } else {
-                                
                                 $discount = 0;
                                 $discountPercent = 0;
-                                if(!isset($pays)){
-                                    $payNow = $pdet->sub_total - $pdet->third_payment_sub_total;
-                                    $payNoww = $payNow;
-                                    $pendMsg = 'Full Payment';
-                                    if ($pdet->submission_payment_sub_total > 0 || $pdet->second_payment_sub_total > 0) {
-                                        $discountPercent = ($data->full_payment_discount) ? $data->full_payment_discount . '%' : 0;
-                            
-                                        // $discountPercent = '5%';
-                                        // $discount = ($payNow * 5 / 100);
-                                        $discount = ($data->full_payment_discount > 0) ? ($payNow * $data->full_payment_discount) / 100 : 0; //product discount fetch
-                                    }
-                                    $whichPayment = 'Full-Outstanding Payment';
-                                }elseif (isset($pays) && $pays->first_payment_status == 'PENDING' && ($pays->submission_payment_status == 'PENDING') & ($pays->second_payment_status == 'PENDING')) {
+                                if (isset($pays) && $pays->first_payment_status == 'PENDING' && ($pays->submission_payment_status == 'PENDING') & ($pays->second_payment_status == 'PENDING')) {
                                     $payNow = $pdet->sub_total - $pdet->third_payment_sub_total;
                                     $payNoww = $payNow;
                                     $pendMsg = 'Full Payment';
@@ -511,10 +451,10 @@ $vals=array(0,1,2);
                             ?>
 
                             <div id='card-payment'>
-                                @include('user.card-payment')
+                                <?php echo $__env->make('user.card-payment', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                             </div>
                             <div id='bank-payment'>
-                                @include('user.bank-payment')
+                                <?php echo $__env->make('user.bank-payment', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                             </div>
                 </div>
                 </div>
@@ -529,19 +469,19 @@ $vals=array(0,1,2);
                         </div>
                         <div class="modal-body" style="height:100%">
                             
-                            <embed src="{{$fileUrl}}#toolbar=0&navpanes=0&pagemode=none" width="100%" height="100%" view="fit" type="application/pdf" />
+                            <embed src="<?php echo e($fileUrl); ?>#toolbar=0&navpanes=0&pagemode=none" width="100%" height="100%" view="fit" type="application/pdf" />
                         </div>
                     </div>
                 </div>
             </div>
             <!-- Contract Modal Ends -->
-@endsection
-@push('custom-scripts')
+<?php $__env->stopSection(); ?>
+<?php $__env->startPush('custom-scripts'); ?>
 
 <script>
     $(document).ready(function(){
-        var Signed = '{{is_object($pays) ? $pays->contract_1st_signature_status : null}}';
-        var pays = '{{is_object($pays)}}';
+        var Signed = '<?php echo e(is_object($pays) ? $pays->contract_1st_signature_status : null); ?>';
+        var pays = '<?php echo e(is_object($pays)); ?>';
         if(pays == 1 && Signed == "SIGNED")
         {
             $('.contract-signature').hide();    
@@ -597,10 +537,10 @@ $vals=array(0,1,2);
             var vat = $('#vats').val();
             var $this = $(this); 
             $.ajax({ 
-                url: '{{ route("getPromo") }} ',
+                url: '<?php echo e(route("getPromo")); ?> ',
                 method: 'POST',
                 data: {
-                    "_token": "{{ csrf_token() }}",
+                    "_token": "<?php echo e(csrf_token()); ?>",
                     "discount_code" : $('#discount_code').val(),
                     "totaldue" : $('#totaldue').val(),
                     'paynow' : paynow,
@@ -667,7 +607,7 @@ $vals=array(0,1,2);
         $('.current_location').change(function(){
             var $this = $(this);
             var paynow = <?php echo $payNoww; ?>;            
-            var discount = '{{$discount}}';
+            var discount = '<?php echo e($discount); ?>';
             var amtx = (paynow - discount);
             var vt =(amtx*5)/100;
             $('#amount').val('');
@@ -689,10 +629,10 @@ $vals=array(0,1,2);
 
             var $this = $(this); 
             $.ajax({ 
-                url: '{{ route("checkPromo") }} ',
+                url: '<?php echo e(route("checkPromo")); ?> ',
                 method: 'POST',
                 data: {
-                    "_token": "{{ csrf_token() }}",
+                    "_token": "<?php echo e(csrf_token()); ?>",
                     "embassy_appearance" : $('#embassy_appearance').val()
                 }
             }).done( function (response) {
@@ -715,11 +655,11 @@ $vals=array(0,1,2);
 
         $.ajax({
         type: 'POST',
-        url: "{{ url('upload_signature') }}",
+        url: "<?php echo e(url('upload_signature')); ?>",
         data: {
-            "_token": "{{ csrf_token() }}",
+            "_token": "<?php echo e(csrf_token()); ?>",
             signed: dataURL,
-            payall: '{{$payall}}',
+            payall: '<?php echo e($payall); ?>',
             response: 1
         },
         success: function(data) {
@@ -729,7 +669,7 @@ $vals=array(0,1,2);
                 toastr.success("Signature updated successfully!");
 
                 $('.contract-signature').hide();
-                //  location.href = "{{url('payment_form')}}/" + '{{$data->id}}';
+                //  location.href = "<?php echo e(url('payment_form')); ?>/" + '<?php echo e($data->id); ?>';
             } else {
             alert('Something went wrong');
             }
@@ -744,36 +684,36 @@ $vals=array(0,1,2);
 
 
 </script>
-@endpush
-<script src="{{asset('js/alert.js')}}"></script>
+<?php $__env->stopPush(); ?>
+<script src="<?php echo e(asset('js/alert.js')); ?>"></script>
 <script type="text/javascript" src="/path/to/toastr.js"></script>
 <script>
-    @if(Session::has('message'))
+    <?php if(Session::has('message')): ?>
         toastr.options =
         {
             "closeButton" : true,
             "progressBar" : true
         }
-            toastr.success("{{ session('message') }}");
-    @endif
+            toastr.success("<?php echo e(session('message')); ?>");
+    <?php endif; ?>
 
-    @if(Session::has('error'))
+    <?php if(Session::has('error')): ?>
         toastr.options =
         {
             "closeButton" : true,
             "progressBar" : true
         }
-            toastr.error("{{ session('error') }}");
-    @endif
+            toastr.error("<?php echo e(session('error')); ?>");
+    <?php endif; ?>
 
-    @if(Session::has('warning'))
+    <?php if(Session::has('warning')): ?>
         toastr.options =
         {
             "closeButton" : true,
             "progressBar" : true
         }
-            toastr.warning("{{ session('warning') }}");
-    @endif
+            toastr.warning("<?php echo e(session('warning')); ?>");
+    <?php endif; ?>
 </script>
 
 <script type="text/javascript">
@@ -784,7 +724,7 @@ $(document).ready(function() {
 });
 </script>
     
-@if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) 
+<?php if(!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)): ?> 
 <script>
     //Disable right click
     document.addEventListener('contextmenu', (e) => e.preventDefault());
@@ -805,4 +745,5 @@ $(document).ready(function() {
         return false;
     };
 </script>
-@endif
+<?php endif; ?>
+<?php echo $__env->make('layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\dejia\OneDrive\Desktop\mygit\pwg_eportal\resources\views/user/payment-form.blade.php ENDPATH**/ ?>

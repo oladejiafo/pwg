@@ -1,4 +1,4 @@
-<meta name="csrf-token" content="{{ csrf_token() }}" />
+<meta name="csrf-token" content="<?php echo e(csrf_token()); ?>" />
 
 <style>
     .footer {
@@ -67,10 +67,10 @@
         }
     }
 </style>
-@php $timer = App\Helpers\users::getDateTime();@endphp
+<?php $timer = App\Helpers\users::getDateTime();?>
 <script>
     
-    var countDownDate = new Date("{{$timer}}").getTime();
+    var countDownDate = new Date("<?php echo e($timer); ?>").getTime();
     
     // Update the count down every 1 second
     var x = setInterval(function() {
@@ -97,7 +97,7 @@
         });
         $.ajax({
             type: 'POST',
-            url: "{{ url('/update/timer/') }}",
+            url: "<?php echo e(url('/update/timer/')); ?>",
             data: {
                 date: formattedDate,
             },
@@ -126,7 +126,7 @@
 </div>
 <div class="footer" align="right" style="padding:20px; ">
     <hr>
-    &copy {{ date('Y') }} <a style="" href="http://pwggroup.ae" target="_blank">PWG Group</a>. All rights
+    &copy <?php echo e(date('Y')); ?> <a style="" href="http://pwggroup.ae" target="_blank">PWG Group</a>. All rights
     reserved.
 </div>
 
@@ -162,3 +162,4 @@
     }
 
 </script>
+<?php /**PATH C:\Users\dejia\OneDrive\Desktop\mygit\pwg_eportal\resources\views/user/footer.blade.php ENDPATH**/ ?>
