@@ -190,7 +190,7 @@ $vals=array(0,1,2);
                             <div align="left" style="background-color: #Fff;padding: 30px 0px">
                                 <div><b style="color:black;font-size: 16px; margin-left:15px">Choose a Payment Method:</b></div>
                                 <div align="left" class="row payoption" style="--bs-gutter-x:0px;display:fles; width:98%; margin:0 auto; margin-bottomx: -30px;margin-top:10px">
-                                    <div class="col-4" style="margin-left:-10px;display:inline-block;" align: left>
+                                    <div class="col-4" style="margin-left:-10px;display:inline-block;" align: left> 
                                         <input type="radio" id="card" name="payoption" checked value="Card" required> 
                                         <label for="card"><img src="<?php echo e(asset('user/images/card_pay.png')); ?>" height="30px"> <span class="brk">Card Payment</span></label>
                                     </div>

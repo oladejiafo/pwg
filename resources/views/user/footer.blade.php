@@ -1,3 +1,5 @@
+<meta name="csrf-token" content="{{ csrf_token() }}" />
+
 <style>
     .footer {
         font-size: 15px;
@@ -65,26 +67,48 @@
         }
     }
 </style>
+@php $timer = App\Helpers\users::getDateTime();@endphp
 <script>
-    // Set the date we're counting down to
     
-    var countDownDate = new Date("March 14, 2023 15:17:25").getTime();
+    var countDownDate = new Date("{{$timer}}").getTime();
     
     // Update the count down every 1 second
     var x = setInterval(function() {
     
       // Get today's date and time
       var now = new Date().getTime();
-    
       // Find the distance between now and the count down date
       var distance = countDownDate - now;
       // If the count down is finished, write some text
-      if (distance < 0) {
-        clearInterval(x);
-        document.getElementById("days").innerHTML = "EXPIRED";
+      if (distance < 0 || isNaN(distance)) {
+        var date = new Date();
+        // Add 7 days to current date
+        const futureDate = new Date(date.getTime() + 7 * 24 * 60 * 60 * 1000);
+
+        // Format future date in YMD format
+        const year = futureDate.getFullYear();
+        const month = String(futureDate.getMonth() + 1).padStart(2, '0');
+        const day = String(futureDate.getDate()).padStart(2, '0');
+        const formattedDate = `${year}-${month}-${day}`;
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            type: 'POST',
+            url: "{{ url('/update/timer/') }}",
+            data: {
+                date: formattedDate,
+            },
+            success: function (response) {
+            }
+        });
+        countDownDate = date.setTime(date.getTime() + (7 * 24 * 60 * 60 * 1000));
+        distance = countDownDate - now;
       }
       countDown(distance);
-    }, 1000);
+    },1000 );
     
     countDown = (distance) => {
         // Time calculations for days, hours, minutes and seconds

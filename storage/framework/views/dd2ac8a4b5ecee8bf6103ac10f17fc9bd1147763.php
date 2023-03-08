@@ -32,6 +32,7 @@ input [type="phone"]
 <?php if(isset($_REQUEST['pid'])): ?>
 <?php 
 session_start(); 
+
 //$_SESSION['prod_id']=$_REQUEST['pid'];
 Session::put('prod_id', $_REQUEST['pid']);
 ?>
