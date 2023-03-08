@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-    @include('user/header')
+    <?php echo $__env->make('user/header', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 <style>
     #info{
         font-size: 1.2em;
@@ -28,7 +28,7 @@
 </style>
     <body>
         
-        @if(session()->has('success'))
+        <?php if(session()->has('success')): ?>
         <div class="alert alert-success alert-block" style="color:#fff; padding:2px; margin-left:auto;margin-right:auto; width:45%;height:120px; text-align:center;margin-bottom:-80px;background-colorx:green;border-radius:10px">
         <button type="button" class="close" data-dismiss="alert" style="float:right;border-style:none;background-color: transparent"><i class="fa fa-times-circle" aria-hidden="true" style="color:#000; font-size:25px";></i>
                     
@@ -52,19 +52,19 @@
                     </g>
                 </svg>
                 <!-- <img src="../user/images/Approved.svg" height="80px" width="80px"> &nbsp; -->
-                <span>{{ session()->get('success') }}</span></h3>
+                <span><?php echo e(session()->get('success')); ?></span></h3>
             </div>
-        @endif
+        <?php endif; ?>
 
-        @if(session()->has('failed'))
+        <?php if(session()->has('failed')): ?>
             <div class="alert alert-danger" style="margin-left:auto;margin-right:auto; width:40%; text-align:center;margin-bottom:20px">
             <button type="button" class="close" data-dismiss="alert" style="float:right;border-style:none;background-color: transparent"><i class="fa fa-times-circle" aria-hidden="true" style="color:#000; font-size:25px";></i>
                     
                     </button>
-                <strong>{{ session()->get('failed') }}</strong>
+                <strong><?php echo e(session()->get('failed')); ?></strong>
             </div>
-        @endif
-        @if(session()->has('info'))
+        <?php endif; ?>
+        <?php if(session()->has('info')): ?>
             <div class="alert alert-infox alert-block">
                 <button type="button" class="close" data-dismiss="alert" style="float:right;border-style:none;background-color: transparent"><i class="fa fa-times-circle" aria-hidden="true" style="color:#fff; font-size:25px";></i>
                     
@@ -88,62 +88,62 @@
                     </g>
                 </svg> &nbsp;
                 <!-- <img src="../user/images/Approved.svg" height="80px" width="80px"> &nbsp; -->
-                <span id="info" style="margin-bottom:0px;line-height:0px">{{ session()->get('info') }}</span>
-                @if(session()->has('info_sub'))
-                <br><span id="info-sub" style="line-height:0px; ;">{{ session()->get('info_sub') }}</span>
-                @endif
+                <span id="info" style="margin-bottom:0px;line-height:0px"><?php echo e(session()->get('info')); ?></span>
+                <?php if(session()->has('info_sub')): ?>
+                <br><span id="info-sub" style="line-height:0px; ;"><?php echo e(session()->get('info_sub')); ?></span>
+                <?php endif; ?>
                </p>
             </div>
-        @endif
+        <?php endif; ?>
 
     <div class="login">
-        {{-- {{Session::get('myproduct_id')}}
-        @php echo'here'; die; @endphp --}}
-        @yield('content')
+        
+        <?php echo $__env->yieldContent('content'); ?>
     </div>
      <!--  load jQuery  -->
 
      <!--load JS for Select2 -->    
-     @include('user/footer')
-
     <script>
-        @if(Session::has('message'))
+        <?php if(Session::has('message')): ?>
         toastr.options =
         {
             "closeButton" : true,
             "progressBar" : true
         }
-                toastr.success("{{ session('message') }}");
-        @endif
+                toastr.success("<?php echo e(session('message')); ?>");
+        <?php endif; ?>
 
-        @if(Session::has('error'))
+        <?php if(Session::has('error')): ?>
         toastr.options =
         {
             "closeButton" : true,
             "progressBar" : true
         }
-                toastr.error("{{ session('error') }}");
-        @endif
+                toastr.error("<?php echo e(session('error')); ?>");
+        <?php endif; ?>
 
-        // @if(Session::has('info'))
+        // <?php if(Session::has('info')): ?>
         // toastr.options =
         // {
         //     "closeButton" : true,
         //     "progressBar" : true
         // }
-        //         toastr.info("{{ session('info') }}");
-        // @endif
+        //         toastr.info("<?php echo e(session('info')); ?>");
+        // <?php endif; ?>
 
-        @if(Session::has('warning'))
+        <?php if(Session::has('warning')): ?>
         toastr.options =
         {
             "closeButton" : true,
             "progressBar" : true
         }
-                toastr.warning("{{ session('warning') }}");
-        @endif
+                toastr.warning("<?php echo e(session('warning')); ?>");
+        <?php endif; ?>
         
     </script>
-        @stack('custom-scripts')
+        <?php echo $__env->yieldPushContent('custom-scripts'); ?>
+
+        <?php echo $__env->make('user/footer', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
     </body>
-</html>
+</html><?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views/layouts/master.blade.php ENDPATH**/ ?>

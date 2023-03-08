@@ -19,7 +19,7 @@
           </div>
         </div>
         <div class="tab-sec">
-            <a href="{{route('register')}}">Signup</a>
+            {{-- <a href="{{route('register')}}">Signup</a> --}}
             <a href="{{route('login')}}" class="signupBtn">Login</a>
         </div>
         <div class="form-sec">

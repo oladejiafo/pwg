@@ -32,7 +32,6 @@ input [type="phone"]
 <?php if(isset($_REQUEST['pid'])): ?>
 <?php 
 session_start(); 
-
 //$_SESSION['prod_id']=$_REQUEST['pid'];
 Session::put('prod_id', $_REQUEST['pid']);
 ?>
@@ -257,4 +256,4 @@ unset($__errorArgs, $__bag); ?>
 
 
 <?php $__env->stopPush(); ?>
-<?php echo $__env->make('layouts.auth', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\dejia\OneDrive\Desktop\mygit\pwg_eportal\resources\views/auth/register.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.auth', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views/auth/register.blade.php ENDPATH**/ ?>

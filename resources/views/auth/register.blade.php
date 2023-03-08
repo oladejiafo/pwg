@@ -53,7 +53,7 @@ Session::put('prod_id', $_REQUEST['pid']);
       </div>
       <div class="tab-sec">
         <a href="{{route('register')}}" class="signupBtn">Signup</a>
-        <a href="{{route('login')}}" >Login</a>
+        {{-- <a href="{{route('login')}}" >Login</a> --}}
       </div>
       <div class="form-sec">
         <form method="POST" action="{{ route('register') }}">
@@ -120,13 +120,17 @@ Session::put('prod_id', $_REQUEST['pid']);
             </div>
           </div>
           <div class="mb-3">
-            <div class="inputs check-box">
+            <span>By continuing you agree to the <a style="margin-left:0px" href="{{route('terms')}}" target="_blank"><u>Terms & Conditions</u></a></span>
+            {{-- <div class="inputs check-box">
               <input type="checkbox" class="checkcolor agree" name="terms" required>
                 <p  style="padding-top: 10px;padding-left:10px"> I agree to the <a target="_blank" href="{{route('terms')}}" >Terms and Policy"</a>
               </p>
-            </div>
+            </div> --}}
           </div>
           <button type="submit" class="btn btn-primary submitBtn">Signup</button>
+          <div class="bottom-sec">
+            <div class="signuplink">If you already registered, <a style="font-weight:700; margin-left:0px" href="{{route('login')}}">Login</a> now</div>
+          </div>
         </form>
       </div>
     </div>
