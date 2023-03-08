@@ -1,4 +1,4 @@
-@extends('layouts.auth')
+
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/> -->
 
 <style>
@@ -20,7 +20,7 @@ input [type="phone"]
 }
 </style>
 
-@php
+<?php
 // $agents = DB::table('employees')
 // ->select('name','sur_name')
 // ->where('is_active', '=', 1)
@@ -28,17 +28,17 @@ input [type="phone"]
 // ->whereIn('designation_id', [1,33,35])
 // ->orderBy('id','asc')
 // ->get();
-@endphp
-@if(isset($_REQUEST['pid']))
-@php 
+?>
+<?php if(isset($_REQUEST['pid'])): ?>
+<?php 
 session_start(); 
 
 //$_SESSION['prod_id']=$_REQUEST['pid'];
 Session::put('prod_id', $_REQUEST['pid']);
-@endphp
+?>
                            
-@endif
-@Section('content')
+<?php endif; ?>
+<?php $__env->startSection('content'); ?>
   <div class="container">
     <div class="form-sec1">
       <div class="heading">
@@ -52,31 +52,45 @@ Session::put('prod_id', $_REQUEST['pid']);
         </div>
       </div>
       <div class="tab-sec">
-        <a href="{{route('register')}}" class="signupBtn">Signup</a>
-        <a href="{{route('login')}}" >Login</a>
+        <a href="<?php echo e(route('register')); ?>" class="signupBtn">Signup</a>
+        <a href="<?php echo e(route('login')); ?>" >Login</a>
       </div>
       <div class="form-sec">
-        <form method="POST" action="{{ route('register') }}">
-          @csrf
+        <form method="POST" action="<?php echo e(route('register')); ?>">
+          <?php echo csrf_field(); ?>
           <div class="mb-3">
             <div class="label"><label for="name" class="form-label">Name</label></div>
             <div class="inputs">
-              <input type="text" style="padding: 10px;" class="form-control" id="exampleInputName" name="name" aria-describedby="emailHelp" autocomplete="off" required value="{{ old('name') }}">
+              <input type="text" style="padding: 10px;" class="form-control" id="exampleInputName" name="name" aria-describedby="emailHelp" autocomplete="off" required value="<?php echo e(old('name')); ?>">
             </div>
           </div>
           <div class="mb-3">
             <div class="label"><label for="email" class="form-label">Email</label></div>
             <div class="inputs">
-              <input type="email" style="padding: 10px;" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp" autocomplete="off" required value="{{ old('email') }}">
-              @error('email') <span class="error">{{ $message }}</span> @enderror
+              <input type="email" style="padding: 10px;" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp" autocomplete="off" required value="<?php echo e(old('email')); ?>">
+              <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <span class="error"><?php echo e($message); ?></span> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
             </div>
           </div>
           <div class="mb-3">
             <div class="label"><label for="phone number" class="form-label">Phone number</label></div>
             <div class="inputs">
-              {{-- <input name="form-control" type="text" id="txtCountryCode" class="c-input-telephone__country error" pattern="^[+]\d{1,3}$" maxlength="4" required="" value="+971" aria-invalid="true"> --}}
-              <input type="tel" style="paddingx: 10px;" class="form-control phone_number" id="phone_number" name="phone_number" aria-describedby="emailHelp" autocomplete="off" required value="{{ old('phone_number') }}" required="">
-              @error('phone_number') <span class="error">{{ $message }}</span> @enderror
+              
+              <input type="tel" style="paddingx: 10px;" class="form-control phone_number" id="phone_number" name="phone_number" aria-describedby="emailHelp" autocomplete="off" required value="<?php echo e(old('phone_number')); ?>" required="">
+              <?php $__errorArgs = ['phone_number'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <span class="error"><?php echo e($message); ?></span> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
             </div>
           </div>
           <div class="mb-3">
@@ -85,18 +99,32 @@ Session::put('prod_id', $_REQUEST['pid']);
             </div>
             <div class="inputs-icon">
               <input type="password" class="form-control passwordInput" id="exampleInputPassword1" name="password" autocomplete="off" required>
-              <img src="{{asset('images/Eye_Icon.png')}}" alt="pwg img" class="iconImg">
-              <img src="{{asset('images/view_password.svg')}}" alt="pwg img" class="viewIcon">
-              @error('password') <span class="error">{{ $message }}</span> @enderror
+              <img src="<?php echo e(asset('images/Eye_Icon.png')); ?>" alt="pwg img" class="iconImg">
+              <img src="<?php echo e(asset('images/view_password.svg')); ?>" alt="pwg img" class="viewIcon">
+              <?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <span class="error"><?php echo e($message); ?></span> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
             </div>
           </div>
           <div class="mb-3">
             <div class="label"><label for="email1" class="form-label">Confirm Password</label></div>
             <div class="inputs-icon">
               <input type="password" class="form-control confirmation" name="password_confirmation" aria-describedby="emailHelp" autocomplete="off" required>
-              <img src="{{asset('images/Eye_Icon.png')}}" alt="pwg img" id="cofirmation">
-              <img src="{{asset('images/view_password.svg')}}" alt="pwg img" class="confirmation_viewIcon">
-              @error('password') <span class="error">{{ $message }}</span> @enderror
+              <img src="<?php echo e(asset('images/Eye_Icon.png')); ?>" alt="pwg img" id="cofirmation">
+              <img src="<?php echo e(asset('images/view_password.svg')); ?>" alt="pwg img" class="confirmation_viewIcon">
+              <?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <span class="error"><?php echo e($message); ?></span> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
             </div>
           </div>
           <div class="mb-3">
@@ -105,24 +133,21 @@ Session::put('prod_id', $_REQUEST['pid']);
             </div>
             <div class="inputs-iconx">
               <input  name="agent" class="agent form-control" type="text" autocomplete="off" placeholder="Type Your Agent" required="">
-              {{-- <select name="agent" class="form-control agentInput" id="exampleInputAgent">
-                @if(old('agent'))
-                <option selected>{{old('agent')}}</option>
-                @else
-                <option selected disabled>--Select Your Agent, if you have one--</option>
-                @endif
-                @foreach ($agents as $agent)
-                    <option>{{ucfirst(strtolower($agent->name))}} {{ucfirst(strtolower($agent->sur_name))}}</option>
-                @endforeach
-                <option>N/A</option>
-              </select> --}}
-              @error('agent') <span class="error">{{ $message }}</span> @enderror
+              
+              <?php $__errorArgs = ['agent'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <span class="error"><?php echo e($message); ?></span> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
             </div>
           </div>
           <div class="mb-3">
             <div class="inputs check-box">
               <input type="checkbox" class="checkcolor agree" name="terms" required>
-                <p  style="padding-top: 10px;padding-left:10px"> I agree to the <a target="_blank" href="{{route('terms')}}" >Terms and Policy"</a>
+                <p  style="padding-top: 10px;padding-left:10px"> I agree to the <a target="_blank" href="<?php echo e(route('terms')); ?>" >Terms and Policy"</a>
               </p>
             </div>
           </div>
@@ -131,8 +156,8 @@ Session::put('prod_id', $_REQUEST['pid']);
       </div>
     </div>
   </div>
-@endsection
-@push('custom-scripts')
+<?php $__env->stopSection(); ?>
+<?php $__env->startPush('custom-scripts'); ?>
 
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script> -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/css/intlTelInput.min.css" rel="stylesheet"/>
@@ -142,7 +167,7 @@ Session::put('prod_id', $_REQUEST['pid']);
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> --}}
+
 <script>
       $(document).ready(function() {
 
@@ -226,27 +251,10 @@ Session::put('prod_id', $_REQUEST['pid']);
       // });
         // });
   </script>
-{{-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> --}}
-{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> --}}
+
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
 
-{{-- 
-<script type="text/javascript">
-  var path = "{{ route('autocompleteAgent') }}";
-  $('input.agent').typeahead({
-      source:  function (str, process) 
-      {
-        return $.get(path, { str: str }, function (data) {
-          var name = [];
-          $.each(data, function(index, value) {
-            name.push(value.name+' '+ value.sur_name+' - '+ value.phone_number);
-          });
-          // console.log(name);
-              return process(name);
-              // return name;
-          });
-      }
-  });
-</script>
---}}
-@endpush
+
+<?php $__env->stopPush(); ?>
+<?php echo $__env->make('layouts.auth', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\dejia\OneDrive\Desktop\mygit\pwg_eportal\resources\views/auth/register.blade.php ENDPATH**/ ?>

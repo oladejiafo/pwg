@@ -46,6 +46,14 @@
         word-spacing: 8px
     }
 
+    @media (max-width:768px) {
+        #days p span.timed {
+            font-weight: 500;
+            font-size: 14px;
+            color: #000000;
+            display: inline-block;
+        }
+    }
     @media (max-width:360px) {
         .footer {
             font-size: 12px;
@@ -64,6 +72,7 @@
     &copy {{ date('Y') }} <a style="" href="http://pwggroup.ae" target="_blank">PWG Group</a>. All rights
     reserved.
 </div>
+
 <script>
 // Set the date we're counting down to
 
@@ -92,8 +101,8 @@ countDown = (distance) => {
   var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
   var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-document.getElementById("days").innerHTML = "<p><span class='head'>PRICE INCREASES IN:</span> <span>" + days + "</span>Days: <span>" + hours + "</span>Hrs: <span>"
-  + minutes + "</span>Mins: <span>" + seconds + "</span>Secs:</p>";
+document.getElementById("days").innerHTML = "<p><span class='head'>PRICE INCREASES IN:</span> <span class='timed'><span>" + days + "</span>Days: <span>" + hours + "</span>Hrs: <span>"
+  + minutes + "</span>Mins: <span>" + seconds + "</span>Secs.</span></p>";
 }
 
 </script>

@@ -131,8 +131,7 @@
                                                         <form action="<?php echo e(route('payment',$prod->id)); ?>" method="GET">
                                                             <button class="btn btn-secondary" style="font-weight:700">Pay Now</button>
                                                         </form>
-                                                    <?php endif; ?>                                                    Now</button>
-
+                                                    <?php endif; ?>
                                                 <?php else: ?>
                                                     <form action="<?php echo e(route('payment',$prod->id)); ?>" method="GET">
                                                         <button class="btn btn-secondary" style="font-weight:700">Pay Now</button>

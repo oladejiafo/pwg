@@ -66,59 +66,61 @@ $vals=array(0,1,2);
     <div class="col-12">
         <!-- Check if application completed, then exclude the other processes link and allow for subsequent payments only -->
         
-        <?php if($levels == '5'): ?>
-          <!-- Show Nothing -->
-        <?php else: ?>
-        <div class="wizard" style="margin-left: 40px;margin-right: 40px;">
-            <div class="row">
-                <div class="tabs d-flex justify-content-center">
-                    <div class="wrapper">
-                        <a href="<?php echo e(url('payment_form', $pid)); ?>" class="wrapper-link">
-                            <div class="round-active round2 m-2">1</div>
-                        </a>
-                        <div class="col-2 round-title">Payment <br> Details</div>
-                    </div>
-                    <div class="linear"></div>
-                    
-                    <?php if($levels == '5' || $levels == '4' || $levels == '3' || $levels == '2'): ?>
-                        <div class="wrapper">
-                            <a href="<?php echo e(route('applicant.details', $pid)); ?>" class="wrapper-link">
-                                <div class="round4 m-2">2</div>
-                            </a>
-                            <div class="col-2 round-title">Applicant <br> Details</div>
-                        </div>
-                        <div class="linear"></div>
-                        <div class="wrapper">
-                            <a href="<?php echo e(url('applicant/review', $pid)); ?>" class="wrapper-link">
-                                <div class="round5 m-2">3</div>
-                            </a>
-                            <div class="col-2 round-title">Application <br> Review</div>
-                        </div>
-                    <?php else: ?>
-                        <div class="wrapper">
-                            <a href="#" onclick="toastr.error('You have to complete Payment first');" class="wrapper-link toastrDefaultError">
-                                <div class="round4 m-2">2</div>
-                            </a>
-                            <div class="col-2 round-title">Applicant <br> Details</div>
-                        </div>
-                        <div class="linear"></div>
-                        <div class="wrapper">
-                            <a href="#" onclick="toastr.error('You have to complete Payment first');"  class="wrapper-link toastrDefaultError">
-                                <div class="round5 m-2">3</div>
-                            </a>
-                            <div class="col-2 round-title">Application <br> Review</div>
-                        </div>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </div>
-
-        <?php endif; ?>
+        
         <div class="payment-form">
+            <?php if($levels == '5'): ?>
+            <!-- Show Nothing -->
+          <?php else: ?>
+          <div class="wizard" style="margin-bottom: 30px;">
+              <div class="row">
+                  <div class="tabs d-flex justify-content-center">
+                      <div class="wrapper">
+                          <a href="<?php echo e(url('payment_form', $pid)); ?>" class="wrapper-link">
+                              <div class="round-active round2 m-2">1</div>
+                          </a>
+                          <div class="col-2 round-title">Payment <br> Details</div>
+                      </div>
+                      <div class="linear"></div>
+                      
+                      <?php if($levels == '5' || $levels == '4' || $levels == '3' || $levels == '2'): ?>
+                          <div class="wrapper">
+                              <a href="<?php echo e(route('applicant.details', $pid)); ?>" class="wrapper-link">
+                                  <div class="round4 m-2">2</div>
+                              </a>
+                              <div class="col-2 round-title">Applicant <br> Details</div>
+                          </div>
+                          <div class="linear"></div>
+                          <div class="wrapper">
+                              <a href="<?php echo e(url('applicant/review', $pid)); ?>" class="wrapper-link">
+                                  <div class="round5 m-2">3</div>
+                              </a>
+                              <div class="col-2 round-title">Application <br> Review</div>
+                          </div>
+                      <?php else: ?>
+                          <div class="wrapper">
+                              <a href="#" onclick="toastr.error('You have to complete Payment first');" class="wrapper-link toastrDefaultError">
+                                  <div class="round4 m-2">2</div>
+                              </a>
+                              <div class="col-2 round-title">Applicant <br> Details</div>
+                          </div>
+                          <div class="linear"></div>
+                          <div class="wrapper">
+                              <a href="#" onclick="toastr.error('You have to complete Payment first');"  class="wrapper-link toastrDefaultError">
+                                  <div class="round5 m-2">3</div>
+                              </a>
+                              <div class="col-2 round-title">Application <br> Review</div>
+                          </div>
+                      <?php endif; ?>
+                  </div>
+              </div>
+          </div>
+  
+          <?php endif; ?>
             <div class="contract-signature">
+                
                 <div class="row">
-                    <div class="col-6">
-                        <div class="contract d-flex align-items-center justify-content-center my-col"  style="height: 284px;">
+                    <div class="col-lg-6 col-md-12 col-sm-12">
+                        <div class="contract d-flex align-items-center justify-content-center my-col">
                             <div class="contractImg">
                                 <img src="<?php echo e(asset('images/contract.png')); ?>" width="100%" height="100%">
                             </div>
@@ -129,7 +131,7 @@ $vals=array(0,1,2);
                         </div>
                         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#contractModal">ZOOM TO REVIEW</button>
                     </div>
-                    <div class="col-6">
+                    <div class="col-lg-6 col-md-12 col-sm-12">
                         <div class="my-col">
                             <form enctype="multipart/form-data" id="signatureSubmit">
                                 <?php echo csrf_field(); ?>
@@ -137,7 +139,7 @@ $vals=array(0,1,2);
                                 <input type="hidden" name="ppid" value="<?php echo e(isset($pdet->id) ? $pdet->id : ''); ?>">
                                 <input type="hidden" name="user_id" value="<?php echo e(Auth::user()->id); ?>">
                                 <input type="hidden" name="payall" value="<?php echo e($payall); ?>">
-                                <div id="signature-pad" class="signature-pad" style="height: 284px;">
+                                <div id="signature-pad" class="signature-pad">
                                     <div class="signature-pad--body">
                                         <canvas id="sig"></canvas>
                                         
@@ -167,7 +169,7 @@ $vals=array(0,1,2);
                     </div>
                 </div>
             </div>
-            <div class="row" style="background-color: #Fff;padding: 30px; margin-top:5px">
+            <div class="row" style="background-color: #Fff;paddingx: 30px; margin-top:5px">
                 <div class="col-12">
                     
                     <div classx="form-sec discountForm">
@@ -176,15 +178,15 @@ $vals=array(0,1,2);
                                 <div align="left" class="row payoption" style="--bs-gutter-x:0px;display:fles; width:98%; margin:0 auto; margin-bottomx: -30px;margin-top:10px">
                                     <div class="col-4" style="margin-left:-10px;display:inline-block;" align: left>
                                         <input type="radio" id="card" name="payoption" checked value="Card" required> 
-                                        <label for="card"><img src="<?php echo e(asset('user/images/card_pay.png')); ?>" height="30px"> Card Payment</label>
+                                        <label for="card"><img src="<?php echo e(asset('user/images/card_pay.png')); ?>" height="30px"> <span class="brk">Card Payment</span></label>
                                     </div>
                                     <div class="col-4" style="margin-left:0px;display:inline-block;">
                                         <input type="radio" id="transfer" name="payoption" value="Transfer" required> 
-                                        <label for="transfer"><img src="<?php echo e(asset('user/images/transfer_pay.png')); ?>" height="30px"> Bank Transfer</label>
+                                        <label for="transfer"><img src="<?php echo e(asset('user/images/transfer_pay.png')); ?>" height="30px"> <span class="brk">Bank Transfer</span></label>
                                     </div>
                                     <div class="col-4" style="margin-left:0px;display:inline-block;">
                                         <input type="radio" id="deposit" name="payoption" value="Deposit" required> 
-                                        <label for="deposit"><img src="<?php echo e(asset('user/images/deposit_pay.png')); ?>" height="30px"> Bank Deposit</label>
+                                        <label for="deposit"><img src="<?php echo e(asset('user/images/deposit_pay.png')); ?>" height="30px"> <span class="brk">Bank Deposit</span></label>
                                     </div>
                                 </div>
     
