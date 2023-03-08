@@ -928,8 +928,8 @@ class HomeController extends Controller
 
                 Session::put('packageType', $request->packageType);
 
-                //Call Create Contract Function
-                self::createContract($request->pid);
+                // //Call Create Contract Function
+                // self::createContract($request->pid);
                 
                 //Call Create Application Function
                 self::createAppliacation($request->pid, $request->ppid);
@@ -1584,8 +1584,8 @@ class HomeController extends Controller
 
             Session::put('packageType', $request->packageType);
 
-            //Call Create Contract Function
-            self::createContract($request->pid);
+            // //Call Create Contract Function
+            // self::createContract($request->pid);
             
             //Call Create Application Function
             self::createAppliacation($request->pid, $request->ppid);
