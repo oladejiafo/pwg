@@ -266,11 +266,11 @@
     <input type="hidden" name="third_p" value="{{ $pdet->second_payment_sub_total }}">
 
     <div class="row mt4">
-        <div class="col-md-4 col-sm-12" style="margin-top: 30px">
+        <div class="col-lg-6 col-md-6 col-sm-12" style="margin-top: 30px">
             <span>By continuing you agree to the <a href="{{route('terms')}}"  style="color:#000;margin:30px 0;font-size: 15px" target="_blank"><u>Terms & Conditions</u></a></span>
         </div>
-        <div class="col-md-4 col-sm-12"></div>
-        <div class="col-md-4 col-sm-12">
+        <div class="col-lg-2 col-md-1 col-sm-12"></div>
+        <div class="col-lg-4 col-md-5 col-sm-12">
             <button type="submit" class="btn btn-primary submitBtn" style="border-radius: 0px">Pay Now</button>
         </div>
 

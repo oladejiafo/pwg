@@ -47,19 +47,30 @@ class HomeController extends Controller
     public function redirect()
     {
         if (Auth::id()) {
+
             $client = User::find(Auth::id());
-            if (session('prod_id')) {
+
+            $complete = DB::table('applications')
+            ->where('client_id', '=', Auth::user()->id)
+            ->orderBy('id', 'desc')
+            ->first();
+
+            if(isset($complete) && $complete->destination_id > 0 && $complete->destination_id != null) {
+                return \Redirect::route('myapplication');
+            } elseif (Session::has('prod_id')) {
                 $id = Session::get('prod_id');
 
                 $data = product::find($id);
 
                 $promo = promo::where('employee_id', '=', $id)->where('active_until', '>=', date('Y-m-d'))->get();
                 $ppay = product_payments::where('destination_id', '=', $id)->where('pricing_plan_type', '=', Session::get('packageType'))->where('status', 'CURRENT')->first();
-                // $proddet = product_details::where('product_id', '=', $id)->get();
 
                 session()->forget('prod_id');
-                return view('user.package', compact('data', 'ppay', 'promo'));
-                //   return \Redirect::route('product', $idd);
+
+                // return view('user.package-type', compact('data', 'ppay', 'id'));
+
+                return \Redirect::route('packageType', $id);
+
 
             } else {
                 $started = DB::table('applications')
@@ -916,6 +927,7 @@ class HomeController extends Controller
             }
             $result = pdfBlock::attachSignature($originalPdf, $signatureUrl, $data, $paymentType, $applicant);
         }
+        return $applicant->id;
 
     } 
 
@@ -1572,9 +1584,9 @@ class HomeController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'bank' => 'required',
-                'datepayment' => 'required',
-                'bank_reference' => 'required',
-                'type_payment' => 'required',
+                // 'datepayment' => 'required',
+                // 'bank_reference' => 'required',
+                // 'type_payment' => 'required',
                 'imgInp' => 'required'
             ]);
 
@@ -1589,7 +1601,7 @@ class HomeController extends Controller
             // self::createContract($request->pid);
             
             //Call Create Application Function
-            self::createAppliacation($request->pid, $request->ppid);
+            $applicationId = self::createAppliacation($request->pid, $request->ppid);
 
             if ($request->hasFile('imgInp')) {
             } else {
@@ -1598,8 +1610,8 @@ class HomeController extends Controller
             }
             $applicationImg = null;
 
-            Payment::where('application_id', $request->applicationId)->where('payment_type', $request->paymentType)->where('invoice_no', NULL)->where('bank_reference_no', NULL)->delete();
-            $application = Application::find($request->applicationId);
+            // Payment::where('application_id', $request->applicationId)->where('payment_type', $request->whichpayment)->where('invoice_no', NULL)->where('bank_reference_no', NULL)->delete();
+            $application = Application::find($applicationId);
             $application->status = ($application->status) ?? 'DOCUMENT_SUBMITTED'; // add in payment success
 
             $application->application_stage_status = ($application->application_stage_status == 5) ? 5 : 2;
@@ -1608,23 +1620,23 @@ class HomeController extends Controller
                 ->first();
             if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                 $url = null;
-                if ($request->paymentType == 'FIRST' || $request->paymentType == "BALANCE_ON_FIRST") {
+                if ($request->whichpayment == 'FIRST' || $request->whichpayment == "BALANCE_ON_FIRST") {
                     $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_1st_payment, env('MEDIA_DISK'));
                     $application->first_payment_txn_mode = ($application->is_first_payment_partially_paid == 1) ? 'BALANCE_TRANSFER' : 'TRANSFER';
                     $application->save();
-                    $applicationImg = Application::find($request->applicationId);
+                    $applicationImg = Application::find($applicationId);
                     $url =  $applicationImg->getMedia(Application::$media_collection_main_1st_payment)[0]->getFullUrl();
-                } else if ($request->paymentType == 'SUBMISSION') {
+                } else if ($request->whichpayment == 'SUBMISSION' || $request->whichpayment == "BALANCE_ON_SUBMISSION") {
                     $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_submission_payment, env('MEDIA_DISK'));
                     $application->submission_payment_txn_mode = ($application->is_first_payment_partially_paid == 1) ? 'BALANCE_TRANSFER' : 'TRANSFER';
                     $application->save();
-                    $applicationImg = Application::find($request->applicationId);
+                    $applicationImg = Application::find($applicationId);
                     $url =  $applicationImg->getMedia(Application::$media_collection_submission_payment)[0]->getFullUrl();
-                } else if ($request->paymentType == 'SECOND') {
+                } else if ($request->whichpayment == 'SECOND' || $request->whichpayment == "BALANCE_ON_SECOND") {
                     $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_2nd_payment, env('MEDIA_DISK'));
                     $application->second_payment_txn_mode = ($application->is_first_payment_partially_paid == 1) ? 'BALANCE_TRANSFER' : 'TRANSFER';
                     $application->save();
-                    $applicationImg = Application::find($request->applicationId);
+                    $applicationImg = Application::find($applicationId);
                     $url =  $applicationImg->getMedia(Application::$media_collection_main_2nd_payment)[0]->getFullUrl();
                 } else {
                     if (in_array($application->first_payment_stage_status, ['PAID', 'PARTIALLY_PAID'])) {
@@ -1633,7 +1645,7 @@ class HomeController extends Controller
                         $application->submission_payment_txn_mode = 'TRANSFER';
                         $application->second_payment_txn_mode = 'TRANSFER';
                         $application->save();
-                        $applicationImg = Application::find($request->applicationId);
+                        $applicationImg = Application::find($applicationId);
                         $url =  $applicationImg->getMedia(Application::$media_collection_main_2nd_payment)[0]->getFullUrl();
                     } else {
                         $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_1st_payment, env('MEDIA_DISK'));
@@ -1643,30 +1655,32 @@ class HomeController extends Controller
                         $application->submission_payment_txn_mode = 'TRANSFER';
                         $application->second_payment_txn_mode = 'TRANSFER';
                         $application->save();
-                        $applicationImg = Application::find($request->applicationId);
+                        $applicationImg = Application::find($applicationId);
                         $url =  $applicationImg->getMedia(Application::$media_collection_main_2nd_payment)[0]->getFullUrl();
                     }
                 }
 
             } else {
                 $url = null;
-                if ($request->paymentType == 'FIRST' || $request->paymentType == "BALANCE_ON_FIRST") {
+                // dd($request->whichpayment);
+                if ($request->whichpayment == 'FIRST' || $request->whichpayment == "BALANCE_ON_FIRST") {
                     $application->first_payment_txn_mode = ($application->is_first_payment_partially_paid == 1) ? 'BALANCE_TRANSFER' : 'TRANSFER';
                     $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_1st_payment, 'local');
                     $application->save();
-                    $applicationImg = Application::find($request->applicationId);
+                    $applicationImg = Application::find($applicationId);
+                
                     $url =  $applicationImg->getMedia(Application::$media_collection_main_1st_payment)[0]->getPath();
-                } else if ($request->paymentType == 'SUBMISSION') {
+                } else if ($request->whichpayment == 'SUBMISSION' || $request->whichpayment == "BALANCE_ON_SUBMISSION") {
                     $application->submission_payment_txn_mode = ($application->is_submission_payment_partially_paid == 1) ? 'BALANCE_TRANSFER' : 'TRANSFER';
                     $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_submission_payment, 'local');
                     $application->save();
-                    $applicationImg = Application::find($request->applicationId);
+                    $applicationImg = Application::find($applicationId);
                     $url =  $applicationImg->getMedia(Application::$media_collection_submission_payment)[0]->getPath();
-                } else if ($request->paymentType == 'SECOND') {
+                } else if ($request->whichpayment == 'SECOND' || $request->whichpayment == "BALANCE_ON_SECOND") {
                     $application->second_payment_txn_mode = ($application->is_second_payment_partially_paid == 1) ? 'BALANCE_TRANSFER' : 'TRANSFER';;
                     $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_2nd_payment, 'local');
                     $application->save();
-                    $applicationImg = Application::find($request->applicationId);
+                    $applicationImg = Application::find($applicationId);
                     $url =  $applicationImg->getMedia(Application::$media_collection_main_2nd_payment)[0]->getPath();
                 } else {
                     if (in_array($application->first_payment_stage_status, ['PAID', 'PARTIALLY_PAID'])) {
@@ -1675,7 +1689,7 @@ class HomeController extends Controller
                         $application->second_payment_txn_mode = 'TRANSFER';
                         $application->save();
                         $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_2nd_payment, 'local');
-                        $applicationImg = Application::find($request->applicationId);
+                        $applicationImg = Application::find($applicationId);
                         $url =  $applicationImg->getMedia(Application::$media_collection_submission_payment)[0]->getPath();
                     } else {
                         $application->first_payment_txn_mode = 'TRANSFER';
@@ -1683,7 +1697,7 @@ class HomeController extends Controller
                         $application->second_payment_txn_mode = 'TRANSFER';
                         $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_1st_payment, 'local');
                         $application->save();
-                        $applicationImg = Application::find($request->applicationId);
+                        $applicationImg = Application::find($applicationId);
                         $url =  $applicationImg->getMedia(Application::$media_collection_main_1st_payment)[0]->getPath();
                         $application->addMedia($url)->preservingOriginal()->toMediaCollection(Application::$media_collection_submission_payment, 'local');
                         $application->addMedia($url)->preservingOriginal()->toMediaCollection(Application::$media_collection_main_2nd_payment, 'local');
@@ -1711,6 +1725,7 @@ class HomeController extends Controller
             //     return view('user.payment-confirm', compact('id'))->with('error', 'Something went wrong! Please try again');
             // }
         } catch (Exception $e) {
+            dd($e);
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
@@ -2031,7 +2046,7 @@ class HomeController extends Controller
                 return \Redirect::route('payment-fail', $id);
             }
         } catch (Exception $e) {
-            dd($e);
+            // dd($e);
             return \Redirect::route('myapplication')->with('error', $e->getMessage());
         }
     }
@@ -2438,6 +2453,7 @@ class HomeController extends Controller
                 ->where('payment_type', $ptype)
                 ->orderBy('id', 'DESC')
                 ->first();
+            // dd($apply->id);
             if ($paymentDetailsBasedType) {
             } else {
                 $paymentDetailsBasedType  =  Payment::where('application_id', $apply->id)
@@ -2446,7 +2462,9 @@ class HomeController extends Controller
             }
             $paymentDetails =  $paymentDetailsBasedType;
         }
+        return self::getInvoiceDevelop($paymentDetails->payment_type);
 
+        // dd($paymentDetails);
         if ($paymentDetails->payment_type == 'Full-Outstanding Payment') {
             $filename = Auth::user()->name . '-' . $paymentDetails->payment_type . '-' . "Invoice.pdf";
             $invoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
