@@ -121,4 +121,4 @@
         }
     </script>
 <?php $__env->stopPush(); ?>
-<?php /**PATH C:\Users\dejia\OneDrive\Desktop\mygit\pwg_eportal\resources\views/user/bank-payment.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views/user/bank-payment.blade.php ENDPATH**/ ?>

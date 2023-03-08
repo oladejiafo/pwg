@@ -104,6 +104,8 @@
      <!--  load jQuery  -->
 
      <!--load JS for Select2 -->    
+     @include('user/footer')
+
     <script>
         @if(Session::has('message'))
         toastr.options =
@@ -143,8 +145,5 @@
         
     </script>
         @stack('custom-scripts')
-
-        @include('user/footer')
-
     </body>
 </html>

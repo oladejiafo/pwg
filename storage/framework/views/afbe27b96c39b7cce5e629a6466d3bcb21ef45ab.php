@@ -19,7 +19,7 @@
           </div>
         </div>
         <div class="tab-sec">
-            <a href="<?php echo e(route('register')); ?>">Signup</a>
+            
             <a href="<?php echo e(route('login')); ?>" class="signupBtn">Login</a>
         </div>
         <div class="form-sec">
@@ -92,4 +92,4 @@ unset($__errorArgs, $__bag); ?>
 <?php $__env->stopPush(); ?>
 
 
-<?php echo $__env->make('layouts.auth', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\dejia\OneDrive\Desktop\mygit\pwg_eportal\resources\views/auth/login.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.auth', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views/auth/login.blade.php ENDPATH**/ ?>

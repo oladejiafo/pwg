@@ -131,8 +131,7 @@
                                                         <form action="<?php echo e(route('payment',$prod->id)); ?>" method="GET">
                                                             <button class="btn btn-secondary" style="font-weight:700">Pay Now</button>
                                                         </form>
-                                                    <?php endif; ?>                                                    Now</button>
-
+                                                    <?php endif; ?>
                                                 <?php else: ?>
                                                     <form action="<?php echo e(route('payment',$prod->id)); ?>" method="GET">
                                                         <button class="btn btn-secondary" style="font-weight:700">Pay Now</button>
@@ -251,4 +250,4 @@
 
 </body>
 
-</html><?php /**PATH C:\Users\dejia\OneDrive\Desktop\mygit\pwg_eportal\resources\views/user/paid_details.blade.php ENDPATH**/ ?>
+</html><?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views/user/paid_details.blade.php ENDPATH**/ ?>
