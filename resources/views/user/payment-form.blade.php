@@ -397,9 +397,22 @@ $vals=array(0,1,2);
                                 }
                                 $discount = 0;
                             } else {
+                                
                                 $discount = 0;
                                 $discountPercent = 0;
-                                if (isset($pays) && $pays->first_payment_status == 'PENDING' && ($pays->submission_payment_status == 'PENDING') & ($pays->second_payment_status == 'PENDING')) {
+                                if(!isset($pays)){
+                                    $payNow = $pdet->sub_total - $pdet->third_payment_sub_total;
+                                    $payNoww = $payNow;
+                                    $pendMsg = 'Full Payment';
+                                    if ($pdet->submission_payment_sub_total > 0 || $pdet->second_payment_sub_total > 0) {
+                                        $discountPercent = ($data->full_payment_discount) ? $data->full_payment_discount . '%' : 0;
+                            
+                                        // $discountPercent = '5%';
+                                        // $discount = ($payNow * 5 / 100);
+                                        $discount = ($data->full_payment_discount > 0) ? ($payNow * $data->full_payment_discount) / 100 : 0; //product discount fetch
+                                    }
+                                    $whichPayment = 'Full-Outstanding Payment';
+                                }elseif (isset($pays) && $pays->first_payment_status == 'PENDING' && ($pays->submission_payment_status == 'PENDING') & ($pays->second_payment_status == 'PENDING')) {
                                     $payNow = $pdet->sub_total - $pdet->third_payment_sub_total;
                                     $payNoww = $payNow;
                                     $pendMsg = 'Full Payment';
