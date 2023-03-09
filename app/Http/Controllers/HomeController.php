@@ -883,16 +883,13 @@ class HomeController extends Controller
             $data->third_payment_remaining = $pricingPLan['third_payment_price'];
             $res = $data->save();
         } else {
-            $datas->pricing_plan_id = $pricingPLan->id;
-            $datas->work_permit_category =  (Session::get('packageType')) ?? 'BLUE_COLLAR';
-            $datas->application_stage_status = 1;
-            $datas->destination_id = $pid;
-            $datas->applied_country = strtoupper(product::where('id', $pid)->pluck('name')->first());
-            $datas->contract = Session::get('contract');
-            $datas->work_permit_status = 'WORK_PERMIT_NOT_APPLIED';
-            $datas->is_workpermit_delivered = 0;
-            $datas->is_job_offer_letter_delivered = 0;
-
+            $datas->pricing_plan_id = ($datas->pricing_plan_id) ?? $pricingPLan->id;
+            $datas->work_permit_category =  ($datas->work_permit_category) ?? (Session::get('packageType')) ?? 'BLUE_COLLAR';
+            $datas->application_stage_status = ($datas->application_stage_status) ?? 1;
+            $datas->destination_id = ($datas->destination_id) ?? $pid;
+            $datas->applied_country = ($datas->applied_country) ?? strtoupper(product::where('id', $pid)->pluck('name')->first());
+            $datas->contract = ($datas->contract) ?? Session::get('contract');
+            $datas->work_permit_status = ($datas->work_permit_status) ?? 'WORK_PERMIT_NOT_APPLIED';
             $res = $datas->save();
         }
 
@@ -1442,6 +1439,8 @@ class HomeController extends Controller
                             // $datas->total_price = (in_array($datas->first_payment_status, ['PAID', 'PARTIALLY_PAID'])) ? ($datas->first_payment_paid + $thisPayment + $pdet->third_payment_price)  : $thisPayment + $pdet->third_payment_price;
                             if ($datas->submission_payment_status == 'PARTIALLY_PAID') {
                                 $datas->total_vat = $datas->first_payment_vat + $datas->submission_payment_vat + $datas->third_payment_vat + $thisVat;
+                            } else if ($datas->first_payment_status == 'PARTIALLY_PAID' || $datas->first_payment_status == 'PAID') {
+                                $datas->total_vat = $datas->first_payment_vat + $thisVat;
                             } else {
                                 $datas->total_vat = $thisVat;
                             }
@@ -2469,6 +2468,8 @@ class HomeController extends Controller
             }
             $paymentDetails =  $paymentDetailsBasedType;
         }
+        return self::getInvoiceDevelop($paymentDetails->payment_type);
+
         // dd($paymentDetails);
         if ($paymentDetails->payment_type == 'Full-Outstanding Payment') {
             $filename = Auth::user()->name . '-' . $paymentDetails->payment_type . '-' . "Invoice.pdf";
