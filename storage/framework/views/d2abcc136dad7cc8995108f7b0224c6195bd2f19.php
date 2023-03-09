@@ -223,7 +223,7 @@
                             </div>
                             <span class="bottom">
                                 <h3 class="product-title intro-excerpt" style="font-size: 35px; color:aliceblue"><?php echo e(ucfirst($offer->name)); ?></h3>
-                                <p style="font-size:20px"><?php echo e($offer->slogan); ?></p>
+                                <p style="font-size:20px;"><?php echo e($offer->slogan); ?></p>
                             </span>
                             
                             

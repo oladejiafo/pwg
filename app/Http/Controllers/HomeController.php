@@ -2155,9 +2155,6 @@ class HomeController extends Controller
             }
             $paymentDetails =  $paymentDetailsBasedType;
         }
-        return self::getInvoiceDevelop($paymentDetails->payment_type);
-
-        // dd($paymentDetails);
         if ($paymentDetails->payment_type == 'Full-Outstanding Payment') {
             $filename = Auth::user()->name . '-' . $paymentDetails->payment_type . '-' . "Invoice.pdf";
             $invoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
