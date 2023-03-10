@@ -156,7 +156,7 @@
                                 <div class="row">
                                     <div class="col-2 my-auto">
                                         <div class="image">
-                                            <img src="{{asset('images/Icons_schengen_details.svg')}}" width="100%" height="100%" alt="PWG Group">
+                                            <img src="{{asset('images/refferal.png')}}" width="100%" height="100%" alt="PWG Group">
                                         </div>
                                     </div>
                                     <div class="col-1">
