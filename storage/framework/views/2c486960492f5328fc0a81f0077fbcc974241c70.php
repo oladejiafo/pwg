@@ -278,7 +278,7 @@ $vals=array(0,1,2);
                                         $pendMsg = '';
                                         $payNoww = $pdet->first_payment_sub_total;
                                     }
-                                } elseif (isset($pays) && $pays->first_payment_status == 'PAID' && $pays->submission_payment_status != 'PAID') {
+                                } elseif (isset($pays) && $pays->first_payment_status == 'PAID' && $pays->submission_payment_status != 'PAID' && $pdet->submission_payment_sub_total>0) {
                                     $outsub = $pays->submission_payment_price - $pays->submission_payment_paid;
                                     $outsec = 0;
                             
@@ -303,7 +303,7 @@ $vals=array(0,1,2);
                                             $pendMsg = '';
                                         }
                                     }
-                                } elseif (isset($pays) && $pays->first_payment_status == 'PAID' && $pays->submission_payment_status == 'PAID' && $outsub > 0) {
+                                } elseif (isset($pays) && $pays->first_payment_status == 'PAID' && $pays->submission_payment_status == 'PAID' && $outsub > 0 && $pdet->submission_payment_sub_total>0) {
                                     $outsub = $pays->submission_payment_price - $pays->submission_payment_paid;
                                     $outsec = 0;
                             
@@ -311,7 +311,7 @@ $vals=array(0,1,2);
                                     $payNow = $outsub; //$pdet->submission_payment_sub_total;
                                     $payNoww = $outsub;
                                     $whichPayment = 'SUBMISSION';
-                                } elseif (isset($pays) && $pays->submission_payment_status == 'PAID' && $pays->second_payment_status != 'PAID') {
+                                } elseif (isset($pays) && $pays->first_payment_status == 'PAID' && $pays->second_payment_status != 'PAID' && empty($pdet->submission_payment_sub_total)) {
                                     $outsec = $pays->second_payment_price - $pays->second_payment_paid;
                                     $outsub = 0;
                             
@@ -337,7 +337,33 @@ $vals=array(0,1,2);
                                             $pendMsg = '';
                                         }
                                     }
-                                } elseif (isset($pays) && $pays->submission_payment_status == 'PAID' && $pays->second_payment_status == 'PAID' && $outsec > 0) {
+                                } elseif (isset($pays) && $pays->submission_payment_status == 'PAID' && $pays->second_payment_status != 'PAID' && $pdet->second_payment_sub_total>0) {
+                                    $outsec = $pays->second_payment_price - $pays->second_payment_paid;
+                                    $outsub = 0;
+                            
+                                    $whichPayment = 'SECOND';
+                                    if ($pays->second_payment_remaining > 0 && $pays->second_payment_status == 'PARTIALLY_PAID') {
+                                        $vat_2 = $pays->second_payment_remaining * (5 / 100);
+                                        $pendMsg = 'You have ' . ($pays->second_payment_remaining) . ' balance on second payment.';
+                                        $payNoww = $pays->second_payment_remaining;
+                                        $payNow = $pdet->second_payment_sub_total;
+                                        $whichPayment = 'BALANCE_ON_SECOND';
+                                    } else {
+                                        if ($diff > 0 && $pays->is_submission_payment_partially_paid == 1) {
+                                            $payNow = $pdet->second_payment_sub_total;
+                                            $payNoww = $pdet->second_payment_sub_total + $pends;
+                                            $pendMsg = ' + ' . $pends . ' carried over from previous payment';
+                                        } elseif ($diff < 0 && $pays->is_submission_payment_partially_paid == 1) {
+                                            $payNow = $pdet->second_payment_sub_total;
+                                            $payNoww = $pdet->second_payment_sub_total - $pends;
+                                            $pendMsg = ' - ' . $pends . ' over paid from previous payment';
+                                        } else {
+                                            $payNow = $pdet->second_payment_sub_total;
+                                            $payNoww = $pdet->second_payment_sub_total;
+                                            $pendMsg = '';
+                                        }
+                                    }
+                                } elseif (isset($pays) && $pays->submission_payment_status == 'PAID' && $pays->second_payment_status == 'PAID' && $outsec > 0 && $pdet->second_payment_sub_total>0) {
                                     $pendMsg = 'You have ' . $outsec . ' balance on second payment.';
                                     $payNow = $outsec; //$pdet->submission_payment_sub_total;
                                     $payNoww = $outsec;

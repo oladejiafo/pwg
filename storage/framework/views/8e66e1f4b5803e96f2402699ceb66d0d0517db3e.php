@@ -14,11 +14,7 @@
                         <?php else: ?>
                             First Payment
                         <?php endif; ?>
-                        <span style="font-size:11px" class="vtt">
-                            <?php if($vat > 0): ?>
-                                (+ 5% VAT)
-                            <?php endif; ?>
-                        </span>
+                        
                         <?php if($pends > 1): ?>
                             <br>
                             <font style='font-size:10px;color:red'><i fa fa-arrow-up></i> <?php echo e($pendMsg); ?> </font>
@@ -34,6 +30,7 @@
                         <span style="font-size:11px">AED</span>
                     </div>
                 </div>
+                <?php if($second_pay>0): ?>
                 <div class="total-sec row mt-3">
                     <div class="left-section col-6">
 
@@ -42,11 +39,7 @@
                         <?php else: ?>
                             Submission Payment
                         <?php endif; ?>
-                        <span style="font-size:11px" class="vtt">
-                            <?php if($vat > 0): ?>
-                                (+ 5% VAT)
-                            <?php endif; ?>
-                        </span>
+                        
                         <?php if($outsub > 1): ?>
                             <br>
                             <font style='font-size:10px;color:red'><i fa fa-arrow-up></i> <?php echo e($pendMsg); ?> </font>
@@ -64,6 +57,8 @@
 
                     </div>
                 </div>
+                <?php endif; ?>
+                <?php if($third_pay>0): ?>
                 <div class="total-sec row mt-3">
                     <div class="left-section col-6">
                         <?php if($whichPayment == 'SECOND'): ?>
@@ -78,11 +73,7 @@
                         <?php else: ?>
                             Second Payment
                         <?php endif; ?>
-                        <span style="font-size:11px" class="vtt">
-                            <?php if($vat > 0): ?>
-                                (+ 5% VAT)
-                            <?php endif; ?>
-                        </span>
+                        
                         <?php if($outsec > 1): ?>
                             <br>
                             <font style='font-size:10px;color:red'><i fa fa-arrow-up></i> <?php echo e($pendMsg); ?> </font>
@@ -98,6 +89,7 @@
                         <span style="font-size:11px">AED</span>
                     </div>
                 </div>
+                <?php endif; ?>
                 <hr>
 
                 <div class="total-sec row mt-3">
@@ -168,15 +160,7 @@
                     </div>
                 <?php endif; ?>
                 <?php if(isset($vat) && $vat > 0): ?>
-                    <div class="total-sec row mt-3 showVat" id="showVat">
-                        <div class="left-section col-6">
-                            VAT (+ 5% of <?php echo e($whichPayment); ?>)
-                        </div>
-                        <div class="right-section col-6" align="right">
-                            <span id="vatt"><?php echo e(number_format($vat, 2)); ?> </span>
-                            <span style="font-size:11px">AED</span>
-                        </div>
-                    </div>
+                    
                 <?php endif; ?>
                 <input type="hidden" name="vats" id="vats" value="<?php echo e($vat); ?>">
             </div>
@@ -194,7 +178,7 @@
                     <?php endif; ?>
                     <p>Minimum amount of <b> 1,000 AED</b><span style="font-size:11px" class="vtt">
                             <?php if($vat > 0): ?>
-                                (+ 5% VAT)
+                                
                             <?php endif; ?>
                         </span></p>
 
@@ -256,6 +240,7 @@
                 <input type="hidden" id="totaldue" name="totaldue" value="<?php echo e(round((($payNoww - $discount) + $vat),2)); ?>">
             <?php endif; ?>
         </div>
+        
     </div>
 
 

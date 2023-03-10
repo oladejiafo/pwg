@@ -14,11 +14,11 @@
                         @else
                             First Payment
                         @endif
-                        <span style="font-size:11px" class="vtt">
+                        {{-- <span style="font-size:11px" class="vtt">
                             @if ($vat > 0)
                                 (+ 5% VAT)
                             @endif
-                        </span>
+                        </span> --}}
                         @if ($pends > 1)
                             <br>
                             <font style='font-size:10px;color:red'><i fa fa-arrow-up></i> {{ $pendMsg }} </font>
@@ -33,6 +33,7 @@
                         <span style="font-size:11px">AED</span>
                     </div>
                 </div>
+                @if($second_pay>0)
                 <div class="total-sec row mt-3">
                     <div class="left-section col-6">
 
@@ -41,11 +42,11 @@
                         @else
                             Submission Payment
                         @endif
-                        <span style="font-size:11px" class="vtt">
+                        {{-- <span style="font-size:11px" class="vtt">
                             @if ($vat > 0)
                                 (+ 5% VAT)
                             @endif
-                        </span>
+                        </span> --}}
                         @if ($outsub > 1)
                             <br>
                             <font style='font-size:10px;color:red'><i fa fa-arrow-up></i> {{ $pendMsg }} </font>
@@ -62,6 +63,8 @@
 
                     </div>
                 </div>
+                @endif
+                @if($third_pay>0)
                 <div class="total-sec row mt-3">
                     <div class="left-section col-6">
                         @if ($whichPayment == 'SECOND')
@@ -76,11 +79,11 @@
                         @else
                             Second Payment
                         @endif
-                        <span style="font-size:11px" class="vtt">
+                        {{-- <span style="font-size:11px" class="vtt">
                             @if ($vat > 0)
                                 (+ 5% VAT)
                             @endif
-                        </span>
+                        </span> --}}
                         @if ($outsec > 1)
                             <br>
                             <font style='font-size:10px;color:red'><i fa fa-arrow-up></i> {{ $pendMsg }} </font>
@@ -95,6 +98,7 @@
                         <span style="font-size:11px">AED</span>
                     </div>
                 </div>
+                @endif
                 <hr>
 
                 <div class="total-sec row mt-3">
@@ -163,7 +167,7 @@
                     </div>
                 @endif
                 @if (isset($vat) && $vat > 0)
-                    <div class="total-sec row mt-3 showVat" id="showVat">
+                    {{-- <div class="total-sec row mt-3 showVat" id="showVat">
                         <div class="left-section col-6">
                             VAT (+ 5% of {{ $whichPayment }})
                         </div>
@@ -171,7 +175,7 @@
                             <span id="vatt">{{ number_format($vat, 2) }} </span>
                             <span style="font-size:11px">AED</span>
                         </div>
-                    </div>
+                    </div> --}}
                 @endif
                 <input type="hidden" name="vats" id="vats" value="{{ $vat }}">
             </div>
@@ -191,7 +195,7 @@
                     @endif
                     <p>Minimum amount of <b> 1,000 AED</b><span style="font-size:11px" class="vtt">
                             @if ($vat > 0)
-                                (+ 5% VAT)
+                                {{-- (+ 5% VAT) --}}
                             @endif
                         </span></p>
 
@@ -253,6 +257,7 @@
                 <input type="hidden" id="totaldue" name="totaldue" value="{{round((($payNoww - $discount) + $vat),2) }}">
             @endif
         </div>
+        
     </div>
 
 
