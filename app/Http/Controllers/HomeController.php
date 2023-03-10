@@ -68,9 +68,7 @@ class HomeController extends Controller
                 session()->forget('prod_id');
 
                 // return view('user.package-type', compact('data', 'ppay', 'id'));
-
                 return \Redirect::route('packageType', $id);
-
 
             } else {
                 $started = DB::table('applications')
@@ -197,6 +195,7 @@ class HomeController extends Controller
                 ->orderBy('sub_total', 'asc')
                 ->first();
 
+               
             if ($request->response == 1) {
                 return $famdet;
             }

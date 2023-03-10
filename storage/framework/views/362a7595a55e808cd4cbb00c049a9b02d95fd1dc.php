@@ -115,7 +115,7 @@
 
                         <!-- Start Column  -->
                         <li>
-                            <div class="col-4 cellContainer" style="margin-top:10%">
+                            <div class="col-4 cellContainer" style="margin-top:5%">
                                 <span class="product-item item-hints" href="#">
                                     <span class="positionAnchor hint"  data-position="1">
 
@@ -233,19 +233,8 @@
                                 <i class="<?php echo e($icon); ?>"></i> <?php echo e($offer_discount_msg); ?> 
                             </p>
                             <p>
-                                <?php if(Route::has('login')): ?>
-                                    <?php if(auth()->guard()->check()): ?>
-                                    <a class="btn btn-secondary" href="<?php echo e(url('package/type', $offer->id)); ?>">Apply Now</a>
-                                <?php else: ?>
                                 
-                                    <?php //$prod_id =$offer->id; ?>
-                                    
-                                    
-                                    <a class="btn btn-secondary" href="<?php echo e(url('register?pid='. $offer->id)); ?>">Apply Now</a>
-                                    <?php endif; ?>
-                                
-                                <?php endif; ?>
-                                
+                                <a class="btn btn-secondary" href="<?php echo e(url('package/type', $offer->id)); ?>">Apply Now</a>
                             </p>
                         </span>
                     </span>
