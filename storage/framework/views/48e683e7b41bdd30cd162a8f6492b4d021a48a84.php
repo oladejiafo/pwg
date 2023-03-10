@@ -124,14 +124,14 @@
                 toastr.error("<?php echo e(session('error')); ?>");
         <?php endif; ?>
 
-        // <?php if(Session::has('info')): ?>
-        // toastr.options =
-        // {
-        //     "closeButton" : true,
-        //     "progressBar" : true
-        // }
-        //         toastr.info("<?php echo e(session('info')); ?>");
-        // <?php endif; ?>
+        <?php if(Session::has('infoMessage')): ?>
+        toastr.options =
+        {
+            "closeButton" : true,
+            "progressBar" : true
+        }
+                toastr.info("<?php echo e(session('info')); ?>");
+        <?php endif; ?>
 
         <?php if(Session::has('warning')): ?>
         toastr.options =

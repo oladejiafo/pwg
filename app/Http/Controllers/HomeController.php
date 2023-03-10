@@ -1467,7 +1467,13 @@ class HomeController extends Controller
             }
 
             $id = $request->productId;
-            return view('user.payment-confirm', compact('id'));
+            if($application->application_stage_status != 5){
+                session::put('paymentMode', "TRANSFER");
+                return Redirect::route('applicant.details', $application->destination_id);
+            } else {
+                return Redirect::route('myapplication', $application->destination_id)->with('infoMessage', 'Payment need to be confirmed!');
+            }
+            // return view('user.payment-confirm', compact('id'));
             // } else {
             //     return view('user.payment-confirm', compact('id'))->with('error', 'Something went wrong! Please try again');
             // }
@@ -1688,10 +1694,9 @@ class HomeController extends Controller
                     // Send Notifications on This Payment ##############
                     $email = Auth::user()->email;
                     $userID = Auth::user()->id;
-
                     if ((isset($ppd) && ($ppd['payment_type'] == "FIRST" || $ppd['payment_type'] == "BALANCE_ON_FIRST")) || (isset($dat) && ($dat['payment_type'] == "FIRST" || $dat['payment_type'] == "BALANCE_ON_FIRST"))) {
                         $ems = "";
-                    } else if ($ppd['payment_type'] == "SUBMISSION") {
+                    } else if (isset($ppd) && ($ppd['payment_type'] == "SUBMISSION" )) {
                         $ems = " You will be notified when your Work Permit is ready.";
                     } else {
                         $ems = " You will be notified when your embassy appearance date is set.";
@@ -1736,7 +1741,13 @@ class HomeController extends Controller
                     Quickbook::createInvoice($payment);
                     $msg = "Awesome! Payment Successful!";
                     Session::forget('paymentCreds');
-                    return view('user.payment-success', compact('id'));
+                    if($data->application_stage_status != 5){
+                        session::put('paymentMode', "NETWORK");
+                        return Redirect::route('applicant.details', $data->destination_id);
+                    } else {
+                        return Redirect::route('myapplication', $data->destination_id)->with('message', 'Payment successfull!');
+                    }
+                    // return view('user.payment-success', compact('id'));
      
                 } else {
                     Session::forget('paymentCreds');
@@ -1749,7 +1760,6 @@ class HomeController extends Controller
                 return \Redirect::route('payment-fail', $id);
             }
         } catch (Exception $e) {
-            // dd($e);
             return \Redirect::route('myapplication')->with('error', $e->getMessage());
         }
     }

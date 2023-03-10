@@ -198,7 +198,7 @@
                             <?php endif; ?>
                         </span></p>
 
-                    <p><b>Remaining amount to be paid in 7 days</b></p>
+                    <p><b>Remaining amount to be paid in 30 days</b></p>
                 </div>
             <?php endif; ?>
         </div>

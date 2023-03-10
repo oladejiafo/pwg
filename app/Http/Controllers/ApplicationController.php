@@ -1044,4 +1044,18 @@ class ApplicationController extends Controller
         $jobCategoryList = $query->get();
         return $jobCategoryList;
     }
+
+    public function addReferrer(Request $request)
+    {
+        $applicant = Applicant::where('client_id', Auth::id())
+                ->where('destination_id', $request->product_id)
+                ->update([
+                    'referrer_name_by_client' => $request->referrerName,
+                    'referrer_passport_number_by_client' => $request->referrerPassport
+                ]);
+
+        return Response::json(array(
+            'status' => true
+        ), 200);
+    }
 }
