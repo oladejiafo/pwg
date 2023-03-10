@@ -1196,11 +1196,17 @@ body {
   margin-bottom: 30px;
   position: relative;
   top: 0;
+  width: 550px !important;
   -webkit-transition: .3s all ease;
   -o-transition: .3s all ease;
   transition: .3s all ease;
 }
 
+@media (max-width:820px) {
+  .product-section .product-item .product-thumbnail {
+    width:100% !important;
+  }
+}
 @media (min-width:375px) and (max-width:768px) {
 
   .product-section .product-item {
