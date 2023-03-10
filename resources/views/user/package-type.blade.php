@@ -285,21 +285,39 @@ $cXamount=0;
                                     </div>
                                     <div class="indpackage">
                                         <ul>
+                                            <li><div style="text-align: left;margin-left: 35px">Free accomodation</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Free transportation</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Free health insurance</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Free regeneration meal</div></li>
                                             <li><div style="text-align: left;margin-left: 35px">Flexible working hours</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Salary on time</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Permanent residency</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Passport after 5 year</div></li>
                                             <li><div style="text-align: left;margin-left: 35px">Attractive job market</div></li>
                                             <li><div style="text-align: left;margin-left: 35px">Low cost of living</div></li>
                                             <li><div style="text-align: left;margin-left: 35px">Legal employment</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Health insurance</div></li>
                                             <li><div style="text-align: left;margin-left: 35px">Respect of your rights</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Free airport transfer</div></li>
                                             <li><div style="text-align: left;margin-left: 35px">No company ban</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Salary on time</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Free regeneration meal</div></li>
                                         </ul>
-                                        <div class="bonus" style="text-align: left;margin-block:15px; margin-left: 35px"><i class="fa fa-star" style="color:#FACB08;font-size: 25px;"></i><b style="font-size: 18px;margin-left: 15px;">BONUS:</b> Salary deduction on the last payment of selected package.</div>
+                                        {{-- <div class="bonus" style="text-align: left;margin-block:15px; margin-left: 35px"><i class="fa fa-star" style="color:#FACB08;font-size: 25px;"></i><b style="font-size: 18px;margin-left: 15px;">BONUS:</b> Salary deduction on the last payment of selected package.</div> --}}
                                     </div>
                                     <div>
-                                        <button type="submit" class="btn btn-primary" style="width: 100%;font-size: 24px;background: #FACB08">APPLY NOW</button>
+                                        {{-- @if(Route::has('login'))
+                                            @auth
+                                            <form action="{{ url('payment_form', $data->id) }}" method="GET">
+                                        @else
+                                            <form action="{{ url('register') }}">
+                                                @php Session::put('prod_id', $data->id); @endphp
+                                            @endauth
+                                        @endif
+                                        @csrf
+                                            <input type="hidden" name="cost" value="{{$blue_cost}}">
+                                            <input type="hidden" name="blue_id" value="{{$prdet->id}}">
+                                            <input type="hidden" name="pr_id" value="{{$data->id}}">
+                                        
+                                            <input type="hidden" value="BLUE_COLLAR" name="myPack"> --}}
+                                            <button type="submit" class="btn btn-primary" style="width: 100%;font-size: 24px;background: #FACB08">APPLY NOW</button>
+                                        {{-- </form> --}}
                                     </div>
                                 </div>
                               
@@ -335,21 +353,44 @@ $cXamount=0;
                                     </div>
                                     <div class="fampackage">
                                         <ul>
-                                            <li><div style="text-align: left;margin-left: 35px">Access to Free Education</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Family benefits</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Low cost of living</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Legal employment</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Health insurance</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Respect of your rights</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Free airport transfer</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">No company ban</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Free accomodation</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Free transportation</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Free health insurance</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Free regeneration meal</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Flexible working hours</div></li>
                                             <li><div style="text-align: left;margin-left: 35px">Salary on time</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Permanent residency</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Passport after 5 year</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Family benefits</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Access to Free Education</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Low cost of living</div></li>
+                                            {{-- <li><div style="text-align: left;margin-left: 35px">Legal employment</div></li> --}}
+                                            <li><div style="text-align: left;margin-left: 35px">Respect of your rights</div></li>
+                                            {{-- <li><div style="text-align: left;margin-left: 35px">No company ban</div></li> --}}
                                             <li><div style="text-align: left;margin-left: 35px">Right to family reunification</div></li>
+
                                         </ul>
-                                        <div class="bonus" style="text-align: left;margin-block:15px; margin-left: 35px"><i class="fa fa-star" style="color:#E10930;font-size: 25px;"></i><b style="font-size: 18px;margin-left: 15px;">BONUS:</b> Salary deduction on the last payment of selected package.</div>
+                                        {{-- <div class="bonus" style="text-align: left;margin-block:15px; margin-left: 35px"><i class="fa fa-star" style="color:#E10930;font-size: 25px;"></i><b style="font-size: 18px;margin-left: 15px;">BONUS:</b> Salary deduction on the last payment of selected package.</div> --}}
                                     </div>
                                     <div>
-                                        <button type="submit" class="btn btn-primary" style="width: 100%;font-size: 24px;background: #E10930">APPLY NOW</button>
+                                        {{-- @if(Route::has('login'))
+                                            @auth
+                                            <form action="{{ url('payment_form', $data->id) }}" method="GET">
+                                        @else
+                                            <form action="{{ url('register') }}">
+                                                @php Session::put('prod_id', $data->id); @endphp
+                                            @endauth
+                                        @endif
+                                            <input type="hidden" name="pr_id" value="{{$data->id}}">
+                                            @csrf
+        
+                                            <input type="hidden" name="productId" value="{{$productId}}">
+                                            <input type="hidden" class="hiddenFamAmount" name="cost" value="{{($famdet) ?  number_format($famdet['first_payment_sub_total']) : 0 }}">
+                                            <input type="hidden" value="FAMILY_PACKAGE" name="myPack">
+                                            <input type="hidden" value="{{($famdet) ? $famdet->id : 0 }}" name="fam_id" class="fam_id">
+                                             --}}
+                                            <button type="submit" class="btn btn-primary" style="width: 100%;font-size: 24px;background: #E10930">APPLY NOW</button>
+                                        {{-- </form> --}}
                                     </div>
                                 </div>
                               
@@ -454,7 +495,7 @@ $cXamount=0;
                                     <input type="hidden" name="productId" value="{{$productId}}">
                                     <input type="hidden" class="hiddenFamAmount" name="cost" value="{{($famdet) ?  number_format($famdet['first_payment_sub_total']) : 0 }}">
                                     <input type="hidden" value="FAMILY_PACKAGE" name="myPack">
-                                    <input type="hidden" value="{{($famdet) ? $famdet->id : 0 }}" name="fam_id">
+                                    <input type="hidden" value="{{($famdet) ? $famdet->id : 0 }}" name="fam_id" class="fam_id">
 
                                     <div class="partner-sec">
                                         <?php $XYZ = Session::get('mySpouse'); ?>
@@ -735,6 +776,7 @@ function getCost(kidd, parents)
             $('.Famamount_old').text(parseFloat(data.first_payment_sub_total*1.2995).toLocaleString());
             $('.Famamount_save').text(parseFloat(vallu).toLocaleString());
             $('.hiddenFamAmount').val(data.first_payment_sub_total);
+            $('.fam_id').val(data.id);
         },
         errror: function (error) {
         }

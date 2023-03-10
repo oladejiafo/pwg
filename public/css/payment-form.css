@@ -685,10 +685,10 @@ select {
     animation: pulse 5s infinite;
 }
 
-.file--uploading>label:hover {
-    /* border-color: hsl(48, 100%, 67%);
-    background-color: hsl(48, 100%, 96%); */
-}
+/* .file--uploading>label:hover {
+    border-color: hsl(48, 100%, 67%);
+    background-color: hsl(48, 100%, 96%);
+} */
 
 .recieptUpload:hover .file--uploading>label,
 .recieptUpload:hover {

@@ -216,14 +216,13 @@
 
 
                     @if($paid->second_payment_status != 'PAID')
-                    <div class="row" style="font-size:18px">
+                    {{-- <div class="row" style="font-size:18px">
                         <div style="align-items: left; align:left; float: left; padding-left:40px;padding-right:40px" class="col-12">Your next payment is <b>
 
-                          {{-- @if($paid->submission_payment_status =='PAID' && $paid->submission_payment_price == $paid->submission_payment_paid)                     --}}
                           @if($paid->submission_payment_status =='PAID' && $paid->submission_payment_remaining = 0)                    
                             {{ $pays->second_payment_sub_total }} AED
                             </b>, to be charged for Third Payment.
-                          {{-- @elseif($paid->first_payment_status =='PAID' && $paid->first_payment_price == $paid->first_payment_paid) --}}
+
                           @elseif($paid->first_payment_status =='PAID' && $paid->first_payment_remaining == 0)
                             {{ $pays->submission_payment_sub_total }} AED
                             </b>, to be charged for Second Payment.
@@ -239,7 +238,7 @@
                           @endif
 
                         </div>
-                    </div>
+                    </div> --}}
                     @endif
 
                 </div>

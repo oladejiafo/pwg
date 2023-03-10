@@ -165,7 +165,7 @@
 
                         <!-- Start Column  -->
                         <li>
-                            <div class="col-4 cellContainer" style="margin-top:10%">
+                            <div class="col-4 cellContainer" style="margin-top:5%">
                                 <span class="product-item item-hints" href="#">
                                     <span class="positionAnchor hint"  data-position="1">
 
@@ -285,19 +285,14 @@
                                 <i class="{{$icon}}"></i> {{$offer_discount_msg}} 
                             </p>
                             <p>
-                                @if(Route::has('login'))
+                                {{-- @if(Route::has('login'))
                                     @auth
                                     <a class="btn btn-secondary" href="{{ url('package/type', $offer->id) }}">Apply Now</a>
                                 @else
-                                {{-- <form action="{{ url('register') }}"> --}}
-                                    <?php //$prod_id =$offer->id; ?>
-                                    {{-- @php Session::put('prod_id', $offer->id); @endphp --}}
-                                    {{-- <input type="hidden" name="prod_id" value="{{$offer->id}}"> --}}
                                     <a class="btn btn-secondary" href="{{ url('register?pid='. $offer->id) }}">Apply Now</a>
                                     @endauth
-                                {{-- </form> --}}
-                                @endif
-                                {{-- <a class="btn btn-secondary" href="{{ url('package/type', $offer->id) }}">Apply Now</a> --}}
+                                @endif --}}
+                                <a class="btn btn-secondary" href="{{ url('package/type', $offer->id) }}">Apply Now</a>
                             </p>
                         </span>
                     </span>

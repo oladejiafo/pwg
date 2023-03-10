@@ -68,9 +68,7 @@ class HomeController extends Controller
                 session()->forget('prod_id');
 
                 // return view('user.package-type', compact('data', 'ppay', 'id'));
-
                 return \Redirect::route('packageType', $id);
-
 
             } else {
                 $started = DB::table('applications')
@@ -197,6 +195,7 @@ class HomeController extends Controller
                 ->orderBy('sub_total', 'asc')
                 ->first();
 
+               
             if ($request->response == 1) {
                 return $famdet;
             }
@@ -808,7 +807,7 @@ class HomeController extends Controller
                 $user = Client::find(Auth::id());
                 $signatureUrl = (isset($user->getMedia(Client::$media_collection_main_signture)[0])) ? $user->getMedia(Client::$media_collection_main_signture)[0]->getUrl() : null;
                 if($signatureUrl == null){
-                    return back()->with('failed', 'Oppss! Please provide signature.');
+                    return back()->with('error', 'Oppss! Please provide signature.');
                 }
                 // //Call Create Contract Function
                 // self::createContract($request->pid);
@@ -1340,7 +1339,7 @@ class HomeController extends Controller
             $user = Client::find(Auth::id());
             $signatureUrl = (isset($user->getMedia(Client::$media_collection_main_signture)[0])) ? $user->getMedia(Client::$media_collection_main_signture)[0]->getUrl() : null;
             if($signatureUrl == null){
-                return back()->with('failed', 'Oppss! Please provide signature.');
+                return back()->with('error', 'Oppss! Please provide signature.');
             }
             Session::put('packageType', $request->packageType);
 
@@ -1760,6 +1759,7 @@ class HomeController extends Controller
                 return \Redirect::route('payment-fail', $id);
             }
         } catch (Exception $e) {
+            dd($e);
             return \Redirect::route('myapplication')->with('error', $e->getMessage());
         }
     }

@@ -79,7 +79,7 @@
       // Find the distance between now and the count down date
       var distance = countDownDate - now;
       // If the count down is finished, write some text
-      if (distance < 0 || isNaN(distance)) {
+      if (distance < 0 || isNaN(distance) || (Math.floor(distance / (1000 * 60 * 60 * 24)) <= 1)) {
         var date = new Date();
         // Add 7 days to current date
         const futureDate = new Date(date.getTime() + 7 * 24 * 60 * 60 * 1000);

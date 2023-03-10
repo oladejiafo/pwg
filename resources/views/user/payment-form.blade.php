@@ -179,7 +179,7 @@ $vals=array(0,1,2);
                 
                 <div class="row">
                     <div class="col-lg-6 col-md-12 col-sm-12">
-                        <div class="contract d-flex align-items-center justify-content-center my-col">
+                        <div class="contract d-flex align-items-center justify-content-center my-col"  data-bs-toggle="modal" data-bs-target="#contractModal">
                             <div class="contractImg">
                                 <img src="{{asset('images/contract.png')}}" width="100%" height="100%">
                             </div>
@@ -243,11 +243,11 @@ $vals=array(0,1,2);
                                     </div>
                                     <div class="col-4" style="margin-left:0px;display:inline-block;">
                                         <input type="radio" id="transfer" name="payoption" value="Transfer" required> 
-                                        <label for="transfer"><img src="{{asset('user/images/transfer_pay.png')}}" height="30px"> <span class="brk">Bank Transfer</span></label>
+                                        <label for="transfer"><img src="{{asset('user/images/transfer_pay.png')}}" height="30px"> <span class="brk">Bank Transfer/Bank Deposit</span></label>
                                     </div>
                                     <div class="col-4" style="margin-left:0px;display:inline-block;">
                                         <input type="radio" id="deposit" name="payoption" value="Deposit" required> 
-                                        <label for="deposit"><img src="{{asset('user/images/deposit_pay.png')}}" height="30px"> <span class="brk">Bank Deposit</span></label>
+                                        <label for="deposit"><img src="{{asset('user/images/deposit_pay.png')}}" height="30px"> <span class="brk">ATM/Cash Machine Deposit</span></label>
                                     </div>
                                 </div>
     
