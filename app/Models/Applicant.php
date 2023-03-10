@@ -45,7 +45,10 @@ class Applicant extends Model implements HasMedia
         'submission_payment_status',
         'second_payment_status',
         'third_payment_status',
-        'contract'
+        'contract',
+        'first_payment_txn_mode',
+        'submission_payment_txn_mode',
+        'second_payment_txn_mode'
     ];
 
 

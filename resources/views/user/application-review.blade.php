@@ -152,6 +152,60 @@
                 <div class="tab-content clearfix" style="margin: 0; padding: 0;">
                     <div class="tab-pane active" id="mainApplicant">
                         <div class="applicant-detail-sec">
+                            <div class="heading"  data-bs-toggle="collapse" data-bs-target="#collapseReferrer" aria-expanded="true" aria-controls="collapseReferrer">
+                                <div class="row">
+                                    <div class="col-2 my-auto">
+                                        <div class="image">
+                                            <img src="{{asset('images/refferal.png')}}" width="100%" height="100%" alt="PWG Group">
+                                        </div>
+                                    </div>
+                                    <div class="col-1">
+                                        <div class="vl"></div>
+                                    </div>
+                                    <div class="col-6 my-auto">
+                                        <div class="first-heading d-flex justify-content-center">
+                                            <h3>
+                                                {{ __('Refferer Details')}}
+                                            </h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-1">
+                                    </div>
+                                    <div class="col-2 mx-auto my-auto">
+                                        <div class="down-arrow">
+                                            <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%" alt="PWG Group">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="collapse show" id="collapseReferrer">
+                                    <div class="form-sec">
+                                        <form method="POST" enctype="multipart/form-data" id="referrer_details">
+                                            @csrf
+                                            <input type="hidden" name="product_id" value="{{$productId}}">
+                                            <div class="form-group row mt-4">
+                                                <div class="form-floating col-sm-6 mt-3">
+                                                    <input type="text" name="referrerName" id="floatingInput" class="form-control referrerName" placeholder="Referrer Name" value="{{$applicant['referrer_name_by_client']}}" autocomplete="off" />
+                                                    <label for="floatingInput">Referrer Name(if you have any)</label>
+                                                </div>
+                                                <div class="form-floating col-sm-6 mt-3">
+                                                    <input type="text" name="referrerPassport" id="floatingInput" class="form-control referrerPassport" placeholder="Referrer Name" value="{{$applicant['referrer_passport_number_by_client']}}" autocomplete="off" />
+                                                    <label for="floatingInput">Referrer Passport Number(if you have any)</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row mt-4">
+                                                <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
+                                                    <button type="submit" class="btn btn-primary submitBtn collapseReferrer" aria-expanded="false">Edit</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="applicant-detail-sec">
                             <div class="heading"  data-bs-toggle="collapse" data-bs-target="#collapseapplicant" aria-expanded="true" aria-controls="collapseapplicant">
                                 <div class="row">
                                     <div class="col-2">
@@ -2910,6 +2964,32 @@
                 $("input[name=passport_upload]").attr("value",names);
             }
         })
+
+        $("#referrer_details").submit(function(e){
+            e.preventDefault(); 
+            if($('.referrerName').val() || $('.referrerName').val() ){
+                var formData = new FormData(this);
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                type: 'POST',
+                url: "{{ url('store/referrer/details') }}",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    if(data.status) {
+                    } else {
+                    }
+                }
+            });
+
+            } else {
+            }
+        });
         // children
 
         for(var i= 1 ; i<='{{$client['children_count']}}'; i++)

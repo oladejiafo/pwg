@@ -125,14 +125,14 @@
                 toastr.error("{{ session('error') }}");
         @endif
 
-        // @if(Session::has('info'))
-        // toastr.options =
-        // {
-        //     "closeButton" : true,
-        //     "progressBar" : true
-        // }
-        //         toastr.info("{{ session('info') }}");
-        // @endif
+        @if(Session::has('infoMessage'))
+        toastr.options =
+        {
+            "closeButton" : true,
+            "progressBar" : true
+        }
+                toastr.info("{{ session('info') }}");
+        @endif
 
         @if(Session::has('warning'))
         toastr.options =

@@ -1,4 +1,62 @@
 <div class="tab-pane active" id="mainApplicant">
+
+    <div class="applicant-detail-sec">
+        <div class="heading"  data-bs-toggle="collapse" data-bs-target="#collapseReferrer" aria-expanded="false" aria-controls="collapseReferrer">
+            <div class="row">
+                <div class="col-2 my-auto">
+                    <div class="image">
+                        <img src="{{asset('images/refferal.png')}}" width="100%" height="100%" alt="PWG Group">
+                    </div>
+                </div>
+                <div class="col-1">
+                    <div class="vl"></div>
+                </div>
+                <div class="col-6 my-auto">
+                    <div class="first-heading d-flex justify-content-center">
+                        <h3>
+                            {{ __('Refferer Details')}}
+                        </h3>
+                    </div>
+                </div>
+                <div class="col-1">
+                    <div class="dataCompleted referralData">
+                        <img src="{{asset('images/Affiliate_Program_Section_completed.svg')}}" alt="PWG Group approved">
+                    </div>
+                </div>
+                <div class="col-2 mx-auto my-auto">
+                    <div class="down-arrow">
+                        <img src="{{asset('images/down_arrow.png')}}" height="auto" width="25%" alt="PWG Group">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="collapse" id="collapseReferrer">
+                <div class="form-sec">
+                    <form method="POST" enctype="multipart/form-data" id="referrer_details">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{$productId}}">
+                        <div class="form-group row mt-4">
+                            <div class="form-floating col-sm-6 mt-3">
+                                <input type="text" name="referrerName" id="floatingInput" class="form-control referrerName" placeholder="Referrer Name" value="{{$applicant['referrer_name_by_client']}}" autocomplete="off" />
+                                <label for="floatingInput">Referrer Name(if you have any)</label>
+                            </div>
+                            <div class="form-floating col-sm-6 mt-3">
+                                <input type="text" name="referrerPassport" id="floatingInput" class="form-control referrerPassport" placeholder="Referrer Name" value="{{$applicant['referrer_passport_number_by_client']}}" autocomplete="off" />
+                                <label for="floatingInput">Referrer Passport Number(if you have any)</label>
+                            </div>
+                        </div>
+                        <div class="form-group row mt-4">
+                            <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
+                                <button type="submit" class="btn btn-primary submitBtn collapseReferrer" data-bs-toggle="collapse" data-bs-target="#collapseapplicant" aria-expanded="false" aria-controls="collapseapplicant">Continue</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="applicant-detail-sec">
         <div class="heading applicantsec" data-bs-toggle="collapse" data-bs-target="#collapseapplicant" aria-expanded="false" aria-controls="collapseapplicant">
             <div class="row">

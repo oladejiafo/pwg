@@ -87,6 +87,17 @@
                         </div>
                     </div>
                 </div>
+                @if(session::get('paymentMode') == "TRANSFER")
+                    <div style="display:flex;color:white; padding:2%;background-color: #dd9951; height: 80px; float:left;border-radius:3px;margin-top: 5px;"> 
+                        <span class="review-info-icon"><i class="fas fa-exclamation-triangle"></i></span> 
+                        <span class="review-info" style="display:inline-block;">Payment need to be confirmed! Please continue with application. <span>
+                    </div>
+                @elseif(session::get('paymentMode') == "NETWORK") 
+                    <div style="display:flex;color:white; padding:2%;background-color: #0f8c13; height: 80px; float:left;border-radius:3px;margin-top: 5px;"> 
+                        <span class="review-info-icon"><i class="fa fa-check" aria-hidden="true"></i>                        </span> 
+                        <span class="review-info" style="display:inline-block;"><b>Payment successfull! Please continue with application. <span>
+                    </div>
+                @endif
                 <div class="applicant-tab-sec">
                     <div class="row">
                         @if(($applicant['work_permit_category']) && ($client['is_spouse'] != null || $client['is_spouse'] != 0) && ($client['children_count'] != null || $client['children_count'] != 0))
@@ -335,7 +346,7 @@
         // $('.country_birth, .citizenship, .home_country, .current_country').select2();
         // Main Applicant
         $('.applicantReviewSpin, .dependentReviewSpin, .childReviewSpin').hide();
-        $('.schengen_visa, .applicantData, .homeCountryData, .currentCountryData, .schengenData, .dependent_schengen_visa, #is_finger_print_collected_for_Schengen_visa,#is_dependent_finger_print_collected_for_Schengen_visa').hide();
+        $('.schengen_visa, .applicantData, .homeCountryData, .currentCountryData, .schengenData, .dependent_schengen_visa, #is_finger_print_collected_for_Schengen_visa,#is_dependent_finger_print_collected_for_Schengen_visa, .referralData').hide();
         $('.datepicker').datepicker({
             dateFormat : "dd-mm-yy",
             changeMonth: true,
@@ -686,6 +697,36 @@
                 }
             });
         });
+        $("#referrer_details").submit(function(e){
+            e.preventDefault(); 
+            if($('.referrerName').val() || $('.referrerName').val() ){
+                var formData = new FormData(this);
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                type: 'POST',
+                url: "{{ url('store/referrer/details') }}",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    if(data.status) {
+                        $('#collapseReferrer').removeClass('show');
+                        $('#collapseapplicant').addClass('show');
+                        $('.referralData').show();
+                    } else {
+                    }
+                }
+            });
+
+            } else {
+                $('#collapseReferrer').removeClass('show');
+                $('#collapseapplicant').addClass('show');
+            }
+        });
         $("#home_country_details").submit(function(e){
             e.preventDefault(); 
             $("#home_country_details :input").each(function(index, elm){
@@ -711,7 +752,7 @@
                     if(data.status) {
                         $('#collapseHome').removeClass('show');
                         $('.homeCountryData').show();
-                        $('#collapseCurrent').addClass('show');
+                        $('#collapseapplicant').addClass('show');
                         $('.homeCountryCompleted').val(1);
                     } else {
                         var validationError = data.errors;

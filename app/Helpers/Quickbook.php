@@ -115,7 +115,6 @@ class Quickbook
                 // ->where('applications.destination_id', Session::get('myproduct_id'))
                 ->where('applications.id', $paymentDetails->application_id)
                 ->where('applications.client_id', Auth::id())
-                ->where('pricing_plans.status', 'CURRENT')
                 ->orderBy('id', 'DESC')
                 ->first();
             $destination = product::find($apply->destination_id);
@@ -951,7 +950,6 @@ class Quickbook
                 ->join('pricing_plans', 'pricing_plans.id', '=', 'applications.pricing_plan_id')
                 ->where('applications.id', $paymentDetails->application_id)
                 ->where('applications.client_id', $client->id)
-                ->where('pricing_plans.status', 'CURRENT')
                 ->orderBy('id', 'DESC')
                 ->first();
             $destination = DB::table('destinations')->where('id', '=', $apply->destination_id)->first();

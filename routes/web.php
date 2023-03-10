@@ -81,7 +81,7 @@ Route::post('/add_referal', [HomeController::class,'addreferal']);
 Route::get('/myapplication',[HomeController::class,'myapplication'])->name('myapplication');
 Route::get('/affiliate', [HomeController::class,'affiliate'])->name('affiliate');
 
-Route::post('/add-referrer', [HomeController::class,'addReferrer'])->name('add-referer');
+Route::post('/store/referrer/details', [ApplicationController::class,'addReferrer'])->name('add-referer');
 Route::put('family/details/submit', [HomeController::class, 'familyDetails'])->name('family.details.submit');
 Route::get('contract/{id}', [HomeController::class, 'contract'])->name('contract');
 Route::get('contract/view/{id}', [HomeController::class, 'contractReview'])->name('contract-review');
