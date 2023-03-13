@@ -468,7 +468,6 @@ class HomeController extends Controller
                     // ->whereNotIn('status',  ['APPLICATION_COMPLETED','VISA_REFUSED', 'APPLICATION_CANCELLED','REFUNDED'] )
                     ->orderBy('id', 'desc')
                     ->first();
-
                 if (isset($complete)) {
                     $app_id = $complete->id;
                     $p_id = $complete->destination_id;
@@ -527,7 +526,6 @@ class HomeController extends Controller
                     // ->whereNotIn('status',  ['APPLICATION_COMPLETED','VISA_REFUSED', 'APPLICATION_CANCELLED','REFUNDED'] )
                     ->limit(1)
                     ->first();
-
                 $pdet = DB::table('pricing_plans')
                     ->where('id', '=', $pack_id)
                     ->first();
@@ -2381,5 +2379,62 @@ class HomeController extends Controller
         ], [
             'date' => $request->date
         ]);
+    }
+
+    public function getFooterTimer()
+    {
+        $response = [];
+        $date =  Timer::first()->date;
+        $response['data'] = $date;
+        return $response;
+    }
+
+    public function updatePricing()
+    {
+
+        $applicants = Application::where('first_payment_status', 'PENDING')
+            ->where('created_at', '>=', "2023-02-01")
+            ->get();
+        foreach ($applicants as $applicant) {
+            $pricingPlan = DB::table('destination_id', $applicant->destination_id)
+                ->where('status', 'CURRENT')
+                ->where('is_active', 1)
+                ->orderBy('id', 'desc')
+                ->first();
+            Applicant::find($applicant->id)
+                ->update([
+                    'pricing_plan_id' => $pricingPlan->id,
+                    'sub_total' => $pricingPlan->sub_total,
+                    'total_vat' => $pricingPlan->total_vat,
+                    'total_price' => $pricingPlan->total_price,
+                    'total_paid' => 0,
+                    'total_remaining' => $pricingPlan->total_price,
+
+                    'first_payment_sub_total' => $pricingPlan->first_payment_sub_total,
+                    'first_payment_vat' => $pricingPlan->first_payment_vat,
+                    'first_payment_price' => $pricingPlan->first_payment_price,
+                    'first_payment_paid' => 0,
+                    'first_payment_remaining' => $pricingPlan->first_payment_price,
+
+                    'submission_payment_sub_total' => $pricingPlan->submission_payment_sub_total,
+                    'submission_payment_vat' => $pricingPlan->submission_payment_vat,
+                    'submission_payment_price' => $pricingPlan->submission_payment_price,
+                    'submission_payment_paid' => 0,
+                    'submission_payment_remaining' => $pricingPlan->submission_payment_price,
+
+                    'second_payment_sub_total' => $pricingPlan->second_payment_sub_total,
+                    'second_payment_vat' => $pricingPlan->second_payment_vat,
+                    'second_payment_price' => $pricingPlan->second_payment_price,
+                    'second_payment_paid' => 0,
+                    'second_payment_remaining' => $pricingPlan->second_payment_price,
+
+
+                    'third_payment_sub_total' => $pricingPlan->third_payment_sub_total,
+                    'third_payment_vat' => $pricingPlan->third_payment_vat,
+                    'third_payment_price' => $pricingPlan->third_payment_price,
+                    'third_payment_paid' => 0,
+                    'third_payment_remaining' => $pricingPlan->third_payment_price
+                ]);
+        }
     }
 }

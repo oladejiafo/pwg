@@ -5,7 +5,7 @@
             <div class="row">
                 <div class="col-2 my-auto">
                     <div class="image">
-                        <img src="{{asset('images/refferal.png')}}" width="100%" height="100%" alt="PWG Group">
+                        <img src="{{asset('images/refferal.png')}}" width="85%" height="100%" alt="PWG Group" style="opacity: 0.82;">
                     </div>
                 </div>
                 <div class="col-1">

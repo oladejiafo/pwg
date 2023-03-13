@@ -147,8 +147,8 @@ Route::get('autocompleteAgent', [HomeController::class, 'autocompleteAgent'])->n
 Route::post('submit/bank/transfer', [HomeController::class, 'submitBankTransfer'])->name('submit.bank.transfer');
 
 //footer timer
-
 Route::post('update/timer', [HomeController::class, 'updateFooterTimer']);
+Route::get('timer', [HomeController::class, 'getFooterTimer'])->name('timer');
 
 // Affiliate
 

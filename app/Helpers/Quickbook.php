@@ -293,7 +293,7 @@ class Quickbook
                     } else if ($paymentType == 'SECOND') {
                         $productObj = $dataService->Query("select * from Item Where Name='Typing for Visa Application - Poland'");
                     }
-                    
+
                     if ($paymentDetails->payment_type ==  'Full-Outstanding Payment') {
                         $FullFirstPayment = $dataService->Query("select * from Item Where Name='Photocopy Cv, Passport - Poland'");
                         $FullFirstPaymentProduct = $dataService->FindbyId('Item', $FullFirstPayment[0]->Id);
@@ -344,7 +344,7 @@ class Quickbook
                     if ($firstPaymentDone->remaining_amount > 0) {
                         self::firstPaymentBalanceDue($paymentType, $apply, $paymentDetails, $customer, $dataService, $remainingPayment);
                     }
-                    if ($apply->second_payment_price > 0) {
+                    if ($apply->planSecondPrice > 0 && $apply->planThirdPrice > 0) {
                         $theResourceObj = Invoice::create([
                             "Line" => [
                                 [
@@ -426,7 +426,7 @@ class Quickbook
                         $paymentDetails->invoice_no = $invoiceData->DocNumber;
                         $paymentDetails->invoice_id = $invoiceData->Id;
                         $paymentDetails->save();
-                    } else {
+                    } else if ($apply->planSecondPrice > 0 && ($apply->planThirdPrice == 0 || $apply->planThirdPrice == null)){
                         $theResourceObj = Invoice::create([
                             "Line" => [
                                 [
@@ -480,9 +480,64 @@ class Quickbook
                         $paymentDetails->invoice_no = $invoiceData->DocNumber;
                         $paymentDetails->invoice_id = $invoiceData->Id;
                         $paymentDetails->save();
+                    } else if ($apply->planThirdPrice > 0 && ($apply->planSecondPrice == 0 || $apply->planSecondPrice == null)){
+                        $theResourceObj = Invoice::create([
+                            "Line" => [
+                                [
+                                    "Description" => $FullThirdPaymentProduct->Description,
+                                    "Amount" => $apply->planThirdPrice,
+                                    "DetailType" => "SalesItemLineDetail",
+                                    "SalesItemLineDetail" =>
+                                    [
+                                        "TaxCodeRef" => [
+                                            "value" => (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? (($apply->total_vat == 0 || $apply->total_vat == null) ? 4 : 12) : 'TAX'
+                                        ],
+                                        "ItemRef" =>
+                                        [
+                                            "value" => $FullThirdPaymentProduct->Id, //$updatThirdItem->Id
+                                            "name" => $FullThirdPaymentProduct->Name,
+                                            // "Description" => $updatThirdItem->Description
+                                        ],
+                                        'UnitPrice' => $apply->planThirdPrice,
+                                        'Qty' => 1.0
+                                    ]
+                                ],
+                            ],
+                            "Deposit" => ((($apply->total_paid - $remainingPayment)) > ($apply->total_paid - $remainingPayment) + $apply->total_vat) ? ($apply->total_paid - $remainingPayment) + $apply->total_vat : ($apply->total_paid - $remainingPayment), //$apply->total_paid - $remainingPayment
+                            "AutoDocNumber" => true,
+
+                            "TxnTaxDetail" => [
+                                "TxnTaxCodeRef" => [
+                                    "value" => ($apply->total_vat == 0 || $apply->total_vat == null) ? 0 : 5,  // tax rate
+                                    "name" => ($apply->total_vat == 0 || $apply->total_vat == null) ? 'EX Exempt' : "SR Standard Rated (DXB)", // tax rate name
+                                ],
+                                "TotalTax" => ($apply->total_vat == 0 || $apply->total_vat == null) ? 0 : $apply->total_vat,
+                            ],
+                            "PaymentRefNum" => $paymentDetails->bank_reference_no,
+                            "CustomerMemo" => [
+                                "value" => ((($apply->total_paid - $remainingPayment)) > ($apply->total_paid - $remainingPayment) + $apply->total_vat) ? $paymentDetails->bank_reference_no . 'Extra Amount' . ((($apply->total_paid - $remainingPayment)) - ($apply->total_paid - $remainingPayment) + $apply->total_vat) : $paymentDetails->bank_reference_no,
+                            ],
+                            "PrivateNote" => $paymentDetails->bank_reference_no,
+                            "CustomerRef" => [
+                                "value" => ($customer->Id) ??  $customer[0]->Id
+                            ],
+                            "BillEmail" => [
+                                "Address" => Auth::user()->email
+                            ],
+                            "BillEmailCc" => [
+                                "Address" => "a@intuit.com"
+                            ],
+                            "BillEmailBcc" => [
+                                "Address" => "v@intuit.com"
+                            ]
+                        ]);
+                        $invoiceData = $dataService->Add($theResourceObj);
+                        $paymentDetails->invoice_no = $invoiceData->DocNumber;
+                        $paymentDetails->invoice_id = $invoiceData->Id;
+                        $paymentDetails->save();
                     }
                 } else {
-                    if ($apply->second_payment_price > 0) {
+                    if ($apply->planFirstPrice > 0 && $apply->planSecondPrice > 0 && $apply->planThirdPrice > 0) {
                         $theResourceObj = Invoice::create([
                             "Line" => [
                                 [
@@ -577,7 +632,7 @@ class Quickbook
                         $paymentDetails->invoice_no = $invoiceData->DocNumber;
                         $paymentDetails->invoice_id = $invoiceData->Id;
                         $paymentDetails->save();
-                    } else {
+                    } else if ($apply->planFirstPrice > 0 && $apply->planSecondPrice > 0) {
                         $theResourceObj = Invoice::create([
                             "Line" => [
                                 [
@@ -653,6 +708,83 @@ class Quickbook
                         $paymentDetails->invoice_no = $invoiceData->DocNumber;
                         $paymentDetails->invoice_id = $invoiceData->Id;
                         $paymentDetails->save();
+                    } else if ($apply->planFirstPrice > 0 && $apply->planThirdPrice > 0) {
+                        $theResourceObj = Invoice::create([
+                            "Line" => [
+                                [
+                                    "Description" => $FullFirstPaymentProduct->Description,
+                                    "Amount" => $apply->planFirstPrice,
+                                    "DetailType" =>
+                                    "SalesItemLineDetail",
+                                    "SalesItemLineDetail" =>
+                                    [
+                                        "TaxCodeRef" => [
+                                            "value" => (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? (($apply->total_vat == 0 || $apply->total_vat == null) ? 4 : 12) : 'TAX'
+                                        ],
+                                        "ItemRef" =>
+                                        [
+                                            "value" => $FullFirstPaymentProduct->Id,
+                                            "name" => $FullFirstPaymentProduct->Name,
+                                            // "Description" => $updatFirstItem->Description
+                                        ],
+                                        'UnitPrice' => $apply->planFirstPrice,
+                                        'Qty' => 1.0
+                                    ]
+                                ],
+                                [
+                                    "Description" => $FullThirdPaymentProduct->Description,
+                                    "Amount" => $apply->planThirdPrice,
+                                    "DetailType" => "SalesItemLineDetail",
+                                    "SalesItemLineDetail" =>
+                                    [
+                                        "TaxCodeRef" => [
+                                            "value" => (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? (($apply->total_vat == 0 || $apply->total_vat == null) ? 4 : 12) : 'TAX'
+                                        ],
+                                        "ItemRef" =>
+                                        [
+                                            "value" => $FullThirdPaymentProduct->Id,
+                                            "name" => $FullThirdPaymentProduct->Name,
+                                            // "Description" => $updatThirdItem->Description
+                                        ],
+                                        'UnitPrice' => $apply->planThirdPrice,
+                                        'Qty' => 1.0
+                                    ]
+                                ],
+                                [
+                                    "DetailType" => "DiscountLineDetail",
+                                    "DiscountLineDetail"  => [
+                                        "PercentBased" => true,
+                                        "DiscountPercent" => ((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0)),
+                                    ]
+                                ]
+                            ],
+                            "ApplyTaxAfterDiscount" => true,
+                            "Deposit" => ($apply->total_paid > (($apply->planFirstPrice + $apply->planThirdPrice) - (($apply->planFirstPrice + $apply->planThirdPrice) * ((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat)) ? (($apply->planFirstPrice + $apply->planThirdPrice) - (($apply->planFirstPrice + $apply->planThirdPrice) * ((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat) : $apply->total_paid, //$apply->total_paid,
+                            "AutoDocNumber" => true,
+
+                            "TxnTaxDetail" => [
+                                "TxnTaxCodeRef" => [
+                                    "value" => ($apply->total_vat == 0 || $apply->total_vat == null) ? 0 : 5,  // tax rate
+                                    "name" => ($apply->total_vat == 0 || $apply->total_vat == null) ? 'EX Exempt' : "SR Standard Rated (DXB)", // tax rate name
+                                ],
+                                "TotalTax" => ($apply->total_vat == 0 || $apply->total_vat == null) ? 0 : $apply->total_vat,
+                            ],
+                            "PaymentRefNum" => $paymentDetails->bank_reference_no,
+                            "CustomerMemo" => [
+                                "value" => ($apply->total_paid > (($apply->planFirstPrice + $apply->planThirdPrice) - (($apply->planFirstPrice + $apply->planThirdPrice) * ((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat)) ? $paymentDetails->bank_reference_no . 'Paid extra ' . ($apply->total_paid - (($apply->planFirstPrice + $apply->planThirdPrice) - (($apply->planFirstPrice + $apply->planThirdPrice) * ((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat)) : $paymentDetails->bank_reference_no,
+                            ],
+                            "PrivateNote" => $paymentDetails->bank_reference_no,
+                            "CustomerRef" => [
+                                "value" => ($customer->Id) ??  $customer[0]->Id
+                            ],
+                            "BillEmail" => [
+                                "Address" => Auth::user()->email
+                            ]
+                        ]);
+                        $invoiceData = $dataService->Add($theResourceObj);
+                        $paymentDetails->invoice_no = $invoiceData->DocNumber;
+                        $paymentDetails->invoice_id = $invoiceData->Id;
+                        $paymentDetails->save();
                     }
                 }
             } else {
@@ -683,6 +815,7 @@ class Quickbook
                 return  true;
             }
         } catch (Exception $exception) {
+            dd($exception);
             UserHelper::webLogger($exception);
             return \Redirect::route('myapplication')->with('error', $exception->getMessage());
         }
@@ -1128,7 +1261,7 @@ class Quickbook
                     } else if ($payment->payment_type == 'SECOND') {
                         $productObj = $dataService->Query("select * from Item Where Name='Typing for Visa Application - Poland'");
                     }
-                    
+
                     if ($paymentDetails->payment_type ==  'Full-Outstanding Payment') {
                         $FullFirstPayment = $dataService->Query("select * from Item Where Name='Photocopy Cv, Passport - Poland'");
                         $FullFirstPaymentProduct = $dataService->FindbyId('Item', $FullFirstPayment[0]->Id);
@@ -1250,7 +1383,7 @@ class Quickbook
                             ],
                             "TxnDate" => $paymentDetails->payment_date,
                             "DueDate" => $paymentDetails->payment_date,
-            
+
                             "BillEmail" => [
                                 "Address" => $client->email
                             ],
@@ -1306,7 +1439,7 @@ class Quickbook
                                 "value" => ($customer->Id) ??  $customer[0]->Id
                             ],
                             "TxnDate" => $paymentDetails->payment_date,
-                            "DueDate" => $paymentDetails->payment_date,            
+                            "DueDate" => $paymentDetails->payment_date,
                             "BillEmail" => [
                                 "Address" => $client->email
                             ],
@@ -1407,7 +1540,7 @@ class Quickbook
                                 "value" => ($apply->total_paid > (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) - (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) * ((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat)) ? $paymentDetails->bank_reference_no . 'Paid extra ' . ($apply->total_paid - (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) - (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) * ((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat)) : $paymentDetails->bank_reference_no,
                             ],
                             "TxnDate" => $paymentDetails->payment_date,
-                            "DueDate" => $paymentDetails->payment_date,            
+                            "DueDate" => $paymentDetails->payment_date,
                             "PrivateNote" => $paymentDetails->bank_reference_no,
                             "CustomerRef" => [
                                 "value" => ($customer->Id) ??  $customer[0]->Id
@@ -1484,7 +1617,7 @@ class Quickbook
                                 "value" => ($apply->total_paid > (($apply->planFirstPrice + $apply->planSecondPrice) - (($apply->planFirstPrice + $apply->planSecondPrice) * (($apply->coupon_code) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat)) ? $paymentDetails->bank_reference_no . ' Paid extra' . ($apply->total_paid - (($apply->planFirstPrice + $apply->planSecondPrice) - (($apply->planFirstPrice + $apply->planSecondPrice) * (($apply->coupon_code) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat)) : $paymentDetails->bank_reference_no,
                             ],
                             "TxnDate" => $paymentDetails->payment_date,
-                            "DueDate" => $paymentDetails->payment_date,            
+                            "DueDate" => $paymentDetails->payment_date,
                             "PrivateNote" => $paymentDetails->bank_reference_no,
                             "CustomerRef" => [
                                 "value" => ($customer->Id) ??  $customer[0]->Id
