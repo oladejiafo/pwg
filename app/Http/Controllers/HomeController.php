@@ -196,7 +196,10 @@ class HomeController extends Controller
 
 
             if ($request->response == 1) {
+                // dd($request->pyall);
+                // $pyall=$request->pyall;
                 return $famdet;
+                // return $pyall;
             }
         } else {
             $famdet = family_breakdown::where('destination_id', '=', $productId)
@@ -479,6 +482,7 @@ class HomeController extends Controller
                         $pack_id = $request->fam_id;
                     }
                 }
+                $myPack = $request->myPack;
 
 
                 //Call Create Contract Function
@@ -528,7 +532,7 @@ class HomeController extends Controller
                     ->where('id', '=', $pack_id)
                     ->first();
 
-                return view('user.payment-form', compact('data', 'pdet', 'pays', 'payall', 'paym', 'fileUrl'));
+                return view('user.payment-form', compact('data', 'pdet', 'pays', 'payall', 'paym', 'fileUrl','myPack'));
             } else {
                 return redirect('home');
             }
@@ -787,6 +791,18 @@ class HomeController extends Controller
             $result = pdfBlock::attachSignature($originalPdf, $signatureUrl, $data, $paymentType, $applicant);
         }
         return $applicant->id;
+    }
+
+    public static function payType(Request $request) {
+        if($request->payall ==0)
+        {
+            $payall =0;
+            Session::put('payall',0);
+        } else {
+            $payall =1;
+            Session::put('payall',1);
+        }
+        return $payall;
     }
 
     public function addpayment(Request $request)

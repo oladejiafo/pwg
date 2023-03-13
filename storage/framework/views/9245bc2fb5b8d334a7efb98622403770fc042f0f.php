@@ -1,6 +1,6 @@
-@extends('layouts.master')
-<link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
-<link href="{{asset('user/css/products.css')}}" rel="stylesheet">
+
+<link href="<?php echo e(asset('user/css/bootstrap.min.css')); ?>" rel="stylesheet">
+<link href="<?php echo e(asset('user/css/products.css')); ?>" rel="stylesheet">
 
 <style>
     .package-type ul {
@@ -206,39 +206,15 @@
 </style>
 
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 
-{{-- @if($canadaOthers->first())
 
-@php 
-$cSamount=0;
-$cXamount=0;
-@endphp
-@foreach($canadaOthers as $canada)
-
-@if($canada->pricing_plan_type == "STUDY_PERMIT")
-@php  
-  $cSname = $canada->pricing_plan_type;
-  $cSamount =$cSamount + $canada->sub_total - $canada->third_payment_sub_total;
-@endphp
-@endif
-
-@if($canada->pricing_plan_type == "EXPRESS_ENTRY")
-@php  
-  $cXname = $canada->pricing_plan_type;
-  $cXamount = $cXamount + $canada->sub_total - $canada->third_payment_sub_total;
-@endphp
-@endif
-
-@endforeach
-
-@endif --}}
 
     <div class="container" style="margin-top: 100px;">
         <div class="col-12">
             <div align="center" class="package">
                 <div class="header">
-                    {{-- FOR {{strtoupper($data->name)}} --}}
+                    
                     <h2>CHOOSE YOUR PACKAGE</h2>
                     <div class="bottoom-title">
                         <p>To start your journey to Poland, please select the package that best suits you</p>
@@ -247,37 +223,37 @@ $cXamount=0;
                 <br>
                 <div class="row" style="margin-left:auto; margin-right:auto; text-align:center;justify-content: center; display: flex;">
                 
-                      @if($proddet->first())
-                        @foreach($proddet as $prdet)
-                        @if ($loop->first)
+                      <?php if($proddet->first()): ?>
+                        <?php $__currentLoopData = $proddet; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $prdet): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php if($loop->first): ?>
                     
-                            @php 
+                            <?php 
                             // $blue_cost = $prdet->total_price
                             // $blue_cost = $prdet->sub_total - $prdet->third_payment_sub_total
                             $blue_cost = $prdet->first_payment_sub_total
-                            @endphp 
+                            ?> 
 
-                            @endif
-                        @endforeach
-                        @else 
-                        @php                                   
+                            <?php endif; ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php else: ?> 
+                        <?php                                   
                             $blue_cost = 0
-                            @endphp
-                        @endif
+                            ?>
+                        <?php endif; ?>
                        
                     <div class="col-sm-10 col-md-6 col-lg-5" style="display:inline-block;">
-                        <img src="{{asset('user/images/individual.png')}}" width="100%" alt="PWG Group">
+                        <img src="<?php echo e(asset('user/images/individual.png')); ?>" width="100%" alt="PWG Group">
                         <div class="package-type blue-collar" data-bs-toggle="modalXX" data-bs-target="#individualModalXX">
                             <div class="content">
                                 <div>
                                     <div class="row price">
-                                        @php $blue_cost_old = $blue_cost*1.2995; $blue_save= $blue_cost_old - $blue_cost;@endphp
-                                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 promo" align="right"><b>PROMO PRICE</b> <br> <b><span style="font-size:12px">AED</span> <span style="font-size:18px">{{number_format($blue_cost,0)}}</span></b></div>
+                                        <?php $blue_cost_old = $blue_cost*1.2995; $blue_save= $blue_cost_old - $blue_cost;?>
+                                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 promo" align="right"><b>PROMO PRICE</b> <br> <b><span style="font-size:12px">AED</span> <span style="font-size:18px"><?php echo e(number_format($blue_cost,0)); ?></span></b></div>
                                         <div class="col-lg-2 col-md-2 col-sm-1 col-xs-1 line" align="center" style="padding:0 5px; border-left: 2px solid rgb(57, 127, 184); height: 52px;transform: translateX(50%);"><b></b></div>
-                                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 regular" align="left"><b>REGULAR PRICE</b> <br> <span style="font-size:12px">AED</span> <span style="font-size:18px"><del>{{number_format($blue_cost_old,0)}}</del></span></div>
+                                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 regular" align="left"><b>REGULAR PRICE</b> <br> <span style="font-size:12px">AED</span> <span style="font-size:18px"><del><?php echo e(number_format($blue_cost_old,0)); ?></del></span></div>
                                     </div>
                                     <div class="row saved">
-                                        <div class="col-5" style="background: #000; border-radius:30px 0 0 30px;color:#fff; font-size:10px;font-weight:600; padding-block: 5px">SAVE AED {{number_format($blue_save,0)}}</div>
+                                        <div class="col-5" style="background: #000; border-radius:30px 0 0 30px;color:#fff; font-size:10px;font-weight:600; padding-block: 5px">SAVE AED <?php echo e(number_format($blue_save,0)); ?></div>
                                         <div class="col-7" style="background: #FACB08; border-radius:0 30px 30px 0;color:#000; font-size:10px; font-weight:600; padding-block: 5px">SALES ENDS 7 DAYS</div>
                                     </div>
                                     <div class="row" style="border-block: 1px solid #000;padding:5px; margin:15px">
@@ -300,21 +276,21 @@ $cXamount=0;
                                             <li><div style="text-align: left;margin-left: 35px">Your right is protected</div></li>
                                             <li><div style="text-align: left;margin-left: 35px">No company ban</div></li>
                                         </ul>
-                                        {{-- <div class="bonus" style="text-align: left;margin-block:15px; margin-left: 35px"><i class="fa fa-star" style="color:#FACB08;font-size: 25px;"></i><b style="font-size: 18px;margin-left: 15px;">BONUS:</b> Salary deduction on the last payment of selected package.</div> --}}
+                                        
                                     </div>
                                     <div>
-                                        @if(Route::has('login'))
-                                            @auth
-                                            <form action="{{ url('payment_form', $data->id) }}" method="GET">
-                                        @else
-                                            <form action="{{ url('register') }}">
-                                                @php Session::put('prod_id', $data->id); @endphp
-                                            @endauth
-                                        @endif
-                                        @csrf
-                                            <input type="hidden" name="cost" value="{{$blue_cost}}">
-                                            <input type="hidden" name="blue_id" value="{{$prdet->id}}">
-                                            <input type="hidden" name="pr_id" value="{{$data->id}}">
+                                        <?php if(Route::has('login')): ?>
+                                            <?php if(auth()->guard()->check()): ?>
+                                            <form action="<?php echo e(url('payment_form', $data->id)); ?>" method="GET">
+                                        <?php else: ?>
+                                            <form action="<?php echo e(url('register')); ?>">
+                                                <?php Session::put('prod_id', $data->id); ?>
+                                            <?php endif; ?>
+                                        <?php endif; ?>
+                                        <?php echo csrf_field(); ?>
+                                            <input type="hidden" name="cost" value="<?php echo e($blue_cost); ?>">
+                                            <input type="hidden" name="blue_id" value="<?php echo e($prdet->id); ?>">
+                                            <input type="hidden" name="pr_id" value="<?php echo e($data->id); ?>">
                                         
                                             <input type="hidden" value="BLUE_COLLAR" name="myPack">
                                             <button type="submit" class="btn btn-primary" style="width: 100%;font-size: 24px;background: #FACB08">APPLY NOW</button>
@@ -326,27 +302,27 @@ $cXamount=0;
                         </div>
                     </div>
                     
-                    @if($famdet)
+                    <?php if($famdet): ?>
 
                     <div class="col-sm-10 col-md-6 col-lg-5" style="display:inline-block;">
-                        <img src="{{asset('user/images/family.png')}}" width="100%" alt="PWG Group">
+                        <img src="<?php echo e(asset('user/images/family.png')); ?>" width="100%" alt="PWG Group">
                         <div class="package-type family-package" data-bs-toggle="modalXX" data-bs-target="#familyModalXX">
 
                             <div class="content">
                                 <div>
                                     <div class="row price" style="padding:0 5%">
-                                        @if(isset($famdet)) 
-                                            @php 
+                                        <?php if(isset($famdet)): ?> 
+                                            <?php 
                                                 $famdet_cost_old = $famdet['first_payment_sub_total']*1.2995; 
                                                 $famdet_save= $famdet_cost_old - $famdet['first_payment_sub_total'];
-                                            @endphp
-                                        @endif
-                                        <div class="col-lg-5 col-md-5 col-sm-5 promo" align="right"><b>PROMO PRICE</b> <br> <b><span style="font-size:12px">AED</span> <span style="font-size:18px">{{number_format($famdet['first_payment_sub_total'],0)}}</span></b></div>
+                                            ?>
+                                        <?php endif; ?>
+                                        <div class="col-lg-5 col-md-5 col-sm-5 promo" align="right"><b>PROMO PRICE</b> <br> <b><span style="font-size:12px">AED</span> <span style="font-size:18px"><?php echo e(number_format($famdet['first_payment_sub_total'],0)); ?></span></b></div>
                                         <div class="col-lg-2 col-md-2 col-sm-1 line" align="center" style="padding:0 5px; border-left: 2px solid rgb(57, 127, 184); height: 52px;transform: translateX(50%);"><b></b></div>
-                                        <div class="col-lg-5 col-md-5 col-sm-6 regular" align="left"><b>REGULAR PRICE</b> <br> <span style="font-size:12px">AED</span> <span style="font-size:18px"><del>{{number_format($famdet_cost_old,0)}}</del></span></div>
+                                        <div class="col-lg-5 col-md-5 col-sm-6 regular" align="left"><b>REGULAR PRICE</b> <br> <span style="font-size:12px">AED</span> <span style="font-size:18px"><del><?php echo e(number_format($famdet_cost_old,0)); ?></del></span></div>
                                     </div>
                                     <div class="row saved">
-                                        <div class="col-5" style="background: #000; border-radius:30px 0 0 30px;color:#fff; font-size:10px;font-weight:600; padding-block: 5px">SAVE AED {{number_format($famdet_save,0)}}</div>
+                                        <div class="col-5" style="background: #000; border-radius:30px 0 0 30px;color:#fff; font-size:10px;font-weight:600; padding-block: 5px">SAVE AED <?php echo e(number_format($famdet_save,0)); ?></div>
                                         <div class="col-7" style="background: #FACB08; border-radius:0 30px 30px 0;color:#000; font-size:10px; font-weight:600; padding-block: 5px">SALES ENDS 7 DAYS</div>
                                     </div>
                                     <div class="row" style="border-block: 1px solid #000;padding:5px; margin:15px">
@@ -366,30 +342,30 @@ $cXamount=0;
                                             <li><div style="text-align: left;margin-left: 35px">Family benefits</div></li>
                                             <li><div style="text-align: left;margin-left: 35px">Access to Free Education</div></li>
                                             <li><div style="text-align: left;margin-left: 35px">Low cost of living</div></li>
-                                            {{-- <li><div style="text-align: left;margin-left: 35px">Legal employment</div></li> --}}
+                                            
                                             <li><div style="text-align: left;margin-left: 35px">Respect of your rights</div></li>
-                                            {{-- <li><div style="text-align: left;margin-left: 35px">No company ban</div></li> --}}
+                                            
                                             <li><div style="text-align: left;margin-left: 35px">Right to family reunification</div></li>
 
                                         </ul>
-                                        {{-- <div class="bonus" style="text-align: left;margin-block:15px; margin-left: 35px"><i class="fa fa-star" style="color:#E10930;font-size: 25px;"></i><b style="font-size: 18px;margin-left: 15px;">BONUS:</b> Salary deduction on the last payment of selected package.</div> --}}
+                                        
                                     </div>
                                     <div>
-                                        @if(Route::has('login'))
-                                            @auth
-                                            <form action="{{ url('payment_form', $data->id) }}" method="GET">
-                                        @else
-                                            <form action="{{ url('register') }}">
-                                                @php Session::put('prod_id', $data->id); @endphp
-                                            @endauth
-                                        @endif
-                                            <input type="hidden" name="pr_id" value="{{$data->id}}">
-                                            @csrf
+                                        <?php if(Route::has('login')): ?>
+                                            <?php if(auth()->guard()->check()): ?>
+                                            <form action="<?php echo e(url('payment_form', $data->id)); ?>" method="GET">
+                                        <?php else: ?>
+                                            <form action="<?php echo e(url('register')); ?>">
+                                                <?php Session::put('prod_id', $data->id); ?>
+                                            <?php endif; ?>
+                                        <?php endif; ?>
+                                            <input type="hidden" name="pr_id" value="<?php echo e($data->id); ?>">
+                                            <?php echo csrf_field(); ?>
         
-                                            <input type="hidden" name="productId" value="{{$productId}}">
-                                            <input type="hidden" class="hiddenFamAmount" name="cost" value="{{($famdet) ?  number_format($famdet['first_payment_sub_total']) : 0 }}">
+                                            <input type="hidden" name="productId" value="<?php echo e($productId); ?>">
+                                            <input type="hidden" class="hiddenFamAmount" name="cost" value="<?php echo e(($famdet) ?  number_format($famdet['first_payment_sub_total']) : 0); ?>">
                                             <input type="hidden" value="FAMILY_PACKAGE" name="myPack">
-                                            <input type="hidden" value="{{($famdet) ? $famdet->id : 0 }}" name="fam_id" class="fam_id">
+                                            <input type="hidden" value="<?php echo e(($famdet) ? $famdet->id : 0); ?>" name="fam_id" class="fam_id">
                                             
                                             <button type="submit" class="btn btn-primary" style="width: 100%;font-size: 24px;background: #E10930">APPLY NOW</button>
                                         </form>
@@ -399,7 +375,7 @@ $cXamount=0;
                             </div>
                         </div>
                     </div>
-                    @endif
+                    <?php endif; ?>
                
                     </div>
                                 
@@ -408,14 +384,14 @@ $cXamount=0;
                         <div class="modal-dialog row">
                             <div class="modal-content col-4" style="border-radius: 15px">
                                 <div class="modal-headerx" align="center">
-                                    <div><img src="{{asset('user/images/individual_icon.png')}}" width="30%" style="margin-top:25px;margin-bottom:5px" alt="PWG Group"></div>
+                                    <div><img src="<?php echo e(asset('user/images/individual_icon.png')); ?>" width="30%" style="margin-top:25px;margin-bottom:5px" alt="PWG Group"></div>
                                     <h5 class="modal-title" id="individualModalLabel">INDIVIDUAL PACKAGE</h5>
-                                    {{-- <button type="button" style="float:right; font-size:11px; width:20px;height:20px" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> --}}
+                                    
                                 </div>
                                 <div class="modal-body" style="height:auto">
                                     
                                     <div class="row" style="padding:5px 5%; margin:3px 0 10px 0">
-                                        <div class="col-5" style="background: #000; border-radius:30px 0 0 30px;color:#fff; font-size:10px;font-weight:600; padding-block: 5px">SAVE AED {{number_format($blue_save,0)}}</div>
+                                        <div class="col-5" style="background: #000; border-radius:30px 0 0 30px;color:#fff; font-size:10px;font-weight:600; padding-block: 5px">SAVE AED <?php echo e(number_format($blue_save,0)); ?></div>
                                         <div class="col-7" style="background: #FACB08; border-radius:0 30px 30px 0;color:#000; font-size:10px; font-weight:600; padding-block: 5px">WHEN YOU PAY IN FULL</div>
                                     </div>
                                     <div class="row">
@@ -423,24 +399,24 @@ $cXamount=0;
                                     </div>
                                     <div class="row" style="padding:10px 5%">
                                         
-                                        @php $blue_cost_old = $blue_cost*1.2995; $blue_save= $blue_cost_old - $blue_cost;@endphp
-                                        <div class="col-5" align="right"><span style="font-size:10px;;color:#000"><b>PROMO PRICE</b></span> <br> <b><span style="font-size:12px">AED</span> <span style="font-size:22px;color:#000">{{number_format($blue_cost,0)}}</span></b></div>
+                                        <?php $blue_cost_old = $blue_cost*1.2995; $blue_save= $blue_cost_old - $blue_cost;?>
+                                        <div class="col-5" align="right"><span style="font-size:10px;;color:#000"><b>PROMO PRICE</b></span> <br> <b><span style="font-size:12px">AED</span> <span style="font-size:22px;color:#000"><?php echo e(number_format($blue_cost,0)); ?></span></b></div>
                                         <div class="col-1" align="center" style="padding:0 3px; border-left: 0px solid rgb(57, 127, 184); height: 52px;transform: translateX(50%);"><b></b></div>
-                                        <div class="col-6" align="right" style="padding-right:15%"><span style="font-size:10px;color:#000"><b>REGULAR PRICE</b></span> <br> <span style="font-size:12px;color:#E10930">AED</span> <span style="font-size:22px;color:#E10930"><del>{{number_format($blue_cost_old,0)}}</del></span></div>
+                                        <div class="col-6" align="right" style="padding-right:15%"><span style="font-size:10px;color:#000"><b>REGULAR PRICE</b></span> <br> <span style="font-size:12px;color:#E10930">AED</span> <span style="font-size:22px;color:#E10930"><del><?php echo e(number_format($blue_cost_old,0)); ?></del></span></div>
                                     </div>
-                                    @if(Route::has('login'))
-                                        @auth
-                                        <form action="{{ url('payment_form', $data->id) }}" method="GET">
-                                    @else
-                                        <form action="{{ url('register') }}">
-                                            @php Session::put('prod_id', $data->id); @endphp
-                                        @endauth
-                                    @endif
+                                    <?php if(Route::has('login')): ?>
+                                        <?php if(auth()->guard()->check()): ?>
+                                        <form action="<?php echo e(url('payment_form', $data->id)); ?>" method="GET">
+                                    <?php else: ?>
+                                        <form action="<?php echo e(url('register')); ?>">
+                                            <?php Session::put('prod_id', $data->id); ?>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
                                             
-                                    @csrf
-                                    <input type="hidden" name="cost" value="{{$blue_cost}}">
-                                    <input type="hidden" name="blue_id" value="{{$prdet->id}}">
-                                    <input type="hidden" name="pr_id" value="{{$data->id}}">
+                                    <?php echo csrf_field(); ?>
+                                    <input type="hidden" name="cost" value="<?php echo e($blue_cost); ?>">
+                                    <input type="hidden" name="blue_id" value="<?php echo e($prdet->id); ?>">
+                                    <input type="hidden" name="pr_id" value="<?php echo e($data->id); ?>">
                                 
                                     <input type="hidden" value="BLUE_COLLAR" name="myPack">
                                     <div class="form-groupx row" style=" margin:0 auto;"> 
@@ -449,7 +425,7 @@ $cXamount=0;
                                             <?php
                                             if($data->full_payment_discount > 0) {
                                             ?>
-                                            {{-- <p style="margin-left:2px;font-weight:bold;font-size: 13px; margin-right:10px">Get <i>{{number_format(($data->full_payment_discount * $blue_cost/100))}} AED</i> discount on Full Payment</p> --}}
+                                            
                                             <?php
                                             }
                                             ?>
@@ -459,7 +435,7 @@ $cXamount=0;
                                         </div>
 
                                             <p align="center" style="font-size: 11px">
-                                                <i>By continuing, you have accepted our <a target="_blank" href="{{route('terms')}}"  style="color:#000;margin:0;font-size: 15px"><u>Terms & Conditions</u></a></i>
+                                                <i>By continuing, you have accepted our <a target="_blank" href="<?php echo e(route('terms')); ?>"  style="color:#000;margin:0;font-size: 15px"><u>Terms & Conditions</u></a></i>
                                             </p>
                                     </div>
                                 </form>
@@ -468,36 +444,36 @@ $cXamount=0;
                         </div>
                     </div>
                     <!-- Individual Modal Ends -->
-                    @if($famdet)
+                    <?php if($famdet): ?>
                     <!-- Family Modal -->
                     <div class="modal fade" id="familyModal" tabindex="-1" aria-labelledby="familyModalLabel" aria-hidden="true">
                         <div class="modal-dialog row">
                             <div class="modal-content col-4" style="border-radius: 15px">
                                 <div class="modal-headerx" align="center">
-                                    <div><img src="{{asset('user/images/family_icon.png')}}" width="30%" style="margin-top:25px;margin-bottom:5px" alt="PWG Group"></div>
+                                    <div><img src="<?php echo e(asset('user/images/family_icon.png')); ?>" width="30%" style="margin-top:25px;margin-bottom:5px" alt="PWG Group"></div>
                                     <h5 class="modal-title" id="familyModalLabel">FAMILY PACKAGE</h5>
-                                    {{-- <button type="button" style="float:right; font-size:11px; width:20px;height:20px" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> --}}
+                                    
                                 </div>
                                 <div class="modal-body" style="height:auto">
                                     <p style="font-size: 18px">Dependants Details </p>
                                     <p style="font-size: 12px;margin-top:-10px">Please add details about your Dependants</p>
-                                    @if(Route::has('login'))
-                                    @auth
-                                    <form action="{{ url('payment_form', $data->id) }}" method="GET">
-                                    @else
-                                    <form action="{{ url('register') }}">
-                                        @php Session::put('prod_id', $data->id); @endphp
-                                    @endauth
-                                    @endif
+                                    <?php if(Route::has('login')): ?>
+                                    <?php if(auth()->guard()->check()): ?>
+                                    <form action="<?php echo e(url('payment_form', $data->id)); ?>" method="GET">
+                                    <?php else: ?>
+                                    <form action="<?php echo e(url('register')); ?>">
+                                        <?php Session::put('prod_id', $data->id); ?>
+                                    <?php endif; ?>
+                                    <?php endif; ?>
 
-                                    {{-- <input type="hidden" value="{{$data->id}}"> --}}
-                                    <input type="hidden" name="pr_id" value="{{$data->id}}">
-                                    @csrf
+                                    
+                                    <input type="hidden" name="pr_id" value="<?php echo e($data->id); ?>">
+                                    <?php echo csrf_field(); ?>
 
-                                    <input type="hidden" name="productId" value="{{$productId}}">
-                                    <input type="hidden" class="hiddenFamAmount" name="cost" value="{{($famdet) ?  number_format($famdet['first_payment_sub_total']) : 0 }}">
+                                    <input type="hidden" name="productId" value="<?php echo e($productId); ?>">
+                                    <input type="hidden" class="hiddenFamAmount" name="cost" value="<?php echo e(($famdet) ?  number_format($famdet['first_payment_sub_total']) : 0); ?>">
                                     <input type="hidden" value="FAMILY_PACKAGE" name="myPack">
-                                    <input type="hidden" value="{{($famdet) ? $famdet->id : 0 }}" name="fam_id" class="fam_id">
+                                    <input type="hidden" value="<?php echo e(($famdet) ? $famdet->id : 0); ?>" name="fam_id" class="fam_id">
 
                                     <div class="partner-sec">
                                         <?php $XYZ = Session::get('mySpouse'); ?>
@@ -505,13 +481,13 @@ $cXamount=0;
                                         <p style="height: 13px; padding: 15px 30px;font-size: 12px;margin-top:-25px; margin-bottom:25px">
                                             Yes
                                             <label class="switch">
-                                                <input type="radio" id="mySpouse" name="spouse" @if($XYZ == 'yes' ) checked="checked" @endif  onclick="handleClick(this);" value="yes">
+                                                <input type="radio" id="mySpouse" name="spouse" <?php if($XYZ == 'yes' ): ?> checked="checked" <?php endif; ?>  onclick="handleClick(this);" value="yes">
                                                 <span class="slider round"></span>
                                             </label>
                                             
                                             No
                                             <label class="switch">
-                                                <input type="radio" id="mySpouse" name="spouse" @if($XYZ == 'no' || $XYZ == null) checked="checked" @endif onclick="handleClick(this);" value="no">
+                                                <input type="radio" id="mySpouse" name="spouse" <?php if($XYZ == 'no' || $XYZ == null): ?> checked="checked" <?php endif; ?> onclick="handleClick(this);" value="no">
                                                 <span class="slider round"></span>
                                             </label>
                                         </p>
@@ -524,23 +500,23 @@ $cXamount=0;
                                             <p style="font-size: 12px;margin-bottom:-15px;margin-top:-10px">How many children will be accompanying you?</p>
                                             <div class=" row children">
                                                 <div class="col-2">
-                                                    <input type="radio" id="none" name="children" @if($ABC == 0 || $ABC==null ) checked="checked" @endif  onclick="handleKids(this);" value="0"/>
+                                                    <input type="radio" id="none" name="children" <?php if($ABC == 0 || $ABC==null ): ?> checked="checked" <?php endif; ?>  onclick="handleKids(this);" value="0"/>
                                                     <label for="none">None</label>
                                                 </div>
                                                 <div class="col-2">
-                                                    <input type="radio" id="one" name="children" @if($ABC == 1 || $ABC==null ) checked="checked" @endif onclick="handleKids(this);" value="1"/>
+                                                    <input type="radio" id="one" name="children" <?php if($ABC == 1 || $ABC==null ): ?> checked="checked" <?php endif; ?> onclick="handleKids(this);" value="1"/>
                                                     <label for="one">One</label>
                                                 </div>
                                                 <div class="col-2">
-                                                    <input type="radio" id="two" name="children" @if($ABC == 2 ) checked="checked" @endif onclick="handleKids(this);" value="2" />
+                                                    <input type="radio" id="two" name="children" <?php if($ABC == 2 ): ?> checked="checked" <?php endif; ?> onclick="handleKids(this);" value="2" />
                                                     <label for="two">Two</label>
                                                 </div>
                                                 <div class="col-2">
-                                                    <input type="radio" id="three" name="children" @if($ABC == 3 ) checked="checked" @endif onclick="handleKids(this);" value="3" />
+                                                    <input type="radio" id="three" name="children" <?php if($ABC == 3 ): ?> checked="checked" <?php endif; ?> onclick="handleKids(this);" value="3" />
                                                     <label for="three">Three</label>
                                                 </div>
                                                 <div class="col-2">
-                                                    <input type="radio" id="four" name="children" @if($ABC == 4 ) checked="checked" @endif onclick="handleKids(this);" value="4" />
+                                                    <input type="radio" id="four" name="children" <?php if($ABC == 4 ): ?> checked="checked" <?php endif; ?> onclick="handleKids(this);" value="4" />
                                                     <label for="four">Four</label>
                                                 </div>
                                             </div>
@@ -548,7 +524,7 @@ $cXamount=0;
                                     </div>
 
                                     <div class="row saved" style="padding:15px 5%; margin:3px 0 10px 0">
-                                        <div class="col-5" style="background: #000; border-radius:30px 0 0 30px;color:#fff; font-size:10px;font-weight:600; padding-block: 5px;">SAVE AED <span class="Famamount_save">{{number_format($famdet_save,0)}}</span></div>
+                                        <div class="col-5" style="background: #000; border-radius:30px 0 0 30px;color:#fff; font-size:10px;font-weight:600; padding-block: 5px;">SAVE AED <span class="Famamount_save"><?php echo e(number_format($famdet_save,0)); ?></span></div>
                                         <div class="col-7" style="background: #FACB08; border-radius:0 30px 30px 0;color:#000; font-size:10px; font-weight:600; padding-block: 5px;">WHEN YOU PAY IN FULL</div>
                                     </div>
                                     <div class="row">
@@ -556,10 +532,10 @@ $cXamount=0;
                                     </div>
                                     <div class="row price" style="padding:10px 5%">
                                         
-                                        @php $blue_cost_old = $blue_cost*1.2995; $blue_save= $blue_cost_old - $blue_cost;@endphp
-                                        <div class="col-5 promos" align="right"><span style="font-size:10px;;color:#000"><b>PROMO PRICE</b></span> <br> <b><span style="font-size:12px">AED</span> <span style="font-size:22px;color:#000" class="Famamount">{{number_format($famdet['first_payment_sub_total'],0)}}</span></b></div>
+                                        <?php $blue_cost_old = $blue_cost*1.2995; $blue_save= $blue_cost_old - $blue_cost;?>
+                                        <div class="col-5 promos" align="right"><span style="font-size:10px;;color:#000"><b>PROMO PRICE</b></span> <br> <b><span style="font-size:12px">AED</span> <span style="font-size:22px;color:#000" class="Famamount"><?php echo e(number_format($famdet['first_payment_sub_total'],0)); ?></span></b></div>
                                         <div class="col-1 separator" align="center" style="padding:0 3px; border-left: 0px solid rgb(57, 127, 184); height: 52px;transform: translateX(50%);"><b></b></div>
-                                        <div class="col-6 actual" align="right" style="padding-right:15%"><span style="font-size:10px;color:#000"><b>REGULAR PRICE</b></span> <br> <span style="font-size:12px;color:#E10930">AED</span> <del style="font-size:22px;color:#E10930"><span style="font-size:22px;color:#E10930" class="Famamount_old">{{number_format($famdet_cost_old,0)}}</span></del></div>
+                                        <div class="col-6 actual" align="right" style="padding-right:15%"><span style="font-size:10px;color:#000"><b>REGULAR PRICE</b></span> <br> <span style="font-size:12px;color:#E10930">AED</span> <del style="font-size:22px;color:#E10930"><span style="font-size:22px;color:#E10930" class="Famamount_old"><?php echo e(number_format($famdet_cost_old,0)); ?></span></del></div>
                                     </div>
 
                                     <div class="form-groupx row" style=" margin:0 auto;"> 
@@ -568,7 +544,7 @@ $cXamount=0;
                                             <?php
                                             if($data->full_payment_discount > 0) {
                                             ?>
-                                            {{-- <p style="margin-left:2px;font-weight:bold;font-size: 13px; margin-right:10px">Get <i>{{number_format(($data->full_payment_discount * $blue_cost/100))}} AED</i> discount on Full Payment</p> --}}
+                                            
                                             <?php
                                             }
                                             ?>
@@ -578,7 +554,7 @@ $cXamount=0;
                                         </div>
 
                                             <p align="center" style="font-size: 11px">
-                                                <i>By continuing, you have accepted our <a target="_blank" href="{{route('terms')}}"  style="color:#000;margin:0;font-size: 15px"><u>Terms & Conditions</u></a></i>
+                                                <i>By continuing, you have accepted our <a target="_blank" href="<?php echo e(route('terms')); ?>"  style="color:#000;margin:0;font-size: 15px"><u>Terms & Conditions</u></a></i>
                                             </p>
                                     </div>
                                 </form>
@@ -587,7 +563,7 @@ $cXamount=0;
                         </div>
                     </div>
                     <!-- Family Modal Ends -->
-                    @endif
+                    <?php endif; ?>
             </div>
         </div>
 
@@ -595,8 +571,8 @@ $cXamount=0;
 
 
 
-@endSection
-@push('custom-scripts')
+<?php $__env->stopSection(); ?>
+<?php $__env->startPush('custom-scripts'); ?>
 <script>
     $(document).ready(function(){
             $('.blue-desc').hide();
@@ -736,7 +712,7 @@ $cXamount=0;
         });
 
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
@@ -762,7 +738,7 @@ function getCost(kidd, parents)
 {
     $.ajax({
         type: 'GET',
-        url: "{{ route('packageType',$productId)  }}",
+        url: "<?php echo e(route('packageType',$productId)); ?>",
         data: {kid : kidd, parents: parents , response : 1}, 
         success: function (data) {
             let vallu = (data.first_payment_sub_total*1.2995)-(data.first_payment_sub_total);
@@ -779,3 +755,4 @@ function getCost(kidd, parents)
 }
 
 </script>
+<?php echo $__env->make('layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\dejia\OneDrive\Desktop\mygit\pwg_eportal\resources\views/user/package-type.blade.php ENDPATH**/ ?>

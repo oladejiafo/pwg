@@ -1196,7 +1196,7 @@ body {
   margin-bottom: 30px;
   position: relative;
   top: 0;
-  width: 550px !important;
+  /* width: 550px !important; */
   -webkit-transition: .3s all ease;
   -o-transition: .3s all ease;
   transition: .3s all ease;
@@ -2752,7 +2752,7 @@ iframe img {
 .children-sec,
 .partner-sec {
   margin-top: 10px;
-  padding: 0 50px;
+  padding: 0 0px;
 }
 
 @media (max-width: 500px){
@@ -2810,6 +2810,7 @@ iframe img {
   border: 1px solid #CCC;
   font-size: 10px;
   width:50px;
+  padding-left: 5px;
   border-radius: 16px;
   cursor: pointer;
   z-index: 90;

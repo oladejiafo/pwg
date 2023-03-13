@@ -26,14 +26,12 @@
 <?php $__env->startSection('content'); ?>
 
 <?php
-if(Session::has('payall'))
-{
-    $payall = Session::get('payall');
-} elseif(isset($_REQUEST['payall'])) {
-    $payall = $_REQUEST['payall'];
-} else {
-    $payall = 0;
-}
+
+// Session::forget('packageType');
+// Session::forget('myproduct_id');
+// Session::forget('mypack_id');
+// Session::forget('mySpouse');
+// Session::forget('myKids');
 
 $completed = DB::table('applications')
 ->where('client_id', '=', Auth::user()->id)
@@ -159,14 +157,10 @@ $vals=array(0,1,2);
                                     </div>
             
                                         <div class="signature-pad--actions">
-                                            <div class="col-6">
-
+                                            <div class="col-12">
                                                 <button type="button" class="btn btn-primary clear" id="clear" data-action="clear">CLEAR</button>
                                             </div>
-                                            <div class="col-6">
-                                                <!-- <button type="submit" id="sigBtn" data-action="savePNG" class="btn btn-primary">SUBMIT</button> -->
-                                                <button type="button" id="sigBtn" data-action="save-png" class="btn btn-primary button save">SIGN</button>
-                                            </div>
+                                            
                                         </div>
              
                                     
@@ -185,317 +179,538 @@ $vals=array(0,1,2);
             </div>
             <div class="row" style="background-color: #Fff;padding: 30px; margin-top:5px;--bs-gutter-x: 0px;">
                 <div class="col-12">
-                    
+<Style>
+    /* style="accent-color:#08fa30;border: 1px solid white;width: 20px;height: 20px;top: 5px;left: -3px;position:relative;" */
+    input[type='radio']:after {
+        accent-color:#08fa30;
+        border: 1px solid white;
+        width: 20px;
+        height: 20px;
+        top: -2px;
+        left: -7px;
+        position:relative;
+        background-color: #fff;
+        border-radius: 50%;
+        content: '';
+        visibility: visible;
+        display: inline-block; 
+    }
+    input[type='radio']:checked:after {
+        accent-color:#FACB08;
+        border: 5px solid white;
+        width: 20px;
+        visibility: visible;
+        height: 20px;
+        top: -2px;
+        left: -7px;
+        position:relative;
+        background-color: #857f7f;
+        content: '';
+        display: inline-block;
+    }
+
+    #optTA{
+        display: block;
+    }
+    #optTB{
+        display: none;
+    }
+
+    #optCA{
+        display: block;
+    }
+    #optCB{
+        display: none;
+    }
+
+    #optDA{
+        display: block;
+    }
+    #optDB{
+        display: none;
+    }
+@media (max-width:1450px) {
+    .payoption label {
+        height: 75px;
+    }
+    .partner-sec .switch {
+    margin: 0 12px;
+    }
+}
+
+    @media (max-width:900px) {
+        
+    .payoption label {
+        height: 75px;
+    }
+    #optTA{
+        display: none;
+    }
+    #optTB{
+        display: block;
+    }
+
+    #optCA{
+        display: none;
+    }
+    #optCB{
+        display: block;
+    }
+
+    #optDA{
+        display: none;
+    }
+    #optDB{
+        display: block;
+    }
+    }
+
+    @media(420px) {
+        #optDB{
+            font-size: 9px;
+        } 
+    }
+</Style>
                     <div classx="form-sec discountForm">
                             <div align="left" style="background-color: #Fff;padding: 30px 0px">
                                 <div><b style="color:black;font-size: 16px; margin-left:15px">Choose a Payment Method:</b></div>
-                                <div align="left" class="row payoption" style="--bs-gutter-x:0px;display:fles; width:98%; margin:0 auto; margin-bottomx: -30px;margin-top:10px">
+                                <div align="left" class="row payoption" style="--bs-gutter-x:0px;display:fles; width:100%; margin:0 auto; margin-bottomx: -30px;margin-topx:10px">
                                     <div class="col-4" style="margin-left:-10px;display:inline-block;" align: left> 
                                         <input type="radio" id="card" name="payoption" checked value="Card" required> 
-                                        <label for="card"><img src="<?php echo e(asset('user/images/card_pay.png')); ?>" height="30px"> <span class="brk">Card Payment</span></label>
+                                        <label for="card"><img src="<?php echo e(asset('user/images/card_pay.png')); ?>" height="30px"> <span class="brk"><span id="optCA">Card Payment</span><span id="optCB">Card Payment</span></span></label>
                                     </div>
                                     <div class="col-4" style="margin-left:0px;display:inline-block;">
                                         <input type="radio" id="transfer" name="payoption" value="Transfer" required> 
-                                        <label for="transfer"><img src="<?php echo e(asset('user/images/transfer_pay.png')); ?>" height="30px"> <span class="brk">Bank Transfer/Bank Deposit</span></label>
+                                        <label for="transfer"><img src="<?php echo e(asset('user/images/transfer_pay.png')); ?>" height="30px"> <span class="brk"><span id="optTA">Bank Transfer/Deposit</span><span id="optTB">Bank Transfer</span></span></label>
                                     </div>
                                     <div class="col-4" style="margin-left:0px;display:inline-block;">
                                         <input type="radio" id="deposit" name="payoption" value="Deposit" required> 
-                                        <label for="deposit"><img src="<?php echo e(asset('user/images/deposit_pay.png')); ?>" height="30px"> <span class="brk">ATM/Cash Machine Deposit</span></label>
+                                        <label for="deposit"><img src="<?php echo e(asset('user/images/deposit_pay.png')); ?>" height="30px"> <span class="brk"><span id="optDA">ATM/Cash Deposit Machine</span><span id="optDB">ATM Deposit</span></span></label>
                                     </div>
                                 </div>
-    
+
                             </div>
+                            <hr style="border: 2px solid #ccc;margin:0">
+                            <div align="left" style="background-color: #Fff;padding: 10px 0px">
+                                <div><b style="color:black;font-size: 14px; margin-left:15px">Choose your payment type:     
+                                </b></div>
+                                <div class="row" style=" margin:0 auto;"> 
+
+                                    <div class="col-lg-3 col-md-4 col-sm-6" style="max-width:200px;display:inline-block;border-radius:5px; margin-block:3px; padding-block:10px; border: 0px solid #fff; background:#FACB08">
+                                        <input type="radio" name="payall" id="partial" checked value="1" required> 
+                                        <label><b>PAY INSTALLMENTS</b></label>
+                                    </div> &ensp;
+                                    <div class="col-lg-3 col-md-4 col-sm-6" style="max-width:200px;display:inline-block;border-radius:5px; margin-block:3px; padding-block:10px; border: 0px solid #fff; background:#FACB08">
+                                        <input type="radio" name="payall" id="full" value="0" required> 
+                                        <label><b>FULL PAYMENT</b></label>
+                                    </div>&ensp;
+                                </div>
+                            </div> 
+                            <?php if($myPack == "FAMILY_PACKAGE"): ?>
+                            <link href="<?php echo e(asset('user/css/products.css')); ?>" rel="stylesheet">
+                            <style>
+                               
+                                .partner-sec .switch {
+                                    margin: 0 25px;
+                                }
+                                .partner-sec {
+                                    width:25%;
+                                }
+                                .children-sec {
+                                    width:30%;
+                                }
+                                .partner-sec .status{
+                                    height: 50px; 
+                                    padding: 15px;
+                                    font-size: 12px;
+                                    margin-top:-17px; 
+                                    margin-bottom:25px;
+                                    background-color: #FACB08;
+                                    width:80%;
+                                }
+                                @media(max-width:1024px){
+                                    .partner-sec .status {
+                                        width: 90% !important;
+                                    }
+                                    .partner-sec .switch {
+                                    margin: 0 12px;
+                                }
+                                }
+                                @media(max-width:950px) {
+                                 .partner-sec {
+                                    width:100% !important;
+                                }
+                                .children-sec {
+                                    width:100% !important;
+                                }
+                                .partner-sec .status{
+                                    width:100%;
+                                }
+                                }
+                            </style>
                            
-                            <?php if(session()->has('myDiscount') && session()->has('haveCoupon') && session()->get('haveCoupon') == 1): ?>
-                                <?php
-                                    $promo = session()->get('myDiscount');
-                                ?>
-                            <?php else: ?>
-                                <?php
-                                    $promo = 0;
-                                ?>
-                            <?php endif; ?>
-
-                            <?php if(isset($pdet)): ?>
-                                <?php
-                                
-                                    $first_pay = $pdet->first_payment_sub_total;
-                                    $second_pay = $pdet->submission_payment_sub_total;
-                                    $third_pay = $pdet->second_payment_sub_total;
+                            <div id="family" class="row" style="--bs-gutter-x: 0px;">
+                            
+                            <p style="font-size: 18px">Dependants Details </p>
+                            <div class="partner-sec  col-md-5 col-lg-5 col-sm-12" >
+                                <?php $XYZ = (Session::has('mySpouse')) ? Session::get('mySpouse') : 'no'; ?>
+                                <p style="font-size: 12px">Is your spouse/partner accompanying you?</p>
+                                <p class="status">
+                                    Yes
+                                    <label class="switch">
+                                        <input type="radio" id="mySpouse" name="spouse" <?php if($XYZ == 'yes' ): ?> checked="checked" <?php endif; ?>  onclick="handleClick(this);" value="yes">
+                                        <span class="slider round"></span>
+                                    </label>
                                     
-                                    $tot_pay = $first_pay + $second_pay + $third_pay;
-                                ?>
-                            <?php else: ?>
-                                <?php
-                                    $first_pay = 0;
-                                    $second_pay = 0;
-                                    $third_pay = 0;
-                                    
-                                    $tot_pay = 0;
-                                ?>
-                            <?php endif; ?>
+                                    No
+                                    <label class="switch">
+                                        <input type="radio" id="mySpouse" name="spouse" <?php if($XYZ == 'no' || $XYZ == null): ?> checked="checked" <?php endif; ?> onclick="handleClick(this);" value="no">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </p>
+                            </div>
 
-                            <?php
-                                $diff = $pays ? $pays->first_payment_remaining : 0; //$pays->first_payment_price - $pays->first_payment_paid
-                            ?>
-
-                            <?php if($diff > 0): ?>
-                                <?php
-                                    $pends = $pays ? $pays->first_payment_remaining : 0;
-                                ?>
-                            <?php elseif($diff < 0): ?>
-                                <?php
-                                    $pends = $pays ? $pays->first_payment_paid - $pays->first_payment_sub_total : 0;
-                                ?>
-                            <?php else: ?>
-                                <?php
-                                    $pends = 0;
-                                ?>
-                            <?php endif; ?>
-
-
-                            <?php
-                            
-                            // $outsec = $pays ? $pays->second_payment_price - $pays->second_payment_paid : 0;
-                            // $outsub = $pays ? $pays->submission_payment_price - $pays->submission_payment_paid : 0;
-                            $outsec = $pays ? $pays->second_payment_remaining : 0;
-                            $outsub= $pays ? $pays->submission_payment_remaining : 0;
-                            if ($payall == 0 || empty($payall)) {
-                                if (!isset($pays) || ($pays->first_payment_status != 'PAID' || $pays->first_payment_status == null)) {
-                                    //    && (isset($paym->transaction_mode) && $paym->transaction_mode != "TRANSFER" && ($paym->payment_type !="FIRST" || $paym->payment_type != "BALANCE_ON_FIRST"))
-                                    $whichPayment = 'FIRST';
-                                    $outsub = 0;
-                                    $outsec = 0;
-                            
-                                    $payNow = $pdet->first_payment_sub_total;
-                                    // if($diff > 0 || $pays->first_payment_price > $pays->first_payment_paid) {
-                                    // if ($diff > 0 || (isset($pays) && $pays->first_payment_remaining > 0)) {
-                                    if(isset($pays) &&  $pays->first_payment_paid > 0){
-                                        $pendMsg = 'You have ' . $pends . ' balance on first payment.';
-                                        $payNoww = $pends;
-                                        $whichPayment = 'BALANCE_ON_FIRST';
-                                    } else {
-                                        $pendMsg = '';
-                                        $payNoww = $pdet->first_payment_sub_total;
-                                    }
-                                } elseif (isset($pays) && $pays->first_payment_status == 'PAID' && $pays->submission_payment_status != 'PAID' && $pdet->submission_payment_sub_total>0) {
-                                    $outsub = $pays->submission_payment_price - $pays->submission_payment_paid;
-                                    $outsec = 0;
-                            
-                                    $whichPayment = 'SUBMISSION';
-                                    if ($pays->submission_payment_remaining > 0 && $pays->submission_payment_status == 'PARTIALLY_PAID') {
-                                        $pendMsg = 'You have ' . $pays->submission_payment_remaining . ' balance on submisssion payment.';
-                                        $payNoww = $pays->submission_payment_remaining;
-                                        $payNow = $pdet->submission_payment_sub_total;
-                                        $whichPayment = 'BALANCE_ON_SUBMISSION';
-                                    } else {
-                                        if ($diff > 0 && $pays->is_first_payment_partially_paid == 1) {
-                                            $payNow = $pdet->submission_payment_sub_total;
-                                            $payNoww = $pdet->submission_payment_sub_total + $pends;
-                                            $pendMsg = ' + ' . $pends . ' carried over from previous payment';
-                                        } elseif ($diff < 0 && $pays->is_first_payment_partially_paid == 1) {
-                                            $payNow = $pdet->submission_payment_sub_total;
-                                            $payNoww = $pdet->submission_payment_sub_total - $pends;
-                                            $pendMsg = ' - ' . $pends . ' over paid from previous payment';
-                                        } else {
-                                            $payNow = $pdet->submission_payment_sub_total;
-                                            $payNoww = $pdet->submission_payment_sub_total;
-                                            $pendMsg = '';
-                                        }
-                                    }
-                                } elseif (isset($pays) && $pays->first_payment_status == 'PAID' && $pays->submission_payment_status == 'PAID' && $outsub > 0 && $pdet->submission_payment_sub_total>0) {
-                                    $outsub = $pays->submission_payment_price - $pays->submission_payment_paid;
-                                    $outsec = 0;
-                            
-                                    $pendMsg = 'You have ' . $outsub . ' balance on submission payment.';
-                                    $payNow = $outsub; //$pdet->submission_payment_sub_total;
-                                    $payNoww = $outsub;
-                                    $whichPayment = 'SUBMISSION';
-                                } elseif (isset($pays) && $pays->first_payment_status == 'PAID' && $pays->second_payment_status != 'PAID' && empty($pdet->submission_payment_sub_total)) {
-                                    $outsec = $pays->second_payment_price - $pays->second_payment_paid;
-                                    $outsub = 0;
-                            
-                                    $whichPayment = 'SECOND';
-                                    if ($pays->second_payment_remaining > 0 && $pays->second_payment_status == 'PARTIALLY_PAID') {
-                                        $vat_2 = $pays->second_payment_remaining * (5 / 100);
-                                        $pendMsg = 'You have ' . ($pays->second_payment_remaining) . ' balance on second payment.';
-                                        $payNoww = $pays->second_payment_remaining;
-                                        $payNow = $pdet->second_payment_sub_total;
-                                        $whichPayment = 'BALANCE_ON_SECOND';
-                                    } else {
-                                        if ($diff > 0 && $pays->is_submission_payment_partially_paid == 1) {
-                                            $payNow = $pdet->second_payment_sub_total;
-                                            $payNoww = $pdet->second_payment_sub_total + $pends;
-                                            $pendMsg = ' + ' . $pends . ' carried over from previous payment';
-                                        } elseif ($diff < 0 && $pays->is_submission_payment_partially_paid == 1) {
-                                            $payNow = $pdet->second_payment_sub_total;
-                                            $payNoww = $pdet->second_payment_sub_total - $pends;
-                                            $pendMsg = ' - ' . $pends . ' over paid from previous payment';
-                                        } else {
-                                            $payNow = $pdet->second_payment_sub_total;
-                                            $payNoww = $pdet->second_payment_sub_total;
-                                            $pendMsg = '';
-                                        }
-                                    }
-                                } elseif (isset($pays) && $pays->submission_payment_status == 'PAID' && $pays->second_payment_status != 'PAID' && $pdet->second_payment_sub_total>0) {
-                                    $outsec = $pays->second_payment_price - $pays->second_payment_paid;
-                                    $outsub = 0;
-                            
-                                    $whichPayment = 'SECOND';
-                                    if ($pays->second_payment_remaining > 0 && $pays->second_payment_status == 'PARTIALLY_PAID') {
-                                        $vat_2 = $pays->second_payment_remaining * (5 / 100);
-                                        $pendMsg = 'You have ' . ($pays->second_payment_remaining) . ' balance on second payment.';
-                                        $payNoww = $pays->second_payment_remaining;
-                                        $payNow = $pdet->second_payment_sub_total;
-                                        $whichPayment = 'BALANCE_ON_SECOND';
-                                    } else {
-                                        if ($diff > 0 && $pays->is_submission_payment_partially_paid == 1) {
-                                            $payNow = $pdet->second_payment_sub_total;
-                                            $payNoww = $pdet->second_payment_sub_total + $pends;
-                                            $pendMsg = ' + ' . $pends . ' carried over from previous payment';
-                                        } elseif ($diff < 0 && $pays->is_submission_payment_partially_paid == 1) {
-                                            $payNow = $pdet->second_payment_sub_total;
-                                            $payNoww = $pdet->second_payment_sub_total - $pends;
-                                            $pendMsg = ' - ' . $pends . ' over paid from previous payment';
-                                        } else {
-                                            $payNow = $pdet->second_payment_sub_total;
-                                            $payNoww = $pdet->second_payment_sub_total;
-                                            $pendMsg = '';
-                                        }
-                                    }
-                                } elseif (isset($pays) && $pays->submission_payment_status == 'PAID' && $pays->second_payment_status == 'PAID' && $outsec > 0 && $pdet->second_payment_sub_total>0) {
-                                    $pendMsg = 'You have ' . $outsec . ' balance on second payment.';
-                                    $payNow = $outsec; //$pdet->submission_payment_sub_total;
-                                    $payNoww = $outsec;
-                                    $whichPayment = 'SECOND';
-                                } else {
-                                    $whichPayment = 'FIRST';
-                                    $payNow = $pdet->first_payment_sub_total;
-                                    $payNoww = $pdet->first_payment_sub_total;
-                                    $pendMsg = '';
-                                }
-                                $discount = 0;
-                            } else {
+                            <?php $ABC = Session::get('myKids'); ?>
+                           
+                            <div class="children-sec col-md-6 col-lg-6 col-sm-12">
                                 
-                                $discount = 0;
-                                $discountPercent = 0;
-                                if(!isset($pays)){
-                                    $payNow = $pdet->sub_total - $pdet->third_payment_sub_total;
-                                    $payNoww = $payNow;
-                                    $pendMsg = 'Full Payment';
-                                    if ($pdet->submission_payment_sub_total > 0 || $pdet->second_payment_sub_total > 0) {
-                                        $discountPercent = ($data->full_payment_discount) ? $data->full_payment_discount . '%' : 0;
+                                    <p style="font-size: 12px;margin-bottom:-15px;margin-top:3px">How many children will be accompanying you?</p>
+                                    <div class=" row children" style="widthx:35%">
+                                        <div class="col-2">
+                                            <input type="radio" id="none" name="children" class="kids" <?php if($ABC == 0 || $ABC==null ): ?> checked="checked" <?php endif; ?>  onclick="handleKids(this);" value="0"/>
+                                            <label for="none">None</label>
+                                        </div>
+                                        <div class="col-2">
+                                            <input type="radio" id="one" name="children" class="kids" <?php if($ABC == 1 || $ABC==null ): ?> checked="checked" <?php endif; ?> onclick="handleKids(this);" value="1"/>
+                                            <label for="one">One</label>
+                                        </div>
+                                        <div class="col-2">
+                                            <input type="radio" id="two" name="children" class="kids" <?php if($ABC == 2 ): ?> checked="checked" <?php endif; ?> onclick="handleKids(this);" value="2" />
+                                            <label for="two">Two</label>
+                                        </div>
+                                        <div class="col-2">
+                                            <input type="radio" id="three" name="children" class="kids" <?php if($ABC == 3 ): ?> checked="checked" <?php endif; ?> onclick="handleKids(this);" value="3" />
+                                            <label for="three">Three</label>
+                                        </div>
+                                        <div class="col-2">
+                                            <input type="radio" id="four" name="children" <?php if($ABC == 4 ): ?> checked="checked" <?php endif; ?> onclick="handleKids(this);" value="4" />
+                                            <label for="four">Four</label>
+                                        </div>
+                                    </div>
+                              
+                            </div>
+                        </div>
+                        <hr style="border: 2px solid #ccc;margin:0">
+                        <?php endif; ?>
+
+                        <div id="paymain">
                             
-                                        // $discountPercent = '5%';
-                                        // $discount = ($payNow * 5 / 100);
-                                        $discount = ($data->full_payment_discount > 0) ? ($payNow * $data->full_payment_discount) / 100 : 0; //product discount fetch
-                                    }
-                                    $whichPayment = 'Full-Outstanding Payment';
-                                }elseif (isset($pays) && $pays->first_payment_status == 'PENDING' && ($pays->submission_payment_status == 'PENDING') & ($pays->second_payment_status == 'PENDING')) {
-                                    $payNow = $pdet->sub_total - $pdet->third_payment_sub_total;
-                                    $payNoww = $payNow;
-                                    $pendMsg = 'Full Payment';
-                                    if ($pdet->submission_payment_sub_total > 0 || $pdet->second_payment_sub_total > 0) {
-                                        $discountPercent = ($data->full_payment_discount) ? $data->full_payment_discount . '%' : 0;
-                            
-                                        // $discountPercent = '5%';
-                                        // $discount = ($payNow * 5 / 100);
-                                        $discount = ($data->full_payment_discount > 0) ? ($payNow * $data->full_payment_discount) / 100 : 0; //product discount fetch
-                                    }
-                                    $whichPayment = 'Full-Outstanding Payment';
-                                } elseif (isset($pays) && $pays->first_payment_status != 'PAID') {
-                                    if (is_null($pdet->second_payment_price) or empty($pdet->second_payment_price)) {
-                                        $payNow = $pdet->submission_payment_sub_total;
-                                        $payNoww = $payNow;
-                                        if ($diff > 0) {
-                                            $pendMsg = 'Part Paid already';
-                                        } else {
-                                            $pendMsg = '';
-                                        }
-                                        $discountPercent = '';
-                                        $discount = 0;
-                                    } elseif ($diff > 0) {
-                                        $payNow = $pdet->sub_total - $pdet->first_payment_sub_total - $pdet->third_payment_sub_total;
-                                        $payNoww = $pdet->sub_total - $pdet->first_payment_sub_total - $pdet->third_payment_sub_total;
-                                        $pendMsg = 'Part Paid already';
-                                        if ($pdet->submission_payment_sub_total > 0 || $pdet->second_payment_sub_total > 0) {
-                                            $discountPercent = ($data->full_payment_discount) ? $data->full_payment_discount . '%' : 0;
-
-                                            $discount = ($data->full_payment_discount > 0) ? ($payNow * $data->full_payment_discount) / 100 : 0; //product discount fetch
-                                        }
-                                    } else {
-                                        $payNow = $pdet->sub_total - $pdet->third_payment_sub_total;
-                                        $payNoww = $pdet->sub_total - $pdet->third_payment_sub_total;
-                                        $pendMsg = 'Full Payment';
-                                        if ($pdet->submission_payment_sub_total > 0 || $pdet->second_payment_sub_total > 0) {
-
-                                            $discountPercent = $data->full_payment_discount ? $data->full_payment_discount . '%' : 0;
-                                            $discount = $data->full_payment_discount > 0 ? ($payNow * $data->full_payment_discount) / 100 : 0; //product discount fetch
-                                        }
-                                    }
-                                    $whichPayment = 'Full-Outstanding Payment';
-                                // } elseif (isset($pays) && $pays->first_payment_status == 'PAID' && $pays->submission_payment_status == 'PENDING') {
-                                } elseif(isset($pays) && $pays->first_payment_status =="PAID"){
-                                    if ($pdet->second_payment_price != null || $pdet->second_payment_price != 0) {
-
-                                        if($pays->submission_payment_status =="PENDING"){
-                                            $payNow = $pdet->submission_payment_sub_total + $pdet->second_payment_sub_total;
-                                            $payNoww = $payNow;
-                                            if($pdet->submission_payment_sub_total > 0 || $pdet->second_payment_sub_total > 0){
-                                                $discountPercent =  ($data->full_payment_discount) ? $data->full_payment_discount.'%' : 0;
-                                                $discount = ($data->full_payment_discount > 0) ? ($payNow * $data->full_payment_discount / 100) : 0;
-                                            }
-                                        } else if($pays->submission_payment_status =="PARTIALLY_PAID") {
-                                            $payNow = $pdet->second_payment_sub_total;
-                                            $payNoww = $pays->submission_payment_remaining + $payNow;
-                                            if($pdet->submission_payment_sub_total > 0 || $pdet->second_payment_sub_total > 0){
-                                                $discountPercent =  ($data->full_payment_discount) ? $data->full_payment_discount.'%' : 0;
-                                                $discount = ($data->full_payment_discount > 0) ? ($pdet->second_payment_sub_total * $data->full_payment_discount / 100) : 0;
-                                            }
-                                        }
-                                        $pendMsg = "Full Outstanding Payment";
-                                        $whichPayment = 'Full-Outstanding Payment';
-                                    } else {
-                                        $payNow = $pdet->submission_payment_sub_total;
-                                        $payNoww = $payNow;
-                                        $pendMsg = '';
-                                        $discountPercent = '';
-                                        $discount = 0;
-                                        $whichPayment = 'SUBMISSION';
-                                    }
-
-                                } elseif (isset($pays) && $pays->first_payment_status == 'PAID' && $pays->submission_payment_status == 'PAID' && ($pays->second_payment_status =="PENDING" || $pays->second_payment_status == 'PARTIALLY_PAID' )) {
-                                    $payNow = $pdet->second_payment_sub_total;
-                                    $payNoww = $payNow;
-                                    $pendMsg = '';
-                                    $discountPercent = '';
-                                    $discount = 0;
-                                } else {
-                                    $payNow = 0;
-                                    $payNoww = $payNow;
-                                    $pendMsg = '';
-                                    $discountPercent = '';
-                                    $discount = 0;
-                                }
-                            
-                                $whichPayment = 'Full-Outstanding Payment';
-                            }
-
-                            $vatPercent = '5%';
-
-                            $vat = (($payNow - $discount) * 5) / 100;
-                            
-                            $totalPay = round($payNow - $discount + $vat, 2);
-
-                            ?>
-
                             <div id='card-payment'>
                                 <?php echo $__env->make('user.card-payment', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                             </div>
                             <div id='bank-payment'>
                                 <?php echo $__env->make('user.bank-payment', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                             </div>
-                </div>
+
+
+                            
+<?php
+// if(Session::has('payall'))
+// {
+//     $payall = Session::get('payall');
+// } elseif(isset($_REQUEST['payall'])) {
+//     $payall = $_REQUEST['payall'];
+// } else {
+//     $payall = 0;
+// }
+// Session::forget('payall');
+?>
+<?php if(session()->has('myDiscount') && session()->has('haveCoupon') && session()->get('haveCoupon') == 1): ?>
+<?php
+    $promo = session()->get('myDiscount');
+?>
+<?php else: ?>
+<?php
+    $promo = 0;
+?>
+<?php endif; ?>
+
+<?php if(isset($pdet)): ?>
+<?php
+
+    $first_pay = $pdet->first_payment_sub_total;
+    $second_pay = $pdet->submission_payment_sub_total;
+    $third_pay = $pdet->second_payment_sub_total;
+    
+    $tot_pay = $first_pay + $second_pay + $third_pay;
+?>
+<?php else: ?>
+<?php
+    $first_pay = 0;
+    $second_pay = 0;
+    $third_pay = 0;
+    
+    $tot_pay = 0;
+?>
+<?php endif; ?>
+
+<?php
+$diff = $pays ? $pays->first_payment_remaining : 0; //$pays->first_payment_price - $pays->first_payment_paid
+?>
+
+<?php if($diff > 0): ?>
+<?php
+    $pends = $pays ? $pays->first_payment_remaining : 0;
+?>
+<?php elseif($diff < 0): ?>
+<?php
+    $pends = $pays ? $pays->first_payment_paid - $pays->first_payment_sub_total : 0;
+?>
+<?php else: ?>
+<?php
+    $pends = 0;
+?>
+<?php endif; ?>
+
+
+<?php
+
+// $outsec = $pays ? $pays->second_payment_price - $pays->second_payment_paid : 0;
+// $outsub = $pays ? $pays->submission_payment_price - $pays->submission_payment_paid : 0;
+$outsec = $pays ? $pays->second_payment_remaining : 0;
+$outsub= $pays ? $pays->submission_payment_remaining : 0;
+if ($payall == 0 || empty($payall)) {
+if (!isset($pays) || ($pays->first_payment_status != 'PAID' || $pays->first_payment_status == null)) {
+    //    && (isset($paym->transaction_mode) && $paym->transaction_mode != "TRANSFER" && ($paym->payment_type !="FIRST" || $paym->payment_type != "BALANCE_ON_FIRST"))
+    $whichPayment = 'FIRST';
+    $outsub = 0;
+    $outsec = 0;
+
+    $payNow = $pdet->first_payment_sub_total;
+    // if($diff > 0 || $pays->first_payment_price > $pays->first_payment_paid) {
+    // if ($diff > 0 || (isset($pays) && $pays->first_payment_remaining > 0)) {
+    if(isset($pays) &&  $pays->first_payment_paid > 0){
+        $pendMsg = 'You have ' . $pends . ' balance on first payment.';
+        $payNoww = $pends;
+        $whichPayment = 'BALANCE_ON_FIRST';
+    } else {
+        $pendMsg = '';
+        $payNoww = $pdet->first_payment_sub_total;
+    }
+} elseif (isset($pays) && $pays->first_payment_status == 'PAID' && $pays->submission_payment_status != 'PAID' && $pdet->submission_payment_sub_total>0) {
+    $outsub = $pays->submission_payment_price - $pays->submission_payment_paid;
+    $outsec = 0;
+
+    $whichPayment = 'SUBMISSION';
+    if ($pays->submission_payment_remaining > 0 && $pays->submission_payment_status == 'PARTIALLY_PAID') {
+        $pendMsg = 'You have ' . $pays->submission_payment_remaining . ' balance on submisssion payment.';
+        $payNoww = $pays->submission_payment_remaining;
+        $payNow = $pdet->submission_payment_sub_total;
+        $whichPayment = 'BALANCE_ON_SUBMISSION';
+    } else {
+        if ($diff > 0 && $pays->is_first_payment_partially_paid == 1) {
+            $payNow = $pdet->submission_payment_sub_total;
+            $payNoww = $pdet->submission_payment_sub_total + $pends;
+            $pendMsg = ' + ' . $pends . ' carried over from previous payment';
+        } elseif ($diff < 0 && $pays->is_first_payment_partially_paid == 1) {
+            $payNow = $pdet->submission_payment_sub_total;
+            $payNoww = $pdet->submission_payment_sub_total - $pends;
+            $pendMsg = ' - ' . $pends . ' over paid from previous payment';
+        } else {
+            $payNow = $pdet->submission_payment_sub_total;
+            $payNoww = $pdet->submission_payment_sub_total;
+            $pendMsg = '';
+        }
+    }
+} elseif (isset($pays) && $pays->first_payment_status == 'PAID' && $pays->submission_payment_status == 'PAID' && $outsub > 0 && $pdet->submission_payment_sub_total>0) {
+    $outsub = $pays->submission_payment_price - $pays->submission_payment_paid;
+    $outsec = 0;
+
+    $pendMsg = 'You have ' . $outsub . ' balance on submission payment.';
+    $payNow = $outsub; //$pdet->submission_payment_sub_total;
+    $payNoww = $outsub;
+    $whichPayment = 'SUBMISSION';
+} elseif (isset($pays) && $pays->first_payment_status == 'PAID' && $pays->second_payment_status != 'PAID' && empty($pdet->submission_payment_sub_total)) {
+    $outsec = $pays->second_payment_price - $pays->second_payment_paid;
+    $outsub = 0;
+
+    $whichPayment = 'SECOND';
+    if ($pays->second_payment_remaining > 0 && $pays->second_payment_status == 'PARTIALLY_PAID') {
+        $vat_2 = $pays->second_payment_remaining * (5 / 100);
+        $pendMsg = 'You have ' . ($pays->second_payment_remaining) . ' balance on second payment.';
+        $payNoww = $pays->second_payment_remaining;
+        $payNow = $pdet->second_payment_sub_total;
+        $whichPayment = 'BALANCE_ON_SECOND';
+    } else {
+        if ($diff > 0 && $pays->is_submission_payment_partially_paid == 1) {
+            $payNow = $pdet->second_payment_sub_total;
+            $payNoww = $pdet->second_payment_sub_total + $pends;
+            $pendMsg = ' + ' . $pends . ' carried over from previous payment';
+        } elseif ($diff < 0 && $pays->is_submission_payment_partially_paid == 1) {
+            $payNow = $pdet->second_payment_sub_total;
+            $payNoww = $pdet->second_payment_sub_total - $pends;
+            $pendMsg = ' - ' . $pends . ' over paid from previous payment';
+        } else {
+            $payNow = $pdet->second_payment_sub_total;
+            $payNoww = $pdet->second_payment_sub_total;
+            $pendMsg = '';
+        }
+    }
+} elseif (isset($pays) && $pays->submission_payment_status == 'PAID' && $pays->second_payment_status != 'PAID' && $pdet->second_payment_sub_total>0) {
+    $outsec = $pays->second_payment_price - $pays->second_payment_paid;
+    $outsub = 0;
+
+    $whichPayment = 'SECOND';
+    if ($pays->second_payment_remaining > 0 && $pays->second_payment_status == 'PARTIALLY_PAID') {
+        $vat_2 = $pays->second_payment_remaining * (5 / 100);
+        $pendMsg = 'You have ' . ($pays->second_payment_remaining) . ' balance on second payment.';
+        $payNoww = $pays->second_payment_remaining;
+        $payNow = $pdet->second_payment_sub_total;
+        $whichPayment = 'BALANCE_ON_SECOND';
+    } else {
+        if ($diff > 0 && $pays->is_submission_payment_partially_paid == 1) {
+            $payNow = $pdet->second_payment_sub_total;
+            $payNoww = $pdet->second_payment_sub_total + $pends;
+            $pendMsg = ' + ' . $pends . ' carried over from previous payment';
+        } elseif ($diff < 0 && $pays->is_submission_payment_partially_paid == 1) {
+            $payNow = $pdet->second_payment_sub_total;
+            $payNoww = $pdet->second_payment_sub_total - $pends;
+            $pendMsg = ' - ' . $pends . ' over paid from previous payment';
+        } else {
+            $payNow = $pdet->second_payment_sub_total;
+            $payNoww = $pdet->second_payment_sub_total;
+            $pendMsg = '';
+        }
+    }
+} elseif (isset($pays) && $pays->submission_payment_status == 'PAID' && $pays->second_payment_status == 'PAID' && $outsec > 0 && $pdet->second_payment_sub_total>0) {
+    $pendMsg = 'You have ' . $outsec . ' balance on second payment.';
+    $payNow = $outsec; //$pdet->submission_payment_sub_total;
+    $payNoww = $outsec;
+    $whichPayment = 'SECOND';
+} else {
+    $whichPayment = 'FIRST';
+    $payNow = $pdet->first_payment_sub_total;
+    $payNoww = $pdet->first_payment_sub_total;
+    $pendMsg = '';
+}
+$discount = 0;
+} else {
+
+$discount = 0;
+$discountPercent = 0;
+if(!isset($pays)){
+    $payNow = $pdet->sub_total - $pdet->third_payment_sub_total;
+    $payNoww = $payNow;
+    $pendMsg = 'Full Payment';
+    if ($pdet->submission_payment_sub_total > 0 || $pdet->second_payment_sub_total > 0) {
+        $discountPercent = ($data->full_payment_discount) ? $data->full_payment_discount . '%' : 0;
+
+        // $discountPercent = '5%';
+        // $discount = ($payNow * 5 / 100);
+        $discount = ($data->full_payment_discount > 0) ? ($payNow * $data->full_payment_discount) / 100 : 0; //product discount fetch
+    }
+    $whichPayment = 'Full-Outstanding Payment';
+}elseif (isset($pays) && $pays->first_payment_status == 'PENDING' && ($pays->submission_payment_status == 'PENDING') & ($pays->second_payment_status == 'PENDING')) {
+    $payNow = $pdet->sub_total - $pdet->third_payment_sub_total;
+    $payNoww = $payNow;
+    $pendMsg = 'Full Payment';
+    if ($pdet->submission_payment_sub_total > 0 || $pdet->second_payment_sub_total > 0) {
+        $discountPercent = ($data->full_payment_discount) ? $data->full_payment_discount . '%' : 0;
+
+        // $discountPercent = '5%';
+        // $discount = ($payNow * 5 / 100);
+        $discount = ($data->full_payment_discount > 0) ? ($payNow * $data->full_payment_discount) / 100 : 0; //product discount fetch
+    }
+    $whichPayment = 'Full-Outstanding Payment';
+} elseif (isset($pays) && $pays->first_payment_status != 'PAID') {
+    if (is_null($pdet->second_payment_price) or empty($pdet->second_payment_price)) {
+        $payNow = $pdet->submission_payment_sub_total;
+        $payNoww = $payNow;
+        if ($diff > 0) {
+            $pendMsg = 'Part Paid already';
+        } else {
+            $pendMsg = '';
+        }
+        $discountPercent = '';
+        $discount = 0;
+    } elseif ($diff > 0) {
+        $payNow = $pdet->sub_total - $pdet->first_payment_sub_total - $pdet->third_payment_sub_total;
+        $payNoww = $pdet->sub_total - $pdet->first_payment_sub_total - $pdet->third_payment_sub_total;
+        $pendMsg = 'Part Paid already';
+        if ($pdet->submission_payment_sub_total > 0 || $pdet->second_payment_sub_total > 0) {
+            $discountPercent = ($data->full_payment_discount) ? $data->full_payment_discount . '%' : 0;
+
+            $discount = ($data->full_payment_discount > 0) ? ($payNow * $data->full_payment_discount) / 100 : 0; //product discount fetch
+        }
+    } else {
+        $payNow = $pdet->sub_total - $pdet->third_payment_sub_total;
+        $payNoww = $pdet->sub_total - $pdet->third_payment_sub_total;
+        $pendMsg = 'Full Payment';
+        if ($pdet->submission_payment_sub_total > 0 || $pdet->second_payment_sub_total > 0) {
+
+            $discountPercent = $data->full_payment_discount ? $data->full_payment_discount . '%' : 0;
+            $discount = $data->full_payment_discount > 0 ? ($payNow * $data->full_payment_discount) / 100 : 0; //product discount fetch
+        }
+    }
+    $whichPayment = 'Full-Outstanding Payment';
+// } elseif (isset($pays) && $pays->first_payment_status == 'PAID' && $pays->submission_payment_status == 'PENDING') {
+} elseif(isset($pays) && $pays->first_payment_status =="PAID"){
+    if ($pdet->second_payment_price != null || $pdet->second_payment_price != 0) {
+
+        if($pays->submission_payment_status =="PENDING"){
+            $payNow = $pdet->submission_payment_sub_total + $pdet->second_payment_sub_total;
+            $payNoww = $payNow;
+            if($pdet->submission_payment_sub_total > 0 || $pdet->second_payment_sub_total > 0){
+                $discountPercent =  ($data->full_payment_discount) ? $data->full_payment_discount.'%' : 0;
+                $discount = ($data->full_payment_discount > 0) ? ($payNow * $data->full_payment_discount / 100) : 0;
+            }
+        } else if($pays->submission_payment_status =="PARTIALLY_PAID") {
+            $payNow = $pdet->second_payment_sub_total;
+            $payNoww = $pays->submission_payment_remaining + $payNow;
+            if($pdet->submission_payment_sub_total > 0 || $pdet->second_payment_sub_total > 0){
+                $discountPercent =  ($data->full_payment_discount) ? $data->full_payment_discount.'%' : 0;
+                $discount = ($data->full_payment_discount > 0) ? ($pdet->second_payment_sub_total * $data->full_payment_discount / 100) : 0;
+            }
+        }
+        $pendMsg = "Full Outstanding Payment";
+        $whichPayment = 'Full-Outstanding Payment';
+    } else {
+        $payNow = $pdet->submission_payment_sub_total;
+        $payNoww = $payNow;
+        $pendMsg = '';
+        $discountPercent = '';
+        $discount = 0;
+        $whichPayment = 'SUBMISSION';
+    }
+
+} elseif (isset($pays) && $pays->first_payment_status == 'PAID' && $pays->submission_payment_status == 'PAID' && ($pays->second_payment_status =="PENDING" || $pays->second_payment_status == 'PARTIALLY_PAID' )) {
+    $payNow = $pdet->second_payment_sub_total;
+    $payNoww = $payNow;
+    $pendMsg = '';
+    $discountPercent = '';
+    $discount = 0;
+} else {
+    $payNow = 0;
+    $payNoww = $payNow;
+    $pendMsg = '';
+    $discountPercent = '';
+    $discount = 0;
+}
+
+$whichPayment = 'Full-Outstanding Payment';
+}
+
+$vatPercent = '5%';
+
+$vat = (($payNow - $discount) * 5) / 100;
+
+$totalPay = round($payNow - $discount + $vat, 2);
+// echo $payall= $_COOKIE['payallx'];
+?>
+
+                        </div>
+                        
+                    </div>
                 </div>
             </div>
         </div>
@@ -518,7 +733,9 @@ $vals=array(0,1,2);
 <?php $__env->startPush('custom-scripts'); ?>
 
 <script>
+
     $(document).ready(function(){
+        // let ppyall=<?php echo SESSION::get('ppyall')?>;
         var Signed = '<?php echo e(is_object($pays) ? $pays->contract_1st_signature_status : null); ?>';
         var pays = '<?php echo e(is_object($pays)); ?>';
         if(pays == 1 && Signed == "SIGNED")
@@ -528,15 +745,7 @@ $vals=array(0,1,2);
             $('.contract-signature').show();    
         }
 
-        // var canvas = document.getElementById("sigz");
-        // var ctx = canvas.getContext("2d");
-        // ctx.font = "16px Arial";
-        // ctx.fillStyle = "#ccc";
-        // ctx.textAlign = "center";
-        // ctx.fillText("Please Sign Here", canvas.width/2, canvas.height/2);
-
-        $('#bank-payment').
-        hide();
+        $('#bank-payment').hide();
 
         $('#transfer').click(function(){
             $('#bank-payment').show();
@@ -550,12 +759,11 @@ $vals=array(0,1,2);
             $('#bank-payment').hide();
             $('#card-payment').show();
         });
+     
 
         $('#showDiscount').hide();
         $('#discount').hide();
         $('#promoDiscount').hide();
-        // document.getElementById("amountLink2").value = $(this).val();
-        // let ax = $('#amountLink').text(($('#totaldue').val()));
 
         $('#amount').keyup(function() {
             if($('#amount').val()){
@@ -642,90 +850,14 @@ $vals=array(0,1,2);
                 }
             });
         });
-
-        $('.current_location').change(function(){
-            var $this = $(this);
-            var paynow = <?php echo $payNoww; ?>;            
-            var discount = '<?php echo e($discount); ?>';
-            var amtx = (paynow - discount);
-            var vt =(amtx*5)/100;
-            $('#amount').val('');
-            
-              document.getElementById("amountLink2").value = Math.floor((amtx + (amtx*5/100)) *100)/100;
-              $('#amountLink').text(parseFloat(Math.floor((amtx + (amtx*5/100)) * 100)/100).toLocaleString('en')); //= amtx + (amtx*5/100);
-              document.getElementById("totaldue").value = Math.floor((amtx + (amtx*5/100)) *100)/100;
-
-              var nf = Intl.NumberFormat(); 
-              $('#vatt').html(nf.format(vt));
- 
-              $('#vats').val(Math.floor(vt * 100)/100);
-              $('#showVat').show();
-              $('#vt').text("VAT Inclusive");
-              $('.vtt').text("(+ 5% VAT)");
-            
-        });
-        $('.embassy_appearance').change(function(){
-
-            var $this = $(this); 
-            $.ajax({ 
-                url: '<?php echo e(route("checkPromo")); ?> ',
-                method: 'POST',
-                data: {
-                    "_token": "<?php echo e(csrf_token()); ?>",
-                    "embassy_appearance" : $('#embassy_appearance').val()
-                }
-            }).done( function (response) {
-
-                if (response.status) {
-                    // alert(response.status);
-                        $('#discount').show();
-                    // $('#target-div').html(response.status); 
-                } else {
-                    $('#discount').hide();
-                }
-            });
-        });
-
-        savePNGButton.addEventListener("click", () => {
-        if (signaturePad.isEmpty()) {
-            toastr.error("Please provide a signature.");
-        } else {
-            const dataURL = signaturePad.toDataURL();
-
-        $.ajax({
-        type: 'POST',
-        url: "<?php echo e(url('upload_signature')); ?>",
-        data: {
-            "_token": "<?php echo e(csrf_token()); ?>",
-            signed: dataURL,
-            payall: '<?php echo e($payall); ?>',
-            response: 1
-        },
-        success: function(data) {
-            console.log(data);
-            if (data) 
-            {
-                toastr.success("Signature updated successfully!");
-
-                $('.contract-signature').hide();
-                //  location.href = "<?php echo e(url('payment_form')); ?>/" + '<?php echo e($data->id); ?>';
-            } else {
-            alert('Something went wrong');
-            }
-
-        },
-        error: function(error) {}
-        });
-    }
     });
-
-  });
 
 
 </script>
 <?php $__env->stopPush(); ?>
 <script src="<?php echo e(asset('js/alert.js')); ?>"></script>
 <script type="text/javascript" src="/path/to/toastr.js"></script>
+
 <script>
     <?php if(Session::has('message')): ?>
         toastr.options =
@@ -753,15 +885,10 @@ $vals=array(0,1,2);
         }
             toastr.warning("<?php echo e(session('warning')); ?>");
     <?php endif; ?>
+
 </script>
 
-<script type="text/javascript">
 
-$(document).ready(function() {
-
-
-});
-</script>
     
 <?php if(!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)): ?> 
 <script>
@@ -783,6 +910,7 @@ $(document).ready(function() {
         )
         return false;
     };
+
 </script>
 <?php endif; ?>
 <?php echo $__env->make('layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\dejia\OneDrive\Desktop\mygit\pwg_eportal\resources\views/user/payment-form.blade.php ENDPATH**/ ?>
