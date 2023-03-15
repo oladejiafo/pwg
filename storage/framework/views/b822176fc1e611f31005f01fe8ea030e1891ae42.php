@@ -7,7 +7,7 @@ if (Session::has('payall')) {
     $payall = $payall;
 }
 
-Session::forget('payall');
+// Session::forget('payall');
 ?>
 <?php if(session()->has('myDiscount') && session()->has('haveCoupon') && session()->get('haveCoupon') == 1): ?>
     <?php
@@ -73,9 +73,11 @@ if ($payall == 0 || empty($payall)) {
         $payNow = $pdet->first_payment_sub_total;
         // if($diff > 0 || $pays->first_payment_price > $pays->first_payment_paid) {
         // if ($diff > 0 || (isset($pays) && $pays->first_payment_remaining > 0)) {
-        if (isset($pays) && $pays->first_payment_paid > 0) {
-            $pendMsg = 'You have ' . $pends . ' balance on first payment.';
+
+        if (isset($pays) && $pays->first_payment_paid > 0 && $pays->first_payment_remaining > 0) {
+           $pendMsg = 'You have ' . $pends . ' balance on first payment.';
             $payNoww = $pends;
+            $payNow = $pends;
             $whichPayment = 'BALANCE_ON_FIRST';
         } else {
             $pendMsg = '';
@@ -282,10 +284,19 @@ if ($payall == 0 || empty($payall)) {
 
 $vatPercent = '5%';
 
-$vat = (($payNow - $discount) * 5) / 100;
 $payall;
-$totalPay = round($payNow - $discount + $vat, 2);
+$vat = (($payNow - $discount) * 5) / 100;
+
+// die();
+if (isset($pays) && (($pays->first_payment_remaining > 0 && $pays->first_payment_status == 'PARTIALLY_PAID') || ($pays->second_payment_remaining > 0 && $pays->second_payment_status == 'PARTIALLY_PAID') || ($pays->third_payment_remaining > 0 && $pays->third_payment_status == 'PARTIALLY_PAID')))
+{
+    $totalPay = round($payNoww, 2);
+} else {
+
+    $totalPay = round($payNow - $discount + $vat, 2);
+} 
 ?>
+
 <div class="container">
     <div class="col-12">
 
@@ -297,7 +308,7 @@ $totalPay = round($payNow - $discount + $vat, 2);
                 <div class="row">
                     <div class="heading">
                         <div class="first-heading" style="text-align: center">
-                            <p>Proceed to your bank APP to complete this payment and upload your proof of payment.</p>
+                            <p style="font-size: 14px">Proceed to your bank APP to complete this payment and upload your proof of payment.</p>
                         </div>
                     </div>
                     <div class="row">
@@ -305,6 +316,7 @@ $totalPay = round($payNow - $discount + $vat, 2);
                             <h5>Bank Details:</h5>
                             <div class="row bankDetails">
                                 <div class="col-12 adcb">
+                                    <p class="flash"><i class="fa fa-warning"></i> <b>Pay directly to the bank account provided below, do not give cash to anyone or pay to another account!</b></p>
 
                                     <ul>
                                         <li>
@@ -438,7 +450,6 @@ $totalPay = round($payNow - $discount + $vat, 2);
             //     constrainInput: false     
             // });
 
-             
             $('#partial').click(function() {
 
                 $.ajax({
@@ -469,6 +480,7 @@ $totalPay = round($payNow - $discount + $vat, 2);
 
             $('#full').click(function() {
 
+                // throw new Error();
                 $.ajax({
                     url: '<?php echo e(route('payType')); ?> ',
                     method: 'POST',
@@ -478,8 +490,7 @@ $totalPay = round($payNow - $discount + $vat, 2);
                     },
                     success: function(data) {
 
-                        console.log($("#bank-payment").load(window.location.href +
-                            " #bank-payment > *"));
+                        console.log($("#bank-payment").load(window.location.href + " #bank-payment > *"));
 
                         if ($('input[name="payoption"]:checked').val() == "Transfer" || $(
                                 'input[name="payoption"]:checked').val() == "Deposit") {
@@ -575,9 +586,12 @@ $totalPay = round($payNow - $discount + $vat, 2);
 
     <script>
         function saveSign() {
-
-            if (signaturePad.isEmpty()) {
+            var Signed = '<?php echo e(is_object($pays) ? $pays->contract_1st_signature_status : null); ?>';
+            var pays = '<?php echo e(is_object($pays)); ?>';
+            alert(pays);
+            if (signaturePad.isEmpty() && (pays != 1 && Signed != "SIGNED")) {
                 toastr.error("Please provide a signature.");
+                break;
             } else {
                 const dataURL = signaturePad.toDataURL();
 

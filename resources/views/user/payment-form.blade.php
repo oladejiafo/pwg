@@ -205,7 +205,7 @@ $vals=array(0,1,2);
             
                                         <div class="signature-pad--actions">
                                             <div class="col-12">
-                                                <button type="button" class="btn btn-primary clear" id="clear" data-action="clear">CLEAR</button>
+                                                <button type="button" class="btn btn-primary clear" id="clear" style="margin-bottom: -5px;" data-action="clear">CLEAR</button>
                                             </div>
                                             {{-- <div class="col-6">
                                                 <!-- <button type="submit" id="sigBtn" data-action="savePNG" class="btn btn-primary">SUBMIT</button> -->
@@ -320,6 +320,26 @@ $vals=array(0,1,2);
             font-size: 9px;
         } 
     }
+
+    .flash {
+        animation-name: flash;
+        animation-duration: 0.5s;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+        animation-direction: alternate;
+        animation-play-state: running;
+    }
+
+    @keyframes flash {
+        from {
+            color: black; /*rgba(255, 234, 4, 0.692)*/
+        }
+
+        to {
+            color: red;
+        }
+    }
+
 </Style>
                     <div classx="form-sec discountForm">
                             <div align="left" style="background-color: #Fff;padding: 30px 0px">
@@ -331,19 +351,24 @@ $vals=array(0,1,2);
                                     </div>
                                     <div class="col-4" style="margin-left:0px;display:inline-block;">
                                         <input type="radio" id="transfer" name="payoption" value="Transfer" required> 
-                                        <label for="transfer"><img src="{{asset('user/images/transfer_pay.png')}}" height="30px"> <span class="brk"><span id="optTA">Bank Transfer/Deposit</span><span id="optTB">Bank Transfer</span></span></label>
+                                        <label for="transfer"><img src="{{asset('user/images/transfer_pay.png')}}" height="30px"> <span class="brk"><span id="optTA">Bank Transfer/Exchange</span><span id="optTB">Bank Transfer</span></span></label>
                                     </div>
                                     <div class="col-4" style="margin-left:0px;display:inline-block;">
                                         <input type="radio" id="deposit" name="payoption" value="Deposit" required> 
-                                        <label for="deposit"><img src="{{asset('user/images/deposit_pay.png')}}" height="30px"> <span class="brk"><span id="optDA">ATM/Cash Deposit Machine</span><span id="optDB">ATM Deposit</span></span></label>
+                                        <label for="deposit"><img src="{{asset('user/images/deposit_pay.png')}}" height="30px"> <span class="brk"><span id="optDA">ATM Deposit</span><span id="optDB">ATM Deposit</span></span></label>
                                     </div>
                                 </div>
 
                             </div>
                             <hr style="border: 2px solid #ccc;margin:0">
                             <div align="left" style="background-color: #Fff;padding: 10px 0px">
-                                <div><b style="color:black;font-size: 14px; margin-left:15px">Choose your payment type:     
-                                </b></div>
+                                <div>
+                                    <b style="color:black;font-size: 14px; margin-leftx:15px">Choose your payment type:</b> &ensp;&ensp;&ensp;&ensp;
+                                    <span class="flash" style="font-size: 11px;font-weight:600;">
+                                        <?php $disc=($pdet->sub_total-$pdet->third_payment_sub_total)/10; ?>
+                                        (Save additional {{$disc}}AED when you make full payment)
+                                    </span>
+                                </div>
                                 <div class="row" style=" margin:0 auto;"> 
 
                                     <div class="col-lg-3 col-md-4 col-sm-6" style="max-width:200px;display:inline-block;border-radius:5px; margin-block:3px; padding-block:10px; border: 0px solid #fff; background:#FACB08">
@@ -354,6 +379,10 @@ $vals=array(0,1,2);
                                         <input type="radio" name="payall" id="full" value="0" required> 
                                         <label><b>FULL PAYMENT</b></label>
                                     </div>&ensp;
+                                    {{-- <span style="font-size: 11px;font-weight:600;">
+                                        <?php //$disc=($pdet->sub_total-$pdet->third_payment_sub_total)/10; ?>
+                                        (Save additional {{$disc}}AED when you make full payment)
+                                    </span> --}}
                                 </div>
                             </div> 
                             @if($myPack == "FAMILY_PACKAGE")
@@ -401,7 +430,7 @@ $vals=array(0,1,2);
                            
                             <div id="family" class="row" style="--bs-gutter-x: 0px;">
                             
-                            <p style="font-size: 18px">Dependants Details </p>
+                            <p style="font-size: 14px">Dependants Details </p>
                             <div class="partner-sec  col-md-5 col-lg-5 col-sm-12" >
                                 <?php $XYZ = (Session::has('mySpouse')) ? Session::get('mySpouse') : 'no'; ?>
                                 <p style="font-size: 12px">Is your spouse/partner accompanying you?</p>

@@ -526,6 +526,7 @@ class HomeController extends Controller
                     // ->whereNotIn('status',  ['APPLICATION_COMPLETED','VISA_REFUSED', 'APPLICATION_CANCELLED','REFUNDED'] )
                     ->limit(1)
                     ->first();
+                    
                 $pdet = DB::table('pricing_plans')
                     ->where('id', '=', $pack_id)
                     ->first();
@@ -814,7 +815,7 @@ class HomeController extends Controller
                 Session::put('packageType', $request->packageType);
                 $user = Client::find(Auth::id());
                 $signatureUrl = (isset($user->getMedia(Client::$media_collection_main_signture)[0])) ? $user->getMedia(Client::$media_collection_main_signture)[0]->getUrl() : null;
-                if ($signatureUrl == null) {
+                if ($signatureUrl == null && $request->whichpayment == 'FIRST') {
                     return back()->with('error', 'Oppss! Please provide signature.');
                 }
                 // //Call Create Contract Function
@@ -995,7 +996,7 @@ class HomeController extends Controller
                 $failUrl =  url('/') . '/payment/fail';
                 $order['action']                        = "PURCHASE";                      // Transaction mode ("AUTH" = authorize only, no automatic settle/capture, "SALE" = authorize + automatic settle/capture)
                 $order['amount']['currencyCode']       = "AED";                           // Payment currency ('AED' only for now)
-                $order['amount']['value']                = floor($amount * 100);              // Minor units (1000 = 10.00 AED)
+                $order['amount']['value']                = floor($amount * 100);         // Minor units (1000 = 10.00 AED)
                 $order['language']                       = "en";                        // Payment page language ('en' or 'ar' only)
                 $order['emailAddress']                    = "pwggroup@pwggroup.pl";
                 $order['billingAddress']['firstName'] = "PWG";
@@ -1340,9 +1341,13 @@ class HomeController extends Controller
             }
             $user = Client::find(Auth::id());
             $signatureUrl = (isset($user->getMedia(Client::$media_collection_main_signture)[0])) ? $user->getMedia(Client::$media_collection_main_signture)[0]->getUrl() : null;
+            // if ($request->whichpayment == 'FIRST') {
+                // dd($signatureUrl);
+
             if ($signatureUrl == null) {
                 return back()->with('error', 'Oppss! Please provide signature.');
             }
+
             Session::put('packageType', $request->packageType);
 
             // //Call Create Contract Function

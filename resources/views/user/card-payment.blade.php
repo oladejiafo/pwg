@@ -295,7 +295,7 @@ $totalPay = round($payNow - $discount + $vat, 2);
         <div class="col-lg-6 col-md-12" style="padding-right:20px">
 
             <div class="total">
-                @if ($first_pay > 0 && $whichPayment == 'FIRST')
+                @if ($first_pay > 0 && ($whichPayment == 'FIRST' || $whichPayment == 'BALANCE_ON_FIRST'))
                     <div class="total-sec row mt-3">
                         <div class="left-section col-6">
 
@@ -319,7 +319,7 @@ $totalPay = round($payNow - $discount + $vat, 2);
                             <span style="font-size:11px">AED</span>
                         </div>
                     </div>
-                @elseif($second_pay > 0 && $whichPayment == 'SUBMISSION')
+                @elseif($second_pay > 0 && ($whichPayment == 'SUBMISSION' || $whichPayment == 'BALANCE_ON_SUBMISSION'))
                     <div class="total-sec row mt-3">
                         <div class="left-section col-6">
 
@@ -350,7 +350,7 @@ $totalPay = round($payNow - $discount + $vat, 2);
 
                         </div>
                     </div>
-                @elseif($third_pay > 0 && $whichPayment == 'SECOND')
+                @elseif($third_pay > 0 && ($whichPayment == 'SECOND' || $whichPayment == 'BALANCE_ON_SECOND'))
                     <div class="total-sec row mt-3">
                         <div class="left-section col-6">
                             @if ($whichPayment == 'SECOND')
@@ -386,7 +386,7 @@ $totalPay = round($payNow - $discount + $vat, 2);
                         <div class="left-section col-6">
                             <b>Full Outstanding Payment</b>
                         </div>
-                        <div class="right-section col-6" align="right" id="thispay">
+                        <div class="right-section col-6" align="right" id="thispay" style="font-weight:bold">
 
                             <b>{{ number_format($payNoww, 2) }}</b>
 
@@ -400,24 +400,25 @@ $totalPay = round($payNow - $discount + $vat, 2);
                     </div>
                     <div class="right-section col-6" align="right" id="thissave">
                         @if($payall == 1 && isset($discount) && $discount > 0)
-                            {{ (($payNoww*1.2995) - $payNoww)+$discount }} AED
+                            {{ (($payNoww*1.2995) - $payNoww)+$discount }} 
                         @else
-                            {{ ($payNoww*1.2995) - $payNoww }} AED
+                            {{ ($payNoww*1.2995) - $payNoww }} 
                         @endif
+                        <span style="font-size:11px"> AED</span>
                     </div>
                 </div>
-                <hr>
+                {{-- <hr> --}}
 
                 @if ($payall == 1 && isset($discount) && $discount > 0)
                     <div class="total-sec row mt-3 showDiscount">
-                        {{-- <div class="left-section col-6">
+                        <div class="left-section col-6">
                             Full Payment Discount (<span
-                                id="discountPercent">-{{ $discountPercent ? $discountPercent : '' }}</span>)
-                        </div> --}}
+                                id="discountPercent"> {{ $discountPercent ? $discountPercent : '' }}</span>)
+                        </div>
                         <div class="right-section col-6" align="right">
 
-                            {{-- <span id="discountValue">{{ number_format($discount, 2) }} </span> --}}
-                            {{-- <span style="font-size:11px" id="discountVal">AED</span> --}}
+                            <span id="discountValue">{{ number_format($discount, 2) }} </span>
+                            <span style="font-size:11px" id="discountVal">AED</span>
                             <input type="hidden" name="discount" id="myDiscount" value="{{ $discount }}">
                             <input type="hidden" name="discountCode" id="myDiscountCode" value="">
 
@@ -459,8 +460,8 @@ $totalPay = round($payNow - $discount + $vat, 2);
         </div>
         <div class="col-lg-6 col-md-12">
             @if ($whichPayment == 'FIRST' && (!isset($pays) || $pays->first_payment_paid == 0))
-                <div class="partial" style="height: 100%;">
-                    <p>Pay {{ strtolower($whichPayment) }} installment in partial</p>
+                <div class="partial" style="height: 100%;font-size:14px">
+                    <p style="font-size:14px"><b>You may pay {{ strtolower($whichPayment) }} installment in partial</b></p>
                     <input type="text" class="form-control" name="amount" id="amount"
                         placeholder="Enter partial payment" style="text-align:left !important"
                         oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');">
@@ -470,13 +471,13 @@ $totalPay = round($payNow - $discount + $vat, 2);
                     @if ($errors->has('amount'))
                         <div class="error">{{ $errors->first('amount') }}</div>
                     @endif
-                    <p>Minimum amount of <b> 1,000 AED</b><span style="font-size:11px" class="vtt">
+                    <p style="font-size:12px">Minimum amount of <b> 1,000 AED</b><span style="font-size:11px" class="vtt">
                             @if ($vat > 0)
                                 {{-- (+ 5% VAT) --}}
                             @endif
                         </span></p>
 
-                    <p><b>Remaining amount to be paid in 30 days</b></p>
+                    <p style="font-size:12px"><b>Remaining amount to be paid within 30 days</b></p>
                 </div>
             @endif
         </div>
@@ -722,8 +723,9 @@ $totalPay = round($payNow - $discount + $vat, 2);
     });
 
     function saveSign() {
-
-        if (signaturePad.isEmpty()) {
+        var Signed = '{{is_object($pays) ? $pays->contract_1st_signature_status : null}}';
+        var pays = '{{is_object($pays)}}';
+        if (signaturePad.isEmpty() && (pays != 1 && Signed != "SIGNED")) {
             toastr.error("Please provide a signature.");
         } else {
             const dataURL = signaturePad.toDataURL();

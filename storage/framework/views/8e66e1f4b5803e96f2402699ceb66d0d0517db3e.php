@@ -295,7 +295,7 @@ $totalPay = round($payNow - $discount + $vat, 2);
         <div class="col-lg-6 col-md-12" style="padding-right:20px">
 
             <div class="total">
-                <?php if($first_pay > 0 && $whichPayment == 'FIRST'): ?>
+                <?php if($first_pay > 0 && ($whichPayment == 'FIRST' || $whichPayment == 'BALANCE_ON_FIRST')): ?>
                     <div class="total-sec row mt-3">
                         <div class="left-section col-6">
 
@@ -320,7 +320,7 @@ $totalPay = round($payNow - $discount + $vat, 2);
                             <span style="font-size:11px">AED</span>
                         </div>
                     </div>
-                <?php elseif($second_pay > 0 && $whichPayment == 'SUBMISSION'): ?>
+                <?php elseif($second_pay > 0 && ($whichPayment == 'SUBMISSION' || $whichPayment == 'BALANCE_ON_SUBMISSION')): ?>
                     <div class="total-sec row mt-3">
                         <div class="left-section col-6">
 
@@ -349,7 +349,7 @@ $totalPay = round($payNow - $discount + $vat, 2);
 
                         </div>
                     </div>
-                <?php elseif($third_pay > 0 && $whichPayment == 'SECOND'): ?>
+                <?php elseif($third_pay > 0 && ($whichPayment == 'SECOND' || $whichPayment == 'BALANCE_ON_SECOND')): ?>
                     <div class="total-sec row mt-3">
                         <div class="left-section col-6">
                             <?php if($whichPayment == 'SECOND'): ?>
@@ -387,7 +387,7 @@ $totalPay = round($payNow - $discount + $vat, 2);
                         <div class="left-section col-6">
                             <b>Full Outstanding Payment</b>
                         </div>
-                        <div class="right-section col-6" align="right" id="thispay">
+                        <div class="right-section col-6" align="right" id="thispay" style="font-weight:bold">
 
                             <b><?php echo e(number_format($payNoww, 2)); ?></b>
 
@@ -401,21 +401,25 @@ $totalPay = round($payNow - $discount + $vat, 2);
                     </div>
                     <div class="right-section col-6" align="right" id="thissave">
                         <?php if($payall == 1 && isset($discount) && $discount > 0): ?>
-                            <?php echo e((($payNoww*1.2995) - $payNoww)+$discount); ?> AED
+                            <?php echo e((($payNoww*1.2995) - $payNoww)+$discount); ?> 
                         <?php else: ?>
-                            <?php echo e(($payNoww*1.2995) - $payNoww); ?> AED
+                            <?php echo e(($payNoww*1.2995) - $payNoww); ?> 
                         <?php endif; ?>
+                        <span style="font-size:11px"> AED</span>
                     </div>
                 </div>
-                <hr>
+                
 
                 <?php if($payall == 1 && isset($discount) && $discount > 0): ?>
                     <div class="total-sec row mt-3 showDiscount">
-                        
+                        <div class="left-section col-6">
+                            Full Payment Discount (<span
+                                id="discountPercent"> <?php echo e($discountPercent ? $discountPercent : ''); ?></span>)
+                        </div>
                         <div class="right-section col-6" align="right">
 
-                            
-                            
+                            <span id="discountValue"><?php echo e(number_format($discount, 2)); ?> </span>
+                            <span style="font-size:11px" id="discountVal">AED</span>
                             <input type="hidden" name="discount" id="myDiscount" value="<?php echo e($discount); ?>">
                             <input type="hidden" name="discountCode" id="myDiscountCode" value="">
 
@@ -443,8 +447,8 @@ $totalPay = round($payNow - $discount + $vat, 2);
         </div>
         <div class="col-lg-6 col-md-12">
             <?php if($whichPayment == 'FIRST' && (!isset($pays) || $pays->first_payment_paid == 0)): ?>
-                <div class="partial" style="height: 100%;">
-                    <p>Pay <?php echo e(strtolower($whichPayment)); ?> installment in partial</p>
+                <div class="partial" style="height: 100%;font-size:14px">
+                    <p style="font-size:14px"><b>You may pay <?php echo e(strtolower($whichPayment)); ?> installment in partial</b></p>
                     <input type="text" class="form-control" name="amount" id="amount"
                         placeholder="Enter partial payment" style="text-align:left !important"
                         oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');">
@@ -452,13 +456,13 @@ $totalPay = round($payNow - $discount + $vat, 2);
                     <?php if($errors->has('amount')): ?>
                         <div class="error"><?php echo e($errors->first('amount')); ?></div>
                     <?php endif; ?>
-                    <p>Minimum amount of <b> 1,000 AED</b><span style="font-size:11px" class="vtt">
+                    <p style="font-size:12px">Minimum amount of <b> 1,000 AED</b><span style="font-size:11px" class="vtt">
                             <?php if($vat > 0): ?>
                                 
                             <?php endif; ?>
                         </span></p>
 
-                    <p><b>Remaining amount to be paid in 30 days</b></p>
+                    <p style="font-size:12px"><b>Remaining amount to be paid within 30 days</b></p>
                 </div>
             <?php endif; ?>
         </div>
@@ -703,8 +707,9 @@ $totalPay = round($payNow - $discount + $vat, 2);
     });
 
     function saveSign() {
-
-        if (signaturePad.isEmpty()) {
+        var Signed = '<?php echo e(is_object($pays) ? $pays->contract_1st_signature_status : null); ?>';
+        var pays = '<?php echo e(is_object($pays)); ?>';
+        if (signaturePad.isEmpty() && (pays != 1 && Signed != "SIGNED")) {
             toastr.error("Please provide a signature.");
         } else {
             const dataURL = signaturePad.toDataURL();

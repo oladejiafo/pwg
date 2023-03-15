@@ -88,9 +88,9 @@
                     </div>
                 </div>
                 @if(session::get('paymentMode') == "TRANSFER")
-                    <div style="display:flex;color:white; padding:2%;background-color: #dd9951; height: 80px; float:left;border-radius:3px;margin-top: 5px;"> 
-                        <span class="review-info-icon"><i class="fas fa-exclamation-triangle"></i></span> 
-                        <span class="review-info" style="display:inline-block;">Payment need to be confirmed! Please continue with application. <span>
+                    <div style="display:flex;color:white; padding:2%;background-color: #0f8c13; height: 80px; float:left;border-radius:3px;margin-top: 5px;"> 
+                        <span class="review-info-icon"><i class="fa fa-check"></i></span> 
+                        <span class="review-info" style="display:inline-block;">After verification of payment, your invoice wil be made available. Please continue with application. <span>
                     </div>
                 @elseif(session::get('paymentMode') == "NETWORK") 
                     <div style="display:flex;color:white; padding:2%;background-color: #0f8c13; height: 80px; float:left;border-radius:3px;margin-top: 5px;"> 

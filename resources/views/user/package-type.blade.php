@@ -233,7 +233,23 @@ $cXamount=0;
 @endforeach
 
 @endif --}}
+@if($proddet->first())
+@foreach($proddet as $prdet)
+    @if ($loop->first)
 
+        @php 
+        // $blue_cost = $prdet->total_price
+        // $blue_cost = $prdet->sub_total - $prdet->third_payment_sub_total
+        $blue_cost = $prdet->first_payment_sub_total
+        @endphp 
+
+    @endif
+@endforeach
+@else 
+@php                                   
+    $blue_cost = 0
+@endphp
+@endif
     <div class="container" style="margin-top: 100px;">
         <div class="col-12">
             <div align="center" class="package">
@@ -241,29 +257,13 @@ $cXamount=0;
                     {{-- FOR {{strtoupper($data->name)}} --}}
                     <h2>CHOOSE YOUR PACKAGE</h2>
                     <div class="bottoom-title">
-                        <p>To start your journey to Poland, please select the package that best suits you</p>
+                        <p>To start your journey to {{$data->name}}, please select the package that best suits you</p>
                     </div>
                 </div>
                 <br>
                 <div class="row" style="margin-left:auto; margin-right:auto; text-align:center;justify-content: center; display: flex;">
                 
-                      @if($proddet->first())
-                        @foreach($proddet as $prdet)
-                        @if ($loop->first)
-                    
-                            @php 
-                            // $blue_cost = $prdet->total_price
-                            // $blue_cost = $prdet->sub_total - $prdet->third_payment_sub_total
-                            $blue_cost = $prdet->first_payment_sub_total
-                            @endphp 
 
-                            @endif
-                        @endforeach
-                        @else 
-                        @php                                   
-                            $blue_cost = 0
-                            @endphp
-                        @endif
                        
                     <div class="col-sm-10 col-md-6 col-lg-5" style="display:inline-block;">
                         <img src="{{asset('user/images/individual.png')}}" width="100%" alt="PWG Group">
