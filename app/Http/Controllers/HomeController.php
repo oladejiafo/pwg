@@ -196,7 +196,10 @@ class HomeController extends Controller
 
 
             if ($request->response == 1) {
+                // dd($request->pyall);
+                // $pyall=$request->pyall;
                 return $famdet;
+                // return $pyall;
             }
         } else {
             $famdet = family_breakdown::where('destination_id', '=', $productId)
@@ -416,12 +419,12 @@ class HomeController extends Controller
             } else {
                 $dueDay = "";
             }
-
+          //  $p_id=101;
             $pays = DB::table('pricing_plans')
                 ->join('applications', 'applications.pricing_plan_id', '=', 'pricing_plans.id')
                 // ->select('applications.pricing_plan_id', 'applications.destination_id', 'pricing_plans.id', 'pricing_plans.pricing_plan_type', 'pricing_plans.total_price', 'pricing_plans.destination_id', 'pricing_plans.first_payment_price', 'pricing_plans.submission_payment_price', 'pricing_plans.second_payment_price', 'pricing_plans.third_payment_price', 'pricing_plans.total_price')
                 ->select('applications.pricing_plan_id', 'applications.destination_id', 'pricing_plans.id', 'pricing_plans.pricing_plan_type', 'pricing_plans.sub_total', 'pricing_plans.destination_id', 'pricing_plans.first_payment_sub_total', 'pricing_plans.submission_payment_sub_total', 'pricing_plans.second_payment_sub_total', 'pricing_plans.third_payment_sub_total', 'pricing_plans.sub_total')
-                ->where('pricing_plans.pricing_plan_type', '=', $packageType)
+                // ->where('pricing_plans.pricing_plan_type', '=', $packageType) //REMOVED NOW
                 ->where('applications.destination_id', '=', $p_id)
                 ->where('applications.client_id', '=', $id)
                 // ->where('pricing_plans.status', 'CURRENT')
@@ -478,6 +481,7 @@ class HomeController extends Controller
                         $pack_id = $request->fam_id;
                     }
                 }
+                $myPack = $request->myPack;
 
 
                 //Call Create Contract Function
@@ -522,10 +526,12 @@ class HomeController extends Controller
                     // ->whereNotIn('status',  ['APPLICATION_COMPLETED','VISA_REFUSED', 'APPLICATION_CANCELLED','REFUNDED'] )
                     ->limit(1)
                     ->first();
+                    
                 $pdet = DB::table('pricing_plans')
                     ->where('id', '=', $pack_id)
                     ->first();
-                return view('user.payment-form', compact('data', 'pdet', 'pays', 'payall', 'paym', 'fileUrl'));
+
+                return view('user.payment-form', compact('data', 'pdet', 'pays', 'payall', 'paym', 'fileUrl','myPack'));
             } else {
                 return redirect('home');
             }
@@ -786,6 +792,18 @@ class HomeController extends Controller
         return $applicant->id;
     }
 
+    public static function payType(Request $request) {
+        if($request->payall ==0)
+        {
+            $payall =0;
+            Session::put('payall',0);
+        } else {
+            $payall =1;
+            Session::put('payall',1);
+        }
+        return $payall;
+    }
+
     public function addpayment(Request $request)
     {
         try {
@@ -797,7 +815,7 @@ class HomeController extends Controller
                 Session::put('packageType', $request->packageType);
                 $user = Client::find(Auth::id());
                 $signatureUrl = (isset($user->getMedia(Client::$media_collection_main_signture)[0])) ? $user->getMedia(Client::$media_collection_main_signture)[0]->getUrl() : null;
-                if ($signatureUrl == null) {
+                if ($signatureUrl == null && $request->whichpayment == 'FIRST') {
                     return back()->with('error', 'Oppss! Please provide signature.');
                 }
                 // //Call Create Contract Function
@@ -978,7 +996,7 @@ class HomeController extends Controller
                 $failUrl =  url('/') . '/payment/fail';
                 $order['action']                        = "PURCHASE";                      // Transaction mode ("AUTH" = authorize only, no automatic settle/capture, "SALE" = authorize + automatic settle/capture)
                 $order['amount']['currencyCode']       = "AED";                           // Payment currency ('AED' only for now)
-                $order['amount']['value']                = floor($amount * 100);              // Minor units (1000 = 10.00 AED)
+                $order['amount']['value']                = floor($amount * 100);         // Minor units (1000 = 10.00 AED)
                 $order['language']                       = "en";                        // Payment page language ('en' or 'ar' only)
                 $order['emailAddress']                    = "pwggroup@pwggroup.pl";
                 $order['billingAddress']['firstName'] = "PWG";
@@ -1323,9 +1341,13 @@ class HomeController extends Controller
             }
             $user = Client::find(Auth::id());
             $signatureUrl = (isset($user->getMedia(Client::$media_collection_main_signture)[0])) ? $user->getMedia(Client::$media_collection_main_signture)[0]->getUrl() : null;
+            // if ($request->whichpayment == 'FIRST') {
+                // dd($signatureUrl);
+
             if ($signatureUrl == null) {
                 return back()->with('error', 'Oppss! Please provide signature.');
             }
+
             Session::put('packageType', $request->packageType);
 
             // //Call Create Contract Function
