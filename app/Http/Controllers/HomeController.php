@@ -46,6 +46,7 @@ class HomeController extends Controller
 {
     public function redirect()
     {
+
         if (Auth::id()) {
 
             $client = User::find(Auth::id());
@@ -109,7 +110,6 @@ class HomeController extends Controller
 
     public function index()
     {
-        pdfBlock::pdfBlock('pdf/workpermittemplate.pdf');
         if (Auth::id()) {
             $started = DB::table('applications')
                 ->select('pricing_plan_id', 'destination_id', 'client_id', 'first_payment_status', 'status')
@@ -2366,10 +2366,8 @@ class HomeController extends Controller
 
     public function getFooterTimer()
     {
-        $response = [];
         $date =  Timer::first()->date;
-        $response['data'] = $date;
-        return $response;
+        return response()->json(['date' => $date]);
     }
 
     public function updatePricing()
