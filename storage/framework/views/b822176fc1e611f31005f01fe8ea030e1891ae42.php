@@ -317,7 +317,6 @@ if (isset($pays) && (($pays->first_payment_remaining > 0 && $pays->first_payment
                             <div class="row bankDetails">
                                 <div class="col-12 adcb">
                                     <p class="flash"><i class="fa fa-warning"></i> <b>Pay directly to the bank account provided below, do not give cash to anyone or pay to another account!</b></p>
-
                                     <ul>
                                         <li>
                                             <h6>
