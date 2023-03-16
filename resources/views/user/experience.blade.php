@@ -21,7 +21,7 @@
             {{-- <h3>Please add your experience very carefully, and add multiple experiences if you have worked in more than one job sector
             </h3> --}}
             <h4 style="margin-top:60px">Job Sector List</h4>
-            <p style="display:flex;color:white; padding:2%;background-color: rgb(67, 65, 65); height: 100px; float:left; font-weight:400"> <span><i class="fa fa-info-circle fa-spin-pulse fa-rotate-90" style="display:inline-block;font-size:55px;font-style:italics;color:#FAE008; margin-left:5px; margin-right:15px;--fa-animation-duration: 5s;"></i></span> <span style="display:inline-block">You can add your experience by expanding below options to select your experience that is relevant to this application, or search on using the search bar. Please know that you can add more than one experience and remove it if you no longer want it to appear.<span></p>
+            <p style="display:flex;color:white; padding:2%;background-color: rgb(67, 65, 65); height: 100px; float:left; font-weight:400"> <span><i class="fa fa-info-circle fa-spin-pulse fa-rotate-90" style="display:inline-block;font-size:55px;font-style:italics;color:#FAE008; margin-left:5px; margin-right:15px;--fa-animation-duration: 5s;"></i></span> <span style="display:inline-block">You can add your experience by expanding below options to select your experience that is relevant to this application, or search on using the search bar. <span style="font-size:14px"><b>Please know that you can add more than one experience</b></span> and remove it if you no longer want it to appear.<span></p>
             <div class="form-group mt-4 searchForm">
                 <div class="row">
                     <div class="col-8 col-md-10 col-lg-10 mt-3" >

@@ -639,9 +639,9 @@ select {
     /* Remove margins */
 }
 
-.bankDetails {
-    /* margin-top: 2.3rem; */
-}
+/* .bankDetails {
+    margin-top: 2.3rem;
+} */
 
 .recieptUpload {
     margin: 0 auto;

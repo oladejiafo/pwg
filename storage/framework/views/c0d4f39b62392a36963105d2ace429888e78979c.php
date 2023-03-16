@@ -69,7 +69,7 @@
 </style>
 <?php $timer = App\Helpers\users::getDateTime();?>
 <script>
-    
+
     var countDownDate = new Date("<?php echo e($timer); ?>").getTime();
     // Update the count down every 1 second
     var x = setInterval(function() {
