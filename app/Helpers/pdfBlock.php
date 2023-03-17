@@ -68,7 +68,7 @@ class pdfBlock
     }
 
 
-    public static function mapDetails($originalPdf, $destination_file, $product, $package)
+    public static function mapDetails($originalPdf, $destination_file, $product, $package, $client)
     {
 
         $pdf = new \setasign\Fpdi\Fpdi();
@@ -78,7 +78,7 @@ class pdfBlock
 
             $pdf->AddPage();
             $template = $pdf->importPage($pageNo);
-            $client = User::find(Auth::id());
+            // $client = User::find(Auth::id());
             // use the imported page and place it at point 20,30 with a width of 170 mm
             $pdf->useTemplate($template, 10, 10, 200);
             //Select Arial italic 8
@@ -245,7 +245,7 @@ class pdfBlock
         Storage::disk(env('MEDIA_DISK'))->put($destination_file, $theString, 'public');
     }
 
-    public static function attachSignature($originalPdf, $signature, $product, $paymentType, $applicant)
+    public static function attachSignature($originalPdf, $signature, $product, $paymentType, $applicant, $client)
     {
         $pdf = new \setasign\Fpdi\Fpdi();
         $fileContent = file_get_contents($originalPdf, 'rb');
@@ -258,7 +258,6 @@ class pdfBlock
             //Select Arial italic 8
             $pdf->SetFont('Arial', 'B', '9');
             $pdf->SetTextColor(0, 0, 0);
-            $client = User::find(Auth::id());
 
             if (strtolower($product->name) == Constant::poland || strtolower($product->name) == Constant::germany) {
 
@@ -267,7 +266,7 @@ class pdfBlock
                         //signature
                         $pdf->Image($signature, 40, 217, 25, 20, 'PNG');
 
-                        $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name .'_'.$product->name.'_first_payment_contract.pdf';
+                        $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name .'_'.$product->name.'_first_payment_contract.pdf';
                     // }
                 }
                 // if ($pageNo == 5) {
@@ -279,7 +278,7 @@ class pdfBlock
                 //         $pdf->SetXY(172, 87);
                 //         $pdf->Write(2, date('d/m/Y'));
 
-                //         $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_first_payment_contract.pdf';
+                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_first_payment_contract.pdf';
                 //     }
                 //     if ($paymentType == 'SUBMISSION') {
                 //         // $pdf->Image($signature, 155, 149, 18, 15, 'PNG');
@@ -287,11 +286,11 @@ class pdfBlock
                 //         $pdf->SetXY(172, 127);
                 //         $pdf->Write(2, date('d/m/Y'));
 
-                //         $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_second_payment_contract.pdf';
+                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_second_payment_contract.pdf';
                 //     } else if($paymentType == 'Full-Outstanding Payment'){
                 //         $pdf->SetXY(172, 123);
                 //         $pdf->Write(2, date('d/m/Y'));
-                //         $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_second_payment_contract.pdf';
+                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_second_payment_contract.pdf';
                 //     }
                 // }
                 // if ($pageNo == 5) {
@@ -303,12 +302,12 @@ class pdfBlock
                 //         $pdf->SetXY(172, 171);
                 //         $pdf->Write(2, date('d/m/Y'));
 
-                //         $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_third_payment_contract.pdf';
+                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_third_payment_contract.pdf';
                 //     } elseif($paymentType == 'Full-Outstanding Payment') {
                 //         $pdf->SetXY(172, 168);
                 //         $pdf->Write(2, date('d/m/Y'));
 
-                //         $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_third_payment_contract.pdf';
+                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_third_payment_contract.pdf';
                 //     }
 
                 //     if ($paymentType == 'Fourth Payment' || $paymentType == 'Full-Outstanding Payment') {
@@ -318,7 +317,7 @@ class pdfBlock
                 //         $pdf->SetXY(172, 215);
                 //         $pdf->Write(2, date('d/m/Y'));
 
-                //         $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_third_payment_contract.pdf';
+                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_third_payment_contract.pdf';
                 //     }
                 // }
             } else if (strtolower($product->name) == Constant::czech) {
@@ -328,7 +327,7 @@ class pdfBlock
                         //signature
 
                         $pdf->Image($signature, 40, 229, 25, 20, 'PNG');
-                        $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name .'_'.$product->name.'_first_payment_contract.pdf';
+                        $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name .'_'.$product->name.'_first_payment_contract.pdf';
                     }
                 }
                 // if ($pageNo == 5) {
@@ -340,7 +339,7 @@ class pdfBlock
                 //         $pdf->SetXY(172, 103);
                 //         $pdf->Write(2, date('d/m/Y'));
 
-                //         $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_first_payment_contract.pdf';
+                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_first_payment_contract.pdf';
                 //     }
                 //     if ($paymentType == 'SUBMISSION') {
 
@@ -349,12 +348,12 @@ class pdfBlock
                 //         $pdf->SetXY(172, 143);
                 //         $pdf->Write(2, date('d/m/Y'));
 
-                //         $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_second_payment_contract.pdf';
+                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_second_payment_contract.pdf';
                 //     } else if($paymentType == 'Full-Outstanding Payment') {
                 //         $pdf->SetXY(172, 140);
                 //         $pdf->Write(2, date('d/m/Y'));
 
-                //         $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_second_payment_contract.pdf';
+                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_second_payment_contract.pdf';
                 //     }
                 // }
                 // if ($pageNo == 5) {
@@ -366,12 +365,12 @@ class pdfBlock
                 //         $pdf->SetXY(172, 188);
                 //         $pdf->Write(2, date('d/m/Y'));
 
-                //         $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_third_payment_contract.pdf';
+                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_third_payment_contract.pdf';
                 //     } else if($paymentType == 'Full-Outstanding Payment') {
                 //         $pdf->SetXY(172, 187);
                 //         $pdf->Write(2, date('d/m/Y'));
 
-                //         $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_third_payment_contract.pdf';
+                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_third_payment_contract.pdf';
                 //     }
 
                 //     if ($paymentType == 'Fourth Payment' || $paymentType == 'Full-Outstanding Payment') {
@@ -381,7 +380,7 @@ class pdfBlock
                 //         $pdf->SetXY(172, 234);
                 //         $pdf->Write(2, date('d/m/Y')); 
 
-                //         $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_third_payment_contract.pdf';
+                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_third_payment_contract.pdf';
                 //     }
                 // }
             } else if (strtolower($product->name) == Constant::canada) {
@@ -391,7 +390,7 @@ class pdfBlock
                         //signature
                         $pdf->Image($signature, 40, 215, 25, 20, 'PNG');
 
-                        $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name .'_'.$product->name.'_first_payment_contract.pdf';
+                        $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name .'_'.$product->name.'_first_payment_contract.pdf';
                     }
                 }
                 // if ($pageNo == 5) {
@@ -403,7 +402,7 @@ class pdfBlock
                 //         $pdf->SetXY(162, 144);
                 //         $pdf->Write(2, date('d/m/Y'));
 
-                //         $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_first_payment_contract.pdf';
+                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_first_payment_contract.pdf';
                 //     }
                 //     if ($paymentType == 'SUBMISSION' || $paymentType == 'Full-Outstanding Payment') {
 
@@ -412,7 +411,7 @@ class pdfBlock
                 //         $pdf->SetXY(162, 232);
                 //         $pdf->Write(2, date('d/m/Y'));
 
-                //         $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_second_payment_contract.pdf';
+                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_second_payment_contract.pdf';
                 //     }
                 // }
                 // if ($pageNo == 6) {
@@ -424,7 +423,7 @@ class pdfBlock
                 //         $pdf->SetXY(162, 152);
                 //         $pdf->Write(2, date('d/m/Y'));
 
-                //         $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_third_payment_contract.pdf';
+                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_third_payment_contract.pdf';
                 //     }
                 // }
             } else if (strtolower($product->name) == Constant::malta) {
@@ -434,7 +433,7 @@ class pdfBlock
                         //signature
 
                         $pdf->Image($signature, 40, 229, 25, 20, 'PNG');
-                        $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name .'_'.$product->name.'_first_payment_contract.pdf';
+                        $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name .'_'.$product->name.'_first_payment_contract.pdf';
                     }
                 }
                 // if ($pageNo == 5) {
@@ -446,7 +445,7 @@ class pdfBlock
                 //         $pdf->SetXY(173, 106);
                 //         $pdf->Write(2, date('d/m/Y'));
 
-                //         $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_first_payment_contract.pdf';
+                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_first_payment_contract.pdf';
                 //     }
                 //     if ($paymentType == 'SUBMISSION') {
 
@@ -455,12 +454,12 @@ class pdfBlock
                 //         $pdf->SetXY(174, 148);
                 //         $pdf->Write(2, date('d/m/Y'));
 
-                //         $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_second_payment_contract.pdf';
+                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_second_payment_contract.pdf';
                 //     } else if($paymentType == 'Full-Outstanding Payment') {
                 //         $pdf->SetXY(174, 145);
                 //         $pdf->Write(2, date('d/m/Y'));
 
-                //         $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_second_payment_contract.pdf';
+                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_second_payment_contract.pdf';
                 //     }
                 // }
                 // if ($pageNo == 5) {
@@ -472,12 +471,12 @@ class pdfBlock
                 //         $pdf->SetXY(176, 196);
                 //         $pdf->Write(2, date('d/m/Y'));
 
-                //         $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_third_payment_contract.pdf';
+                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_third_payment_contract.pdf';
                 //     } else if($paymentType == 'Full-Outstanding Payment'){
                 //         $pdf->SetXY(172, 195);
                 //         $pdf->Write(2, date('d/m/Y'));
 
-                //         $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_third_payment_contract.pdf';
+                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_third_payment_contract.pdf';
                 //     }
                 //     if ($paymentType == 'Fourth Payment' || $paymentType == 'Full-Outstanding Payment') {
 
@@ -486,7 +485,7 @@ class pdfBlock
                 //         $pdf->SetXY(172, 246);
                 //         $pdf->Write(2, date('d/m/Y'));
 
-                //         $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_third_payment_contract.pdf';
+                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_third_payment_contract.pdf';
                 //     }
                 // }
             }

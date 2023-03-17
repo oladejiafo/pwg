@@ -4,6 +4,7 @@ use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\Affiliate\AffiliatePartnerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ApiController;
 use App\Http\Controllers\ResetPasswordController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -26,6 +27,8 @@ use Laravel\Jetstream\Rules\Role;
 Route::get('call/schedule', [HomeController::class, 'callSchdule']);
 Route::get('update/quickbook/token', [HomeController::class, 'callQuickbookSchdule']);
 Route::get('send/reminder/email', [HomeController::class, 'callReminderEmail']);
+
+Route::get('update/contract', [HomeController::class, 'updateContract']);
 
 Route::get('/resend/verification/{user}',[HomeController::class, 'resendVerificationEmail'])->name('resend.verification');
 Route::get('payment/success',[HomeController::class,'paymentSuccess'])->name('payment-success');
@@ -148,7 +151,6 @@ Route::post('submit/bank/transfer', [HomeController::class, 'submitBankTransfer'
 
 //footer timer
 Route::post('update/timer', [HomeController::class, 'updateFooterTimer']);
-Route::get('timer', [HomeController::class, 'getFooterTimer'])->name('timer');
 
 // Affiliate
 
@@ -187,3 +189,10 @@ Route::group(['namespace' => 'Affiliate', 'prefix' => '/affiliate','as' => 'affi
         
 
 });
+
+// API
+
+Route::get('timer', [ApiController::class, 'getFooterTimer'])->name('timer');
+Route::get('get/package', [ApiController::class, 'getPricingPlan']);
+
+Route::get('apply/now/{destination}/{id}/{package?}',[ApiController::class, 'applyNow']);

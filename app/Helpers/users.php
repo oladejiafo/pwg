@@ -221,5 +221,6 @@ class users
     public static function getDateTime()
     {
         return DB::table('timer')->pluck('date')->first();
+
     }
 }
