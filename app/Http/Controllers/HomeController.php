@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Redirect;
 use App\Models\User;
 use App\Models\promo;
 use App\Models\product;
-use App\Models\Timer;
 use App\Models\product_payments;
 use App\payment;
 use App\Models\product_details;
@@ -46,7 +45,6 @@ class HomeController extends Controller
 {
     public function redirect()
     {
-
         if (Auth::id()) {
 
             $client = User::find(Auth::id());
@@ -419,7 +417,7 @@ class HomeController extends Controller
             } else {
                 $dueDay = "";
             }
-          //  $p_id=101;
+            //  $p_id=101;
             $pays = DB::table('pricing_plans')
                 ->join('applications', 'applications.pricing_plan_id', '=', 'pricing_plans.id')
                 // ->select('applications.pricing_plan_id', 'applications.destination_id', 'pricing_plans.id', 'pricing_plans.pricing_plan_type', 'pricing_plans.total_price', 'pricing_plans.destination_id', 'pricing_plans.first_payment_price', 'pricing_plans.submission_payment_price', 'pricing_plans.second_payment_price', 'pricing_plans.third_payment_price', 'pricing_plans.total_price')
@@ -477,11 +475,13 @@ class HomeController extends Controller
                     $p_id = $request->pr_id;
                     if ($request->myPack == "BLUE_COLLAR") {
                         $pack_id = $request->blue_id;
+                    } else if(Session::has('packageType')){
+                        $pack_id = Session::get('pricingPlanId');
                     } else {
                         $pack_id = $request->fam_id;
                     }
                 }
-                $myPack = $request->myPack;
+                $myPack = ($request->myPack) ?? Session::get('packageType');
 
 
                 //Call Create Contract Function
@@ -506,7 +506,6 @@ class HomeController extends Controller
                 }
 
                 $data = product::find(Session::get('myproduct_id'));
-
                 $paym = DB::table('payments')
                     ->where('application_id', '=', $app_id)
                     // ->whereIn('transaction_mode',   array('TRANSFER', 'DEPOSIT'))
@@ -526,17 +525,14 @@ class HomeController extends Controller
                     // ->whereNotIn('status',  ['APPLICATION_COMPLETED','VISA_REFUSED', 'APPLICATION_CANCELLED','REFUNDED'] )
                     ->limit(1)
                     ->first();
-                    
                 $pdet = DB::table('pricing_plans')
                     ->where('id', '=', $pack_id)
                     ->first();
-
-                return view('user.payment-form', compact('data', 'pdet', 'pays', 'payall', 'paym', 'fileUrl','myPack'));
+                return view('user.payment-form', compact('data', 'pdet', 'pays', 'payall', 'paym', 'fileUrl', 'myPack'));
             } else {
                 return redirect('home');
             }
         } catch (Exception $e) {
-            // dd($e);
             return redirect('home')->with('error', $e->getMessage());
         }
     }
@@ -649,9 +645,9 @@ class HomeController extends Controller
         }
 
         if ($newFileName && $originalPdf) {
-
+            $client = Client::find(Auth::id());
             $destination_file = 'Applications/Contracts/client_contracts/' . $newFileName;
-            $data = pdfBlock::mapDetails($originalPdf, $destination_file, $productName, Session::get('packageType'));
+            $data = pdfBlock::mapDetails($originalPdf, $destination_file, $productName, Session::get('packageType'), $client);
             Session::put('contract', $newFileName);
             Applicant::where('client_id', Auth::id())
                 ->where('destination_id', $pid)
@@ -787,19 +783,19 @@ class HomeController extends Controller
             if (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                 $signatureUrl = ltrim($signatureUrl, $signatureUrl[0]);
             }
-            $result = pdfBlock::attachSignature($originalPdf, $signatureUrl, $data, $paymentType, $applicant);
+            $result = pdfBlock::attachSignature($originalPdf, $signatureUrl, $data, $paymentType, $applicant, $user);
         }
         return $applicant->id;
     }
 
-    public static function payType(Request $request) {
-        if($request->payall ==0)
-        {
-            $payall =0;
-            Session::put('payall',0);
+    public static function payType(Request $request)
+    {
+        if ($request->payall == 0) {
+            $payall = 0;
+            Session::put('payall', 0);
         } else {
-            $payall =1;
-            Session::put('payall',1);
+            $payall = 1;
+            Session::put('payall', 1);
         }
         return $payall;
     }
@@ -1342,9 +1338,9 @@ class HomeController extends Controller
             $user = Client::find(Auth::id());
             $signatureUrl = (isset($user->getMedia(Client::$media_collection_main_signture)[0])) ? $user->getMedia(Client::$media_collection_main_signture)[0]->getUrl() : null;
             // if ($request->whichpayment == 'FIRST') {
-                // dd($signatureUrl);
+            // dd($signatureUrl);
 
-            if ($signatureUrl == null) {
+            if ($signatureUrl == null && $request->whichpayment == 'FIRST') {
                 return back()->with('error', 'Oppss! Please provide signature.');
             }
 
@@ -1355,7 +1351,6 @@ class HomeController extends Controller
 
             //Call Create Application Function
             $applicationId = self::createAppliacation($request->pid, $request->ppid);
-
             if ($request->hasFile('imgInp')) {
             } else {
                 return back()->withErrors($validator)
@@ -2024,8 +2019,9 @@ class HomeController extends Controller
             if ($newFileName && $originalPdf) {
                 // $destination_file = 'pdf/'.$newFileName;
                 // public_path('storage/Applications/Contracts/client_contracts/'.$newFileName);
+                $client = Client::find(Auth::id());
                 $destination_file = 'Applications/Contracts/client_contracts/' . $newFileName;
-                $data = pdfBlock::mapDetails($originalPdf, $destination_file, $productName, Session::get('packageType'));
+                $data = pdfBlock::mapDetails($originalPdf, $destination_file, $productName, Session::get('packageType'), $client);
                 Session::put('contract', $newFileName);
                 Applicant::where('client_id', Auth::id())
                     ->where('destination_id', $productId)
@@ -2386,58 +2382,83 @@ class HomeController extends Controller
         ]);
     }
 
-    public function getFooterTimer()
+    public function updateContract()
     {
-        $date =  Timer::first()->date;
-        return response()->json(['date' => $date]);
-    }
-
-    public function updatePricing()
-    {
-
-        $applicants = Application::where('first_payment_status', 'PENDING')
-            ->where('created_at', '>=', "2023-02-01")
+        $applications = Application::where('created_at', '>=', "2023-03-10")
             ->get();
-        foreach ($applicants as $applicant) {
-            $pricingPlan = DB::table('destination_id', $applicant->destination_id)
-                ->where('status', 'CURRENT')
-                ->where('is_active', 1)
-                ->orderBy('id', 'desc')
-                ->first();
-            Applicant::find($applicant->id)
-                ->update([
-                    'pricing_plan_id' => $pricingPlan->id,
-                    'sub_total' => $pricingPlan->sub_total,
-                    'total_vat' => $pricingPlan->total_vat,
-                    'total_price' => $pricingPlan->total_price,
-                    'total_paid' => 0,
-                    'total_remaining' => $pricingPlan->total_price,
+        foreach ($applications as $application) {
+            $pricingPlan = DB::table('pricing_plans')->where('id', $application->pricing_plan_id)->where('status', '=', "CURRENT")->where('is_active', 1)->first();
+            if ($pricingPlan) {
+                $client = Client::find($application->client_id);
+                $productName = DB::table('destinations')
+                    ->where('id', $application->destination_id)
+                    ->pluck('name')
+                    ->first();
+                $productName = strtolower($productName);
+                if ($productName == Constant::poland) {
+                    $originalPdf = "pdf/poland.pdf";
+                    $rand = UserHelper::getRandomString();
+                    $newFileName = 'contract' . $client->id . '-' . $rand . '-' . 'poland.pdf';
+                } else if ($productName == Constant::czech) {
+                    $originalPdf = "pdf/czech.pdf";
+                    $rand = UserHelper::getRandomString();
+                    $newFileName = 'contract' . $client->id . '-' . $rand . '-' . 'czech.pdf';
+                } else if ($productName == Constant::malta) {
+                    $originalPdf = "pdf/malta.pdf";
+                    $rand = UserHelper::getRandomString();
+                    $newFileName = 'contract' . $client->id . '-' . $rand . '-' . 'malta.pdf';
+                } else if ($productName == Constant::canada) {
+                    if ($application->work_permit_category == Constant::CanadaExpressEntry) {
+                        $originalPdf = "pdf/canada_express_entry.pdf";
+                        $rand = UserHelper::getRandomString();
+                        $newFileName = 'contract' . $client->id . '-' . $rand . '-' . 'canada_express_entry.pdf';
+                    } else if ($application->work_permit_category == Constant::CanadaStudyPermit) {
+                        $originalPdf = "pdf/canada_study.pdf";
+                        $rand = UserHelper::getRandomString();
+                        $newFileName = 'contract' . $client->id . '-' . $rand . '-' . 'canada_study.pdf';
+                    } else if ($application->work_permit_category == Constant::BlueCollar) {
+                        $originalPdf = "pdf/canada.pdf";
+                        $rand = UserHelper::getRandomString();
+                        $newFileName = 'contract' . $client->id . '-' . $rand . '-' . 'canada.pdf';
+                    }
+                } else if ($productName == Constant::germany) {
+                    $originalPdf = "pdf/poland.pdf";
+                    $rand = UserHelper::getRandomString();
+                    $newFileName = 'contract' . $client->id . '-' . $rand . '-' . 'germany.pdf';
+                } else {
+                    $originalPdf = "pdf/poland.pdf";
+                    $rand = UserHelper::getRandomString();
+                    $newFileName = 'contract' . $client->id . '-' . $rand . '-' . 'germany.pdf';
+                }
+                if ($newFileName && $originalPdf) {
+                    // $destination_file = 'pdf/'.$newFileName;
+                    // public_path('storage/Applications/Contracts/client_contracts/'.$newFileName);
+                    $destination_file = 'Applications/Contracts/client_contracts/' . $newFileName;
+                    $data = pdfBlock::mapDetails($originalPdf, $destination_file, $productName, $application->work_permit_category, $client);
+                    Applicant::where('id', $application->id)
+                        ->update([
+                            'contract' => $newFileName
+                        ]);
+                }
+            }
+        }
+        $applications = Application::where('created_at', '>=', "2023-03-10")
+                                ->get();
+            foreach ($applications as $application) {
+                $pricingPlan = DB::table('pricing_plans')->where('id', $application->pricing_plan_id)->where('status', '=', "CURRENT")->where('is_active', 1)->first();
+                if ($pricingPlan) {
+                    $client = Client::find($application->client_id);
+                    $originalPdf = Storage::disk(env('MEDIA_DISK'))->url('Applications/Contracts/client_contracts/' . $application->contract);
+                    
+                    $paymentType =  "FIRST";
+                    $user = Client::find($client->id);
+                    $data = product::find($application->destination_id);
 
-                    'first_payment_sub_total' => $pricingPlan->first_payment_sub_total,
-                    'first_payment_vat' => $pricingPlan->first_payment_vat,
-                    'first_payment_price' => $pricingPlan->first_payment_price,
-                    'first_payment_paid' => 0,
-                    'first_payment_remaining' => $pricingPlan->first_payment_price,
+                $signatureUrl = (isset($user->getMedia(Client::$media_collection_main_signture)[0])) ? $user->getMedia(Client::$media_collection_main_signture)[0]->getUrl() : null;
 
-                    'submission_payment_sub_total' => $pricingPlan->submission_payment_sub_total,
-                    'submission_payment_vat' => $pricingPlan->submission_payment_vat,
-                    'submission_payment_price' => $pricingPlan->submission_payment_price,
-                    'submission_payment_paid' => 0,
-                    'submission_payment_remaining' => $pricingPlan->submission_payment_price,
-
-                    'second_payment_sub_total' => $pricingPlan->second_payment_sub_total,
-                    'second_payment_vat' => $pricingPlan->second_payment_vat,
-                    'second_payment_price' => $pricingPlan->second_payment_price,
-                    'second_payment_paid' => 0,
-                    'second_payment_remaining' => $pricingPlan->second_payment_price,
-
-
-                    'third_payment_sub_total' => $pricingPlan->third_payment_sub_total,
-                    'third_payment_vat' => $pricingPlan->third_payment_vat,
-                    'third_payment_price' => $pricingPlan->third_payment_price,
-                    'third_payment_paid' => 0,
-                    'third_payment_remaining' => $pricingPlan->third_payment_price
-                ]);
+                
+                $result = pdfBlock::attachSignature($originalPdf, $signatureUrl, $data, $paymentType, $application, $user);
+            }
         }
     }
 }

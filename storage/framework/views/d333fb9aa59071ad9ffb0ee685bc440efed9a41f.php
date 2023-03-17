@@ -9,52 +9,52 @@ if (Session::has('payall')) {
 
 // Session::forget('payall');
 ?>
-@if (session()->has('myDiscount') && session()->has('haveCoupon') && session()->get('haveCoupon') == 1)
-    @php
+<?php if(session()->has('myDiscount') && session()->has('haveCoupon') && session()->get('haveCoupon') == 1): ?>
+    <?php
         $promo = session()->get('myDiscount');
-    @endphp
-@else
-    @php
+    ?>
+<?php else: ?>
+    <?php
         $promo = 0;
-    @endphp
-@endif
+    ?>
+<?php endif; ?>
 
-@if (isset($pdet))
-    @php
+<?php if(isset($pdet)): ?>
+    <?php
         
         $first_pay = $pdet->first_payment_sub_total;
         $second_pay = $pdet->submission_payment_sub_total;
         $third_pay = $pdet->second_payment_sub_total;
         
         $tot_pay = $first_pay + $second_pay + $third_pay;
-    @endphp
-@else
-    @php
+    ?>
+<?php else: ?>
+    <?php
         $first_pay = 0;
         $second_pay = 0;
         $third_pay = 0;
         
         $tot_pay = 0;
-    @endphp
-@endif
+    ?>
+<?php endif; ?>
 
-@php
+<?php
     $diff = $pays ? $pays->first_payment_remaining : 0; //$pays->first_payment_price - $pays->first_payment_paid
-@endphp
+?>
 
-@if ($diff > 0)
-    @php
+<?php if($diff > 0): ?>
+    <?php
         $pends = $pays ? $pays->first_payment_remaining : 0;
-    @endphp
-@elseif($diff < 0)
-    @php
+    ?>
+<?php elseif($diff < 0): ?>
+    <?php
         $pends = $pays ? $pays->first_payment_paid - $pays->first_payment_sub_total : 0;
-    @endphp
-@else
-    @php
+    ?>
+<?php else: ?>
+    <?php
         $pends = 0;
-    @endphp
-@endif
+    ?>
+<?php endif; ?>
 
 
 <?php
@@ -301,10 +301,10 @@ if (isset($pays) && (($pays->first_payment_remaining > 0 && $pays->first_payment
     <div class="col-12">
 
         <div class="bank-tranfer">
-            <form action="{{ route('submit.bank.transfer') }}" method="POST" enctype="multipart/form-data">
-                @csrf
+            <form action="<?php echo e(route('submit.bank.transfer')); ?>" method="POST" enctype="multipart/form-data">
+                <?php echo csrf_field(); ?>
 
-                <input type="hidden" name="productId" value="{{ $pdet->destination_id }}">
+                <input type="hidden" name="productId" value="<?php echo e($pdet->destination_id); ?>">
                 <div class="row">
                     <div class="heading">
                         <div class="first-heading" style="text-align: center">
@@ -362,12 +362,13 @@ if (isset($pays) && (($pays->first_payment_remaining > 0 && $pays->first_payment
                                     <div class="form-group row mt-4">
                                         <div class="form-floating mt-3" align="left">
                                             AMOUNT TO PAY: <b style="font-size: 18px"><span id="transAmount">
-                                                    @if (isset($totalPay))
-                                                        {{ number_format($totalPay, 2) }}
-                                                    @endif
+                                                    <?php if(isset($totalPay)): ?>
+                                                        <?php echo e(number_format($totalPay, 2)); ?>
+
+                                                    <?php endif; ?>
                                                 </span></b> <b>AED</b>
                                             <input type="hidden" name="invoice_amount" id="invoiceAmount"
-                                                value="{{ $totalPay }}" />
+                                                value="<?php echo e($totalPay); ?>" />
                                         </div>
                                     </div>
                                     <input type="hidden" name="bank" class="form-select form-control bank"
@@ -387,26 +388,21 @@ if (isset($pays) && (($pays->first_payment_remaining > 0 && $pays->first_payment
                                 <div class='file file--uploading'>
                                     <label for='input-file'>
                                         <div class="recieptUploadImage"><img
-                                                src="{{ asset('images/receiptupload.png') }}" alt="PWG Receipt"
+                                                src="<?php echo e(asset('images/receiptupload.png')); ?>" alt="PWG Receipt"
                                                 width="100%"></div>
                                     </label>
                                     <h6 style="text-align: center"><span style="color:aqua">Browse to upload</span></h6>
                                     <input id='input-file' name="imgInp" accept="image/*" type='file' id="imgInp"
                                         onchange="changeImage(event)" />
-                                    @if ($errors->has('imgInp'))
+                                    <?php if($errors->has('imgInp')): ?>
                                         <span class="error">Please upload receipt</span>
-                                    @endif
+                                    <?php endif; ?>
                                 </div>
                             </div>
                             <div align="center" style="text-align: center;margin:20px auto;color:#ccc;">Supported
                                 formats: PDF, JPG, PNG</div>
                         </div>
-                        {{-- <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                                <h5 align="center">Preview:</h5>
-                                <div class="previewImage">
-                                    <img id="output" width="100%"/>
-                                </div>
-                            </div> --}}
+                        
 
                     </div>
                 </div>
@@ -415,19 +411,19 @@ if (isset($pays) && (($pays->first_payment_remaining > 0 && $pays->first_payment
                 </div>
                 <div class="row">
                     <div class="col-4">
-                        <a href="{{ url()->previous() }}"><button type="cancel" class="cancelBtn btnx"
+                        <a href="<?php echo e(url()->previous()); ?>"><button type="cancel" class="cancelBtn btnx"
                                 style="float: left;">Cancel</button></a>
                     </div>
                     <div class="col-4">
-                        <input type="hidden" name="pid" value="{{ $data->id }}">
-                        <input type="hidden" name="ppid" value="{{ isset($pdet->id) ? $pdet->id : '' }}">
-                        <input type="hidden" name="uid" value="{{ Auth::user()->id }}">
-                        <input type="hidden" name="packageType" value="{{ $pdet->pricing_plan_type }}">
+                        <input type="hidden" name="pid" value="<?php echo e($data->id); ?>">
+                        <input type="hidden" name="ppid" value="<?php echo e(isset($pdet->id) ? $pdet->id : ''); ?>">
+                        <input type="hidden" name="uid" value="<?php echo e(Auth::user()->id); ?>">
+                        <input type="hidden" name="packageType" value="<?php echo e($pdet->pricing_plan_type); ?>">
                         <input type="hidden" name="whichpayment"
-                            value="{{ $whichPayment ? $whichPayment : 'FIRST' }}">
-                        <input type="hidden" name="first_p" value="{{ $pdet->first_payment_sub_total }}">
-                        <input type="hidden" name="second_p" value="{{ $pdet->submission_payment_sub_total }}">
-                        <input type="hidden" name="third_p" value="{{ $pdet->second_payment_sub_total }}">
+                            value="<?php echo e($whichPayment ? $whichPayment : 'FIRST'); ?>">
+                        <input type="hidden" name="first_p" value="<?php echo e($pdet->first_payment_sub_total); ?>">
+                        <input type="hidden" name="second_p" value="<?php echo e($pdet->submission_payment_sub_total); ?>">
+                        <input type="hidden" name="third_p" value="<?php echo e($pdet->second_payment_sub_total); ?>">
                     </div>
                     <div class="col-4">
                         <button type="submit" onclick="saveSign()" class="btn btn-primary submitBtn"
@@ -440,7 +436,7 @@ if (isset($pays) && (($pays->first_payment_remaining > 0 && $pays->first_payment
     </div>
 </div>
 
-@push('custom-scripts')
+<?php $__env->startPush('custom-scripts'); ?>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 
@@ -456,10 +452,10 @@ if (isset($pays) && (($pays->first_payment_remaining > 0 && $pays->first_payment
             $('#partial').click(function() {
 
                 $.ajax({
-                    url: '{{ route('payType') }} ',
+                    url: '<?php echo e(route('payType')); ?> ',
                     method: 'POST',
                     data: {
-                        "_token": "{{ csrf_token() }}",
+                        "_token": "<?php echo e(csrf_token()); ?>",
                         "payall": 0
                     },
                     success: function(data) {
@@ -485,10 +481,10 @@ if (isset($pays) && (($pays->first_payment_remaining > 0 && $pays->first_payment
 
                 // throw new Error();
                 $.ajax({
-                    url: '{{ route('payType') }} ',
+                    url: '<?php echo e(route('payType')); ?> ',
                     method: 'POST',
                     data: {
-                        "_token": "{{ csrf_token() }}",
+                        "_token": "<?php echo e(csrf_token()); ?>",
                         "payall": 1
                     },
                     success: function(data) {
@@ -535,7 +531,7 @@ if (isset($pays) && (($pays->first_payment_remaining > 0 && $pays->first_payment
                 // alert(ppyall);
                 $.ajax({
                     // type: 'GET',
-                    url: "{{ route('packageType',$data->id)  }}",
+                    url: "<?php echo e(route('packageType',$data->id)); ?>",
                     data: {kid : kidd, parents: parents , response : 1 }, 
                     success: function (data) {
                         let vallu = (data.first_payment_sub_total*1.2995)-(data.first_payment_sub_total);
@@ -589,8 +585,8 @@ if (isset($pays) && (($pays->first_payment_remaining > 0 && $pays->first_payment
 
     <script>
         function saveSign() {
-            var Signed = '{{is_object($pays) ? $pays->contract_1st_signature_status : null}}';
-            var pays = '{{is_object($pays)}}';
+            var Signed = '<?php echo e(is_object($pays) ? $pays->contract_1st_signature_status : null); ?>';
+            var pays = '<?php echo e(is_object($pays)); ?>';
             if (signaturePad.isEmpty() && (pays != 1 && Signed != "SIGNED")) {
                 toastr.error("Please provide a signature.");
             } else {
@@ -598,11 +594,11 @@ if (isset($pays) && (($pays->first_payment_remaining > 0 && $pays->first_payment
 
                 $.ajax({
                     type: 'POST',
-                    url: "{{ url('upload_signature') }}",
+                    url: "<?php echo e(url('upload_signature')); ?>",
                     data: {
-                        "_token": "{{ csrf_token() }}",
+                        "_token": "<?php echo e(csrf_token()); ?>",
                         signed: dataURL,
-                        payall: '{{ $payall }}',
+                        payall: '<?php echo e($payall); ?>',
                         response: 1
                     },
                     success: function(data) {
@@ -611,7 +607,7 @@ if (isset($pays) && (($pays->first_payment_remaining > 0 && $pays->first_payment
                             // toastr.success("Signature updated successfully!");
 
                             $('.contract-signature').hide();
-                            //  location.href = "{{ url('payment_form') }}/" + '{{ $data->id }}';
+                            //  location.href = "<?php echo e(url('payment_form')); ?>/" + '<?php echo e($data->id); ?>';
                         } else {
                             alert('Something went wrong');
                         }
@@ -623,4 +619,5 @@ if (isset($pays) && (($pays->first_payment_remaining > 0 && $pays->first_payment
 
         }
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
+<?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views/user/bank-payment.blade.php ENDPATH**/ ?>
