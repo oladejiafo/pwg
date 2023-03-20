@@ -76,8 +76,10 @@
     
       // Get today's date and time
     var now = new Date().getTime();
+
       // Find the distance between now and the count down date
-    var distance = countDownDate - now;
+      console.log(parseInt(countDownDate) ,parseInt(now) );
+      var distance = parseInt(countDownDate) - parseInt(now);
       // If the count down is finished, write some text
     //   if (distance < 0 || isNaN(distance) || (Math.floor(distance / (1000 * 60 * 60 * 24)) <= 1)) {
     var tomorrow = new Date();
@@ -88,7 +90,7 @@
         tomorrow = tomorrow.getFullYear()+'-'+(tomorrow.getMonth()+1)+'-'+tomorrow.getDate();
     }
     var lastDay = new Date(tomorrow);
-    if (compareDate(timer, lastDay)) {
+    if (compareDate(timer, lastDay) || (Math.floor(parseInt(distance) / (1000 * 60 * 60 * 24)))  <= 0) {
         var date = new Date();
         // Add 7 days to current date
         const futureDate = new Date(date.getTime() + 7 * 24 * 60 * 60 * 1000);
@@ -123,18 +125,18 @@
     
     countDown = (distance) => {
         // Time calculations for days, hours, minutes and seconds
-      var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      var days = Math.floor(parseInt(distance) / (1000 * 60 * 60 * 24));
+      var hours = Math.floor(parseInt(distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor(parseInt(distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor(parseInt(distance % (1000 * 60)) / 1000);
     
     document.getElementById("days").innerHTML = "<p><span class='head'>PRICE INCREASES IN:</span> <span>" + days + "</span>Days: <span>" + hours + "</span>Hrs: <span>"
       + minutes + "</span>Mins: <span>" + seconds + "</span>Secs:</p>";
     }
     compareDate = (timer, tomorrow) => {
-        if(timer.getFullYear() == tomorrow.getFullYear()){
-            if(timer.getMonth() == tomorrow.getMonth()){
-                if(timer.getDate() == tomorrow.getDate()){
+        if(timer.getFullYear() >= tomorrow.getFullYear()){
+            if(timer.getMonth() >= tomorrow.getMonth()){
+                if(timer.getDate() >= tomorrow.getDate()){
                     return true;
                 }
             }

@@ -1,426 +1,670 @@
-<!DOCTYPE html>
-<html>
+@extends('layouts.master')
+<link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
+<link href="{{asset('user/css/products.css')}}" rel="stylesheet">
 
-@include('user/header')
-
-    <!-- bootstrap core css -->
-    <link href="{{asset('user/css/bootstrap.min.css')}}" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-
-    <!--====== Line Icons CSS ======-->
-    <link rel="stylesheet" href="../user/assets/css/LineIcons.css">
+<style>
+    .package-type ul {
+      list-style: none;
+    }
     
-    <!--====== Style CSS ======-->
-    <link rel="stylesheet" href="../user/assets/css/style.css">
-    <link rel="stylesheet" href="{{ asset('user/css/style.css') }}">
-    <link href="{{asset('user/css/products.css')}}" rel="stylesheet">
-    <style>
-        .banner_bg {
-        width: 100%;
-        float: left;
-        background-image: url(../user/images/v1_17125.png) !important;
-        background-color: rgba(6, 45, 83, 0.7);
-        /* height: 480px;    */
-        padding-top: 30px;
-        background-size: 100%;
-        background-repeat: no-repeat;
+    .package-type ul li {
+       font-size: 14px;
+       /* align-items: left; */
+       position: relative;
+
+    }
+   
+    .package-type ul li::marker {
+      content: "";
+      display: inline-block; 
+    }
+
+    ul li::before {
+        position: absolute;
+        content: "✓";
+        display: block;
+        width: 25px;
+        height: 25px;
+        top: 5px;
+        left: 5px;
+        margin-bottom: 0 !important;
+        font-weight: bold;
+    }
+
+    .package-type .indpackage ul li::before {
+        background: #FACB08;
+        color: #000;
+    }
+
+    .package-type .fampackage ul li::before {
+        background: #E10930;
+        color: #fff;
+    }
+
+    .package-type .czechIndpackage ul li::before {
+        background: #000;
+        color: #fff;
+    }
+
+    .package-type .maltaIndpackage ul li::before {
+        background: #736359;
+        color: #fff;
+    }
+
+    .package-type .canadaPackage ul li::before {
+        background: #820202;
+        color: #fff;
+    }
+
+    .package-type .germanyIndpackage ul li::before {
+        background: #000000;
+        color: #fff;
+    }
+    
+    .selected path {
+        fill: #000;
+    }
+
+    .package-type .price
+    {
+        padding:0 5%;
+    }
+    .package-type .saved {
+        padding:0 5%; 
+        margin:3px 0 10px 0;
+    }
+   
+    @media (max-width: 1100px)
+    {
+        .package-type .price
+        {
+            padding:0;
+        }   
+        .package-type .promo {
+            padding: 0px
         }
-        .col-4 {
+        .package-type .line {
+            padding: 0px
+        }
+        .package-type .regular {
+            padding: 0px
+        }
+        .package-type .saved {
+            padding:0; 
+            margin:3px 0 10px 0;
+        }
+    }
+
+
+    @media (max-width:800px)
+    {
+        .package {
+            padding: 20px 5% !important;
+        }
+        h3 {
+            font-size: 25px !important;
+            text-align: center !important;
+        }
+        p {
+            text-align: center;
+            font-size: 20px;
+        }
+        .package-type{
+            margin: 0px 0px 50px 0px;
+            /* width: 100%; */
+            padding: 0px !important;
+            /* height: 350px; */
+        }
+        .package-type img {
+        width:100px; 
+        /* height:120px; */
+        }
+    }
+    @media (max-width: 600px)
+    {
+        .package-type .line {
+            width: 2%;
+        }
+        .package-type .promo {
+            width: 47%;
+        }
+        .package-type .regular {
+            width: 47%;
+        }                            
+    }
+
+    @media (max-width:360px) {
+        .fampackage ul,
+        .indpackage ul {
+            padding: 0px;
+        }
+        .fampackage .bonus,
+        .indpackage .bonus {
+            padding: 0px;
+            margin-left: 0px !important;
+        }
+
+        .package-type .saved .col-5,
+        .package-type .saved .col-7 {
+            font-size: 12px !important;            
+        }
+        .package {
+            padding: 20px 0% !important;
             width: 100% !important;
         }
-        #a2 {
-           display: relative;
-            }
-        #a1 {
-            display: none;
+
+        .package .switch {
+            width: 60px !important;
         }
-        @media (max-width:767px) {
-            #a1 {
-                display: flex;
-            }
-            #a2 {
-                display: none;
-            }
+        .children label {
+            width: 40px !important;
         }
-        @media (min-width:601px) and (max-width:768px) {
-            .banner_bg {
-                width: 100%;
-                float: left;
-                background-size: 100%;
-                background-repeat: no-repeat !important;
-                background-position: center left !important;
-                object-fit: contain;
-            }
+
+        #familymodal .price {
+            padding: 10px 0px !important
         }
-        @media (min-width:280px) and (max-width:600px) {
-            .banner_bg {
-                width: 100%;
-                float: left;
-                background-size: 100%;
-                background-repeat: no-repeat !important;
-                background-position: center top !important;
-                object-fit: contain;
-            }
+
+        #familymodal .separator {
+            width: 1%;
         }
-    </style>
+        #familymodal .promos {
+            width: 47%;
+        }
+        #familymodal .actual {
+            width: 47%;
+            padding-right: 0px !important;
+        }    
+    }
 
-<body>
+    @media (max-width:280px) {
+        .fampackage ul,
+        .indpackage ul {
+            padding: 0px;
+        }
+        .fampackage .bonus,
+        .indpackage .bonus {
+            padding: 0px;
+            margin-left: 0px !important;
+        }
 
-@if(Route::has('login'))
+        .package-type .saved .col-5,
+        .package-type .saved .col-7 {
+            font-size: 12px !important;            
+        }
+        .package {
+            padding: 20px 0% !important;
+            width: 100% !important;
+        }
+        .package-type .price {
+            font-size: 12px !important;
+        }
+        .package .header h2 {
+            font-size: 35px;
+        }
+        .package .header p{
+            font-size: 15px !important;
+        }
+        .package-type {
+            height: 800px !important;
+            max-height: 800px !important;
+            margin-bottom: 50px !important;
+        }
+        .btn.btn-secondary {
+            width: 90% !important;
+            font-size: 10px !important;
+        }
+        .familymodal .saved {
+            padding: 0px !important; 
+        }
+    }
+
+</style>
 
 
-        @auth
-        @else
-    <!-- Start Hero Section -->
+@section('content')
 
-    {{-- <div class="hero banner_bg layerd" style="padding-top: 80px; ">
-
-        <div class="container-fluid">
-            <div class="row justify-content-between">
-                <div class="col-md-12">
-                    <div class="intro-excerpt">
-                        <h1 id="headerTitle">Your Migration Journey Starts Here</h1>
-                        <p id="headerText" class="mb-4">Get your Europe & Canada Visa from any part of the world.</p>
-                        <p><a href="{{route('login')}}" id="headerBtn" class="btn btn-hero">START NOW</a></p>
+    <div class="container" style="margin-top: 100px;">
+        <div class="col-12">
+            <div align="center" class="package">
+                <div class="header">
+                    <h2>CHOOSE YOUR PACKAGE</h2>
+                    <div class="bottoom-title">
+                        <p>To start your journey, please select the package that best suits you</p>
                     </div>
                 </div>
-            </div>
-
-        </div>
-    </div> --}}
-    {{-- <div class="col-12 banner">
-        <div class="row">
-
-            <div class="col-md-4 col-sm-12 col-lg-4" id="a1">
-                <div class="static-applicant">
-                        <img src="{{asset('images/staticApplicant.png')}}" alt="pwg" width="100%" height="100%">
-                </div>
-            </div>
-            <div class="col-md-4 col-sm-12 col-lg-4">
-                <div class="new-applicant">
-                    <div class="applicantImg">
-                        <img src="{{asset('images/Applications.png')}}" alt="pwg" width="40%" height="40%">
-                    </div>
-                    <p class="headerFont">NEW APPLICANTS</p>
-                    <p class="subHead">Migration journey  starts here.</p>
-                    <p class="headDetails">Get your Europe & Canada Visa <br> from any part of  the world.</p>
-                    <a class="applicantBtn" href="{{route('register')}}">START NOW</a>
-                </div>
-            </div>
-            <div class="col-md-4 col-sm-12 col-lg-4">
-                <div class="existing-applicant"> 
-                    <div class="applicantImg">
-                        <img src="{{asset('images/existingApplicant.png')}}" alt="pwg" width="40%" height="40%">
-                    </div>
-                    <p class="headerFont">EXISTING APPLICANTS</p>
-                    <p class="subHead">Migration journey continues here.</p>
-                    <p class="headDetails">Get your Europe & Canada Visa <br> from any part of  the world.</p>
-                    <a class="applicantBtn" href="{{route('login')}}">START NOW</a>
-                </div>
-            </div>
-            <div class="col-md-4 col-sm-12 col-lg-4" id="a2">
-                <div class="static-applicant">
-                        <img src="{{asset('images/staticApplicant.png')}}" alt="pwg" width="100%" height="100%">
-                </div>
-            </div>
-        </div>
-    </div> --}}
-    <!-- End Hero Section -->
-@endauth 
-@endif
-
-    <!-- Start Product Section -->
-    <div class="product-section">
-
-        @if(Route::has('login'))
-        @auth
-       <div class="carousel" id="carouselThree"  data-ride="carousel" style="margin-block:20px ;">
-
-          <div class="outer  scroll-pane" id="container">
-            <div class="container-fluid text-center">
-                <div class="row" >
-
-                    <ul>
-                        @foreach($package as $offer)
-
-                            @if($promo->first())
-                                @foreach($promo as $prom)
-                                    <?php
-                                        if($prom->discount_percent >0 && $prom->product_id == $offer->id)
-                                        { 
-                                            $icon = 'fa fa-minus-circle';
-                                            $offer_discount_msg = 'Promo Offer: ' .$prom->discount_percent .'% off !';
-                                        } else {
-                                            $icon = '';
-                                            $offer_discount_msg = '-';
-                                        }
-                                    ?>
-                                @endforeach
-                            @else 
-                                @php
-                                    $icon = '';
-                                    $offer_discount_msg = '-'; 
-                                @endphp
-                            @endif
-
-                        <!-- Start Column  -->
-                        <li>
-                            <div class="col-4 cellContainer" style="margin-top:5%">
-                                <span class="product-item item-hints" href="#">
-                                    <span class="positionAnchor hint"  data-position="1">
-
-                                        <!-- <img src="../user/images/{{$offer->image}}" style="height:458px" class="img-fluid product-thumbnail home_img" alt="PWG Group"> -->
-
-                                        {{-- <div class="home-img"> --}}
-                                            <img src="../user/images/{{$offer->image}}" width="100%" class="img-fluid product-thumbnail home_img" alt="PWG Group">
-                                        {{-- </div> --}}
-
-                                        <div class="hint-content do--split-children">
-                                            <p>{{$offer->description}}</p>
+                <br>
+                <div class="row" style="margin-left:auto; margin-right:auto; text-align:center;justify-content: center; display: flex;">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4" style="display:inline-block;padding-bottom:25px;">
+                        <img src="{{asset('user/images/individual.png')}}" width="100%" alt="PWG Group">
+                        <div class="package-type blue-collar" data-bs-toggle="modalXX" data-bs-target="#individualModalXX">
+                            <div class="content">
+                                <div>
+                                    <div class="row price">
+                                        @php $blue_cost_old = $pricingPlan['poland_indi']->first_payment_sub_total*1.2995; $blue_save= $blue_cost_old - $pricingPlan['poland_indi']->first_payment_sub_total;@endphp
+                                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 promo" align="right">
+                                            <b>PROMO PRICE</b> <br> 
+                                            <b>
+                                                <span style="font-size:12px">AED</span>
+                                                <span style="font-size:18px">{{number_format($pricingPlan['poland_indi']->first_payment_sub_total,0)}}</span>
+                                            </b>
                                         </div>
-                                        <span class="bottom">
-                                            <h3 class="product-title intro-excerpt" style="font-size: 35px; color:aliceblue">{{ucfirst($offer->name)}}</h3>
-                                            <p style="font-size:20px">{{$offer->slogan}}</p>
-                                        </span>
+                                        <div class="col-lg-2 col-md-2 col-sm-1 col-xs-1 line" align="center" style="padding:0 5px; border-left: 2px solid rgb(57, 127, 184); height: 52px;transform: translateX(50%);"><b></b></div>
+                                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 regular" align="left"><b>REGULAR PRICE</b> <br> <span style="font-size:12px">AED</span> <span style="font-size:18px"><del>{{number_format($blue_cost_old,0)}}</del></span></div>
+                                    </div>
+                                    <div class="row saved">
+                                        <div class="col-5" style="background: #000; border-radius:30px 0 0 30px;color:#fff; font-size:10px;font-weight:600; padding-block: 5px">SAVE AED {{number_format($blue_save,0)}}</div>
+                                        <div class="col-7" style="background: #FACB08; border-radius:0 30px 30px 0;color:#000; font-size:10px; font-weight:600; padding-block: 5px">SALES ENDS 7 DAYS</div>
+                                    </div>
+                                    <div class="row" style="border-block: 1px solid #000;padding:10px; margin:15px">
+                                        <div class="col"><b>INDIVIDUAL PACKAGE</b></div>
+                                    </div>
+                                    <div class="indpackage">
+                                        <ul>
+                                            <li><div style="text-align: left;margin-left: 35px">Free accomodation</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Free transportation</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Free health insurance</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Free regeneration meal</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Flexible working hours</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Permanent residency</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Passport after 5 year</div></li>
 
-                                        <p style="font-size:12px">@if($offer->name == "Canada" || $offer->name == "Germany") Full Payment Price @else First Installment Payment From @endif</p>
-
-                                        <strong class="product-price">  {{number_format($offer->first_payment_sub_total,2)}} {{$offer->currency}}</strong>
-
-                                        {{-- <p style="font-size:12px">Starting from </p>
-
-                                        <strong class="product-price">  {{number_format($offer->unit_price,2)}} {{$offer->currency}}</strong> --}}
-                                        <p> 
-                                            <i class="{{$icon}}"></i> {{$offer_discount_msg}}
-                                        </p>
-                                        <p>
-                                            
-                                            @if(isset($started) && $offer->id == $started->destination_id)
-                                            <a class="btn btn-secondary" href="#"><span class="done">Already Applied</span><span class="doned">Applied</span> <i class="fa fa-check-circle" style="font-size:18px; color:green"></i></a>
-                                            {{-- <a class="btn btn-secondary" href="#">Already Applied <i class="fa fa-check-circle" style="font-size:18px; color:green"></i></a> --}}
+                                            <li><div style="text-align: left;margin-left: 35px">Salary on time</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Attractive job market</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Low cost of living</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Legal employment</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Your right is protected</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">No company ban</div></li>
+                                        </ul>
+                                        {{-- <div class="bonus" style="text-align: left;margin-block:15px; margin-left: 35px"><i class="fa fa-star" style="color:#FACB08;font-size: 25px;"></i><b style="font-size: 18px;margin-left: 15px;">BONUS:</b> Salary deduction on the last payment of selected package.</div> --}}
+                                    </div>
+                                    <div>
+                                        @if(Route::has('login'))
+                                            @auth
+                                            <form action="{{ url('/payment_form/'. $pricingPlan['poland_indi']->destination_id ) }}" method="GET">
+                                        @else
+                                            <form action="{{ url('register') }}">
+                                                @php Session::put('prod_id', $pricingPlan['poland_indi']->destination_id); @endphp
+                                            @endauth
+                                        @endif
+                                        @csrf
+                                            <input type="hidden" name="cost" value="{{$pricingPlan['poland_indi']->first_payment_sub_total}}">
+                                            <input type="hidden" name="blue_id" value="{{$pricingPlan['poland_indi']->id}}">
+                                            <input type="hidden" name="pr_id" value="{{$pricingPlan['poland_indi']->destination_id}}">
+                                        
+                                            <input type="hidden" value="BLUE_COLLAR" name="myPack">
+                                            @if(isset($started) && $pricingPlan['poland_indi']->destination_id == $started->destination_id)
+                                                <a class="btn btn-primary" style="width: 100%;font-size: 14px;" href="{{route('myapplication')}}"><span class="done">Already Applied</span><i class="fa fa-check-circle" style="font-size:14px; color:green"></i></a>
                                             @else
-                                            
-                                            {{-- <a class="btn btn-secondary" @if(isset($started->destination_id)) onclick="return alert('You have an active application already.');" @endif href="{{ url('package/type', $offer->id) }}">Apply Now</a> --}}
-                                            <a class="btn btn-secondary" @if(isset($started->destination_id)) onclick="toastr.error('You have an active application already.','',{positionClass: 'toast-top-center', closeButton: 'true', width: '400px'})" href="#" @else href="{{ url('package/type', $offer->id) }}" @endif>Apply Now</a>
+                                                <button class="btn btn-primary" style="width: 100%;font-size: 24px;background: #FACB08" @if(isset($started->destination_id)) onclick="toastr.error('You have an active application already.','',{positionClass: 'toast-top-center', closeButton: 'true', width: '400px'})" type="button" @else type="submit" @endif>APPLY NOW</button>
                                             @endif
-                                        </p>
-                                    </span>
-                                </span>
+                                        </form>
+                                    </div>
+                                </div>
+                              
                             </div>
-                        </li>
-                        <!-- End Column  -->
-                        @endforeach
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4" style="display:inline-block;padding-bottom:25px;">
+                        <img src="{{asset('user/images/family.png')}}" width="100%" alt="PWG Group">
+                        <div class="package-type blue-collar" data-bs-toggle="modalXX" data-bs-target="#individualModalXX">
+                            <div class="content">
+                                <div>
+                                    <div class="row price">
+                                        @php $blue_cost_old = $pricingPlan['poland_family']->first_payment_sub_total*1.2995; $blue_save= $blue_cost_old - $pricingPlan['poland_family']->first_payment_sub_total;@endphp
+                                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 promo" align="right">
+                                            <b>PROMO PRICE</b> <br> 
+                                            <b>
+                                                <span style="font-size:12px">AED</span>
+                                                <span style="font-size:18px">{{number_format($pricingPlan['poland_family']->first_payment_sub_total,0)}}</span>
+                                            </b>
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 col-sm-1 col-xs-1 line" align="center" style="padding:0 5px; border-left: 2px solid rgb(57, 127, 184); height: 52px;transform: translateX(50%);"><b></b></div>
+                                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 regular" align="left"><b>REGULAR PRICE</b> <br> <span style="font-size:12px">AED</span> <span style="font-size:18px"><del>{{number_format($blue_cost_old,0)}}</del></span></div>
+                                    </div>
+                                    <div class="row saved">
+                                        <div class="col-5" style="background: #000; border-radius:30px 0 0 30px;color:#fff; font-size:10px;font-weight:600; padding-block: 5px">SAVE AED {{number_format($blue_save,0)}}</div>
+                                        <div class="col-7" style="background: #FACB08; border-radius:0 30px 30px 0;color:#000; font-size:10px; font-weight:600; padding-block: 5px">SALES ENDS 7 DAYS</div>
+                                    </div>
+                                    <div class="row" style="border-block: 1px solid #000;padding:10px; margin:15px">
+                                        <div class="col"><b>INDIVIDUAL PACKAGE</b></div>
+                                    </div>
+                                    <div class="fampackage ">
+                                        <ul>
+                                            <li><div style="text-align: left;margin-left: 35px">Free accomodation</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Free transportation</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Free health insurance</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Free regeneration meal</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Flexible working hours</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Permanent residency</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Passport after 5 year</div></li>
 
-                    </ul>
-
-                </div>
-            </div>
-            <div class="nextprev">
-                <a class="carousel-control-prev" alt="PWG" id="slideBack" href="#carouselThree" style="text-decoration:none;" role="button" data-slide="prev" aria-label="Navigate Back">
-                    <i class="lni lni-arrow-left"></i>
-                </a>
-                <a class="carousel-control-next" alt="PWG" id="slide" href="#carouselThree" style="text-decoration:none;" role="button" data-slide="next" aria-label="Navigate forward">
-                    <i class="lni lni-arrow-right"></i>
-                </a>
-            </div>
- 
-        </div>
-
-       </div>
-        <!-- @include('user.earning') -->
-
-        @else
-
-        <div class="container-fluid text-center">
-
-            <div class="row">
-              @foreach($package as $offer)
-                @if($promo->first())
-                    @foreach($promo as $prom)
-                        <?php
-
-                            if($prom->discount_percent >0 && $prom->product_id == $offer->id)
-                            { 
-                            $icon = 'fa fa-minus-circle';
-                            $offer_discount_msg = 'Promo Offer: ' .$prom->discount_percent .'% off !';
-        
-                            } else {
-                            $icon = '';
-                            $offer_discount_msg = '-';
-                            }
-                                                
-                        ?>
-                    @endforeach
-
-                @else 
-                    @php
-                        $icon = '';
-                        $offer_discount_msg = '-'; 
-                    @endphp
-                @endif
-                <!-- Start Column  -->
-                <div class="col-sm-12 col-xs-12 col-lg-4 cellContainer destinationView">
-                    <span class="product-item item-hints" href="#">
-                        <span class="positionAnchor hint"  data-position="1">
-
-                            <!-- <img src="../user/images/{{$offer->image}}" style="height:458px" class="img-fluid product-thumbnail home_img" alt="PWG Group"> -->
-
-                            {{-- <div class="home-img"> --}}
-                                <img src="../user/images/{{$offer->image}}" width="100%"  class="img-fluid product-thumbnail home_img" alt="PWG Group">
-                            {{-- </div> --}}
-
-                            <div class="hint-content do--split-children">
-                              <p>{{$offer->description}}</p>
+                                            <li><div style="text-align: left;margin-left: 35px">Salary on time</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Attractive job market</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Low cost of living</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Legal employment</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Your right is protected</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">No company ban</div></li>
+                                        </ul>
+                                        {{-- <div class="bonus" style="text-align: left;margin-block:15px; margin-left: 35px"><i class="fa fa-star" style="color:#FACB08;font-size: 25px;"></i><b style="font-size: 18px;margin-left: 15px;">BONUS:</b> Salary deduction on the last payment of selected package.</div> --}}
+                                    </div>
+                                    <div>
+                                        @if(Route::has('login'))
+                                            @auth
+                                            <form action="{{ url('/payment_form/'. $pricingPlan['poland_indi']->destination_id ) }}" method="GET">
+                                            @else
+                                            <form action="{{ url('register') }}">
+                                                @php Session::put('prod_id', $pricingPlan['poland_family']->destination_id); @endphp
+                                            @endauth
+                                        @endif
+                                        @csrf
+                                            <input type="hidden" name="cost" value="{{$pricingPlan['poland_family']->first_payment_sub_total}}">
+                                            <input type="hidden" name="blue_id" value="{{$pricingPlan['poland_family']->id}}">
+                                            <input type="hidden" name="pr_id" value="{{$pricingPlan['poland_family']->destination_id}}">
+                                        
+                                            <input type="hidden" value="BLUE_COLLAR" name="myPack">
+                                            @if(isset($started) && $pricingPlan['poland_family']->destination_id == $started->destination_id)
+                                                <a class="btn btn-primary" style="width: 100%;font-size: 14px;" href="{{route('myapplication')}}"><span class="done">Already Applied</span><span class="doned">Applied</span> <i class="fa fa-check-circle" style="font-size:14px; color:green"></i></a>
+                                            @else
+                                                <button class="btn btn-primary" style="width: 100%;font-size: 24px;background: #E10930; color:#fff" @if(isset($started->destination_id)) onclick="toastr.error('You have an active application already.','',{positionClass: 'toast-top-center', closeButton: 'true', width: '400px'})" type="button" @else type="submit" @endif>APPLY NOW</button>
+                                            @endif
+                                        </form>
+                                    </div>
+                                </div>
+                              
                             </div>
-                            <span class="bottom">
-                                <h3 class="product-title intro-excerpt" style="font-size: 35px; color:aliceblue">{{ucfirst($offer->name)}}</h3>
-                                <p style="font-size:20px;">{{$offer->slogan}}</p>
-                            </span>
-                            {{-- <p style="font-size:12px">Starting from </p>
-                            <strong class="product-price">{{number_format($offer->unit_price,2)}} {{$offer->currency}}</strong> --}}
-                            
-                            <p style="font-size:12px">@if($offer->name == "Canada" || $offer->name == "Germany") Full Payment Price @else First Installment Payment From @endif</p>
-                            <strong class="product-price"> {{number_format($offer->first_payment_sub_total,2)}} {{$offer->currency}}</strong>
-                            <p>
-                                <i class="{{$icon}}"></i> {{$offer_discount_msg}} 
-                            </p>
-                            <p>
-                                {{-- @if(Route::has('login'))
-                                    @auth
-                                    <a class="btn btn-secondary" href="{{ url('package/type', $offer->id) }}">Apply Now</a>
-                                @else
-                                    <a class="btn btn-secondary" href="{{ url('register?pid='. $offer->id) }}">Apply Now</a>
-                                    @endauth
-                                @endif --}}
-                                <a class="btn btn-secondary" href="{{ url('package/type', $offer->id) }}">Apply Now</a>
-                            </p>
-                        </span>
-                    </span>
-                </div>
-                <!-- End Column  -->
-                @endforeach
-                <div class="col-4 cellContainer">
-                    <span class="product-itemx" href="#">
-                        <span class="positionAnchorx" data-position="1">
-                            <span class="bottom">
-                                <h3 class="product-title intro-excerpt" style="font-size: 35px; color:aliceblue"></h3>
-                                <p style="font-size:20px"></p>
-                            </span>
-                            <strong class="product-price"></strong>
-                            <p></p>
-                        </span>
-                    </span>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4" style="display:inline-block;padding-bottom:25px;">
+                        <img src="{{asset('user/images/czechpackage.png')}}" width="100%" alt="PWG Group">
+                        <div class="package-type blue-collar" data-bs-toggle="modalXX" data-bs-target="#individualModalXX">
+                            <div class="content">
+                                <div>
+                                    <div class="row price">
+                                        @php $blue_cost_old = $pricingPlan['czech_indi']->first_payment_sub_total*1.2995; $blue_save= $blue_cost_old - $pricingPlan['czech_indi']->first_payment_sub_total;@endphp
+                                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 promo" align="right">
+                                            <b>PROMO PRICE</b> <br> 
+                                            <b>
+                                                <span style="font-size:12px">AED</span>
+                                                <span style="font-size:18px">{{number_format($pricingPlan['czech_indi']->first_payment_sub_total,0)}}</span>
+                                            </b>
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 col-sm-1 col-xs-1 line" align="center" style="padding:0 5px; border-left: 2px solid rgb(57, 127, 184); height: 52px;transform: translateX(50%);"><b></b></div>
+                                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 regular" align="left"><b>REGULAR PRICE</b> <br> <span style="font-size:12px">AED</span> <span style="font-size:18px"><del>{{number_format($blue_cost_old,0)}}</del></span></div>
+                                    </div>
+                                    <div class="row saved">
+                                        <div class="col-5" style="background: #000; border-radius:30px 0 0 30px;color:#fff; font-size:10px;font-weight:600; padding-block: 5px">SAVE AED {{number_format($blue_save,0)}}</div>
+                                        <div class="col-7" style="background: #FACB08; border-radius:0 30px 30px 0;color:#000; font-size:10px; font-weight:600; padding-block: 5px">SALES ENDS 7 DAYS</div>
+                                    </div>
+                                    <div class="row" style="border-block: 1px solid #000;padding:10px; margin:15px">
+                                        <div class="col"><b>INDIVIDUAL PACKAGE</b></div>
+                                    </div>
+                                    <div class="czechIndpackage">
+                                        <ul>
+                                            <li><div style="text-align: left;margin-left: 35px">Free accomodation</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Free transportation</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Free health insurance</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Free regeneration meal</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Flexible working hours</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Permanent residency</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Passport after 5 year</div></li>
+
+                                            <li><div style="text-align: left;margin-left: 35px">Salary on time</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Attractive job market</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Low cost of living</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Legal employment</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Your right is protected</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">No company ban</div></li>
+                                        </ul>
+                                        {{-- <div class="bonus" style="text-align: left;margin-block:15px; margin-left: 35px"><i class="fa fa-star" style="color:#FACB08;font-size: 25px;"></i><b style="font-size: 18px;margin-left: 15px;">BONUS:</b> Salary deduction on the last payment of selected package.</div> --}}
+                                    </div>
+                                    <div>
+                                        @if(Route::has('login'))
+                                            @auth
+                                            <form action="{{ url('/payment_form/'. $pricingPlan['poland_indi']->destination_id ) }}" method="GET">
+                                        @else
+                                            <form action="{{ url('register') }}">
+                                                @php Session::put('prod_id', $pricingPlan['czech_indi']->destination_id); @endphp
+                                            @endauth
+                                        @endif
+                                        @csrf
+                                            <input type="hidden" name="cost" value="{{$pricingPlan['czech_indi']->first_payment_sub_total}}">
+                                            <input type="hidden" name="blue_id" value="{{$pricingPlan['czech_indi']->id}}">
+                                            <input type="hidden" name="pr_id" value="{{$pricingPlan['czech_indi']->destination_id}}">
+                                        
+                                            <input type="hidden" value="FAMILY_PACKAGE" name="myPack">
+                                            @if(isset($started) && $pricingPlan['czech_indi']->destination_id == $started->destination_id)
+                                                <a class="btn btn-primary" style="width: 100%;font-size: 14px;" href="{{route('myapplication')}}" style="font-size:14px;" ><span class="done">Already Applied</span><i class="fa fa-check-circle" style="font-size:14px; color:green"></i></a>
+                                            @else
+                                                <button class="btn btn-primary" style="width: 100%;font-size: 24px;background: #000; color:#fff" @if(isset($started->destination_id)) onclick="toastr.error('You have an active application already.','',{positionClass: 'toast-top-center', closeButton: 'true', width: '400px'})" type="button" @else type="submit" @endif>APPLY NOW</button>
+                                            @endif
+                                        </form>
+                                    </div>
+                                </div>
+                              
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4" style="display:inline-block;padding-bottom:25px;">
+                        <img src="{{asset('user/images/maltapackage.png')}}" width="100%" alt="PWG Group">
+                        <div class="package-type blue-collar" data-bs-toggle="modalXX" data-bs-target="#individualModalXX">
+                            <div class="content">
+                                <div>
+                                    <div class="row price">
+                                        @php $blue_cost_old = $pricingPlan['malta_indi']->first_payment_sub_total*1.2995; $blue_save= $blue_cost_old - $pricingPlan['malta_indi']->first_payment_sub_total;@endphp
+                                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 promo" align="right">
+                                            <b>PROMO PRICE</b> <br> 
+                                            <b>
+                                                <span style="font-size:12px">AED</span>
+                                                <span style="font-size:18px">{{number_format($pricingPlan['malta_indi']->first_payment_sub_total,0)}}</span>
+                                            </b>
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 col-sm-1 col-xs-1 line" align="center" style="padding:0 5px; border-left: 2px solid rgb(57, 127, 184); height: 52px;transform: translateX(50%);"><b></b></div>
+                                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 regular" align="left"><b>REGULAR PRICE</b> <br> <span style="font-size:12px">AED</span> <span style="font-size:18px"><del>{{number_format($blue_cost_old,0)}}</del></span></div>
+                                    </div>
+                                    <div class="row saved">
+                                        <div class="col-5" style="background: #000; border-radius:30px 0 0 30px;color:#fff; font-size:10px;font-weight:600; padding-block: 5px">SAVE AED {{number_format($blue_save,0)}}</div>
+                                        <div class="col-7" style="background: #FACB08; border-radius:0 30px 30px 0;color:#000; font-size:10px; font-weight:600; padding-block: 5px">SALES ENDS 7 DAYS</div>
+                                    </div>
+                                    <div class="row" style="border-block: 1px solid #000;padding:10px; margin:15px">
+                                        <div class="col"><b>INDIVIDUAL PACKAGE</b></div>
+                                    </div>
+                                    <div class="maltaIndpackage">
+                                        <ul>
+                                            <li><div style="text-align: left;margin-left: 35px">Free accomodation</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Free transportation</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Free health insurance</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Free regeneration meal</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Flexible working hours</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Permanent residency</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Passport after 5 year</div></li>
+
+                                            <li><div style="text-align: left;margin-left: 35px">Salary on time</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Attractive job market</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Low cost of living</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Legal employment</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Your right is protected</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">No company ban</div></li>
+                                        </ul>
+                                        {{-- <div class="bonus" style="text-align: left;margin-block:15px; margin-left: 35px"><i class="fa fa-star" style="color:#FACB08;font-size: 25px;"></i><b style="font-size: 18px;margin-left: 15px;">BONUS:</b> Salary deduction on the last payment of selected package.</div> --}}
+                                    </div>
+                                    <div>
+                                        @if(Route::has('login'))
+                                            @auth
+                                            <form action="{{ url('/payment_form/'. $pricingPlan['poland_indi']->destination_id ) }}" method="GET">
+                                        @else
+                                            <form action="{{ url('register') }}">
+                                                @php Session::put('prod_id', $pricingPlan['malta_indi']->destination_id); @endphp
+                                            @endauth
+                                        @endif
+                                        @csrf
+                                            <input type="hidden" name="cost" value="{{$pricingPlan['malta_indi']->first_payment_sub_total}}">
+                                            <input type="hidden" name="blue_id" value="{{$pricingPlan['malta_indi']->id}}">
+                                            <input type="hidden" name="pr_id" value="{{$pricingPlan['malta_indi']->destination_id}}">
+                                        
+                                            <input type="hidden" value="BLUE_COLLAR" name="myPack">
+                                            @if(isset($started) && $pricingPlan['malta_indi']->destination_id == $started->destination_id)
+                                                <a class="btn btn-secondary" href="{{route('myapplication')}}" style="width: 100%;font-size: 14px;"><span class="done">Already Applied</span> <i class="fa fa-check-circle" style="font-size:14px; color:green"></i></a>
+                                            @else
+                                                <button class="btn btn-primary" style="width: 100%;font-size: 24px;background: #736359;color:#fff" @if(isset($started->destination_id)) onclick="toastr.error('You have an active application already.','',{positionClass: 'toast-top-center', closeButton: 'true', width: '400px'})" type="button" @else type="submit" @endif>APPLY NOW</button>
+                                            @endif
+                                        </form>
+                                    </div>
+                                </div>
+                              
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4" style="display:inline-block;padding-bottom:25px;">
+                        <img src="{{asset('user/images/canadaPackage.png')}}" width="100%" alt="PWG Group">
+                        <div class="package-type blue-collar" data-bs-toggle="modalXX" data-bs-target="#individualModalXX">
+                            <div class="content">
+                                <div>
+                                    <div class="row price">
+                                        @php $blue_cost_old = $pricingPlan['canada_indi']->first_payment_sub_total*1.2995; $blue_save= $blue_cost_old - $pricingPlan['canada_indi']->first_payment_sub_total;@endphp
+                                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 promo" align="right">
+                                            <b>PROMO PRICE</b> <br> 
+                                            <b>
+                                                <span style="font-size:12px">AED</span>
+                                                <span style="font-size:18px">{{number_format($pricingPlan['canada_indi']->first_payment_sub_total,0)}}</span>
+                                            </b>
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 col-sm-1 col-xs-1 line" align="center" style="padding:0 5px; border-left: 2px solid rgb(57, 127, 184); height: 52px;transform: translateX(50%);"><b></b></div>
+                                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 regular" align="left"><b>REGULAR PRICE</b> <br> <span style="font-size:12px">AED</span> <span style="font-size:18px"><del>{{number_format($blue_cost_old,0)}}</del></span></div>
+                                    </div>
+                                    <div class="row saved">
+                                        <div class="col-5" style="background: #000; border-radius:30px 0 0 30px;color:#fff; font-size:10px;font-weight:600; padding-block: 5px">SAVE AED {{number_format($blue_save,0)}}</div>
+                                        <div class="col-7" style="background: #FACB08; border-radius:0 30px 30px 0;color:#000; font-size:10px; font-weight:600; padding-block: 5px">SALES ENDS 7 DAYS</div>
+                                    </div>
+                                    <div class="row" style="border-block: 1px solid #000;padding:10px; margin:15px">
+                                        <div class="col"><b>INDIVIDUAL PACKAGE</b></div>
+                                    </div>
+                                    <div class="canadaPackage ">
+                                        <ul>
+                                            <li><div style="text-align: left;margin-left: 35px">Free accomodation</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Free transportation</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Free health insurance</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Free regeneration meal</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Flexible working hours</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Permanent residency</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Passport after 5 year</div></li>
+
+                                            <li><div style="text-align: left;margin-left: 35px">Salary on time</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Attractive job market</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Low cost of living</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Legal employment</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Your right is protected</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">No company ban</div></li>
+                                        </ul>
+                                        {{-- <div class="bonus" style="text-align: left;margin-block:15px; margin-left: 35px"><i class="fa fa-star" style="color:#FACB08;font-size: 25px;"></i><b style="font-size: 18px;margin-left: 15px;">BONUS:</b> Salary deduction on the last payment of selected package.</div> --}}
+                                    </div>
+                                    <div>
+                                        @if(Route::has('login'))
+                                            @auth
+                                            <form action="{{ url('/payment_form/'. $pricingPlan['poland_indi']->destination_id ) }}" method="GET">
+                                        @else
+                                            <form action="{{ url('register') }}">
+                                                @php Session::put('prod_id', $pricingPlan['canada_indi']->destination_id); @endphp
+                                            @endauth
+                                        @endif
+                                        @csrf
+                                            <input type="hidden" name="cost" value="{{$pricingPlan['canada_indi']->first_payment_sub_total}}">
+                                            <input type="hidden" name="blue_id" value="{{$pricingPlan['canada_indi']->id}}">
+                                            <input type="hidden" name="pr_id" value="{{$pricingPlan['canada_indi']->destination_id}}">
+                                        
+                                            <input type="hidden" value="BLUE_COLLAR" name="myPack">
+                                            @if(isset($started) && $pricingPlan['canada_indi']->destination_id == $started->destination_id)
+                                                <a class="btn btn-secondary" href="{{route('myapplication')}}" style="width: 100%;font-size: 14px;"><span class="done">Already Applied</span> <i class="fa fa-check-circle" style="font-size:14px; color:green"></i></a>
+                                            @else
+                                                <button class="btn btn-primary" style="width: 100%;font-size: 24px;background: #820202; color:#fff" @if(isset($started->destination_id)) onclick="toastr.error('You have an active application already.','',{positionClass: 'toast-top-center', closeButton: 'true', width: '400px'})" type="button" @else type="submit" @endif>APPLY NOW</button>
+                                            @endif
+                                        </form>
+                                    </div>
+                                </div>
+                              
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4" style="display:inline-block;padding-bottom:25px;">
+                        <img src="{{asset('user/images/germanypackage.png')}}" width="100%" alt="PWG Group" style="height: 272px;">
+                        <div class="package-type blue-collar" data-bs-toggle="modalXX" data-bs-target="#individualModalXX">
+                            <div class="content">
+                                <div>
+                                    <div class="row price">
+                                        @php $blue_cost_old = $pricingPlan['germany_indi']->first_payment_sub_total*1.2995; $blue_save= $blue_cost_old - $pricingPlan['germany_indi']->first_payment_sub_total;@endphp
+                                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 promo" align="right">
+                                            <b>PROMO PRICE</b> <br> 
+                                            <b>
+                                                <span style="font-size:12px">AED</span>
+                                                <span style="font-size:18px">{{number_format($pricingPlan['germany_indi']->first_payment_sub_total,0)}}</span>
+                                            </b>
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 col-sm-1 col-xs-1 line" align="center" style="padding:0 5px; border-left: 2px solid rgb(57, 127, 184); height: 52px;transform: translateX(50%);"><b></b></div>
+                                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 regular" align="left"><b>REGULAR PRICE</b> <br> <span style="font-size:12px">AED</span> <span style="font-size:18px"><del>{{number_format($blue_cost_old,0)}}</del></span></div>
+                                    </div>
+                                    <div class="row saved">
+                                        <div class="col-5" style="background: #000; border-radius:30px 0 0 30px;color:#fff; font-size:10px;font-weight:600; padding-block: 5px">SAVE AED {{number_format($blue_save,0)}}</div>
+                                        <div class="col-7" style="background: #FACB08; border-radius:0 30px 30px 0;color:#000; font-size:10px; font-weight:600; padding-block: 5px">SALES ENDS 7 DAYS</div>
+                                    </div>
+                                    <div class="row" style="border-block: 1px solid #000;padding:10px; margin:15px">
+                                        <div class="col"><b>INDIVIDUAL PACKAGE</b></div>
+                                    </div>
+                                    <div class="germanyIndpackage">
+                                        <ul>
+                                            <li><div style="text-align: left;margin-left: 35px">Free accomodation</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Free transportation</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Free health insurance</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Free regeneration meal</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Flexible working hours</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Permanent residency</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Passport after 5 year</div></li>
+
+                                            <li><div style="text-align: left;margin-left: 35px">Salary on time</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Attractive job market</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Low cost of living</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Legal employment</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Your right is protected</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">No company ban</div></li>
+                                        </ul>
+                                        {{-- <div class="bonus" style="text-align: left;margin-block:15px; margin-left: 35px"><i class="fa fa-star" style="color:#FACB08;font-size: 25px;"></i><b style="font-size: 18px;margin-left: 15px;">BONUS:</b> Salary deduction on the last payment of selected package.</div> --}}
+                                    </div>
+                                    <div>
+                                        @if(Route::has('login'))
+                                            @auth
+                                            <form action="{{ url('/payment_form/'. $pricingPlan['poland_indi']->destination_id ) }}" method="GET">
+                                        @else
+                                            <form action="{{ url('register') }}">
+                                                @php Session::put('prod_id', $pricingPlan['germany_indi']->destination_id); @endphp
+                                            @endauth
+                                        @endif
+                                        @csrf
+                                            <input type="hidden" name="cost" value="{{$pricingPlan['germany_indi']->first_payment_sub_total}}">
+                                            <input type="hidden" name="blue_id" value="{{$pricingPlan['germany_indi']->id}}">
+                                            <input type="hidden" name="pr_id" value="{{$pricingPlan['germany_indi']->destination_id}}">
+                                        
+                                            <input type="hidden" value="BLUE_COLLAR" name="myPack">
+                                            @if(isset($started) && $pricingPlan['germany_indi']->destination_id == $started->destination_id)
+                                                <a class="btn btn-secondary" href="{{route('myapplication')}}" style="width: 100%;font-size: 14px;"><span class="done">Already Applied</span><i class="fa fa-check-circle" style="font-size:14px; color:green"></i></a>
+                                            @else
+                                                <button class="btn btn-primary" style="width: 100%;font-size: 24px;background: #000; color:#fff" @if(isset($started->destination_id)) onclick="toastr.error('You have an active application already.','',{positionClass: 'toast-top-center', closeButton: 'true', width: '400px'})" type="button" @else type="submit" @endif>APPLY NOW</button>
+                                            @endif
+                                        </form>
+                                    </div>
+                                </div>
+                              
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        @endauth
-        @endif
-
     </div>
-    <div class="modal fade" id="formatModal" tabindex="-1" aria-labelledby="formatModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header" style="border-bottom: 1px solid #fff">
-              <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <img loading="lazy" src="{{asset('images/warningimage.png')}}" width ="100%" height ="100%;" alt="EMAS">
-            </div>
-          </div>
-        </div>
-    </div>
-    @include('user/footer')
-    <!-- End Product Section -->
-
-
-    <!--====== Jquery js ======-->
-    <script src="../user/assets/js/vendor/jquery-1.12.4.min.js"></script>
-
-  </body>
-
-</html>
-
+@endSection
+@push('custom-scripts')
 <script>
-    $(document).ready(function() {
-        $('#formatModal').modal({
-            backdrop: 'static',
-            keyboard: false
-        });
-        if(!Cookies.get("visited")){
-            $('#formatModal').modal('show');
-        }
-
-        $('.btn-close').click(function(){
-            var date = new Date();
-            date.setDate(date.getDate() + 1);
-            Cookies.set('visited', true, {expires: date});
-            $('#formatModal').modal('hide');
-        });
-    });
-var button = document.getElementById('slide');
-button.onclick = function () {
-    var container = document.getElementById('container');
-    sideScroll(container,'right',25,100,10);
-};
-
-var back = document.getElementById('slideBack');
-back.onclick = function () {
-    var container = document.getElementById('container');
-    sideScroll(container,'left',25,100,10);
-};
-
-function sideScroll(element,direction,speed,distance,step){
-    scrollAmount = 0;
-    var slideTimer = setInterval(function(){
-        if(direction == 'left'){
-            element.scrollLeft -= step;
-        } else {
-            element.scrollLeft += step;
-        }
-        scrollAmount += step;
-        if(scrollAmount >= distance){
-            window.clearInterval(slideTimer);
-        }
-    }, speed);
-}
-</script>
 <script>
-    $(document).ready(function() {
-    @if(Session::has('message'))
-    toastr.options =
-    {
-    "closeButton" : true,
-    "progressBar" : true
-    }
-    toastr.success("{{ session('message') }}");
-    @endif
-    
-    @if(Session::has('error'))
-    toastr.options =
-    {
-    "closeButton" : true,
-    "progressBar" : true
-    }
-    toastr.error("{{ session('error') }}");
-    @php Session::forget('error'); @endphp
-    @endif
-    
-    @if(Session::has('info'))
-    toastr.options =
-    {
-    "closeButton" : true,
-    "progressBar" : true
-    }
-    toastr.info("{{ session('info') }}");
-    @endif
-    
-    @if(Session::has('warning'))
-    toastr.options =
-    {
-    "closeButton" : true,
-    "progressBar" : true
-    }
-    toastr.warning("{{ session('warning') }}");
-    @endif
-    }); 
-   </script>
+@endpush
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
+
+

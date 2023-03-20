@@ -157,7 +157,7 @@
                 </div>
                 <div class="tab-content clearfix" style="margin: 0; padding: 0;">
                     @include('user.main-applicant-detail')
-                    @include('user.main-applicant-dependent')
+                        @include('user.main-applicant-dependent')
                     @include('user.main-applicant-children')
                 </div>
             </div>

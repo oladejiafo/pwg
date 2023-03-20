@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Applicant;
 use App\Application;
 use App\Client;
+use App\Models\Timer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -108,13 +109,13 @@ class HomeController extends Controller
 
     public function index()
     {
+        $pricingPlan = UserHelper::getGeneralPricingPlan();
         if (Auth::id()) {
             $started = DB::table('applications')
                 ->select('pricing_plan_id', 'destination_id', 'client_id', 'first_payment_status', 'status')
                 ->where('applications.client_id', '=', Auth::user()->id)
                 ->orderBy('applications.id', 'desc')
                 ->first();
-
             // $package = DB::table('destinations')->orderBy(DB::raw('FIELD(name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
 
             $package = DB::table('pricing_plans')
@@ -126,9 +127,8 @@ class HomeController extends Controller
 
             $promo = promo::where('active_until', '>=', date('Y-m-d'))->get();
 
-            return view('user.home', compact('package', 'promo', 'started'));
+            return view('user.home', compact('package', 'promo', 'started', 'pricingPlan'));
         } else {
-
             // $package = DB::table('destinations')->orderBy(DB::raw('FIELD(name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
 
             $package = DB::table('pricing_plans')
@@ -140,7 +140,7 @@ class HomeController extends Controller
             // dd($package);
             $promo = promo::where('active_until', '>=', date('Y-m-d'))->get();
 
-            return view('user.home', compact('package', 'promo'));
+            return view('user.home', compact('package', 'promo', 'pricingPlan'));
         }
 
         // try {
@@ -475,13 +475,13 @@ class HomeController extends Controller
                     $p_id = $request->pr_id;
                     if ($request->myPack == "BLUE_COLLAR") {
                         $pack_id = $request->blue_id;
-                    } else if(Session::has('packageType')){
+                    } else if(Session::has('packageTypeOpted')){
                         $pack_id = Session::get('pricingPlanId');
                     } else {
                         $pack_id = $request->fam_id;
                     }
                 }
-                $myPack = ($request->myPack) ?? Session::get('packageType');
+                $myPack = ($request->myPack) ?? Session::get('packageTypeOpted');
 
 
                 //Call Create Contract Function

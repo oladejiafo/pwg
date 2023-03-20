@@ -157,7 +157,7 @@
                 </div>
                 <div class="tab-content clearfix" style="margin: 0; padding: 0;">
                     <?php echo $__env->make('user.main-applicant-detail', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-                    <?php echo $__env->make('user.main-applicant-dependent', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+                        <?php echo $__env->make('user.main-applicant-dependent', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                     <?php echo $__env->make('user.main-applicant-children', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                 </div>
             </div>
