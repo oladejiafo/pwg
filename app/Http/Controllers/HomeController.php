@@ -1017,22 +1017,26 @@ class HomeController extends Controller
                         ['client_id', '=', Auth::user()->id],
                         ['destination_id', '=', $request->pid],
                     ])
-                        ->orderBy('id', 'Desc')
+                        ->orderBy('id', 'Desc')                       
                         ->first();
 
+                        // select(
+                        //     'id', 'client_id', 'branch_id', 'pricing_plan_id', 'destination_id', 'status', 'work_permit_status', 'first_payment_status', 'submission_payment_status', 'second_payment_status', 'third_payment_status', 'is_first_payment_partially_paid', 'is_submission_payment_partially_paid', 'is_second_payment_partially_paid', 'is_third_payment_partially_paid', 'first_payment_verified_by_accountant', 'submission_payment_verified_by_accountant', 'second_payment_verified_by_accountant', 'third_payment_verified_by_accountant', 'first_payment_verified_by_cfo', 'submission_payment_verified_by_cfo', 'second_payment_verified_by_cfo', 'third_payment_verified_by_cfo', 'contract_1st_signature_status', 'contract_submission_signature_status', 'contract_2nd_signature_status', 'contract_3rd_signature_status', 'contract_1st_signature_at', 'contract_submission_signature_at', 'contract_2nd_signature_at', 'contract_3rd_signature_at', 'contract_1st_signature_verified_by_accountant', 'contract_submission_signature_verified_by_accountant', 'contract_2nd_signature_verified_by_accountant', 'contract_3rd_signature_verified_by_accountant', 'contract_1st_signature_verified', 'contract_submission_signature_verified', 'contract_2nd_signature_verified', 'contract_3rd_signature_verified', 'sub_total', 'total_vat', 'total_discount', 'total_price', 'total_paid', 'total_remaining', 'first_payment_sub_total', 'first_payment_vat', 'first_payment_discount', 'first_payment_price', 'first_payment_paid', 'first_payment_remaining', 'first_payment_agent_commision', 'first_payment_agent_commision_paid', 'submission_payment_sub_total', 'submission_payment_vat', 'submission_payment_discount', 'submission_payment_price', 'submission_payment_paid', 'submission_payment_remaining', 'submission_payment_agent_commision', 'submission_payment_agent_commision_paid', 'second_payment_sub_total', 'second_payment_vat', 'second_payment_discount', 'second_payment_price', 'second_payment_paid', 'second_payment_remaining', 'second_payment_agent_commision', 'second_payment_agent_commision_paid', 'third_payment_sub_total', 'third_payment_vat', 'third_payment_discount', 'third_payment_price', 'third_payment_paid', 'third_payment_remaining', 'third_payment_agent_commision', 'third_payment_agent_commision_paid', 'contract', 'embassy_country', 'application_stage_status', 'family_package_application_status', 'is_job_offer_letter_delivered', 'is_workpermit_delivered', 'first_payment_txn_mode', 'submission_payment_txn_mode', 'second_payment_txn_mode'
+                        // )
                     $paymentCreds = [
                         'whatsPaid' => $whatsPaid,
                         'thisPayment' => $thisPayment,
                         'thisPaymentMade' => $thisPaymentMade,
                         'totalremaining' => $request['totalremaining'],
                         'whichpayment' => $request['whichpayment'],
-                        'datas' => $datas,
+                        'datas' => $datas['id'],
                         'totalpay' => $request->totalpay,
                         'discount' => $request->discount,
                         'totaldue' => $request->totaldue,
                         'totalremaining' => $request->totalremaining,
                         'pid' => $request->pid
                     ];
+                    //  dd($paymentCreds);
 
                     if ($datas === null) {
                         $data = new applicant;
@@ -1316,6 +1320,7 @@ class HomeController extends Controller
                 return redirect('home');
             }
         } catch (Exception $e) {
+            // dd($e);
             return redirect('myapplication')->with($e->getMessage());
         }
     }
@@ -1517,6 +1522,7 @@ class HomeController extends Controller
                 if ($paymentResponse->authResponse->success == true && $paymentResponse->authResponse->resultCode == "00") {
                     // $paymentDetails = Payment::where('id', Session::get('paymentId'))->first();
                     if (session()->has('paymentCreds')) {
+
                     } else {
                         return \Redirect::route('myapplication');
                     }

@@ -69,17 +69,26 @@
 </style>
 <?php $timer = App\Helpers\users::getDateTime();?>
 <script>
-    
+    var timer = new Date("<?php echo e($timer); ?>");
     var countDownDate = new Date("<?php echo e($timer); ?>").getTime();
     // Update the count down every 1 second
     var x = setInterval(function() {
     
       // Get today's date and time
-      var now = new Date().getTime();
+    var now = new Date().getTime();
       // Find the distance between now and the count down date
-      var distance = countDownDate - now;
+    var distance = countDownDate - now;
       // If the count down is finished, write some text
-      if (distance < 0 || isNaN(distance) || (Math.floor(distance / (1000 * 60 * 60 * 24)) <= 1)) {
+    //   if (distance < 0 || isNaN(distance) || (Math.floor(distance / (1000 * 60 * 60 * 24)) <= 1)) {
+    var tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1)
+    if ((tomorrow.getMonth()+1) < 10) {
+            tomorrow = tomorrow.getFullYear()+'-0'+(tomorrow.getMonth()+1)+'-'+tomorrow.getDate();
+    } else {
+        tomorrow = tomorrow.getFullYear()+'-'+(tomorrow.getMonth()+1)+'-'+tomorrow.getDate();
+    }
+    var lastDay = new Date(tomorrow);
+    if (compareDate(timer, lastDay)) {
         var date = new Date();
         // Add 7 days to current date
         const futureDate = new Date(date.getTime() + 7 * 24 * 60 * 60 * 1000);
@@ -88,7 +97,10 @@
         const year = futureDate.getFullYear();
         const month = String(futureDate.getMonth() + 1).padStart(2, '0');
         const day = String(futureDate.getDate()).padStart(2, '0');
-        const formattedDate = `${year}-${month}-${day}`;
+        const hour = futureDate.getHours();
+        const minutes = futureDate.getMinutes();
+        const second = futureDate.getSeconds();
+        const formattedDate = `${year}-${month}-${day}`+' '+`${hour}:${minutes}:${second}`;
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -119,7 +131,16 @@
     document.getElementById("days").innerHTML = "<p><span class='head'>PRICE INCREASES IN:</span> <span>" + days + "</span>Days: <span>" + hours + "</span>Hrs: <span>"
       + minutes + "</span>Mins: <span>" + seconds + "</span>Secs:</p>";
     }
-    
+    compareDate = (timer, tomorrow) => {
+        if(timer.getFullYear() == tomorrow.getFullYear()){
+            if(timer.getMonth() == tomorrow.getMonth()){
+                if(timer.getDate() == tomorrow.getDate()){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 </script>   
 <div id="days">
 </div>

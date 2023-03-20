@@ -288,7 +288,7 @@ $payall;
 $vat = (($payNow - $discount) * 5) / 100;
 
 // die();
-if (isset($pays) && (($pays->first_payment_remaining > 0 && $pays->first_payment_status == 'PARTIALLY_PAID') || ($pays->second_payment_remaining > 0 && $pays->second_payment_status == 'PARTIALLY_PAID') || ($pays->third_payment_remaining > 0 && $pays->third_payment_status == 'PARTIALLY_PAID')))
+if (isset($pays) && (($pays->first_payment_remaining > 0 && $pays->first_payment_status == 'PARTIALLY_PAID') || ($pays->second_payment_remaining > 0 && $pays->second_payment_status == 'PARTIALLY_PAID') || ($pays->submission_payment_remaining > 0 && $pays->submission_payment_status == 'PARTIALLY_PAID')))
 {
     $totalPay = round($payNoww, 2);
 } else {
@@ -587,10 +587,8 @@ if (isset($pays) && (($pays->first_payment_remaining > 0 && $pays->first_payment
         function saveSign() {
             var Signed = '<?php echo e(is_object($pays) ? $pays->contract_1st_signature_status : null); ?>';
             var pays = '<?php echo e(is_object($pays)); ?>';
-            alert(pays);
             if (signaturePad.isEmpty() && (pays != 1 && Signed != "SIGNED")) {
                 toastr.error("Please provide a signature.");
-                break;
             } else {
                 const dataURL = signaturePad.toDataURL();
 
