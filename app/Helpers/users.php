@@ -221,6 +221,37 @@ class users
     public static function getDateTime()
     {
         return DB::table('timer')->pluck('date')->first();
-
     }
+
+    public static function getGeneralPricingPlan()
+    {
+        $response = [];
+        $pricingPlans = DB::table('pricing_plans')
+                    ->join('destinations', 'destinations.id', '=', 'pricing_plans.destination_id')
+                    ->where('pricing_plans.status', 'CURRENT')
+                    ->select('pricing_plans.*', 'destinations.name')
+                    ->get();
+        
+        foreach($pricingPlans as $plan) {
+            if(($plan->no_of_parent == 0 || $plan->no_of_parent == null) && ($plan->no_of_children == 0 || $plan->no_of_children == null) && ($plan->name == 'Poland')){
+                $response['poland_indi'] = $plan;
+            } 
+            if (($plan->no_of_parent == 1 && $plan->no_of_children == 1) && ($plan->name == 'Poland')){
+                $response['poland_family'] = $plan;
+            } 
+            if(($plan->no_of_parent == 0 || $plan->no_of_parent == null) && ($plan->no_of_children == 0 || $plan->no_of_children == null) && ($plan->name == 'Canada')) {
+                $response['canada_indi'] = $plan;
+            }
+            if(($plan->no_of_parent == 0 || $plan->no_of_parent == null) && ($plan->no_of_children == 0 || $plan->no_of_children == null) && ($plan->name == 'Germany')) {
+                $response['germany_indi'] = $plan;
+            }
+            if(($plan->no_of_parent == 0 || $plan->no_of_parent == null) && ($plan->no_of_children == 0 || $plan->no_of_children == null) && ($plan->name == 'Malta')) {
+                $response['malta_indi'] = $plan;
+            }
+            if(($plan->no_of_parent == 0 || $plan->no_of_parent == null) && ($plan->no_of_children == 0 || $plan->no_of_children == null) && ($plan->name == 'Czech')) {
+                $response['czech_indi'] = $plan;
+            }
+        }
+        return $response;
+    }   
 }

@@ -1059,6 +1059,7 @@
                                                         </div>
 
                                                     </div>
+                                                </div>
                                             </span>
                                         </div>
                                     </div>
@@ -2241,8 +2242,8 @@
 </div>
 
 <?php if(strtoupper($paid->second_payment_status) != 'PAID' &&
-        strtoupper($paid->submission_payment_status) != 'PAID' &&
-        $prod->full_payment_discount > 0): ?>
+        ($pays->submission_payment_sub_total > 0 && strtoupper($paid->submission_payment_status) != 'PAID') &&
+        $prod->full_payment_discount > 0 ): ?>
     <?php if(isset($prod->id)): ?>
         <?php
             $ppd = $prod->id;
@@ -2256,11 +2257,11 @@
                 <?php if(
                     (strtoupper($paid->first_payment_status) == 'PAID' ||
                         strtoupper($paid->first_payment_status) == 'PARTIALLY_PAID') &&
-                        $paid->application_stage_status != 5): ?>
+                        $paid->application_stage_status != 5 ): ?>
                     <button class="btn btn-secondary toastrDefaultError"
                         style="border-width:thin; width:250px; height:60px; font-size:32px; font-weight:bold"
                         onclick="toastr.error('Your application process not completed!')">Pay All Now</button>
-                <?php elseif(($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0)): ?>
+                <?php elseif(($paid->first_payment_status != "PAID" && $paid->first_payment_verified_by_cfo == 0 && $paid->first_payment_txn_mode == 'TRANSFER')): ?>
                     <button class="btn btn-secondary toastrDefaultError"
                         style="border-width:thin; width:250px; height:60px; font-size:32px; font-weight:bold" 
                         onclick="toastr.error('Your previous payment being verified!')">

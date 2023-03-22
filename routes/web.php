@@ -29,6 +29,7 @@ Route::get('update/quickbook/token', [HomeController::class, 'callQuickbookSchdu
 Route::get('send/reminder/email', [HomeController::class, 'callReminderEmail']);
 
 Route::get('update/contract', [HomeController::class, 'updateContract']);
+Route::get('update/passport/contract/{id}',[HomeController::class, 'addPassportDetails']);
 
 Route::get('/resend/verification/{user}',[HomeController::class, 'resendVerificationEmail'])->name('resend.verification');
 Route::get('payment/success',[HomeController::class,'paymentSuccess'])->name('payment-success');

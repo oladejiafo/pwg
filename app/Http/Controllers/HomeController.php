@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Applicant;
 use App\Application;
 use App\Client;
+use App\Models\Timer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -45,6 +46,7 @@ class HomeController extends Controller
 {
     public function redirect()
     {
+        $pricingPlan = UserHelper::getGeneralPricingPlan();
         if (Auth::id()) {
 
             $client = User::find(Auth::id());
@@ -58,16 +60,14 @@ class HomeController extends Controller
                 return \Redirect::route('myapplication');
             } elseif (Session::has('prod_id')) {
                 $id = Session::get('prod_id');
-
                 $data = product::find($id);
 
                 $promo = promo::where('employee_id', '=', $id)->where('active_until', '>=', date('Y-m-d'))->get();
                 $ppay = product_payments::where('destination_id', '=', $id)->where('pricing_plan_type', '=', Session::get('packageType'))->where('status', 'CURRENT')->first();
 
                 session()->forget('prod_id');
-
                 // return view('user.package-type', compact('data', 'ppay', 'id'));
-                return \Redirect::route('packageType', $id);
+                return Redirect::to('payment_form/' . $id);
             } else {
                 $started = DB::table('applications')
                     ->select('pricing_plan_id', 'destination_id', 'client_id', 'first_payment_status', 'status')
@@ -89,7 +89,7 @@ class HomeController extends Controller
 
                 $promo = promo::where('active_until', '>=', date('Y-m-d'))->get();
 
-                return view('user.home', compact('package', 'promo', 'started'));
+                return view('user.home', compact('package', 'promo', 'started', 'pricingPlan'));
             }
         } else {
             Session::flush();
@@ -102,19 +102,19 @@ class HomeController extends Controller
                 ->get();
             $promo = promo::where('active_until', '>=', date('Y-m-d'))->get();
 
-            return view('user.home', compact('package', 'promo'));
+            return view('user.home', compact('package', 'promo', 'pricingPlan'));
         }
     }
 
     public function index()
     {
+        $pricingPlan = UserHelper::getGeneralPricingPlan();
         if (Auth::id()) {
             $started = DB::table('applications')
                 ->select('pricing_plan_id', 'destination_id', 'client_id', 'first_payment_status', 'status')
                 ->where('applications.client_id', '=', Auth::user()->id)
                 ->orderBy('applications.id', 'desc')
                 ->first();
-
             // $package = DB::table('destinations')->orderBy(DB::raw('FIELD(name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
 
             $package = DB::table('pricing_plans')
@@ -126,9 +126,8 @@ class HomeController extends Controller
 
             $promo = promo::where('active_until', '>=', date('Y-m-d'))->get();
 
-            return view('user.home', compact('package', 'promo', 'started'));
+            return view('user.home', compact('package', 'promo', 'started', 'pricingPlan'));
         } else {
-
             // $package = DB::table('destinations')->orderBy(DB::raw('FIELD(name, "Poland", "Czech", "Malta", "Canada", "Germany")'))->get();
 
             $package = DB::table('pricing_plans')
@@ -140,7 +139,7 @@ class HomeController extends Controller
             // dd($package);
             $promo = promo::where('active_until', '>=', date('Y-m-d'))->get();
 
-            return view('user.home', compact('package', 'promo'));
+            return view('user.home', compact('package', 'promo', 'pricingPlan'));
         }
 
         // try {
@@ -191,7 +190,6 @@ class HomeController extends Controller
                 ->where('status', 'CURRENT')
                 ->orderBy('sub_total', 'asc')
                 ->first();
-
 
             if ($request->response == 1) {
                 // dd($request->pyall);
@@ -267,7 +265,6 @@ class HomeController extends Controller
     public function signature(Request $request, $id)
     {
         if (Auth::id()) {
-            Session::put('mypay_option', $request->payall);
             $data = product::find($id);
             return view('user.signature', compact('data'));
         } else {
@@ -277,7 +274,9 @@ class HomeController extends Controller
 
     public function upload(Request $request)
     {
-        if (Auth::id()) {
+        $user = User::find(Auth::id());
+        $signatureUrl = (isset($user->getMedia(Client::$media_collection_main_signture)[0])) ? $user->getMedia(Client::$media_collection_main_signture)[0]->getUrl() : null;
+        if (Auth::id() && $signatureUrl == null) {
             list($part_a, $image_parts) = explode(";base64,", $request->signed);
             $image_type_aux = explode("image/", $part_a);
             $image_type = $image_type_aux[1];
@@ -293,18 +292,21 @@ class HomeController extends Controller
 
 
             if ($signature) {
-                Session::put('payall', $request->payall);
-                Session::put('infox', 'Signature is Successful!');
-                Session::put('infox_sub', 'Proceed to application');
-                return true;
+                $signatureUrl = (isset($signature->getMedia(Client::$media_collection_main_signture)[0])) ? $signature->getMedia(Client::$media_collection_main_signture)[0]->getUrl() : null;
+                $response = [
+                    'status' => true,
+                    'url' => $signatureUrl
+                ];
+                return $response;
             } else {
-                Session::put('failed', 'Oppss! Something went wrong.');
-                return false;
-                // return redirect()->back()->with('failed', 'Oppss! Something went wrong.');
+                $response = [
+                    'status' => false,
+                ];
             }
         } else {
-            return false;
-            // return redirect()->back()->with('message', 'You are not authorized');
+            $response = [
+                'status' => false,
+            ];
         }
     }
 
@@ -323,7 +325,7 @@ class HomeController extends Controller
     {
         if (Auth::id()) {
             Session::forget('discountapplied');
-
+            Session::forget('packageTypeOpted');
             $id = Auth::user()->id;
             Session::forget('payall');
 
@@ -453,14 +455,14 @@ class HomeController extends Controller
         }
     }
 
-    public function payment(Request $request)
+    public function payment($productId, Request $request)
     {
         try {
             $famCode = 0;
             if (Auth::id()) {
                 Session::forget('haveCoupon');
                 Session::forget('myDiscount');
-
+                Session::forget('discountapplied');
                 $complete = DB::table('applications')
                     ->where('client_id', '=', Auth::user()->id)
                     // ->whereNotIn('status',  ['APPLICATION_COMPLETED','VISA_REFUSED', 'APPLICATION_CANCELLED','REFUNDED'] )
@@ -470,20 +472,21 @@ class HomeController extends Controller
                     $app_id = $complete->id;
                     $p_id = $complete->destination_id;
                     $pack_id = $complete->pricing_plan_id;
+                    $myPack = $complete->work_permit_category;
                 } else {
                     $app_id = null;
                     $p_id = $request->pr_id;
                     if ($request->myPack == "BLUE_COLLAR") {
                         $pack_id = $request->blue_id;
-                    } else if(Session::has('packageType')){
+                    } else if ($request->myPack == "FAMILY_PACKAGE") {
+                        $pack_id = $request->fam_id;
+                    } else if (Session::has('packageTypeOpted')) {
                         $pack_id = Session::get('pricingPlanId');
                     } else {
                         $pack_id = $request->fam_id;
                     }
+                    $myPack = ($request->myPack) ?? Session::get('packageTypeOpted');
                 }
-                $myPack = ($request->myPack) ?? Session::get('packageType');
-
-
                 //Call Create Contract Function
                 $fileUrl = self::createContract($p_id);
 
@@ -499,6 +502,7 @@ class HomeController extends Controller
 
                 if (Session::has('payall')) {
                     $payall = Session::get('payall'); //$request->payall;
+                    // Session::forget('payall');
                 } else if (isset($request->payall)) {
                     $payall = $request->payall;
                 } else {
@@ -517,7 +521,8 @@ class HomeController extends Controller
                     ->orderBy('id', 'desc')
                     ->first();
                 $pays = DB::table('applications')
-                    ->select('applications.pricing_plan_id', 'applications.total_price', 'applications.total_paid', 'applications.first_payment_status', 'applications.submission_payment_status', 'applications.second_payment_status', 'first_payment_price', 'first_payment_paid', 'first_payment_remaining', 'is_first_payment_partially_paid', 'submission_payment_price', 'submission_payment_paid', 'submission_payment_remaining', 'second_payment_price', 'second_payment_paid', 'second_payment_remaining', 'first_payment_verified_by_cfo', 'contract_1st_signature_status')
+                    ->select('*')
+                    // ->select('applications.pricing_plan_id', 'applications.total_price', 'applications.total_paid', 'applications.first_payment_status', 'applications.submission_payment_status', 'applications.second_payment_status', 'first_payment_price', 'first_payment_paid', 'first_payment_remaining', 'is_first_payment_partially_paid', 'submission_payment_price', 'submission_payment_paid', 'submission_payment_remaining', 'second_payment_price', 'second_payment_paid', 'second_payment_remaining', 'first_payment_verified_by_cfo', 'contract_1st_signature_status', 'coupon_code','second_payment_discount','submission_payment_discount')
                     ->where('applications.client_id', '=', Auth::user()->id)
                     ->where('applications.destination_id', '=', $id)
                     // ->where('work_permit_category', $packageType)
@@ -790,6 +795,8 @@ class HomeController extends Controller
 
     public static function payType(Request $request)
     {
+        Session::forget('payall');
+
         if ($request->payall == 0) {
             $payall = 0;
             Session::put('payall', 0);
@@ -812,7 +819,22 @@ class HomeController extends Controller
                 $user = Client::find(Auth::id());
                 $signatureUrl = (isset($user->getMedia(Client::$media_collection_main_signture)[0])) ? $user->getMedia(Client::$media_collection_main_signture)[0]->getUrl() : null;
                 if ($signatureUrl == null && $request->whichpayment == 'FIRST') {
-                    return back()->with('error', 'Oppss! Please provide signature.');
+                    if ($request->signed) {
+                        list($part_a, $image_parts) = explode(";base64,", $request->signed);
+                        $image_type_aux = explode("image/", $part_a);
+                        $image_type = $image_type_aux[1];
+                        $signate = Auth::user()->id . '_' . time() . '.' . $image_type;
+                        $signature = Client::find(Auth::user()->id);
+
+                        if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+                            $signature->addMediaFromBase64($request->signed)->usingFileName($signate)->toMediaCollection(Client::$media_collection_main_signture, env('MEDIA_DISK'));
+                        } else {
+                            $signature->addMediaFromBase64($request->signed)->usingFileName($signate)->toMediaCollection(Client::$media_collection_main_signture, 'local');
+                        }
+                        $signature->save();
+                    } else {
+                        return back()->with('error', 'Oppss! Please provide signature.');
+                    }
                 }
                 // //Call Create Contract Function
                 // self::createContract($request->pid);
@@ -903,12 +925,14 @@ class HomeController extends Controller
                     $validator = Validator::make($request->all(), [
                         'amount' => 'numeric|gte:1000|lte:' . $payLimit,
                         'totaldue' => 'required',
-                        'totalpay' => 'numeric'
+                        'totalpay' => 'numeric',
+                        'agree' => 'required'
                     ]);
                 } else {
                     $validator = Validator::make($request->all(), [
                         'totaldue' => 'required',
-                        'totalpay' => 'numeric'
+                        'totalpay' => 'numeric',
+                        'agree' => 'required'
                     ]);
                 }
                 if ($validator->fails()) {
@@ -938,7 +962,6 @@ class HomeController extends Controller
                     $totalpay = $request->totalpay;
                 }
                 $outstand = $request->totalpay + $thisVat;
-
                 if ($request->totaldue == ($request->totalpay + $request->discount)) {
                     $whatsPaid = "PAID";
                     // } elseif (($request->totaldue > ($request->totalpay + $request->discount)) && (($request->totalpay + $request->discount) >= 1000)) {
@@ -951,6 +974,20 @@ class HomeController extends Controller
                 } else {
                     $whatsPaid = "PENDING"; //??????
                     $overPay = $request->totalpay - $request->totaldue;
+                }
+                if (Session::get('discountapplied') == 1) {
+                    $couponCodeData = DB::table('coupons')->where('code', $request->discountCode)->get()->first();
+                    if ($request->whichpayment == 'FIRST') {
+                        $first_payment_discount = ($pdet->first_payment_sub_total * $couponCodeData->amount) / 100;
+                        $topaynow_temp_first = ($pdet->first_payment_sub_total  - $first_payment_discount);
+                        $first_payment_vat = ($topaynow_temp_first *  5) / 100;
+                        $paidAmount = $topaynow_temp_first + $first_payment_vat;
+                        if ($paidAmount == $request->totalpay) {
+                            $whatsPaid = 'PAID';
+                        }
+                    } else if ($request->whichpayment == 'BALANCE_ON_FIRST') {
+                        $whatsPaid = 'PAID';
+                    }
                 }
                 $haveSpouse =  Session::get('mySpouse');
                 $kids =  Session::get('myKids');
@@ -1017,12 +1054,12 @@ class HomeController extends Controller
                         ['client_id', '=', Auth::user()->id],
                         ['destination_id', '=', $request->pid],
                     ])
-                        ->orderBy('id', 'Desc')                       
+                        ->orderBy('id', 'Desc')
                         ->first();
 
-                        // select(
-                        //     'id', 'client_id', 'branch_id', 'pricing_plan_id', 'destination_id', 'status', 'work_permit_status', 'first_payment_status', 'submission_payment_status', 'second_payment_status', 'third_payment_status', 'is_first_payment_partially_paid', 'is_submission_payment_partially_paid', 'is_second_payment_partially_paid', 'is_third_payment_partially_paid', 'first_payment_verified_by_accountant', 'submission_payment_verified_by_accountant', 'second_payment_verified_by_accountant', 'third_payment_verified_by_accountant', 'first_payment_verified_by_cfo', 'submission_payment_verified_by_cfo', 'second_payment_verified_by_cfo', 'third_payment_verified_by_cfo', 'contract_1st_signature_status', 'contract_submission_signature_status', 'contract_2nd_signature_status', 'contract_3rd_signature_status', 'contract_1st_signature_at', 'contract_submission_signature_at', 'contract_2nd_signature_at', 'contract_3rd_signature_at', 'contract_1st_signature_verified_by_accountant', 'contract_submission_signature_verified_by_accountant', 'contract_2nd_signature_verified_by_accountant', 'contract_3rd_signature_verified_by_accountant', 'contract_1st_signature_verified', 'contract_submission_signature_verified', 'contract_2nd_signature_verified', 'contract_3rd_signature_verified', 'sub_total', 'total_vat', 'total_discount', 'total_price', 'total_paid', 'total_remaining', 'first_payment_sub_total', 'first_payment_vat', 'first_payment_discount', 'first_payment_price', 'first_payment_paid', 'first_payment_remaining', 'first_payment_agent_commision', 'first_payment_agent_commision_paid', 'submission_payment_sub_total', 'submission_payment_vat', 'submission_payment_discount', 'submission_payment_price', 'submission_payment_paid', 'submission_payment_remaining', 'submission_payment_agent_commision', 'submission_payment_agent_commision_paid', 'second_payment_sub_total', 'second_payment_vat', 'second_payment_discount', 'second_payment_price', 'second_payment_paid', 'second_payment_remaining', 'second_payment_agent_commision', 'second_payment_agent_commision_paid', 'third_payment_sub_total', 'third_payment_vat', 'third_payment_discount', 'third_payment_price', 'third_payment_paid', 'third_payment_remaining', 'third_payment_agent_commision', 'third_payment_agent_commision_paid', 'contract', 'embassy_country', 'application_stage_status', 'family_package_application_status', 'is_job_offer_letter_delivered', 'is_workpermit_delivered', 'first_payment_txn_mode', 'submission_payment_txn_mode', 'second_payment_txn_mode'
-                        // )
+                    // select(
+                    //     'id', 'client_id', 'branch_id', 'pricing_plan_id', 'destination_id', 'status', 'work_permit_status', 'first_payment_status', 'submission_payment_status', 'second_payment_status', 'third_payment_status', 'is_first_payment_partially_paid', 'is_submission_payment_partially_paid', 'is_second_payment_partially_paid', 'is_third_payment_partially_paid', 'first_payment_verified_by_accountant', 'submission_payment_verified_by_accountant', 'second_payment_verified_by_accountant', 'third_payment_verified_by_accountant', 'first_payment_verified_by_cfo', 'submission_payment_verified_by_cfo', 'second_payment_verified_by_cfo', 'third_payment_verified_by_cfo', 'contract_1st_signature_status', 'contract_submission_signature_status', 'contract_2nd_signature_status', 'contract_3rd_signature_status', 'contract_1st_signature_at', 'contract_submission_signature_at', 'contract_2nd_signature_at', 'contract_3rd_signature_at', 'contract_1st_signature_verified_by_accountant', 'contract_submission_signature_verified_by_accountant', 'contract_2nd_signature_verified_by_accountant', 'contract_3rd_signature_verified_by_accountant', 'contract_1st_signature_verified', 'contract_submission_signature_verified', 'contract_2nd_signature_verified', 'contract_3rd_signature_verified', 'sub_total', 'total_vat', 'total_discount', 'total_price', 'total_paid', 'total_remaining', 'first_payment_sub_total', 'first_payment_vat', 'first_payment_discount', 'first_payment_price', 'first_payment_paid', 'first_payment_remaining', 'first_payment_agent_commision', 'first_payment_agent_commision_paid', 'submission_payment_sub_total', 'submission_payment_vat', 'submission_payment_discount', 'submission_payment_price', 'submission_payment_paid', 'submission_payment_remaining', 'submission_payment_agent_commision', 'submission_payment_agent_commision_paid', 'second_payment_sub_total', 'second_payment_vat', 'second_payment_discount', 'second_payment_price', 'second_payment_paid', 'second_payment_remaining', 'second_payment_agent_commision', 'second_payment_agent_commision_paid', 'third_payment_sub_total', 'third_payment_vat', 'third_payment_discount', 'third_payment_price', 'third_payment_paid', 'third_payment_remaining', 'third_payment_agent_commision', 'third_payment_agent_commision_paid', 'contract', 'embassy_country', 'application_stage_status', 'family_package_application_status', 'is_job_offer_letter_delivered', 'is_workpermit_delivered', 'first_payment_txn_mode', 'submission_payment_txn_mode', 'second_payment_txn_mode'
+                    // )
                     $paymentCreds = [
                         'whatsPaid' => $whatsPaid,
                         'thisPayment' => $thisPayment,
@@ -1034,7 +1071,10 @@ class HomeController extends Controller
                         'discount' => $request->discount,
                         'totaldue' => $request->totaldue,
                         'totalremaining' => $request->totalremaining,
-                        'pid' => $request->pid
+                        'pid' => $request->pid,
+                        'couponApplied' => Session::get('discountapplied'),
+                        'couponCode' => $request->discountCode,
+                        'coupon' => $request->coupon
                     ];
                     //  dd($paymentCreds);
 
@@ -1049,22 +1089,56 @@ class HomeController extends Controller
                             $data->first_payment_price = $thisPayment; //was remarked
                             // $data->first_payment_paid = $thisPaymentMade; //was remarked
                             $data->first_payment_vat = $thisVat;
-                            $data->first_payment_discount = $thisDiscount;
+                            // $data->first_payment_discount = $thisDiscount;
+                            $data->total_price = $thisPayment + $pdet->third_payment_price;
+                            $data->total_remaining = $thisPayment + $pdet->third_payment_price;
+                            $data->total_vat = $thisVat;
+
+                            $data->total_discount = 0;
+                            $data->total_vat = $pdet->total_vat;
+                            $data->total_price = $pdet->total_price;
+                            $data->total_paid = 0;
+                            $data->total_remaining = $pdet->total_price;
                         } elseif ($request->whichpayment == 'BALANCE_ON_FIRST') {
+                            $data->total_discount = 0;
+                            $data->total_vat = $pdet->total_vat;
+                            $data->total_price = $pdet->total_price;
+                            $data->total_paid = $data->first_payment_paid;
+                            $data->total_remaining = $pdet->total_price - $data->first_payment_paid;
                         } elseif ($request->whichpayment == 'SUBMISSION') {
                             $data->submission_payment_price = $thisPayment;
                             // $data->submission_payment_paid = $thisPaymentMade;
                             $data->submission_payment_vat = $thisVat;
-                            $data->submission_payment_discount = $thisDiscount;
+                            // $data->submission_payment_discount = $thisDiscount;
+                            $data->total_discount = 0;
+                            $data->total_vat = $pdet->total_vat;
+                            $data->total_price = $pdet->total_price;
+                            $data->total_paid = $data->first_payment_paid;
+                            $data->total_remaining = $pdet->total_price - $data->first_payment_paid;
                         } elseif ($request->whichpayment == 'BALANCE_ON_SUBMISSION') {
+                            $data->total_discount = 0;
+                            $data->total_vat = $pdet->total_vat;
+                            $data->total_price = $pdet->total_price;
+                            $data->total_paid = $data->first_payment_paid + $data->submission_payment_paid;
+                            $data->total_remaining = $pdet->total_price - ($data->first_payment_paid + $data->submission_payment_paid);
                         } elseif ($request->whichpayment == 'SECOND') {
                             $data->second_payment_price = $thisPayment;
                             // $data->second_payment_paid = $thisPaymentMade;
                             $data->second_payment_vat = $thisVat;
-                            $data->second_payment_discount = $thisDiscount;
+                            // $data->second_payment_discount = $thisDiscount;
                             $data->coupon_code = $thisCode;
+                            $data->total_discount = 0;
+                            $data->total_vat = $pdet->total_vat;
+                            $data->total_price = $pdet->total_price;
+                            $data->total_paid = $data->first_payment_paid + $data->submission_payment_paid;
+                            $data->total_remaining = $pdet->total_price - ($data->first_payment_paid + $data->submission_payment_paid);
                             $res = $data->save();
                         } elseif ($request->whichpayment == 'BALANCE_ON_SECOND') {
+                            $data->total_discount = 0;
+                            $data->total_vat = $pdet->total_vat;
+                            $data->total_price = $pdet->total_price;
+                            $data->total_paid = $data->first_payment_paid + $data->submission_payment_paid;
+                            $data->total_remaining = $pdet->total_price - ($data->first_payment_paid + $data->submission_payment_paid);
                         } else {
                             // $data->second_payment_status = 'PAID';
                             $data->total_price = $thisPayment + $pdet->third_payment_price;
@@ -1157,7 +1231,6 @@ class HomeController extends Controller
 
                         $res = $data->save();
                     } else {
-
                         if ((empty($apply->embassy_country) || $apply->embassy_country == null)) {
                             $datas->embassy_country = $request->embassy_appearance;
                         }
@@ -1165,18 +1238,66 @@ class HomeController extends Controller
 
                         if ($request->whichpayment == 'FIRST') {
 
-                            $datas->first_payment_discount = $thisDiscount;
+                            // $datas->first_payment_discount = $thisDiscount;
+                            $datas->total_discount = 0;
+                            $datas->total_vat = $pdet->total_vat;
+                            $datas->total_price = $pdet->total_price;
+                            $datas->total_paid = 0;
+                            $datas->total_remaining = $pdet->total_price;
+                            $datas->first_payment_vat = $pdet->first_payment_vat;
+                            $datas->submission_payment_vat = $pdet->submission_payment_vat;
+                            $datas->second_payment_vat = $pdet->submission_payment_vat;
                         } else if ($request->whichpayment == 'BALANCE_ON_FIRST') {
+                            $datas->total_discount = 0;
+                            $datas->total_vat = $pdet->total_vat;
+                            $datas->total_price = $pdet->total_price;
+                            $datas->total_paid = 0;
+                            $datas->total_remaining = $pdet->total_price;
+                            $datas->first_payment_vat = $pdet->first_payment_vat;
+                            $datas->submission_payment_vat = $pdet->submission_payment_vat;
+                            $datas->second_payment_vat = $pdet->submission_payment_vat;
                         } elseif ($request->whichpayment == 'SUBMISSION') {
                             // $datas->submission_payment_price = $thisPayment;
                             // $datas->submission_payment_vat = $thisVat;
-                            $datas->submission_payment_discount = $thisDiscount;
+                            // $datas->submission_payment_discount = $thisDiscount;
+                            $datas->total_discount = 0;
+                            $datas->total_vat = $pdet->total_vat;
+                            $datas->total_price = $pdet->total_price;
+                            $datas->total_paid = 0;
+                            $datas->total_remaining = $pdet->total_price;
+                            $datas->first_payment_vat = $pdet->first_payment_vat;
+                            $datas->submission_payment_vat = $pdet->submission_payment_vat;
+                            $datas->second_payment_vat = $pdet->submission_payment_vat;
                         } elseif ($request->whichpayment == 'BALANCE_ON_SUBMISSION') {
+                            $datas->total_discount = 0;
+                            $datas->total_vat = $pdet->total_vat;
+                            $datas->total_price = $pdet->total_price;
+                            $datas->total_paid = 0;
+                            $datas->total_remaining = $pdet->total_price;
+                            $datas->first_payment_vat = $pdet->first_payment_vat;
+                            $datas->submission_payment_vat = $pdet->submission_payment_vat;
+                            $datas->second_payment_vat = $pdet->submission_payment_vat;
                         } elseif ($request->whichpayment == 'SECOND') {
                             // $datas->second_payment_price = $thisPayment;
                             // $datas->second_payment_vat = $thisVat;
-                            $datas->second_payment_discount = $thisDiscount;
+                            // $datas->second_payment_discount = $thisDiscount;
+                            $datas->total_discount = 0;
+                            $datas->total_vat = $pdet->total_vat;
+                            $datas->total_price = $pdet->total_price;
+                            $datas->total_paid = 0;
+                            $datas->total_remaining = $pdet->total_price;
+                            $datas->first_payment_vat = $pdet->first_payment_vat;
+                            $datas->submission_payment_vat = $pdet->submission_payment_vat;
+                            $datas->second_payment_vat = $pdet->submission_payment_vat;
                         } elseif ($request->whichpayment == 'BALANCE_ON_SECOND') {
+                            $datas->total_discount = 0;
+                            $datas->total_vat = $pdet->total_vat;
+                            $datas->total_price = $pdet->total_price;
+                            $datas->total_paid = 0;
+                            $datas->total_remaining = $pdet->total_price;
+                            $datas->first_payment_vat = $pdet->first_payment_vat;
+                            $datas->submission_payment_vat = $pdet->submission_payment_vat;
+                            $datas->second_payment_vat = $pdet->submission_payment_vat;
                         } else {
                             if (in_array($datas->first_payment_status, ['PAID', 'PARTIALLY_PAID'])) {
                                 if (in_array($datas->submission_payment_status, ['PAID', 'PARTIALLY_PAID'])) {
@@ -1320,7 +1441,7 @@ class HomeController extends Controller
                 return redirect('home');
             }
         } catch (Exception $e) {
-            // dd($e);
+            dd($e);
             return redirect('myapplication')->with($e->getMessage());
         }
     }
@@ -1456,6 +1577,32 @@ class HomeController extends Controller
                     }
                 }
             }
+            if (Session::get('discountapplied') == 1 && (($request->whichpayment == 'FIRST') || ($request->whichpayment != 'BALANCE_ON_FIRST') || ($request->whichpayment != 'SUBMISSION' || $request->whichpayment != 'BALANCE_ON_SUBMISSION') || ($request->whichpayment != 'SECOND' || $request->whichpayment != 'BALANCE_ON_SECOND'))) {
+                $couponCodeData = DB::table('coupons')->where('code', $request->code)->get()->first();
+                $application->coupon = $request->couponDetails;
+                $application->coupon_code = $request->code;
+
+                $total = $paysplit->sub_total - $paysplit->third_payment_sub_total;
+                $application->total_discount = ($total * $couponCodeData->amount) / 100;
+                $totalTemp = $total - ($total * $couponCodeData->amount) / 100;
+                $application->total_vat = (($totalTemp *  5) / 100) + ($paysplit->third_payment_vat);
+                $application->total_remaining = $application->total_price = ($paysplit->sub_total - (($total * $couponCodeData->amount) / 100))  + (($totalTemp *  5) / 100);
+
+                $topaynow_temp_first = $paysplit->first_payment_sub_total  - (($couponCodeData->amount *  $paysplit->first_payment_sub_total) / 100);
+                $application->first_payment_discount = ($paysplit->first_payment_sub_total * $couponCodeData->amount) / 100;
+                $application->first_payment_vat = ($topaynow_temp_first *  5) / 100;
+                $application->first_payment_remaining = $application->first_payment_price = $topaynow_temp_first + ($topaynow_temp_first *  5) / 100;
+
+                $topaynow_temp_submission = $paysplit->submission_payment_sub_total  - (($couponCodeData->amount *  $paysplit->submission_payment_sub_total) / 100);
+                $application->submission_payment_discount = ($paysplit->submission_payment_sub_total * $couponCodeData->amount) / 100;
+                $application->submission_payment_vat = ($topaynow_temp_submission *  5) / 100;
+                $application->submission_payment_remaining = $application->submission_payment_price = $topaynow_temp_submission + ($topaynow_temp_submission *  5) / 100;
+
+                $topaynow_temp_second = $paysplit->second_payment_sub_total  - (($couponCodeData->amount *  $paysplit->second_payment_sub_total) / 100);
+                $application->second_payment_discount = ($paysplit->second_payment_sub_total * $couponCodeData->amount) / 100;
+                $application->second_payment_vat = ($topaynow_temp_second *  5) / 100;
+                $application->second_payment_remaining = $application->second_payment_price = $topaynow_temp_second + ($topaynow_temp_second *  5) / 100;
+            }
 
             $application->save();
             // if ($payment->save()) {
@@ -1522,20 +1669,60 @@ class HomeController extends Controller
                 if ($paymentResponse->authResponse->success == true && $paymentResponse->authResponse->resultCode == "00") {
                     // $paymentDetails = Payment::where('id', Session::get('paymentId'))->first();
                     if (session()->has('paymentCreds')) {
-
                     } else {
-                        return \Redirect::route('myapplication');
+                        $application = Applicant::where('client_id', '=', Auth::id())->orderBy('id', 'DESC')->first();
+                        $dat = new payment;
+                        $dat->application_id = $application->id;
+                        $dat->payment_date =  date('Y-m-d');;
+                        $dat->payable_amount = $paymentResponse->amount->value / 100;
+                        $dat->invoice_amount = $paymentResponse->amount->value / 100;
+                        $dat->bank_id = '8';
+                        $dat->payment_verified_by_cfo = 0;
+                        $dat->paid_amount = $paymentResponse->amount->value / 100;
+                        $dat->currency = $paymentResponse->amount->currencyCode;
+                        $dat->bank_reference_no = $paymentResponse->merchantOrderReference;
+                        $dat->transaction_id = $paymentResponse->_id;
+                        $dat->transaction_mode = 'CARD';
+                        $dat->save();
+                        return \Redirect::route('myapplication')->with('info', 'Payment have to be verified!');
                     }
                     $paymentCreds = Session::get('paymentCreds');
-
+                    // dd($paymentCreds);
                     $data = applicant::where([
                         ['client_id', '=', Auth::user()->id],
                         ['destination_id', '=', $id],
                     ])
                         ->orderBy('id', 'DESC')
                         ->first();
+                    $couponCodeData = null;
+                    $pricing = DB::table('pricing_plans')->where('id', $data->pricing_plan_id)->first();
+                    if ($paymentCreds['couponApplied'] ==  1 && (($paymentCreds['whichpayment'] == 'FIRST') || ($paymentCreds['whichpayment'] != 'BALANCE_ON_FIRST') || ($paymentCreds['whichpayment'] != 'SUBMISSION' || $paymentCreds['whichpayment'] != 'BALANCE_ON_SUBMISSION') || ($paymentCreds['whichpayment'] != 'SECOND' || $paymentCreds['whichpayment'] != 'BALANCE_ON_SECOND'))) {
+                        $couponCodeData = DB::table('coupons')->where('code', $paymentCreds['couponCode'])->get()->first();
+                        $data->coupon = $paymentCreds['coupon'];
+                        $data->coupon_code = $paymentCreds['couponCode'];
+
+                        $total = $pricing->sub_total - $pricing->third_payment_sub_total;
+                        $data->total_discount = ($total * $couponCodeData->amount) / 100;
+                        $totalTemp = $total - ($total * $couponCodeData->amount) / 100;
+                        $data->total_vat = (($totalTemp *  5) / 100) + ($pricing->third_payment_vat);
+                        $data->total_remaining = $data->total_price = ($pricing->sub_total - (($total * $couponCodeData->amount) / 100))  + (($totalTemp *  5) / 100);
+
+                        $topaynow_temp_first = $pricing->first_payment_sub_total  - (($couponCodeData->amount *  $pricing->first_payment_sub_total) / 100);
+                        $data->first_payment_discount = ($pricing->first_payment_sub_total * $couponCodeData->amount) / 100;
+                        $data->first_payment_vat = ($topaynow_temp_first *  5) / 100;
+                        $data->first_payment_remaining = $data->first_payment_price = $topaynow_temp_first + ($topaynow_temp_first *  5) / 100;
+
+                        $topaynow_temp_submission = $pricing->submission_payment_sub_total  - (($couponCodeData->amount *  $pricing->submission_payment_sub_total) / 100);
+                        $data->submission_payment_discount = ($pricing->submission_payment_sub_total * $couponCodeData->amount) / 100;
+                        $data->submission_payment_vat = ($topaynow_temp_submission *  5) / 100;
+                        $data->submission_payment_remaining = $data->submission_payment_price = $topaynow_temp_submission + ($topaynow_temp_submission *  5) / 100;
+
+                        $topaynow_temp_second = $pricing->second_payment_sub_total  - (($couponCodeData->amount *  $pricing->second_payment_sub_total) / 100);
+                        $data->second_payment_discount = ($pricing->second_payment_sub_total * $couponCodeData->amount) / 100;
+                        $data->second_payment_vat = ($topaynow_temp_second *  5) / 100;
+                        $data->second_payment_remaining = $data->second_payment_price = $topaynow_temp_second + ($topaynow_temp_second *  5) / 100;
+                    }
                     if ($paymentCreds['whichpayment'] == 'FIRST' || $paymentCreds['whichpayment'] == 'BALANCE_ON_FIRST') {
-                        $data->first_payment_status = $paymentCreds['whatsPaid'];
                         if ($paymentCreds['whatsPaid'] == 'PARTIALLY_PAID') { // add in payment success
                             // $data->first_payment_remaining =  $paymentCreds['thisPayment'] - $paymentCreds['thisPaymentMade']; // add in payment success
                             // $data->first_payment_remaining =  ($paymentCreds['thisPayment'] + $paymentCreds['discount']) - $paymentCreds['thisPaymentMade'];
@@ -1548,12 +1735,12 @@ class HomeController extends Controller
 
                             $data->is_first_payment_partially_paid = 0; // add in payment success
                             $data->status = 'DOCUMENTS_SUBMITTED'; // add in payment success
-                            $data->first_payment_paid = $data->first_payment_paid + $paymentCreds['totalpay'];
+                            $data->first_payment_paid = ($data->first_payment_status == "PARTIALLY_PAID") ? $data->first_payment_paid + $paymentCreds['totalpay'] : $paymentCreds['totalpay'];
 
                             $data->first_payment_verified_by_accountant = 1;
                             $data->first_payment_verified_by_cfo = 1;
                         }
-
+                        $data->first_payment_status = $paymentCreds['whatsPaid'];
                         $data->first_payment_price = $paymentCreds['thisPayment']; // add in payment success
 
                     } elseif ($paymentCreds['whichpayment'] == 'SUBMISSION' || $paymentCreds['whichpayment'] == 'BALANCE_ON_SUBMISSION') {
@@ -1747,6 +1934,8 @@ class HomeController extends Controller
                     Quickbook::createInvoice($payment);
                     $msg = "Awesome! Payment Successful!";
                     Session::forget('paymentCreds');
+                    Session::forget('discountapplied');
+
                     if ($data->application_stage_status != 5) {
                         session::put('paymentMode', "NETWORK");
                         return Redirect::route('applicant.details', $data->destination_id);
@@ -1766,6 +1955,7 @@ class HomeController extends Controller
                 return \Redirect::route('payment-fail', $id);
             }
         } catch (Exception $e) {
+            dd($e);
             return \Redirect::route('myapplication')->with('error', $e->getMessage());
         }
     }
@@ -1878,60 +2068,172 @@ class HomeController extends Controller
 
     public function getPromo(Request $request)
     {
-        $response['status'] = false;
-        $id = Session::get('myproduct_id');
-        $coupon = DB::table('coupons')
-            ->select('amount')
-            ->where('code', '=', strip_tags($request->discount_code))
-            ->where('employee_id', '=', $id)
-            ->where('active_from', '<=', date('Y-m-d'))
-            ->where('active_until', '>=', date('Y-m-d'))
-            ->where('active', '=', 1)
-            ->get();
+        $response = [];
+        $coupon = [];
+        $coupon_code = $request->discount_code;
+        if (isset($coupon_code)) {
+            $coupon_code = strtolower($coupon_code);
+            $coupon['code'] = $coupon_code;
+            $couponCodeData = DB::table('coupons')->where('code', $coupon_code)->get()->first();
 
-        foreach ($coupon as $apply) {
-            $my_discount = $apply->amount;
-        }
+            if (
+                $couponCodeData
+                && $couponCodeData->code
+                && $couponCodeData->active == true
+            ) {
 
+                if (isset($couponCodeData->employee_id) && $couponCodeData->employee_id) {
 
-        if ($coupon->first()) {
+                    if ($couponCodeData->active_from > now()) {
 
-            $discountPercent = 'PROMO: ' . $my_discount . '%';
-            $discountamt = ($my_discount *  $request->totaldue) / 100;
+                        $coupon['status'] = 'offer_not_started_yet';
+                        $coupon['is_valid'] = false;
+                        $topaynoww = $request->totaldue; //If no promo
+                        $response['topaynow'] = $topaynoww;
+                        $response['message'] = "Offer not started yet!";
+                        $response['status'] = false;
+                        $response['coupon'] = $coupon;
+                    } else if ($couponCodeData->active_until < now()) {
 
-            $topaynow = $request->totaldue  - (($my_discount *  $request->totaldue) / 100);
-            if ($request->vat > 0) {
-                $vatNow = ($topaynow_temp *  5) / 100;
-                $topaynow = $topaynow_temp + $vatNow;
+                        $coupon['status'] = 'code_expired';
+                        $coupon['is_valid'] = false;
+                        Session::put('haveCoupon', 0);
+                        $response['haveCoupon'] = 0;
+                        $topaynoww = $request->totaldue; //If no promo
+                        $response['topaynow'] = $topaynoww;
+                        $response['message'] = "Code expired!";
+                        $response['status'] = false;
+                        $response['coupon'] = $coupon;
+                    } else {
+
+                        $couponUsage = Application::where(
+                            [
+                                ['coupon_code', '=', $coupon_code]
+                            ]
+                        )->get()->count();
+                        if ($couponUsage == 0) {
+                            Session::put('haveCoupon', 1);
+                            Session::put('myDiscount', $couponCodeData->amount);
+                            Session::put('discountapplied', 1);
+                            $coupon['is_valid'] = true;
+                            $coupon['status'] = 'not_used_yet';
+                            $coupon['reward'] = $couponCodeData->reward;
+                            $coupon['amount'] = $couponCodeData->amount;
+                            $response['myDiscount'] = $couponCodeData->amount;
+                            $response['haveCoupon'] = 1;
+                            $discountamt = ($couponCodeData->amount *  $request->paynow) / 100;
+                            $response['discountamt'] = $discountamt;
+                            $topaynow_temp = $request->paynow  - (($couponCodeData->amount *  $request->paynow) / 100);
+                            $vatNow = ($topaynow_temp *  5) / 100;
+                            $topaynow = $topaynow_temp + $vatNow;
+                            $response['topaynow'] = $topaynow;
+                            $response['vatNow'] = $vatNow;
+                            $discountPercent = 'PROMO: ' . $couponCodeData->amount . '%';
+                            $response['discountPercent'] = $discountPercent;
+                            $response['coupon'] = $coupon;
+                            $response['status'] = true;
+                            $response['message'] = "Coupon applied!";
+                        } else {
+                            $coupon['is_valid'] = false;
+                            $coupon['status'] = 'already_used';
+                            $topaynoww = $request->totaldue; //If no promo
+                            Session::put('haveCoupon', 0);
+                            $response['haveCoupon'] = 0;
+                            $response['topaynow'] = $topaynoww;
+                            $response['message'] = "Already used";
+                            $response['status'] = false;
+                            $response['coupon'] = $coupon;
+                        }
+                    }
+                } else {
+                    $coupon['is_valid'] = false;
+                    $coupon['status'] = 'not_assigned_yet';
+                    $topaynoww = $request->totaldue; //If no promo
+                    Session::put('haveCoupon', 0);
+                    $response['haveCoupon'] = 0;
+                    $response['topaynow'] = $topaynoww;
+                    $response['message'] = "Not assigned yet!";
+                    $response['status'] = false;
+                    $response['coupon'] = $coupon;
+                }
             } else {
-                $topaynow = $topaynow_temp;
-                $vatNow = 0;
+                $coupon['status'] = false;
+                $coupon['status'] = 'invalid_code';
+                $topaynoww = $request->totaldue; //If no promo
+                Session::put('haveCoupon', 0);
+                $response['haveCoupon'] = 0;
+                $response['topaynow'] = $topaynoww;
+                $response['message'] = "Inavlid code!";
+                $response['status'] = false;
+                $response['coupon'] = $coupon;
             }
-
-            Session::put('haveCoupon', 1);
-            Session::put('myDiscount', $my_discount);
-            Session::put('discountapplied', 1);
-
-            $response['myDiscount'] = $my_discount;
-            $response['haveCoupon'] = 1;
-            $response['discountamt'] = $discountamt;
-            $response['topaynow'] = $topaynow;
-            $response['vatNow'] = $vatNow;
-            $response['discountPercent'] = $discountPercent;
-
-            $response['status'] = true;
-
-
-            // return \Redirect::route('payment', $id);
         } else {
+            $coupon['status'] = false;
+            $coupon['status'] = 'invalid_code';
             $topaynoww = $request->totaldue; //If no promo
             Session::put('haveCoupon', 0);
             $response['haveCoupon'] = 0;
             $response['topaynow'] = $topaynoww;
-            // return \Redirect::route('payment', $id)->with('failed', 'Invalid Discount/Promo Code');
-
+            $response['message'] = "Please provide coupon code!";
+            $response['status'] = false;
+            $response['coupon'] = $coupon;
         }
+
         return $response;
+
+        // $response['status'] = false;
+        // $id = Session::get('myproduct_id');
+        // $coupon = DB::table('coupons')
+        //     ->select('amount')
+        //     ->where('code', '=', strip_tags($request->discount_code))
+        //     ->where('employee_id', '=', $id)
+        //     ->where('active_from', '<=', date('Y-m-d'))
+        //     ->where('active_until', '>=', date('Y-m-d'))
+        //     ->where('active', '=', 1)
+        //     ->get();
+
+        // foreach ($coupon as $apply) {
+        //     $my_discount = $apply->amount;
+        // }
+
+
+        // if ($coupon->first()) {
+
+        //     $discountPercent = 'PROMO: ' . $my_discount . '%';
+        //     $discountamt = ($my_discount *  $request->totaldue) / 100;
+
+        //     $topaynow = $request->totaldue  - (($my_discount *  $request->totaldue) / 100);
+        //     if ($request->vat > 0) {
+        //         $vatNow = ($topaynow_temp *  5) / 100;
+        //         $topaynow = $topaynow_temp + $vatNow;
+        //     } else {
+        //         $topaynow = $topaynow_temp;
+        //         $vatNow = 0;
+        //     }
+
+        //     Session::put('haveCoupon', 1);
+        //     Session::put('myDiscount', $my_discount);
+        //     Session::put('discountapplied', 1);
+
+        //     $response['myDiscount'] = $my_discount;
+        //     $response['haveCoupon'] = 1;
+        //     $response['discountamt'] = $discountamt;
+        //     $response['topaynow'] = $topaynow;
+        //     $response['vatNow'] = $vatNow;
+        //     $response['discountPercent'] = $discountPercent;
+
+        //     $response['status'] = true;
+
+
+        //     // return \Redirect::route('payment', $id);
+        // } else {
+        //     $topaynoww = $request->totaldue; //If no promo
+        //     Session::put('haveCoupon', 0);
+        //     $response['haveCoupon'] = 0;
+        //     $response['topaynow'] = $topaynoww;
+        //     // return \Redirect::route('payment', $id)->with('failed', 'Invalid Discount/Promo Code');
+
+        // }
     }
 
     public function checkPromo(Request $request)
@@ -2449,22 +2751,28 @@ class HomeController extends Controller
             }
         }
         $applications = Application::where('created_at', '>=', "2023-03-10")
-                                ->get();
-            foreach ($applications as $application) {
-                $pricingPlan = DB::table('pricing_plans')->where('id', $application->pricing_plan_id)->where('status', '=', "CURRENT")->where('is_active', 1)->first();
-                if ($pricingPlan) {
-                    $client = Client::find($application->client_id);
-                    $originalPdf = Storage::disk(env('MEDIA_DISK'))->url('Applications/Contracts/client_contracts/' . $application->contract);
-                    
-                    $paymentType =  "FIRST";
-                    $user = Client::find($client->id);
-                    $data = product::find($application->destination_id);
+            ->get();
+        foreach ($applications as $application) {
+            $pricingPlan = DB::table('pricing_plans')->where('id', $application->pricing_plan_id)->where('status', '=', "CURRENT")->where('is_active', 1)->first();
+            if ($pricingPlan) {
+                $client = Client::find($application->client_id);
+                $originalPdf = Storage::disk(env('MEDIA_DISK'))->url('Applications/Contracts/client_contracts/' . $application->contract);
+
+                $paymentType =  "FIRST";
+                $user = Client::find($client->id);
+                $data = product::find($application->destination_id);
 
                 $signatureUrl = (isset($user->getMedia(Client::$media_collection_main_signture)[0])) ? $user->getMedia(Client::$media_collection_main_signture)[0]->getUrl() : null;
 
-                
+
                 $result = pdfBlock::attachSignature($originalPdf, $signatureUrl, $data, $paymentType, $application, $user);
             }
         }
+    }
+
+    public function addPassportDetails($id)
+    {
+        $applicant = Application::find($id);
+        pdfBlock::mapMoreInfo($applicant);
     }
 }

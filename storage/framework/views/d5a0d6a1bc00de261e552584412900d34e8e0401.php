@@ -323,8 +323,8 @@
 
                                 <div class="input-group-btn">
                                     <span class="fileUpload btn">
-                                        <span class="upl" id="upload">Choose File</span>
-                                        <input type="file" class="upload up passport_copy" id="up"  name="passport_copy" />
+                                        <span class="upl" id="upload" onclick="showPassportFormat()">Choose File</span>
+                                        
                                     </span><!-- btn-orange -->
                                 </div><!-- btn -->
                                 <label for="passport_copy">Upload Passport Copy*</label>
@@ -485,8 +485,8 @@ unset($__errorArgs, $__bag); ?>
                                 <input type="text" class="form-control residence_id" id="residence_copy" name="residence_copy" onclick="showResidenceIdFormat('applicant')" placeholder="Residence/Emirates ID*" readonly >
                                 <div class="input-group-btn">
                                     <span class="fileUpload btn">
-                                        <span class="upl" id="upload">Choose File</span>
-                                        <input type="file" class="upload residence_id" id="up"  name="residence_copy" />
+                                        <span class="upl" id="upload" onclick="showResidenceIdFormat('applicant')">Choose File</span>
+                                        
                                     </span><!-- btn-orange -->
                                 </div><!-- btn -->
                                 <label for="residence_copy">Residence/Emirates ID*</label>
@@ -496,8 +496,8 @@ unset($__errorArgs, $__bag); ?>
                                 <input type="text" class="form-control visa_copy" id="visa_copy" onclick="showVisaFormat('applicant')" name="visa_copy" placeholder="Visa Copy" readonly autocomplete="off">
                                 <div class="input-group-btn">
                                     <span class="fileUpload btn">
-                                        <span class="upl" id="upload">Choose File</span>
-                                        <input type="file" class="upload visa_copy" id="up"  name="visa_copy" />
+                                        <span class="upl" id="upload" onclick="showVisaFormat('applicant')">Choose File</span>
+                                        
                                     </span><!-- btn-orange -->
                                 </div><!-- btn -->
                                 <label for="visa_copy">Visa Copy</label>
@@ -612,8 +612,7 @@ unset($__errorArgs, $__bag); ?>
                                 <input type="text" class="form-control schengen_copy" id="schengen_copy" onclick="showSchengenVisaFormat('applicant')" name="schengen_copy" placeholder="Image of Schengen Or National Visa Issued During Last 5 Years" readonly >
                                 <div class="input-group-btn">
                                     <span class="fileUpload btn">
-                                        <span class="upl" id="upload">Choose File</span>
-                                        <input type="file" class="upload schengen_copy" accept="image/png, image/gif, image/jpeg" name="schengen_copy" />
+                                        <span class="upl" id="upload" onclick="showSchengenVisaFormat('applicant')">Choose File</span>
                                     </span><!-- btn-orange -->
                                 </div><!-- btn -->
                                 <label for="schengen_copy">Image of Schengen Or National Visa Issued During Last 5 Years</label>
