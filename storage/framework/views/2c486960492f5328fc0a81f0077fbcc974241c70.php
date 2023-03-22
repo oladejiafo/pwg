@@ -403,23 +403,23 @@ $vals=array(0,1,2);
                                     <p style="font-size: 12px;margin-bottom:-15px;margin-top:3px">How many children will be accompanying you?</p>
                                     <div class=" row children" style="widthx:35%">
                                         <div class="col-2">
-                                            <input type="radio" id="none" name="children" class="kids" <?php if($ABC == 0 || $ABC==null ): ?> checked="checked" <?php endif; ?>  onclick="handleKids(this);" value="0"/>
+                                            <input type="radio" id="none" name="children" class="kids" <?php if($ABC == 0 || $ABC==null ): ?> checked="checked" <?php endif; ?>  value="0"/>
                                             <label for="none">None</label>
                                         </div>
                                         <div class="col-2">
-                                            <input type="radio" id="one" name="children" class="kids" <?php if($ABC == 1 || $ABC==null ): ?> checked="checked" <?php endif; ?> onclick="handleKids(this);" value="1"/>
+                                            <input type="radio" id="one" name="children" class="kids" <?php if($ABC == 1 || $ABC==null ): ?> checked="checked" <?php endif; ?> value="1"/>
                                             <label for="one">One</label>
                                         </div>
                                         <div class="col-2">
-                                            <input type="radio" id="two" name="children" class="kids" <?php if($ABC == 2 ): ?> checked="checked" <?php endif; ?> onclick="handleKids(this);" value="2" />
+                                            <input type="radio" id="two" name="children" class="kids" <?php if($ABC == 2 ): ?> checked="checked" <?php endif; ?> value="2" />
                                             <label for="two">Two</label>
                                         </div>
                                         <div class="col-2">
-                                            <input type="radio" id="three" name="children" class="kids" <?php if($ABC == 3 ): ?> checked="checked" <?php endif; ?> onclick="handleKids(this);" value="3" />
+                                            <input type="radio" id="three" name="children" class="kids" <?php if($ABC == 3 ): ?> checked="checked" <?php endif; ?> value="3" />
                                             <label for="three">Three</label>
                                         </div>
                                         <div class="col-2">
-                                            <input type="radio" id="four" name="children" <?php if($ABC == 4 ): ?> checked="checked" <?php endif; ?> onclick="handleKids(this);" value="4" />
+                                            <input type="radio" id="four" name="children" <?php if($ABC == 4 ): ?> checked="checked" <?php endif; ?> value="4" />
                                             <label for="four">Four</label>
                                         </div>
                                     </div>
