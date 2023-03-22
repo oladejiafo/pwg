@@ -350,8 +350,8 @@
                                 <input type="text" class="form-control dependent_residence_copy" id="dependent_residence_copy" name="dependent_residence_copy" onclick="showResidenceIdFormat('dependent')" placeholder="Residence/Emirates ID*" readonly >
                                 <div class="input-group-btn">
                                     <span class="fileUpload btn">
-                                        <span class="upl" id="upload">Choose File</span>
-                                        <input type="file" class="upload dependent_residence_copy" id="up"  name="dependent_residence_copy" />
+                                        <span class="upl" id="upload" onclick="showResidenceIdFormat('dependent')">Choose File</span>
+                                        
                                     </span><!-- btn-orange -->
                                 </div><!-- btn -->
                                 <label for="dependent_residence_copy">Residence/Emirates ID*</label>
@@ -361,8 +361,8 @@
                                 <input type="text" class="form-control dependent_visa_copy" name="dependent_visa_copy" id="dependent_visa_copy" placeholder="Visa Copy" onclick="showVisaFormat('dependent')" readonly >
                                 <div class="input-group-btn">
                                     <span class="fileUpload btn">
-                                        <span class="upl" id="upload">Choose File</span>
-                                        <input type="file" class="upload dependent_visa_copy" id="up"  name="dependent_visa_copy" />
+                                        <span class="upl" id="upload" onclick="showVisaFormat('dependent')">Choose File</span>
+                                        
                                     </span><!-- btn-orange -->
                                 </div><!-- btn -->
                                 <label for="dependent_visa_copy">Visa Copy</label>
@@ -472,8 +472,8 @@
                                 <input type="text" class="form-control dependent_schengen_copy" id="dependent_schengen_copy" name="dependent_schengen_copy" onclick="showSchengenVisaFormat('dependent')" placeholder="Image of Schengen Or National Visa Issued During Last 5 Years" readonly >
                                 <div class="input-group-btn">
                                     <span class="fileUpload btn">
-                                        <span class="upl" id="upload">Choose File</span>
-                                        <input type="file" class="upload dependent_schengen_copy" accept="image/png, image/gif, image/jpeg" name="dependent_schengen_copy" />
+                                        <span class="upl" id="upload" onclick="showSchengenVisaFormat('dependent')">Choose File</span>
+                                        
                                     </span><!-- btn-orange -->
                                 </div><!-- btn -->
                                 <label for="dependent_schengen_copy">Image of Schengen Or National Visa Issued During Last 5 Years</label>

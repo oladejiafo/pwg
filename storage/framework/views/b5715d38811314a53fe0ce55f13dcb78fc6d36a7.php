@@ -33,6 +33,7 @@
 // Session::forget('mySpouse');
 // Session::forget('myKids');
 
+
 $completed = DB::table('applications')
 ->where('client_id', '=', Auth::user()->id)
 ->orderBy('id','desc')
@@ -177,7 +178,7 @@ $vals=array(0,1,2);
                     </div>
                 </div>
             </div>
-            <div class="row" style="background-color: #Fff;padding: 30px; margin-top:5px;--bs-gutter-x: 0px;">
+            <div class="row" style="background-color: #Fff;padding: 30px; margin-top:5px;--bs-gutter-x: 0px;margin-bottom:8%;">
                 <div class="col-12">
 <Style>
     /* style="accent-color:#08fa30;border: 1px solid white;width: 20px;height: 20px;top: 5px;left: -3px;position:relative;" */
@@ -195,8 +196,8 @@ $vals=array(0,1,2);
         visibility: visible;
         display: inline-block; 
     }
-    input[type='radio']:checked:after {
-        accent-color:#FACB08;
+        input[type='radio']:checked:after {
+            accent-color:#FACB08;
         border: 5px solid white;
         width: 20px;
         visibility: visible;
@@ -289,7 +290,11 @@ $vals=array(0,1,2);
             color: red;
         }
     }
-
+    #card-payment input[type='checkbox']:checked:after {
+        accent-color:#FACB08;
+        border: #FACB08;
+        background-color: #FACB08;
+    }
 </Style>
                     <div classx="form-sec discountForm">
                             <div align="left" style="background-color: #Fff;padding: 30px 0px">
@@ -310,28 +315,48 @@ $vals=array(0,1,2);
                                 </div>
 
                             </div>
-                            <hr style="border: 2px solid #ccc;margin:0">
-                            <div align="left" style="background-color: #Fff;padding: 10px 0px">
-                                <div>
-                                    <b style="color:black;font-size: 14px; margin-leftx:15px">Choose your payment type:</b> &ensp;&ensp;&ensp;&ensp;
-                                    <span class="flash" style="font-size: 11px;font-weight:600;">
-                                        <?php $disc=($pdet->sub_total-$pdet->third_payment_sub_total)/10; ?>
-                                        (Save additional <?php echo e($disc); ?>AED when you make full payment)
-                                    </span>
-                                </div>
-                                <div class="row" style=" margin:0 auto;"> 
+                            <div class="row">
+                                <?php if((!isset($pays)) || ((isset($pays)) && ($pays->first_payment_status == "PENDING"))): ?>
+                                    <div class="col-md-6">
+                                        <hr style="border: 2px solid #ccc;margin:0">
+                                        <div align="left" style="background-color: #Fff;padding: 10px 0px">
+                                            <div>
+                                                <b style="color:black;font-size: 14px; margin-leftx:15px">Choose your payment type:</b> &ensp;&ensp;&ensp;&ensp;
+                                                <span class="flash" style="font-size: 11px;font-weight:600;">
+                                                    <?php $disc=($pdet->sub_total-$pdet->third_payment_sub_total)/10; ?>
+                                                    (Save additional <?php echo e($disc); ?>AED when you make full payment)
+                                                </span>
+                                            </div>
+                                            <div class="row" style=" margin:0 auto;"> 
 
-                                    <div class="col-lg-3 col-md-4 col-sm-6" style="max-width:200px;display:inline-block;border-radius:5px; margin-block:3px; padding-block:10px; border: 0px solid #fff; background:#FACB08">
-                                        <input type="radio" name="payall" id="partial" checked value="1" required> 
-                                        <label><b>PAY INSTALLMENTS</b></label>
-                                    </div> &ensp;
-                                    <div class="col-lg-3 col-md-4 col-sm-6" style="max-width:200px;display:inline-block;border-radius:5px; margin-block:3px; padding-block:10px; border: 0px solid #fff; background:#FACB08">
-                                        <input type="radio" name="payall" id="full" value="0" required> 
-                                        <label><b>FULL PAYMENT</b></label>
-                                    </div>&ensp;
-                                    
-                                </div>
-                            </div> 
+                                                <div class="col-lg-12 col-md-4 col-sm-4" style="max-width:200px;display:inline-block;border-radius:5px; margin-block:3px; padding-block:10px; border: 0px solid #fff; background:#FACB08">
+                                                    <input type="radio" name="payall" id="partial" checked value="1" required> 
+                                                    <label><b>PAY INSTALLMENTS</b></label>
+                                                </div> &ensp;
+                                                <div class="col-lg-12 col-md-4 col-sm-4" style="max-width:200px;display:inline-block;border-radius:5px; margin-block:3px; padding-block:10px; border: 0px solid #fff; background:#FACB08">
+                                                    <input type="radio" name="payall" id="full" value="0" required> 
+                                                    <label><b>FULL PAYMENT</b></label>
+                                                </div>&ensp;
+                                                
+                                            </div>
+                                        </div> 
+                                    </div>
+                                    <?php if(Auth::user()->created_at >= "2023-03-22"): ?>
+                                        <div class="col-md-6 coupon" style="margin-top: 4%;">
+                                            <div class="row">
+                                                <div class="form-floating col-8">
+                                                    <input type="text" class="form-control" name="coupon" id="discount_code" placeholder="Enter coupon code" autocomplete="off" />
+                                                    <label for="discount_code">Enter coupon code</label>
+                                                </div>
+                                                <div class="col-4">
+                                                    <button type="button" class="btn btn-primary dicountBtn" id="dicountBtn" style="font-size:18px;border-color: #FACB08;">APPLY CODE</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                            </div>
+                            
                             <?php if($myPack == "FAMILY_PACKAGE"): ?>
                             <link href="<?php echo e(asset('user/css/products.css')); ?>" rel="stylesheet">
                             <style>
@@ -384,13 +409,13 @@ $vals=array(0,1,2);
                                 <p class="status">
                                     Yes
                                     <label class="switch">
-                                        <input type="radio" id="mySpouse" name="spouse" <?php if($XYZ == 'yes' ): ?> checked="checked" <?php endif; ?>  onclick="handleClick(this);" value="yes">
+                                        <input type="radio" id="yesmySpouse" name="spouse" <?php if($XYZ == 'yes' ): ?> checked="checked" <?php endif; ?>   value="yes">
                                         <span class="slider round"></span>
                                     </label>
                                     
                                     No
                                     <label class="switch">
-                                        <input type="radio" id="mySpouse" name="spouse" <?php if($XYZ == 'no' || $XYZ == null): ?> checked="checked" <?php endif; ?> onclick="handleClick(this);" value="no">
+                                        <input type="radio" id="mySpouse" name="spouse" <?php if($XYZ == 'no' || $XYZ == null): ?> checked="checked" <?php endif; ?>  value="no">
                                         <span class="slider round"></span>
                                     </label>
                                 </p>
@@ -403,23 +428,23 @@ $vals=array(0,1,2);
                                     <p style="font-size: 12px;margin-bottom:-15px;margin-top:3px">How many children will be accompanying you?</p>
                                     <div class=" row children" style="widthx:35%">
                                         <div class="col-2">
-                                            <input type="radio" id="none" name="children" class="kids" <?php if($ABC == 0 || $ABC==null ): ?> checked="checked" <?php endif; ?>  onclick="handleKids(this);" value="0"/>
+                                            <input type="radio" id="none" name="children" class="kids" <?php if($ABC == 0 || $ABC==null ): ?> checked="checked" <?php endif; ?>   value="0"/>
                                             <label for="none">None</label>
                                         </div>
                                         <div class="col-2">
-                                            <input type="radio" id="one" name="children" class="kids" <?php if($ABC == 1 || $ABC==null ): ?> checked="checked" <?php endif; ?> onclick="handleKids(this);" value="1"/>
+                                            <input type="radio" id="one" name="children" class="kids" <?php if($ABC == 1 || $ABC==null ): ?> checked="checked" <?php endif; ?>  value="1"/>
                                             <label for="one">One</label>
                                         </div>
                                         <div class="col-2">
-                                            <input type="radio" id="two" name="children" class="kids" <?php if($ABC == 2 ): ?> checked="checked" <?php endif; ?> onclick="handleKids(this);" value="2" />
+                                            <input type="radio" id="two" name="children" class="kids" <?php if($ABC == 2 ): ?> checked="checked" <?php endif; ?>  value="2" />
                                             <label for="two">Two</label>
                                         </div>
                                         <div class="col-2">
-                                            <input type="radio" id="three" name="children" class="kids" <?php if($ABC == 3 ): ?> checked="checked" <?php endif; ?> onclick="handleKids(this);" value="3" />
+                                            <input type="radio" id="three" name="children" class="kids" <?php if($ABC == 3 ): ?> checked="checked" <?php endif; ?>  value="3" />
                                             <label for="three">Three</label>
                                         </div>
                                         <div class="col-2">
-                                            <input type="radio" id="four" name="children" <?php if($ABC == 4 ): ?> checked="checked" <?php endif; ?> onclick="handleKids(this);" value="4" />
+                                            <input type="radio" id="four" name="children" <?php if($ABC == 4 ): ?> checked="checked" <?php endif; ?>  value="4" />
                                             <label for="four">Four</label>
                                         </div>
                                     </div>
@@ -761,6 +786,12 @@ $totalPay = round($payNow - $discount + $vat, 2);
 <script>
 
     $(document).ready(function(){
+
+        $('.coupon').show();
+        $('#showDiscount').hide();
+        $('#card').prop('checked', true);
+        $('#mySpouse').prop('checked', true);
+        $('#one').prop('checked', true);
         // let ppyall=<?php echo SESSION::get('ppyall')?>;
         var Signed = '<?php echo e(is_object($pays) ? $pays->contract_1st_signature_status : null); ?>';
         var pays = '<?php echo e(is_object($pays)); ?>';
@@ -809,6 +840,8 @@ $totalPay = round($payNow - $discount + $vat, 2);
             var paynow = <?php echo $payNoww; ?>;     
             var vat = $('#vats').val();
             var $this = $(this); 
+            var totalPay = '<?php echo e($totalPay); ?>';
+            $('#transAmount').empty();
             $.ajax({ 
                 url: '<?php echo e(route("getPromo")); ?> ',
                 method: 'POST',
@@ -820,7 +853,7 @@ $totalPay = round($payNow - $discount + $vat, 2);
                     'vat' : vat
                 }
             }).done( function (response) {
-            
+                var coupon = JSON.stringify(response.coupon);
                 if (response.status == true) {
                     // alert(response.myDiscount);
                     // alert(response.status);
@@ -859,8 +892,11 @@ $totalPay = round($payNow - $discount + $vat, 2);
                     document.getElementById("vats").value = Math.floor(response.vatNow * 100)/100;
                     // document.getElementById("myDiscount").value = response.discountamt;
                     document.getElementById("myDiscount").value = Math.floor(discountAmt * 100)/100;
-
+                    $('#transAmount').text(amtNoww)
                     document.getElementById("myDiscountCode").value = $('#discount_code').val();
+                    $('.couponDetails').val(coupon);
+                    $(".code").val($('#discount_code').val());
+                    $('.couponApplyDetails').val(coupon);
                     // document.getElementById("totaldue").value = response.topaynow;
                     // $('#amountLink2').html(response.topaynow);
                     // $('#totaldue').html(response.topaynow);
@@ -870,9 +906,12 @@ $totalPay = round($payNow - $discount + $vat, 2);
                 } else {
                     let preAmt = $('#totaldue').val();
                     $('#amountLink').html(preAmt);
-                    
+                    $('#transAmount').text(totalPay);
+                    $('#amountLink').html(totalPay);
+                    $('#amountLink2').val(totalPay);
+                    $('#totaldue').val(totalPay);
                     $('#showDiscount').hide();
-                    toastr.error('Invalid Discount Code');
+                    toastr.error(response.message);
                 }
             });
         });
@@ -914,7 +953,27 @@ $totalPay = round($payNow - $discount + $vat, 2);
 
 </script>
 
+<?php if(!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)): ?> 
+<script>
+    //Disable right click
+    document.addEventListener('contextmenu', (e) => e.preventDefault());
 
-    
+    function ctrlShiftKey(e, keyCode) {
+        return e.ctrlKey && e.shiftKey && e.keyCode === keyCode.charCodeAt(0);
+    }
 
+    document.onkeydown = (e) => {
+        // Disable F12, Ctrl + Shift + I, Ctrl + Shift + J, Ctrl + U
+        if (
+            event.keyCode === 123 ||
+            ctrlShiftKey(e, 'I') ||
+            ctrlShiftKey(e, 'J') ||
+            ctrlShiftKey(e, 'C') ||
+            (e.ctrlKey && e.keyCode === 'U'.charCodeAt(0))
+        )
+        return false;
+    };
+
+</script>
+<?php endif; ?>
 <?php echo $__env->make('layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views/user/payment-form.blade.php ENDPATH**/ ?>

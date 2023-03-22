@@ -23,17 +23,17 @@
                             <tbody><tr>
                                 <td style="box-sizing:border-box;font-family:Yantramanav,sans-serif;max-width:100vw;padding:32px">
                                     <div style="box-sizing:border-box;font-family:Yantramanav,sans-serif;width:400px;height:250px;display:block;margin:30px auto">
-                                        <img src="{{asset('images/paymentsuccesmail.png')}}" alt="PWG Group" width="100%" height="100%">
+                                        <img src="<?php echo e(asset('images/paymentsuccesmail.png')); ?>" alt="PWG Group" width="100%" height="100%">
                                     </div>
                                     <h1 style="box-sizing:border-box;font-family:Yantramanav,sans-serif;color:#3d4852;font-size:24px;font-weight:bold;margin-top:0;text-align:center">PAYMENT SUBMITTED <br>
                                         SUCCESSFULLY!</h1>
                                     <p style="box-sizing:border-box;font-family:Yantramanav,sans-serif;font-size:15px;line-height:1.5em;margin-top:0;text-align:center">Thank you,</p>
                                     <p style="box-sizing:border-box;font-family:Yantramanav,sans-serif;font-size:15px;line-height:1.5em;margin-top:0;text-align:center">
-                                            You have successfully made your <b style="font-weight: bold">{{ucwords($data['paymentType'])}}</b> payment<br>
+                                            You have successfully made your <b style="font-weight: bold"><?php echo e(ucwords($data['paymentType'])); ?></b> payment<br>
                                             and you can view & download your invoice under <br>
                                             <b>My Applications</b> on our portal. If you are not completed with application details the work permit will be delay. 
-                                            @if(ucwords($data['paymentType']) != 'SECOND') You will be notified when your <br>
-                                            @if(ucwords($data['paymentType']) == 'FIRST') work permit is ready. @elseif(ucwords($data['paymentType']) == 'SUBMISSION') embassy appointment is set. @elseif(ucwords($data['paymentType']) == 'Full-Outstanding Payment') work permit & embassy appointment is set. @endif @endif
+                                            <?php if(ucwords($data['paymentType']) != 'SECOND'): ?> You will be notified when your <br>
+                                            <?php if(ucwords($data['paymentType']) == 'FIRST'): ?> work permit is ready. <?php elseif(ucwords($data['paymentType']) == 'SUBMISSION'): ?> embassy appointment is set. <?php elseif(ucwords($data['paymentType']) == 'Full-Outstanding Payment'): ?> work permit & embassy appointment is set. <?php endif; ?> <?php endif; ?>
                                     </p>
                                     <table role="presentation" style="box-sizing:border-box;font-family:Yantramanav,sans-serif;margin:auto;padding:0;text-align:center;float:center;width:100%;margin-bottom:1.5em" width="100%" cellspacing="0" cellpadding="0" align="center">
                                         <tbody><tr>
@@ -45,7 +45,7 @@
                                                                 <tbody>
                                                                     <tr>
                                                                         <td style="box-sizing:border-box;font-family:Yantramanav,sans-serif">
-                                                                            <a href="{{env('APP_URL')}}/myapplication" class="m_6264836849513322656button" rel="noopener" style="font-size: 20px;font-weight:500;box-sizing:border-box;float:center;border-radius:4px;color:#fff;display:inline-block;overflow:hidden;text-decoration:none;padding:12px;width:200px;text-align:center;background-color:#2ead0c!important;border:1px solid #c4c6cd" target="_blank" >GET INVOICE</a>
+                                                                            <a href="<?php echo e(env('APP_URL')); ?>/myapplication" class="m_6264836849513322656button" rel="noopener" style="font-size: 20px;font-weight:500;box-sizing:border-box;float:center;border-radius:4px;color:#fff;display:inline-block;overflow:hidden;text-decoration:none;padding:12px;width:200px;text-align:center;background-color:#2ead0c!important;border:1px solid #c4c6cd" target="_blank" >GET INVOICE</a>
                                                                         </td>
                                                                     </tr>
                                                                 </tbody>
@@ -62,7 +62,7 @@
                                             height: 51px;
                                             width: 23%;
                                             float: right;margin-right:25px;">
-                                                <img src="{{asset('images/logoo.png')}}" alt="PWG Group" width="100%" height="100%">
+                                                <img src="<?php echo e(asset('images/logoo.png')); ?>" alt="PWG Group" width="100%" height="100%">
                                             </div>
                                         </div>
                         
@@ -76,7 +76,7 @@
                                                 color: #383838;
                                                 text-align: left;
                                                 margin-left:25px">
-                                                ©{{ now()->year }} PWG Group <br>
+                                                ©<?php echo e(now()->year); ?> PWG Group <br>
                                                 The Oberoi Centre, Office - 20th Floor<br>
                                                 Business Bay, Dubai, United Arab Emirates<br>
                                             </p>
@@ -103,3 +103,4 @@
         </tbody></table>
     </body>
 </html>
+<?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views/emails/payment-success.blade.php ENDPATH**/ ?>

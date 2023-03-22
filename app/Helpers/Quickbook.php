@@ -325,8 +325,7 @@ class Quickbook
                 }
             }
             $coupon = DB::table('coupons')
-                ->where('location', '=', $apply->embassy_country)
-                ->where('employee_id', '=', $destination->id)
+                ->where('code','=',$apply->coupon_code)
                 ->where('active_from', '<=', date('Y-m-d'))
                 ->where('active_until', '>=', date('Y-m-d'))
                 ->where('active', '=', 1)
@@ -823,7 +822,7 @@ class Quickbook
 
     private static function quickBook($dataService, $coupon, $unitPrice, $updatItem, $paidAmount, $tax, $customer, $paymentDetails, $application)
     {
-        if (Session::get('discountapplied') == 1) {
+        // if (Session::get('discountapplied') == 1) {
             $theResourceObj = Invoice::create([
                 "Line" => [
                     [
@@ -846,7 +845,7 @@ class Quickbook
                         "DetailType" => "DiscountLineDetail",
                         "DiscountLineDetail"  => [
                             "PercentBased" => true,
-                            "DiscountPercent" => $coupon->amount
+                            "DiscountPercent" => ($coupon->amount) ?? 0
                         ]
 
                     ]
@@ -882,56 +881,56 @@ class Quickbook
                     "Address" => "v@intuit.com"
                 ]
             ]);
-        } else {
-            $theResourceObj = Invoice::create([
-                "Line" => [
-                    [
-                        "Description" => $updatItem->Description,
-                        "Amount" => $unitPrice,
-                        "DetailType" => "SalesItemLineDetail",
-                        "SalesItemLineDetail" => [
-                            "TaxCodeRef" => [
-                                "value" => (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? (($tax == 0 || $tax == null) ? 4 : 12) : 'TAX'
-                            ],
-                            "ItemRef" => [
-                                "value" => $updatItem->Id,
-                                "name" => $updatItem->Name
-                            ],
-                            'UnitPrice' => $unitPrice,
-                            'Qty' => 1.0
-                        ]
-                    ]
-                ],
-                "Deposit" => ($paidAmount > ($unitPrice + $tax)) ? $unitPrice + $tax : $paidAmount,
-                "AutoDocNumber" => true,
-                // no tax due to free zone
-                "TxnTaxDetail" => [
-                    "TxnTaxCodeRef" => [
-                        "value" => ($tax == 0 || $tax == null) ? 0 : 5,  // tax rate
-                        "name" => ($tax == 0 || $tax == null) ? 'EX Exempt' : "SR Standard Rated (DXB)", // tax rate name
-                    ],
-                    "TotalTax" => ($tax == 0 || $tax == null) ? 0 : $tax,
-                ],
-                "PaymentRefNum" => $paymentDetails->bank_reference_no,
+        // } else {
+        //     $theResourceObj = Invoice::create([
+        //         "Line" => [
+        //             [
+        //                 "Description" => $updatItem->Description,
+        //                 "Amount" => $unitPrice,
+        //                 "DetailType" => "SalesItemLineDetail",
+        //                 "SalesItemLineDetail" => [
+        //                     "TaxCodeRef" => [
+        //                         "value" => (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? (($tax == 0 || $tax == null) ? 4 : 12) : 'TAX'
+        //                     ],
+        //                     "ItemRef" => [
+        //                         "value" => $updatItem->Id,
+        //                         "name" => $updatItem->Name
+        //                     ],
+        //                     'UnitPrice' => $unitPrice,
+        //                     'Qty' => 1.0
+        //                 ]
+        //             ]
+        //         ],
+        //         "Deposit" => ($paidAmount > ($unitPrice + $tax)) ? $unitPrice + $tax : $paidAmount,
+        //         "AutoDocNumber" => true,
+        //         // no tax due to free zone
+        //         "TxnTaxDetail" => [
+        //             "TxnTaxCodeRef" => [
+        //                 "value" => ($tax == 0 || $tax == null) ? 0 : 5,  // tax rate
+        //                 "name" => ($tax == 0 || $tax == null) ? 'EX Exempt' : "SR Standard Rated (DXB)", // tax rate name
+        //             ],
+        //             "TotalTax" => ($tax == 0 || $tax == null) ? 0 : $tax,
+        //         ],
+        //         "PaymentRefNum" => $paymentDetails->bank_reference_no,
 
-                "CustomerRef" => [
-                    "value" => ($customer->Id) ??  $customer[0]->Id
-                ],
-                "CustomerMemo" => [
-                    "value" => ($paidAmount > ($unitPrice + $tax)) ? $paymentDetails->bank_reference_no . "<br> Paid additional amount" . ($paidAmount - ($unitPrice + $tax)) : $paymentDetails->bank_reference_no,
-                ],
-                "PrivateNote" => $paymentDetails->bank_reference_no,
-                "BillEmail" => [
-                    "Address" => Auth::user()->email
-                ],
-                "BillEmailCc" => [
-                    "Address" => "a@intuit.com"
-                ],
-                "BillEmailBcc" => [
-                    "Address" => "v@intuit.com"
-                ]
-            ]);
-        }
+        //         "CustomerRef" => [
+        //             "value" => ($customer->Id) ??  $customer[0]->Id
+        //         ],
+        //         "CustomerMemo" => [
+        //             "value" => ($paidAmount > ($unitPrice + $tax)) ? $paymentDetails->bank_reference_no . "<br> Paid additional amount" . ($paidAmount - ($unitPrice + $tax)) : $paymentDetails->bank_reference_no,
+        //         ],
+        //         "PrivateNote" => $paymentDetails->bank_reference_no,
+        //         "BillEmail" => [
+        //             "Address" => Auth::user()->email
+        //         ],
+        //         "BillEmailCc" => [
+        //             "Address" => "a@intuit.com"
+        //         ],
+        //         "BillEmailBcc" => [
+        //             "Address" => "v@intuit.com"
+        //         ]
+        //     ]);
+        // }
 
         $invoiceData = $dataService->Add($theResourceObj);
         $paymentDetails->invoice_no = $invoiceData->DocNumber;
@@ -1666,7 +1665,7 @@ class Quickbook
 
     private static function quickBookMissed($dataService, $coupon, $unitPrice, $updatItem, $paidAmount, $tax, $customer, $paymentDetails, $application, $client)
     {
-        if ($application->coupon_code) {
+        // if ($application->coupon_code) {
             $theResourceObj = Invoice::create([
                 "Line" => [
                     [
@@ -1689,7 +1688,7 @@ class Quickbook
                         "DetailType" => "DiscountLineDetail",
                         "DiscountLineDetail"  => [
                             "PercentBased" => true,
-                            "DiscountPercent" => $coupon->amount
+                            "DiscountPercent" => ($coupon->amount)??0
                         ]
 
                     ]
@@ -1727,58 +1726,58 @@ class Quickbook
                     "Address" => "v@intuit.com"
                 ]
             ]);
-        } else {
-            $theResourceObj = Invoice::create([
-                "Line" => [
-                    [
-                        "Description" => $updatItem->Description,
-                        "Amount" => $unitPrice,
-                        "DetailType" => "SalesItemLineDetail",
-                        "SalesItemLineDetail" => [
-                            "TaxCodeRef" => [
-                                "value" => (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? (($tax == 0 || $tax == null) ? 4 : 12) : 'TAX'
-                            ],
-                            "ItemRef" => [
-                                "value" => $updatItem->Id,
-                                "name" => $updatItem->Name
-                            ],
-                            'UnitPrice' => $unitPrice,
-                            'Qty' => 1.0
-                        ]
-                    ]
-                ],
-                "Deposit" => ($paidAmount > ($unitPrice + $tax)) ? $unitPrice + $tax : $paidAmount,
-                "AutoDocNumber" => true,
-                // no tax due to free zone
-                "TxnTaxDetail" => [
-                    "TxnTaxCodeRef" => [
-                        "value" => ($tax == 0 || $tax == null) ? 0 : 5,  // tax rate
-                        "name" => ($tax == 0 || $tax == null) ? 'EX Exempt' : "SR Standard Rated (DXB)", // tax rate name
-                    ],
-                    "TotalTax" => ($tax == 0 || $tax == null) ? 0 : $tax,
-                ],
-                "PaymentRefNum" => $paymentDetails->bank_reference_no,
+        // } else {
+        //     $theResourceObj = Invoice::create([
+        //         "Line" => [
+        //             [
+        //                 "Description" => $updatItem->Description,
+        //                 "Amount" => $unitPrice,
+        //                 "DetailType" => "SalesItemLineDetail",
+        //                 "SalesItemLineDetail" => [
+        //                     "TaxCodeRef" => [
+        //                         "value" => (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? (($tax == 0 || $tax == null) ? 4 : 12) : 'TAX'
+        //                     ],
+        //                     "ItemRef" => [
+        //                         "value" => $updatItem->Id,
+        //                         "name" => $updatItem->Name
+        //                     ],
+        //                     'UnitPrice' => $unitPrice,
+        //                     'Qty' => 1.0
+        //                 ]
+        //             ]
+        //         ],
+        //         "Deposit" => ($paidAmount > ($unitPrice + $tax)) ? $unitPrice + $tax : $paidAmount,
+        //         "AutoDocNumber" => true,
+        //         // no tax due to free zone
+        //         "TxnTaxDetail" => [
+        //             "TxnTaxCodeRef" => [
+        //                 "value" => ($tax == 0 || $tax == null) ? 0 : 5,  // tax rate
+        //                 "name" => ($tax == 0 || $tax == null) ? 'EX Exempt' : "SR Standard Rated (DXB)", // tax rate name
+        //             ],
+        //             "TotalTax" => ($tax == 0 || $tax == null) ? 0 : $tax,
+        //         ],
+        //         "PaymentRefNum" => $paymentDetails->bank_reference_no,
 
-                "CustomerRef" => [
-                    "value" => ($customer->Id) ??  $customer[0]->Id
-                ],
-                "CustomerMemo" => [
-                    "value" => ($paidAmount > ($unitPrice + $tax)) ? $paymentDetails->bank_reference_no . "<br> Paid additional amount" . ($paidAmount - ($unitPrice + $tax)) : $paymentDetails->bank_reference_no,
-                ],
-                "TxnDate" => $paymentDetails->payment_date,
-                "DueDate" => $paymentDetails->payment_date,
-                "PrivateNote" => $paymentDetails->bank_reference_no,
-                "BillEmail" => [
-                    "Address" => $client->email
-                ],
-                "BillEmailCc" => [
-                    "Address" => "a@intuit.com"
-                ],
-                "BillEmailBcc" => [
-                    "Address" => "v@intuit.com"
-                ]
-            ]);
-        }
+        //         "CustomerRef" => [
+        //             "value" => ($customer->Id) ??  $customer[0]->Id
+        //         ],
+        //         "CustomerMemo" => [
+        //             "value" => ($paidAmount > ($unitPrice + $tax)) ? $paymentDetails->bank_reference_no . "<br> Paid additional amount" . ($paidAmount - ($unitPrice + $tax)) : $paymentDetails->bank_reference_no,
+        //         ],
+        //         "TxnDate" => $paymentDetails->payment_date,
+        //         "DueDate" => $paymentDetails->payment_date,
+        //         "PrivateNote" => $paymentDetails->bank_reference_no,
+        //         "BillEmail" => [
+        //             "Address" => $client->email
+        //         ],
+        //         "BillEmailCc" => [
+        //             "Address" => "a@intuit.com"
+        //         ],
+        //         "BillEmailBcc" => [
+        //             "Address" => "v@intuit.com"
+        //         ]
+        //     ]);
+        // }
         $invoiceData = $dataService->Add($theResourceObj);
         $paymentDetails->invoice_no = $invoiceData->DocNumber;
         $paymentDetails->invoice_id = $invoiceData->Id;

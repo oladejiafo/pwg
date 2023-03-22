@@ -42,7 +42,7 @@
     }
 
     .package-type .czechIndpackage ul li::before {
-        background: #000;
+        background: #84BD00;
         color: #fff;
     }
 
@@ -235,7 +235,7 @@
                 <br>
                 <div class="row" style="margin-left:auto; margin-right:auto; text-align:center;justify-content: center; display: flex;">
                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4" style="display:inline-block;padding-bottom:25px;">
-                        <img src="<?php echo e(asset('user/images/individual.png')); ?>" width="100%" alt="PWG Group">
+                        <img src="<?php echo e(asset('user/images/polandIndividual.png')); ?>" width="100%" alt="PWG Group">
                         <div class="package-type blue-collar" data-bs-toggle="modalXX" data-bs-target="#individualModalXX">
                             <div class="content">
                                 <div>
@@ -282,7 +282,7 @@
                                             <?php if(auth()->guard()->check()): ?>
                                             <form action="<?php echo e(url('/payment_form/'. $pricingPlan['poland_indi']->destination_id )); ?>" method="GET">
                                         <?php else: ?>
-                                            <form action="<?php echo e(url('register')); ?>">
+                                            <form action="<?php echo e(url('apply/now/poland/'.$pricingPlan['poland_indi']->destination_id.'/individual')); ?>">
                                                 <?php Session::put('prod_id', $pricingPlan['poland_indi']->destination_id); ?>
                                             <?php endif; ?>
                                         <?php endif; ?>
@@ -292,150 +292,10 @@
                                             <input type="hidden" name="pr_id" value="<?php echo e($pricingPlan['poland_indi']->destination_id); ?>">
                                         
                                             <input type="hidden" value="BLUE_COLLAR" name="myPack">
-                                            <?php if(isset($started) && $pricingPlan['poland_indi']->destination_id == $started->destination_id): ?>
+                                            <?php if(isset($started) && $pricingPlan['poland_indi']->destination_id == $started->destination_id && $pricingPlan['poland_indi']->id == $started->pricing_plan_id): ?>
                                                 <a class="btn btn-primary" style="width: 100%;font-size: 14px;" href="<?php echo e(route('myapplication')); ?>"><span class="done">Already Applied</span><i class="fa fa-check-circle" style="font-size:14px; color:green"></i></a>
                                             <?php else: ?>
-                                                <button class="btn btn-primary" style="width: 100%;font-size: 24px;background: #FACB08" <?php if(isset($started->destination_id)): ?> onclick="toastr.error('You have an active application already.','',{positionClass: 'toast-top-center', closeButton: 'true', width: '400px'})" type="button" <?php else: ?> type="submit" <?php endif; ?>>APPLY NOW</button>
-                                            <?php endif; ?>
-                                        </form>
-                                    </div>
-                                </div>
-                              
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4" style="display:inline-block;padding-bottom:25px;">
-                        <img src="<?php echo e(asset('user/images/family.png')); ?>" width="100%" alt="PWG Group">
-                        <div class="package-type blue-collar" data-bs-toggle="modalXX" data-bs-target="#individualModalXX">
-                            <div class="content">
-                                <div>
-                                    <div class="row price">
-                                        <?php $blue_cost_old = $pricingPlan['poland_family']->first_payment_sub_total*1.2995; $blue_save= $blue_cost_old - $pricingPlan['poland_family']->first_payment_sub_total;?>
-                                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 promo" align="right">
-                                            <b>PROMO PRICE</b> <br> 
-                                            <b>
-                                                <span style="font-size:12px">AED</span>
-                                                <span style="font-size:18px"><?php echo e(number_format($pricingPlan['poland_family']->first_payment_sub_total,0)); ?></span>
-                                            </b>
-                                        </div>
-                                        <div class="col-lg-2 col-md-2 col-sm-1 col-xs-1 line" align="center" style="padding:0 5px; border-left: 2px solid rgb(57, 127, 184); height: 52px;transform: translateX(50%);"><b></b></div>
-                                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 regular" align="left"><b>REGULAR PRICE</b> <br> <span style="font-size:12px">AED</span> <span style="font-size:18px"><del><?php echo e(number_format($blue_cost_old,0)); ?></del></span></div>
-                                    </div>
-                                    <div class="row saved">
-                                        <div class="col-5" style="background: #000; border-radius:30px 0 0 30px;color:#fff; font-size:10px;font-weight:600; padding-block: 5px">SAVE AED <?php echo e(number_format($blue_save,0)); ?></div>
-                                        <div class="col-7" style="background: #FACB08; border-radius:0 30px 30px 0;color:#000; font-size:10px; font-weight:600; padding-block: 5px">SALES ENDS 7 DAYS</div>
-                                    </div>
-                                    <div class="row" style="border-block: 1px solid #000;padding:10px; margin:15px">
-                                        <div class="col"><b>INDIVIDUAL PACKAGE</b></div>
-                                    </div>
-                                    <div class="fampackage ">
-                                        <ul>
-                                            <li><div style="text-align: left;margin-left: 35px">Free accomodation</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Free transportation</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Free health insurance</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Free regeneration meal</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Flexible working hours</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Permanent residency</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Passport after 5 year</div></li>
-
-                                            <li><div style="text-align: left;margin-left: 35px">Salary on time</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Attractive job market</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Low cost of living</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Legal employment</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Your right is protected</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">No company ban</div></li>
-                                        </ul>
-                                        
-                                    </div>
-                                    <div>
-                                        <?php if(Route::has('login')): ?>
-                                            <?php if(auth()->guard()->check()): ?>
-                                            <form action="<?php echo e(url('/payment_form/'. $pricingPlan['poland_indi']->destination_id )); ?>" method="GET">
-                                            <?php else: ?>
-                                            <form action="<?php echo e(url('register')); ?>">
-                                                <?php Session::put('prod_id', $pricingPlan['poland_family']->destination_id); ?>
-                                            <?php endif; ?>
-                                        <?php endif; ?>
-                                        <?php echo csrf_field(); ?>
-                                            <input type="hidden" name="cost" value="<?php echo e($pricingPlan['poland_family']->first_payment_sub_total); ?>">
-                                            <input type="hidden" name="blue_id" value="<?php echo e($pricingPlan['poland_family']->id); ?>">
-                                            <input type="hidden" name="pr_id" value="<?php echo e($pricingPlan['poland_family']->destination_id); ?>">
-                                        
-                                            <input type="hidden" value="BLUE_COLLAR" name="myPack">
-                                            <?php if(isset($started) && $pricingPlan['poland_family']->destination_id == $started->destination_id): ?>
-                                                <a class="btn btn-primary" style="width: 100%;font-size: 14px;" href="<?php echo e(route('myapplication')); ?>"><span class="done">Already Applied</span><span class="doned">Applied</span> <i class="fa fa-check-circle" style="font-size:14px; color:green"></i></a>
-                                            <?php else: ?>
-                                                <button class="btn btn-primary" style="width: 100%;font-size: 24px;background: #E10930; color:#fff" <?php if(isset($started->destination_id)): ?> onclick="toastr.error('You have an active application already.','',{positionClass: 'toast-top-center', closeButton: 'true', width: '400px'})" type="button" <?php else: ?> type="submit" <?php endif; ?>>APPLY NOW</button>
-                                            <?php endif; ?>
-                                        </form>
-                                    </div>
-                                </div>
-                              
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4" style="display:inline-block;padding-bottom:25px;">
-                        <img src="<?php echo e(asset('user/images/czechpackage.png')); ?>" width="100%" alt="PWG Group">
-                        <div class="package-type blue-collar" data-bs-toggle="modalXX" data-bs-target="#individualModalXX">
-                            <div class="content">
-                                <div>
-                                    <div class="row price">
-                                        <?php $blue_cost_old = $pricingPlan['czech_indi']->first_payment_sub_total*1.2995; $blue_save= $blue_cost_old - $pricingPlan['czech_indi']->first_payment_sub_total;?>
-                                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 promo" align="right">
-                                            <b>PROMO PRICE</b> <br> 
-                                            <b>
-                                                <span style="font-size:12px">AED</span>
-                                                <span style="font-size:18px"><?php echo e(number_format($pricingPlan['czech_indi']->first_payment_sub_total,0)); ?></span>
-                                            </b>
-                                        </div>
-                                        <div class="col-lg-2 col-md-2 col-sm-1 col-xs-1 line" align="center" style="padding:0 5px; border-left: 2px solid rgb(57, 127, 184); height: 52px;transform: translateX(50%);"><b></b></div>
-                                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 regular" align="left"><b>REGULAR PRICE</b> <br> <span style="font-size:12px">AED</span> <span style="font-size:18px"><del><?php echo e(number_format($blue_cost_old,0)); ?></del></span></div>
-                                    </div>
-                                    <div class="row saved">
-                                        <div class="col-5" style="background: #000; border-radius:30px 0 0 30px;color:#fff; font-size:10px;font-weight:600; padding-block: 5px">SAVE AED <?php echo e(number_format($blue_save,0)); ?></div>
-                                        <div class="col-7" style="background: #FACB08; border-radius:0 30px 30px 0;color:#000; font-size:10px; font-weight:600; padding-block: 5px">SALES ENDS 7 DAYS</div>
-                                    </div>
-                                    <div class="row" style="border-block: 1px solid #000;padding:10px; margin:15px">
-                                        <div class="col"><b>INDIVIDUAL PACKAGE</b></div>
-                                    </div>
-                                    <div class="czechIndpackage">
-                                        <ul>
-                                            <li><div style="text-align: left;margin-left: 35px">Free accomodation</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Free transportation</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Free health insurance</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Free regeneration meal</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Flexible working hours</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Permanent residency</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Passport after 5 year</div></li>
-
-                                            <li><div style="text-align: left;margin-left: 35px">Salary on time</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Attractive job market</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Low cost of living</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Legal employment</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Your right is protected</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">No company ban</div></li>
-                                        </ul>
-                                        
-                                    </div>
-                                    <div>
-                                        <?php if(Route::has('login')): ?>
-                                            <?php if(auth()->guard()->check()): ?>
-                                            <form action="<?php echo e(url('/payment_form/'. $pricingPlan['poland_indi']->destination_id )); ?>" method="GET">
-                                        <?php else: ?>
-                                            <form action="<?php echo e(url('register')); ?>">
-                                                <?php Session::put('prod_id', $pricingPlan['czech_indi']->destination_id); ?>
-                                            <?php endif; ?>
-                                        <?php endif; ?>
-                                        <?php echo csrf_field(); ?>
-                                            <input type="hidden" name="cost" value="<?php echo e($pricingPlan['czech_indi']->first_payment_sub_total); ?>">
-                                            <input type="hidden" name="blue_id" value="<?php echo e($pricingPlan['czech_indi']->id); ?>">
-                                            <input type="hidden" name="pr_id" value="<?php echo e($pricingPlan['czech_indi']->destination_id); ?>">
-                                        
-                                            <input type="hidden" value="FAMILY_PACKAGE" name="myPack">
-                                            <?php if(isset($started) && $pricingPlan['czech_indi']->destination_id == $started->destination_id): ?>
-                                                <a class="btn btn-primary" style="width: 100%;font-size: 14px;" href="<?php echo e(route('myapplication')); ?>" style="font-size:14px;" ><span class="done">Already Applied</span><i class="fa fa-check-circle" style="font-size:14px; color:green"></i></a>
-                                            <?php else: ?>
-                                                <button class="btn btn-primary" style="width: 100%;font-size: 24px;background: #000; color:#fff" <?php if(isset($started->destination_id)): ?> onclick="toastr.error('You have an active application already.','',{positionClass: 'toast-top-center', closeButton: 'true', width: '400px'})" type="button" <?php else: ?> type="submit" <?php endif; ?>>APPLY NOW</button>
+                                                <button class="btn btn-primary" style="width: 100%;font-size: 24px;background: #FACB08; border-color:#FACB08" <?php if(isset($started->destination_id)): ?> onclick="toastr.error('You have an active application already.','',{positionClass: 'toast-top-center', closeButton: 'true', width: '400px'})" type="button" <?php else: ?> type="submit" <?php endif; ?>>APPLY NOW</button>
                                             <?php endif; ?>
                                         </form>
                                     </div>
@@ -490,10 +350,10 @@
                                     <div>
                                         <?php if(Route::has('login')): ?>
                                             <?php if(auth()->guard()->check()): ?>
-                                            <form action="<?php echo e(url('/payment_form/'. $pricingPlan['poland_indi']->destination_id )); ?>" method="GET">
+                                            <form action="<?php echo e(url('/payment_form/'. $pricingPlan['malta_indi']->destination_id )); ?>" method="GET">
                                         <?php else: ?>
-                                            <form action="<?php echo e(url('register')); ?>">
-                                                <?php Session::put('prod_id', $pricingPlan['malta_indi']->destination_id); ?>
+                                            <form action="<?php echo e(url('apply/now/malta/'.$pricingPlan['malta_indi']->destination_id.'/individual')); ?>">
+                                            <?php Session::put('prod_id', $pricingPlan['malta_indi']->destination_id); ?>
                                             <?php endif; ?>
                                         <?php endif; ?>
                                         <?php echo csrf_field(); ?>
@@ -506,6 +366,148 @@
                                                 <a class="btn btn-secondary" href="<?php echo e(route('myapplication')); ?>" style="width: 100%;font-size: 14px;"><span class="done">Already Applied</span> <i class="fa fa-check-circle" style="font-size:14px; color:green"></i></a>
                                             <?php else: ?>
                                                 <button class="btn btn-primary" style="width: 100%;font-size: 24px;background: #736359;color:#fff" <?php if(isset($started->destination_id)): ?> onclick="toastr.error('You have an active application already.','',{positionClass: 'toast-top-center', closeButton: 'true', width: '400px'})" type="button" <?php else: ?> type="submit" <?php endif; ?>>APPLY NOW</button>
+                                            <?php endif; ?>
+                                        </form>
+                                    </div>
+                                </div>
+                              
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4" style="display:inline-block;padding-bottom:25px;">
+                        <img src="<?php echo e(asset('user/images/czechpackage.png')); ?>" width="100%" alt="PWG Group" height="273px">
+                        <div class="package-type blue-collar" data-bs-toggle="modalXX" data-bs-target="#individualModalXX">
+                            <div class="content">
+                                <div>
+                                    <div class="row price">
+                                        <?php $blue_cost_old = $pricingPlan['czech_indi']->first_payment_sub_total*1.2995; $blue_save= $blue_cost_old - $pricingPlan['czech_indi']->first_payment_sub_total;?>
+                                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 promo" align="right">
+                                            <b>PROMO PRICE</b> <br> 
+                                            <b>
+                                                <span style="font-size:12px">AED</span>
+                                                <span style="font-size:18px"><?php echo e(number_format($pricingPlan['czech_indi']->first_payment_sub_total,0)); ?></span>
+                                            </b>
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 col-sm-1 col-xs-1 line" align="center" style="padding:0 5px; border-left: 2px solid rgb(57, 127, 184); height: 52px;transform: translateX(50%);"><b></b></div>
+                                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 regular" align="left"><b>REGULAR PRICE</b> <br> <span style="font-size:12px">AED</span> <span style="font-size:18px"><del><?php echo e(number_format($blue_cost_old,0)); ?></del></span></div>
+                                    </div>
+                                    <div class="row saved">
+                                        <div class="col-5" style="background: #000; border-radius:30px 0 0 30px;color:#fff; font-size:10px;font-weight:600; padding-block: 5px">SAVE AED <?php echo e(number_format($blue_save,0)); ?></div>
+                                        <div class="col-7" style="background: #FACB08; border-radius:0 30px 30px 0;color:#000; font-size:10px; font-weight:600; padding-block: 5px">SALES ENDS 7 DAYS</div>
+                                    </div>
+                                    <div class="row" style="border-block: 1px solid #000;padding:10px; margin:15px">
+                                        <div class="col"><b>INDIVIDUAL PACKAGE</b></div>
+                                    </div>
+                                    <div class="czechIndpackage">
+                                        <ul>
+                                            <li><div style="text-align: left;margin-left: 35px">Free accomodation</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Free transportation</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Free health insurance</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Free regeneration meal</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Flexible working hours</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Permanent residency</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Passport after 5 year</div></li>
+
+                                            <li><div style="text-align: left;margin-left: 35px">Salary on time</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Attractive job market</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Low cost of living</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Legal employment</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Your right is protected</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">No company ban</div></li>
+                                        </ul>
+                                        
+                                    </div>
+                                    <div>
+                                        <?php if(Route::has('login')): ?>
+                                            <?php if(auth()->guard()->check()): ?>
+                                            <form action="<?php echo e(url('/payment_form/'. $pricingPlan['czech_indi']->destination_id )); ?>" method="GET">
+                                        <?php else: ?>
+                                            <form action="<?php echo e(url('apply/now/czech/'.$pricingPlan['czech_indi']->destination_id.'/individual')); ?>">
+                                                <?php Session::put('prod_id', $pricingPlan['czech_indi']->destination_id); ?>
+                                            <?php endif; ?>
+                                        <?php endif; ?>
+                                        <?php echo csrf_field(); ?>
+                                            <input type="hidden" name="cost" value="<?php echo e($pricingPlan['czech_indi']->first_payment_sub_total); ?>">
+                                            <input type="hidden" name="blue_id" value="<?php echo e($pricingPlan['czech_indi']->id); ?>">
+                                            <input type="hidden" name="pr_id" value="<?php echo e($pricingPlan['czech_indi']->destination_id); ?>">
+                                            <input type="hidden" value="BLUE_COLLAR" name="myPack">
+
+                                            <?php if(isset($started) && $pricingPlan['czech_indi']->destination_id == $started->destination_id): ?>
+                                                <a class="btn btn-primary" style="width: 100%;font-size: 14px;" href="<?php echo e(route('myapplication')); ?>" style="font-size:14px;" ><span class="done">Already Applied</span><i class="fa fa-check-circle" style="font-size:14px; color:green"></i></a>
+                                            <?php else: ?>
+                                                <button class="btn btn-primary" style="width: 100%;font-size: 24px;background: #84BD00; color:#fff" <?php if(isset($started->destination_id)): ?> onclick="toastr.error('You have an active application already.','',{positionClass: 'toast-top-center', closeButton: 'true', width: '400px'})" type="button" <?php else: ?> type="submit" <?php endif; ?>>APPLY NOW</button>
+                                            <?php endif; ?>
+                                        </form>
+                                    </div>
+                                </div>
+                              
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4" style="display:inline-block;padding-bottom:25px;">
+                        <img src="<?php echo e(asset('user/images/polandFamily.png')); ?>" width="100%" alt="PWG Group" height="272px">
+                        <div class="package-type blue-collar" data-bs-toggle="modalXX" data-bs-target="#individualModalXX">
+                            <div class="content">
+                                <div>
+                                    <div class="row price">
+                                        <?php $blue_cost_old = $pricingPlan['poland_family']->first_payment_sub_total*1.2995; $blue_save= $blue_cost_old - $pricingPlan['poland_family']->first_payment_sub_total;?>
+                                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 promo" align="right">
+                                            <b>PROMO PRICE</b> <br> 
+                                            <b>
+                                                <span style="font-size:12px">AED</span>
+                                                <span style="font-size:18px"><?php echo e(number_format($pricingPlan['poland_family']->first_payment_sub_total,0)); ?></span>
+                                            </b>
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 col-sm-1 col-xs-1 line" align="center" style="padding:0 5px; border-left: 2px solid rgb(57, 127, 184); height: 52px;transform: translateX(50%);"><b></b></div>
+                                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 regular" align="left"><b>REGULAR PRICE</b> <br> <span style="font-size:12px">AED</span> <span style="font-size:18px"><del><?php echo e(number_format($blue_cost_old,0)); ?></del></span></div>
+                                    </div>
+                                    <div class="row saved">
+                                        <div class="col-5" style="background: #000; border-radius:30px 0 0 30px;color:#fff; font-size:10px;font-weight:600; padding-block: 5px">SAVE AED <?php echo e(number_format($blue_save,0)); ?></div>
+                                        <div class="col-7" style="background: #FACB08; border-radius:0 30px 30px 0;color:#000; font-size:10px; font-weight:600; padding-block: 5px">SALES ENDS 7 DAYS</div>
+                                    </div>
+                                    <div class="row" style="border-block: 1px solid #000;padding:10px; margin:15px">
+                                        <div class="col"><b>FAMILY PACKAGE</b></div>
+                                    </div>
+                                    <div class="fampackage ">
+                                        <ul>
+                                            <li><div style="text-align: left;margin-left: 35px">Free accomodation</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Free transportation</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Free health insurance</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Free regeneration meal</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Flexible working hours</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Permanent residency</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Passport after 5 year</div></li>
+
+                                            <li><div style="text-align: left;margin-left: 35px">Salary on time</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Attractive job market</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Low cost of living</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Legal employment</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Your right is protected</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">No company ban</div></li>
+                                        </ul>
+                                        
+                                    </div>
+                                    <div>
+                                        <?php if(Route::has('login')): ?>
+                                            <?php if(auth()->guard()->check()): ?>
+                                            <form action="<?php echo e(url('/payment_form/'. $pricingPlan['poland_family']->destination_id )); ?>" method="GET">
+                                            <?php else: ?>
+                                                <form action="<?php echo e(url('apply/now/poland/'.$pricingPlan['poland_family']->destination_id.'/family')); ?>">
+                                                <?php Session::put('prod_id', $pricingPlan['poland_family']->destination_id); ?>
+                                            <?php endif; ?>
+                                        <?php endif; ?>
+                                        <?php echo csrf_field(); ?>
+                                            <input type="hidden" name="cost" value="<?php echo e($pricingPlan['poland_family']->first_payment_sub_total); ?>">
+                                            <input type="hidden" name="blue_id" value="<?php echo e($pricingPlan['poland_family']->id); ?>">
+                                            <input type="hidden" name="pr_id" value="<?php echo e($pricingPlan['poland_family']->destination_id); ?>">
+                                        
+                                            <input type="hidden" value="FAMILY_PACKAGE" name="myPack">
+                                            <input type="hidden" value="<?php echo e($pricingPlan['poland_family']->id); ?>" name="fam_id" class="fam_id">
+
+                                            <?php if(isset($started) && $pricingPlan['poland_family']->destination_id == $started->destination_id && $pricingPlan['poland_family']->id == $started->pricing_plan_id): ?>
+                                                <a class="btn btn-primary" style="width: 100%;font-size: 14px;" href="<?php echo e(route('myapplication')); ?>"><span class="done">Already Applied</span><i class="fa fa-check-circle" style="font-size:14px; color:green"></i></a>
+                                            <?php else: ?>
+                                                <button class="btn btn-primary" style="width: 100%;font-size: 24px;background: #E10930; color:#fff" <?php if(isset($started->destination_id)): ?> onclick="toastr.error('You have an active application already.','',{positionClass: 'toast-top-center', closeButton: 'true', width: '400px'})" type="button" <?php else: ?> type="submit" <?php endif; ?>>APPLY NOW</button>
                                             <?php endif; ?>
                                         </form>
                                     </div>
@@ -560,10 +562,10 @@
                                     <div>
                                         <?php if(Route::has('login')): ?>
                                             <?php if(auth()->guard()->check()): ?>
-                                            <form action="<?php echo e(url('/payment_form/'. $pricingPlan['poland_indi']->destination_id )); ?>" method="GET">
+                                            <form action="<?php echo e(url('/payment_form/'. $pricingPlan['canada_indi']->destination_id )); ?>" method="GET">
                                         <?php else: ?>
-                                            <form action="<?php echo e(url('register')); ?>">
-                                                <?php Session::put('prod_id', $pricingPlan['canada_indi']->destination_id); ?>
+                                        <form action="<?php echo e(url('apply/now/canada/'.$pricingPlan['canada_indi']->destination_id.'/individual')); ?>">
+                                            <?php Session::put('prod_id', $pricingPlan['canada_indi']->destination_id); ?>
                                             <?php endif; ?>
                                         <?php endif; ?>
                                         <?php echo csrf_field(); ?>
@@ -630,9 +632,9 @@
                                     <div>
                                         <?php if(Route::has('login')): ?>
                                             <?php if(auth()->guard()->check()): ?>
-                                            <form action="<?php echo e(url('/payment_form/'. $pricingPlan['poland_indi']->destination_id )); ?>" method="GET">
+                                            <form action="<?php echo e(url('/payment_form/'. $pricingPlan['germany_indi']->destination_id )); ?>" method="GET">
                                         <?php else: ?>
-                                            <form action="<?php echo e(url('register')); ?>">
+                                            <form action="<?php echo e(url('apply/now/germany/'.$pricingPlan['germany_indi']->destination_id.'/individual')); ?>">
                                                 <?php Session::put('prod_id', $pricingPlan['germany_indi']->destination_id); ?>
                                             <?php endif; ?>
                                         <?php endif; ?>

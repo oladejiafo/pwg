@@ -599,19 +599,13 @@ class pdfBlock
     public static function mapMoreInfo($complete)
     {
         $applicant = Application::find($complete->id);
+        $client = User::find($applicant->client_id);
         $originalPdf = null;
         $destination_file = null;
         $product = product::find($applicant->destination_id)->name;
         $productName = strtolower($product);
         $package = $applicant->work_permit_category;
-        if ($applicant->second_payment_status == 'PAID') {
-            if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
-                $originalPdf = (isset($applicant->getMedia(Application::$media_collection_main_2nd_signature)[0])) ? $applicant->getMedia(Application::$media_collection_main_2nd_signature)[0]->getUrl() : null;
-            } else {
-                $originalPdf = (isset($applicant->getMedia(Application::$media_collection_main_2nd_signature)[0])) ? $applicant->getMedia(Application::$media_collection_main_2nd_signature)[0]->getPath() : null;
-            }
-            $destination_file = Applicant::$media_collection_main_2nd_signature;
-        } elseif ($applicant->first_payment_status == 'PAID' || $applicant->first_payment_status == 'PARTIALLY_PAID') {
+        if ($applicant->first_payment_status == 'PAID' || $applicant->first_payment_status == 'PARTIALLY_PAID') {
             if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                 $originalPdf = (isset($applicant->getMedia(Application::$media_collection_main_1st_signature)[0])) ? $applicant->getMedia(Application::$media_collection_main_1st_signature)[0]->getUrl() : null;
             } else {
@@ -626,23 +620,23 @@ class pdfBlock
                 $originalPdf = ltrim($originalPdf, $originalPdf[0]);
             }
             if ($productName == Constant::poland) {
-                $newFileName = 'contract' . Auth::id() . '-' . UserHelper::getRandomString() . '-' . 'poland.pdf';
+                $newFileName = 'contract' . $client->id . '-' . UserHelper::getRandomString() . '-' . 'poland.pdf';
             } else if ($productName == Constant::czech) {
-                $newFileName = 'contract' . Auth::id() . '-' . UserHelper::getRandomString() . '-' . 'czech.pdf';
+                $newFileName = 'contract' . $client->id . '-' . UserHelper::getRandomString() . '-' . 'czech.pdf';
             } else if ($productName == Constant::malta) {
-                $newFileName = 'contract' . Auth::id() . '-' . UserHelper::getRandomString() . '-' . 'malta.pdf';
+                $newFileName = 'contract' . $client->id . '-' . UserHelper::getRandomString() . '-' . 'malta.pdf';
             } else if ($productName == Constant::canada) {
                 if ($package == Constant::CanadaExpressEntry) {
-                    $newFileName = 'contract' . Auth::id() . '-' . UserHelper::getRandomString() . '-' . 'canada_express_entry.pdf';
+                    $newFileName = 'contract' . $client->id . '-' . UserHelper::getRandomString() . '-' . 'canada_express_entry.pdf';
                 } else if ($package == Constant::CanadaStudyPermit) {
-                    $newFileName = 'contract' . Auth::id() . '-' . UserHelper::getRandomString() . '-' . 'canada_study.pdf';
+                    $newFileName = 'contract' . $client->id . '-' . UserHelper::getRandomString() . '-' . 'canada_study.pdf';
                 } else if ($package == Constant::BlueCollar) {
-                    $newFileName = 'contract' . Auth::id() . '-' . UserHelper::getRandomString() . '-' . 'canada.pdf';
+                    $newFileName = 'contract' . $client->id . '-' . UserHelper::getRandomString() . '-' . 'canada.pdf';
                 }
             } else if ($productName == Constant::germany) {
-                $newFileName = 'contract' . Auth::id() . '-' . UserHelper::getRandomString() . '-' . 'germany.pdf';
+                $newFileName = 'contract' . $client->id . '-' . UserHelper::getRandomString() . '-' . 'germany.pdf';
             } else {
-                $newFileName = 'contract' . Auth::id() . '-' . UserHelper::getRandomString() . '-' . 'germany.pdf';
+                $newFileName = 'contract' . $client->id . '-' . UserHelper::getRandomString() . '-' . 'germany.pdf';
             }
             $destination_file = 'Applications/Contracts/client_contracts/' . $newFileName;
         }
@@ -656,7 +650,6 @@ class pdfBlock
         for ($pageNo = 1; $pageNo <= $pagecount; $pageNo++) {
             $pdf->AddPage();
             $template = $pdf->importPage($pageNo);
-            $client = User::find(Auth::id());
             // use the imported page and place it at point 20,30 with a width of 170 mm
             $pdf->useTemplate($template, 10, 10, 200);
             //Select Arial italic 8
@@ -719,7 +712,7 @@ class pdfBlock
             }
         }
         if ($applicant->second_payment_status == 'PAID') {
-            $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_third_payment_contract.pdf';
+            $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_third_payment_contract.pdf';
 
             $theString = $pdf->Output('S');
             if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
@@ -733,7 +726,7 @@ class pdfBlock
                 $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Application::$media_collection_main_2nd_signature, 'local');
             }
         } elseif ($applicant->first_payment_status == 'PAID' || $applicant->first_payment_status == 'PARTIALLY_PAID') {
-            $fileName = Auth::user()->name . '_' . Auth::user()->middle_name . '_' . Auth::user()->sur_name . '_first_payment_contract.pdf';
+            $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_first_payment_contract.pdf';
             $theString = $pdf->Output('S');
             if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                 $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Application::$media_collection_main_1st_signature, env('MEDIA_DISK'));

@@ -78,7 +78,6 @@
     var now = new Date().getTime();
 
       // Find the distance between now and the count down date
-      console.log(parseInt(countDownDate) ,parseInt(now) );
       var distance = parseInt(countDownDate) - parseInt(now);
       // If the count down is finished, write some text
     //   if (distance < 0 || isNaN(distance) || (Math.floor(distance / (1000 * 60 * 60 * 24)) <= 1)) {
@@ -134,9 +133,9 @@
       + minutes + "</span>Mins: <span>" + seconds + "</span>Secs:</p>";
     }
     compareDate = (timer, tomorrow) => {
-        if(timer.getFullYear() >= tomorrow.getFullYear()){
-            if(timer.getMonth() >= tomorrow.getMonth()){
-                if(timer.getDate() >= tomorrow.getDate()){
+        if(timer.getFullYear() == tomorrow.getFullYear()){
+            if(timer.getMonth() == tomorrow.getMonth()){
+                if(timer.getDate() == tomorrow.getDate()){
                     return true;
                 }
             }
@@ -146,9 +145,5 @@
 </script>   
 <div id="days">
 </div>
-<div class="footer" align="right" style="padding:20px; ">
-    <hr>
-    &copy <?php echo e(date('Y')); ?> <a style="" href="http://pwggroup.ae" target="_blank">PWG Group</a>. All rights
-    reserved.
-</div>
+
 <?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views/user/footer.blade.php ENDPATH**/ ?>

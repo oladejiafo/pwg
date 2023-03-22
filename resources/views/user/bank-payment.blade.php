@@ -103,8 +103,13 @@ if ($payall == 0 || empty($payall)) {
                 $payNoww = $pdet->submission_payment_sub_total - $pends;
                 $pendMsg = ' - ' . $pends . ' over paid from previous payment';
             } else {
-                $payNow = $pdet->submission_payment_sub_total;
-                $payNoww = $pdet->submission_payment_sub_total;
+                if($pays->coupon_code != null){
+                    $payNow = $pdet->submission_payment_sub_total - $pays->submission_payment_discount;
+                    $payNoww = $pdet->submission_payment_sub_total - $pays->submission_payment_discount;
+                } else {
+                    $payNow = $pdet->submission_payment_sub_total;
+                    $payNoww = $pdet->submission_payment_sub_total;
+                }
                 $pendMsg = '';
             }
         }
@@ -113,8 +118,13 @@ if ($payall == 0 || empty($payall)) {
         $outsec = 0;
 
         $pendMsg = 'You have ' . $outsub . ' balance on submission payment.';
-        $payNow = $outsub; //$pdet->submission_payment_sub_total;
-        $payNoww = $outsub;
+        if($pays->coupon_code != null){
+            $payNow = $outsub - $pays->submission_payment_discount;
+            $payNoww = $outsub - $pays->submission_payment_discount;
+        } else {
+            $payNow = $outsub; //$pdet->submission_payment_sub_total;
+            $payNoww = $outsub;
+        }
         $whichPayment = 'SUBMISSION';
     } elseif (isset($pays) && $pays->first_payment_status == 'PAID' && $pays->second_payment_status != 'PAID' && empty($pdet->submission_payment_sub_total)) {
         $outsec = $pays->second_payment_price - $pays->second_payment_paid;
@@ -137,8 +147,13 @@ if ($payall == 0 || empty($payall)) {
                 $payNoww = $pdet->second_payment_sub_total - $pends;
                 $pendMsg = ' - ' . $pends . ' over paid from previous payment';
             } else {
-                $payNow = $pdet->second_payment_sub_total;
-                $payNoww = $pdet->second_payment_sub_total;
+                if($pays->coupon_code != null){
+                    $payNow = $pdet->second_payment_sub_total - $pays->second_payment_discount;
+                    $payNoww = $pdet->second_payment_sub_total - $pays->second_payment_discount;
+                } else {
+                    $payNow = $pdet->second_payment_sub_total;
+                    $payNoww = $pdet->second_payment_sub_total;
+                }
                 $pendMsg = '';
             }
         }
@@ -163,15 +178,25 @@ if ($payall == 0 || empty($payall)) {
                 $payNoww = $pdet->second_payment_sub_total - $pends;
                 $pendMsg = ' - ' . $pends . ' over paid from previous payment';
             } else {
-                $payNow = $pdet->second_payment_sub_total;
-                $payNoww = $pdet->second_payment_sub_total;
+                if($pays->coupon_code != null){ 
+                    $payNow = $pdet->second_payment_sub_total - $pays->second_payment_discount;;
+                    $payNoww = $pdet->second_payment_sub_total - $pays->second_payment_discount;;
+                } else {
+                    $payNow = $pdet->second_payment_sub_total;
+                    $payNoww = $pdet->second_payment_sub_total;
+                }
                 $pendMsg = '';
             }
         }
     } elseif (isset($pays) && $pays->submission_payment_status == 'PAID' && $pays->second_payment_status == 'PAID' && $outsec > 0 && $pdet->second_payment_sub_total > 0) {
         $pendMsg = 'You have ' . $outsec . ' balance on second payment.';
-        $payNow = $outsec; //$pdet->submission_payment_sub_total;
-        $payNoww = $outsec;
+        if($pays->coupon_code != null){ 
+            $payNow = $outsec - $pays->second_payment_discount;;
+            $payNoww = $outsec - $pays->second_payment_discount;;
+        } else {
+            $payNow = $outsec;
+            $payNoww = $outsec;
+        }
         $whichPayment = 'SECOND';
     } else {
         $whichPayment = 'FIRST';
@@ -305,6 +330,8 @@ if (isset($pays) && (($pays->first_payment_remaining > 0 && $pays->first_payment
                 @csrf
 
                 <input type="hidden" name="productId" value="{{ $pdet->destination_id }}">
+                <input type="hidden" name="code" class="code">
+                <input type="hidden" name="couponDetails" class="couponApplyDetails">
                 <div class="row">
                     <div class="heading">
                         <div class="first-heading" style="text-align: center">
@@ -430,7 +457,7 @@ if (isset($pays) && (($pays->first_payment_remaining > 0 && $pays->first_payment
                         <input type="hidden" name="third_p" value="{{ $pdet->second_payment_sub_total }}">
                     </div>
                     <div class="col-4">
-                        <button type="submit" onclick="saveSign()" class="btn btn-primary submitBtn"
+                        <button type="submit" onclick="saveSignB()" class="btn btn-primary submitBtn"
                             style="float: right;">Submit</button>
                     </div>
 
@@ -453,127 +480,128 @@ if (isset($pays) && (($pays->first_payment_remaining > 0 && $pays->first_payment
             //     constrainInput: false     
             // });
 
-            $('#partial').click(function() {
+            // $('#partial').click(function() {
+            //     $('.coupon').show();
+            //     $.ajax({
+            //         url: '{{ route('payType') }} ',
+            //         method: 'POST',
+            //         data: {
+            //             "_token": "{{ csrf_token() }}",
+            //             "payall": 0
+            //         },
+            //         success: function(data) {
 
-                $.ajax({
-                    url: '{{ route('payType') }} ',
-                    method: 'POST',
-                    data: {
-                        "_token": "{{ csrf_token() }}",
-                        "payall": 0
-                    },
-                    success: function(data) {
+            //             $("#bank-payment").load(window.location.href + " #bank-payment > *");
+            //             $('#bank-payment').hide();
 
-                        $("#bank-payment").load(window.location.href + " #bank-payment > *");
-                        $('#bank-payment').hide();
+            //             if ($('input[name="payoption"]:checked').val() == "Transfer" || $(
+            //                     'input[name="payoption"]:checked').val() == "Deposit") {
+            //                 $('#bank-payment').show();
+            //                 $('#card-payment').hide();
+            //             } else {
+            //                 $('#bank-payment').hide();
+            //                 $('#card-payment').show();
+            //             }
 
-                        if ($('input[name="payoption"]:checked').val() == "Transfer" || $(
-                                'input[name="payoption"]:checked').val() == "Deposit") {
-                            $('#bank-payment').show();
-                            $('#card-payment').hide();
-                        } else {
-                            $('#bank-payment').hide();
-                            $('#card-payment').show();
-                        }
+            //         }
 
-                    }
+            //     });
+            // });
 
-                });
-            });
+            // $('#full').click(function() {
+            //     alert('hjfhgfhg');
+            //     $('.coupon').hide();
+            //     // throw new Error();
+            //     $.ajax({
+            //         url: '{{ route('payType') }} ',
+            //         method: 'POST',
+            //         data: {
+            //             "_token": "{{ csrf_token() }}",
+            //             "payall": 1
+            //         },
+            //         success: function(data) {
 
-            $('#full').click(function() {
+            //             console.log($("#bank-payment").load(window.location.href + " #bank-payment > *"));
 
-                // throw new Error();
-                $.ajax({
-                    url: '{{ route('payType') }} ',
-                    method: 'POST',
-                    data: {
-                        "_token": "{{ csrf_token() }}",
-                        "payall": 1
-                    },
-                    success: function(data) {
+            //             if ($('input[name="payoption"]:checked').val() == "Transfer" || $(
+            //                     'input[name="payoption"]:checked').val() == "Deposit") {
 
-                        console.log($("#bank-payment").load(window.location.href + " #bank-payment > *"));
+            //                 $('#paymain #bank-payment').show();
+            //                 $('#card-payment').hide();
+            //             } else {
+            //                 $('#bank-payment').hide();
+            //                 $('#card-payment').show();
+            //             }
+            //         }
 
-                        if ($('input[name="payoption"]:checked').val() == "Transfer" || $(
-                                'input[name="payoption"]:checked').val() == "Deposit") {
-
-                            $('#paymain #bank-payment').show();
-                            $('#card-payment').hide();
-                        } else {
-                            $('#bank-payment').hide();
-                            $('#card-payment').show();
-                        }
-                    }
-
-                });
-            });
+            //     });
+            // });
                 
-            $('input[name="spouse"]').click(function(e) {
-                let parents = e.target.value;
-                // parents = spouse.value;
-                kidd = $('input[name="children"]:checked').val();
-                getCost(kidd,parents);      
-            });
+            // $('input[name="spouse"]').click(function(e) {
+            //     let parents = e.target.value;
+            //     // parents = spouse.value;
+            //     kidd = $('input[name="children"]:checked').val();
+            //     getCost(kidd,parents);      
+            // });
 
-            $('input[name="children"]').click(function(e) {
-                let kidd = e.target.value;
-                parents = $("input[name=spouse]:checked").val();
-                getCost(kidd,parents);
+            // $('input[name="children"]').click(function(e) {
+            //     let kidd = e.target.value;
+            //     parents = $("input[name=spouse]:checked").val();
+            //     getCost(kidd,parents);
 
-            });
+            // });
 
-            function getCost(kidd, parents)
-            {
-                let ppyall = 0;
-                // alert($('input[name="payall"]:checked').val());
-                if($('input[name="payall"]:checked').val() == 0){
-                    ppyall = 1;
-                } else {
-                    ppyall = 0;
-                }
-                // alert(ppyall);
-                $.ajax({
-                    // type: 'GET',
-                    url: "{{ route('packageType',$data->id)  }}",
-                    data: {kid : kidd, parents: parents , response : 1 }, 
-                    success: function (data) {
-                        let vallu = (data.first_payment_sub_total*1.2995)-(data.first_payment_sub_total);
-                        let thisVat = data.first_payment_sub_total*0.05;
-                        let thisTotal = parseFloat(data.first_payment_sub_total) + parseFloat(thisVat);
+            // function getCost(kidd, parents)
+            // {
+            //     let ppyall = 0;
+            //     // alert($('input[name="payall"]:checked').val());
+            //     if($('input[name="payall"]:checked').val() == 0){
+            //         ppyall = 1;
+            //     } else {
+            //         ppyall = 0;
+            //     }
+            //     // alert(ppyall);
+            //     $.ajax({
+            //         // type: 'GET',
+            //         url: "{{ route('packageType',$data->id)  }}",
+            //         data: {kid : kidd, parents: parents , response : 1 }, 
+            //         success: function (data) {
+            //             let vallu = (data.first_payment_sub_total*1.2995)-(data.first_payment_sub_total);
+            //             let thisVat = data.first_payment_sub_total*0.05;
+            //             let thisTotal = parseFloat(data.first_payment_sub_total) + parseFloat(thisVat);
 
-                        let fullVallu = (data.sub_total*1.2995)-(data.sub_total);
-                        let fullVat = data.sub_total*0.05;
-                        let fullTotal = parseFloat(data.sub_total) + parseFloat(fullVat);
+            //             let fullVallu = (data.sub_total*1.2995)-(data.sub_total);
+            //             let fullVat = data.sub_total*0.05;
+            //             let fullTotal = parseFloat(data.sub_total) + parseFloat(fullVat);
 
 
-                        if(ppyall == 0)
-                        {
-                            $('#amountLink2').val(parseFloat(thisTotal).toLocaleString());
-                            $('#amountLink').text(parseFloat(thisTotal).toLocaleString());
-                            $('#totaldue').val(parseFloat(thisTotal).toLocaleString());
-                            $('#thispay').text(parseFloat(data.first_payment_sub_total).toLocaleString());
-                            $('#transAmount').text(parseFloat(thisTotal).toLocaleString());
-                            $('#invoiceAmount').val(parseFloat(thisTotal).toLocaleString());
+            //             if(ppyall == 0)
+            //             {
+            //                 $('#amountLink2').val(parseFloat(thisTotal).toLocaleString());
+            //                 $('#amountLink').text(parseFloat(thisTotal).toLocaleString());
+            //                 $('#totaldue').val(parseFloat(thisTotal).toLocaleString());
+            //                 $('#thispay').text(parseFloat(data.first_payment_sub_total).toLocaleString());
+            //                 $('#transAmount').text(parseFloat(thisTotal).toLocaleString());
+            //                 $('#invoiceAmount').val(parseFloat(thisTotal).toLocaleString());
 
-                            $('#thissave').text(parseFloat(vallu).toLocaleString());
-                            // $('.hiddenFamAmount').val(data.first_payment_sub_total);
-                        } else {
-                            $('#amountLink2').val(parseFloat(fullTotal).toLocaleString());
-                            $('#amountLink').text(parseFloat(fullTotal).toLocaleString());
-                            $('#totaldue').val(parseFloat(fullTotal).toLocaleString());
-                            $('#thispay').text(parseFloat(data.sub_total).toLocaleString());
-                            $('#transAmount').text(parseFloat(fullTotal).toLocaleString());
-                            $('#invoiceAmount').val(parseFloat(fullTotal).toLocaleString());
+            //                 $('#thissave').text(parseFloat(vallu).toLocaleString());
+            //                 // $('.hiddenFamAmount').val(data.first_payment_sub_total);
+            //             } else {
+            //                 $('#amountLink2').val(parseFloat(fullTotal).toLocaleString());
+            //                 $('#amountLink').text(parseFloat(fullTotal).toLocaleString());
+            //                 $('#totaldue').val(parseFloat(fullTotal).toLocaleString());
+            //                 $('#thispay').text(parseFloat(data.sub_total).toLocaleString());
+            //                 $('#transAmount').text(parseFloat(fullTotal).toLocaleString());
+            //                 $('#invoiceAmount').val(parseFloat(fullTotal).toLocaleString());
 
-                            $('#thissave').text(parseFloat(fullVallu).toLocaleString());
-                        }
-                        $('.fam_id').val(data.id);
-                    },
-                    error: function (error) {
-                    }
-                });
-            }
+            //                 $('#thissave').text(parseFloat(fullVallu).toLocaleString());
+            //             }
+            //             $('.fam_id').val(data.id);
+            //         },
+            //         error: function (error) {
+            //         }
+            //     });
+            // }
         });
     </script>
     <script language="javascript" type="text/javascript">
@@ -588,13 +616,14 @@ if (isset($pays) && (($pays->first_payment_remaining > 0 && $pays->first_payment
 
 
     <script>
-        function saveSign() {
+        function saveSignB() {
             var Signed = '{{is_object($pays) ? $pays->contract_1st_signature_status : null}}';
             var pays = '{{is_object($pays)}}';
             if (signaturePad.isEmpty() && (pays != 1 && Signed != "SIGNED")) {
-                toastr.error("Please provide a signature.");
+                // toastr.error("Please provide a signature.");
             } else {
                 const dataURL = signaturePad.toDataURL();
+                $('.dataUrl').val(dataURL);
 
                 $.ajax({
                     type: 'POST',
@@ -608,12 +637,12 @@ if (isset($pays) && (($pays->first_payment_remaining > 0 && $pays->first_payment
                     success: function(data) {
                         console.log(data);
                         if (data) {
-                            // toastr.success("Signature updated successfully!");
+                            toastr.success("Signature updated successfully!");
 
                             $('.contract-signature').hide();
                             //  location.href = "{{ url('payment_form') }}/" + '{{ $data->id }}';
                         } else {
-                            alert('Something went wrong');
+                            toastr.error('Something went wrong');
                         }
 
                     },
