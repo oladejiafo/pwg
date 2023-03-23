@@ -66,6 +66,8 @@ class HomeController extends Controller
                 $ppay = product_payments::where('destination_id', '=', $id)->where('pricing_plan_type', '=', Session::get('packageType'))->where('status', 'CURRENT')->first();
 
                 session()->forget('prod_id');
+                Session::put('myproduct_id', $id);
+
                 // return view('user.package-type', compact('data', 'ppay', 'id'));
                 return Redirect::to('payment_form/' . $id);
             } else {
@@ -1100,9 +1102,9 @@ class HomeController extends Controller
                             $data->total_paid = 0;
                             $data->total_remaining = $pdet->total_price;
                         } elseif ($request->whichpayment == 'BALANCE_ON_FIRST') {
-                            $data->total_discount = 0;
-                            $data->total_vat = $pdet->total_vat;
-                            $data->total_price = $pdet->total_price;
+                            // $data->total_discount = 0;
+                            // $data->total_vat = $pdet->total_vat;
+                            // $data->total_price = $pdet->total_price;
                             $data->total_paid = $data->first_payment_paid;
                             $data->total_remaining = $pdet->total_price - $data->first_payment_paid;
                         } elseif ($request->whichpayment == 'SUBMISSION') {
@@ -1110,33 +1112,33 @@ class HomeController extends Controller
                             // $data->submission_payment_paid = $thisPaymentMade;
                             $data->submission_payment_vat = $thisVat;
                             // $data->submission_payment_discount = $thisDiscount;
-                            $data->total_discount = 0;
-                            $data->total_vat = $pdet->total_vat;
-                            $data->total_price = $pdet->total_price;
+                            // $data->total_discount = 0;
+                            // $data->total_vat = $pdet->total_vat;
+                            // $data->total_price = $pdet->total_price;
                             $data->total_paid = $data->first_payment_paid;
                             $data->total_remaining = $pdet->total_price - $data->first_payment_paid;
                         } elseif ($request->whichpayment == 'BALANCE_ON_SUBMISSION') {
-                            $data->total_discount = 0;
-                            $data->total_vat = $pdet->total_vat;
-                            $data->total_price = $pdet->total_price;
+                            // $data->total_discount = 0;
+                            // $data->total_vat = $pdet->total_vat;
+                            // $data->total_price = $pdet->total_price;
                             $data->total_paid = $data->first_payment_paid + $data->submission_payment_paid;
                             $data->total_remaining = $pdet->total_price - ($data->first_payment_paid + $data->submission_payment_paid);
                         } elseif ($request->whichpayment == 'SECOND') {
                             $data->second_payment_price = $thisPayment;
                             // $data->second_payment_paid = $thisPaymentMade;
-                            $data->second_payment_vat = $thisVat;
+                            // $data->second_payment_vat = ($data->second_payment_vat) ?? $thisVat;
                             // $data->second_payment_discount = $thisDiscount;
-                            $data->coupon_code = $thisCode;
+                            // $data->coupon_code = $thisCode;
                             $data->total_discount = 0;
-                            $data->total_vat = $pdet->total_vat;
-                            $data->total_price = $pdet->total_price;
+                            // $data->total_vat = $pdet->total_vat;
+                            // $data->total_price = $pdet->total_price;
                             $data->total_paid = $data->first_payment_paid + $data->submission_payment_paid;
                             $data->total_remaining = $pdet->total_price - ($data->first_payment_paid + $data->submission_payment_paid);
                             $res = $data->save();
                         } elseif ($request->whichpayment == 'BALANCE_ON_SECOND') {
-                            $data->total_discount = 0;
-                            $data->total_vat = $pdet->total_vat;
-                            $data->total_price = $pdet->total_price;
+                            // $data->total_discount = 0;
+                            // $data->total_vat = $pdet->total_vat;
+                            // $data->total_price = $pdet->total_price;
                             $data->total_paid = $data->first_payment_paid + $data->submission_payment_paid;
                             $data->total_remaining = $pdet->total_price - ($data->first_payment_paid + $data->submission_payment_paid);
                         } else {
@@ -1226,7 +1228,7 @@ class HomeController extends Controller
                             }
                         }
 
-                        $data->coupon_code = $thisCode;
+                        // $data->coupon_code = $thisCode;
                         // $data->application_stage_status = 2;
 
                         $res = $data->save();
@@ -1235,69 +1237,30 @@ class HomeController extends Controller
                             $datas->embassy_country = $request->embassy_appearance;
                         }
                         $datas->pricing_plan_id = $request->ppid;
-
+                        $datas->total_discount = ($datas->coupon_code) ?  $datas->total_discount : 0;
+                        $datas->total_vat = ($datas->coupon_code) ? $datas->total_vat : $pdet->total_vat;
+                        $datas->total_price = ($datas->coupon_code) ? $datas->total_price : $pdet->total_price;
+                        $datas->first_payment_vat = ($datas->coupon_code) ?  $datas->first_payment_vat : $pdet->first_payment_vat;
+                        $datas->submission_payment_vat = ($datas->coupon_code) ? $datas->submission_payment_vat : $pdet->submission_payment_vat;
+                        $datas->second_payment_vat = ($datas->coupon_code) ? $datas->second_payment_vat : $pdet->second_payment_vat;
                         if ($request->whichpayment == 'FIRST') {
-
-                            // $datas->first_payment_discount = $thisDiscount;
-                            $datas->total_discount = 0;
-                            $datas->total_vat = $pdet->total_vat;
-                            $datas->total_price = $pdet->total_price;
                             $datas->total_paid = 0;
-                            $datas->total_remaining = $pdet->total_price;
-                            $datas->first_payment_vat = $pdet->first_payment_vat;
-                            $datas->submission_payment_vat = $pdet->submission_payment_vat;
-                            $datas->second_payment_vat = $pdet->submission_payment_vat;
+                            $datas->total_remaining = ($datas->coupon_code) ?  $datas->total_remaining : $pdet->total_price;
                         } else if ($request->whichpayment == 'BALANCE_ON_FIRST') {
-                            $datas->total_discount = 0;
-                            $datas->total_vat = $pdet->total_vat;
-                            $datas->total_price = $pdet->total_price;
-                            $datas->total_paid = 0;
-                            $datas->total_remaining = $pdet->total_price;
-                            $datas->first_payment_vat = $pdet->first_payment_vat;
-                            $datas->submission_payment_vat = $pdet->submission_payment_vat;
-                            $datas->second_payment_vat = $pdet->submission_payment_vat;
+                            $datas->total_paid = $datas->first_payment_paid;
+                            $datas->total_remaining = ($datas->coupon_code) ?  $datas->total_remaining : ($pdet->total_price -  $datas->first_payment_paid);
                         } elseif ($request->whichpayment == 'SUBMISSION') {
-                            // $datas->submission_payment_price = $thisPayment;
-                            // $datas->submission_payment_vat = $thisVat;
-                            // $datas->submission_payment_discount = $thisDiscount;
-                            $datas->total_discount = 0;
-                            $datas->total_vat = $pdet->total_vat;
-                            $datas->total_price = $pdet->total_price;
-                            $datas->total_paid = 0;
-                            $datas->total_remaining = $pdet->total_price;
-                            $datas->first_payment_vat = $pdet->first_payment_vat;
-                            $datas->submission_payment_vat = $pdet->submission_payment_vat;
-                            $datas->second_payment_vat = $pdet->submission_payment_vat;
+                            $datas->total_paid = $datas->first_payment_paid;
+                            $datas->total_remaining = ($datas->coupon_code) ?  $datas->total_remaining : ($pdet->total_price -  $datas->first_payment_paid);
                         } elseif ($request->whichpayment == 'BALANCE_ON_SUBMISSION') {
-                            $datas->total_discount = 0;
-                            $datas->total_vat = $pdet->total_vat;
-                            $datas->total_price = $pdet->total_price;
-                            $datas->total_paid = 0;
-                            $datas->total_remaining = $pdet->total_price;
-                            $datas->first_payment_vat = $pdet->first_payment_vat;
-                            $datas->submission_payment_vat = $pdet->submission_payment_vat;
-                            $datas->second_payment_vat = $pdet->submission_payment_vat;
+                            $datas->total_paid = $datas->first_payment_paid + $datas->submission_payment_paid;
+                            $datas->total_remaining = ($datas->coupon_code) ?  $datas->total_remaining : ($pdet->total_price -  ($datas->first_payment_paid + $datas->submission_payment_paid));
                         } elseif ($request->whichpayment == 'SECOND') {
-                            // $datas->second_payment_price = $thisPayment;
-                            // $datas->second_payment_vat = $thisVat;
-                            // $datas->second_payment_discount = $thisDiscount;
-                            $datas->total_discount = 0;
-                            $datas->total_vat = $pdet->total_vat;
-                            $datas->total_price = $pdet->total_price;
-                            $datas->total_paid = 0;
-                            $datas->total_remaining = $pdet->total_price;
-                            $datas->first_payment_vat = $pdet->first_payment_vat;
-                            $datas->submission_payment_vat = $pdet->submission_payment_vat;
-                            $datas->second_payment_vat = $pdet->submission_payment_vat;
+                            $datas->total_paid = $datas->first_payment_paid + $datas->submission_payment_paid;
+                            $datas->total_remaining = ($datas->coupon_code) ?  $datas->total_remaining : ($pdet->total_price -  ($datas->first_payment_paid + $datas->submission_payment_paid));
                         } elseif ($request->whichpayment == 'BALANCE_ON_SECOND') {
-                            $datas->total_discount = 0;
-                            $datas->total_vat = $pdet->total_vat;
-                            $datas->total_price = $pdet->total_price;
-                            $datas->total_paid = 0;
-                            $datas->total_remaining = $pdet->total_price;
-                            $datas->first_payment_vat = $pdet->first_payment_vat;
-                            $datas->submission_payment_vat = $pdet->submission_payment_vat;
-                            $datas->second_payment_vat = $pdet->submission_payment_vat;
+                            $datas->total_paid = $datas->first_payment_paid + $datas->submission_payment_paid + $datas->second_payment_paid;
+                            $datas->total_remaining = ($datas->coupon_code) ?  $datas->total_remaining : ($pdet->total_price -  ($datas->first_payment_paid + $datas->submission_payment_paid + $datas->second_payment_paid));
                         } else {
                             if (in_array($datas->first_payment_status, ['PAID', 'PARTIALLY_PAID'])) {
                                 if (in_array($datas->submission_payment_status, ['PAID', 'PARTIALLY_PAID'])) {
@@ -1420,7 +1383,7 @@ class HomeController extends Controller
                             }
                         }
 
-                        $datas->coupon_code = $thisCode;
+                        // $datas->coupon_code = $thisCode;
                         // $datas->application_stage_status = 2;
 
                         $res = $datas->save();
@@ -1577,7 +1540,7 @@ class HomeController extends Controller
                     }
                 }
             }
-            if (Session::get('discountapplied') == 1 && (($request->whichpayment == 'FIRST') || ($request->whichpayment != 'BALANCE_ON_FIRST') || ($request->whichpayment != 'SUBMISSION' || $request->whichpayment != 'BALANCE_ON_SUBMISSION') || ($request->whichpayment != 'SECOND' || $request->whichpayment != 'BALANCE_ON_SECOND'))) {
+            if (Session::get('discountapplied') == 1 && (($request->whichpayment == 'FIRST') ||  ($request->whichpayment == 'Full-Outstanding Payment') || ($request->whichpayment != 'BALANCE_ON_FIRST') || ($request->whichpayment != 'SUBMISSION' || $request->whichpayment != 'BALANCE_ON_SUBMISSION') || ($request->whichpayment != 'SECOND' || $request->whichpayment != 'BALANCE_ON_SECOND'))) {
                 $couponCodeData = DB::table('coupons')->where('code', $request->code)->get()->first();
                 $application->coupon = $request->couponDetails;
                 $application->coupon_code = $request->code;
@@ -1696,7 +1659,7 @@ class HomeController extends Controller
                         ->first();
                     $couponCodeData = null;
                     $pricing = DB::table('pricing_plans')->where('id', $data->pricing_plan_id)->first();
-                    if ($paymentCreds['couponApplied'] ==  1 && (($paymentCreds['whichpayment'] == 'FIRST') || ($paymentCreds['whichpayment'] != 'BALANCE_ON_FIRST') || ($paymentCreds['whichpayment'] != 'SUBMISSION' || $paymentCreds['whichpayment'] != 'BALANCE_ON_SUBMISSION') || ($paymentCreds['whichpayment'] != 'SECOND' || $paymentCreds['whichpayment'] != 'BALANCE_ON_SECOND'))) {
+                    if ($paymentCreds['couponApplied'] ==  1 && (($paymentCreds['whichpayment'] == 'FIRST') ||  ($paymentCreds['whichpayment'] == 'Full-Outstanding Payment') || ($paymentCreds['whichpayment'] != 'BALANCE_ON_FIRST') || ($paymentCreds['whichpayment'] != 'SUBMISSION' || $paymentCreds['whichpayment'] != 'BALANCE_ON_SUBMISSION') || ($paymentCreds['whichpayment'] != 'SECOND' || $paymentCreds['whichpayment'] != 'BALANCE_ON_SECOND'))) {
                         $couponCodeData = DB::table('coupons')->where('code', $paymentCreds['couponCode'])->get()->first();
                         $data->coupon = $paymentCreds['coupon'];
                         $data->coupon_code = $paymentCreds['couponCode'];
@@ -1704,8 +1667,9 @@ class HomeController extends Controller
                         $total = $pricing->sub_total - $pricing->third_payment_sub_total;
                         $data->total_discount = ($total * $couponCodeData->amount) / 100;
                         $totalTemp = $total - ($total * $couponCodeData->amount) / 100;
-                        $data->total_vat = (($totalTemp *  5) / 100) + ($pricing->third_payment_vat);
-                        $data->total_remaining = $data->total_price = ($pricing->sub_total - (($total * $couponCodeData->amount) / 100))  + (($totalTemp *  5) / 100);
+                        $data->total_vat = $totalVat = (($totalTemp *  5) / 100) + ($pricing->third_payment_vat);
+                        $totalTemp = $totalTemp + $totalVat;
+                        $data->total_remaining = $data->total_price = $totalTemp + $pricing->third_payment_sub_total;
 
                         $topaynow_temp_first = $pricing->first_payment_sub_total  - (($couponCodeData->amount *  $pricing->first_payment_sub_total) / 100);
                         $data->first_payment_discount = ($pricing->first_payment_sub_total * $couponCodeData->amount) / 100;
@@ -1955,7 +1919,6 @@ class HomeController extends Controller
                 return \Redirect::route('payment-fail', $id);
             }
         } catch (Exception $e) {
-            dd($e);
             return \Redirect::route('myapplication')->with('error', $e->getMessage());
         }
     }

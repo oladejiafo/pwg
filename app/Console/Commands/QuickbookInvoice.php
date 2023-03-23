@@ -49,13 +49,13 @@ class QuickbookInvoice extends Command
                 ->whereNull('invoice_no')
                 ->where('created_at', '>=', '2023-02-01')
                 ->get();
-                Quickbook::updateTokenAccess();
-                foreach ($payments as $payment) {
-                    $client = Applicant::join('clients', 'clients.id', '=', 'applications.client_id')
+            Quickbook::updateTokenAccess();
+            foreach ($payments as $payment) {
+                $client = Applicant::join('clients', 'clients.id', '=', 'applications.client_id')
                     ->where('applications.id', $payment->application_id)
                     ->select('clients.*')
                     ->first();
-                Quickbook::createMissedInvoice($payment, $client);
+                $data = Quickbook::createMissedInvoice($payment, $client);
             }
         } catch (Exception $e) {
             UserHelper::webLogger($e);

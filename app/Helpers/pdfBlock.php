@@ -734,6 +734,13 @@ class pdfBlock
                 $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Application::$media_collection_main_1st_signature, 'local');
             }
         } else {
+            $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_first_payment_contract.pdf';
+            $theString = $pdf->Output('S');
+            if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Application::$media_collection_main_1st_signature, env('MEDIA_DISK'));
+            } else {
+                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Application::$media_collection_main_1st_signature, 'local');
+            }
             $theString = $pdf->Output('S');
             Storage::disk(env('MEDIA_DISK'))->put($destination_file, $theString, 'public');
         }

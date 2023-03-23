@@ -814,7 +814,6 @@ class Quickbook
                 return  true;
             }
         } catch (Exception $exception) {
-            dd($exception);
             UserHelper::webLogger($exception);
             return \Redirect::route('myapplication')->with('error', $exception->getMessage());
         }
@@ -845,12 +844,12 @@ class Quickbook
                         "DetailType" => "DiscountLineDetail",
                         "DiscountLineDetail"  => [
                             "PercentBased" => true,
-                            "DiscountPercent" => ($coupon->amount) ?? 0
+                            "DiscountPercent" => (isset($coupon) ? $coupon->amount : 0)
                         ]
 
                     ]
                 ],
-                "Deposit" => ($paidAmount > (($unitPrice - ((($unitPrice * $coupon->amount) / 100))) + $tax)) ? (($unitPrice - ((($unitPrice * $coupon->amount) / 100))) + $tax) : $paidAmount, //$paidAmount, 
+                "Deposit" => ($coupon != null) ?  (($paidAmount > (($unitPrice - ((($unitPrice * $coupon->amount) / 100))) + $tax)) ? (($unitPrice - ((($unitPrice * $coupon->amount) / 100))) + $tax) : $paidAmount) : (($paidAmount > ($unitPrice + $tax)) ? $unitPrice + $tax : $paidAmount), //$paidAmount, 
                 "AutoDocNumber" => true,
 
                 // no tax due to free zone
@@ -868,7 +867,7 @@ class Quickbook
                     "value" => ($customer->Id) ??  $customer[0]->Id
                 ],
                 "CustomerMemo" => [
-                    "value" => ($paidAmount > (($unitPrice - ((($unitPrice * $coupon->amount) / 100))) + $tax)) ?  $paymentDetails->bank_reference_no . "<br> Paid additional amount" . ($paidAmount - (($unitPrice - ((($unitPrice * $coupon->amount) / 100))) + $tax)) : $paymentDetails->bank_reference_no,
+                    "value" => ($coupon != null) ? (($paidAmount > (($unitPrice - ((($unitPrice * $coupon->amount) / 100))) + $tax)) ?  $paymentDetails->bank_reference_no . "<br> Paid additional amount" . ($paidAmount - (($unitPrice - ((($unitPrice * $coupon->amount) / 100))) + $tax)) : $paymentDetails->bank_reference_no) : (($paidAmount > ($unitPrice + $tax)) ? $paymentDetails->bank_reference_no . "<br> Paid additional amount" . ($paidAmount - ($unitPrice + $tax)) : $paymentDetails->bank_reference_no),
                 ],
                 "PrivateNote" => $paymentDetails->bank_reference_no,
                 "BillEmail" => [
@@ -1041,7 +1040,6 @@ class Quickbook
             $customer = $dataService->Query("select * from Customer Where PrimaryEmailAddr='" . $client->email . "'");
             $dataService->throwExceptionOnError(true);
             $paymentDetails = $payment;
-
             $error = $dataService->getLastError();
             if ($customer) {
                 $customerExist = $dataService->FindbyId('Customer', $customer[0]->Id);
@@ -1292,8 +1290,7 @@ class Quickbook
                 }
             }
             $coupon = DB::table('coupons')
-                ->where('location', '=', $apply->embassy_country)
-                ->where('employee_id', '=', $destination->id)
+                ->where('code','=',$apply->coupon_code)
                 ->where('active_from', '<=', date('Y-m-d'))
                 ->where('active_until', '>=', date('Y-m-d'))
                 ->where('active', '=', 1)
@@ -1688,12 +1685,12 @@ class Quickbook
                         "DetailType" => "DiscountLineDetail",
                         "DiscountLineDetail"  => [
                             "PercentBased" => true,
-                            "DiscountPercent" => ($coupon->amount)??0
+                            "DiscountPercent" => (isset($coupon) ? $coupon->amount : 0)
                         ]
 
                     ]
                 ],
-                "Deposit" => ($paidAmount > (($unitPrice - ((($unitPrice * $coupon->amount) / 100))) + $tax)) ? (($unitPrice - ((($unitPrice * $coupon->amount) / 100))) + $tax) : $paidAmount, //$paidAmount, 
+                "Deposit" => ($coupon != null) ?  (($paidAmount > (($unitPrice - ((($unitPrice * $coupon->amount) / 100))) + $tax)) ? (($unitPrice - ((($unitPrice * $coupon->amount) / 100))) + $tax) : $paidAmount) : (($paidAmount > ($unitPrice + $tax)) ? $unitPrice + $tax : $paidAmount), //$paidAmount, 
                 "AutoDocNumber" => true,
 
                 // no tax due to free zone
@@ -1711,7 +1708,7 @@ class Quickbook
                     "value" => ($customer->Id) ??  $customer[0]->Id
                 ],
                 "CustomerMemo" => [
-                    "value" => ($paidAmount > (($unitPrice - ((($unitPrice * $coupon->amount) / 100))) + $tax)) ?  $paymentDetails->bank_reference_no . "<br> Paid additional amount" . ($paidAmount - (($unitPrice - ((($unitPrice * $coupon->amount) / 100))) + $tax)) : $paymentDetails->bank_reference_no,
+                    "value" => ($coupon != null) ? (($paidAmount > (($unitPrice - ((($unitPrice * $coupon->amount) / 100))) + $tax)) ?  $paymentDetails->bank_reference_no . "<br> Paid additional amount" . ($paidAmount - (($unitPrice - ((($unitPrice * $coupon->amount) / 100))) + $tax)) : $paymentDetails->bank_reference_no) : (($paidAmount > ($unitPrice + $tax)) ? $paymentDetails->bank_reference_no . "<br> Paid additional amount" . ($paidAmount - ($unitPrice + $tax)) : $paymentDetails->bank_reference_no),
                 ],
                 "PrivateNote" => $paymentDetails->bank_reference_no,
                 "TxnDate" => $paymentDetails->payment_date,
