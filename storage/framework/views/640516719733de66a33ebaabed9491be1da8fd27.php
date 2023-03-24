@@ -737,10 +737,10 @@ $totalPay = round($payNow - $discount + $vat, 2);
         
             var Signed = '<?php echo e(is_object($pays) ? $pays->contract_1st_signature_status : null); ?>';
             var pays = '<?php echo e(is_object($pays)); ?>';
+            const dataURL = signaturePad.toDataURL();
             if (signaturePad.isEmpty() && (pays != 1 && Signed != "SIGNED")) {
                 // toastr.error("Please provide a signature.");
             } else {
-                const dataURL = signaturePad.toDataURL();
                 $('.dataUrl').val(dataURL);
                 $.ajax({
                     type: 'POST',
@@ -752,6 +752,7 @@ $totalPay = round($payNow - $discount + $vat, 2);
                         response: 1
                     },
                     success: function(data) {
+                        alert(data.url);
                         console.log(data);
                         if (data.status) {
                             toastr.success("Signature updated successfully!");

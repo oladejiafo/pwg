@@ -278,7 +278,7 @@ class HomeController extends Controller
     {
         $user = User::find(Auth::id());
         $signatureUrl = (isset($user->getMedia(Client::$media_collection_main_signture)[0])) ? $user->getMedia(Client::$media_collection_main_signture)[0]->getUrl() : null;
-        if (Auth::id() && $signatureUrl == null) {
+        if (Auth::id() && strlen($signatureUrl) == 0 && ($request->whichpayment == 'FIRST' || $request->whichpayment == 'Full-Outstanding Payment')) {
             list($part_a, $image_parts) = explode(";base64,", $request->signed);
             $image_type_aux = explode("image/", $part_a);
             $image_type = $image_type_aux[1];
@@ -303,11 +303,13 @@ class HomeController extends Controller
             } else {
                 $response = [
                     'status' => false,
+                    'url' => $signatureUrl
                 ];
             }
         } else {
             $response = [
                 'status' => false,
+                'url' => $signatureUrl
             ];
         }
     }
@@ -490,14 +492,14 @@ class HomeController extends Controller
                     $myPack = ($request->myPack) ?? Session::get('packageTypeOpted');
                 }
                 //Call Create Contract Function
-                $fileUrl = self::createContract($p_id);
+                $fileUrl = self::createContract($productId);
 
 
                 if (session()->get('myproduct_id')) {
                     // } else if (isset($request->id)) {
                     //     Session::put('myproduct_id', $request->id);
                 } else {
-                    Session::put('myproduct_id', $p_id);
+                    Session::put('myproduct_id', $productId);
                 }
 
                 $id = Session::get('myproduct_id');
@@ -614,7 +616,6 @@ class HomeController extends Controller
             ->pluck('name')
             ->first();
         $productName = strtolower($productName);
-
         if ($productName == Constant::poland) {
             $originalPdf = "pdf/poland.pdf";
             $rand = UserHelper::getRandomString();
@@ -820,7 +821,7 @@ class HomeController extends Controller
                 Session::put('packageType', $request->packageType);
                 $user = Client::find(Auth::id());
                 $signatureUrl = (isset($user->getMedia(Client::$media_collection_main_signture)[0])) ? $user->getMedia(Client::$media_collection_main_signture)[0]->getUrl() : null;
-                if ($signatureUrl == null && $request->whichpayment == 'FIRST') {
+                if ($signatureUrl == null && ($request->whichpayment == 'FIRST' || $request->whichpayment == 'Full-Outstanding Payment')) {
                     if ($request->signed) {
                         list($part_a, $image_parts) = explode(";base64,", $request->signed);
                         $image_type_aux = explode("image/", $part_a);
@@ -1803,13 +1804,11 @@ class HomeController extends Controller
                         ->first();
                     if ($ppd === null) {
                         $dat = new payment;
-
                         $dat->payment_type = $paymentCreds['whichpayment'];
                         $dat->application_id = $data->id;
                         $dat->payment_date = $thisDay;
                         $dat->payable_amount = ($paymentCreds['whichpayment'] == 'BALANCE_ON_FIRST') ? $paymentCreds['totalpay'] : $paymentCreds['totaldue'];
                         $dat->invoice_amount = $paymentCreds['totalpay'];
-
                         $dat->bank_id = '8';
                         $dat->payment_verified_by_cfo = 1;
                         $dat->paid_amount = $paymentCreds['totalpay'];
@@ -1817,9 +1816,7 @@ class HomeController extends Controller
                         $dat->bank_reference_no = $paymentResponse->merchantOrderReference;
                         $dat->transaction_id = $paymentResponse->_id;
                         $dat->transaction_mode = 'CARD';
-
                         $dat->remaining_amount = (isset($paymentCreds['totalremaining'])) ? NULL : $paymentCreds['totaldue'] - $paymentCreds['totalpay'];
-                        // dd($dat);
                         $dat->save();
                         Session::put('paymentId', $dat->id);
                     } else {
@@ -1926,107 +1923,107 @@ class HomeController extends Controller
     public function paymentFail()
     {
         //Undo Application payment info
-        $pays = payment::where('id', Session::get('paymentId'))->first();
+        // $pays = payment::where('id', Session::get('paymentId'))->first();
         $id = Session::get('myproduct_id');
-
-        if ($pays) {
-            $datas = applicant::where([
-                ['client_id', '=', Auth::user()->id],
-                ['id', '=', $pays->application_id],
-            ])
-                ->orderBy('id', 'DESC')
-                ->first();
-
-            if ($datas === null) {
-            } else {
-                if ($pays->payment_type == 'FIRST') {
-                    if ($datas->first_payment_status == 'PARTIALLY_PAID') {
-                        // $datas->first_payment_paid = $datas->first_payment_paid - $pays->paid_amount;
-                        //    $datas->first_payment_vat = 0;
-                        //    $datas->first_payment_discount = 0;
-                        $datas->first_payment_status = 'PARTIALLY_PAID';
-                        // $datas->first_payment_remaining =  $datas->first_payment_remaining - $pays->paid_amount;
-                    } else {
-                        $datas->first_payment_price = 0;
-                        $datas->first_payment_paid = 0;
-                        $datas->first_payment_vat = 0;
-                        $datas->first_payment_discount = 0;
-                        $datas->first_payment_status = 'PENDING';
-                        $datas->first_payment_remaining =  0;
-                        $datas->is_first_payment_partially_paid = 0;
-                        $datas->status = 'PENDING';
-                        //Undo Payment update
-                        // Payment::where('id', Session::get('paymentId'))->delete();
-                    }
-                } elseif ($pays->payment_type == 'BALANCE_ON_FIRST') {
-                    //    $datas->first_payment_price = 0;
-                    // $datas->first_payment_paid = $datas->first_payment_paid - $pays->paid_amount;
-                    //    $datas->first_payment_vat = 0;    
-                    //    $datas->first_payment_discount = 0;
-                    $datas->first_payment_status = 'PARTIALLY_PAID';
-                    // $datas->first_payment_remaining =  $datas->first_payment_remaining - $pays->paid_amount;
-                    //    $datas->is_first_payment_partially_paid = 0;
-                    //    $datas->status = 'PENDING';
-                } elseif ($pays->payment_type == 'SUBMISSION') {
-                    $datas->submission_payment_price = 0;
-                    $datas->submission_payment_paid = 0;
-                    $datas->submission_payment_vat = 0;
-                    $datas->submission_payment_discount = 0;
-                    $datas->submission_payment_status = 'PENDING';
-                    $datas->status = 'PENDING';
-                    $datas->is_submission_payment_partially_paid = 0;
-                    // //Undo Payment update
-                    // Payment::where('id', Session::get('paymentId'))->delete();
-                } elseif ($pays->payment_type == 'SECOND') {
-                    $datas->second_payment_price = 0;
-                    $datas->second_payment_paid = 0;
-                    $datas->second_payment_vat = 0;
-                    $datas->second_payment_discount = 0;
-                    $datas->second_payment_status = 'PENDING';
-                    $datas->status = 'PENDING';
-                    $datas->is_second_payment_partially_paid = 0;
-                    // //Undo Payment update
-                    // Payment::where('id', Session::get('paymentId'))->delete();
-                } elseif ($pays->payment_type == 'Full-Outstanding Payment') {
-                    if ($datas->first_payment_status == 'PENDING') {
-                        $datas->first_payment_price = 0;
-                        $datas->first_payment_paid = 0;
-                        $datas->first_payment_vat = 0;
-                        $datas->first_payment_discount = 0;
-                        $datas->first_payment_status = 'PENDING';
-                        $datas->first_payment_remaining =  0;
-                        $datas->is_first_payment_partially_paid = 0;
-                    }
-                    $datas->status = 'PENDING';
-                    $datas->submission_payment_price = 0;
-                    $datas->submission_payment_paid = 0;
-                    $datas->submission_payment_vat = 0;
-                    $datas->submission_payment_discount = 0;
-                    $datas->submission_payment_status = 'PENDING';
-                    $datas->status = 'PENDING';
-                    $datas->is_submission_payment_partially_paid = 0;
-                    $datas->second_payment_price = 0;
-                    $datas->second_payment_paid = 0;
-                    $datas->second_payment_vat = 0;
-                    $datas->second_payment_discount = 0;
-                    $datas->second_payment_status = 'PENDING';
-                    $datas->status = 'PENDING';
-                    $datas->is_second_payment_partially_paid = 0;
-                    $datas->total_price = 0;
-                    $datas->total_paid = 0;
-                    $datas->total_vat = 0;
-                    $datas->total_discount = 0;
-                    // //Undo Payment update
-                    // Payment::where('id', Session::get('paymentId'))->delete();
-                }
-                $datas->save();
-            }
-            //Undo Payment update
-            Payment::where('id', Session::get('paymentId'))->delete();
+        Session::forget('payall');
+        Session::forget('couponApplied');
+        // if ($pays) {
+        //     $datas = applicant::where([
+        //         ['client_id', '=', Auth::user()->id],
+        //         ['id', '=', $pays->application_id],
+        //     ])
+        //         ->orderBy('id', 'DESC')
+        //         ->first();
+        //     if ($datas === null) {
+        //     } else {
+        //         if ($pays->payment_type == 'FIRST') {
+        //             if ($datas->first_payment_status == 'PARTIALLY_PAID') {
+        //                 // $datas->first_payment_paid = $datas->first_payment_paid - $pays->paid_amount;
+        //                 //    $datas->first_payment_vat = 0;
+        //                 //    $datas->first_payment_discount = 0;
+        //                 $datas->first_payment_status = 'PARTIALLY_PAID';
+        //                 // $datas->first_payment_remaining =  $datas->first_payment_remaining - $pays->paid_amount;
+        //             } else {
+        //                 $datas->first_payment_price = 0;
+        //                 $datas->first_payment_paid = 0;
+        //                 $datas->first_payment_vat = 0;
+        //                 $datas->first_payment_discount = 0;
+        //                 $datas->first_payment_status = 'PENDING';
+        //                 $datas->first_payment_remaining =  0;
+        //                 $datas->is_first_payment_partially_paid = 0;
+        //                 $datas->status = 'PENDING';
+        //                 //Undo Payment update
+        //                 // Payment::where('id', Session::get('paymentId'))->delete();
+        //             }
+        //         } elseif ($pays->payment_type == 'BALANCE_ON_FIRST') {
+        //             //    $datas->first_payment_price = 0;
+        //             // $datas->first_payment_paid = $datas->first_payment_paid - $pays->paid_amount;
+        //             //    $datas->first_payment_vat = 0;    
+        //             //    $datas->first_payment_discount = 0;
+        //             $datas->first_payment_status = 'PARTIALLY_PAID';
+        //             // $datas->first_payment_remaining =  $datas->first_payment_remaining - $pays->paid_amount;
+        //             //    $datas->is_first_payment_partially_paid = 0;
+        //             //    $datas->status = 'PENDING';
+        //         } elseif ($pays->payment_type == 'SUBMISSION') {
+        //             $datas->submission_payment_price = 0;
+        //             $datas->submission_payment_paid = 0;
+        //             $datas->submission_payment_vat = 0;
+        //             $datas->submission_payment_discount = 0;
+        //             $datas->submission_payment_status = 'PENDING';
+        //             $datas->status = 'PENDING';
+        //             $datas->is_submission_payment_partially_paid = 0;
+        //             // //Undo Payment update
+        //             // Payment::where('id', Session::get('paymentId'))->delete();
+        //         } elseif ($pays->payment_type == 'SECOND') {
+        //             $datas->second_payment_price = 0;
+        //             $datas->second_payment_paid = 0;
+        //             $datas->second_payment_vat = 0;
+        //             $datas->second_payment_discount = 0;
+        //             $datas->second_payment_status = 'PENDING';
+        //             $datas->status = 'PENDING';
+        //             $datas->is_second_payment_partially_paid = 0;
+        //             // //Undo Payment update
+        //             // Payment::where('id', Session::get('paymentId'))->delete();
+        //         } elseif ($pays->payment_type == 'Full-Outstanding Payment') {
+        //             if ($datas->first_payment_status == 'PENDING') {
+        //                 $datas->first_payment_price = 0;
+        //                 $datas->first_payment_paid = 0;
+        //                 $datas->first_payment_vat = 0;
+        //                 $datas->first_payment_discount = 0;
+        //                 $datas->first_payment_status = 'PENDING';
+        //                 $datas->first_payment_remaining =  0;
+        //                 $datas->is_first_payment_partially_paid = 0;
+        //             }
+        //             $datas->status = 'PENDING';
+        //             $datas->submission_payment_price = 0;
+        //             $datas->submission_payment_paid = 0;
+        //             $datas->submission_payment_vat = 0;
+        //             $datas->submission_payment_discount = 0;
+        //             $datas->submission_payment_status = 'PENDING';
+        //             $datas->status = 'PENDING';
+        //             $datas->is_submission_payment_partially_paid = 0;
+        //             $datas->second_payment_price = 0;
+        //             $datas->second_payment_paid = 0;
+        //             $datas->second_payment_vat = 0;
+        //             $datas->second_payment_discount = 0;
+        //             $datas->second_payment_status = 'PENDING';
+        //             $datas->status = 'PENDING';
+        //             $datas->is_second_payment_partially_paid = 0;
+        //             $datas->total_price = 0;
+        //             $datas->total_paid = 0;
+        //             $datas->total_vat = 0;
+        //             $datas->total_discount = 0;
+        //             // //Undo Payment update
+        //             // Payment::where('id', Session::get('paymentId'))->delete();
+        //         }
+        //         $datas->save();
+        //     }
+        //     //Undo Payment update
+        //     Payment::where('id', Session::get('paymentId'))->delete();
+        //     return view('user.payment-fail', compact('id'));
+        // } else {
             return view('user.payment-fail', compact('id'));
-        } else {
-            return view('user.payment-fail', compact('id'));
-        }
+        // }
     }
 
     public function getPromo(Request $request)

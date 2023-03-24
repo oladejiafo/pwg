@@ -32,8 +32,8 @@
     }
 
     .package-type .indpackage ul li::before {
-        background: #FACB08;
-        color: #000;
+        background: #006ACE;
+        color: #fff;
     }
 
     .package-type .fampackage ul li::before {
@@ -295,7 +295,7 @@
                                             <?php if(isset($started) && $pricingPlan['poland_indi']->destination_id == $started->destination_id && $pricingPlan['poland_indi']->id == $started->pricing_plan_id): ?>
                                                 <a class="btn btn-primary" style="width: 100%;font-size: 14px;" href="<?php echo e(route('myapplication')); ?>"><span class="done">Already Applied</span><i class="fa fa-check-circle" style="font-size:14px; color:green"></i></a>
                                             <?php else: ?>
-                                                <button class="btn btn-primary" style="width: 100%;font-size: 24px;background: #FACB08; border-color:#FACB08" <?php if(isset($started->destination_id)): ?> onclick="toastr.error('You have an active application already.','',{positionClass: 'toast-top-center', closeButton: 'true', width: '400px'})" type="button" <?php else: ?> type="submit" <?php endif; ?>>APPLY NOW</button>
+                                                <button class="btn btn-primary" style="width: 100%;font-size: 24px;background: #006ACE; border-color:#006ACE; color:#fff;" <?php if(isset($started->destination_id)): ?> onclick="toastr.error('You have an active application already.','',{positionClass: 'toast-top-center', closeButton: 'true', width: '400px'})" type="button" <?php else: ?> type="submit" <?php endif; ?>>APPLY NOW</button>
                                             <?php endif; ?>
                                         </form>
                                     </div>

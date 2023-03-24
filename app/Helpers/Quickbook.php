@@ -138,14 +138,14 @@ class Quickbook
                     if ($paymentType == 'FIRST' || $paymentType == 'BALANCE_ON_FIRST') {
                         $productObj = $dataService->Query("select * from Item Where Name='Photocopy Cv, Passport - Poland'");
                     } else if ($paymentType == 'SUBMISSION') {
-                        $productObj = $dataService->Query("select * from Item Where Name='Travel Documents Submission - Poland'");
+                        $productObj = $dataService->Query("select * from Item Where Name='Submission Payment After 5 Weeks Of First Installment - Poland'");
                     } else if ($paymentType == 'SECOND') {
                         $productObj = $dataService->Query("select * from Item Where Name='Typing for Visa Application - Poland'");
                     }
                     if ($paymentDetails->payment_type ==  'Full-Outstanding Payment') {
                         $FullFirstPayment = $dataService->Query("select * from Item Where Name='Photocopy Cv, Passport - Poland'");
                         $FullFirstPaymentProduct = $dataService->FindbyId('Item', $FullFirstPayment[0]->Id);
-                        $FullSecondPayment = $dataService->Query("select * from Item Where Name='Travel Documents Submission - Poland'");
+                        $FullSecondPayment = $dataService->Query("select * from Item Where Name='Submission Payment After 5 Weeks Of First Installment - Poland'");
                         $FullSecondPaymentProduct = $dataService->FindbyId('Item', $FullSecondPayment[0]->Id);
                         $FullThirdPayment = $dataService->Query("select * from Item Where Name='Typing for Visa Application - Poland'");
                         $FullThirdPaymentProduct = $dataService->FindbyId('Item', $FullThirdPayment[0]->Id);
@@ -161,14 +161,14 @@ class Quickbook
                     if ($paymentType == 'FIRST' || $paymentType == 'BALANCE_ON_FIRST') {
                         $productObj = $dataService->Query("select * from Item Where Name='Photocopy - CV, Passport - Czech Republic'");
                     } else if ($paymentType == 'SUBMISSION') {
-                        $productObj = $dataService->Query("select * from Item Where Name='Travel Documents Submission - Czech Republic'");
+                        $productObj = $dataService->Query("select * from Item Where Name='Submission Payment - Czech'");
                     } else if ($paymentType == 'SECOND') {
                         $productObj = $dataService->Query("select * from Item Where Name='Typing for Visa Application - Czech Republic'");
                     }
                     if ($paymentDetails->payment_type ==  'Full-Outstanding Payment') {
                         $FullFirstPayment = $dataService->Query("select * from Item Where Name='Photocopy - CV, Passport - Czech Republic'");
                         $FullFirstPaymentProduct = $dataService->FindbyId('Item', $FullFirstPayment[0]->Id);
-                        $FullSecondPayment = $dataService->Query("select * from Item Where Name='Travel Documents Submission - Czech Republic'");
+                        $FullSecondPayment = $dataService->Query("select * from Item Where Name='Submission Payment - Czech'");
                         $FullSecondPaymentProduct = $dataService->FindbyId('Item', $FullSecondPayment[0]->Id);
                         $FullThirdPayment = $dataService->Query("select * from Item Where Name='Typing for Visa Application - Czech Republic'");
                         $FullThirdPaymentProduct = $dataService->FindbyId('Item', $FullThirdPayment[0]->Id);
@@ -184,7 +184,7 @@ class Quickbook
                     if ($paymentType == 'FIRST' || $paymentType == 'BALANCE_ON_FIRST') {
                         $productObj = $dataService->Query("select * from Item Where Name='Photocopy - CV, Passport - Malta'");
                     } else if ($paymentType == 'SUBMISSION') {
-                        $productObj = $dataService->Query("select * from Item Where Name='Travel Documents Submission - Malta'");
+                        $productObj = $dataService->Query("select * from Item Where Name='Submission Payment - Malta'");
                     } else if ($paymentType == 'SECOND') {
                         $productObj = $dataService->Query("select * from Item Where Name='Typing for Visa Application - Malta'");
                     }
@@ -195,7 +195,7 @@ class Quickbook
                             'Taxable' => true
                         ];
                         $dataService->Update(Item::update($FullFirstPaymentProduct, $FullFirstPaymentProductChange));
-                        $FullSecondPayment = $dataService->Query("select * from Item Where Name='Travel Documents Submission - Malta'");
+                        $FullSecondPayment = $dataService->Query("select * from Item Where Name='Submission Payment - Malta'");
                         $FullSecondPaymentProduct = $dataService->FindbyId('Item', $FullSecondPayment[0]->Id);
                         $FullSecondPaymentProductChange = [
                             'Taxable' => true
@@ -219,7 +219,7 @@ class Quickbook
                     if ($paymentType == 'FIRST' || $paymentType == 'BALANCE_ON_FIRST') {
                         $productObj = $dataService->Query("select * from Item Where Name='Photocopy Cv, Passport - Canada'");
                     } else if ($paymentType == 'SUBMISSION') {
-                        $productObj = $dataService->Query("select * from Item Where Name='Travel Documents Sumitted  Canada'");
+                        $productObj = $dataService->Query("select * from Item Where Name='Submission Payment With in a Month after First Installment - Canada'");
                     } else if ($paymentType == 'SECOND') {
                         $productObj = $dataService->Query("select * from Item Where Name='Typing for Visa Application - Canada'");
                     }
@@ -230,7 +230,7 @@ class Quickbook
                             'Taxable' => true
                         ];
                         $dataService->Update(Item::update($FullFirstPaymentProduct, $FullFirstPaymentProductChange));
-                        $FullSecondPayment = $dataService->Query("select * from Item Where Name='Travel Documents Sumitted  Canada'");
+                        $FullSecondPayment = $dataService->Query("select * from Item Where Name='Submission Payment With in a Month after First Installment - Canada'");
                         $FullSecondPaymentProduct = $dataService->FindbyId('Item', $FullSecondPayment[0]->Id);
                         $FullSecondPaymentProductChange = [
                             'Taxable' => true
@@ -289,7 +289,7 @@ class Quickbook
                     if ($paymentType == 'FIRST' || $paymentType == 'BALANCE_ON_FIRST') {
                         $productObj = $dataService->Query("select * from Item Where Name='Photocopy Cv, Passport - Poland'");
                     } else if ($paymentType == 'SUBMISSION') {
-                        $productObj = $dataService->Query("select * from Item Where Name='Travel Documents Submission - Poland'");
+                        $productObj = $dataService->Query("select * from Item Where Name='Submission Payment After 5 Weeks Of First Installment - Poland'");
                     } else if ($paymentType == 'SECOND') {
                         $productObj = $dataService->Query("select * from Item Where Name='Typing for Visa Application - Poland'");
                     }
@@ -297,7 +297,7 @@ class Quickbook
                     if ($paymentDetails->payment_type ==  'Full-Outstanding Payment') {
                         $FullFirstPayment = $dataService->Query("select * from Item Where Name='Photocopy Cv, Passport - Poland'");
                         $FullFirstPaymentProduct = $dataService->FindbyId('Item', $FullFirstPayment[0]->Id);
-                        $FullSecondPayment = $dataService->Query("select * from Item Where Name='Travel Documents Submission - Poland'");
+                        $FullSecondPayment = $dataService->Query("select * from Item Where Name='Submission Payment After 5 Weeks Of First Installment - Poland'");
                         $FullSecondPaymentProduct = $dataService->FindbyId('Item', $FullSecondPayment[0]->Id);
                         $FullThirdPayment = $dataService->Query("select * from Item Where Name='Typing for Visa Application - Poland'");
                         $FullThirdPaymentProduct = $dataService->FindbyId('Item', $FullThirdPayment[0]->Id);
