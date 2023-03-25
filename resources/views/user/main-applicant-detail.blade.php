@@ -651,7 +651,7 @@
         </div>
     </div>
 
-    <div class="applicant-detail-sec" style="margin-bottom: 70px">
+    <div class="applicant-detail-sec" style="margin-bottom: 103px">
         <div class="heading"  data-bs-toggle="collapse" data-bs-target="#collapseExperience" aria-expanded="false" aria-controls="collapseExperience">
             <div class="row">
                 <div class="col-2 my-auto">
