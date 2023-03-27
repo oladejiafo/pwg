@@ -762,7 +762,6 @@ $totalPay = round($payNow - $discount + $vat, 2);
                         response: 1
                     },
                     success: function(data) {
-                        alert(data.url);
                         console.log(data);
                         if (data.status) {
                             toastr.success("Signature updated successfully!");
@@ -770,7 +769,7 @@ $totalPay = round($payNow - $discount + $vat, 2);
                             $('.contract-signature').hide();
                             //  location.href = "{{ url('payment_form') }}/" + '{{ $data->id }}';
                         } else {
-                            alert('Something went wrong');
+                            toastr.error("Something went wrong!");
                         }
 
                     },

@@ -58,15 +58,15 @@ class HomeController extends Controller
 
             if (isset($complete) && $complete->destination_id > 0 && $complete->destination_id != null) {
                 return \Redirect::route('myapplication');
-            } elseif (Session::has('prod_id')) {
-                $id = Session::get('prod_id');
+            } elseif (Session::has('myproduct_id') ) {
+                $id =  Session::get('myproduct_id');
                 $data = product::find($id);
 
                 $promo = promo::where('employee_id', '=', $id)->where('active_until', '>=', date('Y-m-d'))->get();
                 $ppay = product_payments::where('destination_id', '=', $id)->where('pricing_plan_type', '=', Session::get('packageType'))->where('status', 'CURRENT')->first();
 
                 session()->forget('prod_id');
-                Session::put('myproduct_id', $id);
+                // Session::put('myproduct_id', $id);
 
                 // return view('user.package-type', compact('data', 'ppay', 'id'));
                 return Redirect::to('payment_form/' . $id);
@@ -302,7 +302,7 @@ class HomeController extends Controller
                 return $response;
             } else {
                 $response = [
-                    'status' => false,
+                    'status' => true,
                     'url' => $signatureUrl
                 ];
             }
@@ -2650,11 +2650,10 @@ class HomeController extends Controller
         ]);
     }
 
-    public function updateContract()
+    public function updateContract($applicationId)
     {
-        $applications = Application::where('created_at', '>=', "2023-03-10")
-            ->get();
-        foreach ($applications as $application) {
+        $application = Application::find($applicationId);
+        // foreach ($applications as $application) {
             $pricingPlan = DB::table('pricing_plans')->where('id', $application->pricing_plan_id)->where('status', '=', "CURRENT")->where('is_active', 1)->first();
             if ($pricingPlan) {
                 $client = Client::find($application->client_id);
@@ -2709,10 +2708,9 @@ class HomeController extends Controller
                         ]);
                 }
             }
-        }
-        $applications = Application::where('created_at', '>=', "2023-03-10")
-            ->get();
-        foreach ($applications as $application) {
+        // }
+        $application = Application::find($applicationId);
+        // foreach ($applications as $application) {
             $pricingPlan = DB::table('pricing_plans')->where('id', $application->pricing_plan_id)->where('status', '=', "CURRENT")->where('is_active', 1)->first();
             if ($pricingPlan) {
                 $client = Client::find($application->client_id);
@@ -2727,7 +2725,7 @@ class HomeController extends Controller
 
                 $result = pdfBlock::attachSignature($originalPdf, $signatureUrl, $data, $paymentType, $application, $user);
             }
-        }
+        // }
     }
 
     public function addPassportDetails($id)

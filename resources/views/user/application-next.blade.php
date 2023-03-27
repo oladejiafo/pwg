@@ -752,7 +752,7 @@
                     if(data.status) {
                         $('#collapseHome').removeClass('show');
                         $('.homeCountryData').show();
-                        $('#collapseapplicant').addClass('show');
+                        $('#collapseCurrent').addClass('show');
                         $('.homeCountryCompleted').val(1);
                     } else {
                         var validationError = data.errors;
@@ -830,7 +830,6 @@
             if($("input[name=schengen_upload]").val()) {
                 formData.append('schengen_copy', $('.schengen_upload')[0].files[0]);
             }
-            console.log(formData);
             $.ajax({
                 type: 'POST',
                 url: "{{ url('store/schengen/details') }}",

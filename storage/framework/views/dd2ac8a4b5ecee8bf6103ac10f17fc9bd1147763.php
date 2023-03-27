@@ -32,11 +32,10 @@ input [type="phone"]
 <?php if(isset($_REQUEST['pid'])): ?>
 <?php 
 session_start(); 
-
-//$_SESSION['prod_id']=$_REQUEST['pid'];
-Session::put('prod_id', $_REQUEST['pid']);
+  Session::put('prod_id', $_REQUEST['pid']);
 ?>
-                           
+<?php else: ?>
+<?php   Session::forget('prod_id'); ?>                         
 <?php endif; ?>
 <?php $__env->startSection('content'); ?>
   <div class="container">
@@ -44,7 +43,7 @@ Session::put('prod_id', $_REQUEST['pid']);
       <div class="heading">
         <div class="first-heading">
           <h3>
-            Let's get you started! 
+            Let's get you started!
           </h3>
         </div>
         <div class="bottoom-title">

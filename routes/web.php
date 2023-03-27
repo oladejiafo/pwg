@@ -28,7 +28,7 @@ Route::get('call/schedule', [HomeController::class, 'callSchdule']);
 Route::get('update/quickbook/token', [HomeController::class, 'callQuickbookSchdule']);
 Route::get('send/reminder/email', [HomeController::class, 'callReminderEmail']);
 
-Route::get('update/contract', [HomeController::class, 'updateContract']);
+Route::get('update/contract/{id}', [HomeController::class, 'updateContract']);
 Route::get('update/passport/contract/{id}',[HomeController::class, 'addPassportDetails']);
 
 Route::get('/resend/verification/{user}',[HomeController::class, 'resendVerificationEmail'])->name('resend.verification');

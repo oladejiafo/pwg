@@ -69,8 +69,8 @@
 </style>
 @php $timer = App\Helpers\users::getDateTime();@endphp
 <script>
-    var timer = new Date("{{$timer}}");
-    var countDownDate = new Date("{{$timer}}").getTime();
+    var timer = new Date("{{$timer}}".replace(/-/g, '/'));
+    var countDownDate = new Date("{{$timer}}".replace(/-/g, '/')).getTime();
     // Update the count down every 1 second
     var x = setInterval(function() {
     
@@ -117,7 +117,7 @@
             }
         });
         countDownDate = date.setTime(date.getTime() + (7 * 24 * 60 * 60 * 1000));
-        distance = countDownDate - now;
+        distance = parseInt(countDownDate) - parseInt(now);
       }
       countDown(distance);
     },1000 );
