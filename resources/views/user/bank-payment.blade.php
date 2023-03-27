@@ -332,6 +332,8 @@ if (isset($pays) && (($pays->first_payment_remaining > 0 && $pays->first_payment
                 <input type="hidden" name="productId" value="{{ $pdet->destination_id }}">
                 <input type="hidden" name="code" class="code">
                 <input type="hidden" name="couponDetails" class="couponApplyDetails">
+                <input type="hidden" name="signed"  class="dataUrl" value="">
+
                 <div class="row">
                     <div class="heading">
                         <div class="first-heading" style="text-align: center">
@@ -619,12 +621,11 @@ if (isset($pays) && (($pays->first_payment_remaining > 0 && $pays->first_payment
         function saveSignB() {
             var Signed = '{{is_object($pays) ? $pays->contract_1st_signature_status : null}}';
             var pays = '{{is_object($pays)}}';
+            const dataURL = signaturePad.toDataURL();
             if (signaturePad.isEmpty() && (pays != 1 && Signed != "SIGNED")) {
                 // toastr.error("Please provide a signature.");
             } else {
-                const dataURL = signaturePad.toDataURL();
                 $('.dataUrl').val(dataURL);
-
                 $.ajax({
                     type: 'POST',
                     url: "{{ url('upload_signature') }}",
@@ -636,13 +637,13 @@ if (isset($pays) && (($pays->first_payment_remaining > 0 && $pays->first_payment
                     },
                     success: function(data) {
                         console.log(data);
-                        if (data) {
+                        if (data.status) {
                             toastr.success("Signature updated successfully!");
 
                             $('.contract-signature').hide();
                             //  location.href = "{{ url('payment_form') }}/" + '{{ $data->id }}';
                         } else {
-                            toastr.error('Something went wrong');
+                            toastr.error("Something went wrong!");
                         }
 
                     },

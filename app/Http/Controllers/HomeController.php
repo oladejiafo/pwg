@@ -58,7 +58,7 @@ class HomeController extends Controller
 
             if (isset($complete) && $complete->destination_id > 0 && $complete->destination_id != null) {
                 return \Redirect::route('myapplication');
-            } elseif (Session::has('myproduct_id') ) {
+            } elseif (Session::has('myproduct_id') &&  Session::get('myproduct_id') > 0) {
                 $id =  Session::get('myproduct_id');
                 $data = product::find($id);
 
@@ -1430,8 +1430,23 @@ class HomeController extends Controller
             // if ($request->whichpayment == 'FIRST') {
             // dd($signatureUrl);
 
-            if ($signatureUrl == null && $request->whichpayment == 'FIRST') {
-                return back()->with('error', 'Oppss! Please provide signature.');
+            if ($signatureUrl == null && ($request->whichpayment == 'FIRST' || $request->whichpayment == 'Full-Outstanding Payment')) {
+                if ($request->signed) {
+                    list($part_a, $image_parts) = explode(";base64,", $request->signed);
+                    $image_type_aux = explode("image/", $part_a);
+                    $image_type = $image_type_aux[1];
+                    $signate = Auth::user()->id . '_' . time() . '.' . $image_type;
+                    $signature = Client::find(Auth::user()->id);
+
+                    if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+                        $signature->addMediaFromBase64($request->signed)->usingFileName($signate)->toMediaCollection(Client::$media_collection_main_signture, env('MEDIA_DISK'));
+                    } else {
+                        $signature->addMediaFromBase64($request->signed)->usingFileName($signate)->toMediaCollection(Client::$media_collection_main_signture, 'local');
+                    }
+                    $signature->save();
+                } else {
+                    return back()->with('error', 'Oppss! Please provide signature.');
+                }
             }
 
             Session::put('packageType', $request->packageType);

@@ -734,7 +734,6 @@ $totalPay = round($payNow - $discount + $vat, 2);
     });
 
     function saveSign() {
-        
             var Signed = '<?php echo e(is_object($pays) ? $pays->contract_1st_signature_status : null); ?>';
             var pays = '<?php echo e(is_object($pays)); ?>';
             const dataURL = signaturePad.toDataURL();
