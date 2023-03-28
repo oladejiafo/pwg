@@ -308,7 +308,7 @@ class HomeController extends Controller
             }
         } else {
             $response = [
-                'status' => false,
+                'status' => true,
                 'url' => $signatureUrl
             ];
         }
@@ -409,7 +409,6 @@ class HomeController extends Controller
 
                 ->orderBy('id', 'desc')
                 ->first();
-
 
             if (isset($due)) {
                 $date = Carbon::parse($due->payment_date);
@@ -1405,7 +1404,6 @@ class HomeController extends Controller
                 return redirect('home');
             }
         } catch (Exception $e) {
-            dd($e);
             return redirect('myapplication')->with($e->getMessage());
         }
     }
@@ -1493,23 +1491,23 @@ class HomeController extends Controller
                     $url =  $applicationImg->getMedia(Application::$media_collection_main_2nd_payment)[0]->getFullUrl();
                 } else {
                     if (in_array($application->first_payment_stage_status, ['PAID', 'PARTIALLY_PAID'])) {
-                        $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_submission_payment, env('MEDIA_DISK'));
-                        $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_2nd_payment, env('MEDIA_DISK'));
-                        $application->submission_payment_txn_mode = 'TRANSFER';
-                        $application->second_payment_txn_mode = 'TRANSFER';
+                        if($paysplit->submission_payment_sub_total > 0){
+                            $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_submission_payment, env('MEDIA_DISK'));
+                            $application->submission_payment_txn_mode = 'TRANSFER';
+                        } else {
+                            $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_2nd_payment, env('MEDIA_DISK'));
+                            $application->second_payment_txn_mode = 'TRANSFER';
+                        }
                         $application->save();
                         $applicationImg = Application::find($applicationId);
                         $url =  $applicationImg->getMedia(Application::$media_collection_main_2nd_payment)[0]->getFullUrl();
                     } else {
                         $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_1st_payment, env('MEDIA_DISK'));
-                        $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_submission_payment, env('MEDIA_DISK'));
-                        $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_2nd_payment, env('MEDIA_DISK'));
                         $application->first_payment_txn_mode = 'TRANSFER';
                         $application->submission_payment_txn_mode = 'TRANSFER';
                         $application->second_payment_txn_mode = 'TRANSFER';
                         $application->save();
                         $applicationImg = Application::find($applicationId);
-                        $url =  $applicationImg->getMedia(Application::$media_collection_main_2nd_payment)[0]->getFullUrl();
                     }
                 }
             } else {
@@ -1536,11 +1534,14 @@ class HomeController extends Controller
                     $url =  $applicationImg->getMedia(Application::$media_collection_main_2nd_payment)[0]->getPath();
                 } else {
                     if (in_array($application->first_payment_stage_status, ['PAID', 'PARTIALLY_PAID'])) {
-                        $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_submission_payment, 'local');
-                        $application->submission_payment_txn_mode = 'TRANSFER';
-                        $application->second_payment_txn_mode = 'TRANSFER';
+                        if($paysplit->submission_payment_sub_total > 0){
+                            $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_submission_payment, env('MEDIA_DISK'));
+                            $application->submission_payment_txn_mode = 'TRANSFER';
+                        } else {
+                            $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_2nd_payment, env('MEDIA_DISK'));
+                            $application->second_payment_txn_mode = 'TRANSFER';
+                        }
                         $application->save();
-                        $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_2nd_payment, 'local');
                         $applicationImg = Application::find($applicationId);
                         $url =  $applicationImg->getMedia(Application::$media_collection_submission_payment)[0]->getPath();
                     } else {
@@ -1551,8 +1552,6 @@ class HomeController extends Controller
                         $application->save();
                         $applicationImg = Application::find($applicationId);
                         $url =  $applicationImg->getMedia(Application::$media_collection_main_1st_payment)[0]->getPath();
-                        $application->addMedia($url)->preservingOriginal()->toMediaCollection(Application::$media_collection_submission_payment, 'local');
-                        $application->addMedia($url)->preservingOriginal()->toMediaCollection(Application::$media_collection_main_2nd_payment, 'local');
                     }
                 }
             }
@@ -2663,6 +2662,8 @@ class HomeController extends Controller
         ], [
             'date' => $request->date
         ]);
+
+        return UserHelper::getDateTime();
     }
 
     public function updateContract($applicationId)

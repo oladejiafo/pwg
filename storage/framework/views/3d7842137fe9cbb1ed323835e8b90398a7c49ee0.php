@@ -204,7 +204,7 @@
                                                         <?php elseif(isset($paym)): ?>
                                                             <?php if(in_array($paid->first_payment_status, ['PENDING', 'PARTIALLY_PAID']) && $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 0 && $paid->first_payment_txn_mode == 'TRANSFER'): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            <?php elseif($paid->first_payment_status == 'PARTIALLY_PAID' && $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 1 && $paid->first_payment_txn_mode == 'BALANCE_TRANSFER'): ?>
+                                                            <?php elseif($paid->first_payment_status == 'PARTIALLY_PAID' && $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 1 && ($paid->first_payment_txn_mode == 'BALANCE_TRANSFER' || $paid->first_payment_txn_mode == 'TRANSFER')): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
 
                                                             <?php else: ?>
@@ -216,7 +216,7 @@
                                                         <?php else: ?>
                                                             <?php if(in_array($paid->first_payment_status, ['PENDING', 'PARTIALLY_PAID']) && $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 0 && $paid->first_payment_txn_mode == 'TRANSFER'): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            <?php elseif($paid->first_payment_status == 'PARTIALLY_PAID' && $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 1 && $paid->first_payment_txn_mode == 'BALANCE_TRANSFER'): ?>
+                                                            <?php elseif($paid->first_payment_status == 'PARTIALLY_PAID' && $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 1 && ($paid->first_payment_txn_mode == 'BALANCE_TRANSFER' || $paid->first_payment_txn_mode == 'TRANSFER')): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
                                                             <?php else: ?> 
                                                                 <form action="<?php echo e(route('payment', $prod->id)); ?>"
@@ -478,7 +478,7 @@
                                                         <?php elseif(isset($paym)): ?>
                                                             <?php if(in_array($paid->first_payment_status, ['PENDING', 'PARTIALLY_PAID']) && $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 0 && $paid->first_payment_txn_mode == 'TRANSFER'): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            <?php elseif($paid->first_payment_status == 'PARTIALLY_PAID' && $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 1 && $paid->first_payment_txn_mode == 'BALANCE_TRANSFER'): ?>
+                                                            <?php elseif($paid->first_payment_status == 'PARTIALLY_PAID' && $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 1 && ($paid->first_payment_txn_mode == 'BALANCE_TRANSFER' || $paid->first_payment_txn_mode == 'TRANSFER')): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
                                                             <?php else: ?>
                                                                 <form action="<?php echo e(route('payment', $prod->id)); ?>"
@@ -489,7 +489,7 @@
                                                         <?php else: ?>
                                                             <?php if(in_array($paid->first_payment_status, ['PENDING', 'PARTIALLY_PAID']) && $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 0 && $paid->first_payment_txn_mode == 'TRANSFER'): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            <?php elseif($paid->first_payment_status == 'PARTIALLY_PAID' && $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 1 && $paid->first_payment_txn_mode == 'BALANCE_TRANSFER'): ?>
+                                                            <?php elseif($paid->first_payment_status == 'PARTIALLY_PAID' && $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 1 && ($paid->first_payment_txn_mode == 'BALANCE_TRANSFER' || $paid->first_payment_txn_mode == 'TRANSFER')): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
                                                             <?php else: ?>
                                                                 <form action="<?php echo e(route('payment', $prod->id)); ?>"
@@ -739,7 +739,7 @@
                                                         <?php elseif(isset($paym)): ?>
                                                             <?php if((in_array($paid->submission_payment_status, ['PENDING', 'PARTIALLY_PAID'])) && $paid->submission_payment_verified_by_cfo == 0 && $paid->is_submission_payment_partially_paid == 0 && $paid->submission_payment_txn_mode == 'TRANSFER'): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            <?php elseif($paid->submission_payment_status == 'PARTIALLY_PAID' && $paid->submission_payment_verified_by_cfo == 0 && $paid->is_submission_payment_partially_paid == 1 && $paid->submission_payment_txn_mode == 'BALANCE_TRANSFER'): ?>
+                                                            <?php elseif($paid->submission_payment_status == 'PARTIALLY_PAID' && $paid->submission_payment_verified_by_cfo == 0 && $paid->is_submission_payment_partially_paid == 1 && ($paid->submission_payment_txn_mode == 'BALANCE_TRANSFER' || $paid->submission_payment_txn_mode == 'TRANSFER')): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
                                                             <?php else: ?>
                                                                 <?php if($paid->application_stage_status != 5): ?>
@@ -760,7 +760,7 @@
                                                         <?php else: ?>
                                                             <?php if((in_array($paid->submission_payment_status, ['PENDING', 'PARTIALLY_PAID'])) && $paid->submission_payment_verified_by_cfo == 0 && $paid->is_submission_payment_partially_paid == 0 && $paid->submission_payment_txn_mode == 'TRANSFER'): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            <?php elseif($paid->submission_payment_status == 'PARTIALLY_PAID' && $paid->submission_payment_verified_by_cfo == 0 && $paid->is_submission_payment_partially_paid == 1 && $paid->submission_payment_txn_mode == 'BALANCE_TRANSFER'): ?>
+                                                            <?php elseif($paid->submission_payment_status == 'PARTIALLY_PAID' && $paid->submission_payment_verified_by_cfo == 0 && $paid->is_submission_payment_partially_paid == 1 && ($paid->submission_payment_txn_mode == 'BALANCE_TRANSFER' || $paid->submission_payment_txn_mode == 'TRANSFER')): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
                                                             <?php elseif($paid->application_stage_status != 5): ?>
                                                                 <button class="btn btn-secondary toastrDefaultError"
@@ -842,7 +842,7 @@
                                                                 <?php if(in_array($paid->first_payment_status, ['PENDING','PARTIALLY_PAID']) && $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 0 && $paid->first_payment_txn_mode == 'TRANSFER'): ?>
                                                                 
                                                                     <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                                <?php elseif($paid->first_payment_status == 'PARTIALLY_PAID' &&  $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 1 && $paid->first_payment_txn_mode == 'BALANCE_TRANSFER'): ?>
+                                                                <?php elseif($paid->first_payment_status == 'PARTIALLY_PAID' &&  $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 1 && ($paid->first_payment_txn_mode == 'BALANCE_TRANSFER' || $paid->first_payment_txn_mode == 'TRANSFER')): ?>
                                                                     <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
                                                                 <?php else: ?>
                                                                     <form action="<?php echo e(route('payment', $prod->id)); ?>"
@@ -853,7 +853,7 @@
                                                         <?php else: ?>
                                                             <?php if(in_array($paid->first_payment_status, ['PENDING','PARTIALLY_PAID']) && $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 0 && $paid->first_payment_txn_mode == 'TRANSFER'): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            <?php elseif($paid->first_payment_status == 'PARTIALLY_PAID' &&  $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 1 && $paid->first_payment_txn_mode == 'BALANCE_TRANSFER'): ?>
+                                                            <?php elseif($paid->first_payment_status == 'PARTIALLY_PAID' &&  $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 1 && ($paid->first_payment_txn_mode == 'BALANCE_TRANSFER' || $paid->first_payment_txn_mode == 'TRANSFER')): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
                                                             <?php else: ?>
                                                                 <form action="<?php echo e(route('payment', $prod->id)); ?>"
@@ -1107,7 +1107,7 @@
                                                         <?php elseif(isset($paym)): ?>
                                                             <?php if(in_array($paid->submission_payment_status,['PENDING', 'PARTIALLY_PAID']) && $paid->submission_payment_verified_by_cfo == 0 && $paid->is_submission_payment_partially_paid == 0 && $paid->submission_payment_txn_mode == 'TRANSFER'): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            <?php elseif($paid->submission_payment_status == 'PARTIALLY_PAID' &&  $paid->submission_payment_verified_by_cfo == 0 && $paid->is_submission_payment_partially_paid == 1 && $paid->submission_payment_txn_mode == 'BALANCE_TRANSFER'): ?>
+                                                            <?php elseif($paid->submission_payment_status == 'PARTIALLY_PAID' &&  $paid->submission_payment_verified_by_cfo == 0 && $paid->is_submission_payment_partially_paid == 1 && ($paid->submission_payment_txn_mode == 'BALANCE_TRANSFER' || $paid->submission_payment_txn_mode == 'TRANSFER')): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
                                                             <?php else: ?>
                                                                 <?php if($paid->application_stage_status != 5): ?>
@@ -1129,7 +1129,7 @@
                                                         <?php else: ?>
                                                             <?php if(in_array($paid->submission_payment_status,['PENDING', 'PARTIALLY_PAID']) && $paid->submission_payment_verified_by_cfo == 0 && $paid->is_submission_payment_partially_paid == 0 && $paid->submission_payment_txn_mode == 'TRANSFER'): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            <?php elseif($paid->submission_payment_status == 'PARTIALLY_PAID' &&  $paid->submission_payment_verified_by_cfo == 0 && $paid->is_submission_payment_partially_paid == 1 && $paid->submission_payment_txn_mode == 'BALANCE_TRANSFER'): ?>
+                                                            <?php elseif($paid->submission_payment_status == 'PARTIALLY_PAID' &&  $paid->submission_payment_verified_by_cfo == 0 && $paid->is_submission_payment_partially_paid == 1 && ($paid->submission_payment_txn_mode == 'BALANCE_TRANSFER' || $paid->submission_payment_txn_mode == 'TRANSFER')): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
                                                             <?php elseif($paid->application_stage_status != 5): ?>
                                                                 <button class="btn btn-secondary toastrDefaultError"
@@ -1194,7 +1194,7 @@
                                                         <?php elseif(isset($paym)): ?>
                                                             <?php if(in_array($paid->second_payment_status, ['PENDING', 'PARTIALLY_PAID']) && $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 0 && $paid->second_payment_txn_mode == 'TRANSFER'): ?>     
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            <?php elseif($paid->second_payment_status == 'PARTIALLY_PAID' &&  $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 1 && $paid->second_payment_txn_mode == 'BALANCE_TRANSFER'): ?>
+                                                            <?php elseif($paid->second_payment_status == 'PARTIALLY_PAID' &&  $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 1 && ($paid->second_payment_txn_mode == 'BALANCE_TRANSFER' || $paid->second_payment_txn_mode == 'TRANSFER')): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
                                                             <?php else: ?>
                                                                 <?php if($paid->application_stage_status != 5): ?>
@@ -1215,7 +1215,7 @@
                                                         <?php else: ?>
                                                             <?php if(in_array($paid->second_payment_status, ['PENDING', 'PARTIALLY_PAID']) && $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 0 && $paid->second_payment_txn_mode == 'TRANSFER'): ?>     
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            <?php elseif($paid->second_payment_status == 'PARTIALLY_PAID' &&  $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 1 && $paid->second_payment_txn_mode == 'BALANCE_TRANSFER'): ?>
+                                                            <?php elseif($paid->second_payment_status == 'PARTIALLY_PAID' &&  $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 1 && ($paid->second_payment_txn_mode == 'BALANCE_TRANSFER' || $paid->second_payment_txn_mode == 'TRANSFER')): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
                                                             <?php elseif($paid->application_stage_status != 5): ?>
                                                                 <button class="btn btn-secondary toastrDefaultError"
@@ -1300,7 +1300,7 @@
                                                                 
        
                                                                     <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                                <?php elseif($paid->first_payment_status == 'PARTIALLY_PAID' &&  $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 1 && $paid->first_payment_txn_mode == 'BALANCE_TRANSFER'): ?>
+                                                                <?php elseif($paid->first_payment_status == 'PARTIALLY_PAID' &&  $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 1 && ($paid->first_payment_txn_mode == 'BALANCE_TRANSFER' || $paid->first_payment_txn_mode == 'TRANSFER')): ?>
                                                                     <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
                                                                 <?php else: ?> 
                                                                 <form action="<?php echo e(route('payment', $prod->id)); ?>"
@@ -1311,7 +1311,7 @@
                                                             <?php else: ?>
                                                                 <?php if(in_array($paid->first_payment_status, ['PENDING','PARTIALLY_PAID']) &&  $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 0 && $paid->first_payment_txn_mode == 'TRANSFER'): ?>
                                                                     <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                                <?php elseif($paid->first_payment_status == 'PARTIALLY_PAID' &&  $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 1 && $paid->first_payment_txn_mode == 'BALANCE_TRANSFER'): ?>
+                                                                <?php elseif($paid->first_payment_status == 'PARTIALLY_PAID' &&  $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 1 && ($paid->first_payment_txn_mode == 'BALANCE_TRANSFER' || $paid->first_payment_txn_mode =="TRANSFER")): ?>
                                                                     <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
                                                                 <?php else: ?>
                                                                     <form action="<?php echo e(route('payment', $prod->id)); ?>"
@@ -1582,7 +1582,7 @@
                                                             <?php elseif(isset($paym)): ?>
                                                                 <?php if(in_array($paid->second_payment_status,['PENDING', 'PARTIALLY_PAID']) && $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 0 && $paid->second_payment_txn_mode == 'TRANSFER'): ?>
                                                                     <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                                <?php elseif($paid->secondn_payment_status == 'PARTIALLY_PAID' &&  $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 1 && $paid->second_payment_txn_mode == 'BALANCE_TRANSFER'): ?>
+                                                                <?php elseif($paid->secondn_payment_status == 'PARTIALLY_PAID' &&  $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 1 && ($paid->second_payment_txn_mode == 'BALANCE_TRANSFER' || $paid->second_payment_txn_mode == 'TRANSFER')): ?>
                                                                     <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
                                                                 <?php else: ?>
                                                                     <?php if($paid->application_stage_status != 5): ?>
@@ -1604,7 +1604,7 @@
                                                             <?php else: ?>
                                                                 <?php if(in_array($paid->second_payment_status,['PENDING', 'PARTIALLY_PAID']) && $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 0 && $paid->second_payment_txn_mode == 'TRANSFER'): ?>
                                                                     <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                                <?php elseif($paid->second_payment_status == 'PARTIALLY_PAID' &&  $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 1 && $paid->second_payment_txn_mode == 'BALANCE_TRANSFER'): ?>
+                                                                <?php elseif($paid->second_payment_status == 'PARTIALLY_PAID' &&  $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 1 && ($paid->second_payment_txn_mode == 'BALANCE_TRANSFER' || $paid->second_payment_txn_mode == 'TRANSFER')): ?>
                                                                     <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
                                                                 <?php elseif($paid->application_stage_status != 5): ?>
                                                                     <button class="btn btn-secondary toastrDefaultError"
@@ -1726,7 +1726,7 @@
                                                             
    
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            <?php elseif($paid->first_payment_status == 'PARTIALLY_PAID' &&  $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 1 && $paid->first_payment_txn_mode == 'BALANCE_TRANSFER'): ?>
+                                                            <?php elseif($paid->first_payment_status == 'PARTIALLY_PAID' &&  $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 1 && ($paid->first_payment_txn_mode == 'BALANCE_TRANSFER' || $paid->first_payment_txn_mode == 'TRANSFER')): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
                                                             <?php else: ?> 
                                                             <form action="<?php echo e(route('payment', $prod->id)); ?>"
@@ -1737,7 +1737,7 @@
                                                         <?php else: ?>
                                                             <?php if(in_array($paid->first_payment_status, ['PENDING','PARTIALLY_PAID']) &&  $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 0 && $paid->first_payment_txn_mode == 'TRANSFER'): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            <?php elseif($paid->first_payment_status == 'PARTIALLY_PAID' &&  $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 1 && $paid->first_payment_txn_mode == 'BALANCE_TRANSFER'): ?>
+                                                            <?php elseif($paid->first_payment_status == 'PARTIALLY_PAID' &&  $paid->first_payment_verified_by_cfo == 0 && $paid->is_first_payment_partially_paid == 1 && ($paid->first_payment_txn_mode == 'BALANCE_TRANSFER' || $paid->first_payment_txn_mode == 'TRANSFER')): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
                                                             <?php else: ?>
                                                                 <form action="<?php echo e(route('payment', $prod->id)); ?>"
@@ -1862,7 +1862,7 @@
                                                         <?php elseif(isset($paym)): ?>
                                                             <?php if(in_array($paid->submission_payment_status,['PENDING', 'PARTIALLY_PAID']) && $paid->submission_payment_verified_by_cfo == 0 && $paid->is_submission_payment_partially_paid == 0 && $paid->submission_payment_txn_mode == 'TRANSFER'): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            <?php elseif($paid->submission_payment_status == 'PARTIALLY_PAID' &&  $paid->submission_payment_verified_by_cfo == 0 && $paid->is_submission_payment_partially_paid == 1 && $paid->submission_payment_txn_mode == 'BALANCE_TRANSFER'): ?>
+                                                            <?php elseif($paid->submission_payment_status == 'PARTIALLY_PAID' &&  $paid->submission_payment_verified_by_cfo == 0 && $paid->is_submission_payment_partially_paid == 1 && ($paid->submission_payment_txn_mode == 'BALANCE_TRANSFER' || $paid->submission_payment_txn_mode == 'TRANSFER')): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
                                                             <?php else: ?> 
                                                                 <?php if($paid->application_stage_status != 5): ?>
@@ -1883,7 +1883,7 @@
                                                         <?php else: ?>
                                                             <?php if(in_array($paid->submission_payment_status,['PENDING', 'PARTIALLY_PAID']) && $paid->submission_payment_verified_by_cfo == 0 && $paid->is_submission_payment_partially_paid == 0 && $paid->submission_payment_txn_mode == 'TRANSFER'): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            <?php elseif($paid->submission_payment_status == 'PARTIALLY_PAID' &&  $paid->submission_payment_verified_by_cfo == 0 && $paid->is_submission_payment_partially_paid == 1 && $paid->submission_payment_txn_mode == 'BALANCE_TRANSFER'): ?>
+                                                            <?php elseif($paid->submission_payment_status == 'PARTIALLY_PAID' &&  $paid->submission_payment_verified_by_cfo == 0 && $paid->is_submission_payment_partially_paid == 1 && ($paid->submission_payment_txn_mode == 'BALANCE_TRANSFER' || $paid->submission_payment_txn_mode == 'TRANSFER')): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
                                                             <?php elseif($paid->application_stage_status != 5): ?>
                                                                 <button class="btn btn-secondary toastrDefaultError"
@@ -1991,7 +1991,7 @@
                                                         <?php elseif(isset($paym)): ?>
                                                             <?php if(in_array($paid->second_payment_status,['PENDING', 'PARTIALLY_PAID']) && $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 0 && $paid->second_payment_txn_mode == 'TRANSFER'): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            <?php elseif($paid->second_payment_status == 'PARTIALLY_PAID' &&  $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 1 && $paid->second_payment_txn_mode == 'BALANCE_TRANSFER'): ?>
+                                                            <?php elseif($paid->second_payment_status == 'PARTIALLY_PAID' &&  $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 1 && ($paid->second_payment_txn_mode == 'BALANCE_TRANSFER' || $paid->second_payment_txn_mode == 'TRANSFER')): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
                                                             <?php else: ?>    
                                                                 <?php if($paid->application_stage_status != 5): ?>
@@ -2012,7 +2012,7 @@
                                                         <?php else: ?>
                                                             <?php if(in_array($paid->second_payment_status,['PENDING', 'PARTIALLY_PAID']) && $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 0 && $paid->second_payment_txn_mode == 'TRANSFER'): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            <?php elseif($paid->second_payment_status == 'PARTIALLY_PAID' &&  $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 1 && $paid->second_payment_txn_mode == 'BALANCE_TRANSFER'): ?>
+                                                            <?php elseif($paid->second_payment_status == 'PARTIALLY_PAID' &&  $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 1 && ($paid->second_payment_txn_mode == 'BALANCE_TRANSFER' || $paid->second_payment_txn_mode == 'TRANSFER')): ?>
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
                                                             <?php elseif($paid->application_stage_status != 5): ?>
                                                                 <button class="btn btn-secondary toastrDefaultError"

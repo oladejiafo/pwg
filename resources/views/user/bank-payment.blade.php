@@ -636,7 +636,8 @@ if (isset($pays) && (($pays->first_payment_remaining > 0 && $pays->first_payment
                         response: 1
                     },
                     success: function(data) {
-                        console.log(data);
+                        console.log(data);pwg
+                        
                         if (data.status) {
                             toastr.success("Signature updated successfully!");
 
