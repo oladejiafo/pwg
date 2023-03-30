@@ -88,7 +88,7 @@ class pdfBlock
             if ($pageNo == 1 && ($product == Constant::poland || $product == Constant::germany)) {
                 //Date
                 $pdf->SetXY(35, 40);
-                $pdf->Write(2, '08/03/2023');//date('d/m/Y'));
+                $pdf->Write(2, date('d/m/Y'));
 
                 //Place
                 $pdf->SetXY(35, 54);
@@ -728,11 +728,11 @@ class pdfBlock
         } elseif ($applicant->first_payment_status == 'PAID' || $applicant->first_payment_status == 'PARTIALLY_PAID') {
             $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_first_payment_contract.pdf';
             $theString = $pdf->Output('S');
-            // if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
-            //     $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Application::$media_collection_main_1st_signature, env('MEDIA_DISK'));
-            // } else {
+            if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Application::$media_collection_main_1st_signature, env('MEDIA_DISK'));
+            } else {
                 $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Application::$media_collection_main_1st_signature, 'local');
-            // }e
+            }
         } else {
             $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_first_payment_contract.pdf';
             $theString = $pdf->Output('S');
