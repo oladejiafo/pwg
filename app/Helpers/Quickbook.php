@@ -326,8 +326,8 @@ class Quickbook
             }
             $coupon = DB::table('coupons')
                 ->where('code','=',$apply->coupon_code)
-                ->where('active_from', '<=', date('Y-m-d'))
-                ->where('active_until', '>=', date('Y-m-d'))
+                ->where('active_from', '<=', now())
+                ->where('active_until', '>=', now())
                 ->where('active', '=', 1)
                 ->first();
             if ($paymentDetails->payment_type ==  'Full-Outstanding Payment') {
@@ -600,12 +600,12 @@ class Quickbook
                                     "DetailType" => "DiscountLineDetail",
                                     "DiscountLineDetail"  => [
                                         "PercentBased" => true,
-                                        "DiscountPercent" => ((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0)),
+                                        "DiscountPercent" => ((Session::get('discountapplied') == 1) ? (rtrim($coupon->amount, '%')) : (($destination->full_payment_discount) ?? 0)),
                                     ]
                                 ]
                             ],
                             "ApplyTaxAfterDiscount" => true,
-                            "Deposit" => ($apply->total_paid > (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) - (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) * ((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat)) ? (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) - (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) * ((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat) : $apply->total_paid, //$apply->total_paid,
+                            "Deposit" => ($apply->total_paid > (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) - (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) * ((Session::get('discountapplied') == 1) ? (rtrim($coupon->amount, '%')) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat)) ? (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) - (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) * ((Session::get('discountapplied') == 1) ? (rtrim($coupon->amount, '%')) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat) : $apply->total_paid, //$apply->total_paid,
                             "AutoDocNumber" => true,
 
                             "TxnTaxDetail" => [
@@ -617,7 +617,7 @@ class Quickbook
                             ],
                             "PaymentRefNum" => $paymentDetails->bank_reference_no,
                             "CustomerMemo" => [
-                                "value" => ($apply->total_paid > (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) - (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) * ((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat)) ? $paymentDetails->bank_reference_no . 'Paid extra ' . ($apply->total_paid - (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) - (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) * ((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat)) : $paymentDetails->bank_reference_no,
+                                "value" => ($apply->total_paid > (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) - (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) * ((Session::get('discountapplied') == 1) ? (rtrim($coupon->amount, '%')) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat)) ? $paymentDetails->bank_reference_no . 'Paid extra ' . ($apply->total_paid - (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) - (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) * ((Session::get('discountapplied') == 1) ? (rtrim($coupon->amount, '%')) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat)) : $paymentDetails->bank_reference_no,
                             ],
                             "PrivateNote" => $paymentDetails->bank_reference_no,
                             "CustomerRef" => [
@@ -675,13 +675,13 @@ class Quickbook
                                     "DetailType" => "DiscountLineDetail",
                                     "DiscountLineDetail"  => [
                                         "PercentBased" => true,
-                                        "DiscountPercent" => ((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0)),
-                                        // "DiscountPercent" => ($destination->full_payment_discount) ? ((Session::get('discountapplied') == 1) ? ($coupon->amount + $destination->full_payment_discount) : $destination->full_payment_discount) : 0,
+                                        "DiscountPercent" => ((Session::get('discountapplied') == 1) ? (rtrim($coupon->amount, '%')) : (($destination->full_payment_discount) ?? 0)),
+                                        // "DiscountPercent" => ($destination->full_payment_discount) ? ((Session::get('discountapplied') == 1) ? ((rtrim($coupon->amount, '%')) + $destination->full_payment_discount) : $destination->full_payment_discount) : 0,
                                     ]
                                 ]
                             ],
                             "ApplyTaxAfterDiscount" => true,
-                            "Deposit" => ($apply->total_paid > (($apply->planFirstPrice + $apply->planSecondPrice) - (($apply->planFirstPrice + $apply->planSecondPrice) * ((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat)) ? (($apply->planFirstPrice + $apply->planSecondPrice) - (($apply->planFirstPrice + $apply->planSecondPrice) * ((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat) : $apply->total_paid, //$apply->total_paid,
+                            "Deposit" => ($apply->total_paid > (($apply->planFirstPrice + $apply->planSecondPrice) - (($apply->planFirstPrice + $apply->planSecondPrice) * ((Session::get('discountapplied') == 1) ? (rtrim($coupon->amount, '%')) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat)) ? (($apply->planFirstPrice + $apply->planSecondPrice) - (($apply->planFirstPrice + $apply->planSecondPrice) * ((Session::get('discountapplied') == 1) ? (rtrim($coupon->amount, '%')) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat) : $apply->total_paid, //$apply->total_paid,
                             "AutoDocNumber" => true,
 
                             "TxnTaxDetail" => [
@@ -693,7 +693,7 @@ class Quickbook
                             ],
                             "PaymentRefNum" => $paymentDetails->bank_reference_no,
                             "CustomerMemo" => [
-                                "value" => ($apply->total_paid > (($apply->planFirstPrice + $apply->planSecondPrice) - (($apply->planFirstPrice + $apply->planSecondPrice) * ((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat)) ? $paymentDetails->bank_reference_no . ' Paid extra' . ($apply->total_paid - (($apply->planFirstPrice + $apply->planSecondPrice) - (($apply->planFirstPrice + $apply->planSecondPrice) * ((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat)) : $paymentDetails->bank_reference_no,
+                                "value" => ($apply->total_paid > (($apply->planFirstPrice + $apply->planSecondPrice) - (($apply->planFirstPrice + $apply->planSecondPrice) * ((Session::get('discountapplied') == 1) ? (rtrim($coupon->amount, '%')) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat)) ? $paymentDetails->bank_reference_no . ' Paid extra' . ($apply->total_paid - (($apply->planFirstPrice + $apply->planSecondPrice) - (($apply->planFirstPrice + $apply->planSecondPrice) * ((Session::get('discountapplied') == 1) ? (rtrim($coupon->amount, '%')) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat)) : $paymentDetails->bank_reference_no,
                             ],
                             "PrivateNote" => $paymentDetails->bank_reference_no,
                             "CustomerRef" => [
@@ -753,12 +753,12 @@ class Quickbook
                                     "DetailType" => "DiscountLineDetail",
                                     "DiscountLineDetail"  => [
                                         "PercentBased" => true,
-                                        "DiscountPercent" => ((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0)),
+                                        "DiscountPercent" => ((Session::get('discountapplied') == 1) ? (rtrim($coupon->amount, '%')) : (($destination->full_payment_discount) ?? 0)),
                                     ]
                                 ]
                             ],
                             "ApplyTaxAfterDiscount" => true,
-                            "Deposit" => ($apply->total_paid > (($apply->planFirstPrice + $apply->planThirdPrice) - (($apply->planFirstPrice + $apply->planThirdPrice) * ((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat)) ? (($apply->planFirstPrice + $apply->planThirdPrice) - (($apply->planFirstPrice + $apply->planThirdPrice) * ((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat) : $apply->total_paid, //$apply->total_paid,
+                            "Deposit" => ($apply->total_paid > (($apply->planFirstPrice + $apply->planThirdPrice) - (($apply->planFirstPrice + $apply->planThirdPrice) * ((Session::get('discountapplied') == 1) ? (rtrim($coupon->amount, '%')) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat)) ? (($apply->planFirstPrice + $apply->planThirdPrice) - (($apply->planFirstPrice + $apply->planThirdPrice) * ((Session::get('discountapplied') == 1) ? (rtrim($coupon->amount, '%')) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat) : $apply->total_paid, //$apply->total_paid,
                             "AutoDocNumber" => true,
 
                             "TxnTaxDetail" => [
@@ -770,7 +770,7 @@ class Quickbook
                             ],
                             "PaymentRefNum" => $paymentDetails->bank_reference_no,
                             "CustomerMemo" => [
-                                "value" => ($apply->total_paid > (($apply->planFirstPrice + $apply->planThirdPrice) - (($apply->planFirstPrice + $apply->planThirdPrice) * ((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat)) ? $paymentDetails->bank_reference_no . 'Paid extra ' . ($apply->total_paid - (($apply->planFirstPrice + $apply->planThirdPrice) - (($apply->planFirstPrice + $apply->planThirdPrice) * ((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat)) : $paymentDetails->bank_reference_no,
+                                "value" => ($apply->total_paid > (($apply->planFirstPrice + $apply->planThirdPrice) - (($apply->planFirstPrice + $apply->planThirdPrice) * ((Session::get('discountapplied') == 1) ? (rtrim($coupon->amount, '%')) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat)) ? $paymentDetails->bank_reference_no . 'Paid extra ' . ($apply->total_paid - (($apply->planFirstPrice + $apply->planThirdPrice) - (($apply->planFirstPrice + $apply->planThirdPrice) * ((Session::get('discountapplied') == 1) ? (rtrim($coupon->amount, '%')) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat)) : $paymentDetails->bank_reference_no,
                             ],
                             "PrivateNote" => $paymentDetails->bank_reference_no,
                             "CustomerRef" => [
@@ -844,12 +844,12 @@ class Quickbook
                         "DetailType" => "DiscountLineDetail",
                         "DiscountLineDetail"  => [
                             "PercentBased" => true,
-                            "DiscountPercent" => (isset($coupon) ? $coupon->amount : 0)
+                            "DiscountPercent" => (isset($coupon) ? rtrim($coupon->amount, '%')  : 0)
                         ]
 
                     ]
                 ],
-                "Deposit" => ($coupon != null) ?  (($paidAmount > (($unitPrice - ((($unitPrice * $coupon->amount) / 100))) + $tax)) ? (($unitPrice - ((($unitPrice * $coupon->amount) / 100))) + $tax) : $paidAmount) : (($paidAmount > ($unitPrice + $tax)) ? $unitPrice + $tax : $paidAmount), //$paidAmount, 
+                "Deposit" => ($coupon != null) ?  (($paidAmount > (($unitPrice - ((($unitPrice * rtrim($coupon->amount, '%')) / 100))) + $tax)) ? (($unitPrice - ((($unitPrice * rtrim($coupon->amount, '%')) / 100))) + $tax) : $paidAmount) : (($paidAmount > ($unitPrice + $tax)) ? $unitPrice + $tax : $paidAmount), //$paidAmount, 
                 "AutoDocNumber" => true,
 
                 // no tax due to free zone
@@ -867,7 +867,7 @@ class Quickbook
                     "value" => ($customer->Id) ??  $customer[0]->Id
                 ],
                 "CustomerMemo" => [
-                    "value" => ($coupon != null) ? (($paidAmount > (($unitPrice - ((($unitPrice * $coupon->amount) / 100))) + $tax)) ?  $paymentDetails->bank_reference_no . "<br> Paid additional amount" . ($paidAmount - (($unitPrice - ((($unitPrice * $coupon->amount) / 100))) + $tax)) : $paymentDetails->bank_reference_no) : (($paidAmount > ($unitPrice + $tax)) ? $paymentDetails->bank_reference_no . "<br> Paid additional amount" . ($paidAmount - ($unitPrice + $tax)) : $paymentDetails->bank_reference_no),
+                    "value" => ($coupon != null) ? (($paidAmount > (($unitPrice - ((($unitPrice * rtrim($coupon->amount, '%')) / 100))) + $tax)) ?  $paymentDetails->bank_reference_no . "<br> Paid additional amount" . ($paidAmount - (($unitPrice - ((($unitPrice * rtrim($coupon->amount, '%')) / 100))) + $tax)) : $paymentDetails->bank_reference_no) : (($paidAmount > ($unitPrice + $tax)) ? $paymentDetails->bank_reference_no . "<br> Paid additional amount" . ($paidAmount - ($unitPrice + $tax)) : $paymentDetails->bank_reference_no),
                 ],
                 "PrivateNote" => $paymentDetails->bank_reference_no,
                 "BillEmail" => [
@@ -1291,8 +1291,8 @@ class Quickbook
             }
             $coupon = DB::table('coupons')
                 ->where('code','=',$apply->coupon_code)
-                ->where('active_from', '<=', date('Y-m-d'))
-                ->where('active_until', '>=', date('Y-m-d'))
+                ->where('active_from', '<=', now())
+                ->where('active_until', '>=', now())
                 ->where('active', '=', 1)
                 ->first();
             if ($paymentDetails->payment_type ==  'Full-Outstanding Payment') {
@@ -1516,12 +1516,12 @@ class Quickbook
                                     "DetailType" => "DiscountLineDetail",
                                     "DiscountLineDetail"  => [
                                         "PercentBased" => true,
-                                        "DiscountPercent" => (($apply->coupon_code) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0)),
+                                        "DiscountPercent" => (($apply->coupon_code) ? (rtrim($coupon->amount, '%')) : (($destination->full_payment_discount) ?? 0)),
                                     ]
                                 ]
                             ],
                             "ApplyTaxAfterDiscount" => true,
-                            "Deposit" => ($apply->total_paid > (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) - (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) * ((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat)) ? (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) - (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) * ((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat) : $apply->total_paid, //$apply->total_paid,
+                            "Deposit" => ($apply->total_paid > (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) - (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) * ((Session::get('discountapplied') == 1) ? (rtrim($coupon->amount, '%')) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat)) ? (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) - (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) * ((Session::get('discountapplied') == 1) ? (rtrim($coupon->amount, '%')) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat) : $apply->total_paid, //$apply->total_paid,
                             "AutoDocNumber" => true,
 
                             "TxnTaxDetail" => [
@@ -1533,7 +1533,7 @@ class Quickbook
                             ],
                             "PaymentRefNum" => $paymentDetails->bank_reference_no,
                             "CustomerMemo" => [
-                                "value" => ($apply->total_paid > (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) - (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) * ((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat)) ? $paymentDetails->bank_reference_no . 'Paid extra ' . ($apply->total_paid - (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) - (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) * ((Session::get('discountapplied') == 1) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat)) : $paymentDetails->bank_reference_no,
+                                "value" => ($apply->total_paid > (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) - (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) * ((Session::get('discountapplied') == 1) ? (rtrim($coupon->amount, '%')) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat)) ? $paymentDetails->bank_reference_no . 'Paid extra ' . ($apply->total_paid - (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) - (($apply->planFirstPrice + $apply->planSecondPrice + $apply->planThirdPrice) * ((Session::get('discountapplied') == 1) ? (rtrim($coupon->amount, '%')) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat)) : $paymentDetails->bank_reference_no,
                             ],
                             "TxnDate" => $paymentDetails->payment_date,
                             "DueDate" => $paymentDetails->payment_date,
@@ -1593,12 +1593,12 @@ class Quickbook
                                     "DetailType" => "DiscountLineDetail",
                                     "DiscountLineDetail"  => [
                                         "PercentBased" => true,
-                                        "DiscountPercent" => (($apply->coupon_code) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0)),
+                                        "DiscountPercent" => (($apply->coupon_code) ? (rtrim($coupon->amount, '%')) : (($destination->full_payment_discount) ?? 0)),
                                     ]
                                 ]
                             ],
                             "ApplyTaxAfterDiscount" => true,
-                            "Deposit" => ($apply->total_paid > (($apply->planFirstPrice + $apply->planSecondPrice) - (($apply->planFirstPrice + $apply->planSecondPrice) * (($apply->coupon_code) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat)) ? (($apply->planFirstPrice + $apply->planSecondPrice) - (($apply->planFirstPrice + $apply->planSecondPrice) * (($apply->coupon_code) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat) : $apply->total_paid, //$apply->total_paid,
+                            "Deposit" => ($apply->total_paid > (($apply->planFirstPrice + $apply->planSecondPrice) - (($apply->planFirstPrice + $apply->planSecondPrice) * (($apply->coupon_code) ? (rtrim($coupon->amount, '%')) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat)) ? (($apply->planFirstPrice + $apply->planSecondPrice) - (($apply->planFirstPrice + $apply->planSecondPrice) * (($apply->coupon_code) ? (rtrim($coupon->amount, '%')) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat) : $apply->total_paid, //$apply->total_paid,
                             "AutoDocNumber" => true,
 
                             "TxnTaxDetail" => [
@@ -1610,7 +1610,7 @@ class Quickbook
                             ],
                             "PaymentRefNum" => $paymentDetails->bank_reference_no,
                             "CustomerMemo" => [
-                                "value" => ($apply->total_paid > (($apply->planFirstPrice + $apply->planSecondPrice) - (($apply->planFirstPrice + $apply->planSecondPrice) * (($apply->coupon_code) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat)) ? $paymentDetails->bank_reference_no . ' Paid extra' . ($apply->total_paid - (($apply->planFirstPrice + $apply->planSecondPrice) - (($apply->planFirstPrice + $apply->planSecondPrice) * (($apply->coupon_code) ? ($coupon->amount) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat)) : $paymentDetails->bank_reference_no,
+                                "value" => ($apply->total_paid > (($apply->planFirstPrice + $apply->planSecondPrice) - (($apply->planFirstPrice + $apply->planSecondPrice) * (($apply->coupon_code) ? (rtrim($coupon->amount, '%')) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat)) ? $paymentDetails->bank_reference_no . ' Paid extra' . ($apply->total_paid - (($apply->planFirstPrice + $apply->planSecondPrice) - (($apply->planFirstPrice + $apply->planSecondPrice) * (($apply->coupon_code) ? (rtrim($coupon->amount, '%')) : (($destination->full_payment_discount) ?? 0)) / 100) + $apply->total_vat)) : $paymentDetails->bank_reference_no,
                             ],
                             "TxnDate" => $paymentDetails->payment_date,
                             "DueDate" => $paymentDetails->payment_date,
@@ -1685,12 +1685,12 @@ class Quickbook
                         "DetailType" => "DiscountLineDetail",
                         "DiscountLineDetail"  => [
                             "PercentBased" => true,
-                            "DiscountPercent" => (isset($coupon) ? $coupon->amount : 0)
+                            "DiscountPercent" => (isset($coupon) ? rtrim($coupon->amount, '%') : 0)
                         ]
 
                     ]
                 ],
-                "Deposit" => ($coupon != null) ?  (($paidAmount > (($unitPrice - ((($unitPrice * $coupon->amount) / 100))) + $tax)) ? (($unitPrice - ((($unitPrice * $coupon->amount) / 100))) + $tax) : $paidAmount) : (($paidAmount > ($unitPrice + $tax)) ? $unitPrice + $tax : $paidAmount), //$paidAmount, 
+                "Deposit" => ($coupon != null) ?  (($paidAmount > (($unitPrice - ((($unitPrice * rtrim($coupon->amount, '%')) / 100))) + $tax)) ? (($unitPrice - ((($unitPrice * rtrim($coupon->amount, '%')) / 100))) + $tax) : $paidAmount) : (($paidAmount > ($unitPrice + $tax)) ? $unitPrice + $tax : $paidAmount), //$paidAmount, 
                 "AutoDocNumber" => true,
 
                 // no tax due to free zone
@@ -1708,7 +1708,7 @@ class Quickbook
                     "value" => ($customer->Id) ??  $customer[0]->Id
                 ],
                 "CustomerMemo" => [
-                    "value" => ($coupon != null) ? (($paidAmount > (($unitPrice - ((($unitPrice * $coupon->amount) / 100))) + $tax)) ?  $paymentDetails->bank_reference_no . "<br> Paid additional amount" . ($paidAmount - (($unitPrice - ((($unitPrice * $coupon->amount) / 100))) + $tax)) : $paymentDetails->bank_reference_no) : (($paidAmount > ($unitPrice + $tax)) ? $paymentDetails->bank_reference_no . "<br> Paid additional amount" . ($paidAmount - ($unitPrice + $tax)) : $paymentDetails->bank_reference_no),
+                    "value" => ($coupon != null) ? (($paidAmount > (($unitPrice - ((($unitPrice * rtrim($coupon->amount, '%')) / 100))) + $tax)) ?  $paymentDetails->bank_reference_no . "<br> Paid additional amount" . ($paidAmount - (($unitPrice - ((($unitPrice * rtrim($coupon->amount, '%')) / 100))) + $tax)) : $paymentDetails->bank_reference_no) : (($paidAmount > ($unitPrice + $tax)) ? $paymentDetails->bank_reference_no . "<br> Paid additional amount" . ($paidAmount - ($unitPrice + $tax)) : $paymentDetails->bank_reference_no),
                 ],
                 "PrivateNote" => $paymentDetails->bank_reference_no,
                 "TxnDate" => $paymentDetails->payment_date,

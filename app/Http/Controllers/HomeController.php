@@ -909,8 +909,8 @@ class HomeController extends Controller
                 $coupon = DB::table('coupons')
                     ->where('location', '=', ($apply->embassy_country) ?? $request->embassy_appearance)
                     // ->where('employee_id', '=', $id)
-                    ->where('active_from', '<=', date('Y-m-d'))
-                    ->where('active_until', '>=', date('Y-m-d'))
+                    ->where('active_from', '<=', now())
+                    ->where('active_until', '>=',now())
                     ->where('active', '=', 1)
                     ->first();
                 /* Newly added to this point*/
@@ -976,7 +976,7 @@ class HomeController extends Controller
                 if (Session::get('discountapplied') == 1) {
                     $couponCodeData = DB::table('coupons')->where('code', $request->discountCode)->get()->first();
                     if ($request->whichpayment == 'FIRST') {
-                        $first_payment_discount = ($pdet->first_payment_sub_total * $couponCodeData->amount) / 100;
+                        $first_payment_discount = ($pdet->first_payment_sub_total * rtrim($couponCodeData->amount, '%')) / 100;
                         $topaynow_temp_first = ($pdet->first_payment_sub_total  - $first_payment_discount);
                         $first_payment_vat = ($topaynow_temp_first *  5) / 100;
                         $paidAmount = $topaynow_temp_first + $first_payment_vat;
@@ -1157,11 +1157,11 @@ class HomeController extends Controller
 
                                 if ($thisDiscount > 0) {
                                     // $firstDisc = ($request->third_p * $destination->full_payment_discount) / 100;
-                                    $firstDisc = $request->first_p * (Session::get('discountapplied') == 1) ?  $coupon->amount / 100 : $destination->full_payment_discount / 100;
+                                    $firstDisc = $request->first_p * (Session::get('discountapplied') == 1) ?  rtrim($coupon->amount, '%') / 100 : $destination->full_payment_discount / 100;
 
                                     // $firstVat = (($request->first_p - $firstDisc) * 5) / 100;
                                 } else {
-                                    $firstDisc = ($request->first_p * ((Session::get('discountapplied') == 1) ? $coupon->amount : 0)) / 100;
+                                    $firstDisc = ($request->first_p * ((Session::get('discountapplied') == 1) ? rtrim($coupon->amount, '%') : 0)) / 100;
                                     // $firstVat = (($request->first_p )* 5) / 100;
                                 }
 
@@ -1179,10 +1179,10 @@ class HomeController extends Controller
                                 //Second Split
                                 if ($thisDiscount > 0) {
                                     // $secondDisc = ($request->second_p * $destination->full_payment_discount) / 100;
-                                    $secondDisc = ($request->second_p * ((Session::get('discountapplied') == 1) ? ($coupon->amount) : $destination->full_payment_discount)) / 100;
+                                    $secondDisc = ($request->second_p * ((Session::get('discountapplied') == 1) ? (rtrim($coupon->amount, '%')) : $destination->full_payment_discount)) / 100;
                                     // $secondVat = (($request->second_p - $secondDisc) * 5) / 100;
                                 } else {
-                                    $secondDisc = ($request->second_p * ((Session::get('discountapplied') == 1) ? $coupon->amount : 0)) / 100;
+                                    $secondDisc = ($request->second_p * ((Session::get('discountapplied') == 1) ? rtrim($coupon->amount, '%') : 0)) / 100;
                                     // $secondVat = ($request->second_p * 5) / 100;
                                 }
                                 if (isset($thisVat) && $thisVat > 0) {
@@ -1201,9 +1201,9 @@ class HomeController extends Controller
                                 //Third Split
                                 if ($thisDiscount > 0) {
                                     // $thirdDisc = ($request->third_p * $destination->full_payment_discount) / 100;
-                                    $thirdDisc = ($request->third_p * ((Session::get('discountapplied') == 1) ? ($coupon->amount) : $destination->full_payment_discount)) / 100;
+                                    $thirdDisc = ($request->third_p * ((Session::get('discountapplied') == 1) ? (rtrim($coupon->amount, '%')) : $destination->full_payment_discount)) / 100;
                                 } else {
-                                    $thirdDisc = ($request->third_p * ((Session::get('discountapplied') == 1) ? $coupon->amount : 0)) / 100;
+                                    $thirdDisc = ($request->third_p * ((Session::get('discountapplied') == 1) ? rtrim($coupon->amount, '%') : 0)) / 100;
 
                                     // $thirdVat = ($request->third_p * 5) / 100;
                                 }
@@ -1291,11 +1291,11 @@ class HomeController extends Controller
                                 $firstDisc = 0;
                                 if ($thisDiscount > 0) {
                                     // $firstDisc = ($request->first_p * $destination->full_payment_discount) / 100;
-                                    $firstDisc = ($request->first_p * ((Session::get('discountapplied') == 1) ? ($coupon->amount) : $destination->full_payment_discount)) / 100;
+                                    $firstDisc = ($request->first_p * ((Session::get('discountapplied') == 1) ? (rtrim($coupon->amount, '%')) : $destination->full_payment_discount)) / 100;
 
                                     // $firstVat = (($request->first_p - $firstDisc) * 5) / 100;
                                 } else {
-                                    $firstDisc = ($request->first_p * ((Session::get('discountapplied') == 1) ? $coupon->amount : 0)) / 100;
+                                    $firstDisc = ($request->first_p * ((Session::get('discountapplied') == 1) ? rtrim($coupon->amount, '%') : 0)) / 100;
 
                                     // $firstVat = ($request->first_p * 5) / 100;
                                 }
@@ -1322,11 +1322,11 @@ class HomeController extends Controller
                                 //Second Split
                                 if ($thisDiscount > 0) {
                                     // $secondDisc = ($request->second_p * $destination->full_payment_discount) / 100;
-                                    $secondDisc = ($request->second_p * ((Session::get('discountapplied') == 1) ? ($coupon->amount) : $destination->full_payment_discount)) / 100;
+                                    $secondDisc = ($request->second_p * ((Session::get('discountapplied') == 1) ? (rtrim($coupon->amount, '%')) : $destination->full_payment_discount)) / 100;
 
                                     // $secondVat = (($request->second_p - $secondDisc) * 5) / 100;
                                 } else {
-                                    $secondDisc = ($request->second_p * ((Session::get('discountapplied') == 1) ? $coupon->amount : 0)) / 100;
+                                    $secondDisc = ($request->second_p * ((Session::get('discountapplied') == 1) ? rtrim($coupon->amount, '%') : 0)) / 100;
 
                                     // $secondVat = ($request->second_p * 5) / 100;
                                 }
@@ -1353,13 +1353,13 @@ class HomeController extends Controller
                                 $thirdDisc = 0;
                                 //Third Split
                                 if ($thisDiscount > 0) {
-                                    $thirdDisc = ($datas->second_payment_sub_total * ((Session::get('discountapplied') == 1) ? ($coupon->amount) : $destination->full_payment_discount)) / 100;
+                                    $thirdDisc = ($datas->second_payment_sub_total * ((Session::get('discountapplied') == 1) ? (rtrim($coupon->amount, '%')) : $destination->full_payment_discount)) / 100;
 
                                     // $thirdDisc = ($request->third_p * $destination->full_payment_discount) / 100;
                                     // $thirdVat = (($request->third_p - $thirdDisc) * 5) / 100;
 
                                 } else {
-                                    $thirdDisc = ($datas->second_payment_sub_total * ((Session::get('discountapplied') == 1) ? $coupon->amount : 0)) / 100;
+                                    $thirdDisc = ($datas->second_payment_sub_total * ((Session::get('discountapplied') == 1) ? (rtrim($coupon->amount, '%')) : 0)) / 100;
                                     // $thirdVat = ($request->third_p * 5) / 100;
                                 }
                                 if (isset($thisVat) && $thisVat > 0) {
@@ -1579,23 +1579,23 @@ class HomeController extends Controller
                 $application->coupon_code = $request->code;
 
                 $total = $paysplit->sub_total - $paysplit->third_payment_sub_total;
-                $application->total_discount = ($total * $couponCodeData->amount) / 100;
-                $totalTemp = $total - ($total * $couponCodeData->amount) / 100;
+                $application->total_discount = ($total * rtrim($couponCodeData->amount, '%')) / 100;
+                $totalTemp = $total - ($total * rtrim($couponCodeData->amount, '%')) / 100;
                 $application->total_vat = (($totalTemp *  5) / 100) + ($paysplit->third_payment_vat);
-                $application->total_remaining = $application->total_price = ($paysplit->sub_total - (($total * $couponCodeData->amount) / 100))  + (($totalTemp *  5) / 100);
+                $application->total_remaining = $application->total_price = ($paysplit->sub_total - (($total * rtrim($couponCodeData->amount, '%')) / 100))  + (($totalTemp *  5) / 100);
 
-                $topaynow_temp_first = $paysplit->first_payment_sub_total  - (($couponCodeData->amount *  $paysplit->first_payment_sub_total) / 100);
-                $application->first_payment_discount = ($paysplit->first_payment_sub_total * $couponCodeData->amount) / 100;
+                $topaynow_temp_first = $paysplit->first_payment_sub_total  - ((rtrim($couponCodeData->amount, '%') *  $paysplit->first_payment_sub_total) / 100);
+                $application->first_payment_discount = ($paysplit->first_payment_sub_total * rtrim($couponCodeData->amount, '%')) / 100;
                 $application->first_payment_vat = ($topaynow_temp_first *  5) / 100;
                 $application->first_payment_remaining = $application->first_payment_price = $topaynow_temp_first + ($topaynow_temp_first *  5) / 100;
 
-                $topaynow_temp_submission = $paysplit->submission_payment_sub_total  - (($couponCodeData->amount *  $paysplit->submission_payment_sub_total) / 100);
-                $application->submission_payment_discount = ($paysplit->submission_payment_sub_total * $couponCodeData->amount) / 100;
+                $topaynow_temp_submission = $paysplit->submission_payment_sub_total  - ((rtrim($couponCodeData->amount, '%') *  $paysplit->submission_payment_sub_total) / 100);
+                $application->submission_payment_discount = ($paysplit->submission_payment_sub_total * rtrim($couponCodeData->amount, '%')) / 100;
                 $application->submission_payment_vat = ($topaynow_temp_submission *  5) / 100;
                 $application->submission_payment_remaining = $application->submission_payment_price = $topaynow_temp_submission + ($topaynow_temp_submission *  5) / 100;
 
-                $topaynow_temp_second = $paysplit->second_payment_sub_total  - (($couponCodeData->amount *  $paysplit->second_payment_sub_total) / 100);
-                $application->second_payment_discount = ($paysplit->second_payment_sub_total * $couponCodeData->amount) / 100;
+                $topaynow_temp_second = $paysplit->second_payment_sub_total  - ((rtrim($couponCodeData->amount, '%') *  $paysplit->second_payment_sub_total) / 100);
+                $application->second_payment_discount = ($paysplit->second_payment_sub_total * rtrim($couponCodeData->amount, '%')) / 100;
                 $application->second_payment_vat = ($topaynow_temp_second *  5) / 100;
                 $application->second_payment_remaining = $application->second_payment_price = $topaynow_temp_second + ($topaynow_temp_second *  5) / 100;
             }
@@ -1697,24 +1697,24 @@ class HomeController extends Controller
                         $data->coupon_code = $paymentCreds['couponCode'];
 
                         $total = $pricing->sub_total - $pricing->third_payment_sub_total;
-                        $data->total_discount = ($total * $couponCodeData->amount) / 100;
-                        $totalTemp = $total - ($total * $couponCodeData->amount) / 100;
+                        $data->total_discount = ($total * rtrim($couponCodeData->amount, '%')) / 100;
+                        $totalTemp = $total - ($total * rtrim($couponCodeData->amount, '%')) / 100;
                         $data->total_vat = $totalVat = (($totalTemp *  5) / 100) + ($pricing->third_payment_vat);
                         $totalTemp = $totalTemp + $totalVat;
                         $data->total_remaining = $data->total_price = $totalTemp + $pricing->third_payment_sub_total;
 
-                        $topaynow_temp_first = $pricing->first_payment_sub_total  - (($couponCodeData->amount *  $pricing->first_payment_sub_total) / 100);
-                        $data->first_payment_discount = ($pricing->first_payment_sub_total * $couponCodeData->amount) / 100;
+                        $topaynow_temp_first = $pricing->first_payment_sub_total  - ((rtrim($couponCodeData->amount, '%') *  $pricing->first_payment_sub_total) / 100);
+                        $data->first_payment_discount = ($pricing->first_payment_sub_total * rtrim($couponCodeData->amount, '%')) / 100;
                         $data->first_payment_vat = ($topaynow_temp_first *  5) / 100;
                         $data->first_payment_remaining = $data->first_payment_price = $topaynow_temp_first + ($topaynow_temp_first *  5) / 100;
 
-                        $topaynow_temp_submission = $pricing->submission_payment_sub_total  - (($couponCodeData->amount *  $pricing->submission_payment_sub_total) / 100);
-                        $data->submission_payment_discount = ($pricing->submission_payment_sub_total * $couponCodeData->amount) / 100;
+                        $topaynow_temp_submission = $pricing->submission_payment_sub_total  - ((rtrim($couponCodeData->amount, '%') *  $pricing->submission_payment_sub_total) / 100);
+                        $data->submission_payment_discount = ($pricing->submission_payment_sub_total * rtrim($couponCodeData->amount, '%')) / 100;
                         $data->submission_payment_vat = ($topaynow_temp_submission *  5) / 100;
                         $data->submission_payment_remaining = $data->submission_payment_price = $topaynow_temp_submission + ($topaynow_temp_submission *  5) / 100;
 
-                        $topaynow_temp_second = $pricing->second_payment_sub_total  - (($couponCodeData->amount *  $pricing->second_payment_sub_total) / 100);
-                        $data->second_payment_discount = ($pricing->second_payment_sub_total * $couponCodeData->amount) / 100;
+                        $topaynow_temp_second = $pricing->second_payment_sub_total  - ((rtrim($couponCodeData->amount, '%') *  $pricing->second_payment_sub_total) / 100);
+                        $data->second_payment_discount = ($pricing->second_payment_sub_total * rtrim($couponCodeData->amount, '%')) / 100;
                         $data->second_payment_vat = ($topaynow_temp_second *  5) / 100;
                         $data->second_payment_remaining = $data->second_payment_price = $topaynow_temp_second + ($topaynow_temp_second *  5) / 100;
                     }
@@ -2066,7 +2066,7 @@ class HomeController extends Controller
             $coupon_code = strtolower($coupon_code);
             $coupon['code'] = $coupon_code;
             $couponCodeData = DB::table('coupons')->where('code', $coupon_code)->get()->first();
-
+            $couponCodeAmount = rtrim($couponCodeData->amount, '%');
             if (
                 $couponCodeData
                 && $couponCodeData->code
@@ -2104,22 +2104,22 @@ class HomeController extends Controller
                         )->get()->count();
                         if ($couponUsage == 0) {
                             Session::put('haveCoupon', 1);
-                            Session::put('myDiscount', $couponCodeData->amount);
+                            Session::put('myDiscount', $couponCodeAmount);
                             Session::put('discountapplied', 1);
                             $coupon['is_valid'] = true;
                             $coupon['status'] = 'not_used_yet';
                             $coupon['reward'] = $couponCodeData->reward;
-                            $coupon['amount'] = $couponCodeData->amount;
-                            $response['myDiscount'] = $couponCodeData->amount;
+                            $coupon['amount'] = $couponCodeAmount;
+                            $response['myDiscount'] = $couponCodeAmount;
                             $response['haveCoupon'] = 1;
-                            $discountamt = ($couponCodeData->amount *  $request->paynow) / 100;
+                            $discountamt = ($couponCodeAmount *  $request->paynow) / 100;
                             $response['discountamt'] = $discountamt;
-                            $topaynow_temp = $request->paynow  - (($couponCodeData->amount *  $request->paynow) / 100);
+                            $topaynow_temp = $request->paynow  - (($couponCodeAmount *  $request->paynow) / 100);
                             $vatNow = ($topaynow_temp *  5) / 100;
                             $topaynow = $topaynow_temp + $vatNow;
                             $response['topaynow'] = $topaynow;
                             $response['vatNow'] = $vatNow;
-                            $discountPercent = 'PROMO: ' . $couponCodeData->amount . '%';
+                            $discountPercent = 'PROMO: ' . $couponCodeAmount . '%';
                             $response['discountPercent'] = $discountPercent;
                             $response['coupon'] = $coupon;
                             $response['status'] = true;
@@ -2237,8 +2237,8 @@ class HomeController extends Controller
             ->select('amount')
             ->where('location', '=', $request->embassy_appearance)
             ->where('employee_id', '=', $id)
-            ->where('active_from', '<=', date('Y-m-d'))
-            ->where('active_until', '>=', date('Y-m-d'))
+            ->where('active_from', '<=', now())
+            ->where('active_until', '>=', now())
             ->where('active', '=', 1)
             ->get();
 
