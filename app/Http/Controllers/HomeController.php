@@ -2073,7 +2073,7 @@ class HomeController extends Controller
                 && $couponCodeData->active == true
             ) {
 
-                // if (isset($couponCodeData->employee_id) && $couponCodeData->employee_id) {
+                if ((isset($couponCodeData->employee_id) && $couponCodeData->employee_id) || ((isset($couponCodeData->partner_id) && $couponCodeData->partner_id))) {
 
                     if ($couponCodeData->active_from > now()) {
 
@@ -2136,17 +2136,17 @@ class HomeController extends Controller
                             $response['coupon'] = $coupon;
                         }
                     }
-                // } else {
-                //     $coupon['is_valid'] = false;
-                //     $coupon['status'] = 'not_assigned_yet';
-                //     $topaynoww = $request->totaldue; //If no promo
-                //     Session::put('haveCoupon', 0);
-                //     $response['haveCoupon'] = 0;
-                //     $response['topaynow'] = $topaynoww;
-                //     $response['message'] = "Not assigned yet!";
-                //     $response['status'] = false;
-                //     $response['coupon'] = $coupon;
-                // }
+                } else {
+                    $coupon['is_valid'] = false;
+                    $coupon['status'] = 'not_assigned_yet';
+                    $topaynoww = $request->totaldue; //If no promo
+                    Session::put('haveCoupon', 0);
+                    $response['haveCoupon'] = 0;
+                    $response['topaynow'] = $topaynoww;
+                    $response['message'] = "Not assigned yet!";
+                    $response['status'] = false;
+                    $response['coupon'] = $coupon;
+                }
             } else {
                 $coupon['status'] = false;
                 $coupon['status'] = 'invalid_code';
