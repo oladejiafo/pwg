@@ -692,13 +692,11 @@ $totalPay = round($payNow - $discount + $vat, 2);
         function getCost(kidd, parents)
         {
             let ppyall = 0;
-            // alert($('input[name="payall"]:checked').val());
             if($('input[name="payall"]:checked').val() == 0){
                 ppyall = 1;
             } else {
                 ppyall = 0;
             }
-            // alert(ppyall);
             console.log(kidd, parents);
             $.ajax({
                 // type: 'GET',

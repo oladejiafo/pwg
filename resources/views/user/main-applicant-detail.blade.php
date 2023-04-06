@@ -323,7 +323,7 @@
                                 <div class="input-group-btn">
                                     <span class="fileUpload btn">
                                         <span class="upl" id="upload" onclick="showPassportFormat()">Choose File</span>
-                                        {{-- <input type="file" class="upload up passport_copy" id="up"  name="passport_copy" onclick="showPassportFormat()"/> --}}
+                                        {{-- <input type="file" class="upload upl passportUpload" id="upload"  name="passport_copy" onclick="showPassportFormat()"/> --}}
                                     </span><!-- btn-orange -->
                                 </div><!-- btn -->
                                 <label for="passport_copy">Upload Passport Copy*</label>

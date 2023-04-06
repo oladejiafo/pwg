@@ -29,7 +29,6 @@ class CreateNewUser implements CreatesNewUsers
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
         ])->validate();
             
-        // dd($input['phone_number']);
         // if(isset($input['agent']))
         // {
         //     list($agent_name, $agent_phone) = explode(' - ', $input['agent']);

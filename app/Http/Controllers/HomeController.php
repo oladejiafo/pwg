@@ -138,7 +138,6 @@ class HomeController extends Controller
                 ->where('pricing_plans.status', 'CURRENT')
                 ->orderBy(DB::raw('FIELD(destinations.name, "Poland", "Czech", "Malta", "Canada", "Germany")'))
                 ->get();
-            // dd($package);
             $promo = promo::where('active_until', '>=', date('Y-m-d'))->get();
 
             return view('user.home', compact('package', 'promo', 'pricingPlan'));
@@ -194,7 +193,6 @@ class HomeController extends Controller
                 ->first();
 
             if ($request->response == 1) {
-                // dd($request->pyall);
                 // $pyall=$request->pyall;
                 return $famdet;
                 // return $pyall;
@@ -210,7 +208,6 @@ class HomeController extends Controller
         $proddet = family_breakdown::where('destination_id', '=', $productId)->where('pricing_plan_type', 'BLUE_COLLAR')->where('status', 'CURRENT')->get();
         $whiteJobs = family_breakdown::where('destination_id', '=', $productId)->where('pricing_plan_type', 'WHITE_COLLAR')->where('status', 'CURRENT')->get();
         $canadaOthers = family_breakdown::where('destination_id', '=', $productId)->whereIn('pricing_plan_type', array('EXPRESS_ENTRY', 'STUDY_PERMIT'))->where('status', 'CURRENT')->get();
-        // dd($canadaOthers);
         return view('user.package-type', compact('proddet', 'famdet', 'productId', 'whiteJobs', 'data', 'canadaOthers'));
     }
 
@@ -256,7 +253,6 @@ class HomeController extends Controller
                 ->where('status', 'CURRENT')
                 // ->where('family_sub_id', '=', Session::get('fam_id'))      
                 ->first();
-            // dd($ppay);
         }
 
         session()->forget('prod_id');
@@ -628,19 +624,19 @@ class HomeController extends Controller
             $rand = UserHelper::getRandomString();
             $newFileName = 'contract' . Auth::id() . '-' . $rand . '-' . 'malta.pdf';
         } else if ($productName == Constant::canada) {
-            if (Session::get('packageType') == Constant::CanadaExpressEntry) {
-                $originalPdf = "pdf/canada_express_entry.pdf";
-                $rand = UserHelper::getRandomString();
-                $newFileName = 'contract' . Auth::id() . '-' . $rand . '-' . 'canada_express_entry.pdf';
-            } else if (Session::get('packageType') == Constant::CanadaStudyPermit) {
-                $originalPdf = "pdf/canada_study.pdf";
-                $rand = UserHelper::getRandomString();
-                $newFileName = 'contract' . Auth::id() . '-' . $rand . '-' . 'canada_study.pdf';
-            } else if (Session::get('packageType') == Constant::BlueCollar) {
+            // if (Session::get('packageType') == Constant::CanadaExpressEntry) {
+            //     $originalPdf = "pdf/canada_express_entry.pdf";
+            //     $rand = UserHelper::getRandomString();
+            //     $newFileName = 'contract' . Auth::id() . '-' . $rand . '-' . 'canada_express_entry.pdf';
+            // } else if (Session::get('packageType') == Constant::CanadaStudyPermit) {
+            //     $originalPdf = "pdf/canada_study.pdf";
+            //     $rand = UserHelper::getRandomString();
+            //     $newFileName = 'contract' . Auth::id() . '-' . $rand . '-' . 'canada_study.pdf';
+            // } else if (Session::get('packageType') == Constant::BlueCollar) {
                 $originalPdf = "pdf/canada.pdf";
                 $rand = UserHelper::getRandomString();
                 $newFileName = 'contract' . Auth::id() . '-' . $rand . '-' . 'canada.pdf';
-            }
+            // }
         } else if ($productName == Constant::germany) {
             $originalPdf = "pdf/poland.pdf";
             $rand = UserHelper::getRandomString();
@@ -912,7 +908,7 @@ class HomeController extends Controller
                 $destination = Product::find($id);
                 $coupon = DB::table('coupons')
                     ->where('location', '=', ($apply->embassy_country) ?? $request->embassy_appearance)
-                    ->where('employee_id', '=', $id)
+                    // ->where('employee_id', '=', $id)
                     ->where('active_from', '<=', date('Y-m-d'))
                     ->where('active_until', '>=', date('Y-m-d'))
                     ->where('active', '=', 1)
@@ -1078,7 +1074,6 @@ class HomeController extends Controller
                         'couponCode' => $request->discountCode,
                         'coupon' => $request->coupon
                     ];
-                    //  dd($paymentCreds);
 
                     if ($datas === null) {
                         $data = new applicant;
@@ -1426,8 +1421,6 @@ class HomeController extends Controller
             $user = Client::find(Auth::id());
             $signatureUrl = (isset($user->getMedia(Client::$media_collection_main_signture)[0])) ? $user->getMedia(Client::$media_collection_main_signture)[0]->getUrl() : null;
             // if ($request->whichpayment == 'FIRST') {
-            // dd($signatureUrl);
-
             if ($signatureUrl == null && ($request->whichpayment == 'FIRST' || $request->whichpayment == 'Full-Outstanding Payment')) {
                 if ($request->signed) {
                     list($part_a, $image_parts) = explode(";base64,", $request->signed);
@@ -1470,88 +1463,113 @@ class HomeController extends Controller
                 ->where('id', $application->pricing_plan_id)
                 ->first();
             if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
-                $url = null;
                 if ($request->whichpayment == 'FIRST' || $request->whichpayment == "BALANCE_ON_FIRST") {
-                    $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_1st_payment, env('MEDIA_DISK'));
+                    if ($images = $request->file('imgInp')) {
+                        foreach ($images as $image) {
+                            $application->addMedia($image)->toMediaCollection(Application::$media_collection_main_1st_payment, env('MEDIA_DISK'));
+                        }
+                    }
                     $application->first_payment_txn_mode = ($application->is_first_payment_partially_paid == 1) ? 'BALANCE_TRANSFER' : 'TRANSFER';
                     $application->save();
-                    $applicationImg = Application::find($applicationId);
-                    $url =  $applicationImg->getMedia(Application::$media_collection_main_1st_payment)[0]->getFullUrl();
                 } else if ($request->whichpayment == 'SUBMISSION' || $request->whichpayment == "BALANCE_ON_SUBMISSION") {
-                    $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_submission_payment, env('MEDIA_DISK'));
-                    $application->submission_payment_txn_mode = ($application->is_first_payment_partially_paid == 1) ? 'BALANCE_TRANSFER' : 'TRANSFER';
+                    if ($images = $request->file('imgInp')) {
+                        foreach ($images as $image) {
+                            $application->addMedia($image)->toMediaCollection(Application::$media_collection_submission_payment, env('MEDIA_DISK'));
+                        }
+                    }
+                    $application->submission_payment_txn_mode = ($application->is_submission_payment_partially_paid == 1) ? 'BALANCE_TRANSFER' : 'TRANSFER';
                     $application->save();
-                    $applicationImg = Application::find($applicationId);
-                    $url =  $applicationImg->getMedia(Application::$media_collection_submission_payment)[0]->getFullUrl();
                 } else if ($request->whichpayment == 'SECOND' || $request->whichpayment == "BALANCE_ON_SECOND") {
-                    $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_2nd_payment, env('MEDIA_DISK'));
-                    $application->second_payment_txn_mode = ($application->is_first_payment_partially_paid == 1) ? 'BALANCE_TRANSFER' : 'TRANSFER';
+                    if ($images = $request->file('imgInp')) {
+                        foreach ($images as $image) {
+                            $application->addMedia($image)->toMediaCollection(Application::$media_collection_main_2nd_payment, env('MEDIA_DISK'));
+                        }
+                    }
+                    $application->second_payment_txn_mode = ($application->is_second_payment_partially_paid == 1) ? 'BALANCE_TRANSFER' : 'TRANSFER';
                     $application->save();
-                    $applicationImg = Application::find($applicationId);
-                    $url =  $applicationImg->getMedia(Application::$media_collection_main_2nd_payment)[0]->getFullUrl();
                 } else {
                     if (in_array($application->first_payment_stage_status, ['PAID', 'PARTIALLY_PAID'])) {
                         if($paysplit->submission_payment_sub_total > 0){
-                            $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_submission_payment, env('MEDIA_DISK'));
+                            if ($images = $request->file('imgInp')) {
+                                foreach ($images as $image) {
+                                    $application->addMedia($image)->toMediaCollection(Application::$media_collection_submission_payment, env('MEDIA_DISK'));
+                                }
+                            }
                             $application->submission_payment_txn_mode = 'TRANSFER';
                         } else {
-                            $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_2nd_payment, env('MEDIA_DISK'));
+                            if ($images = $request->file('imgInp')) {
+                                foreach ($images as $image) {
+                                    $application->addMedia($image)->toMediaCollection(Application::$media_collection_main_2nd_payment, env('MEDIA_DISK'));
+                                }
+                            }
                             $application->second_payment_txn_mode = 'TRANSFER';
                         }
                         $application->save();
-                        $applicationImg = Application::find($applicationId);
-                        $url =  $applicationImg->getMedia(Application::$media_collection_main_2nd_payment)[0]->getFullUrl();
                     } else {
-                        $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_1st_payment, env('MEDIA_DISK'));
+                        if ($images = $request->file('imgInp')) {
+                            foreach ($images as $image) {
+                                $application->addMedia($image)->toMediaCollection(Application::$media_collection_main_1st_payment, env('MEDIA_DISK'));
+                            }
+                        }
                         $application->first_payment_txn_mode = 'TRANSFER';
                         $application->submission_payment_txn_mode = 'TRANSFER';
                         $application->second_payment_txn_mode = 'TRANSFER';
                         $application->save();
-                        $applicationImg = Application::find($applicationId);
                     }
                 }
             } else {
-                $url = null;
-                // dd($request->whichpayment);
                 if ($request->whichpayment == 'FIRST' || $request->whichpayment == "BALANCE_ON_FIRST") {
                     $application->first_payment_txn_mode = ($application->is_first_payment_partially_paid == 1) ? 'BALANCE_TRANSFER' : 'TRANSFER';
-                    $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_1st_payment, 'local');
+                    if ($images = $request->file('imgInp')) {
+                        foreach ($images as $image) {
+                            $application->addMedia($image)->toMediaCollection(Application::$media_collection_main_1st_payment, 'local');
+                        }
+                    }
                     $application->save();
-                    $applicationImg = Application::find($applicationId);
-
-                    $url =  $applicationImg->getMedia(Application::$media_collection_main_1st_payment)[0]->getPath();
                 } else if ($request->whichpayment == 'SUBMISSION' || $request->whichpayment == "BALANCE_ON_SUBMISSION") {
                     $application->submission_payment_txn_mode = ($application->is_submission_payment_partially_paid == 1) ? 'BALANCE_TRANSFER' : 'TRANSFER';
-                    $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_submission_payment, 'local');
+                    if ($images = $request->file('imgInp')) {
+                        foreach ($images as $image) {
+                            $application->addMedia($image)->toMediaCollection(Application::$media_collection_submission_payment, 'local');
+                        }
+                    }
                     $application->save();
-                    $applicationImg = Application::find($applicationId);
-                    $url =  $applicationImg->getMedia(Application::$media_collection_submission_payment)[0]->getPath();
                 } else if ($request->whichpayment == 'SECOND' || $request->whichpayment == "BALANCE_ON_SECOND") {
                     $application->second_payment_txn_mode = ($application->is_second_payment_partially_paid == 1) ? 'BALANCE_TRANSFER' : 'TRANSFER';;
-                    $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_2nd_payment, 'local');
+                    if ($images = $request->file('imgInp')) {
+                        foreach ($images as $image) {
+                            $application->addMedia($image)->toMediaCollection(Application::$media_collection_main_2nd_payment, 'local');
+                        }
+                    }
                     $application->save();
-                    $applicationImg = Application::find($applicationId);
-                    $url =  $applicationImg->getMedia(Application::$media_collection_main_2nd_payment)[0]->getPath();
                 } else {
                     if (in_array($application->first_payment_stage_status, ['PAID', 'PARTIALLY_PAID'])) {
                         if($paysplit->submission_payment_sub_total > 0){
-                            $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_submission_payment, env('MEDIA_DISK'));
+                            if ($images = $request->file('imgInp')) {
+                                foreach ($images as $image) {
+                                    $application->addMedia($image)->toMediaCollection(Application::$media_collection_submission_payment, 'local');
+                                }
+                            }
                             $application->submission_payment_txn_mode = 'TRANSFER';
                         } else {
-                            $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_2nd_payment, env('MEDIA_DISK'));
+                            if ($images = $request->file('imgInp')) {
+                                foreach ($images as $image) {
+                                    $application->addMedia($image)->toMediaCollection(Application::$media_collection_main_2nd_payment, 'local');
+                                }
+                            }
                             $application->second_payment_txn_mode = 'TRANSFER';
                         }
                         $application->save();
-                        $applicationImg = Application::find($applicationId);
-                        $url =  $applicationImg->getMedia(Application::$media_collection_submission_payment)[0]->getPath();
                     } else {
                         $application->first_payment_txn_mode = 'TRANSFER';
                         $application->submission_payment_txn_mode = 'TRANSFER';
                         $application->second_payment_txn_mode = 'TRANSFER';
-                        $application->addMediaFromRequest('imgInp')->toMediaCollection(Application::$media_collection_main_1st_payment, 'local');
+                        if ($images = $request->file('imgInp')) {
+                            foreach ($images as $image) {
+                                $application->addMedia($image)->toMediaCollection(Application::$media_collection_main_1st_payment, 'local');
+                            }
+                        }
                         $application->save();
-                        $applicationImg = Application::find($applicationId);
-                        $url =  $applicationImg->getMedia(Application::$media_collection_main_1st_payment)[0]->getPath();
                     }
                 }
             }
@@ -1601,7 +1619,7 @@ class HomeController extends Controller
                 session::put('paymentMode', "TRANSFER");
                 return Redirect::route('applicant.details', $application->destination_id);
             } else {
-                return Redirect::route('myapplication', $application->destination_id)->with('infoMessage', 'Payment need to be confirmed!');
+                return Redirect::route('myapplication', $application->destination_id)->with('message', 'Payment need to be confirmed!');
             }
             // return view('user.payment-confirm', compact('id'));
             // } else {
@@ -1665,7 +1683,6 @@ class HomeController extends Controller
                         return \Redirect::route('myapplication')->with('info', 'Payment have to be verified!');
                     }
                     $paymentCreds = Session::get('paymentCreds');
-                    // dd($paymentCreds);
                     $data = applicant::where([
                         ['client_id', '=', Auth::user()->id],
                         ['destination_id', '=', $id],
@@ -2056,7 +2073,7 @@ class HomeController extends Controller
                 && $couponCodeData->active == true
             ) {
 
-                if (isset($couponCodeData->employee_id) && $couponCodeData->employee_id) {
+                // if (isset($couponCodeData->employee_id) && $couponCodeData->employee_id) {
 
                     if ($couponCodeData->active_from > now()) {
 
@@ -2119,17 +2136,17 @@ class HomeController extends Controller
                             $response['coupon'] = $coupon;
                         }
                     }
-                } else {
-                    $coupon['is_valid'] = false;
-                    $coupon['status'] = 'not_assigned_yet';
-                    $topaynoww = $request->totaldue; //If no promo
-                    Session::put('haveCoupon', 0);
-                    $response['haveCoupon'] = 0;
-                    $response['topaynow'] = $topaynoww;
-                    $response['message'] = "Not assigned yet!";
-                    $response['status'] = false;
-                    $response['coupon'] = $coupon;
-                }
+                // } else {
+                //     $coupon['is_valid'] = false;
+                //     $coupon['status'] = 'not_assigned_yet';
+                //     $topaynoww = $request->totaldue; //If no promo
+                //     Session::put('haveCoupon', 0);
+                //     $response['haveCoupon'] = 0;
+                //     $response['topaynow'] = $topaynoww;
+                //     $response['message'] = "Not assigned yet!";
+                //     $response['status'] = false;
+                //     $response['coupon'] = $coupon;
+                // }
             } else {
                 $coupon['status'] = false;
                 $coupon['status'] = 'invalid_code';
@@ -2276,19 +2293,19 @@ class HomeController extends Controller
                 $rand = UserHelper::getRandomString();
                 $newFileName = 'contract' . Auth::id() . '-' . $rand . '-' . 'malta.pdf';
             } else if ($productName == Constant::canada) {
-                if (Session::get('packageType') == Constant::CanadaExpressEntry) {
-                    $originalPdf = "pdf/canada_express_entry.pdf";
-                    $rand = UserHelper::getRandomString();
-                    $newFileName = 'contract' . Auth::id() . '-' . $rand . '-' . 'canada_express_entry.pdf';
-                } else if (Session::get('packageType') == Constant::CanadaStudyPermit) {
-                    $originalPdf = "pdf/canada_study.pdf";
-                    $rand = UserHelper::getRandomString();
-                    $newFileName = 'contract' . Auth::id() . '-' . $rand . '-' . 'canada_study.pdf';
-                } else if (Session::get('packageType') == Constant::BlueCollar) {
+                // if (Session::get('packageType') == Constant::CanadaExpressEntry) {
+                //     $originalPdf = "pdf/canada_express_entry.pdf";
+                //     $rand = UserHelper::getRandomString();
+                //     $newFileName = 'contract' . Auth::id() . '-' . $rand . '-' . 'canada_express_entry.pdf';
+                // } else if (Session::get('packageType') == Constant::CanadaStudyPermit) {
+                //     $originalPdf = "pdf/canada_study.pdf";
+                //     $rand = UserHelper::getRandomString();
+                //     $newFileName = 'contract' . Auth::id() . '-' . $rand . '-' . 'canada_study.pdf';
+                // } else if (Session::get('packageType') == Constant::BlueCollar) {
                     $originalPdf = "pdf/canada.pdf";
                     $rand = UserHelper::getRandomString();
                     $newFileName = 'contract' . Auth::id() . '-' . $rand . '-' . 'canada.pdf';
-                }
+                // }
             } else if ($productName == Constant::germany) {
                 $originalPdf = "pdf/poland.pdf";
                 $rand = UserHelper::getRandomString();
@@ -2439,7 +2456,6 @@ class HomeController extends Controller
                 ->where('payment_type', $ptype)
                 ->orderBy('id', 'DESC')
                 ->first();
-            // dd($apply->id);
             if ($paymentDetailsBasedType) {
             } else {
                 $paymentDetailsBasedType  =  Payment::where('application_id', $apply->id)
@@ -2545,7 +2561,6 @@ class HomeController extends Controller
                 ->where('id', $apply->pricing_plan_id)
                 // ->where('status', 'CURRENT')
                 ->first();
-            // dd($pricing);
             $pdf = PDF::loadView('user.invoice', compact('user', 'apply', 'pricing'));
 
             return $pdf->stream("", array("Attachment" => false));
@@ -2691,19 +2706,19 @@ class HomeController extends Controller
                     $rand = UserHelper::getRandomString();
                     $newFileName = 'contract' . $client->id . '-' . $rand . '-' . 'malta.pdf';
                 } else if ($productName == Constant::canada) {
-                    if ($application->work_permit_category == Constant::CanadaExpressEntry) {
-                        $originalPdf = "pdf/canada_express_entry.pdf";
-                        $rand = UserHelper::getRandomString();
-                        $newFileName = 'contract' . $client->id . '-' . $rand . '-' . 'canada_express_entry.pdf';
-                    } else if ($application->work_permit_category == Constant::CanadaStudyPermit) {
-                        $originalPdf = "pdf/canada_study.pdf";
-                        $rand = UserHelper::getRandomString();
-                        $newFileName = 'contract' . $client->id . '-' . $rand . '-' . 'canada_study.pdf';
-                    } else if ($application->work_permit_category == Constant::BlueCollar) {
+                    // if ($application->work_permit_category == Constant::CanadaExpressEntry) {
+                    //     $originalPdf = "pdf/canada_express_entry.pdf";
+                    //     $rand = UserHelper::getRandomString();
+                    //     $newFileName = 'contract' . $client->id . '-' . $rand . '-' . 'canada_express_entry.pdf';
+                    // } else if ($application->work_permit_category == Constant::CanadaStudyPermit) {
+                    //     $originalPdf = "pdf/canada_study.pdf";
+                    //     $rand = UserHelper::getRandomString();
+                    //     $newFileName = 'contract' . $client->id . '-' . $rand . '-' . 'canada_study.pdf';
+                    // } else if ($application->work_permit_category == Constant::BlueCollar) {
                         $originalPdf = "pdf/canada.pdf";
                         $rand = UserHelper::getRandomString();
                         $newFileName = 'contract' . $client->id . '-' . $rand . '-' . 'canada.pdf';
-                    }
+                    // }
                 } else if ($productName == Constant::germany) {
                     $originalPdf = "pdf/poland.pdf";
                     $rand = UserHelper::getRandomString();

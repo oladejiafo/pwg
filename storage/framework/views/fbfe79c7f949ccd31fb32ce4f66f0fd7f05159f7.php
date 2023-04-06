@@ -171,7 +171,7 @@
         </div>
         <div class="form-group row mt-4">
             <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
-                <?php if($applicant['is_spouse'] != null && $applicant['children_count'] == null): ?>
+                <?php if(($client['is_spouse'] != null && $client['children_count'] == null) || ($client['is_spouse'] != 0 && $client['children_count'] == 0)): ?>
                     <button type="submit" class="btn btn-primary submitBtn dependentReview">Submit  <i class="fa fa-spinner fa-spin dependentReviewSpin"></i></button>
                 <?php else: ?> 
                     <button type="submit" class="btn btn-primary submitBtn dependentNext">Next</button>

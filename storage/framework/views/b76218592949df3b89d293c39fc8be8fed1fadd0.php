@@ -329,15 +329,16 @@
                                                     <label for="agent_code">Agent Code, if any</label>
                                                 </div>
                                                 <div class="col-sm-8 mt-3 form-floating">
-                                                    <input type="text" id="cv" class="form-control cv_upload" placeholder="Upload your cv (PDF only)*" name="cv" value="<?php echo e($client['resumeName']); ?>"  onclick="showResumeFormat('applicant')" autocomplete="off" readonly required>
+                                                    <input type="text" class="form-control cvupload"  id="cvupload" placeholder="Upload your cv (PDF only)*" name="cv" value="<?php echo e(old('cv')); ?>" readonly required>
                                                     <div class="input-group-btn">
                                                         <span class="fileUpload btn">
                                                             <span class="upl" id="upload">Choose File</span>
-                                                            <input type="file" class="upload up cv_upload" id="up"  name="cv"  value="<?php echo e($client['resumeName']); ?>"/>
+                                                            <input type="file" class="upload cvupload" id="up"  name="cv" accept=".pdf, .doc" onchange="readURL(this);" />
                                                             </span><!-- btn-orange -->
                                                     </div><!-- btn -->
+                                                    <label for="cvupload">Upload your cv (PDF & DOC only)*</label>
                                                     <span class="cv_errorClass"></span>
-                                                    <label for="cv">CV</label>
+                                                    
                                                 </div>
 
                                             </div>
@@ -514,17 +515,28 @@ unset($__errorArgs, $__bag); ?>
                                             <?php echo csrf_field(); ?>
                                             <input type="hidden" name="product_id" value="1">
                                             <div class="form-group row mt-4">
-                                                <div class="col-sm-6 mt-3 form-floating">
-                                                    <select class="form-select form-control" id="current_country" name="current_country" placeholder="current_country*">
+                                                <div class="col-sm-4 mt-3 form-floating">
+                                                    <select class="form-select form-control" id="current_country" name="current_location" placeholder="current_country*">
                                                         <option selected> <?php echo e($client['country']); ?> </option>
                                                         <?php $__currentLoopData = Constant::countries; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                             <option <?php echo e(($key == $client['country']) ? 'seleceted' : ''); ?> value="<?php echo e($key); ?>"><?php echo e($item); ?></option>
                                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                     </select>
-                                                    <span class="current_country_errorClass"></span>
+                                                    <span class="current_location_errorClass"></span>
                                                     <label for="current_country">Current Country*</label>
                                                 </div>
-                                                <div class="col-sm-6 mt-3 form-floating">
+                                                <div class="col-sm-4 mt-3 form-floating">
+                                                    <select title="Embassy Appearance Country" class="form-control  embassy_appearance form-select" id="embassy_appearance" placeholder="Country of Embassy Appearance*" name="embassy_appearance" required="">
+                                                        <option selected disabled>--Country of Embassy Appearance*--</option>
+                                                        <option value="United Arab Emirates">United Arab Emirates</option>
+                                                        <?php $__currentLoopData = Constant::countries; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                            <option value="<?php echo e($key); ?>"><?php echo e($item); ?></option>
+                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                    </select>
+                                                    <label for="embassy_appearance">Country of Embassy Appearance*</label>
+                                                    <span class="embassy_appearance_errorClass"></span>
+                                                </div>
+                                                <div class="col-sm-4 mt-3 form-floating">
                                                     <input type="tel" onkeypress="return isNumberKey(event)" style="margin-left: -10px !important;" class="form-control" id="current_residance_mobile" name='current_residance_mobile' value="<?php echo e($client['residence_mobile_number']); ?>" placeholder="Current Residence Mobile Number" autocomplete="off">
                                                     <input type="hidden" class="form-control" id="current_mobile" name='current_residance_mobile1' value="<?php echo e($client['residence_mobile_number']); ?>" placeholder="Current Residence Mobile Number" autocomplete="off">
                                                     <span class="current_residance_mobile_errorClass"></span>
@@ -2522,6 +2534,8 @@ unset($__errorArgs, $__bag); ?>
                         $('.dependentReviewSpin, .childReviewSpin, .applicantReviewSpin').hide();
                     }
                 });
+            } else {
+                $('.dependentReviewSpin , .childReviewSpin, .applicantReviewSpin').hide();
             }
         });
 
@@ -2952,6 +2966,16 @@ unset($__errorArgs, $__bag); ?>
                 $('.visa_copy').attr("value",names);
                 $("input[name=visa_upload]").attr("value",names);
             }
+        });
+        $(document).on('change','.cvupload', function(){
+            $('.cvupload').attr("value", ' ');
+            $("input[name=cvupload]").val('');
+            var names = [];
+            var length = $(this).get(0).files.length;
+            for (var i = 0; i < $(this).get(0).files.length; ++i) {
+                names.push($(this).get(0).files[i].name);
+            }
+            $('.cvupload').attr("value",names);
         });
         $(document).on('change','.schengen_upload', function(){
             var names = [];

@@ -191,8 +191,6 @@ $("form").submit(function() {
   var full_number = phone_number.getNumber(intlTelInputUtils.numberFormat.E164);
 
   $("input[id='phone_number'").val(full_number);
-  
-//   alert(full_number)
-  
+    
 });
 </script>

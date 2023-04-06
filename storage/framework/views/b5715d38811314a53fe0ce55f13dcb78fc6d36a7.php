@@ -855,8 +855,6 @@ $totalPay = round($payNow - $discount + $vat, 2);
             }).done( function (response) {
                 var coupon = JSON.stringify(response.coupon);
                 if (response.status == true) {
-                    // alert(response.myDiscount);
-                    // alert(response.status);
                     $('#amountLink2').val(0);
                     $('#totaldue').val(0);
                     // $('#discountValue').html(0);
@@ -883,7 +881,6 @@ $totalPay = round($payNow - $discount + $vat, 2);
 
                     $('#amountLink').html(amtNoww);
                     $('#vatt').html(vatNow);
-                    // alert(response.topaynow.toFixed(2));
                     $('#amountLink2').val(totalValueNotRounding);
                     $('#totaldue').val(totalValueNotRounding);
 
@@ -952,5 +949,29 @@ $totalPay = round($payNow - $discount + $vat, 2);
     <?php endif; ?>
 
 </script>
+
+<?php if(!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)): ?> 
+<script>
+    //Disable right click
+    document.addEventListener('contextmenu', (e) => e.preventDefault());
+
+    function ctrlShiftKey(e, keyCode) {
+        return e.ctrlKey && e.shiftKey && e.keyCode === keyCode.charCodeAt(0);
+    }
+
+    document.onkeydown = (e) => {
+        // Disable F12, Ctrl + Shift + I, Ctrl + Shift + J, Ctrl + U
+        if (
+            event.keyCode === 123 ||
+            ctrlShiftKey(e, 'I') ||
+            ctrlShiftKey(e, 'J') ||
+            ctrlShiftKey(e, 'C') ||
+            (e.ctrlKey && e.keyCode === 'U'.charCodeAt(0))
+        )
+        return false;
+    };
+
+</script>
+<?php endif; ?>
 
 <?php echo $__env->make('layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal\resources\views/user/payment-form.blade.php ENDPATH**/ ?>

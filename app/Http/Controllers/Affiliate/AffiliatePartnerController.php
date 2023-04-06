@@ -260,7 +260,6 @@ class AffiliatePartnerController extends Controller
    
            $clients = Applicant::where('refferer_code', '=', $mine->affiliate_code)->get();
            $affiliates = Affiliate::where('refferer_code', '=', $mine->affiliate_code)->get();
-           // dd($clients->count());
            return view('affiliate.refferals', compact('affiliates','clients','mine'));
         } else {
            return back();
@@ -273,7 +272,6 @@ class AffiliatePartnerController extends Controller
    
            $clients = Applicant::where('refferer_code', '=', $mine->affiliate_code)->get();
            $affiliates = Affiliate::where('refferer_code', '=', $mine->affiliate_code)->get();
-           // dd($clients->count());
            return view('affiliate.earned', compact('affiliates','clients','mine'));
         } else {
            return back();
@@ -382,7 +380,6 @@ class AffiliatePartnerController extends Controller
         $client = new Client();
        
         $res = $client->request('POST', env('ADMIN_URL').'/api/get-news-media');
-        // dd($res);
         $getNews = $res->getBody()->getContents();
         $news = json_decode($getNews);
         return view('affiliate.news', compact('news'));
@@ -414,7 +411,6 @@ class AffiliatePartnerController extends Controller
                         ->get()
                         ->toArray();
         foreach($presents as $present){
-            // dd(storage_path('presentation/' . $present['image_url']));
             $present['image_url'] =  public_path('/images/affiliate/'.$present['image_url']);
         }
         return $presents;

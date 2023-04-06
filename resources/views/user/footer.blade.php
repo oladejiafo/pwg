@@ -89,7 +89,7 @@
         tomorrow = tomorrow.getFullYear()+'/'+(tomorrow.getMonth()+1)+'/'+tomorrow.getDate();
     }
     var lastDay = new Date(tomorrow);
-    if (compareDate(timer, lastDay) || (Math.floor(parseInt(distance) / (1000 * 60 * 60 * 24)))  <= 0) {
+    if (compareDate(timer, lastDay) || ((Math.floor(parseInt(distance) / (1000 * 60 * 60 * 24)))  <= 0)) {
         var date = new Date();
         console.log(date);
         // Add 7 days to current date

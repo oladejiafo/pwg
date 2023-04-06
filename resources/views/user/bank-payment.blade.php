@@ -410,7 +410,10 @@ if (isset($pays) && (($pays->first_payment_remaining > 0 && $pays->first_payment
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                             <h5 align="center">Upload Receipt:</h5>
                             <div class="previewImage">
-                                <img id="output" width="100%" style="max-height: 240px;" />
+                                {{-- <img id="output" width="100%" style="max-height: 240px;" /> --}}
+                                <div id="output">
+
+                                </div>
                             </div>
                             <div class="recieptUpload">
                                 <div class='file file--uploading'>
@@ -420,7 +423,7 @@ if (isset($pays) && (($pays->first_payment_remaining > 0 && $pays->first_payment
                                                 width="100%"></div>
                                     </label>
                                     <h6 style="text-align: center"><span style="color:aqua">Browse to upload</span></h6>
-                                    <input id='input-file' name="imgInp" accept="image/*" type='file' id="imgInp"
+                                    <input id='input-file' name="imgInp[]" accept="image/*" type='file' id="imgInp" multiple
                                         onchange="changeImage(event)" />
                                     @if ($errors->has('imgInp'))
                                         <span class="error">Please upload receipt</span>
@@ -511,7 +514,6 @@ if (isset($pays) && (($pays->first_payment_remaining > 0 && $pays->first_payment
             // });
 
             // $('#full').click(function() {
-            //     alert('hjfhgfhg');
             //     $('.coupon').hide();
             //     // throw new Error();
             //     $.ajax({
@@ -556,13 +558,11 @@ if (isset($pays) && (($pays->first_payment_remaining > 0 && $pays->first_payment
             // function getCost(kidd, parents)
             // {
             //     let ppyall = 0;
-            //     // alert($('input[name="payall"]:checked').val());
             //     if($('input[name="payall"]:checked').val() == 0){
             //         ppyall = 1;
             //     } else {
             //         ppyall = 0;
             //     }
-            //     // alert(ppyall);
             //     $.ajax({
             //         // type: 'GET',
             //         url: "{{ route('packageType',$data->id)  }}",
@@ -609,9 +609,18 @@ if (isset($pays) && (($pays->first_payment_remaining > 0 && $pays->first_payment
     <script language="javascript" type="text/javascript">
         changeImage = (evt) => {
             var output = document.getElementById('output');
-            output.src = URL.createObjectURL(event.target.files[0]);
-            output.onload = function() {
-                URL.revokeObjectURL(output.src) // free memory
+            const files = event.target.files;
+            for (let i = 0; i < files.length; i++) {
+                let file = files[i];
+                var picReader = new FileReader();
+                picReader.addEventListener("load", function (event) {
+                    var picFile = event.target;
+                    var div = document.createElement("div");
+                    div.innerHTML = "<img class='thumbnail' src='" + picFile.result + "'" + "title='" + picFile.name + "' style='max-height: 210px;width:50%'/ >";
+                    console.log(file.name+'::'+file.size);
+                    output.insertBefore(div, null);
+                });
+                picReader.readAsDataURL(file);
             }
         }
     </script>

@@ -80,7 +80,7 @@
                                                 <?php else: ?>
                                                     <form action="<?php echo e(route('payment', $prod->id)); ?>"
                                                         method="GET">
-                                                        <button class="btn btn-secondary">Pay Now</button>
+                                                        <button class="btn btn-secondary" style="font-weight:700">Pay Now</button>
                                                     </form>
                                                 <?php endif; ?>
                                             <?php else: ?>
@@ -91,7 +91,7 @@
                                                 <?php else: ?> 
                                                     <form action="<?php echo e(route('payment', $prod->id)); ?>"
                                                         method="GET">
-                                                        <button class="btn btn-secondary">Pay Now 111</button>
+                                                        <button class="btn btn-secondary" style="font-weight:700">Pay Now</button>
                                                     </form>
                                                 <?php endif; ?>
                                             <?php endif; ?>
