@@ -8,7 +8,7 @@ use Laravel\Jetstream\Jetstream;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Fortify\Fortify;
-use App\Models\User;
+use App\Client;
 
 class JetstreamServiceProvider extends ServiceProvider
 {
@@ -36,7 +36,7 @@ class JetstreamServiceProvider extends ServiceProvider
         Fortify::authenticateUsing(function (Request $request) {
             
             // session(['link' => url()->previous()]);
-            $user = User::where('email', $request->auth)
+            $user = Client::where('email', $request->auth)
                             ->orWhere('phone_number', $request->auth)
                             ->first();
 

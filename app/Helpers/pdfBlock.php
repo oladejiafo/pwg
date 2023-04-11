@@ -6,8 +6,7 @@ use Codedge\Fpdf\Fpdf\Fpdf;
 use setasign\Fpdi\Fpdi;
 use setasign\Fpdi\PdfReader;
 use App\Models\product;
-use App\Models\User;
-use App\Models\Applicant;
+use App\Client;
 use App\Application;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -78,7 +77,7 @@ class pdfBlock
 
             $pdf->AddPage();
             $template = $pdf->importPage($pageNo);
-            // $client = User::find(Auth::id());
+            // $client = Client::find(Auth::id());
             // use the imported page and place it at point 20,30 with a width of 170 mm
             $pdf->useTemplate($template, 10, 10, 200);
             //Select Arial italic 8
@@ -564,7 +563,7 @@ class pdfBlock
 
             $pdf->AddPage();
             $template = $pdf->importPage($pageNo);
-            $client = User::find($clientId);
+            $client = Client::find($clientId);
             // use the imported page and place it at point 20,30 with a width of 170 mm
             $pdf->useTemplate($template, 10, 10, 200);
             //Select Arial italic 8
@@ -600,7 +599,7 @@ class pdfBlock
     public static function mapMoreInfo($complete)
     {
         $applicant = Application::find($complete->id);
-        $client = User::find($applicant->client_id);
+        $client = Client::find($applicant->client_id);
         $originalPdf = null;
         $destination_file = null;
         $product = product::find($applicant->destination_id)->name;
@@ -612,7 +611,7 @@ class pdfBlock
             } else {
                 $originalPdf = (isset($applicant->getMedia(Application::$media_collection_main_1st_signature)[0])) ? $applicant->getMedia(Application::$media_collection_main_1st_signature)[0]->getPath() : null;
             }
-            $destination_file = Applicant::$media_collection_main_1st_signature;
+            $destination_file = Application::$media_collection_main_1st_signature;
         } else {
             if($applicant->getMedia(Application::$media_collection_main_1st_signature)){
                 if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
@@ -620,7 +619,7 @@ class pdfBlock
                 } else {
                     $originalPdf = (isset($applicant->getMedia(Application::$media_collection_main_1st_signature)[0])) ? $applicant->getMedia(Application::$media_collection_main_1st_signature)[0]->getPath() : null;
                 }
-                $destination_file = Applicant::$media_collection_main_1st_signature;
+                $destination_file = Application::$media_collection_main_1st_signature;
             } else {
                 if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                     $originalPdf = Storage::disk(env('MEDIA_DISK'))->url('Applications/Contracts/client_contracts/' . $applicant->contract);
@@ -751,8 +750,6 @@ class pdfBlock
             } else {
                 $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Application::$media_collection_main_1st_signature, 'local');
             }
-            // $theString = $pdf->Output('S');
-            // Storage::disk(env('MEDIA_DISK'))->put($destination_file, $theString, 'public');
         }
         $applicant->save();
     }

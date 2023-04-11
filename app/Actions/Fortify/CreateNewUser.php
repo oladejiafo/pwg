@@ -2,7 +2,7 @@
 
 namespace App\Actions\Fortify;
 
-use App\Models\User;
+use App\Client;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
@@ -38,7 +38,7 @@ class CreateNewUser implements CreatesNewUsers
         // }
         $agent_name=$input['agent'];
 
-        return User::create([
+        return Client::create([
             'name' => preg_replace("/[^A-Za-z- ]/", '', strip_tags($input['name'])),
             'email' => $input['email'],
             'phone_number' => preg_replace("/[^0-9+]/", '', strip_tags($input['phone_number'])),

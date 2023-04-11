@@ -3,30 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Client;
-use App\Models\User;
-use App\Models\Applicant;
+use App\Application;
 use App\Models\ApplicantExperience;
-use Illuminate\Support\Facades\Storage;
 use App\Models\JobCategoryOne;
 use App\Models\JobCategoryFour;
 use App\Models\JobCategoryThree;
 use App\Models\JobCategoryTwo;
-use App\Models\product;
 use Exception;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Response;
 use App\Mail\NotifyMail;
-use QuickBooksOnline\API\DataService\DataService;
 use DB;
 use Session;
-use Carbon\Carbon;
 use App\Helpers\pdfBlock;
-use App\Helpers\users as UserHelper;
 use App\Constant;
 
 class ApplicationController extends Controller
@@ -39,13 +32,13 @@ class ApplicationController extends Controller
             $completed = DB::table('applications')
                 ->where('destination_id', '=', $productId)
                 ->where('client_id', '=', Auth::user()->id)
+                ->orderBy('id', 'DESC')
                 ->first();
             if(isset($completed->application_stage_status)){
                 $levels = $completed->application_stage_status;
             } else {
                 $levels = 4;
             }
-            // $levels = $completed->application_stage_status;
             return view('user.application-next', compact('productId', 'levels'));
         } else {
             return back();
@@ -68,8 +61,9 @@ class ApplicationController extends Controller
             $client = Client::find(Auth::id());
             $client->addMedia($request->file('cv'))->toMediaCollection(Client::$media_collection_main_resume, env('MEDIA_DISK'));
 
-            $applicant = Applicant::where('client_id', Auth::id())
+            $applicant = Application::where('client_id', Auth::id())
                 ->where('destination_id', $request->product_id)
+                ->orderBy('id', 'DESC')
                 ->first();
 
             $applicant->application_stage_status = 3;
@@ -89,17 +83,18 @@ class ApplicationController extends Controller
                 $productId =  Session::get('myproduct_id');
             }
 
-            $client = User::find(Auth::id());
-            $applicant = Applicant::where('client_id', Auth::id())
+            $client = Client::find(Auth::id());
+            $applicant = Application::where('client_id', Auth::id())
                 ->where('destination_id', $productId)
+                ->orderBy('id', 'DESC')
                 ->first();
 
-            $dependent = User::where('family_member_id', Auth::id())
+            $dependent = Client::where('family_member_id', Auth::id())
                 ->where('is_dependent', 1)
                 ->pluck('id')
                 ->first();
 
-            $client = User::find(Auth::id()); //check this line ???
+            $client = Client::find(Auth::id()); //check this line ???
 
             return view('user.application-next', compact('client', 'productId', 'applicant', 'dependent'))->with('info', 'Data saved successfully!');
         } else {
@@ -145,7 +140,7 @@ class ApplicationController extends Controller
             }
             $client->save();
         }
-        User::where('id', Auth::id())
+        Client::where('id', Auth::id())
             ->update([
                 'name' => $request['first_name'],
                 'middle_name' => $request['middle_name'],
@@ -161,13 +156,12 @@ class ApplicationController extends Controller
             ]);
 
 
-        $applicant = Applicant::where('client_id', Auth::id())
+        $applicant = Application::where('client_id', Auth::id())
             ->where('destination_id', $request->product_id)
+            ->orderBy('id', 'DESC')
             ->first();
         $applicant->assigned_agent_id = ($request->agent_code != null) ? strip_tags($request->agent_code) : null;
         $applicant->sales_agent_name_by_client = ($request->agent_name != null) ? strip_tags($request->agent_name) : null;
-        // $applicant->sales_agent_phone_number_by_client = ($request->agent_phone != null) ? strip_tags($request->agent_phone) : null;
-        // $applicant->branch_id = ($request->agent_branch_id != null) ? strip_tags($request->agent_branch_id) : null;
         $applicant->save();
 
         return Response::json(array(
@@ -240,12 +234,13 @@ class ApplicationController extends Controller
     public function applicantReview($productId)
     {
         if (Auth::id()) {
-            $client = User::find(Auth::id());
-            $applicant = Applicant::where('client_id', Auth::id())
+            $client = Client::find(Auth::id());
+            $applicant = Application::where('client_id', Auth::id())
                 ->where('destination_id', $productId)
+                ->orderBy('id', 'DESC')
                 ->first();
-            $dependent = User::where('family_member_id', Auth::id())->where('is_dependent', 1)->first();
-            $children = User::where('family_member_id', Auth::id())->where('is_dependent', 2)->get();
+            $dependent = Client::where('family_member_id', Auth::id())->where('is_dependent', 1)->first();
+            $children = Client::where('family_member_id', Auth::id())->where('is_dependent', 2)->get();
             if ($applicant->application_stage_status != '5' && $applicant->application_stage_status != '4') {
                 return Redirect::route('applicant.details', $productId)->with('error', 'You have to complete applicant details first!');
             }
@@ -316,13 +311,12 @@ class ApplicationController extends Controller
         $client->company_name = $request->company_name;
         $client->employer_phone_number = $request->employer_phone;
         $client->employer_email = $request->employer_email;
-        $client->country_of_residence = $request->current_location;
-        // $client->embassy_appearance = $request->embassy_appearance;
-        
+        $client->country_of_residence = $request->current_location;        
         $client->save();
 
-        $applicant = Applicant::where('client_id', Auth::id())
+        $applicant = Application::where('client_id', Auth::id())
         ->where('destination_id', $request->product_id)
+        ->orderBy('id', 'DESC')
         ->first();
         $applicant->embassy_country = $request->embassy_appearance;
         $applicant->save();
@@ -382,9 +376,6 @@ class ApplicationController extends Controller
 
                 list($nName,$nExt) = explode('.',$name);
                 $schengenCopy1 = Auth::user()->id.'_'.time() . '_' . str_replace(' ', '_',  $name);
-
-                // $client->addMediaFromRequest('schengen_copy1')->withCustomProperties(['mime-type' => 'image/jpeg'])->preservingOriginal()->usingName($nName)->usingFileName($schengenCopy1)->toMediaCollection(User::$media_collection_main_schengen_visa.$x, env('MEDIA_DISK'));
-
                 $client
                 ->addMedia($copy1) //starting method
                 ->withCustomProperties(['mime-type' => 'image/jpeg']) //middle method
@@ -416,7 +407,7 @@ class ApplicationController extends Controller
         $job_category_two_id = ($request['job_category_two_id']) ?? JobCategoryThree::where('id', $request['job_category_three_id'])->pluck('job_category_two_id')->first();
         $job_category_one_id = ($request['job_category_one_id']) ?? JobCategoryTwo::where('id', $job_category_two_id)->pluck('job_category_one_id')->first();
         if ($request['userType'] == 'dependent') {
-            $data = User::where('family_member_id', Auth::id())
+            $data = Client::where('family_member_id', Auth::id())
                 ->where('is_dependent', 1)
                 ->first();
             if($data){
@@ -524,19 +515,18 @@ class ApplicationController extends Controller
      */
     public function applicantReviewSubmit(Request $request)
     {
-        $applicant =  Applicant::where('client_id', Auth::id())
+        $applicant =  Application::where('client_id', Auth::id())
             ->where('destination_id', $request->product_id)
+            ->orderBy('id', 'DESC')
             ->first();
 
-        Applicant::where('client_id', Auth::id())
+            Application::where('client_id', Auth::id())
             ->where('destination_id', $request->product_id)
             ->update([
                 'application_stage_status' => 5,
                 'status' => 'DOCUMENTS_SUBMITTED',
                 'processing_status' => 'NOT_STARTED'
             ]);
-
-        // $this->_updateApplicationStatus($request->product_id,$applicant['id'], $request['user']);
 
         // Send Notifications on This Payment ##############
         $email = Auth::user()->email;
@@ -575,7 +565,7 @@ class ApplicationController extends Controller
     {
         $response['status'] = false;
         try {
-            Applicant::where('id', $request['applicantId'])
+            Application::where('id', $request['applicantId'])
                 ->update(
                     [
                         'application_stage_status' => 4,
@@ -898,9 +888,9 @@ class ApplicationController extends Controller
             }
         }
 
-        User::where('family_member_id', Auth::id())->where('is_dependent', 2)->delete();
+        Client::where('family_member_id', Auth::id())->where('is_dependent', 2)->delete();
         for ($i = 1; $i <= $request['childrenCount']; $i++) {
-            $child = new User();
+            $child = new Client();
             $child->family_member_id = AUth::id();
             $child->is_dependent = 2;
             $child->name = $request['child_' . $i . '_first_name'];
@@ -911,7 +901,7 @@ class ApplicationController extends Controller
             $child->client_submission_status = 1;
             $child->save();
         }
-        Applicant::where('id', $request['applicant_id'])
+        Application::where('id', $request['applicant_id'])
             ->update(['application_stage_status' =>  4]);
 
         return Response::json(array(
@@ -921,7 +911,7 @@ class ApplicationController extends Controller
 
     private static function getFamilyId()
     {
-        return User::where('family_member_id', Auth::id())
+        return Client::where('family_member_id', Auth::id())
             ->where('is_dependent', 1)
             ->pluck('id')
             ->first();
@@ -937,18 +927,18 @@ class ApplicationController extends Controller
     private static function _updateApplicationStatus($productId, $applicantId, $user)
     {
         if ($user == 'applicant') {
-            User::where('id', Auth::id())
+            Client::where('id', Auth::id())
                 ->update([
                     'client_submission_status' => 1,
                 ]);
             return true;
         } else if ($user == 'family') {
-            User::where('family_member_id', Auth::id())
+            Client::where('family_member_id', Auth::id())
                 ->where('is_dependent', 1)
                 ->update(['client_submission_status' => 1]);
             return true;
         } else if ($user == 'children') {
-            User::where('family_member_id', Auth::id())
+            Client::where('family_member_id', Auth::id())
                 ->where('is_dependent', 2)
                 ->update(['client_submission_status' => 1]);
             return true;
@@ -958,15 +948,16 @@ class ApplicationController extends Controller
     public function checkApplicationStatus(Request $request)
     {
         $response['status'] = false;
-        $applicant = Applicant::where('client_id', Auth::id())
+        $applicant = Application::where('client_id', Auth::id())
             ->where('destination_id', $request->product_id)
+            ->orderBy('id','DESC')
             ->first();
 
         if ($applicant) {
             $response['status'] = true;
             if ($applicant['work_permit_category'] == 'FAMILY_PACKAGE') {
                 if (Auth::user()->is_spouse  == 1) {
-                    $family = User::where('family_member_id', Auth::id())
+                    $family = Client::where('family_member_id', Auth::id())
                         ->where('is_dependent', 1)
                         ->where('client_submission_status', 1)
                         ->first();
@@ -978,7 +969,7 @@ class ApplicationController extends Controller
                 }
 
                 if (Auth::user()->children_count > 0) {
-                    $children = User::where('family_member_id', Auth::id())
+                    $children = Client::where('family_member_id', Auth::id())
                         ->where('is_dependent', 2)
                         ->where('client_submission_status', 1)
                         ->get();
@@ -1047,7 +1038,7 @@ class ApplicationController extends Controller
 
     public function addReferrer(Request $request)
     {
-        $applicant = Applicant::where('client_id', Auth::id())
+        $applicant = Application::where('client_id', Auth::id())
                 ->where('destination_id', $request->product_id)
                 ->update([
                     'referrer_name_by_client' => $request->referrerName,

@@ -13,7 +13,7 @@ use GuzzleHttp\Exception\RequestException;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Mail\ResetPassword;
-use App\Models\Applicant;
+use App\Application;
 use App\Models\Referrer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -35,7 +35,7 @@ class AffiliatePartnerController extends Controller
             $mine = Affiliate::where('id', '=', $my_id)->first();
    
             $affiliates = Affiliate::where('refferer_code', '=', $mine->affiliate_code)->get();
-            $clients = Applicant::where('refferer_code', '=', $mine->affiliate_code)->get();
+            $clients = Application::where('refferer_code', '=', $mine->affiliate_code)->get();
 
             $tot_reff = $clients->count() + $affiliates->count();
             $cl_comm = 0;
@@ -258,7 +258,7 @@ class AffiliatePartnerController extends Controller
         if(Session::has('loginId')){
            $mine = Affiliate::where('id', '=', $aff_id)->first();
    
-           $clients = Applicant::where('refferer_code', '=', $mine->affiliate_code)->get();
+           $clients = Application::where('refferer_code', '=', $mine->affiliate_code)->get();
            $affiliates = Affiliate::where('refferer_code', '=', $mine->affiliate_code)->get();
            return view('affiliate.refferals', compact('affiliates','clients','mine'));
         } else {
@@ -270,7 +270,7 @@ class AffiliatePartnerController extends Controller
         if(Session::has('loginId')){
            $mine = Affiliate::where('id', '=', $aff_id)->first();
    
-           $clients = Applicant::where('refferer_code', '=', $mine->affiliate_code)->get();
+           $clients = Application::where('refferer_code', '=', $mine->affiliate_code)->get();
            $affiliates = Affiliate::where('refferer_code', '=', $mine->affiliate_code)->get();
            return view('affiliate.earned', compact('affiliates','clients','mine'));
         } else {

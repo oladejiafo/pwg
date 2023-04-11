@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Applicant;
+use App\Application;
 use App\Models\Client;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
@@ -41,9 +41,10 @@ class SendWorkPermit extends Command
      */
     public function handle()
     {
-        $applicants = Applicant::where('applications.created_at', '>=', '2023-02-01')
+        $applicants = Application::where('applications.created_at', '>=', '2023-02-01')
             ->where('is_workpermit_delivered', 0)
             ->where('work_permit_status', "WORK_PERMIT_RECEIVED")
+            ->orderby('id', 'DESC')
             ->get();
         foreach ($applicants as $applicant) {
             $response = [
@@ -74,7 +75,7 @@ class SendWorkPermit extends Command
                         ];
                         $email = Client::find($applicant['client_id'])->email;
                         Mail::to($email)->send(new NotifyMail($dataArray));
-                        $updateApplicant = Applicant::find($applicant['id']);
+                        $updateApplicant = Application::find($applicant['id']);
                         $updateApplicant->is_workpermit_delivered = 1;
                         $updateApplicant->save();
                     }

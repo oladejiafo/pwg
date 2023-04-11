@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 use App\payment;
 use App\Helpers\Quickbook;
 use App\Helpers\users as UserHelper;
-use App\Models\Applicant;
+use App\Application;
 use Carbon\Carbon;
 use Exception;
 
@@ -51,9 +51,10 @@ class QuickbookInvoice extends Command
                 ->get();
             Quickbook::updateTokenAccess();
             foreach ($payments as $payment) {
-                $client = Applicant::join('clients', 'clients.id', '=', 'applications.client_id')
+                $client = Application::join('clients', 'clients.id', '=', 'applications.client_id')
                     ->where('applications.id', $payment->application_id)
                     ->select('clients.*')
+                    ->orderby('id', 'DESC')
                     ->first();
                 $data = Quickbook::createMissedInvoice($payment, $client);
             }
