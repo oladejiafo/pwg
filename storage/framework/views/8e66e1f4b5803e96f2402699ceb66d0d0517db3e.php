@@ -100,7 +100,11 @@ if ($payall == 0 || empty($payall)) {
                 $pendMsg = ' - ' . $pends . ' over paid from previous payment';
             } else {
                 $payNow = $pdet->submission_payment_sub_total;
-                $payNoww = $pdet->submission_payment_sub_total;
+                if($pays->coupon_code != null){
+                    $payNow = $pdet->submission_payment_sub_total - $pays->submission_payment_discount;
+                } else {
+                    $payNoww = $pdet->submission_payment_sub_total;
+                }
                 $pendMsg = '';
             }
         }
@@ -109,8 +113,14 @@ if ($payall == 0 || empty($payall)) {
         $outsec = 0;
 
         $pendMsg = 'You have ' . $outsub . ' balance on submission payment.';
-        $payNow = $outsub; //$pdet->submission_payment_sub_total;
-        $payNoww = $outsub;
+        if($pays->coupon_code != null){
+            $payNoww = $pdet->submission_payment_sub_total - $pays->submission_payment_discount;
+            $payNow = $outsub  - $pays->submission_payment_discount; //$pdet->submission_payment_sub_total;
+        } else {
+            $payNoww = $pdet->outsub;
+            $payNow = $outsub; //$pdet->submission_payment_sub_total;
+        }
+        // $payNoww = $outsub;
         $whichPayment = 'SUBMISSION';
     } elseif (isset($pays) && $pays->first_payment_status == 'PAID' && $pays->second_payment_status != 'PAID' && empty($pdet->submission_payment_sub_total)) {
         $outsec = $pays->second_payment_price - $pays->second_payment_paid;
@@ -133,8 +143,13 @@ if ($payall == 0 || empty($payall)) {
                 $payNoww = $pdet->second_payment_sub_total - $pends;
                 $pendMsg = ' - ' . $pends . ' over paid from previous payment';
             } else {
-                $payNow = $pdet->second_payment_sub_total;
-                $payNoww = $pdet->second_payment_sub_total;
+                if($pays->coupon_code != null){
+                    $payNoww = $pdet->second_payment_sub_total - $pays->second_payment_discount;
+                    $payNow = $pdet->second_payment_sub_total - $pays->second_payment_discount;
+                } else {
+                    $payNoww = $pdet->second_payment_sub_total;
+                    $payNow = $pdet->second_payment_sub_total;
+                }
                 $pendMsg = '';
             }
         }
@@ -420,6 +435,7 @@ $totalPay = round($payNow - $discount + $vat, 2);
 
                             <span id="discountValue"><?php echo e(number_format($discount, 2)); ?> </span>
                             <span style="font-size:11px" id="discountVal">AED</span>
+                            <input type="hidden" name="coupon" class="couponDetails">
                             <input type="hidden" name="discount" id="myDiscount" value="<?php echo e($discount); ?>">
                             <input type="hidden" name="discountCode" id="myDiscountCode" value="">
 
@@ -428,13 +444,18 @@ $totalPay = round($payNow - $discount + $vat, 2);
                     </div>
                 <?php else: ?>
                     <div class="total-sec row mt-3 showDiscount" id="showDiscount">
-                        
-                        <div class="right-section col-6" align="right">
+                        <div class="left-section col-6">
 
-                            
+                            Discount (<span
+                                id="discountPercent"><?php echo e(isset($discountPercent) ? $discountPercent : 0); ?> </span>)
+
+                        </div>
+                        <div class="right-section col-6" align="right">
+                            <input type="hidden" name="coupon[]" class="couponDetails">
+                            <span id="discountValue"><?php echo e(number_format($discount, 2)); ?> </span>
+                            <span style="font-size:11px" id="discountVal">AED</span>
                             <input type="hidden" name="discount" id="myDiscount" value="<?php echo e($discount); ?>">
                             <input type="hidden" name="discountCode" id="myDiscountCode" value="">
-
                         </div>
 
                     </div>
@@ -564,10 +585,12 @@ $totalPay = round($payNow - $discount + $vat, 2);
     <input type="hidden" name="first_p" value="<?php echo e($pdet->first_payment_sub_total); ?>">
     <input type="hidden" name="second_p" value="<?php echo e($pdet->submission_payment_sub_total); ?>">
     <input type="hidden" name="third_p" value="<?php echo e($pdet->second_payment_sub_total); ?>">
+    <input type="hidden" name="signed"  class="dataUrl" value="">
     
 
     <div class="row mt4">
         <div class="col-lg-6 col-md-6 col-sm-12" style="margin-top: 30px">
+            <input type="checkbox" name="agree" required autocomplete="off">
             <span>By continuing you agree to the <a href="<?php echo e(route('terms')); ?>"
                     style="color:#000;margin:30px 0;font-size: 15px" target="_blank"><u>Terms &
                         Conditions</u></a></span>
@@ -586,7 +609,7 @@ $totalPay = round($payNow - $discount + $vat, 2);
     $(document).ready(function() {
 
         $('#partial').click(function() {
-
+            $('.coupon').show();
             $.ajax({
                 url: '<?php echo e(route('payType')); ?> ',
                 method: 'POST',
@@ -597,6 +620,7 @@ $totalPay = round($payNow - $discount + $vat, 2);
                 success: function(data) {
 
                     $("#card-payment").load(window.location.href + " #card-payment > *");
+                    $("#bank-payment").load(window.location.href + " #bank-payment > *");
                     $('#bank-payment').hide();
 
                     if ($('input[name="payoption"]:checked').val() == "Card") {
@@ -613,6 +637,8 @@ $totalPay = round($payNow - $discount + $vat, 2);
 
 
         $('#full').click(function() {
+            
+            $('.coupon').hide();
             $.ajax({
                 url: '<?php echo e(route('payType')); ?> ',
                 method: 'POST',
@@ -623,9 +649,9 @@ $totalPay = round($payNow - $discount + $vat, 2);
                 success: function(data) {
 
                     $("#card-payment").load(window.location.href + " #card-payment > *");
-
+                    $("#bank-payment").load(window.location.href + " #bank-payment > *");
                     if ($('input[name="payoption"]:checked').val() == "Card") {
-
+                        
                         $('#bank-payment').hide();
                         $('#card-payment').show();
                     } else {
@@ -663,6 +689,7 @@ $totalPay = round($payNow - $discount + $vat, 2);
                 ppyall = 0;
             }
             // alert(ppyall);
+            console.log(kidd, parents);
             $.ajax({
                 // type: 'GET',
                 url: "<?php echo e(route('packageType',$data->id)); ?>",
@@ -707,37 +734,38 @@ $totalPay = round($payNow - $discount + $vat, 2);
     });
 
     function saveSign() {
-        var Signed = '<?php echo e(is_object($pays) ? $pays->contract_1st_signature_status : null); ?>';
-        var pays = '<?php echo e(is_object($pays)); ?>';
-        if (signaturePad.isEmpty() && (pays != 1 && Signed != "SIGNED")) {
-            toastr.error("Please provide a signature.");
-        } else {
-            const dataURL = signaturePad.toDataURL();
+        
+            var Signed = '<?php echo e(is_object($pays) ? $pays->contract_1st_signature_status : null); ?>';
+            var pays = '<?php echo e(is_object($pays)); ?>';
+            if (signaturePad.isEmpty() && (pays != 1 && Signed != "SIGNED")) {
+                // toastr.error("Please provide a signature.");
+            } else {
+                const dataURL = signaturePad.toDataURL();
+                $('.dataUrl').val(dataURL);
+                $.ajax({
+                    type: 'POST',
+                    url: "<?php echo e(url('upload_signature')); ?>",
+                    data: {
+                        "_token": "<?php echo e(csrf_token()); ?>",
+                        signed: dataURL,
+                        payall: '<?php echo e($payall); ?>',
+                        response: 1
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        if (data.status) {
+                            toastr.success("Signature updated successfully!");
 
-            $.ajax({
-                type: 'POST',
-                url: "<?php echo e(url('upload_signature')); ?>",
-                data: {
-                    "_token": "<?php echo e(csrf_token()); ?>",
-                    signed: dataURL,
-                    payall: '<?php echo e($payall); ?>',
-                    response: 1
-                },
-                success: function(data) {
-                    console.log(data);
-                    if (data) {
-                        // toastr.success("Signature updated successfully!");
+                            $('.contract-signature').hide();
+                            //  location.href = "<?php echo e(url('payment_form')); ?>/" + '<?php echo e($data->id); ?>';
+                        } else {
+                            alert('Something went wrong');
+                        }
 
-                        $('.contract-signature').hide();
-                        //  location.href = "<?php echo e(url('payment_form')); ?>/" + '<?php echo e($data->id); ?>';
-                    } else {
-                        alert('Something went wrong');
-                    }
-
-                },
-                error: function(error) {}
-            });
-        }
+                    },
+                    error: function(error) {}
+                });
+            }
 
     }
 </script>
