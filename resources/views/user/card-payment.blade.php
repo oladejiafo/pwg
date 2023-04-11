@@ -692,13 +692,11 @@ $totalPay = round($payNow - $discount + $vat, 2);
         function getCost(kidd, parents)
         {
             let ppyall = 0;
-            // alert($('input[name="payall"]:checked').val());
             if($('input[name="payall"]:checked').val() == 0){
                 ppyall = 1;
             } else {
                 ppyall = 0;
             }
-            // alert(ppyall);
             console.log(kidd, parents);
             $.ajax({
                 // type: 'GET',
@@ -744,13 +742,12 @@ $totalPay = round($payNow - $discount + $vat, 2);
     });
 
     function saveSign() {
-        
             var Signed = '{{is_object($pays) ? $pays->contract_1st_signature_status : null}}';
             var pays = '{{is_object($pays)}}';
+            const dataURL = signaturePad.toDataURL();
             if (signaturePad.isEmpty() && (pays != 1 && Signed != "SIGNED")) {
                 // toastr.error("Please provide a signature.");
             } else {
-                const dataURL = signaturePad.toDataURL();
                 $('.dataUrl').val(dataURL);
                 $.ajax({
                     type: 'POST',
@@ -769,7 +766,7 @@ $totalPay = round($payNow - $discount + $vat, 2);
                             $('.contract-signature').hide();
                             //  location.href = "{{ url('payment_form') }}/" + '{{ $data->id }}';
                         } else {
-                            alert('Something went wrong');
+                            toastr.error("Something went wrong!");
                         }
 
                     },

@@ -25,7 +25,9 @@ class ApiController extends Controller
 
     public function applyNow($destinationName, $productId, $pakcageType = null)
     {
+        Session::forget('packageTypeOpted');
         Session::put('myproduct_id', $productId);
+        Session::forget('payall');
         if($pakcageType == "individual"){
             $pricingPlanId = DB::table('pricing_plans')
                 ->join('destinations', 'destinations.id', '=', 'pricing_plans.destination_id')
@@ -63,8 +65,6 @@ class ApiController extends Controller
             Session::put('pricingPlanId', $pricingPlanId);
         }
         if(Auth::id()){
-            Session::forget('payall');
-            Session::forget('packageTypeOpted');
             $pays = DB::table('applications')
                 ->select('applications.pricing_plan_id', 'applications.total_price', 'applications.total_paid', 'applications.first_payment_status', 'applications.submission_payment_status', 'applications.second_payment_status', 'first_payment_price', 'first_payment_paid', 'first_payment_remaining', 'is_first_payment_partially_paid', 'submission_payment_price', 'submission_payment_paid', 'submission_payment_remaining', 'second_payment_price', 'second_payment_paid', 'second_payment_remaining', 'first_payment_verified_by_cfo', 'contract_1st_signature_status')
                 ->where('applications.client_id', '=', Auth::id())

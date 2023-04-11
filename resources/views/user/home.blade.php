@@ -32,8 +32,8 @@
     }
 
     .package-type .indpackage ul li::before {
-        background: #FACB08;
-        color: #000;
+        background: #006ACE;
+        color: #fff;
     }
 
     .package-type .fampackage ul li::before {
@@ -73,7 +73,23 @@
         padding:0 5%; 
         margin:3px 0 10px 0;
     }
-   
+
+    .polandDiv, .polandFamilyDiv, .germanyDiv, .maltaDiv{
+        height:270px;
+    }
+
+    .canadaDiv {
+        height: 280px;
+    }
+
+    .czechDiv {
+        height: 267px;
+    }
+
+    .saved .save {
+        font-size:10px;
+    }
+
     @media (max-width: 1100px)
     {
         .package-type .price
@@ -146,7 +162,7 @@
 
         .package-type .saved .col-5,
         .package-type .saved .col-7 {
-            font-size: 12px !important;            
+            font-size: 10px !important;            
         }
         .package {
             padding: 20px 0% !important;
@@ -218,12 +234,22 @@
         }
     }
 
+    @media (min-width: 1024px) {
+        .saved .save {
+            font-size:8px;
+        }
+
+        .packageHead b {
+            font-size: 13px;
+        }
+    }
+
 </style>
 
 
 @section('content')
 
-    <div class="container" style="margin-top: 100px;">
+    <div class="container" style="margin-top: 100px; margin-bottom: 85px;">
         <div class="col-12">
             <div align="center" class="package">
                 <div class="header">
@@ -235,7 +261,9 @@
                 <br>
                 <div class="row" style="margin-left:auto; margin-right:auto; text-align:center;justify-content: center; display: flex;">
                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4" style="display:inline-block;padding-bottom:25px;">
-                        <img src="{{asset('user/images/polandIndividual.png')}}" width="100%" alt="PWG Group">
+                        <div class="polandDiv">
+                            <img src="{{asset('user/images/polandIndividual.png')}}" width="100%" alt="PWG Group" height="100%">
+                        </div>
                         <div class="package-type blue-collar" data-bs-toggle="modalXX" data-bs-target="#individualModalXX">
                             <div class="content">
                                 <div>
@@ -252,10 +280,10 @@
                                         <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 regular" align="left"><b>REGULAR PRICE</b> <br> <span style="font-size:12px">AED</span> <span style="font-size:18px"><del>{{number_format($blue_cost_old,0)}}</del></span></div>
                                     </div>
                                     <div class="row saved">
-                                        <div class="col-5" style="background: #000; border-radius:30px 0 0 30px;color:#fff; font-size:10px;font-weight:600; padding-block: 5px">SAVE AED {{number_format($blue_save,0)}}</div>
-                                        <div class="col-7" style="background: #FACB08; border-radius:0 30px 30px 0;color:#000; font-size:10px; font-weight:600; padding-block: 5px">SALES ENDS 7 DAYS</div>
+                                        <div class="col-5 save" style="background: #000; border-radius:30px 0 0 30px;color:#fff; font-weight:600; padding-block: 5px">SAVE AED {{number_format($blue_save,0)}}</div>
+                                        <div class="col-7 days" style="background: #FACB08; border-radius:0 30px 30px 0;color:#000; font-size:10px; font-weight:600; padding-block: 5px">SALES ENDS 7 DAYS</div>
                                     </div>
-                                    <div class="row" style="border-block: 1px solid #000;padding:10px; margin:15px">
+                                    <div class="row packageHead" style="border-block: 1px solid #000;padding:10px; margin:15px">
                                         <div class="col"><b>INDIVIDUAL PACKAGE</b></div>
                                     </div>
                                     <div class="indpackage">
@@ -295,7 +323,7 @@
                                             @if(isset($started) && $pricingPlan['poland_indi']->destination_id == $started->destination_id && $pricingPlan['poland_indi']->id == $started->pricing_plan_id)
                                                 <a class="btn btn-primary" style="width: 100%;font-size: 14px;" href="{{route('myapplication')}}"><span class="done">Already Applied</span><i class="fa fa-check-circle" style="font-size:14px; color:green"></i></a>
                                             @else
-                                                <button class="btn btn-primary" style="width: 100%;font-size: 24px;background: #FACB08; border-color:#FACB08" @if(isset($started->destination_id)) onclick="toastr.error('You have an active application already.','',{positionClass: 'toast-top-center', closeButton: 'true', width: '400px'})" type="button" @else type="submit" @endif>APPLY NOW</button>
+                                                <button class="btn btn-primary" style="width: 100%;font-size: 24px;background: #006ACE; border-color:#006ACE; color:#fff;" @if(isset($started->destination_id)) onclick="toastr.error('You have an active application already.','',{positionClass: 'toast-top-center', closeButton: 'true', width: '400px'})" type="button" @else type="submit" @endif>APPLY NOW</button>
                                             @endif
                                         </form>
                                     </div>
@@ -305,7 +333,9 @@
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4" style="display:inline-block;padding-bottom:25px;">
-                        <img src="{{asset('user/images/maltapackage.png')}}" width="100%" alt="PWG Group">
+                        <div class="maltaDiv">
+                            <img src="{{asset('user/images/maltapackage.png')}}" width="100%" alt="PWG Group" height="100%">
+                        </div>
                         <div class="package-type blue-collar" data-bs-toggle="modalXX" data-bs-target="#individualModalXX">
                             <div class="content">
                                 <div>
@@ -322,10 +352,10 @@
                                         <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 regular" align="left"><b>REGULAR PRICE</b> <br> <span style="font-size:12px">AED</span> <span style="font-size:18px"><del>{{number_format($blue_cost_old,0)}}</del></span></div>
                                     </div>
                                     <div class="row saved">
-                                        <div class="col-5" style="background: #000; border-radius:30px 0 0 30px;color:#fff; font-size:10px;font-weight:600; padding-block: 5px">SAVE AED {{number_format($blue_save,0)}}</div>
+                                        <div class="col-5 save" style="background: #000; border-radius:30px 0 0 30px;color:#fff;font-weight:600; padding-block: 5px">SAVE AED {{number_format($blue_save,0)}}</div>
                                         <div class="col-7" style="background: #FACB08; border-radius:0 30px 30px 0;color:#000; font-size:10px; font-weight:600; padding-block: 5px">SALES ENDS 7 DAYS</div>
                                     </div>
-                                    <div class="row" style="border-block: 1px solid #000;padding:10px; margin:15px">
+                                    <div class="row packageHead" style="border-block: 1px solid #000;padding:10px; margin:15px">
                                         <div class="col"><b>INDIVIDUAL PACKAGE</b></div>
                                     </div>
                                     <div class="maltaIndpackage">
@@ -375,7 +405,9 @@
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4" style="display:inline-block;padding-bottom:25px;">
-                        <img src="{{asset('user/images/czechpackage.png')}}" width="100%" alt="PWG Group" height="273px">
+                        <div class="czechDiv">
+                            <img src="{{asset('user/images/czechpackage.png')}}" width="100%" alt="PWG Group" height="100%">
+                        </div>
                         <div class="package-type blue-collar" data-bs-toggle="modalXX" data-bs-target="#individualModalXX">
                             <div class="content">
                                 <div>
@@ -392,10 +424,10 @@
                                         <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 regular" align="left"><b>REGULAR PRICE</b> <br> <span style="font-size:12px">AED</span> <span style="font-size:18px"><del>{{number_format($blue_cost_old,0)}}</del></span></div>
                                     </div>
                                     <div class="row saved">
-                                        <div class="col-5" style="background: #000; border-radius:30px 0 0 30px;color:#fff; font-size:10px;font-weight:600; padding-block: 5px">SAVE AED {{number_format($blue_save,0)}}</div>
+                                        <div class="col-5 save" style="background: #000; border-radius:30px 0 0 30px;color:#fff;font-weight:600; padding-block: 5px">SAVE AED {{number_format($blue_save,0)}}</div>
                                         <div class="col-7" style="background: #FACB08; border-radius:0 30px 30px 0;color:#000; font-size:10px; font-weight:600; padding-block: 5px">SALES ENDS 7 DAYS</div>
                                     </div>
-                                    <div class="row" style="border-block: 1px solid #000;padding:10px; margin:15px">
+                                    <div class="row packageHead" style="border-block: 1px solid #000;padding:10px; margin:15px">
                                         <div class="col"><b>INDIVIDUAL PACKAGE</b></div>
                                     </div>
                                     <div class="czechIndpackage">
@@ -445,7 +477,9 @@
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4" style="display:inline-block;padding-bottom:25px;">
-                        <img src="{{asset('user/images/polandFamily.png')}}" width="100%" alt="PWG Group" height="272px">
+                        <div class="polandFamilyDiv">
+                            <img src="{{asset('user/images/polandFamily.png')}}" width="100%" alt="PWG Group" height="100%">
+                        </div>
                         <div class="package-type blue-collar" data-bs-toggle="modalXX" data-bs-target="#individualModalXX">
                             <div class="content">
                                 <div>
@@ -462,10 +496,10 @@
                                         <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 regular" align="left"><b>REGULAR PRICE</b> <br> <span style="font-size:12px">AED</span> <span style="font-size:18px"><del>{{number_format($blue_cost_old,0)}}</del></span></div>
                                     </div>
                                     <div class="row saved">
-                                        <div class="col-5" style="background: #000; border-radius:30px 0 0 30px;color:#fff; font-size:10px;font-weight:600; padding-block: 5px">SAVE AED {{number_format($blue_save,0)}}</div>
+                                        <div class="col-5 save" style="background: #000; border-radius:30px 0 0 30px;color:#fff;font-weight:600; padding-block: 5px">SAVE AED {{number_format($blue_save,0)}}</div>
                                         <div class="col-7" style="background: #FACB08; border-radius:0 30px 30px 0;color:#000; font-size:10px; font-weight:600; padding-block: 5px">SALES ENDS 7 DAYS</div>
                                     </div>
-                                    <div class="row" style="border-block: 1px solid #000;padding:10px; margin:15px">
+                                    <div class="row packageHead" style="border-block: 1px solid #000;padding:10px; margin:15px">
                                         <div class="col"><b>FAMILY PACKAGE</b></div>
                                     </div>
                                     <div class="fampackage ">
@@ -517,9 +551,11 @@
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4" style="display:inline-block;padding-bottom:25px;">
-                        <img src="{{asset('user/images/canadaPackage.png')}}" width="100%" alt="PWG Group">
+                        <div class="canadaDiv">
+                            <img src="{{asset('user/images/canadaPackage.png')}}" width="100%" alt="PWG Group" height="100%">
+                        </div>
                         <div class="package-type blue-collar" data-bs-toggle="modalXX" data-bs-target="#individualModalXX">
-                            <div class="content">
+                            <div class="content" style="margin-top: -10px;">
                                 <div>
                                     <div class="row price">
                                         @php $blue_cost_old = $pricingPlan['canada_indi']->first_payment_sub_total*1.2995; $blue_save= $blue_cost_old - $pricingPlan['canada_indi']->first_payment_sub_total;@endphp
@@ -534,10 +570,10 @@
                                         <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 regular" align="left"><b>REGULAR PRICE</b> <br> <span style="font-size:12px">AED</span> <span style="font-size:18px"><del>{{number_format($blue_cost_old,0)}}</del></span></div>
                                     </div>
                                     <div class="row saved">
-                                        <div class="col-5" style="background: #000; border-radius:30px 0 0 30px;color:#fff; font-size:10px;font-weight:600; padding-block: 5px">SAVE AED {{number_format($blue_save,0)}}</div>
+                                        <div class="col-5 save" style="background: #000; border-radius:30px 0 0 30px;color:#fff;font-weight:600; padding-block: 5px">SAVE AED {{number_format($blue_save,0)}}</div>
                                         <div class="col-7" style="background: #FACB08; border-radius:0 30px 30px 0;color:#000; font-size:10px; font-weight:600; padding-block: 5px">SALES ENDS 7 DAYS</div>
                                     </div>
-                                    <div class="row" style="border-block: 1px solid #000;padding:10px; margin:15px">
+                                    <div class="row packageHead" style="border-block: 1px solid #000;padding:10px; margin:15px">
                                         <div class="col"><b>INDIVIDUAL PACKAGE</b></div>
                                     </div>
                                     <div class="canadaPackage ">
@@ -587,7 +623,9 @@
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4" style="display:inline-block;padding-bottom:25px;">
-                        <img src="{{asset('user/images/germanypackage.png')}}" width="100%" alt="PWG Group" style="height: 272px;">
+                        <div class="germanyDiv">
+                            <img src="{{asset('user/images/germanypackage.png')}}" width="100%" alt="PWG Group" height="100%">
+                        </div>
                         <div class="package-type blue-collar" data-bs-toggle="modalXX" data-bs-target="#individualModalXX">
                             <div class="content">
                                 <div>
@@ -604,10 +642,10 @@
                                         <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 regular" align="left"><b>REGULAR PRICE</b> <br> <span style="font-size:12px">AED</span> <span style="font-size:18px"><del>{{number_format($blue_cost_old,0)}}</del></span></div>
                                     </div>
                                     <div class="row saved">
-                                        <div class="col-5" style="background: #000; border-radius:30px 0 0 30px;color:#fff; font-size:10px;font-weight:600; padding-block: 5px">SAVE AED {{number_format($blue_save,0)}}</div>
+                                        <div class="col-5 save" style="background: #000; border-radius:30px 0 0 30px;color:#fff;font-weight:600; padding-block: 5px">SAVE AED {{number_format($blue_save,0)}}</div>
                                         <div class="col-7" style="background: #FACB08; border-radius:0 30px 30px 0;color:#000; font-size:10px; font-weight:600; padding-block: 5px">SALES ENDS 7 DAYS</div>
                                     </div>
-                                    <div class="row" style="border-block: 1px solid #000;padding:10px; margin:15px">
+                                    <div class="row packageHead" style="border-block: 1px solid #000;padding:10px; margin:15px">
                                         <div class="col"><b>INDIVIDUAL PACKAGE</b></div>
                                     </div>
                                     <div class="germanyIndpackage">

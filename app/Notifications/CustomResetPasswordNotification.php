@@ -5,7 +5,7 @@ namespace App\Notifications;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Lang;
-use App\Models\User;
+use App\Client;
 
 class CustomResetPasswordNotification extends Notification
 {
@@ -78,7 +78,7 @@ class CustomResetPasswordNotification extends Notification
         // return view('auth.reset-password');
         $otp = rand(100000,999999);
 
-        User::where('email', $email)
+        Client::where('email', $email)
             ->update([
                 'otp' => $otp
             ]);

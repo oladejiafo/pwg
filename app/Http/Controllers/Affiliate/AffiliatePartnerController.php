@@ -13,7 +13,7 @@ use GuzzleHttp\Exception\RequestException;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Mail\ResetPassword;
-use App\Models\Applicant;
+use App\Application;
 use App\Models\Referrer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -35,7 +35,7 @@ class AffiliatePartnerController extends Controller
             $mine = Affiliate::where('id', '=', $my_id)->first();
    
             $affiliates = Affiliate::where('refferer_code', '=', $mine->affiliate_code)->get();
-            $clients = Applicant::where('refferer_code', '=', $mine->affiliate_code)->get();
+            $clients = Application::where('refferer_code', '=', $mine->affiliate_code)->get();
 
             $tot_reff = $clients->count() + $affiliates->count();
             $cl_comm = 0;
@@ -258,9 +258,8 @@ class AffiliatePartnerController extends Controller
         if(Session::has('loginId')){
            $mine = Affiliate::where('id', '=', $aff_id)->first();
    
-           $clients = Applicant::where('refferer_code', '=', $mine->affiliate_code)->get();
+           $clients = Application::where('refferer_code', '=', $mine->affiliate_code)->get();
            $affiliates = Affiliate::where('refferer_code', '=', $mine->affiliate_code)->get();
-           // dd($clients->count());
            return view('affiliate.refferals', compact('affiliates','clients','mine'));
         } else {
            return back();
@@ -271,9 +270,8 @@ class AffiliatePartnerController extends Controller
         if(Session::has('loginId')){
            $mine = Affiliate::where('id', '=', $aff_id)->first();
    
-           $clients = Applicant::where('refferer_code', '=', $mine->affiliate_code)->get();
+           $clients = Application::where('refferer_code', '=', $mine->affiliate_code)->get();
            $affiliates = Affiliate::where('refferer_code', '=', $mine->affiliate_code)->get();
-           // dd($clients->count());
            return view('affiliate.earned', compact('affiliates','clients','mine'));
         } else {
            return back();
@@ -382,7 +380,6 @@ class AffiliatePartnerController extends Controller
         $client = new Client();
        
         $res = $client->request('POST', env('ADMIN_URL').'/api/get-news-media');
-        // dd($res);
         $getNews = $res->getBody()->getContents();
         $news = json_decode($getNews);
         return view('affiliate.news', compact('news'));
@@ -414,7 +411,6 @@ class AffiliatePartnerController extends Controller
                         ->get()
                         ->toArray();
         foreach($presents as $present){
-            // dd(storage_path('presentation/' . $present['image_url']));
             $present['image_url'] =  public_path('/images/affiliate/'.$present['image_url']);
         }
         return $presents;

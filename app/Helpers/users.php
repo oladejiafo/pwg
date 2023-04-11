@@ -231,7 +231,6 @@ class users
                     ->where('pricing_plans.status', 'CURRENT')
                     ->select('pricing_plans.*', 'destinations.name')
                     ->get();
-        
         foreach($pricingPlans as $plan) {
             if(($plan->no_of_parent == 0 || $plan->no_of_parent == null) && ($plan->no_of_children == 0 || $plan->no_of_children == null) && ($plan->name == 'Poland')){
                 $response['poland_indi'] = $plan;

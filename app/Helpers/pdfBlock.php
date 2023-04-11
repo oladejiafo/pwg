@@ -6,8 +6,7 @@ use Codedge\Fpdf\Fpdf\Fpdf;
 use setasign\Fpdi\Fpdi;
 use setasign\Fpdi\PdfReader;
 use App\Models\product;
-use App\Models\User;
-use App\Models\Applicant;
+use App\Client;
 use App\Application;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -78,7 +77,7 @@ class pdfBlock
 
             $pdf->AddPage();
             $template = $pdf->importPage($pageNo);
-            // $client = User::find(Auth::id());
+            // $client = Client::find(Auth::id());
             // use the imported page and place it at point 20,30 with a width of 170 mm
             $pdf->useTemplate($template, 10, 10, 200);
             //Select Arial italic 8
@@ -171,47 +170,47 @@ class pdfBlock
                 $pdf->SetXY(50, 99);
                 $pdf->Write(2, $client->email);
             } else if ($pageNo == 1 && $product == Constant::canada) {
-                if ($package == Constant::CanadaExpressEntry) {
-                    //Date
-                    $pdf->SetXY(30, 40);
-                    $pdf->Write(2, date('d/m/Y'));
+                // if ($package == Constant::CanadaExpressEntry) {
+                //     //Date
+                //     $pdf->SetXY(30, 40);
+                //     $pdf->Write(2, date('d/m/Y'));
 
-                    //Place
-                    $pdf->SetXY(30, 54);
-                    $pdf->Write(2, 'DUBAI, UAE');
+                //     //Place
+                //     $pdf->SetXY(30, 54);
+                //     $pdf->Write(2, 'DUBAI, UAE');
 
-                    //Name
-                    $pdf->SetXY(65, 116);
-                    $pdf->Write(2, $client->name . ' ' . $client->sur_name);
+                //     //Name
+                //     $pdf->SetXY(65, 116);
+                //     $pdf->Write(2, $client->name . ' ' . $client->sur_name);
 
-                    //Phone
-                    $pdf->SetXY(65, 155);
-                    $pdf->Write(2, $client->phone_number);
+                //     //Phone
+                //     $pdf->SetXY(65, 155);
+                //     $pdf->Write(2, $client->phone_number);
 
-                    //email
-                    $pdf->SetXY(65, 169);
-                    $pdf->Write(2, $client->email);
-                } else if ($package == Constant::CanadaStudyPermit) {
-                    //Date
-                    $pdf->SetXY(30, 40);
-                    $pdf->Write(2, date('d/m/Y'));
+                //     //email
+                //     $pdf->SetXY(65, 169);
+                //     $pdf->Write(2, $client->email);
+                // } else if ($package == Constant::CanadaStudyPermit) {
+                //     //Date
+                //     $pdf->SetXY(30, 40);
+                //     $pdf->Write(2, date('d/m/Y'));
 
-                    //Place
-                    $pdf->SetXY(30, 54);
-                    $pdf->Write(2, 'DUBAI, UAE');
+                //     //Place
+                //     $pdf->SetXY(30, 54);
+                //     $pdf->Write(2, 'DUBAI, UAE');
 
-                    //Name
-                    $pdf->SetXY(65, 113);
-                    $pdf->Write(2, $client->name . ' ' . $client->sur_name);
+                //     //Name
+                //     $pdf->SetXY(65, 113);
+                //     $pdf->Write(2, $client->name . ' ' . $client->sur_name);
 
-                    //Phone
-                    $pdf->SetXY(65, 152);
-                    $pdf->Write(2, $client->phone_number);
+                //     //Phone
+                //     $pdf->SetXY(65, 152);
+                //     $pdf->Write(2, $client->phone_number);
 
-                    //email
-                    $pdf->SetXY(65, 166);
-                    $pdf->Write(2, $client->email);
-                } else if ($package == Constant::BlueCollar) {
+                //     //email
+                //     $pdf->SetXY(65, 166);
+                //     $pdf->Write(2, $client->email);
+                // } else if ($package == Constant::BlueCollar) {
                     //Date
                     $pdf->SetXY(30, 40);
                     $pdf->Write(2, date('d/m/Y'));
@@ -231,7 +230,7 @@ class pdfBlock
                     //email
                     $pdf->SetXY(65, 170);
                     $pdf->Write(2, $client->email);
-                }
+                // }
             }
 
             if ($pageNo == 4) {
@@ -247,6 +246,7 @@ class pdfBlock
 
     public static function attachSignature($originalPdf, $signature, $product, $paymentType, $applicant, $client)
     {
+        
         $pdf = new \setasign\Fpdi\Fpdi();
         $fileContent = file_get_contents($originalPdf, 'rb');
         $pagecount = $pdf->setSourceFile(StreamReader::createByString($fileContent));
@@ -264,7 +264,7 @@ class pdfBlock
                 if ($pageNo == 4) {
                     // if ($paymentType == 'FIRST' || $paymentType == 'Full-Outstanding Payment') {
                         //signature
-                        $pdf->Image($signature, 40, 217, 25, 20, 'PNG');
+                        $pdf->Image($signature, 45, 217, 25, 20, 'PNG');
 
                         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name .'_'.$product->name.'_first_payment_contract.pdf';
                     // }
@@ -563,7 +563,7 @@ class pdfBlock
 
             $pdf->AddPage();
             $template = $pdf->importPage($pageNo);
-            $client = User::find($clientId);
+            $client = Client::find($clientId);
             // use the imported page and place it at point 20,30 with a width of 170 mm
             $pdf->useTemplate($template, 10, 10, 200);
             //Select Arial italic 8
@@ -599,7 +599,7 @@ class pdfBlock
     public static function mapMoreInfo($complete)
     {
         $applicant = Application::find($complete->id);
-        $client = User::find($applicant->client_id);
+        $client = Client::find($applicant->client_id);
         $originalPdf = null;
         $destination_file = null;
         $product = product::find($applicant->destination_id)->name;
@@ -611,34 +611,43 @@ class pdfBlock
             } else {
                 $originalPdf = (isset($applicant->getMedia(Application::$media_collection_main_1st_signature)[0])) ? $applicant->getMedia(Application::$media_collection_main_1st_signature)[0]->getPath() : null;
             }
-            $destination_file = Applicant::$media_collection_main_1st_signature;
+            $destination_file = Application::$media_collection_main_1st_signature;
         } else {
-            if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
-                $originalPdf = Storage::disk(env('MEDIA_DISK'))->url('Applications/Contracts/client_contracts/' . $applicant->contract);
-            } else {
-                $originalPdf = Storage::disk('local')->url('Applications/Contracts/client_contracts/' . $applicant->contract);
-                $originalPdf = ltrim($originalPdf, $originalPdf[0]);
-            }
-            if ($productName == Constant::poland) {
-                $newFileName = 'contract' . $client->id . '-' . UserHelper::getRandomString() . '-' . 'poland.pdf';
-            } else if ($productName == Constant::czech) {
-                $newFileName = 'contract' . $client->id . '-' . UserHelper::getRandomString() . '-' . 'czech.pdf';
-            } else if ($productName == Constant::malta) {
-                $newFileName = 'contract' . $client->id . '-' . UserHelper::getRandomString() . '-' . 'malta.pdf';
-            } else if ($productName == Constant::canada) {
-                if ($package == Constant::CanadaExpressEntry) {
-                    $newFileName = 'contract' . $client->id . '-' . UserHelper::getRandomString() . '-' . 'canada_express_entry.pdf';
-                } else if ($package == Constant::CanadaStudyPermit) {
-                    $newFileName = 'contract' . $client->id . '-' . UserHelper::getRandomString() . '-' . 'canada_study.pdf';
-                } else if ($package == Constant::BlueCollar) {
-                    $newFileName = 'contract' . $client->id . '-' . UserHelper::getRandomString() . '-' . 'canada.pdf';
+            if($applicant->getMedia(Application::$media_collection_main_1st_signature)){
+                if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+                    $originalPdf = (isset($applicant->getMedia(Application::$media_collection_main_1st_signature)[0])) ? $applicant->getMedia(Application::$media_collection_main_1st_signature)[0]->getUrl() : null;
+                } else {
+                    $originalPdf = (isset($applicant->getMedia(Application::$media_collection_main_1st_signature)[0])) ? $applicant->getMedia(Application::$media_collection_main_1st_signature)[0]->getPath() : null;
                 }
-            } else if ($productName == Constant::germany) {
-                $newFileName = 'contract' . $client->id . '-' . UserHelper::getRandomString() . '-' . 'germany.pdf';
+                $destination_file = Application::$media_collection_main_1st_signature;
             } else {
-                $newFileName = 'contract' . $client->id . '-' . UserHelper::getRandomString() . '-' . 'germany.pdf';
+                if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+                    $originalPdf = Storage::disk(env('MEDIA_DISK'))->url('Applications/Contracts/client_contracts/' . $applicant->contract);
+                } else {
+                    $originalPdf = Storage::disk('local')->url('Applications/Contracts/client_contracts/' . $applicant->contract);
+                    $originalPdf = ltrim($originalPdf, $originalPdf[0]);
+                }
+                if ($productName == Constant::poland) {
+                    $newFileName = 'contract' . $client->id . '-' . UserHelper::getRandomString() . '-' . 'poland.pdf';
+                } else if ($productName == Constant::czech) {
+                    $newFileName = 'contract' . $client->id . '-' . UserHelper::getRandomString() . '-' . 'czech.pdf';
+                } else if ($productName == Constant::malta) {
+                    $newFileName = 'contract' . $client->id . '-' . UserHelper::getRandomString() . '-' . 'malta.pdf';
+                } else if ($productName == Constant::canada) {
+                    // if ($package == Constant::CanadaExpressEntry) {
+                    //     $newFileName = 'contract' . $client->id . '-' . UserHelper::getRandomString() . '-' . 'canada_express_entry.pdf';
+                    // } else if ($package == Constant::CanadaStudyPermit) {
+                    //     $newFileName = 'contract' . $client->id . '-' . UserHelper::getRandomString() . '-' . 'canada_study.pdf';
+                    // } else if ($package == Constant::BlueCollar) {
+                        $newFileName = 'contract' . $client->id . '-' . UserHelper::getRandomString() . '-' . 'canada.pdf';
+                    // }
+                } else if ($productName == Constant::germany) {
+                    $newFileName = 'contract' . $client->id . '-' . UserHelper::getRandomString() . '-' . 'germany.pdf';
+                } else {
+                    $newFileName = 'contract' . $client->id . '-' . UserHelper::getRandomString() . '-' . 'germany.pdf';
+                }
+                $destination_file = 'Applications/Contracts/client_contracts/' . $newFileName;
             }
-            $destination_file = 'Applications/Contracts/client_contracts/' . $newFileName;
         }
         $pdf = new \setasign\Fpdi\Fpdi();
         if (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
@@ -734,9 +743,15 @@ class pdfBlock
                 $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Application::$media_collection_main_1st_signature, 'local');
             }
         } else {
+            $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_first_payment_contract.pdf';
             $theString = $pdf->Output('S');
-            Storage::disk(env('MEDIA_DISK'))->put($destination_file, $theString, 'public');
+            if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Application::$media_collection_main_1st_signature, env('MEDIA_DISK'));
+            } else {
+                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Application::$media_collection_main_1st_signature, 'local');
+            }
         }
+        $applicant->save();
     }
 }
 

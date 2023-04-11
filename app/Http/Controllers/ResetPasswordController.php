@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\ResetPassword;
-use App\Models\User;
+use App\Client;
 use Illuminate\Http\Request;
 use Laravel\Fortify\Rules\Password;
 use Illuminate\Support\Facades\Mail;
@@ -26,7 +26,7 @@ class ResetPasswordController extends Controller
             'email' => 'required|email:rfc,dns|exists:clients',
         ]);
         $email = $request->email;
-        $emailExist =  User::where('email', $email)->first();
+        $emailExist =  Client::where('email', $email)->first();
         if ($emailExist == null) {
             return view('forgot-password')->with('error', 'The email not exist.');
         } else {
@@ -79,7 +79,7 @@ class ResetPasswordController extends Controller
                     // 'confirm_password' => 'required|same:password'
                 ]);
 
-                User::where('email', $request->email)->update(['password' => Hash::make($request->password)]);
+                Client::where('email', $request->email)->update(['password' => Hash::make($request->password)]);
 
 
                 return view('auth.reset-password-success');
@@ -98,7 +98,7 @@ class ResetPasswordController extends Controller
 
     public function updateCurrentPassword(Request $request)
     {
-        $user = User::find(Auth::id());
+        $user = Client::find(Auth::id());
         if (!isset($request['otp'])) {
             $validator = \Validator::make($request->all(), [
                 'current_password' => ['required', 'string'],

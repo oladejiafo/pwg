@@ -285,7 +285,6 @@ var input = document.querySelector("#phone_number");
 // $("form").submit(function() {
 //   var full_number = input.getNumber(intlTelInputUtils.numberFormat.E164);
 // $("input[name='phone_number[full]'").val(full_number);
-//   alert(full_number)
   
 // });
 </script>

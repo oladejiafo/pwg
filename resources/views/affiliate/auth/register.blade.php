@@ -199,7 +199,6 @@ input [type="phone"]
       //     var code = $("#phone_number").intlTelInput("getSelectedCountryData").dialCode;
       //     var phoneNumber = $('#phone_number').val();
       //     var name = $("#phone_number").intlTelInput("getSelectedCountryData").name;
-      //     alert('Country Code : ' + code + '\nPhone Number : ' + phoneNumber + '\nCountry Name : ' + name);
       // });
         // });
   </script>

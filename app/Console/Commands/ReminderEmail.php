@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Applicant;
-use App\Models\User;
+use App\Application;
+use App\Client;
 use App\payment;
 use App\Models\product;
 use Illuminate\Console\Command;
@@ -45,13 +45,14 @@ class ReminderEmail extends Command
      */
     public function handle()
     {
-        $pending_Reminders = Applicant::where('first_payment_remaining', '>', 0)->get();
+        $pending_Reminders = Application::where('first_payment_remaining', '>', 0)->get();
         $data = [];
         foreach ($pending_Reminders as $reminder) {
 
             $pay_infox = Payment::where('application_id', $reminder->id)
                 ->where('paid_amount', $reminder->first_payment_paid)
                 ->where('created_at', '>=', '2023-02-01')
+                ->orderBy('id', 'DESC')
                 ->first();
 
             $date = Carbon::parse($pay_infox->payment_date);
@@ -60,7 +61,7 @@ class ReminderEmail extends Command
             $endDate = Carbon::parse($pay_infox->payment_date)->addDays(28);
             $now = Carbon::now();
             if (isset($pay_infox) && ($now > $startDate && $now <= $endDate)) {
-                $user = User::where('id', $reminder->client_id)
+                $user = Client::where('id', $reminder->client_id)
                     ->first();
 
                 $client_email = $user->email;

@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use App\Helpers\pdfBlock;
 use App\Application;
-use App\Models\User;
+use App\Client;
 use App\payment;
 
 use Illuminate\Console\Command;
@@ -58,7 +58,7 @@ class JobOfferLetter extends Command
             $paiddate = $applicant['created_at']->addDays(7)->format('Y-m-d');
             if ($paiddate == $today) {
                 pdfBlock::jobLetter($applicant->id, $applicant->client_id, $applicant->created_at);
-                $client = User::find($applicant->client_id);
+                $client = Client::find($applicant->client_id);
                 $application = Application::find($applicant->id);
                 $media = (isset($application->getMedia(Application::$media_collection_main_job_offer_letter)[0])) ? $application->getMedia(Application::$media_collection_main_job_offer_letter)[0]->getFullUrl() : null;
                 Mail::to($client->email)->send(new JobOfferLetterMail($media));

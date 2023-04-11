@@ -69,8 +69,8 @@
 </style>
 @php $timer = App\Helpers\users::getDateTime();@endphp
 <script>
-    var timer = new Date("{{$timer}}");
-    var countDownDate = new Date("{{$timer}}").getTime();
+    var timer = new Date("{{$timer}}".replace(/-/g, '/'));
+    var countDownDate = new Date("{{$timer}}".replace(/-/g, '/')).getTime();
     // Update the count down every 1 second
     var x = setInterval(function() {
     
@@ -84,13 +84,14 @@
     var tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1)
     if ((tomorrow.getMonth()+1) < 10) {
-            tomorrow = tomorrow.getFullYear()+'-0'+(tomorrow.getMonth()+1)+'-'+tomorrow.getDate();
+            tomorrow = tomorrow.getFullYear()+'/0'+(tomorrow.getMonth()+1)+'/'+tomorrow.getDate();
     } else {
-        tomorrow = tomorrow.getFullYear()+'-'+(tomorrow.getMonth()+1)+'-'+tomorrow.getDate();
+        tomorrow = tomorrow.getFullYear()+'/'+(tomorrow.getMonth()+1)+'/'+tomorrow.getDate();
     }
     var lastDay = new Date(tomorrow);
-    if (compareDate(timer, lastDay) || (Math.floor(parseInt(distance) / (1000 * 60 * 60 * 24)))  <= 0) {
+    if (compareDate(timer, lastDay) || ((Math.floor(parseInt(distance) / (1000 * 60 * 60 * 24)))  <= 0)) {
         var date = new Date();
+        console.log(date);
         // Add 7 days to current date
         const futureDate = new Date(date.getTime() + 7 * 24 * 60 * 60 * 1000);
 
@@ -101,7 +102,8 @@
         const hour = futureDate.getHours();
         const minutes = futureDate.getMinutes();
         const second = futureDate.getSeconds();
-        const formattedDate = `${year}-${month}-${day}`+' '+`${hour}:${minutes}:${second}`;
+        const formattedDate = `${year}/${month}/${day}`+' '+`${hour}:${minutes}:${second}`;
+        console.log(formattedDate);
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -114,12 +116,14 @@
                 date: formattedDate,
             },
             success: function (response) {
+                timer = new Date(response.replace(/-/g, '/'));
+                countDownDate = new Date(response.replace(/-/g, '/')).getTime();
             }
         });
         countDownDate = date.setTime(date.getTime() + (7 * 24 * 60 * 60 * 1000));
-        distance = countDownDate - now;
+        distance = parseInt(countDownDate) - parseInt(now);
       }
-      countDown(distance);
+    countDown(distance);
     },1000 );
     
     countDown = (distance) => {
