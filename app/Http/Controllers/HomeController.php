@@ -1503,7 +1503,7 @@ class HomeController extends Controller
                         $dat->payable_amount = $paymentResponse->amount->value / 100;
                         $dat->invoice_amount = $paymentResponse->amount->value / 100;
                         $dat->bank_id = '8';
-                        $dat->payment_verified_by_cfo = 0;
+                        $dat->payment_verified_by_cfo = 1;
                         $dat->paid_amount = $paymentResponse->amount->value / 100;
                         $dat->currency = $paymentResponse->amount->currencyCode;
                         $dat->bank_reference_no = $paymentResponse->merchantOrderReference;
@@ -1685,7 +1685,7 @@ class HomeController extends Controller
                         $ppd->payable_amount = ($paymentCreds['whichpayment'] == 'BALANCE_ON_FIRST') ? $paymentCreds['totalpay'] : $paymentCreds['totaldue'];
                         $ppd->invoice_amount = $paymentCreds['totalpay'];
 
-                        $ppd->bank_id = 8;
+                        $ppd->bank_id = '8';
                         $ppd->payment_verified_by_cfo = 1;
                         $ppd->paid_amount = $paymentCreds['totalpay'];
                         $ppd->currency = $paymentResponse->amount->currencyCode;
