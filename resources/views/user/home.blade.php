@@ -244,6 +244,10 @@
         }
     }
 
+    .indpackage li {
+        margin-bottom: 8.5px !important;
+    }
+
 </style>
 
 

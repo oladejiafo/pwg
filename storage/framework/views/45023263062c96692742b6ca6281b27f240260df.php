@@ -202,7 +202,11 @@
                                                 <a class="btn btn-secondary" target="_blank" style="font-family: 'TT Norms Pro';font-weight:700" href="<?php echo e(url('/get/invoice/SECOND')); ?>">Get Invoice</a>
                                             <?php else: ?>
                                                 <?php if($paid->application_stage_status != 5): ?>
-                                                    <button class="btn btn-secondary toastrDefaultError" style="font-weight:700" onclick="toastr.error('Your application process not completed!')">Pay Now</button>                           
+                                                    <?php if($paid->second_payment_status != "PAID" && $paid->second_payment_verified_by_cfo == 0 && ($paid->second_payment_txn_mode == 'TRANSFER' || $paid->second_payment_txn_mode == 'BALANCE_ON_TRANSFER')): ?>
+                                                        <button class="btn btn-secondary" style="font-size:18px;color:#7f8187;font-weight:700" disabled>Being Verified..</button>
+                                                    <?php else: ?>
+                                                        <button class="btn btn-secondary toastrDefaultError" style="font-weight:700" onclick="toastr.error('Your application process not completed!')">Pay Now</button>  
+                                                    <?php endif; ?>                         
                                                 <?php elseif(isset($paym)): ?>
                                                     <?php if($pays->submission_payment_sub_total > 0): ?>
                                                         <?php if($paid->second_payment_status != "PAID" && $paid->second_payment_verified_by_cfo == 0 && ($paid->second_payment_txn_mode == 'TRANSFER' || $paid->submission_payment_txn_mode == 'BALANCE_ON_TRANSFER')): ?>

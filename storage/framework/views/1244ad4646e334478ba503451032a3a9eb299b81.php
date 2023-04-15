@@ -244,6 +244,10 @@
         }
     }
 
+    .indpackage li {
+        margin-bottom: 8.5px !important;
+    }
+
 </style>
 
 
@@ -360,13 +364,13 @@
                                     </div>
                                     <div class="maltaIndpackage">
                                         <ul>
-                                            <li><div style="text-align: left;margin-left: 35px">Free accomodation</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Free transportation</div></li>
                                             <li><div style="text-align: left;margin-left: 35px">Free health insurance</div></li>
                                             <li><div style="text-align: left;margin-left: 35px">Free regeneration meal</div></li>
                                             <li><div style="text-align: left;margin-left: 35px">Flexible working hours</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Attractive rental market</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Ease of transportation</div></li>
                                             <li><div style="text-align: left;margin-left: 35px">Permanent residency</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Passport after 5 year</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Possibility of getting passport by investment</div></li>
 
                                             <li><div style="text-align: left;margin-left: 35px">Salary on time</div></li>
                                             <li><div style="text-align: left;margin-left: 35px">Attractive job market</div></li>
@@ -432,13 +436,13 @@
                                     </div>
                                     <div class="czechIndpackage">
                                         <ul>
-                                            <li><div style="text-align: left;margin-left: 35px">Free accomodation</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Free transportation</div></li>
                                             <li><div style="text-align: left;margin-left: 35px">Free health insurance</div></li>
                                             <li><div style="text-align: left;margin-left: 35px">Free regeneration meal</div></li>
                                             <li><div style="text-align: left;margin-left: 35px">Flexible working hours</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Ease of transportation</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Attractive rental market</div></li>
                                             <li><div style="text-align: left;margin-left: 35px">Permanent residency</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Passport after 5 year</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Excellent medicine and health care system.</div></li>
 
                                             <li><div style="text-align: left;margin-left: 35px">Salary on time</div></li>
                                             <li><div style="text-align: left;margin-left: 35px">Attractive job market</div></li>
@@ -578,13 +582,13 @@
                                     </div>
                                     <div class="canadaPackage ">
                                         <ul>
-                                            <li><div style="text-align: left;margin-left: 35px">Free accomodation</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Free transportation</div></li>
                                             <li><div style="text-align: left;margin-left: 35px">Free health insurance</div></li>
                                             <li><div style="text-align: left;margin-left: 35px">Free regeneration meal</div></li>
                                             <li><div style="text-align: left;margin-left: 35px">Flexible working hours</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Permanent residency</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Passport after 5 year</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Ease of transportation</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Attractive rental market</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Family friendly</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Freedom to move residence</div></li>
 
                                             <li><div style="text-align: left;margin-left: 35px">Salary on time</div></li>
                                             <li><div style="text-align: left;margin-left: 35px">Attractive job market</div></li>
@@ -650,13 +654,13 @@
                                     </div>
                                     <div class="germanyIndpackage">
                                         <ul>
-                                            <li><div style="text-align: left;margin-left: 35px">Free accomodation</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Free transportation</div></li>
                                             <li><div style="text-align: left;margin-left: 35px">Free health insurance</div></li>
                                             <li><div style="text-align: left;margin-left: 35px">Free regeneration meal</div></li>
                                             <li><div style="text-align: left;margin-left: 35px">Flexible working hours</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Permanent residency</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Passport after 5 year</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Ease of accomodation</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Attractive rental market</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Job Security</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Comprehensive Welfare System</div></li>
 
                                             <li><div style="text-align: left;margin-left: 35px">Salary on time</div></li>
                                             <li><div style="text-align: left;margin-left: 35px">Attractive job market</div></li>

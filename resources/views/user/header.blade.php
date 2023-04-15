@@ -45,6 +45,10 @@
           }
         }
 
+        .network .title{
+          font-size: 18px !important;
+        }
+
     </style>
 </head>
 
@@ -69,17 +73,22 @@
                   <span style="display:inline-block"><img alt="PWG" src="{{asset('images/icon1.png')}}"></span><span class="title">{{ __('My Application') }} </span>
                 </a>
               </div>
+              <div class="d-flex align-items-center justify-content-center jobbers">
+                <a class="nav-link btn create-new-button network" aria-expanded="false" href="{{route('newtork.partner')}}">
+                  <span style="display:inline-block"><img alt="PWG" src="{{asset('images/icon2.png')}}"></span><span class="title" style="padding-top:0px;display:inline-block">Network Partner</span>
+                </a>
+              </div>
             @else
               <!-- <div class="d-flex align-items-center justify-content-center jobber">
                 <a class="nav-link btn create-new-button"  aria-expanded="false" href="{{route('login')}}">
                 <span><img src="{{asset('images/icon1.png')}}"></span><span style="padding-top:5px">Applicants </span>
                 </a>
               </div> -->
-              <!-- <div class="d-flex align-items-center justify-content-center jobbers">
+              {{-- <div class="d-flex align-items-center justify-content-center jobbers">
                 <a class="nav-link btn create-new-button" aria-expanded="false" href="{{route('affiliate.home')}}">
                   <span style="display:inline-block"><img alt="PWG" src="{{asset('images/icon2.png')}}"></span><span class="title" style="padding-top:0px;display:inline-block">Affiliate Partner</span>
                 </a>
-              </div>  -->
+              </div> --}}
             @endauth
           @endif
 

@@ -5,6 +5,7 @@ use App\Http\Controllers\Affiliate\AffiliatePartnerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\NetworkController;
 use App\Http\Controllers\ResetPasswordController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -60,7 +61,7 @@ Route::middleware([
 //     return view('welcome');
 // });
 
-Route::get('/',[HomeController::class, 'index']);
+Route::get('/',[HomeController::class, 'index'])->name('index');
 
 Route::get('/home', [HomeController::class, 'redirect'] )->name('redirect');
 
@@ -197,3 +198,6 @@ Route::get('timer', [ApiController::class, 'getFooterTimer'])->name('timer');
 Route::get('get/package', [ApiController::class, 'getPricingPlan']);
 
 Route::get('apply/now/{destination}/{id}/{package?}',[ApiController::class, 'applyNow']);
+ // Network Partner
+Route::get('network/partner', [NetworkController::class, 'index'])->name('newtork.partner');
+Route::post('add/network/partner', [NetworkController::class, 'storeNetworkPartner'])->name('add.network.partner');
