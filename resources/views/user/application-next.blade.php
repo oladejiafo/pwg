@@ -729,7 +729,7 @@
             });
 
             } else {
-                if ($('#myCheckbox').prop('checked')) {
+                if ($('#refererCheckbox').prop('checked')) {
                     $('#collapseReferrer').removeClass('show');
                     $('#collapseapplicant').addClass('show');
                 } else {

@@ -13,10 +13,8 @@ use Illuminate\Support\Facades\Redirect;
 class NetworkController extends Controller
 {
     public function index()
-    {
-        $data = networkPartner::where('client_id', '=', Auth::id())->first();
-
-        return view('network.partner', compact('data'));
+    {   
+        return view('network.partner');
     }
 
     public function storeNetworkPartner(Request $request)
@@ -40,18 +38,16 @@ class NetworkController extends Controller
             }
 
             $data = array_merge($validated, [
-                'client_id' => Auth::id(),
                 'partner_type' => "network",
                 'payment_method' => $request->payment_type,
                 'bank_iban_number' => optional($request)->bank_iban_number,
                 'bank_name' => optional($request)->bank_name,
                 'bank_swift_code' => optional($request)->bank_swift_code,
-                'created_by' => Auth::id(),
             ]);
 
             NetworkPartner::create($data);
 
-            return Redirect::route('index')->with('message', 'Partner details added successfully!');
+            return back()->with('message', 'Partner details added successfully!');
         } else {
             return back()->withInput()->with('error', 'Invalid Code!');
         }

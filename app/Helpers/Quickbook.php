@@ -124,10 +124,10 @@ class Quickbook
             if ($paymentType == 'FIRST' || $paymentType == 'BALANCE_ON_FIRST') {
                 $unitPrice = $apply->planFirstPrice;
                 $tax = $apply->first_payment_vat;
-            } else if ($paymentType == 'SUBMISSION') {
+            } else if ($paymentType == 'SUBMISSION' || $paymentType == 'BALANCE_ON_SUBMISSION') {
                 $unitPrice = $apply->planSecondPrice;
                 $tax = $apply->submission_payment_vat;
-            } else if ($paymentType == 'SECOND') {
+            } else if ($paymentType == 'SECOND' || $paymentType == 'BALANCE_ON_SECOND') {
                 $unitPrice = $apply->planThirdPrice;
                 $tax = $apply->second_payment_vat;
             }
@@ -137,9 +137,9 @@ class Quickbook
                 case Constant::poland:
                     if ($paymentType == 'FIRST' || $paymentType == 'BALANCE_ON_FIRST') {
                         $productObj = $dataService->Query("select * from Item Where Name='Photocopy Cv, Passport - Poland'");
-                    } else if ($paymentType == 'SUBMISSION') {
+                    } else if ($paymentType == 'SUBMISSION' || $paymentType == 'BALANCE_ON_SUBMISSION') {
                         $productObj = $dataService->Query("select * from Item Where Name='Submission Payment After 5 Weeks Of First Installment - Poland'");
-                    } else if ($paymentType == 'SECOND') {
+                    } else if ($paymentType == 'SECOND' || $paymentType == "BALANCE_ON_SECOND") {
                         $productObj = $dataService->Query("select * from Item Where Name='Typing for Visa Application - Poland'");
                     }
                     if ($paymentDetails->payment_type ==  'Full-Outstanding Payment') {
@@ -160,9 +160,9 @@ class Quickbook
                 case Constant::czech:
                     if ($paymentType == 'FIRST' || $paymentType == 'BALANCE_ON_FIRST') {
                         $productObj = $dataService->Query("select * from Item Where Name='Photocopy - CV, Passport - Czech Republic'");
-                    } else if ($paymentType == 'SUBMISSION') {
+                    } else if ($paymentType == 'SUBMISSION' || $paymentType == 'BALANCE_ON_SUBMISSION') {
                         $productObj = $dataService->Query("select * from Item Where Name='Submission Payment - Czech'");
-                    } else if ($paymentType == 'SECOND') {
+                    } else if ($paymentType == 'SECOND' || $paymentType == "BALANCE_ON_SECOND") {
                         $productObj = $dataService->Query("select * from Item Where Name='Typing for Visa Application - Czech Republic'");
                     }
                     if ($paymentDetails->payment_type ==  'Full-Outstanding Payment') {
@@ -183,9 +183,9 @@ class Quickbook
                 case Constant::malta:
                     if ($paymentType == 'FIRST' || $paymentType == 'BALANCE_ON_FIRST') {
                         $productObj = $dataService->Query("select * from Item Where Name='Photocopy - CV, Passport - Malta'");
-                    } else if ($paymentType == 'SUBMISSION') {
+                    } else if ($paymentType == 'SUBMISSION' || $paymentType == 'BALANCE_ON_SUBMISSION') {
                         $productObj = $dataService->Query("select * from Item Where Name='Submission Payment - Malta'");
-                    } else if ($paymentType == 'SECOND') {
+                    } else if ($paymentType == 'SECOND' || $paymentType == "BALANCE_ON_SECOND") {
                         $productObj = $dataService->Query("select * from Item Where Name='Typing for Visa Application - Malta'");
                     }
                     if ($paymentDetails->payment_type ==  'Full-Outstanding Payment') {
@@ -218,9 +218,9 @@ class Quickbook
                 case Constant::canada:
                     if ($paymentType == 'FIRST' || $paymentType == 'BALANCE_ON_FIRST') {
                         $productObj = $dataService->Query("select * from Item Where Name='Photocopy Cv, Passport - Canada'");
-                    } else if ($paymentType == 'SUBMISSION') {
+                    } else if ($paymentType == 'SUBMISSION' || $paymentType == 'BALANCE_ON_SUBMISSION') {
                         $productObj = $dataService->Query("select * from Item Where Name='Submission Payment With in a Month after First Installment - Canada'");
-                    } else if ($paymentType == 'SECOND') {
+                    } else if ($paymentType == 'SECOND' || $paymentType == "BALANCE_ON_SECOND") {
                         $productObj = $dataService->Query("select * from Item Where Name='Typing for Visa Application - Canada'");
                     }
                     if ($paymentDetails->payment_type ==  'Full-Outstanding Payment') {
@@ -253,9 +253,9 @@ class Quickbook
                 case Constant::germany:
                     if ($paymentType == 'FIRST' || $paymentType == 'BALANCE_ON_FIRST') {
                         $productObj = $dataService->Query("select * from Item Where Name='Photocopy- CV, Passport - Germany'");
-                    } else if ($paymentType == 'SUBMISSION') {
+                    } else if ($paymentType == 'SUBMISSION' || $paymentType == 'BALANCE_ON_SUBMISSION') {
                         $productObj = $dataService->Query("select * from Item Where Name='Travel Documents Submission - Germany'");
-                    } else if ($paymentType == 'SECOND') {
+                    } else if ($paymentType == 'SECOND' || $paymentType == "BALANCE_ON_SECOND") {
                         $productObj = $dataService->Query("select * from Item Where Name='Typing for Visa Application - Germany'");
                     }
                     if ($paymentDetails->payment_type ==  'Full-Outstanding Payment') {
@@ -288,7 +288,7 @@ class Quickbook
                 default:
                     if ($paymentType == 'FIRST' || $paymentType == 'BALANCE_ON_FIRST') {
                         $productObj = $dataService->Query("select * from Item Where Name='Photocopy Cv, Passport - Poland'");
-                    } else if ($paymentType == 'SUBMISSION') {
+                    } else if ($paymentType == 'SUBMISSION' || $paymentType == 'BALANCE_ON_SUBMISSION') {
                         $productObj = $dataService->Query("select * from Item Where Name='Submission Payment After 5 Weeks Of First Installment - Poland'");
                     } else if ($paymentType == 'SECOND') {
                         $productObj = $dataService->Query("select * from Item Where Name='Typing for Visa Application - Poland'");
@@ -325,7 +325,7 @@ class Quickbook
                 }
             }
             $coupon = DB::table('coupons')
-                ->where('code','=',$apply->coupon_code)
+                ->where('code', '=', $apply->coupon_code)
                 ->where('active_from', '<=', now())
                 ->where('active_until', '>=', now())
                 ->where('active', '=', 1)
@@ -425,7 +425,7 @@ class Quickbook
                         $paymentDetails->invoice_no = $invoiceData->DocNumber;
                         $paymentDetails->invoice_id = $invoiceData->Id;
                         $paymentDetails->save();
-                    } else if ($apply->planSecondPrice > 0 && ($apply->planThirdPrice == 0 || $apply->planThirdPrice == null)){
+                    } else if ($apply->planSecondPrice > 0 && ($apply->planThirdPrice == 0 || $apply->planThirdPrice == null)) {
                         $theResourceObj = Invoice::create([
                             "Line" => [
                                 [
@@ -479,7 +479,7 @@ class Quickbook
                         $paymentDetails->invoice_no = $invoiceData->DocNumber;
                         $paymentDetails->invoice_id = $invoiceData->Id;
                         $paymentDetails->save();
-                    } else if ($apply->planThirdPrice > 0 && ($apply->planSecondPrice == 0 || $apply->planSecondPrice == null)){
+                    } else if ($apply->planThirdPrice > 0 && ($apply->planSecondPrice == 0 || $apply->planSecondPrice == null)) {
                         $theResourceObj = Invoice::create([
                             "Line" => [
                                 [
@@ -803,6 +803,8 @@ class Quickbook
                     }
                 } elseif ($paymentType == 'SUBMISSION' || $paymentType == 'SECOND') {
                     self::quickBook($dataService, $coupon, $unitPrice, $updatItem, $paidAmount, $tax, $customer, $paymentDetails, $apply);
+                } elseif ($paymentType == 'BALANCE_ON_SUBMISSION' || $paymentType == 'BALANCE_ON_SECOND') {
+                    self::balanceQuickbook($dataService, $updatItem, $paidAmount, $customer, $paymentDetails, $apply);
                 }
             }
             if ($error) {
@@ -821,120 +823,151 @@ class Quickbook
 
     private static function quickBook($dataService, $coupon, $unitPrice, $updatItem, $paidAmount, $tax, $customer, $paymentDetails, $application)
     {
-        // if (Session::get('discountapplied') == 1) {
-            $theResourceObj = Invoice::create([
-                "Line" => [
-                    [
-                        "Description" => $updatItem->Description,
-                        "Amount" => $unitPrice,
-                        "DetailType" => "SalesItemLineDetail",
-                        "SalesItemLineDetail" => [
-                            "TaxCodeRef" => [
-                                "value" => (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? (($tax == 0 || $tax == null) ? 4 : 12) : 'TAX'
-                            ],
-                            "ItemRef" => [
-                                "value" => $updatItem->Id,
-                                "name" => $updatItem->Name
-                            ],
-                            'UnitPrice' => $unitPrice,
-                            'Qty' => 1.0
-                        ]
-                    ],
-                    [
-                        "DetailType" => "DiscountLineDetail",
-                        "DiscountLineDetail"  => [
-                            "PercentBased" => true,
-                            "DiscountPercent" => (isset($coupon) ? rtrim($coupon->amount, '%')  : 0)
-                        ]
-
+        $theResourceObj = Invoice::create([
+            "Line" => [
+                [
+                    "Description" => $updatItem->Description,
+                    "Amount" => $unitPrice,
+                    "DetailType" => "SalesItemLineDetail",
+                    "SalesItemLineDetail" => [
+                        "TaxCodeRef" => [
+                            "value" => (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? (($tax == 0 || $tax == null) ? 4 : 12) : 'TAX'
+                        ],
+                        "ItemRef" => [
+                            "value" => $updatItem->Id,
+                            "name" => $updatItem->Name
+                        ],
+                        'UnitPrice' => $unitPrice,
+                        'Qty' => 1.0
                     ]
                 ],
-                "Deposit" => ($coupon != null) ?  (($paidAmount > (($unitPrice - ((($unitPrice * rtrim($coupon->amount, '%')) / 100))) + $tax)) ? (($unitPrice - ((($unitPrice * rtrim($coupon->amount, '%')) / 100))) + $tax) : $paidAmount) : (($paidAmount > ($unitPrice + $tax)) ? $unitPrice + $tax : $paidAmount), //$paidAmount, 
-                "AutoDocNumber" => true,
+                [
+                    "DetailType" => "DiscountLineDetail",
+                    "DiscountLineDetail"  => [
+                        "PercentBased" => true,
+                        "DiscountPercent" => (isset($coupon) ? rtrim($coupon->amount, '%')  : 0)
+                    ]
 
-                // no tax due to free zone
-
-                "TxnTaxDetail" => [
-                    "TxnTaxCodeRef" => [
-                        "value" => ($tax == 0 || $tax == null) ? 0 : 5,  // tax rate
-                        "name" => ($tax == 0 || $tax == null) ? 'EX Exempt' : "SR Standard Rated (DXB)", // tax rate name
-                    ],
-                    "TotalTax" => ($tax == 0 || $tax == null) ? 0 : $tax,
-                ],
-                "PaymentRefNum" => $paymentDetails->bank_reference_no,
-
-                "CustomerRef" => [
-                    "value" => ($customer->Id) ??  $customer[0]->Id
-                ],
-                "CustomerMemo" => [
-                    "value" => ($coupon != null) ? (($paidAmount > (($unitPrice - ((($unitPrice * rtrim($coupon->amount, '%')) / 100))) + $tax)) ?  $paymentDetails->bank_reference_no . "<br> Paid additional amount" . ($paidAmount - (($unitPrice - ((($unitPrice * rtrim($coupon->amount, '%')) / 100))) + $tax)) : $paymentDetails->bank_reference_no) : (($paidAmount > ($unitPrice + $tax)) ? $paymentDetails->bank_reference_no . "<br> Paid additional amount" . ($paidAmount - ($unitPrice + $tax)) : $paymentDetails->bank_reference_no),
-                ],
-                "PrivateNote" => $paymentDetails->bank_reference_no,
-                "BillEmail" => [
-                    "Address" => Auth::user()->email
-                ],
-                "BillEmailCc" => [
-                    "Address" => "a@intuit.com"
-                ],
-                "BillEmailBcc" => [
-                    "Address" => "v@intuit.com"
                 ]
-            ]);
-        // } else {
-        //     $theResourceObj = Invoice::create([
-        //         "Line" => [
-        //             [
-        //                 "Description" => $updatItem->Description,
-        //                 "Amount" => $unitPrice,
-        //                 "DetailType" => "SalesItemLineDetail",
-        //                 "SalesItemLineDetail" => [
-        //                     "TaxCodeRef" => [
-        //                         "value" => (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? (($tax == 0 || $tax == null) ? 4 : 12) : 'TAX'
-        //                     ],
-        //                     "ItemRef" => [
-        //                         "value" => $updatItem->Id,
-        //                         "name" => $updatItem->Name
-        //                     ],
-        //                     'UnitPrice' => $unitPrice,
-        //                     'Qty' => 1.0
-        //                 ]
-        //             ]
-        //         ],
-        //         "Deposit" => ($paidAmount > ($unitPrice + $tax)) ? $unitPrice + $tax : $paidAmount,
-        //         "AutoDocNumber" => true,
-        //         // no tax due to free zone
-        //         "TxnTaxDetail" => [
-        //             "TxnTaxCodeRef" => [
-        //                 "value" => ($tax == 0 || $tax == null) ? 0 : 5,  // tax rate
-        //                 "name" => ($tax == 0 || $tax == null) ? 'EX Exempt' : "SR Standard Rated (DXB)", // tax rate name
-        //             ],
-        //             "TotalTax" => ($tax == 0 || $tax == null) ? 0 : $tax,
-        //         ],
-        //         "PaymentRefNum" => $paymentDetails->bank_reference_no,
+            ],
+            "Deposit" => ($coupon != null) ?  (($paidAmount > (($unitPrice - ((($unitPrice * rtrim($coupon->amount, '%')) / 100))) + $tax)) ? (($unitPrice - ((($unitPrice * rtrim($coupon->amount, '%')) / 100))) + $tax) : $paidAmount) : (($paidAmount > ($unitPrice + $tax)) ? $unitPrice + $tax : $paidAmount), //$paidAmount, 
+            "AutoDocNumber" => true,
 
-        //         "CustomerRef" => [
-        //             "value" => ($customer->Id) ??  $customer[0]->Id
-        //         ],
-        //         "CustomerMemo" => [
-        //             "value" => ($paidAmount > ($unitPrice + $tax)) ? $paymentDetails->bank_reference_no . "<br> Paid additional amount" . ($paidAmount - ($unitPrice + $tax)) : $paymentDetails->bank_reference_no,
-        //         ],
-        //         "PrivateNote" => $paymentDetails->bank_reference_no,
-        //         "BillEmail" => [
-        //             "Address" => Auth::user()->email
-        //         ],
-        //         "BillEmailCc" => [
-        //             "Address" => "a@intuit.com"
-        //         ],
-        //         "BillEmailBcc" => [
-        //             "Address" => "v@intuit.com"
-        //         ]
-        //     ]);
-        // }
+            // no tax due to free zone
 
+            "TxnTaxDetail" => [
+                "TxnTaxCodeRef" => [
+                    "value" => ($tax == 0 || $tax == null) ? 0 : 5,  // tax rate
+                    "name" => ($tax == 0 || $tax == null) ? 'EX Exempt' : "SR Standard Rated (DXB)", // tax rate name
+                ],
+                "TotalTax" => ($tax == 0 || $tax == null) ? 0 : $tax,
+            ],
+            "PaymentRefNum" => $paymentDetails->bank_reference_no,
+
+            "CustomerRef" => [
+                "value" => ($customer->Id) ??  $customer[0]->Id
+            ],
+            "CustomerMemo" => [
+                "value" => ($coupon != null) ? (($paidAmount > (($unitPrice - ((($unitPrice * rtrim($coupon->amount, '%')) / 100))) + $tax)) ?  $paymentDetails->bank_reference_no . "<br> Paid additional amount" . ($paidAmount - (($unitPrice - ((($unitPrice * rtrim($coupon->amount, '%')) / 100))) + $tax)) : $paymentDetails->bank_reference_no) : (($paidAmount > ($unitPrice + $tax)) ? $paymentDetails->bank_reference_no . "<br> Paid additional amount" . ($paidAmount - ($unitPrice + $tax)) : $paymentDetails->bank_reference_no),
+            ],
+            "PrivateNote" => $paymentDetails->bank_reference_no,
+            "BillEmail" => [
+                "Address" => Auth::user()->email
+            ],
+            "BillEmailCc" => [
+                "Address" => "a@intuit.com"
+            ],
+            "BillEmailBcc" => [
+                "Address" => "v@intuit.com"
+            ]
+        ]);
         $invoiceData = $dataService->Add($theResourceObj);
         $paymentDetails->invoice_no = $invoiceData->DocNumber;
         $paymentDetails->invoice_id = $invoiceData->Id;
         $paymentDetails->save();
+    }
+
+    private static function balanceQuickbook($dataService, $updatItem, $paidAmount, $customer, $paymentDetails, $application)
+    {
+
+        $AmtWithouttax = $paidAmount / (1 + (5/100));
+        $AmtWithouttax = round($AmtWithouttax, 2);
+        $tax = $paidAmount - $AmtWithouttax;
+        $theResourceObj = Invoice::create([
+            "Line" => [
+                [
+                    "Description" => $updatItem->Description,
+                    "Amount" => $AmtWithouttax,
+                    "DetailType" => "SalesItemLineDetail",
+                    "SalesItemLineDetail" => [
+                        "TaxCodeRef" => [
+                            "value" => (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? (($tax == 0 || $tax == null) ? 4 : 12) : 'TAX'
+                        ],
+                        "ItemRef" => [
+                            "value" => $updatItem->Id,
+                            "name" => $updatItem->Name
+                        ],
+                        'UnitPrice' => $AmtWithouttax,
+                        'Qty' => 1.0
+                    ]
+                ]
+            ],
+            "Deposit" => $paidAmount, 
+            "AutoDocNumber" => true,
+
+            // no tax due to free zone
+            
+            "TxnTaxDetail" => [
+                "TxnTaxCodeRef" => [
+                    "value" => ($tax == 0 || $tax == null) ? 0 : 5,  // tax rate
+                    "name" => ($tax == 0 || $tax == null) ? 'EX Exempt' : "SR Standard Rated (DXB)", // tax rate name
+                ],
+                "TotalTax" => ($tax == 0 || $tax == null) ? 0 : $tax,
+            ],
+            "PaymentRefNum" => $paymentDetails->bank_reference_no,
+
+            "CustomerRef" => [
+                "value" => ($customer->Id) ??  $customer[0]->Id
+            ],
+            "CustomerMemo" => [
+                "value" => $paymentDetails->bank_reference_no,
+            ],
+            "PrivateNote" => $paymentDetails->bank_reference_no,
+            "BillEmail" => [
+                "Address" => Auth::user()->email
+            ],
+            "BillEmailCc" => [
+                "Address" => "a@intuit.com"
+            ],
+            "BillEmailBcc" => [
+                "Address" => "v@intuit.com"
+            ]
+        ]);
+        $invoiceData = $dataService->Add($theResourceObj);
+        $paymentDetails->invoice_no = $invoiceData->DocNumber;
+        $paymentDetails->invoice_id = $invoiceData->Id;
+        $paymentDetails->save();
+
+        if($paymentDetails->payment_type == "BALANCE_ON_SECOND"){
+            $previousPayments = PaymentDetails::where('application_id', $application->id)
+                                        ->where('payment_type','=','SECOND')
+                                        ->get();
+            foreach($previousPayments as $payment)
+            {
+                PaymentDetails::where('id', '=', $payment->id)
+                        ->update(['invoice_id' => $invoiceData->Id]);
+            }
+        } elseif($paymentDetails->payment_type == "BALANCE_ON_SUBMISSION"){
+            $previousPayments = PaymentDetails::where('application_id', $application->id)
+                                        ->where('payment_type','=','SUBMISSION')
+                                        ->get();
+            foreach($previousPayments as $payment)
+            {
+                PaymentDetails::where('id', '=', $payment->id)
+                        ->update(['invoice_id' => $invoiceData->Id]);
+            }
+        }
+
     }
 
     public static function updateTokenAccess()
@@ -1102,9 +1135,9 @@ class Quickbook
                 case Constant::poland:
                     if ($payment->payment_type == 'FIRST' || $payment->payment_type == 'BALANCE_ON_FIRST') {
                         $productObj = $dataService->Query("select * from Item Where Name='Photocopy Cv, Passport - Poland'");
-                    } else if ($payment->payment_type == 'SUBMISSION') {
+                    } else if ($payment->payment_type == 'SUBMISSION' || $payment->payment_type == 'BALANCE_ON_SUBMISSION') {
                         $productObj = $dataService->Query("select * from Item Where Name='Travel Documents Submission - Poland'");
-                    } else if ($payment->payment_type == 'SECOND') {
+                    } else if ($payment->payment_type == 'SECOND' || $payment->payment_type == 'BALANCE_ON_SECOND') {
                         $productObj = $dataService->Query("select * from Item Where Name='Typing for Visa Application - Poland'");
                     }
                     if ($paymentDetails->payment_type ==  'Full-Outstanding Payment') {
@@ -1125,9 +1158,9 @@ class Quickbook
                 case Constant::czech:
                     if ($payment->payment_type == 'FIRST' || $payment->payment_type == 'BALANCE_ON_FIRST') {
                         $productObj = $dataService->Query("select * from Item Where Name='Photocopy - CV, Passport - Czech Republic'");
-                    } else if ($payment->payment_type == 'SUBMISSION') {
+                    } else if ($payment->payment_type == 'SUBMISSION' || $payment->payment_type == 'BALANCE_ON_SUBMISSION') {
                         $productObj = $dataService->Query("select * from Item Where Name='Travel Documents Submission - Czech Republic'");
-                    } else if ($payment->payment_type == 'SECOND') {
+                    } else if ($payment->payment_type == 'SECOND' || $payment->payment_type == 'BALANCE_ON_SECOND') {
                         $productObj = $dataService->Query("select * from Item Where Name='Typing for Visa Application - Czech Republic'");
                     }
                     if ($paymentDetails->payment_type ==  'Full-Outstanding Payment') {
@@ -1148,9 +1181,9 @@ class Quickbook
                 case Constant::malta:
                     if ($payment->payment_type == 'FIRST' || $payment->payment_type == 'BALANCE_ON_FIRST') {
                         $productObj = $dataService->Query("select * from Item Where Name='Photocopy - CV, Passport - Malta'");
-                    } else if ($payment->payment_type == 'SUBMISSION') {
+                    } else if ($payment->payment_type == 'SUBMISSION' || $payment->payment_type == 'BALANCE_ON_SUBMISSION') {
                         $productObj = $dataService->Query("select * from Item Where Name='Travel Documents Submission - Malta'");
-                    } else if ($payment->payment_type == 'SECOND') {
+                    } else if ($payment->payment_type == 'SECOND' || $payment->payment_type == 'BALANCE_ON_SECOND') {
                         $productObj = $dataService->Query("select * from Item Where Name='Typing for Visa Application - Malta'");
                     }
                     if ($paymentDetails->payment_type ==  'Full-Outstanding Payment') {
@@ -1183,9 +1216,9 @@ class Quickbook
                 case Constant::canada:
                     if ($payment->payment_type == 'FIRST' || $payment->payment_type == 'BALANCE_ON_FIRST') {
                         $productObj = $dataService->Query("select * from Item Where Name='Photocopy Cv, Passport - Canada'");
-                    } else if ($payment->payment_type == 'SUBMISSION') {
+                    } else if ($payment->payment_type == 'SUBMISSION' || $payment->payment_type == 'BALANCE_ON_SUBMISSION') {
                         $productObj = $dataService->Query("select * from Item Where Name='Travel Documents Sumitted  Canada'");
-                    } else if ($payment->payment_type == 'SECOND') {
+                    } else if ($payment->payment_type == 'SECOND' || $payment->payment_type == 'BALANCE_ON_SECOND') {
                         $productObj = $dataService->Query("select * from Item Where Name='Typing for Visa Application - Canada'");
                     }
                     if ($paymentDetails->payment_type ==  'Full-Outstanding Payment') {
@@ -1218,9 +1251,9 @@ class Quickbook
                 case Constant::germany:
                     if ($payment->payment_type == 'FIRST' || $payment->payment_type == 'BALANCE_ON_FIRST') {
                         $productObj = $dataService->Query("select * from Item Where Name='Photocopy- CV, Passport - Germany'");
-                    } else if ($payment->payment_type == 'SUBMISSION') {
+                    } else if ($payment->payment_type == 'SUBMISSION' || $payment->payment_type == 'BALANCE_ON_SUBMISSION') {
                         $productObj = $dataService->Query("select * from Item Where Name='Travel Documents Submission - Germany'");
-                    } else if ($payment->payment_type == 'SECOND') {
+                    } else if ($payment->payment_type == 'SECOND' || $payment->payment_type == 'BALANCE_ON_SECOND') {
                         $productObj = $dataService->Query("select * from Item Where Name='Typing for Visa Application - Germany'");
                     }
                     if ($paymentDetails->payment_type ==  'Full-Outstanding Payment') {
@@ -1253,9 +1286,9 @@ class Quickbook
                 default:
                     if ($payment->payment_type == 'FIRST' || $payment->payment_type == 'BALANCE_ON_FIRST') {
                         $productObj = $dataService->Query("select * from Item Where Name='Photocopy Cv, Passport - Poland'");
-                    } else if ($payment->payment_type == 'SUBMISSION') {
+                    } else if ($payment->payment_type == 'SUBMISSION' || $payment->payment_type == 'BALANCE_ON_SUBMISSION') {
                         $productObj = $dataService->Query("select * from Item Where Name='Travel Documents Submission - Poland'");
-                    } else if ($payment->payment_type == 'SECOND') {
+                    } else if ($payment->payment_type == 'SECOND' || $payment->payment_type == 'BALANCE_ON_SECOND') {
                         $productObj = $dataService->Query("select * from Item Where Name='Typing for Visa Application - Poland'");
                     }
 
@@ -1290,7 +1323,7 @@ class Quickbook
                 }
             }
             $coupon = DB::table('coupons')
-                ->where('code','=',$apply->coupon_code)
+                ->where('code', '=', $apply->coupon_code)
                 ->where('active_from', '<=', now())
                 ->where('active_until', '>=', now())
                 ->where('active', '=', 1)
@@ -1643,7 +1676,7 @@ class Quickbook
                     } else {
                         self::quickBookMissed($dataService, $coupon, $unitPrice, $updatItem, $paidAmount, $tax, $customer, $paymentDetails, $apply, $client);
                     }
-                } elseif ($payment->payment_type == 'SUBMISSION' || $payment->payment_type == 'SECOND') {
+                } elseif ($payment->payment_type == 'SUBMISSION' || $payment->payment_type == 'BALANCE_ON_SUBMISSION' || $payment->payment_type == 'SECOND' || $payment->payment_type == 'BALANCE_ON_SECOND') {
                     self::quickBookMissed($dataService, $coupon, $unitPrice, $updatItem, $paidAmount, $tax, $customer, $paymentDetails, $apply, $client);
                 }
             }
@@ -1662,119 +1695,66 @@ class Quickbook
 
     private static function quickBookMissed($dataService, $coupon, $unitPrice, $updatItem, $paidAmount, $tax, $customer, $paymentDetails, $application, $client)
     {
-        // if ($application->coupon_code) {
-            $theResourceObj = Invoice::create([
-                "Line" => [
-                    [
-                        "Description" => $updatItem->Description,
-                        "Amount" => $unitPrice,
-                        "DetailType" => "SalesItemLineDetail",
-                        "SalesItemLineDetail" => [
-                            "TaxCodeRef" => [
-                                "value" => (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? (($tax == 0 || $tax == null) ? 4 : 12) : 'TAX'
-                            ],
-                            "ItemRef" => [
-                                "value" => $updatItem->Id,
-                                "name" => $updatItem->Name
-                            ],
-                            'UnitPrice' => $unitPrice,
-                            'Qty' => 1.0
-                        ]
-                    ],
-                    [
-                        "DetailType" => "DiscountLineDetail",
-                        "DiscountLineDetail"  => [
-                            "PercentBased" => true,
-                            "DiscountPercent" => (isset($coupon) ? rtrim($coupon->amount, '%') : 0)
-                        ]
-
+        $theResourceObj = Invoice::create([
+            "Line" => [
+                [
+                    "Description" => $updatItem->Description,
+                    "Amount" => $unitPrice,
+                    "DetailType" => "SalesItemLineDetail",
+                    "SalesItemLineDetail" => [
+                        "TaxCodeRef" => [
+                            "value" => (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? (($tax == 0 || $tax == null) ? 4 : 12) : 'TAX'
+                        ],
+                        "ItemRef" => [
+                            "value" => $updatItem->Id,
+                            "name" => $updatItem->Name
+                        ],
+                        'UnitPrice' => $unitPrice,
+                        'Qty' => 1.0
                     ]
                 ],
-                "Deposit" => ($coupon != null) ?  (($paidAmount > (($unitPrice - ((($unitPrice * rtrim($coupon->amount, '%')) / 100))) + $tax)) ? (($unitPrice - ((($unitPrice * rtrim($coupon->amount, '%')) / 100))) + $tax) : $paidAmount) : (($paidAmount > ($unitPrice + $tax)) ? $unitPrice + $tax : $paidAmount), //$paidAmount, 
-                "AutoDocNumber" => true,
+                [
+                    "DetailType" => "DiscountLineDetail",
+                    "DiscountLineDetail"  => [
+                        "PercentBased" => true,
+                        "DiscountPercent" => (isset($coupon) ? rtrim($coupon->amount, '%') : 0)
+                    ]
 
-                // no tax due to free zone
-
-                "TxnTaxDetail" => [
-                    "TxnTaxCodeRef" => [
-                        "value" => ($tax == 0 || $tax == null) ? 0 : 5,  // tax rate
-                        "name" => ($tax == 0 || $tax == null) ? 'EX Exempt' : "SR Standard Rated (DXB)", // tax rate name
-                    ],
-                    "TotalTax" => ($tax == 0 || $tax == null) ? 0 : $tax,
-                ],
-                "PaymentRefNum" => $paymentDetails->bank_reference_no,
-
-                "CustomerRef" => [
-                    "value" => ($customer->Id) ??  $customer[0]->Id
-                ],
-                "CustomerMemo" => [
-                    "value" => ($coupon != null) ? (($paidAmount > (($unitPrice - ((($unitPrice * rtrim($coupon->amount, '%')) / 100))) + $tax)) ?  $paymentDetails->bank_reference_no . "<br> Paid additional amount" . ($paidAmount - (($unitPrice - ((($unitPrice * rtrim($coupon->amount, '%')) / 100))) + $tax)) : $paymentDetails->bank_reference_no) : (($paidAmount > ($unitPrice + $tax)) ? $paymentDetails->bank_reference_no . "<br> Paid additional amount" . ($paidAmount - ($unitPrice + $tax)) : $paymentDetails->bank_reference_no),
-                ],
-                "PrivateNote" => $paymentDetails->bank_reference_no,
-                "TxnDate" => $paymentDetails->payment_date,
-                "DueDate" => $paymentDetails->payment_date,
-                "BillEmail" => [
-                    "Address" => $client->email
-                ],
-                "BillEmailCc" => [
-                    "Address" => "a@intuit.com"
-                ],
-                "BillEmailBcc" => [
-                    "Address" => "v@intuit.com"
                 ]
-            ]);
-        // } else {
-        //     $theResourceObj = Invoice::create([
-        //         "Line" => [
-        //             [
-        //                 "Description" => $updatItem->Description,
-        //                 "Amount" => $unitPrice,
-        //                 "DetailType" => "SalesItemLineDetail",
-        //                 "SalesItemLineDetail" => [
-        //                     "TaxCodeRef" => [
-        //                         "value" => (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? (($tax == 0 || $tax == null) ? 4 : 12) : 'TAX'
-        //                     ],
-        //                     "ItemRef" => [
-        //                         "value" => $updatItem->Id,
-        //                         "name" => $updatItem->Name
-        //                     ],
-        //                     'UnitPrice' => $unitPrice,
-        //                     'Qty' => 1.0
-        //                 ]
-        //             ]
-        //         ],
-        //         "Deposit" => ($paidAmount > ($unitPrice + $tax)) ? $unitPrice + $tax : $paidAmount,
-        //         "AutoDocNumber" => true,
-        //         // no tax due to free zone
-        //         "TxnTaxDetail" => [
-        //             "TxnTaxCodeRef" => [
-        //                 "value" => ($tax == 0 || $tax == null) ? 0 : 5,  // tax rate
-        //                 "name" => ($tax == 0 || $tax == null) ? 'EX Exempt' : "SR Standard Rated (DXB)", // tax rate name
-        //             ],
-        //             "TotalTax" => ($tax == 0 || $tax == null) ? 0 : $tax,
-        //         ],
-        //         "PaymentRefNum" => $paymentDetails->bank_reference_no,
+            ],
+            "Deposit" => ($coupon != null) ?  (($paidAmount > (($unitPrice - ((($unitPrice * rtrim($coupon->amount, '%')) / 100))) + $tax)) ? (($unitPrice - ((($unitPrice * rtrim($coupon->amount, '%')) / 100))) + $tax) : $paidAmount) : (($paidAmount > ($unitPrice + $tax)) ? $unitPrice + $tax : $paidAmount), //$paidAmount, 
+            "AutoDocNumber" => true,
 
-        //         "CustomerRef" => [
-        //             "value" => ($customer->Id) ??  $customer[0]->Id
-        //         ],
-        //         "CustomerMemo" => [
-        //             "value" => ($paidAmount > ($unitPrice + $tax)) ? $paymentDetails->bank_reference_no . "<br> Paid additional amount" . ($paidAmount - ($unitPrice + $tax)) : $paymentDetails->bank_reference_no,
-        //         ],
-        //         "TxnDate" => $paymentDetails->payment_date,
-        //         "DueDate" => $paymentDetails->payment_date,
-        //         "PrivateNote" => $paymentDetails->bank_reference_no,
-        //         "BillEmail" => [
-        //             "Address" => $client->email
-        //         ],
-        //         "BillEmailCc" => [
-        //             "Address" => "a@intuit.com"
-        //         ],
-        //         "BillEmailBcc" => [
-        //             "Address" => "v@intuit.com"
-        //         ]
-        //     ]);
-        // }
+            // no tax due to free zone
+
+            "TxnTaxDetail" => [
+                "TxnTaxCodeRef" => [
+                    "value" => ($tax == 0 || $tax == null) ? 0 : 5,  // tax rate
+                    "name" => ($tax == 0 || $tax == null) ? 'EX Exempt' : "SR Standard Rated (DXB)", // tax rate name
+                ],
+                "TotalTax" => ($tax == 0 || $tax == null) ? 0 : $tax,
+            ],
+            "PaymentRefNum" => $paymentDetails->bank_reference_no,
+
+            "CustomerRef" => [
+                "value" => ($customer->Id) ??  $customer[0]->Id
+            ],
+            "CustomerMemo" => [
+                "value" => ($coupon != null) ? (($paidAmount > (($unitPrice - ((($unitPrice * rtrim($coupon->amount, '%')) / 100))) + $tax)) ?  $paymentDetails->bank_reference_no . "<br> Paid additional amount" . ($paidAmount - (($unitPrice - ((($unitPrice * rtrim($coupon->amount, '%')) / 100))) + $tax)) : $paymentDetails->bank_reference_no) : (($paidAmount > ($unitPrice + $tax)) ? $paymentDetails->bank_reference_no . "<br> Paid additional amount" . ($paidAmount - ($unitPrice + $tax)) : $paymentDetails->bank_reference_no),
+            ],
+            "PrivateNote" => $paymentDetails->bank_reference_no,
+            "TxnDate" => $paymentDetails->payment_date,
+            "DueDate" => $paymentDetails->payment_date,
+            "BillEmail" => [
+                "Address" => $client->email
+            ],
+            "BillEmailCc" => [
+                "Address" => "a@intuit.com"
+            ],
+            "BillEmailBcc" => [
+                "Address" => "v@intuit.com"
+            ]
+        ]);
         $invoiceData = $dataService->Add($theResourceObj);
         $paymentDetails->invoice_no = $invoiceData->DocNumber;
         $paymentDetails->invoice_id = $invoiceData->Id;

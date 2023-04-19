@@ -11,6 +11,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\JobOfferLetterMail;
 use Carbon\Carbon;
+use DB;
 
 class JobOfferLetter extends Command
 {
@@ -52,7 +53,7 @@ class JobOfferLetter extends Command
             ->where('payments.payment_type', '=', 'FIRST')
             ->where('applications.is_job_offer_letter_delivered', '=', 0)
             ->where('payments.created_at', '>=', '2023-02-01')
-            ->select('payments.created_at', 'applications.id', 'applications.client_id', 'payments.payment_date')
+            ->select('payments.created_at', 'applications.id', 'applications.client_id', 'payments.payment_date', 'pricing_plan_id')
             ->get();
         foreach ($applicants as $applicant) {
             $paiddate = $applicant['created_at']->addDays(7)->format('Y-m-d');
@@ -63,7 +64,12 @@ class JobOfferLetter extends Command
                 $media = (isset($application->getMedia(Application::$media_collection_main_job_offer_letter)[0])) ? $application->getMedia(Application::$media_collection_main_job_offer_letter)[0]->getFullUrl() : null;
                 Mail::to($client->email)->send(new JobOfferLetterMail($media));
                 $application->is_job_offer_letter_delivered = 1;
-                // $application->status = 'WAITING_FOR_SUBMISSION_PAYMENT';
+                $pricingPlans = DB::table('pricing_plans')->where('id', $applicant->pricing_plan_id)->first();
+
+                if(isset($pricingPlans->submission_payment_sub_total) && $pricingPlans->submission_payment_sub_total > 0) {
+                    $application->status = 'WAITING_FOR_SUBMISSION_PAYMENT';
+                }
+
                 $application->save();
             }
         }

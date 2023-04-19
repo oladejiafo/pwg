@@ -291,7 +291,7 @@ $cXamount=0;
                                             <li><div style="text-align: left;margin-left: 35px">Free regeneration meal</div></li>
                                             <li><div style="text-align: left;margin-left: 35px">Flexible working hours</div></li>
                                             <li><div style="text-align: left;margin-left: 35px">Permanent residency</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Passport after 5 year</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Passport after 5 years</div></li>
 
                                             <li><div style="text-align: left;margin-left: 35px">Salary on time</div></li>
                                             <li><div style="text-align: left;margin-left: 35px">Attractive job market</div></li>
@@ -360,7 +360,7 @@ $cXamount=0;
                                             <li><div style="text-align: left;margin-left: 35px">Free regeneration meal</div></li>
                                             <li><div style="text-align: left;margin-left: 35px">Flexible working hours</div></li>
                                             <li><div style="text-align: left;margin-left: 35px">Permanent residency</div></li>
-                                            <li><div style="text-align: left;margin-left: 35px">Passport after 5 year</div></li>
+                                            <li><div style="text-align: left;margin-left: 35px">Passport after 5 years</div></li>
 
                                             <li><div style="text-align: left;margin-left: 35px">Salary on time</div></li>
                                             <li><div style="text-align: left;margin-left: 35px">Family benefits</div></li>

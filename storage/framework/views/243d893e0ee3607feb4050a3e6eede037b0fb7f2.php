@@ -73,11 +73,7 @@
                   <span style="display:inline-block"><img alt="PWG" src="<?php echo e(asset('images/icon1.png')); ?>"></span><span class="title"><?php echo e(__('My Application')); ?> </span>
                 </a>
               </div>
-              <div class="d-flex align-items-center justify-content-center jobbers">
-                <a class="nav-link btn create-new-button network" aria-expanded="false" href="<?php echo e(route('newtork.partner')); ?>">
-                  <span style="display:inline-block"><img alt="PWG" src="<?php echo e(asset('images/icon2.png')); ?>"></span><span class="title" style="padding-top:0px;display:inline-block">Network Partner</span>
-                </a>
-              </div>
+              
             <?php else: ?>
               <!-- <div class="d-flex align-items-center justify-content-center jobber">
                 <a class="nav-link btn create-new-button"  aria-expanded="false" href="<?php echo e(route('login')); ?>">
@@ -189,10 +185,7 @@
     <script src="<?php echo e(asset('user/extra/assets/js/bootstrap.min.js')); ?>"></script>
     <script src="<?php echo e(asset('user/extra/assets/js/owl.carousel.min.js')); ?>"></script>
     <script src="<?php echo e(asset('user/extra/assets/js/wow.js')); ?>"></script>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-
-   
 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
    <?php /**PATH C:\Users\Shamshera Hamza\pwg_client_portal - optimization\resources\views/user/header.blade.php ENDPATH**/ ?>

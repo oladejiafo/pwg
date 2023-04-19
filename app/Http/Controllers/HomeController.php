@@ -1441,7 +1441,7 @@ class HomeController extends Controller
                 'title' => 'New payment from ' . ucwords(Auth::user()->name),
                 'client' => Auth::user()->email,
                 'status' => 'newPayment',
-                'body' => 'The applicant ' . Auth::user()->email . ' uploaded payment receipt for '.$request->whichpayment.' payment. Corresponding to application Id '.$application->id.' . please verify!'
+                'body' => 'The applicant ' . Auth::user()->email . ' uploaded payment receipt for ' . $request->whichpayment . ' payment. Corresponding to application Id ' . $application->id . ' . please verify!'
             ];
             if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                 Mail::to(env('FINANCE_ACCOUNTANT'))->send(new NotifyMail($dataArray));
@@ -1574,13 +1574,13 @@ class HomeController extends Controller
                         if ($data->work_permit_status == "WORK_PERMIT_RECEIVED") {
                             $data->status = 'WAITING_FOR_EMBASSY_APPEARANCE';  // add in payment success
                         }
-                        if ($paymentCreds['whatsPaid'] == 'PARTIALLY_PAID') { // add in payment success
-                            $data->is_submission_payment_partially_paid = 1; // add in payment success
-                        } // add in payment success
                         $data->submission_payment_remaining = 0;
                         $data->submission_payment_verified_by_accountant = 1;
                         $data->submission_payment_verified_by_cfo = 1;
                         $data->is_submission_payment_partially_paid = 0; // add in payment success
+                        if ($paymentCreds['whatsPaid'] == 'PARTIALLY_PAID') { // add in payment success
+                            $data->is_submission_payment_partially_paid = 1; // add in payment success
+                        } // add in payment success
                         // }
                     } elseif ($paymentCreds['whichpayment'] == 'SECOND' || $paymentCreds['whichpayment'] == 'BALANCE_ON_SECOND') {
                         $data->second_payment_paid = $data->second_payment_paid + $paymentCreds['thisPaymentMade']; // add in payment success
@@ -2094,7 +2094,6 @@ class HomeController extends Controller
             $apply = Application::where('client_id', Auth::id())
                 ->orderBy('id', 'DESC')
                 ->first();
-
             $paymentDetailsBasedType  =  Payment::where('application_id', $apply->id)
                 ->where('payment_type', $ptype)
                 ->orderBy('id', 'DESC')
