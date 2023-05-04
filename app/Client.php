@@ -40,7 +40,8 @@ class Client extends Authenticatable implements HasMedia, MustVerifyEmail
         'sales_agent_name_by_client',
         'sales_agent_phone_number_by_client',
         'country_of_residence',
-        'created_at'
+        'created_at',
+        'partner_code_provide_by_client'
     ];
 
     /**

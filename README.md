@@ -62,3 +62,94 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+
+E-portal play same as a E-commerce site here the the user can apply the destination which the user wish to proceed. Through this th payments also be done.
+
+## Prerequisites
+
+PHP 7.3 or later
+Laravel 8.x
+
+## Project Structure
+
+app/
+├── Http/
+│   ├── Controllers/
+│   │   ├── HomeController.php
+│   │   ├── ApplicationController.php
+|   |   ├── ApiController.php
+|   |   ├── NetworkController.php
+|   |   ├── ResetPasswordController.php
+|   |   └── Affiliate/
+|   |           └── AffiliatePartnerController.php
+|   |   
+│   ├── Middleware/
+│   │   ├── Authenticate.php
+│   │   └── AffiliateCheck.php
+│   └── ...
+├── Providers/
+│   ├── AppServiceProvider.php
+│   ├── AuthServiceProvider.php
+|   ├── EventServiceProvider.php
+|   ├── FortifyServiceProvider.php
+|   └── JetstreamServiceProvider.php
+└── ...
+
+## Database Schema
+Here's the database schema for the project:
+
+- **clients**
+- id
+- family_member_id 
+- name 
+- sur_name
+- middle_name
+- email
+- phone_number 
+- new_email  
+- new_phone_number 
+- sex	
+- date_of_birth
+- place_of_birth
+- country_of_birth
+- civil_status
+- other_civil_status
+- citizenship
+- country_of_residence
+- passport_number 
+- passport_issue_date 
+- passport_expiry
+- passport_issued_by
+- address_line_1
+- address_line_2
+- city
+- state
+- postal_code
+- country
+- is_schengen_visa_issued_last_five_year
+- is_finger_print_collected_for_Schengen_visa
+- residence_mobile_number	
+- visa_validity	
+- residence_id
+- current_job_profession
+- work_state
+- work_city	
+- work_postal_code
+- work_address
+
+When registering in eportal the datas will be saved in clients table.
+
+- **applications**
+
+After providing signature and and either by go forward with card payment or bank transfer when the slip upload the application detaisl will be enterded in this table.
+
+
+
+
+
+
+
+
+

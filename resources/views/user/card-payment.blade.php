@@ -765,7 +765,7 @@ $totalPay = round($payNow - $discount + $vat, 2);
                             $('.contract-signature').hide();
                             //  location.href = "{{ url('payment_form') }}/" + '{{ $data->id }}';
                         } else {
-                            toastr.error("Something went wrong!");
+                            // toastr.error("Something went wrong!");
                         }
 
                     },

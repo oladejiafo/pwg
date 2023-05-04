@@ -788,26 +788,32 @@
             $("#current_residency :input").each(function(index, elm){
                 $("."+elm.name+"_errorClass").empty();
             });
-            var fileSize = $('#residence_upload')[0].files[0].size;
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
             var maxSize = 2 * 1024 * 1024; // 2MB in bytes
-            if (fileSize <= maxSize) {   
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                var full_number = phoneCurrentInput.getNumber(intlTelInputUtils.numberFormat.E164);
-                $("input[id='current_residance_mobile'").val(full_number);
-                var formData = new FormData(this);
-                if($("input[name=visa_upload]").val()){
-                    if($('.visa_upload')[0].files[0].size > maxSize){
-                        toastr.error('Selected file is too large. Maximum size is 2MB.');
-                    }
-                    formData.append('visa_copy', $('.visa_upload')[0].files[0]);
+            var fileSize = 0;
+            var full_number = phoneCurrentInput.getNumber(intlTelInputUtils.numberFormat.E164);
+            $("input[id='current_residance_mobile'").val(full_number);
+            var formData = new FormData(this);
+            if($("input[name=visa_upload]").val()){
+                if($('.visa_upload')[0].files[0].size > maxSize){
+                    toastr.error('Selected file is too large. Maximum size is 2MB.');
                 }
-                if($("input[name=residence_upload]").val()){
+                formData.append('visa_copy', $('.visa_upload')[0].files[0]);
+            }
+            if($("input[name=residence_upload]").val()){
+                fileSize = $('#residence_upload')[0].files[0].size;
+                if (fileSize <= maxSize) {   
                     formData.append('residence_copy', $('.residence_upload')[0].files[0]);
+                } else {
+                    toastr.error('Selected file is too large. Maximum size is 2MB.');
                 }
+            }
+            if(fileSize <= maxSize){
                 $.ajax({
                     type: 'POST',
                     url: "{{ url('store/current/details') }}",
@@ -832,8 +838,6 @@
                         toastr.error(error);
                     }
                 });
-            } else {
-                toastr.error('Selected file is too large. Maximum size is 2MB.');
             }
         });
         $('#schengen_details').submit(function(e){
@@ -1177,29 +1181,30 @@
         });
         $('#dependent_current_residency').submit(function(e){
             e.preventDefault(); 
-            var fileSize = $('.dependent_residence_upload')[0].files[0].size;
+            var fileSize = 0;
             var maxSize = 2 * 1024 * 1024; // 2MB in bytes
-            if (fileSize <= maxSize) {  
-                $("#dependent_current_residency :input").each(function(index, elm){
-                    $("."+elm.name+"_errorClass").empty();
-                });
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                var formData = new FormData(this);
-                if($('.dependent_residence_upload')[0].files[0]){
-                    formData.append('dependent_residence_copy', $('.dependent_residence_upload')[0].files[0]);
-                } 
-                if($('.dependent_visa_upload')[0].files[0]) {
-                    if($('.dependent_visa_upload')[0].files[0].size > maxSize) {
-                        toastr.error('Selected file is too large. Maximum size is 2MB.');
-                    }
-                    formData.append('dependent_visa_copy', $('.dependent_visa_upload')[0].files[0]);
+            $("#dependent_current_residency :input").each(function(index, elm){
+                $("."+elm.name+"_errorClass").empty();
+            });
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
-                var full_number = dependentcurrentresidancemobileInput.getNumber(intlTelInputUtils.numberFormat.E164);
-                $("input[id='dependent_current_residance_mobile'").val(full_number);
+            });
+            var formData = new FormData(this);
+            if($('.dependent_residence_upload')[0].files[0]){
+                fileSize = $('.dependent_residence_upload')[0].files[0].size;
+                formData.append('dependent_residence_copy', $('.dependent_residence_upload')[0].files[0]);
+            } 
+            if($('.dependent_visa_upload')[0].files[0]) {
+                if($('.dependent_visa_upload')[0].files[0].size > maxSize) {
+                    toastr.error('Selected file is too large. Maximum size is 2MB.');
+                }
+                formData.append('dependent_visa_copy', $('.dependent_visa_upload')[0].files[0]);
+            }
+            var full_number = dependentcurrentresidancemobileInput.getNumber(intlTelInputUtils.numberFormat.E164);
+            $("input[id='dependent_current_residance_mobile'").val(full_number);
+            if(fileSize < maxSize){
                 $.ajax({
                     type: 'POST',
                     url: "{{ url('store/spouse/current/details') }}",
@@ -1228,7 +1233,7 @@
                         toastr.error(error);
                     }
                 });
-            } else {
+            }  else {
                 toastr.error('Selected file is too large. Maximum size is 2MB.');
             }
         });

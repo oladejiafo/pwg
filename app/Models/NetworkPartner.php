@@ -25,5 +25,6 @@ class NetworkPartner extends Model
         'partner_email',
         'partner_address',
         'created_by',
+        'partner_city'
     ];
 }

@@ -60,13 +60,13 @@ session_start();
           <div class="mb-3">
             <div class="label"><label for="name" class="form-label">Name</label></div>
             <div class="inputs">
-              <input type="text" style="padding: 10px;" class="form-control" id="exampleInputName" name="name" aria-describedby="emailHelp" autocomplete="off" required value="<?php echo e(old('name')); ?>">
+              <input type="text" style="padding: 10px;" class="form-control" placeholder="Type Your Name" id="exampleInputName" name="name" aria-describedby="emailHelp" autocomplete="off" required value="<?php echo e(old('name')); ?>">
             </div>
           </div>
           <div class="mb-3">
             <div class="label"><label for="email" class="form-label">Email</label></div>
             <div class="inputs">
-              <input type="email" style="padding: 10px;" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp" autocomplete="off" required value="<?php echo e(old('email')); ?>">
+              <input type="email" style="padding: 10px;" class="form-control" placeholder="Type Your Email" id="exampleInputEmail1" name="email" aria-describedby="emailHelp" autocomplete="off" required value="<?php echo e(old('email')); ?>">
               <?php $__errorArgs = ['email'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -81,7 +81,7 @@ unset($__errorArgs, $__bag); ?>
             <div class="label"><label for="phone number" class="form-label">Phone number</label></div>
             <div class="inputs">
               
-              <input type="tel" style="paddingx: 10px;" class="form-control phone_number" id="phone_number" name="phone_number" aria-describedby="emailHelp" autocomplete="off" required value="<?php echo e(old('phone_number')); ?>" required="">
+              <input type="tel" style="paddingx: 10px;" class="form-control phone_number" placeholder="Type Your Phone Number" id="phone_number" name="phone_number" aria-describedby="emailHelp" autocomplete="off" required value="<?php echo e(old('phone_number')); ?>" required="">
               <?php $__errorArgs = ['phone_number'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -97,7 +97,7 @@ unset($__errorArgs, $__bag); ?>
               <label for="Password" class="form-label">Password</label>
             </div>
             <div class="inputs-icon">
-              <input type="password" class="form-control passwordInput" id="exampleInputPassword1" name="password" autocomplete="off" required>
+              <input type="password" class="form-control passwordInput" id="exampleInputPassword1" placeholder="Type Your Password" name="password" autocomplete="off" required>
               <img src="<?php echo e(asset('images/Eye_Icon.png')); ?>" alt="pwg img" class="iconImg">
               <img src="<?php echo e(asset('images/view_password.svg')); ?>" alt="pwg img" class="viewIcon">
               <?php $__errorArgs = ['password'];
@@ -113,7 +113,7 @@ unset($__errorArgs, $__bag); ?>
           <div class="mb-3">
             <div class="label"><label for="email1" class="form-label">Confirm Password</label></div>
             <div class="inputs-icon">
-              <input type="password" class="form-control confirmation" name="password_confirmation" aria-describedby="emailHelp" autocomplete="off" required>
+              <input type="password" class="form-control confirmation" name="password_confirmation" placeholder="Type Your Password" aria-describedby="emailHelp" autocomplete="off" required>
               <img src="<?php echo e(asset('images/Eye_Icon.png')); ?>" alt="pwg img" id="cofirmation">
               <img src="<?php echo e(asset('images/view_password.svg')); ?>" alt="pwg img" class="confirmation_viewIcon">
               <?php $__errorArgs = ['password'];
@@ -128,10 +128,10 @@ unset($__errorArgs, $__bag); ?>
           </div>
           <div class="mb-3">
             <div class="label">
-              <label for="Agent" class="form-label">Your Agent Name/Partner Code</label>
+              <label for="Agent" class="form-label">Your Agent Name</label>
             </div>
             <div class="inputs-iconx">
-              <input  name="agent" class="agent form-control" type="text" autocomplete="off" placeholder="Type Your Agent/Partner Code" required="">
+              <input  name="agent" class="agent form-control" type="text" autocomplete="off" placeholder="Type Your Agent Name" value="<?php echo e(old('agent')); ?>">
               
               <?php $__errorArgs = ['agent'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -144,6 +144,22 @@ unset($__errorArgs, $__bag); ?>
             </div>
           </div>
           <div class="mb-3">
+            <div class="label">
+              <label for="Partner" class="form-label">Your Partner Code</label>
+            </div>
+            <div class="inputs-iconx">
+              <input  name="partner" class="agent form-control" type="text" autocomplete="off" placeholder="Type Your Partner Code" value="<?php echo e(old('partner')); ?>">
+              <?php $__errorArgs = ['partner'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <span class="error"><?php echo e($message); ?></span> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+            </div>
+          </div>
+          <div>
             <span>By continuing you agree to the <a style="margin-left:0px" href="<?php echo e(route('terms')); ?>" target="_blank"><u>Terms & Conditions</u></a></span>
             
           </div>

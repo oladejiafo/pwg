@@ -121,7 +121,7 @@ $total = $totalP + $vatP;
         </div><hr style="height:0.7px; opacity:0.2;color:#ccc;">
 
         <div class="row sb" style="display: block;height:40px">
-            <div align="left" class="col-3" style="width:40%;display: inline-block; height:20px"> {{$pricing->plan_name}} VISA Application, {{$user->payment_type}}</div>
+            <div align="left" class="col-3" style="width:40%;display: inline-block; height:20px"> {{$pricing->plan_name}} {{$user->payment_type}}</div>
             <div align="right" class="col-3" style="width:19%;display: inline-block; height:20px"> 1 </div>
             <div align="right" class="col-3" style="width:19%;display: inline-block; height:20px"> {{number_format($thisAmt,2)}}</div>
             <div align="right" class="col-3" style="width:19%;display: inline-block; height:20px"> {{number_format($thisAmt,2)}}</div>
@@ -215,6 +215,10 @@ $total = $totalP + $vatP;
                     <div class="col" style="width:30%;display: inline-block;height:15px; opacity: 0.7;font-size:11px">{{number_format($netAmt,2)}}</div>
                     </div>
                 @endif
+                <br>
+                <div>
+                    <strong>Disclaimer*: </strong>Invoice is temporary and subject to change, and the final version will be available on the eportal dashboard the next working day after 11 am.
+                </div>
         
   </body>
 </html>

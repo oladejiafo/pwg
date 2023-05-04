@@ -30,6 +30,7 @@ class Client extends Authenticatable implements MustVerifyEmail
         'email',
         'phone_number',
         'password',
+        'partner_code_provide_by_client'
     ];
 
     /**

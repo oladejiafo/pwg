@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Application;
 use App\Client;
+use App\Models\NetworkPartnerCode;
+use App\Models\Partner;
 use App\Models\Timer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -639,6 +641,8 @@ class HomeController extends Controller
                 'is_spouse' => $is_spouse,
                 'children_count' => $children
             ]);
+        $networkCode = (NetworkPartnerCode::where('code', '=', Auth::user()->partner_code_provide_by_client)->first()) ?? null;
+        $partnerCode = (Partner::where('partner_code', '=', Auth::user()->partner_code_provide_by_client)->first()) ?? null;
 
         if ($datas === null) {
             $data = new Application();
@@ -682,6 +686,10 @@ class HomeController extends Controller
             $data->third_payment_price = $pricingPLan['third_payment_price'];
             $data->third_payment_paid = 0;
             $data->third_payment_remaining = $pricingPLan['third_payment_price'];
+
+            $data->network_code = ($networkCode) ? $networkCode->code : null;
+            $data->partner_code = ($partnerCode) ? $partnerCode->partner_code : null;
+
             $res = $data->save();
         } else {
             $datas->pricing_plan_id = ($datas->pricing_plan_id) ?? $pricingPLan->id;
@@ -1004,7 +1012,7 @@ class HomeController extends Controller
                     ];
 
                     if ($datas === null) {
-                        $data = new applicant;
+                        $data = new Application;
                         if (in_array($apply->application_stage_status, $vals) && (empty($apply->embassy_country) || $apply->embassy_country == null)) {
                             $data->embassy_country = $request->embassy_appearance;
                         }
@@ -1016,7 +1024,7 @@ class HomeController extends Controller
                             $data->total_price = $thisPayment + $pdet->third_payment_price;
                             $data->total_remaining = $thisPayment + $pdet->third_payment_price;
                             $data->total_vat = $thisVat;
-
+                            $data->first_payment_discount = 0;
                             $data->total_discount = 0;
                             $data->total_vat = $pdet->total_vat;
                             $data->total_price = $pdet->total_price;
@@ -1035,7 +1043,6 @@ class HomeController extends Controller
                             $data->total_remaining = $pdet->total_price - ($data->first_payment_paid + $data->submission_payment_paid);
                         } elseif ($request->whichpayment == 'SECOND') {
                             $data->second_payment_price = $thisPayment;
-                            $data->total_discount = 0;
                             $data->total_paid = $data->first_payment_paid + $data->submission_payment_paid;
                             $data->total_remaining = $pdet->total_price - ($data->first_payment_paid + $data->submission_payment_paid);
                             $res = $data->save();
@@ -1128,6 +1135,12 @@ class HomeController extends Controller
                         if ($request->whichpayment == 'FIRST') {
                             $datas->total_paid = 0;
                             $datas->total_remaining = ($datas->coupon_code) ?  $datas->total_remaining : $pdet->total_price;
+                            $datas->first_payment_price = $pdet->first_payment_price;
+                            $datas->first_payment_discount = 0;
+                            $datas->second_payment_price = $pdet->second_payment_price;
+                            $datas->second_payment_discount = 0;
+                            $datas->submission_payment_price = $pdet->submission_payment_price;
+                            $datas->submission_payment_discount = 0;
                         } else if ($request->whichpayment == 'BALANCE_ON_FIRST') {
                             $datas->total_paid = $datas->first_payment_paid;
                             $datas->total_remaining = ($datas->coupon_code) ?  $datas->total_remaining : ($pdet->total_price -  $datas->first_payment_paid);
@@ -1242,7 +1255,6 @@ class HomeController extends Controller
                 return redirect('home');
             }
         } catch (Exception $e) {
-
             return redirect('myapplication')->with('error', $e->getMessage());
         }
     }
@@ -1435,6 +1447,35 @@ class HomeController extends Controller
                 $application->second_payment_vat = ($topaynow_temp_second *  5) / 100;
                 $application->second_payment_remaining = $application->second_payment_price = $topaynow_temp_second + ($topaynow_temp_second *  5) / 100;
             }
+            if (Session::get('discountapplied') != 1 && (($request->whichpayment == 'FIRST') ||  ($request->whichpayment == 'Full-Outstanding Payment'))) {
+                $application->sub_total = $paysplit->sub_total;
+                $application->total_vat = $paysplit->total_vat;
+                $application->total_price = $paysplit->total_price;
+                $application->total_paid = 0;
+                $application->total_discount = 0;
+                $application->total_remaining = $paysplit->total_price;
+
+                $application->first_payment_sub_total = $paysplit->first_payment_sub_total;
+                $application->first_payment_vat = $paysplit->first_payment_vat;
+                $application->first_payment_price = $paysplit->first_payment_price;
+                $application->first_payment_paid = 0;
+                $application->first_payment_discount = 0;
+                $application->first_payment_remaining = $paysplit->first_payment_price;
+
+                $application->submission_payment_sub_total = $paysplit->submission_payment_sub_total;
+                $application->submission_payment_vat = $paysplit->submission_payment_vat;
+                $application->submission_payment_price = $paysplit->submission_payment_price;
+                $application->submission_payment_paid = 0;
+                $application->submission_payment_discount = 0;
+                $application->submission_payment_remaining = $paysplit->submission_payment_price;
+
+                $application->second_payment_sub_total = $paysplit->second_payment_sub_total;
+                $application->second_payment_vat = $paysplit->second_payment_vat;
+                $application->second_payment_price = $paysplit->second_payment_price;
+                $application->second_payment_paid = 0;
+                $application->second_payment_discount = 0;
+                $application->second_payment_remaining = $paysplit->second_payment_price;
+            }
 
             $application->save();
             $dataArray = [
@@ -1457,7 +1498,7 @@ class HomeController extends Controller
                 return Redirect::route('myapplication', $application->destination_id)->with('message', 'Payment need to be confirmed!');
             }
         } catch (Exception $e) {
-            return redirect()->back()->with('error', $e->getMessage());
+            return Redirect::route('myapplication')->with('error', $e->getMessage());
         }
     }
 
@@ -1695,7 +1736,10 @@ class HomeController extends Controller
 
                         $ppd->save();
                     }
+                    $payment = $this->getPaymentName();
 
+                    Quickbook::updateTokenAccess();
+                    Quickbook::createInvoice($payment);
                     $monthYear = explode('-', $paymentResponse->paymentMethod->expiry);
 
                     // Send Notifications on This Payment ##############
@@ -1742,10 +1786,7 @@ class HomeController extends Controller
                     // Notification Ends ############ 
                     $dest = product::find($id);
                     $dest_name = $dest->name;
-                    $payment = $this->getPaymentName();
 
-                    Quickbook::updateTokenAccess();
-                    Quickbook::createInvoice($payment);
                     $msg = "Awesome! Payment Successful!";
                     Session::forget('paymentCreds');
                     Session::forget('discountapplied');
@@ -2085,9 +2126,6 @@ class HomeController extends Controller
 
     public function getInvoice($ptype = null)
     {
-        Quickbook::updateTokenAccess();
-        $dataService = Quickbook::connectQucikBook();
-
         $paymentDetails = Payment::where('id', Session::get('paymentId'))
             ->first();
         if (isset($ptype)) {
@@ -2106,24 +2144,41 @@ class HomeController extends Controller
             }
             $paymentDetails =  $paymentDetailsBasedType;
         }
-        if ($paymentDetails->payment_type == 'Full-Outstanding Payment') {
-            $filename = Auth::user()->name . '-' . $paymentDetails->payment_type . '-' . "Invoice.pdf";
-            $invoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
-            if ($invoice) {
-                $pdfData = $dataService->DownloadPDF($invoice, null, true);
+        try {
+            Quickbook::updateTokenAccess();
+            $dataService = Quickbook::connectQucikBook();
+
+            if ($paymentDetails->payment_type == 'Full-Outstanding Payment') {
+                $filename = Auth::user()->name . '-' . $paymentDetails->payment_type . '-' . "Invoice.pdf";
+                $invoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
+                if ($invoice) {
+                    $pdfData = $dataService->DownloadPDF($invoice, null, true);
+                } else {
+                    return self::getInvoiceDevelop($paymentDetails->payment_type);
+                }
             } else {
-                return self::getInvoiceDevelop($paymentDetails->payment_type);
-            }
-        } else {
-            if ($paymentDetails->payment_type == 'FIRST' || $paymentDetails->payment_type == 'BALANCE_ON_FIRST') {
-                $firstPaymentDue = Payment::where('application_id', $paymentDetails->application_id)
-                    ->where('payment_type', 'BALANCE_ON_FIRST')
-                    ->count();
-                if ($firstPaymentDue > 0) {
-                    if ($ptype) {
-                        $paymentDetails  =  Payment::where('application_id', $apply->id)
-                            ->where('payment_type', $ptype)
-                            ->first();
+                if ($paymentDetails->payment_type == 'FIRST' || $paymentDetails->payment_type == 'BALANCE_ON_FIRST') {
+                    $firstPaymentDue = Payment::where('application_id', $paymentDetails->application_id)
+                        ->where('payment_type', 'BALANCE_ON_FIRST')
+                        ->count();
+                    if ($firstPaymentDue > 0) {
+                        if ($ptype) {
+                            $paymentDetails  =  Payment::where('application_id', $apply->id)
+                                ->where('payment_type', $ptype)
+                                ->first();
+                            $filename = Auth::user()->name . '-' . $paymentDetails->payment_type . '-' . "Invoice.pdf";
+                            $invoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
+                            if ($invoice) {
+                                $pdfData = $dataService->DownloadPDF($invoice, null, true);
+                            } else {
+                                return self::getInvoiceDevelop($paymentDetails->payment_type);
+                            }
+                        } else {
+                            $filename = Auth::user()->name . '-' . $paymentDetails->payment_type . '-' . "Receipt.pdf";
+                            $reciept = $dataService->FindById("Payment", $paymentDetails->invoice_id);
+                            $pdfData = $dataService->DownloadPDF($reciept, null, true);
+                        }
+                    } else {
                         $filename = Auth::user()->name . '-' . $paymentDetails->payment_type . '-' . "Invoice.pdf";
                         $invoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
                         if ($invoice) {
@@ -2131,10 +2186,6 @@ class HomeController extends Controller
                         } else {
                             return self::getInvoiceDevelop($paymentDetails->payment_type);
                         }
-                    } else {
-                        $filename = Auth::user()->name . '-' . $paymentDetails->payment_type . '-' . "Receipt.pdf";
-                        $reciept = $dataService->FindById("Payment", $paymentDetails->invoice_id);
-                        $pdfData = $dataService->DownloadPDF($reciept, null, true);
                     }
                 } else {
                     $filename = Auth::user()->name . '-' . $paymentDetails->payment_type . '-' . "Invoice.pdf";
@@ -2145,27 +2196,21 @@ class HomeController extends Controller
                         return self::getInvoiceDevelop($paymentDetails->payment_type);
                     }
                 }
-            } else {
-                $filename = Auth::user()->name . '-' . $paymentDetails->payment_type . '-' . "Invoice.pdf";
-                $invoice = $dataService->FindById("Invoice", $paymentDetails->invoice_id);
-                if ($invoice) {
-                    $pdfData = $dataService->DownloadPDF($invoice, null, true);
-                } else {
-                    return self::getInvoiceDevelop($paymentDetails->payment_type);
-                }
             }
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/pdf');
+            header('Content-Disposition: attachment; filename=' . $filename);
+            header('Content-Transfer-Encoding: binary');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . strlen($pdfData));
+            ob_clean();
+            flush();
+            echo $pdfData;
+        } catch (Exception $e) {
+            return self::getInvoiceDevelop($paymentDetails->payment_type);
         }
-        header('Content-Description: File Transfer');
-        header('Content-Type: application/pdf');
-        header('Content-Disposition: attachment; filename=' . $filename);
-        header('Content-Transfer-Encoding: binary');
-        header('Expires: 0');
-        header('Cache-Control: must-revalidate');
-        header('Pragma: public');
-        header('Content-Length: ' . strlen($pdfData));
-        ob_clean();
-        flush();
-        echo $pdfData;
     }
 
     private function getPaymentName()

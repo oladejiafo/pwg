@@ -47,6 +47,7 @@ body {
   height: auto;
   min-height: 200px;
   font-size: 20px;
+  margin-bottom: 2%;
 }
 
 .card .card-body img {
@@ -92,6 +93,7 @@ body {
     max-height: auto;
     margin-top: 40px;
     font-size: 20px;
+    margin-bottom: 7%;
   }
 
   .card .card-body img {
@@ -169,6 +171,7 @@ body {
   justify-content: center;
   background-size: cover;
   border-radius: 10px;
+  margin-bottom: 5%;
 }
 
 
@@ -358,6 +361,7 @@ body {
 @media only screen and (max-width: 768px) and (min-width: 370px) {
   .paid-section {
     padding: 1px 1px 1px 1px;
+    margin-bottom: 30%;
   }
 
   .paid-section .paid-item {
@@ -814,7 +818,7 @@ body {
   padding: 1px;
 }
 .paid-section .cardc .process {
-  margin-top: -45px;
+  margin-top: -20px;
   margin-left: 5px;
 }
 
@@ -909,8 +913,9 @@ body {
   margin-left: 20px;
   /* padding: 1px; */
 }
+
 .paid-section .cardc .process {
-  margin-top: -45px;
+  margin-top: -29px;
   margin-left: 5px;
 }
 

@@ -3,9 +3,9 @@
     <div class="applicant-detail-sec">
         <div class="heading"  data-bs-toggle="collapse" data-bs-target="#collapseReferrer" aria-expanded="false" aria-controls="collapseReferrer">
             <div class="row">
-                <div class="col-2 my-auto">
-                    <div class="image">
-                        <img src="<?php echo e(asset('images/refferal.png')); ?>" width="85%" height="100%" alt="PWG Group" style="opacity: 0.82;">
+                <div class="col-2">
+                    <div class="image my-auto">
+                        <img src="<?php echo e(asset('images/refferal.png')); ?>" width="100%" height="100%" alt="PWG Group" style="opacity: 0.82;">
                     </div>
                 </div>
                 <div class="col-1">
@@ -43,8 +43,8 @@
                                 <label for="floatingInput">Referrer Name(if you have any or if you don't have leave empty)</label>
                             </div>
                             <div class="form-floating col-sm-6 mt-3">
-                                <input type="text" name="referrerPassport" id="floatingInput" class="form-control referrerPassport" placeholder="Referrer Name" value="<?php echo e($applicant['referrer_passport_number_by_client']); ?>" autocomplete="off" />
-                                <label for="floatingInput">Referrer Name(if you have any or if you don't have leave empty)</label>
+                                <input type="text" name="referrerPassport" id="floatingInput" class="form-control referrerPassport" placeholder="Referrer Passport" value="<?php echo e($applicant['referrer_passport_number_by_client']); ?>" autocomplete="off" />
+                                <label for="floatingInput">Referrer Passport(if you have any or if you don't have leave empty)</label>
                             </div>
                         </div>
                         <div class="row mt4">
@@ -476,26 +476,26 @@ unset($__errorArgs, $__bag); ?>
                                 <label for="current_residence_phone_number_label" style="margin-top: -5px !important; margin-left: -5px !important;">Phone Number*</label>
                             </div>
                             <div class="form-floating col-sm-4 mt-3">
-                                <input type="text" name="residence_id" class="form-control" id="residence_id" placeholder="Residence Id*" autocomplete="off"/>
-                                <label for="residence_id">Residence Id*</label>
+                                <input type="text" name="residence_id" class="form-control" id="residence_id" placeholder="Residence Id" autocomplete="off"/>
+                                <label for="residence_id">Residence Id</label>
                                 <span class="residence_id_errorClass"></span>
                             </div>
                             <div class="form-floating col-sm-4 mt-3">
-                                <input type="text" class="form-control visa_validity" name="visa_validity" id="visa_validity" placeholder="Your ID/Visa Date of Validity*" readonly="readonly">
-                                <label for="visa_validity">Your ID/Visa Date of Validity*</label>
+                                <input type="text" class="form-control visa_validity" name="visa_validity" id="visa_validity" placeholder="Your ID/Visa Date of Validity" readonly="readonly">
+                                <label for="visa_validity">Your ID/Visa Date of Validity</label>
                                 <span class="visa_validity_errorClass"></span>
                             </div>
                         </div>
                         <div class="form-group row mt-4">
                             <div class="form-floating col-sm-6 mt-3">
-                                <input type="text" class="form-control residence_id" id="residence_copy" name="residence_copy" onclick="showResidenceIdFormat('applicant')" placeholder="Residence/Emirates ID*" readonly >
+                                <input type="text" class="form-control residence_id" id="residence_copy" name="residence_copy" onclick="showResidenceIdFormat('applicant')" placeholder="Residence/Emirates ID" readonly >
                                 <div class="input-group-btn">
                                     <span class="fileUpload btn">
                                         <span class="upl" id="upload" onclick="showResidenceIdFormat('applicant')">Choose File</span>
                                         
                                     </span><!-- btn-orange -->
                                 </div><!-- btn -->
-                                <label for="residence_copy">Residence/Emirates ID*</label>
+                                <label for="residence_copy">Residence/Emirates ID</label>
                                 <span class="residence_copy_errorClass"></span>
                             </div>
                             <div class="form-floating col-sm-6 mt-3">

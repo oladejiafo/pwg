@@ -260,9 +260,6 @@ class ApplicationController extends Controller
     public function storeCurrentDetails(Request $request)
     {
         $validator = \Validator::make($request->all(), [
-            'residence_id' => 'required',
-            'visa_validity'  => 'required',
-            'residence_copy' => 'required',
             'work_state' => 'required',
             'work_city' => 'required',
             'work_postal_code' => 'required',
@@ -303,7 +300,7 @@ class ApplicationController extends Controller
         $client->country_of_residence = (strlen($request->current_country) > 0) ? $request->current_country : $client->country_of_residence;
         $client->residence_mobile_number = $request->current_residance_mobile;
         $client->residence_id = $request->residence_id;
-        $client->visa_validity = date('Y-m-d', strtotime($request->visa_validity));
+        $client->visa_validity = ($request->visa_validity) ? date('Y-m-d', strtotime($request->visa_validity)) : null;
         $client->work_state = $request->work_state;
         $client->work_city = $request->work_city;
         $client->work_postal_code = $request->work_postal_code;
@@ -726,9 +723,6 @@ class ApplicationController extends Controller
     public function storeSpouseCurrentDetails(Request $request)
     {
         $validator = \Validator::make($request->all(), [
-            'dependent_residence_id' => 'required',
-            'dependent_visa_validity'  => 'required',
-            'dependent_residence_copy' => 'required',
             'dependent_work_state' => 'required',
             'dependent_work_city' => 'required',
             'dependent_work_postal_code' => 'required',
@@ -750,7 +744,7 @@ class ApplicationController extends Controller
             $dependent->country_of_residence = $request->dependent_current_country;
             $dependent->residence_mobile_number = $request->dependent_current_residance_mobile;
             $dependent->residence_id = $request->dependent_residence_id;
-            $dependent->visa_validity = date('Y-m-d', strtotime($request->dependent_visa_validity));
+            $dependent->visa_validity = ($request->dependent_visa_validity) ? date('Y-m-d', strtotime($request->dependent_visa_validity)) : null;
             $dependent->work_state = $request->dependent_work_state;
             $dependent->work_city = $request->dependent_work_city;
             $dependent->work_postal_code = $request->dependent_work_postal_code;

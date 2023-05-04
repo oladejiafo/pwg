@@ -45,6 +45,10 @@
     .network-partner .reset{
         margin-top: 10px
     }
+
+    #days {
+        display: none !important;
+    }
 </style>
 <?php $__env->startSection('content'); ?>
     <div class="container">
@@ -62,8 +66,23 @@
                 <div class="form-sec">
                     <form method="POST" action="<?php echo e(route('add.network.partner')); ?>">
                         <?php echo csrf_field(); ?>
+                        <p><b>Global Mobility Consultant Details</b></p>
+                        <div class="form-group row mb-3">
+                            <div class="form-floating col-sm-12">
+                                <input type="text"  name="global_mobility_consultant_code" class="form-control global_mobility_consultant_code" id="floatingInput" placeholder="Global Mobility Consultant Code" value="<?php echo e(old('global_mobility_consultant_code')); ?>" autocomplete="off"/>
+                                <label for="floatingInput"> Global Mobility Consultant Code*</label>
+                                <?php $__errorArgs = ['global_mobility_consultant_code'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <span class="error"><?php echo e($message); ?></span> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                            </div>
+                        </div>
                         <p><b>Partner's Details</b></p>
-                        <div class="form-group row">
+                        <div class="form-group row ">
                             <div class="form-floating col-sm-12">
                                 <input type="text"  name="partner_code" class="form-control partner_code" id="floatingInput" placeholder="Partner Code" value="<?php echo e(old('partner_code')); ?>" autocomplete="off"/>
                                 <label for="floatingInput"> Partner Code*</label>
@@ -79,8 +98,7 @@ unset($__errorArgs, $__bag); ?>
                         </div>
                         <div class="form-group row mb-2 mt-4">
                                 <input type="hidden" readonly name="partner_type" class="form-control partner_type" id="floatingInput" placeholder="Partner Type" value="Network" autocomplete="off"/>
-
-                            <div class="form-floating col-sm-6 mt-3">
+                            <div class="form-floating col-sm-6">
                                 <input type="text" name="partner_name" class="form-control partner_name" id="floatingInput" placeholder="Partner Name*" value="<?php echo e(old('partner_name')); ?>" autocomplete="off"/>
                                 <label for="floatingInput"> Partner Name*</label>
                                 <?php $__errorArgs = ['partner_name'];
@@ -92,7 +110,7 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
                             </div>
-                            <div class="form-floating col-sm-6 mt-3">
+                            <div class="form-floating col-sm-6">
                                 <select class="form-select form-control payment_type" name="payment_type" id="payment_type" placeholder="Payment Type*" value="<?php echo e(old('payment_type')); ?>">
                                     <option selected disabled>Please select payment type</option>
                                     <option value="Cash">Cash</option>
@@ -110,7 +128,7 @@ unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
                         <div class="form-group row mt-4 mb-4 bankDetails">
-                            <div class="form-floating col-sm-4 mt-3">
+                            <div class="form-floating col-sm-4">
                                 <input type="text" name="bank_name" class="form-control bank_name" id="floatingInput" placeholder="Bank Name*" value="<?php echo e(old('bank_name')); ?>" autocomplete="off"/>
                                 <label for="floatingInput"> Bank Name*</label>
                                 <?php $__errorArgs = ['bank_name'];
@@ -122,7 +140,7 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
                             </div>
-                            <div class="form-floating col-sm-4 mt-3">
+                            <div class="form-floating col-sm-4">
                                 <input type="text" name="bank_iban_number" class="form-control bank_iban_number" id="floatingInput" placeholder="Bank IBAN Number*" value="<?php echo e(old('bank_iban_number')); ?>" autocomplete="off"/>
                                 <label for="floatingInput"> Bank IBAN Number*</label>
                                 <?php $__errorArgs = ['bank_iban_number'];
@@ -134,7 +152,7 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
                             </div>
-                            <div class="form-floating col-sm-4 mt-3">
+                            <div class="form-floating col-sm-4">
                                 <input type="text" name="bank_swift_code" class="form-control bank_swift_code" id="floatingInput" placeholder="Bank SWIFT Code*" value="<?php echo e(old('bank_swift_code')); ?>" autocomplete="off"/>
                                 <label for="floatingInput"> Bank SWIFT Code*</label>
                                 <?php $__errorArgs = ['bank_swift_code'];
@@ -149,7 +167,7 @@ unset($__errorArgs, $__bag); ?>
                         </div>
                         <p><b>Contact Details</b></p>
                         <div class="form-group row">
-                            <div class="form-floating col-sm-6 mt-1">
+                            <div class="form-floating col-sm-6">
                                 <input type="text" name="partner_location" class="form-control partner_location" id="floatingInput" placeholder="Location*" value="<?php echo e(old('partner_location')); ?>" autocomplete="off"/>
                                 <label for="floatingInput"> Location*</label>
                                 <?php $__errorArgs = ['partner_location'];
@@ -161,7 +179,7 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
                             </div>
-                            <div class="form-floating col-sm-6 mt-1">
+                            <div class="form-floating col-sm-6">
                                 <input type="text"  name="partner_phone_number" class="form-control partner_phone_number" id="floatingInput" placeholder="Contact Number*" value="<?php echo e(old('partner_phone_number')); ?>" autocomplete="off"/>
                                 <label for="floatingInput"> Contact Number*</label>
                                 <?php $__errorArgs = ['partner_phone_number'];
@@ -175,7 +193,25 @@ unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
                         <div class="form-group row mt-4">
-                            <div class="form-floating col-sm-6 mt-3">
+                            <div class="form-floating">
+                                <select class="form-select form-control partner_city" name="partner_city" id="partner_city" placeholder="Payment Type*" value="<?php echo e(old('partner_city')); ?>">
+                                    <option selected disabled>Please select city closes to you</option>
+                                    <option value="Dubai">Dubai</option>
+                                    <option value="Abudhabi">Abudhabi</option>
+                                </select>
+                                <label for="payment_type">City*</label>
+                                <?php $__errorArgs = ['partner_city'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <span class="error"><?php echo e($message); ?></span> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                            </div>
+                        </div>
+                        <div class="form-group row mt-4">
+                            <div class="form-floating col-sm-6">
                                 <input type="email" name="partner_email" class="form-control partner_email" id="floatingInput" placeholder="Email" value="<?php echo e(old('partner_email')); ?>" autocomplete="off"/>
                                 <label for="floatingInput"> Email</label>
                                 <?php $__errorArgs = ['partner_email'];
@@ -187,7 +223,7 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
                             </div>
-                            <div class="form-floating col-sm-6 mt-3">
+                            <div class="form-floating col-sm-6">
                                 <input type="text"  name="partner_address" class="form-control partner_address" id="floatingInput" placeholder="Address" value="<?php echo e(old('partner_address')); ?>" autocomplete="off"/>
                                 <label for="floatingInput"> Address</label>
                                 <?php $__errorArgs = ['partner_address'];

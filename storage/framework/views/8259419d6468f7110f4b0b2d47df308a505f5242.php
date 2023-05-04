@@ -442,11 +442,11 @@ if (isset($pays) && (($pays->first_payment_remaining > 0 && $pays->first_payment
                     &nbsp;
                 </div>
                 <div class="row">
-                    <div class="col-4">
+                    <div class="col-lg-4 col-md-4 col-sm-12">
                         <a href="<?php echo e(url()->previous()); ?>"><button type="cancel" class="cancelBtn btnx"
                                 style="float: left;">Cancel</button></a>
                     </div>
-                    <div class="col-4">
+                    <div class="col-lg-4 col-md-4 col-sm-12">
                         <input type="hidden" name="pid" value="<?php echo e($data->id); ?>">
                         <input type="hidden" name="ppid" value="<?php echo e(isset($pdet->id) ? $pdet->id : ''); ?>">
                         <input type="hidden" name="uid" value="<?php echo e(Auth::user()->id); ?>">
@@ -457,7 +457,7 @@ if (isset($pays) && (($pays->first_payment_remaining > 0 && $pays->first_payment
                         <input type="hidden" name="second_p" value="<?php echo e($pdet->submission_payment_sub_total); ?>">
                         <input type="hidden" name="third_p" value="<?php echo e($pdet->second_payment_sub_total); ?>">
                     </div>
-                    <div class="col-4">
+                    <div class="col-lg-4 col-md-4 col-sm-12">
                         <button type="submit" onclick="saveSignB()" class="btn btn-primary submitBtn"
                             style="float: right;">Submit</button>
                     </div>

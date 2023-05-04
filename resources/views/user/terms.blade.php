@@ -27,7 +27,7 @@
     <li>Due to operational difficulties, PWG may decide to suspend or terminate the services. The Client shall be responsible for any transactions made through the services until time of such termination.</li>
     <li>These terms must be read in conjunction with the terms and conditions mentioned in the Contract signed by the client with PWG.</li>
     <li>These terms shall be governed by all the applicable laws in Dubai. Any disputes arising out of these will be falling in the jurisdiction of the courts in Dubai, UAE.</li>
-    <li><b>"PWG Visa Services LLC."</b> maintains the <a target='_blank' href='www.pwggroup.ae'>www.pwggroup.ae Website</a> ("Site").</li>
+    <li><b>"PWG Visa Services LLC."</b> maintains the <a target='_blank' href='https://pwggroup.ae/'>www.pwggroup.ae Website</a> ("Site").</li>
     <li>"United Arab of Emirates is our country of domicile".</li>
     <li>"Visa or MasterCard debit and credit cards in INR will be accepted for payment".</li>
     <li>"The displayed price and currency at the  page, will be the same price and currency printed on the Transaction Receipt and the amount charged to the card will be shown in your card currency".</li>

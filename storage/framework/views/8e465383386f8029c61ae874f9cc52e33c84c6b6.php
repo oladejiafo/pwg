@@ -755,7 +755,7 @@ $totalPay = round($payNow - $discount + $vat, 2);
                             $('.contract-signature').hide();
                             //  location.href = "<?php echo e(url('payment_form')); ?>/" + '<?php echo e($data->id); ?>';
                         } else {
-                            toastr.error("Something went wrong!");
+                            // toastr.error("Something went wrong!");
                         }
 
                     },

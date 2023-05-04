@@ -337,26 +337,26 @@
                         </div>
                         <div class="form-group row mt-4">
                             <div class="form-floating col-sm-6 mt-3">
-                                <input type="text" name="dependent_residence_id" id="dependent_residence_id" class="form-control" placeholder="Residence Id*" autocomplete="off"/>
-                                <label for="dependent_residence_id">Residence Id*</label>
+                                <input type="text" name="dependent_residence_id" id="dependent_residence_id" class="form-control" placeholder="Residence Id" autocomplete="off"/>
+                                <label for="dependent_residence_id">Residence Id</label>
                                 <span class="dependent_residence_id_errorClass"></span>
                             </div>
                             <div class="form-floating col-sm-6 mt-3">
-                                <input type="text" class="form-control dependent_visa_validity" id="dependent_visa_validity" name="dependent_visa_validity" placeholder="Your ID/Visa Date of Validity*" readonly="readonly">
-                                <label>Your ID/Visa Date of Validity*</label>
+                                <input type="text" class="form-control dependent_visa_validity" id="dependent_visa_validity" name="dependent_visa_validity" placeholder="Your ID/Visa Date of Validity" readonly="readonly">
+                                <label>Your ID/Visa Date of Validity</label>
                                 <span class="dependent_visa_validity_errorClass"></span>
                             </div>
                         </div>
                         <div class="form-group row mt-4">
                             <div class="form-floating col-sm-6 mt-3">
-                                <input type="text" class="form-control dependent_residence_copy" id="dependent_residence_copy" name="dependent_residence_copy" onclick="showResidenceIdFormat('dependent')" placeholder="Residence/Emirates ID*" readonly >
+                                <input type="text" class="form-control dependent_residence_copy" id="dependent_residence_copy" name="dependent_residence_copy" onclick="showResidenceIdFormat('dependent')" placeholder="Residence/Emirates ID" readonly >
                                 <div class="input-group-btn">
                                     <span class="fileUpload btn">
                                         <span class="upl" id="upload" onclick="showResidenceIdFormat('dependent')">Choose File</span>
                                         {{-- <input type="file" class="upload dependent_residence_copy" id="up"  name="dependent_residence_copy" /> --}}
                                     </span><!-- btn-orange -->
                                 </div><!-- btn -->
-                                <label for="dependent_residence_copy">Residence/Emirates ID*</label>
+                                <label for="dependent_residence_copy">Residence/Emirates ID</label>
                                 <span class="dependent_residence_copy_errorClass"></span>
                             </div>
                             <div class="form-floating col-sm-6 mt-3">

@@ -232,7 +232,7 @@ $vals=array(0,1,2);
                 <div class="col-12">
 <Style>
     /* style="accent-color:#08fa30;border: 1px solid white;width: 20px;height: 20px;top: 5px;left: -3px;position:relative;" */
-    input[type='radio']:after {
+    input[type='radio']:after, input[type='radio']::-webkit-after, input[type='radio']::-moz-after {
         accent-color:#08fa30;
         border: 1px solid white;
         width: 20px;
@@ -246,7 +246,7 @@ $vals=array(0,1,2);
         visibility: visible;
         display: inline-block; 
     }
-        input[type='radio']:checked:after {
+        input[type='radio']:checked:after,  input[type='radio']:checked::-webkit-after, input[type='radio']:checked::-moz-after{
             accent-color:#FACB08;
         border: 5px solid white;
         width: 20px;
@@ -397,11 +397,11 @@ $vals=array(0,1,2);
                                     @if(Auth::user()->created_at >= "2023-03-22")
                                         <div class="col-md-6 coupon" style="margin-top: 4%;">
                                             <div class="row">
-                                                <div class="form-floating col-8">
+                                                <div class="form-floating col-lg-8 col-md-8 col-sm-12 mt-2">
                                                     <input type="text" class="form-control" name="coupon" id="discount_code" placeholder="Enter coupon code" autocomplete="off" />
                                                     <label for="discount_code">Enter coupon code</label>
                                                 </div>
-                                                <div class="col-4">
+                                                <div class="col-lg-4 col-md-4 col-sm-12 mt-2">
                                                     <button type="button" class="btn btn-primary dicountBtn" id="dicountBtn" style="font-size:18px;border-color: #FACB08;">APPLY CODE</button>
                                                 </div>
                                             </div>

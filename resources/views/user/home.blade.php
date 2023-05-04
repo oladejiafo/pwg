@@ -31,32 +31,32 @@
         font-weight: bold;
     }
 
-    .package-type .indpackage ul li::before {
+    .package-type .indpackage ul li::before{
         background: #006ACE;
         color: #fff;
     }
 
-    .package-type .fampackage ul li::before {
+    .package-type .fampackage ul li::before{
         background: #E10930;
         color: #fff;
     }
 
-    .package-type .czechIndpackage ul li::before {
+    .package-type .czechIndpackage ul li::before{
         background: #84BD00;
         color: #fff;
     }
 
-    .package-type .maltaIndpackage ul li::before {
+    .package-type .maltaIndpackage ul li::before{
         background: #736359;
         color: #fff;
     }
 
-    .package-type .canadaPackage ul li::before {
+    .package-type .canadaPackage ul li::before{
         background: #820202;
         color: #fff;
     }
 
-    .package-type .germanyIndpackage ul li::before {
+    .package-type .germanyIndpackage ul li::before{
         background: #000000;
         color: #fff;
     }
