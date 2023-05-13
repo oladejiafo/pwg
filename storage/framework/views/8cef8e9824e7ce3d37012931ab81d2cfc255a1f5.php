@@ -1773,6 +1773,21 @@ endif;
 unset($__errorArgs, $__bag); ?>
 
                                                     </div>
+                                                    <div class="form-group row mt-4">
+                                                        <div class="form-floating col-sm-6 mt-3">
+                                                            <input type="text"  name="child_<?php echo e($key+1); ?>_passport_number" value="<?php echo e(($child['passport_number'])); ?>"  id="child_<?php echo e($key+1); ?>_passport_number" class="child-passport-number form-control" placeholder="Passport Number*">
+                                                            <label for="child_<?php echo e($key+1); ?>_passport_number">Passport Number*</label>
+                                                            <span class="child_<?php echo e($key+1); ?>_passport_number_errorClass"></span>
+                                                            <?php $__errorArgs = ['child_<?php echo e($key+1); ?>_passport_number'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <span class="error"><?php echo e($message); ?></span> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">

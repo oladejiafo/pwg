@@ -21,6 +21,7 @@ use DB;
 use Session;
 use App\Helpers\pdfBlock;
 use App\Constant;
+use QuickBooksOnline\API\Facades\Employee;
 
 class ApplicationController extends Controller
 {
@@ -34,7 +35,7 @@ class ApplicationController extends Controller
                 ->where('client_id', '=', Auth::user()->id)
                 ->orderBy('id', 'DESC')
                 ->first();
-            if(isset($completed->application_stage_status)){
+            if (isset($completed->application_stage_status)) {
                 $levels = $completed->application_stage_status;
             } else {
                 $levels = 4;
@@ -65,9 +66,12 @@ class ApplicationController extends Controller
                 ->where('destination_id', $request->product_id)
                 ->orderBy('id', 'DESC')
                 ->first();
-
+            $agentCode = DB::table('employees')->where('agent_unique_code', $request->agent_code)->pluck('id')->first();
             $applicant->application_stage_status = 3;
-            $applicant->assigned_agent_id = ($request->agent_code) ?? null;
+            $applicant->assigned_agent_id = $applicant->assigned_agent_id
+                ?? $agentCode
+                ?? $request->agent_code
+                ?? null;
             $applicant->save();
             return Redirect::route('applicant.details', $request->product_id);
         }
@@ -77,8 +81,7 @@ class ApplicationController extends Controller
     {
         Session::forget('info');
         if (Auth::id()) {
-            if(isset($productId)){
-
+            if (isset($productId)) {
             } else {
                 $productId =  Session::get('myproduct_id');
             }
@@ -132,7 +135,7 @@ class ApplicationController extends Controller
             ), 200); // 400 being the HTTP code for an invalid request.
         }
         $client = Client::find(Auth::id());
-        if($request->hasFile('cv')){
+        if ($request->hasFile('cv')) {
             if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                 $client->addMedia($request->file('cv'))->toMediaCollection(Client::$media_collection_main_resume, env('MEDIA_DISK'));
             } else {
@@ -160,7 +163,7 @@ class ApplicationController extends Controller
             ->where('destination_id', $request->product_id)
             ->orderBy('id', 'DESC')
             ->first();
-        $applicant->assigned_agent_id = ($request->agent_code != null) ? strip_tags($request->agent_code) : null;
+        $applicant->assigned_agent_id = ($applicant->assigned_agent_id) ?? (($request->agent_code != null) ? strip_tags($request->agent_code) : null);
         $applicant->sales_agent_name_by_client = ($request->agent_name != null) ? strip_tags($request->agent_name) : null;
         $applicant->save();
 
@@ -308,13 +311,13 @@ class ApplicationController extends Controller
         $client->company_name = $request->company_name;
         $client->employer_phone_number = $request->employer_phone;
         $client->employer_email = $request->employer_email;
-        $client->country_of_residence = $request->current_location;        
+        $client->country_of_residence = $request->current_location;
         $client->save();
 
         $applicant = Application::where('client_id', Auth::id())
-        ->where('destination_id', $request->product_id)
-        ->orderBy('id', 'DESC')
-        ->first();
+            ->where('destination_id', $request->product_id)
+            ->orderBy('id', 'DESC')
+            ->first();
         $applicant->embassy_country = $request->embassy_appearance;
         $applicant->save();
 
@@ -352,7 +355,7 @@ class ApplicationController extends Controller
         $client = Client::find(AUth::id());
         if ($request->hasFile('schengen_copy')) {
             $file = $request->file('schengen_copy');
-            $schengenCopy = Auth::user()->id.'_'.time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
+            $schengenCopy = Auth::user()->id . '_' . time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
             if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                 $client->addMediaFromRequest('schengen_copy')->withCustomProperties(['mime-type' => 'image/jpeg'])->preservingOriginal()->usingFileName($schengenCopy)->toMediaCollection(Client::$media_collection_main_schengen_visa, env('MEDIA_DISK'));
             } else {
@@ -362,26 +365,23 @@ class ApplicationController extends Controller
         }
 
         //Save the added array of schengen visas if available
-        if($request->hasfile('schengen_copy1'))
-        {
+        if ($request->hasfile('schengen_copy1')) {
             $x = 0;
             $file = [];
-            foreach($request->file('schengen_copy1') as $copy1)
-            {
+            foreach ($request->file('schengen_copy1') as $copy1) {
                 $x++;
-                $name=$copy1->getClientOriginalName();
+                $name = $copy1->getClientOriginalName();
 
-                list($nName,$nExt) = explode('.',$name);
-                $schengenCopy1 = Auth::user()->id.'_'.time() . '_' . str_replace(' ', '_',  $name);
+                list($nName, $nExt) = explode('.', $name);
+                $schengenCopy1 = Auth::user()->id . '_' . time() . '_' . str_replace(' ', '_',  $name);
                 $client
-                ->addMedia($copy1) //starting method
-                ->withCustomProperties(['mime-type' => 'image/jpeg']) //middle method
-                ->preservingOriginal() //middle method
-                ->usingName($nName)
-                ->usingFileName($schengenCopy1)
-                ->toMediaCollection(Client::$media_collection_main_schengen_visa.$x, env('MEDIA_DISK')); //finishing method
+                    ->addMedia($copy1) //starting method
+                    ->withCustomProperties(['mime-type' => 'image/jpeg']) //middle method
+                    ->preservingOriginal() //middle method
+                    ->usingName($nName)
+                    ->usingFileName($schengenCopy1)
+                    ->toMediaCollection(Client::$media_collection_main_schengen_visa . $x, env('MEDIA_DISK')); //finishing method
                 $client->save();
-
             }
         }
 
@@ -407,7 +407,7 @@ class ApplicationController extends Controller
             $data = Client::where('family_member_id', Auth::id())
                 ->where('is_dependent', 1)
                 ->first();
-            if($data){
+            if ($data) {
                 $exist = ApplicantExperience::where('client_id', $request->dependentId)
                     ->where('job_category_three_id', $request['job_category_three_id'])
                     ->where('job_category_four_id', $request['job_category_four_id'])
@@ -425,7 +425,6 @@ class ApplicationController extends Controller
                     $response = [
                         'status' => true
                     ];
-                    
                 } else {
                     $response = [
                         'status' => false,
@@ -438,7 +437,6 @@ class ApplicationController extends Controller
                     'message' => 'Please provide dependent details!'
                 ];
             }
-            
         } else {
             $exist = ApplicantExperience::where('client_id', Auth::id())
                 ->where('job_category_three_id', $request['job_category_three_id'])
@@ -515,15 +513,19 @@ class ApplicationController extends Controller
         $applicant =  Application::where('client_id', Auth::id())
             ->where('destination_id', $request->product_id)
             ->orderBy('id', 'DESC')
+            ->select('id')
             ->first();
-
-            Application::where('client_id', Auth::id())
+        $update = Application::where('client_id', Auth::id())
             ->where('destination_id', $request->product_id)
             ->update([
                 'application_stage_status' => 5,
                 'status' => 'DOCUMENTS_SUBMITTED',
                 'processing_status' => 'NOT_STARTED'
             ]);
+        if($update) {
+
+            pdfBlock::mapMoreInfo($applicant);
+        }
 
         // Send Notifications on This Payment ##############
         $email = Auth::user()->email;
@@ -545,7 +547,6 @@ class ApplicationController extends Controller
             ->where('criteria', '=', $criteria)
             ->where('client_id', '=', Auth::user()->id)
             ->first();
-        pdfBlock::mapMoreInfo($applicant);
         if ($check_noti === null) {
             $tday = date('Y-m-d');
             DB::table('notifications')->insert(
@@ -704,9 +705,9 @@ class ApplicationController extends Controller
         if ($request->hasFile('dependent_passport_copy')) {
             $fileName = Auth::user()->id . '_' . time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
             $dependent
-            ->addMedia($request->file('dependent_passport_copy'))
-            ->usingFileName($fileName)
-            ->toMediaCollection(Client::$media_collection_main, env('MEDIA_DISK'));
+                ->addMedia($request->file('dependent_passport_copy'))
+                ->usingFileName($fileName)
+                ->toMediaCollection(Client::$media_collection_main, env('MEDIA_DISK'));
         }
 
         $dependent->save();
@@ -765,16 +766,16 @@ class ApplicationController extends Controller
             $file = $request->file('dependent_residence_copy');
             $residenceCopy = Auth::user()->id . '_' . time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
             $dependent->addMedia($request->file('dependent_residence_copy'))
-            ->usingFileName($residenceCopy)
-            ->toMediaCollection(Client::$media_collection_main_residence_id, env('MEDIA_DISK'));
+                ->usingFileName($residenceCopy)
+                ->toMediaCollection(Client::$media_collection_main_residence_id, env('MEDIA_DISK'));
         }
         $visaCopy = $request['dependent_visa_copy'];
         if ($request->hasFile('dependent_visa_copy')) {
             $file = $request->file('dependent_visa_copy');
             $visaCopy = Auth::user()->id . '_' . time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
             $dependent->addMedia($request->file('dependent_visa_copy'))
-            ->usingFileName($visaCopy)
-            ->toMediaCollection(Client::$media_collection_main_residence_visa, env('MEDIA_DISK'));
+                ->usingFileName($visaCopy)
+                ->toMediaCollection(Client::$media_collection_main_residence_visa, env('MEDIA_DISK'));
         }
         $dependent->save();
         return Response::json(array(
@@ -824,8 +825,8 @@ class ApplicationController extends Controller
             $file = $request->file('dependent_schengen_copy');
             $schengenCopy = Auth::user()->id . '_' . time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
             $dependent->addMediaFromRequest('dependent_schengen_copy')->withCustomProperties(['mime-type' => 'image/jpeg'])->preservingOriginal()
-            ->usingFileName($schengenCopy)
-            ->toMediaCollection(Client::$media_collection_main_schengen_visa, env('MEDIA_DISK'));
+                ->usingFileName($schengenCopy)
+                ->toMediaCollection(Client::$media_collection_main_schengen_visa, env('MEDIA_DISK'));
             $dependent->save();
         }
         //Save the added array of schengen visas if available
@@ -839,12 +840,12 @@ class ApplicationController extends Controller
                 list($nName, $nExt) = explode('.', $name);
                 $schengenCopy1 = Auth::user()->id . '_' . time() . '_' . str_replace(' ', '_',  $name);
                 $dependent
-                ->addMedia($copy1) //starting method
-                ->withCustomProperties(['mime-type' => 'image/jpeg']) //middle method
-                ->preservingOriginal() //middle method
-                ->usingName($nName)
-                ->usingFileName($schengenCopy1)
-                ->toMediaCollection(Client::$media_collection_main_schengen_visa.$x, env('MEDIA_DISK')); //finishing method
+                    ->addMedia($copy1) //starting method
+                    ->withCustomProperties(['mime-type' => 'image/jpeg']) //middle method
+                    ->preservingOriginal() //middle method
+                    ->usingName($nName)
+                    ->usingFileName($schengenCopy1)
+                    ->toMediaCollection(Client::$media_collection_main_schengen_visa . $x, env('MEDIA_DISK')); //finishing method
                 $dependent->save();
             }
         }
@@ -865,42 +866,58 @@ class ApplicationController extends Controller
 
     public function storeChildrenDetails(Request $request)
     {
+        try {
+            for ($i = 1; $i <= $request['childrenCount']; $i++) {
+                $validator = \Validator::make($request->all(), [
+                    "child_" . $i . "_first_name" => 'required',
+                    "child_" . $i . "_surname" => 'required',
+                    "child_" . $i . "_dob" => 'required',
+                    "child_" . $i . "_gender" => 'required',
+                    "child_" . $i . "_passport_number" => 'required',
+                    "child_passport_" . $i  => 'required',
+                ]);
+                if ($validator->fails()) {
+                    return Response::json(array(
+                        'status' => false,
+                        'errors' => $validator->getMessageBag()->toArray()
 
-        for ($i = 1; $i <= $request['childrenCount']; $i++) {
-            $validator = \Validator::make($request->all(), [
-                "child_" . $i . "_first_name" => 'required',
-                "child_" . $i . "_surname" => 'required',
-                "child_" . $i . "_dob" => 'required',
-                "child_" . $i . "_gender" => 'required',
-            ]);
-            if ($validator->fails()) {
-                return Response::json(array(
-                    'status' => false,
-                    'errors' => $validator->getMessageBag()->toArray()
-
-                ), 200); // 400 being the HTTP code for an invalid request.
+                    ), 200); // 400 being the HTTP code for an invalid request.
+                }
             }
-        }
+            Client::where('family_member_id', Auth::id())->where('is_dependent', 2)->delete();
+            for ($i = 1; $i <= $request['childrenCount']; $i++) {
+                $child = new Client();
+                $child->family_member_id = AUth::id();
+                $child->is_dependent = 2;
+                $child->name = $request['child_' . $i . '_first_name'];
+                $child->middle_name = $request['child_' . $i . '_middle_name'];
+                $child->sur_name = $request['child_' . $i . '_surname'];
+                $child->date_of_birth = date('Y-m-d', strtotime($request['child_' . $i . '_dob']));
+                $child->sex = $request['child_' . $i . '_gender'];
+                $child->client_submission_status = 1;
+                if ($request->hasFile("child_passport_" . $i)) {
+                    $file = $request->file("child_passport_" . $i);
+                    $fileName = Auth::user()->id . '_' . time() . '_' . str_replace(' ', '_',  $file->getClientOriginalName());
+                    $child
+                        ->addMedia($request->file("child_passport_" . $i))
+                        ->usingFileName($fileName)
+                        ->toMediaCollection(Client::$media_collection_main, env('MEDIA_DISK'));
+                }
+                $child->passport_number = $request['child_' . $i . '_passport_number'];
+                $child->save();
+            }
+            Application::where('id', $request['applicant_id'])->where('application_stage_status', '!=', 5)
+                ->update(['application_stage_status' =>  4]);
 
-        Client::where('family_member_id', Auth::id())->where('is_dependent', 2)->delete();
-        for ($i = 1; $i <= $request['childrenCount']; $i++) {
-            $child = new Client();
-            $child->family_member_id = AUth::id();
-            $child->is_dependent = 2;
-            $child->name = $request['child_' . $i . '_first_name'];
-            $child->middle_name = $request['child_' . $i . '_middle_name'];
-            $child->sur_name = $request['child_' . $i . '_surname'];
-            $child->date_of_birth = date('Y-m-d', strtotime($request['child_' . $i . '_dob']));
-            $child->sex = $request['child_' . $i . '_gender'];
-            $child->client_submission_status = 1;
-            $child->save();
+            return Response::json(array(
+                'status' => true
+            ), 200);
+        } catch (Exception $e) {
+            // dd($e);
+            return Response::json(array(
+                'status' => false
+            ), 200);
         }
-        Application::where('id', $request['applicant_id'])
-            ->update(['application_stage_status' =>  4]);
-
-        return Response::json(array(
-            'status' => true
-        ), 200);
     }
 
     private static function getFamilyId()
@@ -944,7 +961,7 @@ class ApplicationController extends Controller
         $response['status'] = false;
         $applicant = Application::where('client_id', Auth::id())
             ->where('destination_id', $request->product_id)
-            ->orderBy('id','DESC')
+            ->orderBy('id', 'DESC')
             ->first();
 
         if ($applicant) {
@@ -1033,11 +1050,11 @@ class ApplicationController extends Controller
     public function addReferrer(Request $request)
     {
         $applicant = Application::where('client_id', Auth::id())
-                ->where('destination_id', $request->product_id)
-                ->update([
-                    'referrer_name_by_client' => $request->referrerName,
-                    'referrer_passport_number_by_client' => $request->referrerPassport
-                ]);
+            ->where('destination_id', $request->product_id)
+            ->update([
+                'referrer_name_by_client' => $request->referrerName,
+                'referrer_passport_number_by_client' => $request->referrerPassport
+            ]);
 
         return Response::json(array(
             'status' => true

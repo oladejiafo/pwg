@@ -201,3 +201,6 @@ Route::get('apply/now/{destination}/{id}/{package?}',[ApiController::class, 'app
  // Network Partner
 Route::get('network/partner', [NetworkController::class, 'index'])->name('newtork.partner');
 Route::post('add/network/partner', [NetworkController::class, 'storeNetworkPartner'])->name('add.network.partner');
+Route::post('check/gmcc',  [NetworkController::class, 'checkGMCC'])->name('check.gmcc');
+Route::get('network/partner/code/{code}', [NetworkController::class, 'networkPartnerCode'])->name('newtork.partner.code');
+

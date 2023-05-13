@@ -175,7 +175,6 @@ $vals=array(0,1,2);
   
           @endif
             <div class="contract-signature">
-                
                 <div class="row">
                     <div class="col-lg-6 col-md-12 col-sm-12">
                         <div class="contract d-flex align-items-center justify-content-center my-col"  data-bs-toggle="modal" data-bs-target="#contractModal">
@@ -826,9 +825,12 @@ $totalPay = round($payNow - $discount + $vat, 2);
                         <div class="modal-headerx" align="center">
                             <button type="button" style="float:right; font-size:16px; width:40px;height:40px" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body" style="height:100%">
-                            
-                            <embed src="{{$fileUrl}}#toolbar=0&navpanes=0&pagemode=none" width="100%" height="100%" view="fit" type="application/pdf" />
+                        <div class="modal-body contractFileUrl" style="height:100%">
+                            @if(Session::has('contractFileUrl'))
+                                <embed src="{{Session::get('contractFileUrl')}}#toolbar=0&navpanes=0&pagemode=none" width="100%" height="100%" view="fit" type="application/pdf" />
+                            @else 
+                                <embed src="{{$fileUrl}}#toolbar=0&navpanes=0&pagemode=none" width="100%" height="100%" view="fit" type="application/pdf" />
+                            @endif
                         </div>
                     </div>
                 </div>

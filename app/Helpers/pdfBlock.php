@@ -8,6 +8,7 @@ use setasign\Fpdi\PdfReader;
 use App\Models\product;
 use App\Client;
 use App\Application;
+use App\Models\product_payments;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Constant;
@@ -25,7 +26,7 @@ class pdfBlock
     public static function pdfBlock($fileUrl)
     {
         $pdf = new \setasign\Fpdi\Fpdi();
-        
+
         $fileContent = file_get_contents($fileUrl, 'rb');
         $pagecount = $pdf->setSourceFile(StreamReader::createByString($fileContent));
 
@@ -41,7 +42,7 @@ class pdfBlock
             $rand = UserHelper::getRandomString();
             // //mask
             $mask = "user/images/mask2.jpg";
-            if ($pageNo == 1){
+            if ($pageNo == 1) {
                 $pdf->SetXY(145, 21);
                 $pdf->Write(2, $rand);
                 $pdf->Image($mask, 145, 19, 50, 4, 'JPG');
@@ -67,7 +68,7 @@ class pdfBlock
     }
 
 
-    public static function mapDetails($originalPdf, $destination_file, $product, $package, $client)
+    public static function mapDetails($originalPdf, $destination_file, $product, $package, $client, $parentCount, $kidCount)
     {
 
         $pdf = new \setasign\Fpdi\Fpdi();
@@ -83,134 +84,279 @@ class pdfBlock
             //Select Arial italic 8
             $pdf->SetFont('Arial', 'B', '9');
             $pdf->SetTextColor(0, 0, 0);
+            if ($package == 'FAMILY_PACKAGE') {
+                if ($pageNo == 1 && ($product == Constant::poland)) {
+                    if ($parentCount == 1 && $kidCount == 1) {
+                        //Date
+                        $pdf->SetXY(35, 43);
+                        $pdf->Write(2, date('d/m/Y'));
 
-            if ($pageNo == 1 && ($product == Constant::poland || $product == Constant::germany)) {
-                //Date
-                $pdf->SetXY(35, 40);
-                $pdf->Write(2, date('d/m/Y'));
+                        //Place
+                        $pdf->SetXY(38, 60);
+                        $pdf->Write(2, 'DUBAI, UAE');
 
-                //Place
-                $pdf->SetXY(35, 54);
-                $pdf->Write(2, 'DUBAI, UAE');
+                        //Name
+                        $pdf->SetXY(69, 114);
+                        $pdf->Write(2, $client->name . ' ' . $client->sur_name);
 
-                //Representative
-                // $pdf->SetXY(27, 56 );
-                // $pdf->Write(2, 'UAE');
+                        //Phone
+                        $pdf->SetXY(70, 152);
+                        $pdf->Write(2, $client->phone_number);
 
-                //Name
-                $pdf->SetXY(70, 115);
-                $pdf->Write(2, $client->name . ' ' . $client->sur_name);
+                        //email
+                        $pdf->SetXY(70, 164);
+                        $pdf->Write(2, $client->email);
+                    } else if ($parentCount == 1 && $kidCount == 2) {
 
-                // //Nationality
-                // $pdf->SetXY(70, 129);
-                // $pdf->Write(2, '[Nationality]');                
+                        //Date
+                        $pdf->SetXY(35, 43);
+                        $pdf->Write(2, date('d/m/Y'));
 
-                // //Passport
-                // $pdf->SetXY(70, 143 );
-                // $pdf->Write(2, "[PASSPORT]");                                
+                        //Place
+                        $pdf->SetXY(38, 60);
+                        $pdf->Write(2, 'DUBAI, UAE');
 
-                //Phone
-                $pdf->SetXY(70, 155.5);
-                $pdf->Write(2, $client->phone_number);
+                        //Name
+                        $pdf->SetXY(69, 120);
+                        $pdf->Write(2, $client->name . ' ' . $client->sur_name);
 
-                //email
-                $pdf->SetXY(70, 168);
-                $pdf->Write(2, $client->email);
-            } else if ($pageNo == 1 && $product == Constant::czech) {
-                //Date
-                $pdf->SetXY(32, 28.3);
-                $pdf->Write(2, date('d/m/Y'));
+                        //Phone
+                        $pdf->SetXY(70, 160);
+                        $pdf->Write(2, $client->phone_number);
 
-                //Place
-                $pdf->SetXY(32, 42.3);
-                $pdf->Write(2, 'DUBAI, UAE');
+                        //email
+                        $pdf->SetXY(70, 171);
+                        $pdf->Write(2, $client->email);
+                    } else if ($parentCount == 1 && $kidCount == 3) {
+                        //Date
+                        $pdf->SetXY(35, 43);
+                        $pdf->Write(2, date('d/m/Y'));
 
-                //Name
-                $pdf->SetXY(70, 104);
-                $pdf->Write(2, $client->name . ' ' . $client->sur_name);
+                        //Place
+                        $pdf->SetXY(38, 60);
+                        $pdf->Write(2, 'DUBAI, UAE');
 
-                //Nationality
-                $pdf->SetXY(70, 118);
-                $pdf->Write(2, '');
+                        //Name
+                        $pdf->SetXY(69, 115);
+                        $pdf->Write(2, $client->name . ' ' . $client->sur_name);
 
-                //Passport
-                $pdf->SetXY(70, 132);
-                $pdf->Write(2, '');
+                        //Phone
+                        $pdf->SetXY(70, 160);
+                        $pdf->Write(2, $client->phone_number);
 
-                //Phone
-                $pdf->SetXY(70, 145);
-                $pdf->Write(2, $client->phone_number);
+                        //email
+                        $pdf->SetXY(70, 172);
+                        $pdf->Write(2, $client->email);
+                    } else if ($parentCount == 2 && $kidCount == 1) {
+                        //Date
+                        $pdf->SetXY(35, 43);
+                        $pdf->Write(2, date('d/m/Y'));
 
-                //email
-                $pdf->SetXY(70, 160);
-                $pdf->Write(2, $client->email);
-            } else if ($pageNo == 1 && $product == Constant::malta) {
-                //Date
-                $pdf->SetXY(28, 22);
-                $pdf->Write(2, date('d/m/Y'));
+                        //Place
+                        $pdf->SetXY(38, 60);
+                        $pdf->Write(2, 'DUBAI, UAE');
 
-                //Place
-                $pdf->SetXY(67, 22);
-                $pdf->Write(2, 'DUBAI, UAE');
+                        //Name
+                        $pdf->SetXY(69, 120);
+                        $pdf->Write(2, $client->name . ' ' . $client->sur_name);
 
-                // //mask
-                // $mask = "user/images/mask2.jpg";
-                // $pdf->SetProtection(array('print'));
-                // $pdf->Image($mask, 85, 39, 15, 4, 'JPG');
+                        //Phone
+                        $pdf->SetXY(70, 160);
+                        $pdf->Write(2, $client->phone_number);
 
-                //Name
-                $pdf->SetXY(65, 68.5);
-                $pdf->Write(2, $client->name . ' ' . $client->sur_name);
+                        //email
+                        $pdf->SetXY(70, 172);
+                        $pdf->Write(2, $client->email);
+                    } else if ($parentCount == 2 && $kidCount == 2) {
+                        //Date
+                        $pdf->SetXY(35, 48);
+                        $pdf->Write(2, date('d/m/Y'));
 
-                //Phone
-                $pdf->SetXY(45, 93);
-                $pdf->Write(2, $client->phone_number);
+                        //Place
+                        $pdf->SetXY(40, 68);
+                        $pdf->Write(2, 'DUBAI, UAE');
 
-                //email
-                $pdf->SetXY(50, 99);
-                $pdf->Write(2, $client->email);
-            } else if ($pageNo == 1 && $product == Constant::canada) {
-                // if ($package == Constant::CanadaExpressEntry) {
-                //     //Date
-                //     $pdf->SetXY(30, 40);
-                //     $pdf->Write(2, date('d/m/Y'));
+                        //Name
+                        $pdf->SetXY(69, 128);
+                        $pdf->Write(2, $client->name . ' ' . $client->sur_name);
 
-                //     //Place
-                //     $pdf->SetXY(30, 54);
-                //     $pdf->Write(2, 'DUBAI, UAE');
+                        //Phone
+                        $pdf->SetXY(70, 167);
+                        $pdf->Write(2, $client->phone_number);
 
-                //     //Name
-                //     $pdf->SetXY(65, 116);
-                //     $pdf->Write(2, $client->name . ' ' . $client->sur_name);
+                        //email
+                        $pdf->SetXY(70, 181);
+                        $pdf->Write(2, $client->email);
+                    } else if ($parentCount == 2 && $kidCount == 3) {
+                        //Date
+                        $pdf->SetXY(35, 44);
+                        $pdf->Write(2, date('d/m/Y'));
 
-                //     //Phone
-                //     $pdf->SetXY(65, 155);
-                //     $pdf->Write(2, $client->phone_number);
+                        //Place
+                        $pdf->SetXY(38, 62);
+                        $pdf->Write(2, 'DUBAI, UAE');
 
-                //     //email
-                //     $pdf->SetXY(65, 169);
-                //     $pdf->Write(2, $client->email);
-                // } else if ($package == Constant::CanadaStudyPermit) {
-                //     //Date
-                //     $pdf->SetXY(30, 40);
-                //     $pdf->Write(2, date('d/m/Y'));
+                        //Name
+                        $pdf->SetXY(69, 120);
+                        $pdf->Write(2, $client->name . ' ' . $client->sur_name);
 
-                //     //Place
-                //     $pdf->SetXY(30, 54);
-                //     $pdf->Write(2, 'DUBAI, UAE');
+                        //Phone
+                        $pdf->SetXY(70, 158);
+                        $pdf->Write(2, $client->phone_number);
 
-                //     //Name
-                //     $pdf->SetXY(65, 113);
-                //     $pdf->Write(2, $client->name . ' ' . $client->sur_name);
+                        //email
+                        $pdf->SetXY(70, 172);
+                        $pdf->Write(2, $client->email);
+                    } else if ($parentCount == 2 && $kidCount == 4) {
+                        //Date
+                        $pdf->SetXY(35, 43);
+                        $pdf->Write(2, date('d/m/Y'));
 
-                //     //Phone
-                //     $pdf->SetXY(65, 152);
-                //     $pdf->Write(2, $client->phone_number);
+                        //Place
+                        $pdf->SetXY(38, 60);
+                        $pdf->Write(2, 'DUBAI, UAE');
 
-                //     //email
-                //     $pdf->SetXY(65, 166);
-                //     $pdf->Write(2, $client->email);
-                // } else if ($package == Constant::BlueCollar) {
+                        //Name
+                        $pdf->SetXY(69, 120);
+                        $pdf->Write(2, $client->name . ' ' . $client->sur_name);
+
+                        //Phone
+                        $pdf->SetXY(70, 158);
+                        $pdf->Write(2, $client->phone_number);
+
+                        //email
+                        $pdf->SetXY(70, 172);
+                        $pdf->Write(2, $client->email);
+                    }
+                }
+            } else {
+                if ($pageNo == 1 && ($product == Constant::poland || $product == Constant::germany)) {
+                    //Date
+                    $pdf->SetXY(35, 40);
+                    $pdf->Write(2, date('d/m/Y'));
+
+                    //Place
+                    $pdf->SetXY(35, 54);
+                    $pdf->Write(2, 'DUBAI, UAE');
+
+                    //Representative
+                    // $pdf->SetXY(27, 56 );
+                    // $pdf->Write(2, 'UAE');
+
+                    //Name
+                    $pdf->SetXY(70, 115);
+                    $pdf->Write(2, $client->name . ' ' . $client->sur_name);
+
+                    // //Nationality
+                    // $pdf->SetXY(70, 129);
+                    // $pdf->Write(2, '[Nationality]');                
+
+                    // //Passport
+                    // $pdf->SetXY(70, 143 );
+                    // $pdf->Write(2, "[PASSPORT]");                                
+
+                    //Phone
+                    $pdf->SetXY(70, 155.5);
+                    $pdf->Write(2, $client->phone_number);
+
+                    //email
+                    $pdf->SetXY(70, 168);
+                    $pdf->Write(2, $client->email);
+                } else if ($pageNo == 1 && $product == Constant::czech) {
+                    //Date
+                    $pdf->SetXY(32, 28.3);
+                    $pdf->Write(2, date('d/m/Y'));
+
+                    //Place
+                    $pdf->SetXY(32, 42.3);
+                    $pdf->Write(2, 'DUBAI, UAE');
+
+                    //Name
+                    $pdf->SetXY(70, 104);
+                    $pdf->Write(2, $client->name . ' ' . $client->sur_name);
+
+                    //Nationality
+                    $pdf->SetXY(70, 118);
+                    $pdf->Write(2, '');
+
+                    //Passport
+                    $pdf->SetXY(70, 132);
+                    $pdf->Write(2, '');
+
+                    //Phone
+                    $pdf->SetXY(70, 145);
+                    $pdf->Write(2, $client->phone_number);
+
+                    //email
+                    $pdf->SetXY(70, 160);
+                    $pdf->Write(2, $client->email);
+                } else if ($pageNo == 1 && $product == Constant::malta) {
+                    //Date
+                    $pdf->SetXY(28, 22);
+                    $pdf->Write(2, date('d/m/Y'));
+
+                    //Place
+                    $pdf->SetXY(67, 22);
+                    $pdf->Write(2, 'DUBAI, UAE');
+
+                    // //mask
+                    // $mask = "user/images/mask2.jpg";
+                    // $pdf->SetProtection(array('print'));
+                    // $pdf->Image($mask, 85, 39, 15, 4, 'JPG');
+
+                    //Name
+                    $pdf->SetXY(65, 68.5);
+                    $pdf->Write(2, $client->name . ' ' . $client->sur_name);
+
+                    //Phone
+                    $pdf->SetXY(45, 93);
+                    $pdf->Write(2, $client->phone_number);
+
+                    //email
+                    $pdf->SetXY(50, 99);
+                    $pdf->Write(2, $client->email);
+                } else if ($pageNo == 1 && $product == Constant::canada) {
+                    // if ($package == Constant::CanadaExpressEntry) {
+                    //     //Date
+                    //     $pdf->SetXY(30, 40);
+                    //     $pdf->Write(2, date('d/m/Y'));
+
+                    //     //Place
+                    //     $pdf->SetXY(30, 54);
+                    //     $pdf->Write(2, 'DUBAI, UAE');
+
+                    //     //Name
+                    //     $pdf->SetXY(65, 116);
+                    //     $pdf->Write(2, $client->name . ' ' . $client->sur_name);
+
+                    //     //Phone
+                    //     $pdf->SetXY(65, 155);
+                    //     $pdf->Write(2, $client->phone_number);
+
+                    //     //email
+                    //     $pdf->SetXY(65, 169);
+                    //     $pdf->Write(2, $client->email);
+                    // } else if ($package == Constant::CanadaStudyPermit) {
+                    //     //Date
+                    //     $pdf->SetXY(30, 40);
+                    //     $pdf->Write(2, date('d/m/Y'));
+
+                    //     //Place
+                    //     $pdf->SetXY(30, 54);
+                    //     $pdf->Write(2, 'DUBAI, UAE');
+
+                    //     //Name
+                    //     $pdf->SetXY(65, 113);
+                    //     $pdf->Write(2, $client->name . ' ' . $client->sur_name);
+
+                    //     //Phone
+                    //     $pdf->SetXY(65, 152);
+                    //     $pdf->Write(2, $client->phone_number);
+
+                    //     //email
+                    //     $pdf->SetXY(65, 166);
+                    //     $pdf->Write(2, $client->email);
+                    // } else if ($package == Constant::BlueCollar) {
                     //Date
                     $pdf->SetXY(30, 40);
                     $pdf->Write(2, date('d/m/Y'));
@@ -230,13 +376,14 @@ class pdfBlock
                     //email
                     $pdf->SetXY(65, 170);
                     $pdf->Write(2, $client->email);
-                // }
-            }
+                    // }
+                }
 
-            if ($pageNo == 4) {
-                //Sign
-                // $pdf->SetXY(30, 235 );
-                // $pdf->Write(2, "[SIGN HERE]");   
+                if ($pageNo == 4) {
+                    //Sign
+                    // $pdf->SetXY(30, 235 );
+                    // $pdf->Write(2, "[SIGN HERE]");   
+                }
             }
         }
         // $content = $pdf->Output($destination_file, "F");
@@ -244,9 +391,9 @@ class pdfBlock
         Storage::disk(env('MEDIA_DISK'))->put($destination_file, $theString, 'public');
     }
 
-    public static function attachSignature($originalPdf, $signature, $product, $paymentType, $applicant, $client)
+    public static function attachSignature($originalPdf, $signature, $product, $paymentType, $applicant, $client, $pricingPLan)
     {
-        
+
         $pdf = new \setasign\Fpdi\Fpdi();
         $fileContent = file_get_contents($originalPdf, 'rb');
         $pagecount = $pdf->setSourceFile(StreamReader::createByString($fileContent));
@@ -258,250 +405,271 @@ class pdfBlock
             //Select Arial italic 8
             $pdf->SetFont('Arial', 'B', '9');
             $pdf->SetTextColor(0, 0, 0);
+            if ($pricingPLan['pricing_plan_type'] == 'FAMILY_PACKAGE') {
+                if ($pageNo == 5) {
+                    if ($pricingPLan['no_of_parent'] == 1 && $pricingPLan['no_of_children'] == 1) {
+                        $pdf->Image($signature, 45, 198, 25, 20, 'PNG');
+                    } else if ($pricingPLan['no_of_parent'] == 1 && $pricingPLan['no_of_children'] == 2) {
+                        $pdf->Image($signature, 45, 210, 25, 20, 'PNG');
+                    } else if ($pricingPLan['no_of_parent'] == 1 && $pricingPLan['no_of_children'] == 3) {
+                        $pdf->Image($signature, 45, 210, 25, 20, 'PNG');
+                    } else if ($pricingPLan['no_of_parent'] == 2 && $pricingPLan['no_of_children'] == 1) {
+                        $pdf->Image($signature, 45, 210, 25, 20, 'PNG');
+                    } else if ($pricingPLan['no_of_parent'] == 2 && $pricingPLan['no_of_children'] == 2) {
+                        $pdf->Image($signature, 45, 225, 25, 15, 'PNG');
+                    } else if ($pricingPLan['no_of_parent'] == 2 && $pricingPLan['no_of_children'] == 3) {
+                        $pdf->Image($signature, 45, 225, 25, 15, 'PNG');
+                    } else if ($pricingPLan['no_of_parent'] == 2 && $pricingPLan['no_of_children'] == 4) {
+                        $pdf->Image($signature, 45, 225, 25, 15, 'PNG');
+                    }
 
-            if (strtolower($product->name) == Constant::poland || strtolower($product->name) == Constant::germany) {
+                    $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_' . $product->name . '_first_payment_contract.pdf';
+                }
+            } else {
+                if (strtolower($product->name) == Constant::poland || strtolower($product->name) == Constant::germany) {
 
-                if ($pageNo == 4) {
-                    // if ($paymentType == 'FIRST' || $paymentType == 'Full-Outstanding Payment') {
+                    if ($pageNo == 4) {
+                        // if ($paymentType == 'FIRST' || $paymentType == 'Full-Outstanding Payment') {
                         //signature
                         $pdf->Image($signature, 45, 217, 25, 20, 'PNG');
 
-                        $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name .'_'.$product->name.'_first_payment_contract.pdf';
+                        $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_' . $product->name . '_first_payment_contract.pdf';
+                        // }
+                    }
+                    // if ($pageNo == 5) {
+                    //     if ($paymentType == 'FIRST' || $paymentType == 'Full-Outstanding Payment') {
+                    //         //signature
+
+                    //         // $pdf->Image($signature, 155, 69, 18, 15, 'PNG');
+                    //         // $pdf->Image($signature, 155, 109, 18, 15, 'PNG');
+                    //         $pdf->SetXY(172, 87);
+                    //         $pdf->Write(2, date('d/m/Y'));
+
+                    //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_first_payment_contract.pdf';
+                    //     }
+                    //     if ($paymentType == 'SUBMISSION') {
+                    //         // $pdf->Image($signature, 155, 149, 18, 15, 'PNG');
+                    //         // $pdf->Image($signature, 155, 195, 18, 15, 'PNG');
+                    //         $pdf->SetXY(172, 127);
+                    //         $pdf->Write(2, date('d/m/Y'));
+
+                    //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_second_payment_contract.pdf';
+                    //     } else if($paymentType == 'Full-Outstanding Payment'){
+                    //         $pdf->SetXY(172, 123);
+                    //         $pdf->Write(2, date('d/m/Y'));
+                    //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_second_payment_contract.pdf';
+                    //     }
+                    // }
+                    // if ($pageNo == 5) {
+
+                    //     if ($paymentType == 'SECOND') {
+
+                    //         // $pdf->Image($signature, 155, 64, 18, 15, 'PNG');
+                    //         // $pdf->Image($signature, 155, 103, 18, 15, 'PNG');
+                    //         $pdf->SetXY(172, 171);
+                    //         $pdf->Write(2, date('d/m/Y'));
+
+                    //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_third_payment_contract.pdf';
+                    //     } elseif($paymentType == 'Full-Outstanding Payment') {
+                    //         $pdf->SetXY(172, 168);
+                    //         $pdf->Write(2, date('d/m/Y'));
+
+                    //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_third_payment_contract.pdf';
+                    //     }
+
+                    //     if ($paymentType == 'Fourth Payment' || $paymentType == 'Full-Outstanding Payment') {
+
+                    //         // $pdf->Image($signature, 167, 170, 18, 12, 'PNG');
+                    //         // $pdf->Image($signature, 167, 200, 18, 12, 'PNG');
+                    //         $pdf->SetXY(172, 215);
+                    //         $pdf->Write(2, date('d/m/Y'));
+
+                    //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_third_payment_contract.pdf';
+                    //     }
+                    // }
+                } else if (strtolower($product->name) == Constant::czech) {
+
+                    if ($pageNo == 4) {
+                        if ($paymentType == 'FIRST' || $paymentType == 'Full-Outstanding Payment') {
+                            //signature
+
+                            $pdf->Image($signature, 40, 229, 25, 20, 'PNG');
+                            $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_' . $product->name . '_first_payment_contract.pdf';
+                        }
+                    }
+                    // if ($pageNo == 5) {
+                    //     if ($paymentType == 'FIRST' || $paymentType == 'Full-Outstanding Payment') {
+                    //         //signature
+
+                    //         // $pdf->Image($signature, 155, 72, 18, 15, 'PNG');
+                    //         // $pdf->Image($signature, 155, 117, 18, 15, 'PNG');
+                    //         $pdf->SetXY(172, 103);
+                    //         $pdf->Write(2, date('d/m/Y'));
+
+                    //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_first_payment_contract.pdf';
+                    //     }
+                    //     if ($paymentType == 'SUBMISSION') {
+
+                    //         // $pdf->Image($signature, 159, 160, 18, 15, 'PNG');
+                    //         // $pdf->Image($signature, 155, 209, 18, 15, 'PNG');
+                    //         $pdf->SetXY(172, 143);
+                    //         $pdf->Write(2, date('d/m/Y'));
+
+                    //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_second_payment_contract.pdf';
+                    //     } else if($paymentType == 'Full-Outstanding Payment') {
+                    //         $pdf->SetXY(172, 140);
+                    //         $pdf->Write(2, date('d/m/Y'));
+
+                    //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_second_payment_contract.pdf';
+                    //     }
+                    // }
+                    // if ($pageNo == 5) {
+
+                    //     if ($paymentType == 'SECOND') {
+
+                    //         // $pdf->Image($signature, 158, 68, 18, 15, 'PNG');
+                    //         // $pdf->Image($signature, 158, 119, 18, 15, 'PNG');
+                    //         $pdf->SetXY(172, 188);
+                    //         $pdf->Write(2, date('d/m/Y'));
+
+                    //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_third_payment_contract.pdf';
+                    //     } else if($paymentType == 'Full-Outstanding Payment') {
+                    //         $pdf->SetXY(172, 187);
+                    //         $pdf->Write(2, date('d/m/Y'));
+
+                    //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_third_payment_contract.pdf';
+                    //     }
+
+                    //     if ($paymentType == 'Fourth Payment' || $paymentType == 'Full-Outstanding Payment') {
+
+                    //         // $pdf->Image($signature, 169, 186, 18, 12, 'PNG');
+                    //         // $pdf->Image($signature, 169, 217, 18, 12, 'PNG');
+                    //         $pdf->SetXY(172, 234);
+                    //         $pdf->Write(2, date('d/m/Y')); 
+
+                    //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_third_payment_contract.pdf';
+                    //     }
+                    // }
+                } else if (strtolower($product->name) == Constant::canada) {
+
+                    if ($pageNo == 4) {
+                        if ($paymentType == 'FIRST' || $paymentType == 'Full-Outstanding Payment') {
+                            //signature
+                            $pdf->Image($signature, 40, 215, 25, 20, 'PNG');
+
+                            $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_' . $product->name . '_first_payment_contract.pdf';
+                        }
+                    }
+                    // if ($pageNo == 5) {
+                    //     if ($paymentType == 'FIRST' || $paymentType == 'Full-Outstanding Payment') {
+                    //         //signature
+
+                    //         $pdf->Image($signature, 155, 76, 18, 15, 'PNG');
+                    //         $pdf->Image($signature, 155, 116, 18, 15, 'PNG');
+                    //         $pdf->SetXY(162, 144);
+                    //         $pdf->Write(2, date('d/m/Y'));
+
+                    //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_first_payment_contract.pdf';
+                    //     }
+                    //     if ($paymentType == 'SUBMISSION' || $paymentType == 'Full-Outstanding Payment') {
+
+                    //         $pdf->Image($signature, 155, 156, 18, 15, 'PNG');
+                    //         $pdf->Image($signature, 155, 203, 18, 15, 'PNG');
+                    //         $pdf->SetXY(162, 232);
+                    //         $pdf->Write(2, date('d/m/Y'));
+
+                    //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_second_payment_contract.pdf';
+                    //     }
+                    // }
+                    // if ($pageNo == 6) {
+
+                    //     if ($paymentType == 'SECOND' || $paymentType == 'Full-Outstanding Payment') {
+
+                    //         $pdf->Image($signature, 155, 81, 18, 15, 'PNG');
+                    //         $pdf->Image($signature, 155, 122, 18, 15, 'PNG');
+                    //         $pdf->SetXY(162, 152);
+                    //         $pdf->Write(2, date('d/m/Y'));
+
+                    //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_third_payment_contract.pdf';
+                    //     }
+                    // }
+                } else if (strtolower($product->name) == Constant::malta) {
+
+                    if ($pageNo == 4) {
+                        if ($paymentType == 'FIRST' || $paymentType == 'Full-Outstanding Payment') {
+                            //signature
+
+                            $pdf->Image($signature, 40, 229, 25, 20, 'PNG');
+                            $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_' . $product->name . '_first_payment_contract.pdf';
+                        }
+                    }
+                    // if ($pageNo == 5) {
+                    //     if ($paymentType == 'FIRST' || $paymentType == 'Full-Outstanding Payment') {
+                    //         //signature
+
+                    //         // $pdf->Image($signature, 155, 72, 18, 15, 'PNG');
+                    //         // $pdf->Image($signature, 155, 117, 18, 15, 'PNG');
+                    //         $pdf->SetXY(173, 106);
+                    //         $pdf->Write(2, date('d/m/Y'));
+
+                    //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_first_payment_contract.pdf';
+                    //     }
+                    //     if ($paymentType == 'SUBMISSION') {
+
+                    //         // $pdf->Image($signature, 155, 159, 18, 15, 'PNG');
+                    //         // $pdf->Image($signature, 155, 209, 18, 15, 'PNG');
+                    //         $pdf->SetXY(174, 148);
+                    //         $pdf->Write(2, date('d/m/Y'));
+
+                    //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_second_payment_contract.pdf';
+                    //     } else if($paymentType == 'Full-Outstanding Payment') {
+                    //         $pdf->SetXY(174, 145);
+                    //         $pdf->Write(2, date('d/m/Y'));
+
+                    //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_second_payment_contract.pdf';
+                    //     }
+                    // }
+                    // if ($pageNo == 5) {
+
+                    //     if ($paymentType == 'SECOND') {
+
+                    //         // $pdf->Image($signature, 155, 64, 18, 15, 'PNG');
+                    //         // $pdf->Image($signature, 155, 128, 18, 15, 'PNG');
+                    //         $pdf->SetXY(176, 196);
+                    //         $pdf->Write(2, date('d/m/Y'));
+
+                    //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_third_payment_contract.pdf';
+                    //     } else if($paymentType == 'Full-Outstanding Payment'){
+                    //         $pdf->SetXY(172, 195);
+                    //         $pdf->Write(2, date('d/m/Y'));
+
+                    //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_third_payment_contract.pdf';
+                    //     }
+                    //     if ($paymentType == 'Fourth Payment' || $paymentType == 'Full-Outstanding Payment') {
+
+                    //         // $pdf->Image($signature, 170, 200, 18, 12, 'PNG');
+                    //         // $pdf->Image($signature, 170, 229, 18, 12, 'PNG');
+                    //         $pdf->SetXY(172, 246);
+                    //         $pdf->Write(2, date('d/m/Y'));
+
+                    //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_third_payment_contract.pdf';
+                    //     }
                     // }
                 }
-                // if ($pageNo == 5) {
-                //     if ($paymentType == 'FIRST' || $paymentType == 'Full-Outstanding Payment') {
-                //         //signature
-
-                //         // $pdf->Image($signature, 155, 69, 18, 15, 'PNG');
-                //         // $pdf->Image($signature, 155, 109, 18, 15, 'PNG');
-                //         $pdf->SetXY(172, 87);
-                //         $pdf->Write(2, date('d/m/Y'));
-
-                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_first_payment_contract.pdf';
-                //     }
-                //     if ($paymentType == 'SUBMISSION') {
-                //         // $pdf->Image($signature, 155, 149, 18, 15, 'PNG');
-                //         // $pdf->Image($signature, 155, 195, 18, 15, 'PNG');
-                //         $pdf->SetXY(172, 127);
-                //         $pdf->Write(2, date('d/m/Y'));
-
-                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_second_payment_contract.pdf';
-                //     } else if($paymentType == 'Full-Outstanding Payment'){
-                //         $pdf->SetXY(172, 123);
-                //         $pdf->Write(2, date('d/m/Y'));
-                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_second_payment_contract.pdf';
-                //     }
-                // }
-                // if ($pageNo == 5) {
-
-                //     if ($paymentType == 'SECOND') {
-
-                //         // $pdf->Image($signature, 155, 64, 18, 15, 'PNG');
-                //         // $pdf->Image($signature, 155, 103, 18, 15, 'PNG');
-                //         $pdf->SetXY(172, 171);
-                //         $pdf->Write(2, date('d/m/Y'));
-
-                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_third_payment_contract.pdf';
-                //     } elseif($paymentType == 'Full-Outstanding Payment') {
-                //         $pdf->SetXY(172, 168);
-                //         $pdf->Write(2, date('d/m/Y'));
-
-                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_third_payment_contract.pdf';
-                //     }
-
-                //     if ($paymentType == 'Fourth Payment' || $paymentType == 'Full-Outstanding Payment') {
-
-                //         // $pdf->Image($signature, 167, 170, 18, 12, 'PNG');
-                //         // $pdf->Image($signature, 167, 200, 18, 12, 'PNG');
-                //         $pdf->SetXY(172, 215);
-                //         $pdf->Write(2, date('d/m/Y'));
-
-                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_third_payment_contract.pdf';
-                //     }
-                // }
-            } else if (strtolower($product->name) == Constant::czech) {
-
-                if ($pageNo == 4) {
-                    if ($paymentType == 'FIRST' || $paymentType == 'Full-Outstanding Payment') {
-                        //signature
-
-                        $pdf->Image($signature, 40, 229, 25, 20, 'PNG');
-                        $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name .'_'.$product->name.'_first_payment_contract.pdf';
-                    }
-                }
-                // if ($pageNo == 5) {
-                //     if ($paymentType == 'FIRST' || $paymentType == 'Full-Outstanding Payment') {
-                //         //signature
-
-                //         // $pdf->Image($signature, 155, 72, 18, 15, 'PNG');
-                //         // $pdf->Image($signature, 155, 117, 18, 15, 'PNG');
-                //         $pdf->SetXY(172, 103);
-                //         $pdf->Write(2, date('d/m/Y'));
-
-                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_first_payment_contract.pdf';
-                //     }
-                //     if ($paymentType == 'SUBMISSION') {
-
-                //         // $pdf->Image($signature, 159, 160, 18, 15, 'PNG');
-                //         // $pdf->Image($signature, 155, 209, 18, 15, 'PNG');
-                //         $pdf->SetXY(172, 143);
-                //         $pdf->Write(2, date('d/m/Y'));
-
-                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_second_payment_contract.pdf';
-                //     } else if($paymentType == 'Full-Outstanding Payment') {
-                //         $pdf->SetXY(172, 140);
-                //         $pdf->Write(2, date('d/m/Y'));
-
-                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_second_payment_contract.pdf';
-                //     }
-                // }
-                // if ($pageNo == 5) {
-
-                //     if ($paymentType == 'SECOND') {
-
-                //         // $pdf->Image($signature, 158, 68, 18, 15, 'PNG');
-                //         // $pdf->Image($signature, 158, 119, 18, 15, 'PNG');
-                //         $pdf->SetXY(172, 188);
-                //         $pdf->Write(2, date('d/m/Y'));
-
-                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_third_payment_contract.pdf';
-                //     } else if($paymentType == 'Full-Outstanding Payment') {
-                //         $pdf->SetXY(172, 187);
-                //         $pdf->Write(2, date('d/m/Y'));
-
-                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_third_payment_contract.pdf';
-                //     }
-
-                //     if ($paymentType == 'Fourth Payment' || $paymentType == 'Full-Outstanding Payment') {
-
-                //         // $pdf->Image($signature, 169, 186, 18, 12, 'PNG');
-                //         // $pdf->Image($signature, 169, 217, 18, 12, 'PNG');
-                //         $pdf->SetXY(172, 234);
-                //         $pdf->Write(2, date('d/m/Y')); 
-
-                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_third_payment_contract.pdf';
-                //     }
-                // }
-            } else if (strtolower($product->name) == Constant::canada) {
-
-                if ($pageNo == 4) {
-                    if ($paymentType == 'FIRST' || $paymentType == 'Full-Outstanding Payment') {
-                        //signature
-                        $pdf->Image($signature, 40, 215, 25, 20, 'PNG');
-
-                        $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name .'_'.$product->name.'_first_payment_contract.pdf';
-                    }
-                }
-                // if ($pageNo == 5) {
-                //     if ($paymentType == 'FIRST' || $paymentType == 'Full-Outstanding Payment') {
-                //         //signature
-
-                //         $pdf->Image($signature, 155, 76, 18, 15, 'PNG');
-                //         $pdf->Image($signature, 155, 116, 18, 15, 'PNG');
-                //         $pdf->SetXY(162, 144);
-                //         $pdf->Write(2, date('d/m/Y'));
-
-                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_first_payment_contract.pdf';
-                //     }
-                //     if ($paymentType == 'SUBMISSION' || $paymentType == 'Full-Outstanding Payment') {
-
-                //         $pdf->Image($signature, 155, 156, 18, 15, 'PNG');
-                //         $pdf->Image($signature, 155, 203, 18, 15, 'PNG');
-                //         $pdf->SetXY(162, 232);
-                //         $pdf->Write(2, date('d/m/Y'));
-
-                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_second_payment_contract.pdf';
-                //     }
-                // }
-                // if ($pageNo == 6) {
-
-                //     if ($paymentType == 'SECOND' || $paymentType == 'Full-Outstanding Payment') {
-
-                //         $pdf->Image($signature, 155, 81, 18, 15, 'PNG');
-                //         $pdf->Image($signature, 155, 122, 18, 15, 'PNG');
-                //         $pdf->SetXY(162, 152);
-                //         $pdf->Write(2, date('d/m/Y'));
-
-                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_third_payment_contract.pdf';
-                //     }
-                // }
-            } else if (strtolower($product->name) == Constant::malta) {
-
-                if ($pageNo == 4) {
-                    if ($paymentType == 'FIRST' || $paymentType == 'Full-Outstanding Payment') {
-                        //signature
-
-                        $pdf->Image($signature, 40, 229, 25, 20, 'PNG');
-                        $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name .'_'.$product->name.'_first_payment_contract.pdf';
-                    }
-                }
-                // if ($pageNo == 5) {
-                //     if ($paymentType == 'FIRST' || $paymentType == 'Full-Outstanding Payment') {
-                //         //signature
-
-                //         // $pdf->Image($signature, 155, 72, 18, 15, 'PNG');
-                //         // $pdf->Image($signature, 155, 117, 18, 15, 'PNG');
-                //         $pdf->SetXY(173, 106);
-                //         $pdf->Write(2, date('d/m/Y'));
-
-                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_first_payment_contract.pdf';
-                //     }
-                //     if ($paymentType == 'SUBMISSION') {
-
-                //         // $pdf->Image($signature, 155, 159, 18, 15, 'PNG');
-                //         // $pdf->Image($signature, 155, 209, 18, 15, 'PNG');
-                //         $pdf->SetXY(174, 148);
-                //         $pdf->Write(2, date('d/m/Y'));
-
-                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_second_payment_contract.pdf';
-                //     } else if($paymentType == 'Full-Outstanding Payment') {
-                //         $pdf->SetXY(174, 145);
-                //         $pdf->Write(2, date('d/m/Y'));
-
-                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_second_payment_contract.pdf';
-                //     }
-                // }
-                // if ($pageNo == 5) {
-
-                //     if ($paymentType == 'SECOND') {
-
-                //         // $pdf->Image($signature, 155, 64, 18, 15, 'PNG');
-                //         // $pdf->Image($signature, 155, 128, 18, 15, 'PNG');
-                //         $pdf->SetXY(176, 196);
-                //         $pdf->Write(2, date('d/m/Y'));
-
-                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_third_payment_contract.pdf';
-                //     } else if($paymentType == 'Full-Outstanding Payment'){
-                //         $pdf->SetXY(172, 195);
-                //         $pdf->Write(2, date('d/m/Y'));
-
-                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_third_payment_contract.pdf';
-                //     }
-                //     if ($paymentType == 'Fourth Payment' || $paymentType == 'Full-Outstanding Payment') {
-
-                //         // $pdf->Image($signature, 170, 200, 18, 12, 'PNG');
-                //         // $pdf->Image($signature, 170, 229, 18, 12, 'PNG');
-                //         $pdf->SetXY(172, 246);
-                //         $pdf->Write(2, date('d/m/Y'));
-
-                //         $fileName = $client->name . '_' . $client->middle_name . '_' . $client->sur_name . '_third_payment_contract.pdf';
-                //     }
-                // }
             }
         }
         // if ($paymentType == 'FIRST') {
-            $theString = $pdf->Output('S');
-            if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
-                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Application::$media_collection_main_1st_signature, env('MEDIA_DISK'));
-            } else {
-                $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Application::$media_collection_main_1st_signature, 'local');
-            }
-            $applicant->contract_1st_signature_status = 'SIGNED';
-            $applicant->contract_1st_signature_at = Carbon::now();
-            $applicant->contract_1st_signature_verified_by_accountant = 1;
-            $applicant->contract_1st_signature_verified = 1;            
-            
+        $theString = $pdf->Output('S');
+        if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
+            $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Application::$media_collection_main_1st_signature, env('MEDIA_DISK'));
+        } else {
+            $applicant->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Application::$media_collection_main_1st_signature, 'local');
+        }
+        $applicant->contract_1st_signature_status = 'SIGNED';
+        $applicant->contract_1st_signature_at = Carbon::now();
+        $applicant->contract_1st_signature_verified_by_accountant = 1;
+        $applicant->contract_1st_signature_verified = 1;
+
         // // }
         // if ($paymentType == 'SUBMISSION') {
         //     $theString = $pdf->Output('S');
@@ -547,17 +715,17 @@ class pdfBlock
         $applicant->save();
     }
 
-    public static function jobLetter($applicant,$clientId,$date)
+    public static function jobLetter($applicant, $clientId, $date)
     {
-        
+
         $pdf = new \setasign\Fpdi\Fpdi();
         // $pagecount = $pdf->setSourceFile('pdf/offer_letter_template.pdf');
         $fileContent = file_get_contents(public_path('pdf/offer_letter_template.pdf', 'rb'));
         $pagecount = $pdf->setSourceFile(StreamReader::createByString($fileContent));
 
-        $offer_date = date('F d, Y', strtotime($date. ' + 7 days'));
+        $offer_date = date('F d, Y', strtotime($date . ' + 7 days'));
 
-        $return_date = date('F d, Y', strtotime($offer_date. ' + 7 days'));
+        $return_date = date('F d, Y', strtotime($offer_date . ' + 7 days'));
 
         for ($pageNo = 1; $pageNo <= $pagecount; $pageNo++) {
 
@@ -590,7 +758,7 @@ class pdfBlock
                 $pdf->Write(2,  $return_date);
             }
         }
-        $fileName = 'offer_letter_template_'.$client->id.'_'.$client->sur_name.'.pdf';
+        $fileName = 'offer_letter_template_' . $client->id . '_' . $client->sur_name . '.pdf';
         $theString = $pdf->Output('S');
         $Applicants = Application::find($applicant);
         $Applicants->addMediaFromString($theString)->usingFileName($fileName)->toMediaCollection(Application::$media_collection_main_job_offer_letter, env('MEDIA_DISK'));
@@ -605,6 +773,7 @@ class pdfBlock
         $product = product::find($applicant->destination_id)->name;
         $productName = strtolower($product);
         $package = $applicant->work_permit_category;
+        $pricingPlan = product_payments::find($applicant->pricing_plan_id);
         if ($applicant->first_payment_status == 'PAID' || $applicant->first_payment_status == 'PARTIALLY_PAID') {
             if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                 $originalPdf = (isset($applicant->getMedia(Application::$media_collection_main_1st_signature)[0])) ? $applicant->getMedia(Application::$media_collection_main_1st_signature)[0]->getUrl() : null;
@@ -613,7 +782,7 @@ class pdfBlock
             }
             $destination_file = Application::$media_collection_main_1st_signature;
         } else {
-            if($applicant->getMedia(Application::$media_collection_main_1st_signature)){
+            if ($applicant->getMedia(Application::$media_collection_main_1st_signature)) {
                 if (!in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                     $originalPdf = (isset($applicant->getMedia(Application::$media_collection_main_1st_signature)[0])) ? $applicant->getMedia(Application::$media_collection_main_1st_signature)[0]->getUrl() : null;
                 } else {
@@ -639,7 +808,7 @@ class pdfBlock
                     // } else if ($package == Constant::CanadaStudyPermit) {
                     //     $newFileName = 'contract' . $client->id . '-' . UserHelper::getRandomString() . '-' . 'canada_study.pdf';
                     // } else if ($package == Constant::BlueCollar) {
-                        $newFileName = 'contract' . $client->id . '-' . UserHelper::getRandomString() . '-' . 'canada.pdf';
+                    $newFileName = 'contract' . $client->id . '-' . UserHelper::getRandomString() . '-' . 'canada.pdf';
                     // }
                 } else if ($productName == Constant::germany) {
                     $newFileName = 'contract' . $client->id . '-' . UserHelper::getRandomString() . '-' . 'germany.pdf';
@@ -664,60 +833,373 @@ class pdfBlock
             //Select Arial italic 8
             $pdf->SetFont('Arial', 'B', '9');
             $pdf->SetTextColor(0, 0, 0);
-            if ($pageNo == 1 && ($productName == Constant::poland || $product == Constant::germany)) {
-                //Nationality
-                $pdf->SetXY(85, 136);
-                $pdf->Write(2, $client->citizenship);
-                //Passport
-                $pdf->SetXY(85, 148);
-                $pdf->Write(2, $client->passport_number);
-            } else if ($pageNo == 1 && $productName == Constant::czech) {
-                //Nationality
-                $pdf->SetXY(85, 127);
-                $pdf->Write(2, $client->citizenship);
+            if ($pricingPlan['pricing_plan_type'] == 'FAMILY_PACKAGE' && ($productName == Constant::poland)) {
+                if ($pricingPlan['no_of_parent'] == 1 && $pricingPlan['no_of_children'] == 1) {
+                    $kid = Client::where('family_member_id', $client->id)->orderBy('id', 'DESC')->first();;
 
-                //Passport
-                $pdf->SetXY(85, 139);
-                $pdf->Write(2, $client->passport_number);
-            } else if ($pageNo == 1 && $productName == Constant::canada) {
+                    if ($pageNo == 1) {
+                        //Nationality
+                        $pdf->SetXY(85, 132);
+                        $pdf->Write(2, $client->citizenship);
+                        //Passport
+                        $pdf->SetXY(85, 145);
+                        $pdf->Write(2, $client->passport_number);
+                        // Name
+                        $pdf->SetXY(85, 203);
+                        $pdf->Write(2, ($kid->name . ' ' . $kid->sur_name));
+                        //Nationality
+                        $pdf->SetXY(85, 213);
+                        $pdf->Write(2, $client->citizenship);
+                        //Passport
+                        $pdf->SetXY(85, 223);
+                        $pdf->Write(2, $kid->passport_number . ': Child');
+                    }
+                } else if ($pricingPlan['no_of_parent'] == 1 && $pricingPlan['no_of_children'] == 2) {
 
-                if ($package == Constant::CanadaExpressEntry) {
-                    $pdf->SetXY(85, 136);
-                    $pdf->Write(2, $client->citizenship);
+                    $kids = Client::where('family_member_id', $client->id)->orderBy('id', 'DESC')->get();;
+                    foreach ($kids as $key => $kid) {
+                        if ($key == 0) {
+                            if ($pageNo == 1) {
+                                //Nationality
+                                $pdf->SetXY(85, 141);
+                                $pdf->Write(2, $client->citizenship);
+                                //Passport
+                                $pdf->SetXY(85, 152);
+                                $pdf->Write(2, $client->passport_number);
+                                // Name
+                                $pdf->SetXY(85, 216);
+                                $pdf->Write(2, ($kid->name . ' ' . $kid->sur_name));
+                                //Nationality
+                                $pdf->SetXY(85, 226);
+                                $pdf->Write(2, $client->citizenship);
+                                //Passport
+                                $pdf->SetXY(85, 237);
+                                $pdf->Write(2, $kid->passport_number . ': Child');
+                            }
+                        } else if ($key == 1) {
+                            if ($pageNo == 2 && ($productName == Constant::poland)) {
+                                // Name
+                                $pdf->SetXY(85, 60);
+                                $pdf->Write(2, ($kid->name . ' ' . $kid->sur_name));
+                                //Nationality
+                                $pdf->SetXY(85, 76);
+                                $pdf->Write(2, $client->citizenship);
+                                //Passport
+                                $pdf->SetXY(94, 91);
+                                $pdf->Write(2, $kid->passport_number . ': Child');
+                            }
+                        }
+                    }
+                } else if ($pricingPlan['no_of_parent'] == 1 && $pricingPlan['no_of_children'] == 3) {
+                    $kids = Client::where('family_member_id', $client->id)->orderBy('id', 'DESC')->get();;
+                    foreach ($kids as $key => $kid) {
+                        if ($key == 0) {
+                            if ($pageNo == 1) {
+                                //Nationality
+                                $pdf->SetXY(85, 141);
+                                $pdf->Write(2, $client->citizenship);
+                                //Passport
+                                $pdf->SetXY(85, 152);
+                                $pdf->Write(2, $client->passport_number);
+                                // Name
+                                $pdf->SetXY(85, 216);
+                                $pdf->Write(2, ($kid->name . ' ' . $kid->sur_name));
+                                //Nationality
+                                $pdf->SetXY(85, 226);
+                                $pdf->Write(2, $client->citizenship);
+                                //Passport
+                                $pdf->SetXY(85, 237);
+                                $pdf->Write(2, $kid->passport_number . ': Child');
+                            }
+                        } else if ($key == 1) {
+                            if ($pageNo == 2 && ($productName == Constant::poland)) {
+                                // Name
+                                $pdf->SetXY(85, 60);
+                                $pdf->Write(2, ($kid->name . ' ' . $kid->sur_name));
+                                //Nationality
+                                $pdf->SetXY(85, 74);
+                                $pdf->Write(2, $client->citizenship);
+                                //Passport
+                                $pdf->SetXY(94, 88);
+                                $pdf->Write(2, $kid->passport_number . ': Child');
+                            }
+                        } else if ($key == 2) {
+                            if ($pageNo == 2 && ($productName == Constant::poland)) {
+                                // Name
+                                $pdf->SetXY(85, 115);
+                                $pdf->Write(2, ($kid->name . ' ' . $kid->sur_name));
+                                //Nationality
+                                $pdf->SetXY(85, 126);
+                                $pdf->Write(2, $client->citizenship);
+                                //Passport
+                                $pdf->SetXY(94, 138);
+                                $pdf->Write(2, $kid->passport_number . ': Child');
+                            }
+                        }
+                    }
+                } else if ($pricingPlan['no_of_parent'] == 2 && $pricingPlan['no_of_children'] == 1) {
+                    if ($pricingPlan['no_of_parent'] == 2 && $pricingPlan['no_of_children'] == 1) {
 
-                    //Passport
-                    $pdf->SetXY(85, 148);
-                    $pdf->Write(2, $client->passport_number);
-                } else if ($package == Constant::CanadaStudyPermit) {
-                    //Nationality
-                    $pdf->SetXY(85, 136);
-                    $pdf->Write(2, $client->citizenship);
+                        $dependents = Client::where('family_member_id', $client->id)->orderBy('id', 'DESC')->get();;
+                        foreach ($dependents as $key => $dependent) {
+                            if ($key == 0) {
+                                if ($pageNo == 1) {
+                                    //Nationality
+                                    $pdf->SetXY(85, 141);
+                                    $pdf->Write(2, $client->citizenship);
+                                    //Passport
+                                    $pdf->SetXY(85, 152);
+                                    $pdf->Write(2, $client->passport_number);
+                                    // Name
+                                    $pdf->SetXY(85, 216);
+                                    $pdf->Write(2, ($dependent->name . ' ' . $dependent->sur_name));
+                                    //Nationality
+                                    $pdf->SetXY(85, 226);
+                                    $pdf->Write(2, $client->citizenship);
+                                    //Passport
+                                    $pdf->SetXY(85, 237);
+                                    $pdf->Write(2, $dependent->passport_number . ': Spouse');
+                                }
+                            } else if ($key == 1) {
+                                if ($pageNo == 2 && ($productName == Constant::poland)) {
+                                    // Name
+                                    $pdf->SetXY(85, 60);
+                                    $pdf->Write(2, ($dependent->name . ' ' . $dependent->sur_name));
+                                    //Nationality
+                                    $pdf->SetXY(85, 77);
+                                    $pdf->Write(2, $client->citizenship);
+                                    //Passport
+                                    $pdf->SetXY(94, 94);
+                                    $pdf->Write(2, $dependent->passport_number . ': Child');
+                                }
+                            }
+                        }
+                    }
+                } else if ($pricingPlan['no_of_parent'] == 2 && $pricingPlan['no_of_children'] == 2) {
+                    $dependents = Client::where('family_member_id', $client->id)->orderBy('id', 'DESC')->get();;
+                    foreach ($dependents as $key => $dependent) {
+                        if ($pageNo == 1) {
+                            if ($key == 0) {
+                                //Nationality
+                                $pdf->SetXY(85, 145);
+                                $pdf->Write(2, $client->citizenship);
+                                //Passport
+                                $pdf->SetXY(85, 157);
+                                $pdf->Write(2, $client->passport_number);
+                                // Name
+                                $pdf->SetXY(85, 226);
+                                $pdf->Write(2, ($dependent->name . ' ' . $dependent->sur_name));
+                                //Nationality
+                                $pdf->SetXY(85, 236);
+                                $pdf->Write(2, $client->citizenship);
+                            }
+                        } else  if ($pageNo == 2) {
+                            if ($key == 0) {
+                                //Passport
+                                $pdf->SetXY(85, 50);
+                                $pdf->Write(2, $dependent->passport_number . ': Spouse');
+                            } else if ($key == 1) {
+                                // Name
+                                $pdf->SetXY(85, 80);
+                                $pdf->Write(2, ($dependent->name . ' ' . $dependent->sur_name));
+                                //Nationality
+                                $pdf->SetXY(85, 95);
+                                $pdf->Write(2, $client->citizenship);
+                                //Passport
+                                $pdf->SetXY(94, 114);
+                                $pdf->Write(2, $dependent->passport_number . ': Child');
+                            } else if ($key == 2) {
+                                // Name
+                                $pdf->SetXY(85, 144);
+                                $pdf->Write(2, ($dependent->name . ' ' . $dependent->sur_name));
+                                //Nationality
+                                $pdf->SetXY(85, 156);
+                                $pdf->Write(2, $client->citizenship);
+                                //Passport
+                                $pdf->SetXY(94, 170);
+                                $pdf->Write(2, $dependent->passport_number . ': Child');
+                            }
+                        }
+                    }
+                } else if ($pricingPlan['no_of_parent'] == 2 && $pricingPlan['no_of_children'] == 3) {
+                    $dependents = Client::where('family_member_id', $client->id)->orderBy('id', 'DESC')->get();;
+                    foreach ($dependents as $key => $dependent) {
+                        if ($pageNo == 1) {
+                            if ($key == 0) {
+                                //Nationality
+                                $pdf->SetXY(85, 142);
+                                $pdf->Write(2, $client->citizenship);
+                                //Passport
+                                $pdf->SetXY(85, 154);
+                                $pdf->Write(2, $client->passport_number);
+                                // Name
+                                $pdf->SetXY(85, 216);
+                                $pdf->Write(2, ($dependent->name . ' ' . $dependent->sur_name));
+                                //Nationality
+                                $pdf->SetXY(85, 226);
+                                $pdf->Write(2, $client->citizenship);
 
-                    //Passport
-                    $pdf->SetXY(85, 148);
-                    $pdf->Write(2, $client->passport_number);
-                } else if ($package == Constant::BlueCollar) {
-                    //Nationality
-                    $pdf->SetXY(85, 136);
-                    $pdf->Write(2, $client->citizenship);
+                                //Passport
+                                $pdf->SetXY(85, 236);
+                                $pdf->Write(2, $dependent->passport_number . ': Spouse');
+                            }
+                        } else  if ($pageNo == 2) {
+                            if ($key == 1) {
+                                // Name
+                                $pdf->SetXY(85, 68);
+                                $pdf->Write(2, ($dependent->name . ' ' . $dependent->sur_name));
+                                //Nationality
+                                $pdf->SetXY(85, 78);
+                                $pdf->Write(2, $client->citizenship);
+                                //Passport
+                                $pdf->SetXY(94, 88);
+                                $pdf->Write(2, $dependent->passport_number . ': Child');
+                            } else if ($key == 2) {
+                                // Name
+                                $pdf->SetXY(85, 113);
+                                $pdf->Write(2, ($dependent->name . ' ' . $dependent->sur_name));
+                                //Nationality
+                                $pdf->SetXY(85, 122);
+                                $pdf->Write(2, $client->citizenship);
+                                //Passport
+                                $pdf->SetXY(94, 132);
+                                $pdf->Write(2, $dependent->passport_number . ': Child');
+                            } else if ($key == 3) {
+                                // Name
+                                $pdf->SetXY(85, 153);
+                                $pdf->Write(2, ($dependent->name . ' ' . $dependent->sur_name));
+                                //Nationality
+                                $pdf->SetXY(85, 164);
+                                $pdf->Write(2, $client->citizenship);
+                                //Passport
+                                $pdf->SetXY(94, 174);
+                                $pdf->Write(2, $dependent->passport_number . ': Child');
+                            }
+                        }
+                    }
+                } else if ($pricingPlan['no_of_parent'] == 2 && $pricingPlan['no_of_children'] == 4) {
+                    $dependents = Client::where('family_member_id', $client->id)->orderBy('id', 'DESC')->get();;
+                    foreach ($dependents as $key => $dependent) {
+                        if ($pageNo == 1) {
+                            if ($key == 0) {
+                                //Nationality
+                                $pdf->SetXY(85, 140);
+                                $pdf->Write(2, $client->citizenship);
+                                //Passport
+                                $pdf->SetXY(85, 150);
+                                $pdf->Write(2, $client->passport_number);
+                                // Name
+                                $pdf->SetXY(85, 214);
+                                $pdf->Write(2, ($dependent->name . ' ' . $dependent->sur_name));
+                                //Nationality
+                                $pdf->SetXY(85, 226);
+                                $pdf->Write(2, $client->citizenship);
 
-                    //Passport
-                    $pdf->SetXY(85, 148);
-                    $pdf->Write(2, $client->passport_number);
+                                //Passport
+                                $pdf->SetXY(85, 236);
+                                $pdf->Write(2, $dependent->passport_number . ': Spouse');
+                            }
+                        } else  if ($pageNo == 2) {
+                            if ($key == 1) {
+                                // Name
+                                $pdf->SetXY(85, 58);
+                                $pdf->Write(2, ($dependent->name . ' ' . $dependent->sur_name));
+                                //Nationality
+                                $pdf->SetXY(85, 68);
+                                $pdf->Write(2, $client->citizenship);
+                                //Passport
+                                $pdf->SetXY(94, 78);
+                                $pdf->Write(2, $dependent->passport_number . ': Child');
+                            } else if ($key == 2) {
+                                // Name
+                                $pdf->SetXY(85, 95);
+                                $pdf->Write(2, ($dependent->name . ' ' . $dependent->sur_name));
+                                //Nationality
+                                $pdf->SetXY(85, 103);
+                                $pdf->Write(2, $client->citizenship);
+                                //Passport
+                                $pdf->SetXY(94, 113);
+                                $pdf->Write(2, $dependent->passport_number . ': Child');
+                            } else if ($key == 3) {
+                                // Name
+                                $pdf->SetXY(85, 130);
+                                $pdf->Write(2, ($dependent->name . ' ' . $dependent->sur_name));
+                                //Nationality
+                                $pdf->SetXY(85, 140);
+                                $pdf->Write(2, $client->citizenship);
+                                //Passport
+                                $pdf->SetXY(94, 150);
+                                $pdf->Write(2, $dependent->passport_number . ': Child');
+                            } else if ($key == 4) {
+                                // Name
+                                $pdf->SetXY(85, 170);
+                                $pdf->Write(2, ($dependent->name . ' ' . $dependent->sur_name));
+                                //Nationality
+                                $pdf->SetXY(85, 178);
+                                $pdf->Write(2, $client->citizenship);
+                                //Passport
+                                $pdf->SetXY(94, 190);
+                                $pdf->Write(2, $dependent->passport_number . ': Child');
+                            }
+                        }
+                    }
                 }
-            } else if ($pageNo == 1 && $productName == Constant::malta) {
+            } else {
+                if ($pageNo == 1 && ($productName == Constant::poland || $product == Constant::germany)) {
+                    //Nationality
+                    $pdf->SetXY(85, 136);
+                    $pdf->Write(2, $client->citizenship);
+                    //Passport
+                    $pdf->SetXY(85, 148);
+                    $pdf->Write(2, $client->passport_number);
+                } else if ($pageNo == 1 && $productName == Constant::czech) {
+                    //Nationality
+                    $pdf->SetXY(85, 127);
+                    $pdf->Write(2, $client->citizenship);
 
-                //Nationality
-                $pdf->SetXY(60, 86);
-                $pdf->Write(2, $client->citizenship);
+                    //Passport
+                    $pdf->SetXY(85, 139);
+                    $pdf->Write(2, $client->passport_number);
+                } else if ($pageNo == 1 && $productName == Constant::canada) {
 
-                //Passport
-                $pdf->SetXY(84, 97);
-                $pdf->Write(2, $client->passport_number);
+                    if ($package == Constant::CanadaExpressEntry) {
+                        $pdf->SetXY(85, 136);
+                        $pdf->Write(2, $client->citizenship);
 
-                //DOB
-                $pdf->SetXY(68, 92);
-                $pdf->Write(2, $client->date_of_birth);
+                        //Passport
+                        $pdf->SetXY(85, 148);
+                        $pdf->Write(2, $client->passport_number);
+                    } else if ($package == Constant::CanadaStudyPermit) {
+                        //Nationality
+                        $pdf->SetXY(85, 136);
+                        $pdf->Write(2, $client->citizenship);
+
+                        //Passport
+                        $pdf->SetXY(85, 148);
+                        $pdf->Write(2, $client->passport_number);
+                    } else if ($package == Constant::BlueCollar) {
+                        //Nationality
+                        $pdf->SetXY(85, 136);
+                        $pdf->Write(2, $client->citizenship);
+
+                        //Passport
+                        $pdf->SetXY(85, 148);
+                        $pdf->Write(2, $client->passport_number);
+                    }
+                } else if ($pageNo == 1 && $productName == Constant::malta) {
+
+                    //Nationality
+                    $pdf->SetXY(60, 86);
+                    $pdf->Write(2, $client->citizenship);
+
+                    //Passport
+                    $pdf->SetXY(84, 97);
+                    $pdf->Write(2, $client->passport_number);
+
+                    //DOB
+                    $pdf->SetXY(68, 92);
+                    $pdf->Write(2, $client->date_of_birth);
+                }
             }
         }
         if ($applicant->second_payment_status == 'PAID') {

@@ -542,12 +542,12 @@ $totalPay = round($payNow - $discount + $vat, 2);
                 <input type="hidden" id="totaldue" name="totaldue" value="{{ round($payNow + $vat, 2) }}">
                 <input type="hidden" name="totalremaining" value="{{ round($pends, 2) }}">
             @else
-                <h2 style="font-size: 1em;">Now you will pay {{ strtolower($whichPayment) }} installment only
+                <h2 style="font-size: 1em;">Now you will pay {{ strtolower($whichPayment) }} installment only 
                     <span id="amountLink">
 
                         {{-- <b>{{(($pays->first_payment_status !="PAID") ? (($diff > 0) ? number_format((floor(((($payNoww - $discount)+ $vat)+$pays->first_payment_remaining)*100)/100),2) : (number_format((floor((($payNoww - $discount)+ $vat)*100)/100),2))):number_format((floor((($payNoww - $discount)+ $vat)*100)/100),2))}}</b> --}}
                         <b><span id="amountLink">
-                                {{ !isset($pays) || $pays->first_payment_status != 'PAID' ? ($diff > 0 ? number_format(floor(($payNoww - $discount + $vat) * 100) / 100, 2) : number_format(floor(($payNoww - $discount + $vat) * 100) / 100, 2)) : number_format(floor(($payNoww - $discount + $vat) * 100) / 100, 2) }}
+                                {{ !isset($pays) || $pays->first_payment_status != 'PAID' ? ($diff > 0 ? number_format(floor(($payNow - $discount + $vat) * 100) / 100, 2) : number_format(floor(($payNow - $discount + $vat) * 100) / 100, 2)) : number_format(floor(($payNow - $discount + $vat) * 100) / 100, 2) }}
                             </span></b>
                     </span> AED
                     <span style="font-size:11px;opacity:0.6" id="amountText">
@@ -565,9 +565,9 @@ $totalPay = round($payNow - $discount + $vat, 2);
                 </h2>
                 {{-- <input type="hidden" id="amountLink2" name="totalpay" value="{{ round((($payNoww - $discount)+ $vat),2) }}"> --}}
                 <input type="hidden" id="amountLink2" name="totalpay"
-                    value="{{ !isset($pays) || $pays->first_payment_status != 'PAID' ? ($diff > 0 ? round($payNoww - $discount + $vat, 2) : round($payNoww - $discount + $vat, 2)) : round($payNoww - $discount + $vat, 2) }}">
+                    value="{{ !isset($pays) || $pays->first_payment_status != 'PAID' ? ($diff > 0 ? round($payNow - $discount + $vat, 2) : round($payNow - $discount + $vat, 2)) : round($payNow - $discount + $vat, 2) }}">
                 <input type="hidden" id="totaldue" name="totaldue"
-                    value="{{ round($payNoww - $discount + $vat, 2) }}">
+                    value="{{ round($payNow - $discount + $vat, 2) }}">
             @endif
         </div>
 
@@ -702,6 +702,7 @@ $totalPay = round($payNow - $discount + $vat, 2);
                 url: "{{ route('packageType',$data->id)  }}",
                 data: {kid : kidd, parents: parents , response : 1 }, 
                 success: function (data) {
+                    console.log(data);
                     let vallu = (data.first_payment_sub_total*1.2995)-(data.first_payment_sub_total);
                     let thisVat = data.first_payment_sub_total*0.05;
                     let thisTotal = parseFloat(data.first_payment_sub_total) + parseFloat(thisVat);
@@ -709,7 +710,6 @@ $totalPay = round($payNow - $discount + $vat, 2);
                     let fullVallu = (data.sub_total*1.2995)-(data.sub_total);
                     let fullVat = data.sub_total*0.05;
                     let fullTotal = parseFloat(data.sub_total) + parseFloat(fullVat);
-
 
                     if(ppyall == 0)
                     {
@@ -733,6 +733,8 @@ $totalPay = round($payNow - $discount + $vat, 2);
                         $('#thissave').text(parseFloat(fullVallu).toLocaleString());
                     }
                     $('.fam_id').val(data.id);
+                    $('.contractFileUrl').empty();
+                    $('.contractFileUrl').append('<embed src="'+data.contractFileUrl+'#toolbar=0&navpanes=0&pagemode=none" width="100%" height="100%" view="fit" type="application/pdf" />');
                 },
                 error: function (error) {
                 }

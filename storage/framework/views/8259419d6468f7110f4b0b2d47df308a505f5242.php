@@ -649,7 +649,7 @@ if (isset($pays) && (($pays->first_payment_remaining > 0 && $pays->first_payment
                             $('.contract-signature').hide();
                             //  location.href = "<?php echo e(url('payment_form')); ?>/" + '<?php echo e($data->id); ?>';
                         } else {
-                            toastr.error("Something went wrong!");
+                            // toastr.error("Something went wrong!");
                         }
 
                     },

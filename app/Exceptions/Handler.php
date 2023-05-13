@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\ValidationException;
+use Swift_TransportException;
 
 use Throwable;
 
@@ -44,6 +45,11 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $e)
     {
+        if ($e instanceof Swift_TransportException) {
+            // Handle the Swift_TransportException here
+            return redirect()->route('redirect')->with('error', 'Mail server limit exceeded');
+
+        }
         if ($this->isHttpException($e)) {
             switch ($e->getStatusCode()) {
                     // not found
@@ -74,7 +80,7 @@ class Handler extends ExceptionHandler
                     break;
             }
         } else {
-            return parent::render($request, $e);
+        return parent::render($request, $e);
         }
     }
 }

@@ -1197,7 +1197,7 @@
                                                         @elseif(isset($paym))
                                                             @if(in_array($paid->second_payment_status, ['PENDING', 'PARTIALLY_PAID']) && $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 0 && $paid->second_payment_txn_mode == 'TRANSFER')     
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            @elseif($paid->second_payment_status == 'PARTIALLY_PAID' &&  $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 1 && ($paid->second_payment_txn_mode == 'BALANCE_TRANSFER' || $paid->second_payment_txn_mode == 'TRANSFER'))
+                                                            @elseif($paid->second_payment_status == 'PARTIALLY_PAID' &&  $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 1 && ($paid->second_payment_txn_mode == 'BALANCE_TRANSFER'))
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
                                                             @else
                                                                 @if ($paid->application_stage_status != 5)
@@ -1218,7 +1218,7 @@
                                                         @else
                                                             @if(in_array($paid->second_payment_status, ['PENDING', 'PARTIALLY_PAID']) && $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 0 && $paid->second_payment_txn_mode == 'TRANSFER')     
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            @elseif($paid->second_payment_status == 'PARTIALLY_PAID' &&  $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 1 && ($paid->second_payment_txn_mode == 'BALANCE_TRANSFER' || $paid->second_payment_txn_mode == 'TRANSFER'))
+                                                            @elseif($paid->second_payment_status == 'PARTIALLY_PAID' &&  $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 1 && ($paid->second_payment_txn_mode == 'BALANCE_TRANSFER'))
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
                                                             @elseif ($paid->application_stage_status != 5)
                                                                 <button class="btn btn-secondary toastrDefaultError"
@@ -1605,7 +1605,7 @@
                                                             @else
                                                                 @if(in_array($paid->second_payment_status,['PENDING', 'PARTIALLY_PAID']) && $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 0 && $paid->second_payment_txn_mode == 'TRANSFER')
                                                                     <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                                @elseif($paid->second_payment_status == 'PARTIALLY_PAID' &&  $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 1 && ($paid->second_payment_txn_mode == 'BALANCE_TRANSFER' || $paid->second_payment_txn_mode == 'TRANSFER'))
+                                                                @elseif($paid->second_payment_status == 'PARTIALLY_PAID' &&  $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 1 && ($paid->second_payment_txn_mode == 'BALANCE_TRANSFER'))
                                                                     <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
                                                                 @elseif ($paid->application_stage_status != 5)
                                                                     <button class="btn btn-secondary toastrDefaultError"
@@ -2032,7 +2032,7 @@
                                                                 @else
                                                                     @if(in_array($paid->second_payment_status,['PENDING', 'PARTIALLY_PAID']) && $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 0 && $paid->second_payment_txn_mode == 'TRANSFER')
                                                                         <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                                    @elseif($paid->second_payment_status == 'PARTIALLY_PAID' &&  $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 1 && ($paid->second_payment_txn_mode == 'BALANCE_TRANSFER' || $paid->second_payment_txn_mode == 'TRANSFER'))
+                                                                    @elseif($paid->second_payment_status == 'PARTIALLY_PAID' &&  $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 1 && ($paid->second_payment_txn_mode == 'BALANCE_TRANSFER'))
                                                                         <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
                                                                     @elseif ($paid->application_stage_status != 5)
                                                                         <button class="btn btn-secondary toastrDefaultError"
@@ -2376,7 +2376,7 @@
                                                         @elseif(isset($paym))
                                                             @if(in_array($paid->second_payment_status,['PENDING', 'PARTIALLY_PAID']) && $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 0 && $paid->second_payment_txn_mode == 'TRANSFER')
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            @elseif($paid->second_payment_status == 'PARTIALLY_PAID' &&  $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 1 && ($paid->second_payment_txn_mode == 'BALANCE_TRANSFER' || $paid->second_payment_txn_mode == 'TRANSFER'))
+                                                            @elseif($paid->second_payment_status == 'PARTIALLY_PAID' &&  $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 1 && ($paid->second_payment_txn_mode == 'BALANCE_TRANSFER'))
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
                                                             @else    
                                                                 @if ($paid->application_stage_status != 5)
@@ -2397,7 +2397,7 @@
                                                         @else
                                                             @if(in_array($paid->second_payment_status,['PENDING', 'PARTIALLY_PAID']) && $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 0 && $paid->second_payment_txn_mode == 'TRANSFER')
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
-                                                            @elseif($paid->second_payment_status == 'PARTIALLY_PAID' &&  $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 1 && ($paid->second_payment_txn_mode == 'BALANCE_TRANSFER' || $paid->second_payment_txn_mode == 'TRANSFER'))
+                                                            @elseif($paid->second_payment_status == 'PARTIALLY_PAID' &&  $paid->second_payment_verified_by_cfo == 0 && $paid->is_second_payment_partially_paid == 1 && ($paid->second_payment_txn_mode == 'BALANCE_TRANSFER'))
                                                                 <button class="btn btn-secondary" style="font-size:16px;color:#7f8187" disabled>Being Verified..</button>
                                                             @elseif ($paid->application_stage_status != 5)
                                                                 <button class="btn btn-secondary toastrDefaultError"

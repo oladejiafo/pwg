@@ -946,6 +946,7 @@ class Quickbook
         $invoiceData = $dataService->Add($theResourceObj);
         $paymentDetails->invoice_no = $invoiceData->DocNumber;
         $paymentDetails->invoice_id = $invoiceData->Id;
+        $paymentDetails->payment_type = ($paymentDetails->payment_type == "BALANCE_ON_SECOND") ? 'SECOND' : (($paymentDetails->payment_type == "BALANCE_ON_SUBMISSION") ? 'SUBMISSION' : $paymentDetails->payment_type);
         $paymentDetails->save();
 
         if($paymentDetails->payment_type == "BALANCE_ON_SECOND"){
@@ -955,7 +956,8 @@ class Quickbook
             foreach($previousPayments as $payment)
             {
                 PaymentDetails::where('id', '=', $payment->id)
-                        ->update(['invoice_id' => $invoiceData->Id]);
+                        ->update(['invoice_id' => $invoiceData->Id,
+                                ]);
             }
         } elseif($paymentDetails->payment_type == "BALANCE_ON_SUBMISSION"){
             $previousPayments = PaymentDetails::where('application_id', $application->id)
@@ -964,7 +966,8 @@ class Quickbook
             foreach($previousPayments as $payment)
             {
                 PaymentDetails::where('id', '=', $payment->id)
-                        ->update(['invoice_id' => $invoiceData->Id]);
+                        ->update(['invoice_id' => $invoiceData->Id,
+                                ]);
             }
         }
 
@@ -1042,6 +1045,7 @@ class Quickbook
         $resultingObj = $dataService->Add($paymentObj);
         $paymentDetails->invoice_id = $resultingObj->Id;
         $paymentDetails->invoice_no = $prevInvoice->invoice_no;
+        $paymentDetails->payment_type = ($paymentDetails->payment_type == 'BALANCE_ON_FIRST') ? 'FIRST' :$paymentDetails->payment_type; 
         $paymentDetails->save();
     }
 

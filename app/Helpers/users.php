@@ -180,12 +180,12 @@ class users
             $file = self::getWorkpermitFile($paidDetails);
             if (isset($file['FileExist'])) {
                 if (strtoupper($paidDetails->first_payment_status) == 'PAID' && $paidDetails->work_permit_status == "WORK_PERMIT_RECEIVED" && strtoupper($paidDetails->submission_payment_status) != 'PAID' && $file['FileExist']) {
-                    $response['fileUrl'] = (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? Storage::disk('local')->url(pdfBlock::pdfBlock($file['fileUrl'])) : Storage::disk('s3')->url(pdfBlock::pdfBlock($file['fileUrl']));
+                    $response['fileUrl'] = null; //(in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) ? Storage::disk('local')->url(pdfBlock::pdfBlock($file['fileUrl'])) : Storage::disk('s3')->url(pdfBlock::pdfBlock($file['fileUrl']));
                     $response['message'] = "Download after second payment";
                     $response['status'] = 'permitReady';
-                } else if (strtoupper($paidDetails->first_payment_status) == 'PAID' && strtoupper($paidDetails->submission_payment_status) == 'PAID' && $paidDetails->work_permit_status == "WORK_PERMIT_RECEIVED" && $file['FileExist']) {
-                    $response['message'] = "Download work permit";
-                    $response['fileUrl'] = $file['fileUrl'];
+                } else if (strtoupper($paidDetails->first_payment_status) == 'PAID' && strtoupper($paidDetails->second_payment_status) == 'PAID' && $paidDetails->work_permit_status == "WORK_PERMIT_RECEIVED" && $file['FileExist']) {
+                    $response['message'] = "Download after second payment";
+                    $response['fileUrl'] = null; //$file['fileUrl'];
                     $response['status'] = true;
                 } else {
                     $response['message'] = "Work permit not available yet.";

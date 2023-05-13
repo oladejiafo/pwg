@@ -21,6 +21,11 @@
                                 </h3>
                             </div>
                         </div>
+                        <div class="col-1">
+                            <div class="dataCompleted childDataCompleted<?php echo e($i); ?>">
+                                <img src="<?php echo e(asset('images/Affiliate_Program_Section_completed.svg')); ?>" alt="approved">
+                            </div>
+                        </div>
                         <div class="col-2 mx-auto my-auto">
                             <div class="down-arrow">
                                 <img src="<?php echo e(asset('images/down_arrow.png')); ?>" height="auto" width="25%">
@@ -39,7 +44,7 @@
                                     <input type="hidden" name="child" value="<?php echo e($i); ?>">
                                     <input type="text" name="child_<?php echo e($i); ?>_first_name" id="child_<?php echo e($i); ?>_first_name" class="form-control child_<?php echo e($i); ?>_first_name" placeholder="First Name*" value="" autocomplete="off" />
                                     <label for="child_<?php echo e($i); ?>_first_name">First Name*</label>
-                                    <span class="child_<?php echo e($i); ?>_first_name_errorClass"></span>
+                                    <span class="child_<?php echo e($i); ?>_first_name_errorClass error"></span>
                                     <?php $__errorArgs = ['child_<?php echo e($i); ?>_first_name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -56,7 +61,7 @@ unset($__errorArgs, $__bag); ?>
                                 <div class="form-floating col-sm-4 mt-3">
                                     <input type="text" name="child_<?php echo e($i); ?>_surname" id="child_<?php echo e($i); ?>_surname" class="form-control child_<?php echo e($i); ?>_surname" placeholder="Surname*" value="" autocomplete="off"  />
                                     <label for="child_<?php echo e($i); ?>_surname">Surname*</label>
-                                    <span class="child_<?php echo e($i); ?>_surname_errorClass"></span>
+                                    <span class="child_<?php echo e($i); ?>_surname_errorClass error"></span>
                                     <?php $__errorArgs = ['child_<?php echo e($i); ?>_surname'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -71,7 +76,7 @@ unset($__errorArgs, $__bag); ?>
                                 <div class="form-floating col-sm-6 mt-3">
                                     <input type="text"  name="child_<?php echo e($i); ?>_dob"  id="child_<?php echo e($i); ?>_dob" class="child-dob form-control" placeholder="Date Of Birth*" readonly>
                                     <label for="child_<?php echo e($i); ?>_dob">Date Of Birth*</label>
-                                    <span class="child_<?php echo e($i); ?>_dob_errorClass"></span>
+                                    <span class="child_<?php echo e($i); ?>_dob_errorClass error"></span>
                                     <?php $__errorArgs = ['child_<?php echo e($i); ?>_dob'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -89,7 +94,7 @@ unset($__errorArgs, $__bag); ?>
                                         <option value="FEMALE">Female</option>
                                     </select>
                                     <label for="child_<?php echo e($i); ?>_gender">Gender *</label>
-                                    <span class="child_<?php echo e($i); ?>_gender_errorClass"></span>
+                                    <span class="child_<?php echo e($i); ?>_gender_errorClass error"></span>
                                     <?php $__errorArgs = ['child_<?php echo e($i); ?>_gender'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -100,13 +105,50 @@ endif;
 unset($__errorArgs, $__bag); ?>
                                 </div>
                             </div>
+                            <div class="form-group row mt-4">
+                                <div class="form-floating col-sm-6 mt-3">
+                                    <input type="text"  name="child_<?php echo e($i); ?>_passport_number"  id="child_<?php echo e($i); ?>_passport_number" value="<?php echo e(old('passport_number')); ?>" class="child-passport-number form-control" placeholder="Passport Number*">
+                                    <label for="child_<?php echo e($i); ?>_passport_number">Passport Number*</label>
+                                    <span class="child_<?php echo e($i); ?>_passport_number_errorClass error"></span>
+                                    <?php $__errorArgs = ['child_<?php echo e($i); ?>_passport_number'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <span class="error"><?php echo e($message); ?></span> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+
+                                </div>
+                                
+                                    <div class="form-floating col-sm-6 mt-3">
+                                        <input type="text" class="form-control child_<?php echo e($i); ?>_passport" placeholder="Upload your passport copy*" name="child_passport_<?php echo e($i); ?>" value="<?php echo e(old('child_passport')); ?>" readonly required>
+                                        <div class="input-group-btn">
+                                            <span class="fileUpload btn">
+                                                <span class="upl" id="upload">Choose File</span>
+                                                <input type="file" class="upload up child_<?php echo e($i); ?>_passport" id="up"  name="child_passport_<?php echo e($i); ?>"/>
+                                                </span><!-- btn-orange -->
+                                        </div><!-- btn -->
+                                        <label for="child_<?php echo e($i); ?>_passport">Upload your passport copy*</label>
+                                        <span class="child_<?php echo e($i); ?>_passport_errorClass error"></span>
+                                        <?php $__errorArgs = ['child_<?php echo e($i); ?>_passport'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> <span class="error"><?php echo e($message); ?></span> <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                                    </div>
+                                
+                            </div>
                         </div>
                         <div class="form-group row mt-4">
                             <div class="col-lg-4 col-md-10 offset-lg-4 offset-md-1 col-sm-12">
                                 <?php if($i ==  $client['children_count']): ?>
                                     <button type="submit" class="btn btn-primary submitBtn">Submit <i class="fa fa-spinner fa-spin childReviewSpin"></i></button>  
                                 <?php else: ?> 
-                                    <button type="button" class="btn btn-primary submitBtn collapsechild<?php echo e($i+1); ?>" data-bs-toggle="collapse" data-bs-target="#collapsechild<?php echo e($i+1); ?>" aria-expanded="false" aria-controls="collapsechild<?php echo e($i+1); ?>">Continue</button>  
+                                    <button type="button" class="btn btn-primary submitBtn" data-bs-toggle="collapse" aria-expanded="false" onclick="kidContinue(<?php echo e($i); ?>)">Continue</button>  
                                 <?php endif; ?>
                             </div>
                         </div>

@@ -67,8 +67,8 @@ class HomeController extends Controller
                     ->orderBy('applications.id', 'desc')
                     ->first();
 
-                //Quickbook
-                Quickbook::updateTokenAccess();
+                // //Quickbook
+                // Quickbook::updateTokenAccess();
 
                 $package = DB::table('pricing_plans')
                     ->join('destinations', 'destinations.id', '=', 'pricing_plans.destination_id')
@@ -136,7 +136,7 @@ class HomeController extends Controller
         Session::forget('mypack_id');
         Session::forget('mySpouse');
         Session::forget('myKids');
-
+        Session::forget('contractFileUrl');
         if (isset($request->parents)) {
             Session::put('mySpouse', $request['parents']);
             Session::put('myKids', $request['kid']);
@@ -165,8 +165,11 @@ class HomeController extends Controller
                 ->where('status', 'CURRENT')
                 ->orderBy('sub_total', 'asc')
                 ->first();
-
+            $fileUrl = self::createContract($productId, 'FAMILY_PACKAGE', $parentt, $kids);
+            Session::put('contractFileUrl', $fileUrl);
             if ($request->response == 1) {
+
+                $famdet['contractFileUrl'] = $fileUrl;
                 return $famdet;
             }
         } else {
@@ -176,11 +179,10 @@ class HomeController extends Controller
                 ->orderBy('sub_total', 'asc')
                 ->first();
         }
-
         $proddet = family_breakdown::where('destination_id', '=', $productId)->where('pricing_plan_type', 'BLUE_COLLAR')->where('status', 'CURRENT')->get();
         $whiteJobs = family_breakdown::where('destination_id', '=', $productId)->where('pricing_plan_type', 'WHITE_COLLAR')->where('status', 'CURRENT')->get();
         $canadaOthers = family_breakdown::where('destination_id', '=', $productId)->whereIn('pricing_plan_type', array('EXPRESS_ENTRY', 'STUDY_PERMIT'))->where('status', 'CURRENT')->get();
-        return view('user.package-type', compact('proddet', 'famdet', 'productId', 'whiteJobs', 'data', 'canadaOthers'));
+        return view('user.package-type', compact('proddet', 'famdet', 'productId', 'whiteJobs', 'data', 'canadaOthers', 'fileUrl'));
     }
 
     public function product(Request $request)
@@ -415,6 +417,8 @@ class HomeController extends Controller
     public function payment($productId, Request $request)
     {
         try {
+            Session::forget('contractFileUrl');
+            Session::forget('mySpouse');
             $famCode = 0;
             if (Auth::id()) {
                 Session::forget('haveCoupon');
@@ -445,9 +449,7 @@ class HomeController extends Controller
                     $myPack = ($request->myPack) ?? Session::get('packageTypeOpted');
                 }
                 //Call Create Contract Function
-                $fileUrl = self::createContract($productId);
-
-
+                $fileUrl = self::createContract($productId, (($request->myPack) ?? Session::get('packageTypeOpted')), $parentCount = 1, $kidCount = 1);
                 if (session()->get('myproduct_id')) {
                 } else {
                     Session::put('myproduct_id', $productId);
@@ -483,6 +485,7 @@ class HomeController extends Controller
                 $pdet = DB::table('pricing_plans')
                     ->where('id', '=', $pack_id)
                     ->first();
+                Session::put('mySpouse', 'no');
                 return view('user.payment-form', compact('data', 'pdet', 'pays', 'payall', 'paym', 'fileUrl', 'myPack'));
             } else {
                 return redirect('home');
@@ -549,7 +552,7 @@ class HomeController extends Controller
         }
     }
 
-    private static function createContract($pid)
+    private static function createContract($pid, $packageType, $parentCount = 1, $kidCount = 1)
     {
         $originalPdf = null;
         $destination_file = null;
@@ -562,9 +565,41 @@ class HomeController extends Controller
             ->first();
         $productName = strtolower($productName);
         if ($productName == Constant::poland) {
-            $originalPdf = "pdf/poland.pdf";
-            $rand = UserHelper::getRandomString();
-            $newFileName = 'contract' . Auth::id() . '-' . $rand . '-' . 'poland.pdf';
+            if ($packageType == 'FAMILY_PACKAGE') {
+                if ($parentCount == 1 && $kidCount == 1) {
+                    $originalPdf = "pdf/FP-Poland-1parents-1kids.pdf";
+                    $rand = UserHelper::getRandomString();
+                    $newFileName = 'contract' . Auth::id() . '-' . $rand . '-' . 'poland.pdf';
+                } elseif ($parentCount == 1 && $kidCount == 2) {
+                    $originalPdf = "pdf/FP-Poland-1parents-2kids.pdf";
+                    $rand = UserHelper::getRandomString();
+                    $newFileName = 'contract' . Auth::id() . '-' . $rand . '-' . 'poland.pdf';
+                } elseif ($parentCount == 1 && $kidCount == 3) {
+                    $originalPdf = "pdf/FP-Poland-1parents-3kids.pdf";
+                    $rand = UserHelper::getRandomString();
+                    $newFileName = 'contract' . Auth::id() . '-' . $rand . '-' . 'poland.pdf';
+                } elseif ($parentCount == 2 && $kidCount == 1) {
+                    $originalPdf = "pdf/FP-Poland-2parents-1kids.pdf";
+                    $rand = UserHelper::getRandomString();
+                    $newFileName = 'contract' . Auth::id() . '-' . $rand . '-' . 'poland.pdf';
+                } elseif ($parentCount == 2 && $kidCount == 2) {
+                    $originalPdf = "pdf/FP-Poland-2parents-2kids.pdf";
+                    $rand = UserHelper::getRandomString();
+                    $newFileName = 'contract' . Auth::id() . '-' . $rand . '-' . 'poland.pdf';
+                } elseif ($parentCount == 2 && $kidCount == 3) {
+                    $originalPdf = "pdf/FP-Poland-2parents-3 kids.pdf";
+                    $rand = UserHelper::getRandomString();
+                    $newFileName = 'contract' . Auth::id() . '-' . $rand . '-' . 'poland.pdf';
+                } elseif ($parentCount == 2 && $kidCount == 4) {
+                    $originalPdf = "pdf/FP-Poland-2parents-4kids.pdf";
+                    $rand = UserHelper::getRandomString();
+                    $newFileName = 'contract' . Auth::id() . '-' . $rand . '-' . 'poland.pdf';
+                }
+            } else {
+                $originalPdf = "pdf/poland.pdf";
+                $rand = UserHelper::getRandomString();
+                $newFileName = 'contract' . Auth::id() . '-' . $rand . '-' . 'poland.pdf';
+            }
         } else if ($productName == Constant::czech) {
             $originalPdf = "pdf/czech.pdf";
             $rand = UserHelper::getRandomString();
@@ -590,11 +625,11 @@ class HomeController extends Controller
         if ($newFileName && $originalPdf) {
             $client = Client::find(Auth::id());
             $destination_file = 'Applications/Contracts/client_contracts/' . $newFileName;
-            $data = pdfBlock::mapDetails($originalPdf, $destination_file, $productName, Session::get('packageType'), $client);
+            $data = pdfBlock::mapDetails($originalPdf, $destination_file, $productName, $packageType, $client, $parentCount, $kidCount);
             Session::put('contract', $newFileName);
             Application::where('client_id', Auth::id())
                 ->where('destination_id', $pid)
-                ->where('work_permit_category', (Session::get('packageType')) ?? 'BLUE_COLLAR')
+                ->where('work_permit_category', ($packageType) ?? 'BLUE_COLLAR')
                 ->update([
                     'contract' => $newFileName
                 ]);
@@ -625,11 +660,18 @@ class HomeController extends Controller
             } else {
                 $myCHildren = $children = 0;
             }
+            $pricingPLan = product_payments::where('pricing_plan_type', "FAMILY_PACKAGE")
+                ->where('no_of_parent', $mySpouse)
+                ->where('no_of_children', $myCHildren)
+                ->where('status', "CURRENT")
+                ->where('is_active', 1)
+                ->orderby('id', 'DESC')
+                ->first();
+        } else {
+            $pricingPLan = product_payments::where('id', $pack_id)->first();
         }
-
-
-        $pricingPLan = product_payments::where('id', $pack_id)->first();
-
+       
+        $pack_id = $pricingPLan['id'];
         $datas = Application::where('client_id', Auth::id())
             ->where('destination_id', $pid)
             ->where('pricing_plan_id', $pricingPLan->id)
@@ -690,6 +732,8 @@ class HomeController extends Controller
             $data->network_code = ($networkCode) ? $networkCode->code : null;
             $data->partner_code = ($partnerCode) ? $partnerCode->partner_code : null;
 
+            $data->assigned_agent_id = ($networkCode) ? $networkCode->agent_code : null;
+
             $res = $data->save();
         } else {
             $datas->pricing_plan_id = ($datas->pricing_plan_id) ?? $pricingPLan->id;
@@ -701,7 +745,6 @@ class HomeController extends Controller
             $datas->work_permit_status = ($datas->work_permit_status) ?? 'WORK_PERMIT_NOT_APPLIED';
             $res = $datas->save();
         }
-
         ############## SIGNED CONTRACT ######################
         $applicant = Application::where('client_id', Auth::id())
             ->where('pricing_plan_id', $pack_id)
@@ -733,7 +776,7 @@ class HomeController extends Controller
             if (in_array($_SERVER['REMOTE_ADDR'], Constant::is_local)) {
                 $signatureUrl = ltrim($signatureUrl, $signatureUrl[0]);
             }
-            $result = pdfBlock::attachSignature($originalPdf, $signatureUrl, $data, $paymentType, $applicant, $user);
+            $result = pdfBlock::attachSignature($originalPdf, $signatureUrl, $data, $paymentType, $applicant, $user, $pricingPLan);
         }
         return $applicant->id;
     }
@@ -860,7 +903,8 @@ class HomeController extends Controller
                 $applicant_id = ($apply) ? $apply->id : null;
                 $vals = array(0, 1, 2);
 
-                $payLimit = $request->totaldue - $request->vats;
+                // dd(intval(10,500));
+                $payLimit = str_replace(",", "", $request->totaldue) - $request->vats;
                 if ($request->amount > 0) {
                     $validator = Validator::make($request->all(), [
                         'amount' => 'numeric|gte:1000|lte:' . $payLimit,
@@ -885,7 +929,7 @@ class HomeController extends Controller
                 }
                 $thisPayment = $request->whichpayment;
                 $thisVat = $request->vats;
-                $thisPayment = $request->totaldue;
+                $thisPayment = str_replace(",", "", $request->totaldue);
                 $thisPaymentMade = $request->totalpay;
                 if ($request->discount > 0) {
                     $thisDiscount = $request->discount;
@@ -902,10 +946,10 @@ class HomeController extends Controller
                     $totalpay = $request->totalpay;
                 }
                 $outstand = $request->totalpay + $thisVat;
-                if ($request->totaldue == ($request->totalpay + $request->discount)) {
+                if (str_replace(",", "", $request->totaldue) == ($request->totalpay + $request->discount)) {
                     $whatsPaid = "PAID";
                     // } elseif (($request->totaldue > ($request->totalpay + $request->discount)) && (($request->totalpay + $request->discount) >= 1000)) {
-                } elseif (($request->totaldue > ($request->totalpay + $request->discount)) || (($request->totalpay + $request->discount) >= 1000)) {
+                } elseif ((str_replace(",", "", $request->totaldue) > ($request->totalpay + $request->discount)) || (($request->totalpay + $request->discount) >= 1000)) {
                     if ($request->totalremaining == ($request->totalpay + $request->discount)) {
                         $whatsPaid = "PAID";
                     } else {
@@ -913,7 +957,7 @@ class HomeController extends Controller
                     }
                 } else {
                     $whatsPaid = "PENDING"; //??????
-                    $overPay = $request->totalpay - $request->totaldue;
+                    $overPay = $request->totalpay - str_replace(",", "", $request->totaldue);
                 }
                 if (Session::get('discountapplied') == 1) {
                     $couponCodeData = DB::table('coupons')->where('code', $request->discountCode)->get()->first();
@@ -1003,7 +1047,7 @@ class HomeController extends Controller
                         'datas' => $datas['id'],
                         'totalpay' => $request->totalpay,
                         'discount' => $request->discount,
-                        'totaldue' => $request->totaldue,
+                        'totaldue' => str_replace(",", "", $request->totaldue),
                         'totalremaining' => $request->totalremaining,
                         'pid' => $request->pid,
                         'couponApplied' => Session::get('discountapplied'),
@@ -1016,7 +1060,7 @@ class HomeController extends Controller
                         if (in_array($apply->application_stage_status, $vals) && (empty($apply->embassy_country) || $apply->embassy_country == null)) {
                             $data->embassy_country = $request->embassy_appearance;
                         }
-                        $data->pricing_plan_id = $request->ppid;
+                        // $data->pricing_plan_id = $request->ppid;
 
                         if ($request->whichpayment == 'FIRST') {
                             $data->first_payment_price = $thisPayment; //was remarked
@@ -1125,7 +1169,7 @@ class HomeController extends Controller
                         if ((empty($apply->embassy_country) || $apply->embassy_country == null)) {
                             $datas->embassy_country = $request->embassy_appearance;
                         }
-                        $datas->pricing_plan_id = $request->ppid;
+                        // $datas->pricing_plan_id = $request->ppid;
                         $datas->total_discount = ($datas->coupon_code) ?  $datas->total_discount : 0;
                         $datas->total_vat = ($datas->coupon_code) ? $datas->total_vat : $pdet->total_vat;
                         $datas->total_price = ($datas->coupon_code) ? $datas->total_price : $pdet->total_price;
@@ -1255,6 +1299,7 @@ class HomeController extends Controller
                 return redirect('home');
             }
         } catch (Exception $e) {
+            // dd($e);
             return redirect('myapplication')->with('error', $e->getMessage());
         }
     }
@@ -1538,19 +1583,23 @@ class HomeController extends Controller
                     if (session()->has('paymentCreds')) {
                     } else {
                         $application = Application::where('client_id', '=', Auth::id())->orderBy('id', 'DESC')->first();
-                        $dat = new payment;
-                        $dat->application_id = $application->id;
-                        $dat->payment_date =  date('Y-m-d');;
-                        $dat->payable_amount = $paymentResponse->amount->value / 100;
-                        $dat->invoice_amount = $paymentResponse->amount->value / 100;
-                        $dat->bank_id = '8';
-                        $dat->payment_verified_by_cfo = 1;
-                        $dat->paid_amount = $paymentResponse->amount->value / 100;
-                        $dat->currency = $paymentResponse->amount->currencyCode;
-                        $dat->bank_reference_no = $paymentResponse->merchantOrderReference;
-                        $dat->transaction_id = $paymentResponse->_id;
-                        $dat->transaction_mode = 'CARD';
-                        $dat->save();
+                        $paymentExist = payment::where('application_id', $application->id)->where('bank_reference_no', $paymentResponse->merchantOrderReference)->first();
+                        if ($paymentExist == NULL) {
+                            $dat = new payment;
+                            $dat->application_id = $application->id;
+                            $dat->payment_date =  date('Y-m-d');;
+                            $dat->payable_amount = $paymentResponse->amount->value / 100;
+                            $dat->invoice_amount = $paymentResponse->amount->value / 100;
+                            $dat->bank_id = '8';
+                            $dat->payment_verified_by_cfo = 1;
+                            $dat->paid_amount = $paymentResponse->amount->value / 100;
+                            $dat->currency = $paymentResponse->amount->currencyCode;
+                            $dat->bank_reference_no = $paymentResponse->merchantOrderReference;
+                            $dat->transaction_id = $paymentResponse->_id;
+                            $dat->transaction_mode = 'CARD';
+                            $dat->save();
+                        }
+
                         return \Redirect::route('myapplication')->with('info', 'Payment have to be verified!');
                     }
                     $paymentCreds = Session::get('paymentCreds');
@@ -1687,7 +1736,8 @@ class HomeController extends Controller
                     $thisDay =  date('Y-m-d');
                     $ppd = payment::where([
                         ['application_id', '=', $data->id],
-                        ['payment_type', $paymentCreds['whichpayment']]
+                        ['bank_reference_no', $paymentResponse->merchantOrderReference],
+                        // ['payment_type', $paymentCreds['whichpayment']]
                     ])
                         ->first();
                     $datas = Application::where([
@@ -1710,7 +1760,7 @@ class HomeController extends Controller
                         $dat->bank_reference_no = $paymentResponse->merchantOrderReference;
                         $dat->transaction_id = $paymentResponse->_id;
                         $dat->transaction_mode = 'CARD';
-                        $dat->remaining_amount = (isset($paymentCreds['totalremaining'])) ? NULL : $paymentCreds['totaldue'] - $paymentCreds['totalpay'];
+                        $dat->remaining_amount = (isset($paymentCreds['totalremaining'])) ? 0 : $paymentCreds['totaldue'] - $paymentCreds['totalpay'];
                         $dat->save();
                         Session::put('paymentId', $dat->id);
                     } else {
@@ -1843,7 +1893,7 @@ class HomeController extends Controller
 
                         $coupon['status'] = 'offer_not_started_yet';
                         $coupon['is_valid'] = false;
-                        $topaynoww = $request->totaldue; //If no promo
+                        $topaynoww = str_replace(",", "", $request->totaldue); //If no promo
                         $response['topaynow'] = $topaynoww;
                         $response['message'] = "Offer not started yet!";
                         $response['status'] = false;
@@ -1854,7 +1904,7 @@ class HomeController extends Controller
                         $coupon['is_valid'] = false;
                         Session::put('haveCoupon', 0);
                         $response['haveCoupon'] = 0;
-                        $topaynoww = $request->totaldue; //If no promo
+                        $topaynoww = str_replace(",", "", $request->totaldue); //If no promo
                         $response['topaynow'] = $topaynoww;
                         $response['message'] = "Code expired!";
                         $response['status'] = false;
@@ -1891,7 +1941,7 @@ class HomeController extends Controller
                         } else {
                             $coupon['is_valid'] = false;
                             $coupon['status'] = 'already_used';
-                            $topaynoww = $request->totaldue; //If no promo
+                            $topaynoww = str_replace(",", "", $request->totaldue); //If no promo
                             Session::put('haveCoupon', 0);
                             $response['haveCoupon'] = 0;
                             $response['topaynow'] = $topaynoww;
@@ -1903,7 +1953,7 @@ class HomeController extends Controller
                 } else {
                     $coupon['is_valid'] = false;
                     $coupon['status'] = 'not_assigned_yet';
-                    $topaynoww = $request->totaldue; //If no promo
+                    $topaynoww = str_replace(",", "", $request->totaldue); //If no promo
                     Session::put('haveCoupon', 0);
                     $response['haveCoupon'] = 0;
                     $response['topaynow'] = $topaynoww;
@@ -1914,7 +1964,7 @@ class HomeController extends Controller
             } else {
                 $coupon['status'] = false;
                 $coupon['status'] = 'invalid_code';
-                $topaynoww = $request->totaldue; //If no promo
+                $topaynoww = str_replace(",", "", $request->totaldue); //If no promo
                 Session::put('haveCoupon', 0);
                 $response['haveCoupon'] = 0;
                 $response['topaynow'] = $topaynoww;
@@ -1925,7 +1975,7 @@ class HomeController extends Controller
         } else {
             $coupon['status'] = false;
             $coupon['status'] = 'invalid_code';
-            $topaynoww = $request->totaldue; //If no promo
+            $topaynoww = str_replace(",", "", $request->totaldue); //If no promo
             Session::put('haveCoupon', 0);
             $response['haveCoupon'] = 0;
             $response['topaynow'] = $topaynoww;
@@ -2010,7 +2060,7 @@ class HomeController extends Controller
             if ($newFileName && $originalPdf) {
                 $client = Client::find(Auth::id());
                 $destination_file = 'Applications/Contracts/client_contracts/' . $newFileName;
-                $data = pdfBlock::mapDetails($originalPdf, $destination_file, $productName, Session::get('packageType'), $client);
+                $data = pdfBlock::mapDetails($originalPdf, $destination_file, $productName, Session::get('packageType'), $client, $parentCount = 1, $kidCount = 1);
                 Session::put('contract', $newFileName);
                 Application::where('client_id', Auth::id())
                     ->where('destination_id', $productId)
@@ -2405,7 +2455,7 @@ class HomeController extends Controller
             }
             if ($newFileName && $originalPdf) {
                 $destination_file = 'Applications/Contracts/client_contracts/' . $newFileName;
-                $data = pdfBlock::mapDetails($originalPdf, $destination_file, $productName, $application->work_permit_category, $client);
+                $data = pdfBlock::mapDetails($originalPdf, $destination_file, $productName, $application->work_permit_category, $client, $parentCount = 1, $kidCount = 1);
                 Application::where('id', $application->id)
                     ->update([
                         'contract' => $newFileName
@@ -2425,7 +2475,7 @@ class HomeController extends Controller
             $signatureUrl = (isset($user->getMedia(Client::$media_collection_main_signture)[0])) ? $user->getMedia(Client::$media_collection_main_signture)[0]->getUrl() : null;
 
 
-            $result = pdfBlock::attachSignature($originalPdf, $signatureUrl, $data, $paymentType, $application, $user);
+            $result = pdfBlock::attachSignature($originalPdf, $signatureUrl, $data, $paymentType, $application, $user, $pricingPlan);
         }
     }
 

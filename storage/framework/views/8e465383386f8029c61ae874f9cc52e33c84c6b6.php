@@ -533,12 +533,12 @@ $totalPay = round($payNow - $discount + $vat, 2);
                 <input type="hidden" id="totaldue" name="totaldue" value="<?php echo e(round($payNow + $vat, 2)); ?>">
                 <input type="hidden" name="totalremaining" value="<?php echo e(round($pends, 2)); ?>">
             <?php else: ?>
-                <h2 style="font-size: 1em;">Now you will pay <?php echo e(strtolower($whichPayment)); ?> installment only
+                <h2 style="font-size: 1em;">Now you will pay <?php echo e(strtolower($whichPayment)); ?> installment only 
                     <span id="amountLink">
 
                         
                         <b><span id="amountLink">
-                                <?php echo e(!isset($pays) || $pays->first_payment_status != 'PAID' ? ($diff > 0 ? number_format(floor(($payNoww - $discount + $vat) * 100) / 100, 2) : number_format(floor(($payNoww - $discount + $vat) * 100) / 100, 2)) : number_format(floor(($payNoww - $discount + $vat) * 100) / 100, 2)); ?>
+                                <?php echo e(!isset($pays) || $pays->first_payment_status != 'PAID' ? ($diff > 0 ? number_format(floor(($payNow - $discount + $vat) * 100) / 100, 2) : number_format(floor(($payNow - $discount + $vat) * 100) / 100, 2)) : number_format(floor(($payNow - $discount + $vat) * 100) / 100, 2)); ?>
 
                             </span></b>
                     </span> AED
@@ -557,9 +557,9 @@ $totalPay = round($payNow - $discount + $vat, 2);
                 </h2>
                 
                 <input type="hidden" id="amountLink2" name="totalpay"
-                    value="<?php echo e(!isset($pays) || $pays->first_payment_status != 'PAID' ? ($diff > 0 ? round($payNoww - $discount + $vat, 2) : round($payNoww - $discount + $vat, 2)) : round($payNoww - $discount + $vat, 2)); ?>">
+                    value="<?php echo e(!isset($pays) || $pays->first_payment_status != 'PAID' ? ($diff > 0 ? round($payNow - $discount + $vat, 2) : round($payNow - $discount + $vat, 2)) : round($payNow - $discount + $vat, 2)); ?>">
                 <input type="hidden" id="totaldue" name="totaldue"
-                    value="<?php echo e(round($payNoww - $discount + $vat, 2)); ?>">
+                    value="<?php echo e(round($payNow - $discount + $vat, 2)); ?>">
             <?php endif; ?>
         </div>
 
@@ -692,6 +692,7 @@ $totalPay = round($payNow - $discount + $vat, 2);
                 url: "<?php echo e(route('packageType',$data->id)); ?>",
                 data: {kid : kidd, parents: parents , response : 1 }, 
                 success: function (data) {
+                    console.log(data);
                     let vallu = (data.first_payment_sub_total*1.2995)-(data.first_payment_sub_total);
                     let thisVat = data.first_payment_sub_total*0.05;
                     let thisTotal = parseFloat(data.first_payment_sub_total) + parseFloat(thisVat);
@@ -699,7 +700,6 @@ $totalPay = round($payNow - $discount + $vat, 2);
                     let fullVallu = (data.sub_total*1.2995)-(data.sub_total);
                     let fullVat = data.sub_total*0.05;
                     let fullTotal = parseFloat(data.sub_total) + parseFloat(fullVat);
-
 
                     if(ppyall == 0)
                     {
@@ -723,6 +723,8 @@ $totalPay = round($payNow - $discount + $vat, 2);
                         $('#thissave').text(parseFloat(fullVallu).toLocaleString());
                     }
                     $('.fam_id').val(data.id);
+                    $('.contractFileUrl').empty();
+                    $('.contractFileUrl').append('<embed src="'+data.contractFileUrl+'#toolbar=0&navpanes=0&pagemode=none" width="100%" height="100%" view="fit" type="application/pdf" />');
                 },
                 error: function (error) {
                 }

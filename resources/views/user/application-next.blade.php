@@ -439,6 +439,66 @@
             }
             $('.cvupload').attr("value",names);
         });
+        $(document).on('change','.child_1_passport', function(){
+            var names = [];
+            var length = $(this).get(0).files.length;
+            for (var i = 0; i < $(this).get(0).files.length; ++i) {
+                names.push($(this).get(0).files[i].name);
+            }
+            if(length>2){
+                var fileName = names.join(', ');
+                $('.child_1_passport').attr("value",length+" files selected");
+            }
+            else{
+                $('.child_1_passport').attr("value",names);
+            }
+        });
+
+        $(document).on('change','.child_2_passport', function(){
+            var names = [];
+            var length = $(this).get(0).files.length;
+            for (var i = 0; i < $(this).get(0).files.length; ++i) {
+                names.push($(this).get(0).files[i].name);
+            }
+            if(length>2){
+                var fileName = names.join(', ');
+                $('.child_2_passport').attr("value",length+" files selected");
+            }
+            else{
+                $('.child_2_passport').attr("value",names);
+            }
+        });
+
+        $(document).on('change','.child_3_passport', function(){
+            var names = [];
+            var length = $(this).get(0).files.length;
+            for (var i = 0; i < $(this).get(0).files.length; ++i) {
+                names.push($(this).get(0).files[i].name);
+            }
+            if(length>2){
+                var fileName = names.join(', ');
+                $('.child_3_passport').attr("value",length+" files selected");
+            }
+            else{
+                $('.child_3_passport').attr("value",names);
+            }
+        });
+
+        $(document).on('change','.child_4_passport', function(){
+            var names = [];
+            var length = $(this).get(0).files.length;
+            for (var i = 0; i < $(this).get(0).files.length; ++i) {
+                names.push($(this).get(0).files[i].name);
+            }
+            if(length>2){
+                var fileName = names.join(', ');
+                $('.child_4_passport').attr("value",length+" files selected");
+            }
+            else{
+                $('.child_4_passport').attr("value",names);
+            }
+        });
+
         $('.passport_upload, .residence_upload, .visa_upload, .schengen_upload, .dependent_passport_upload, .dependent_residence_upload, .dependent_visa_upload, .dependent_schengen_upload').click(function(){
             $("#passportFormatModal").modal('hide');
             $("#visaFormatModal").modal('hide');
@@ -1434,6 +1494,7 @@
         for(var i= 1 ; i<='{{$client['children_count']}}'; i++)
         {
             $('.childData'+i).hide();
+            $('.childDataCompleted'+i).hide();
         }
         $('#child_details').submit(function(e){
             e.preventDefault(); 
@@ -1441,6 +1502,12 @@
             $("#child_details :input").each(function(index, elm){
                 $("."+elm.name+"_errorClass").empty();
             });
+            var names = [];
+            
+            var formData = new FormData(this);
+            if($('.dependent_passport_upload')[0].files[0]){
+                formData.append('dependent_passport_copy', $('.dependent_passport_upload')[0].files[0]);
+            }
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -1449,7 +1516,7 @@
             $.ajax({
                 type: 'POST',
                 url: "{{ route('store.children.details') }}",
-                data: new FormData(this),
+                data: formData,
                 processData: false,
                 contentType: false,
                 success: function (data) {
@@ -1574,6 +1641,7 @@
             }
         });
     });
+
     function showPassportFormat()
     {
          $("#passportFormatModal").modal('show');
@@ -1650,6 +1718,57 @@
             }
         });
         return returnValue;
+    }
+
+    function kidContinue(i)
+    {
+        var error = 0;
+        if($('#child_'+i+'_first_name').val()){
+            $('.child_'+i+'_first_name_errorClass').text(' ');
+        } else {
+            error++;
+            $('.child_'+i+'_first_name_errorClass').text('Child '+i+' first name is required');
+        }
+
+        if($('#child_'+i+'_surname').val()){
+            $('.child_'+i+'_surname_errorClass').text(' ');
+        } else {
+            error++;
+            $('.child_'+i+'_surname_errorClass').text('Child '+i+' surname is required');
+        }
+
+        if($('#child_'+i+'_dob').val()){
+            $('.child_'+i+'_dob_errorClass').text(' ');
+        } else {
+            error++;
+            $('.child_'+i+'_dob_errorClass').text('Child '+i+' dob is required');
+        }
+
+        if($('#child_'+i+'_gender').val()){
+            $('.child_'+i+'_gender_errorClass').text(' ');
+        } else {
+            error++;
+            $('.child_'+i+'_gender_errorClass').text('Child '+i+' gender is required');
+        }
+
+        if($('#child_'+i+'_passport_number').val()){
+            $('.child_'+i+'_passport_number_errorClass').text(' ')
+        } else {
+            error++;
+            $('.child_'+i+'_passport_number_errorClass').text('Child '+i+' passport number is required');
+        }
+        if($('input[name="child_passport_'+i+'"]').val()){
+            $('.child_'+i+'_passport_errorClass').text(' ')
+        } else {
+            error++;
+            $('.child_'+i+'_passport_errorClass').text('Child '+i+' passport is required');
+        }  
+
+        if(error == 0){
+            $('.childDataCompleted'+i).show();
+            $('#collapsechild'+i).removeClass('show');
+            $('#collapsechild'+(i+1)).addClass('show');
+        }   
     }
 </script>
 

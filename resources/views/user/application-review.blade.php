@@ -1761,6 +1761,14 @@
                                                         @error('child_{{$key+1}}_gender') <span class="error">{{ $message }}</span> @enderror
 
                                                     </div>
+                                                    <div class="form-group row mt-4">
+                                                        <div class="form-floating col-sm-6 mt-3">
+                                                            <input type="text"  name="child_{{$key+1}}_passport_number" value="{{($child['passport_number'])}}"  id="child_{{$key+1}}_passport_number" class="child-passport-number form-control" placeholder="Passport Number*">
+                                                            <label for="child_{{$key+1}}_passport_number">Passport Number*</label>
+                                                            <span class="child_{{$key+1}}_passport_number_errorClass"></span>
+                                                            @error('child_{{$key+1}}_passport_number') <span class="error">{{ $message }}</span> @enderror
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="form-group row mt-4">
